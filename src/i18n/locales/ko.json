@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "일반 꽃",
+    "optionalEndless": "무한 모드 (선택 사항)"
+  },
   "codexReference": {
     "titleConcept": "게임의 핵심 개념",
     "titleTilesOverview": "패 이해하기",
@@ -2593,7 +2597,7 @@
       },
       "seal_of_fortune": {
         "name": "요행의 부적",
-        "description": "1/4 확률로 무작위 법령에 박막/홀로/프리즘을 부여"
+        "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 중 하나를 부여"
       },
       "seal_of_the_immortal": {
         "name": "불멸의 부적",
@@ -2645,7 +2649,7 @@
       },
       "script_of_aura": {
         "name": "영기의 문서",
-        "description": "선택한 패 1장에 박막/홀로/프리즘을 부여"
+        "description": "선택한 패 1장에 박막/홀로그램/다색 중 하나를 부여"
       },
       "script_of_ectoplasm": {
         "name": "영질의 문서",
@@ -2661,7 +2665,7 @@
       },
       "script_of_the_hex": {
         "name": "저주의 문서",
-        "description": "무작위 법령에 프리즘을 부여하고 나머지를 모두 파괴"
+        "description": "무작위 법령에 다색을 부여하고 나머지 법령을 모두 파괴"
       },
       "script_of_the_sigil": {
         "name": "인장의 문서",

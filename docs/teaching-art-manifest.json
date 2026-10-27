@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "tool": "Built-in image_gen",
+  "postprocessing": "cwebp quality 84, resize to 960 × 320; no crop, background removal or painted text.",
+  "assets": [
+    {
+      "id": "decree-synergy",
+      "path": "public/assets/illustrations/teaching/decree-synergy.webp",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-9614e73e-f9bb-4dd3-8d66-67ca5ad8ca21.png",
+      "sourceSha256": "2fdfe5c67e3fdabdac142b7ef84a3d939865a9294b164eba002c219c17f51095",
+      "runtimeSha256": "eec872265b0875e30686dbae4f02958745fc3eaac8c63e33ceba47d8101bf440",
+      "bytes": 63594,
+      "width": 960,
+      "height": 320,
+      "prompt": "Use case: stylized-concept. Asset type: compact educational banner for Tensho, an East Asian mahjong roguelike. Generate one landscape 3:1 full-bleed image. Scene: dark jade felt with soft shadowed emerald background. Exactly three equally prominent antique parchment Decree scrolls stand side by side in three equal columns, centered at one-sixth, one-half, and five-sixths of image width, with comfortable margins and no overlaps. Each scroll has carved antique-gold rollers, ivory parchment, restrained red cord, and dimensional hand-painted tactile richness. The first scroll displays an illustration of three ivory mahjong tiles with simple circular pips, symbolizing base points, not coins. The middle scroll displays two warm interweaving golden flames, symbolizing an added bonus. The third scroll displays a brilliant gold sunburst with jade rays, symbolizing amplification. All three scrolls the same size and shape; bold readable motifs and clear silhouettes at a small UI width. A faint gold thread visually links their bases without arrows or written symbols. Premium painterly realistic fantasy treasure art with deep forest-green, jade, old gold, warm ivory, tiny vermilion accents. Calm readable lighting, bright scroll faces, not dark muddy art. No text, letters, numerals, mathematical signs, captions, calligraphy, logos, watermarks, frames, UI, or characters. No extra scrolls. Entire composition fully visible inside the wide banner. All educational labels and arithmetic will be added separately in localized HTML."
+    },
+    {
+      "id": "flower-awakening",
+      "path": "public/assets/illustrations/teaching/flower-awakening.webp",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-a40464d4-5edf-4c4a-927c-804aa280b5d8.png",
+      "sourceSha256": "1ce561be0a061a4a23c49054b6d3010679ec5a90872525fb021c47f09911d1a4",
+      "runtimeSha256": "f58697ee4836f247d43bba48649c9101fe1299af7d54f9a34f4ebc6e36792b4d",
+      "bytes": 51028,
+      "width": 960,
+      "height": 320,
+      "prompt": "Use case: stylized-concept. Asset type: compact before-and-after educational banner for Tensho, an East Asian mahjong roguelike. Generate one landscape 3:1 full-bleed image, dark jade and forest-green backdrop, no text. Two clearly separated arrangements in two equal halves: LEFT a dormant delicate plum branch with closed red buds and a few small blossoms in a polished deep-jade slender pear-shaped vase with gold rim, small foot and gold floral inlay. RIGHT the very same vase and plum plant now fully awakened, with a fuller crown of vivid vermilion five-petal plum blossoms, luminous gold stamens and subtly gold-lit branches, vigorous rather than giant. Both vases on the same baseline and same scale, entire vase and crown visible, generous safe margins. A very subtle warm current joins the two arrangements through the middle, no arrow, no particles or clutter. Tactile dimensional painterly game-item illustration, antique gold, polished jade, ivory highlights, saturated red petals. Strong silhouettes readable at mobile banner sizes. No people, no symbols, no lettering, no numerals, no labels, no calligraphy, no UI, no decorative border, no watermark. Educational state labels will be added separately in localized HTML; this is illustrative and not an instruction to buy a particular flower."
+    },
+    {
+      "id": "victory-endless",
+      "path": "public/assets/illustrations/teaching/victory-endless.webp",
+      "source": "/Users/evgenyvinnik/.codex/generated_images/019fd81b-74a3-7cb0-8795-d6c90a5733b7/exec-0a8cac2f-4523-46c8-9c27-29e3d65dee2c.png",
+      "sourceSha256": "e77d6327bfb4717d8df9364da1ad9d30cf246c8e662ae6b99f363c60327a511a",
+      "runtimeSha256": "a54dff80bfe3c1d3a8afa1c17fba12e177ccf663290783c269d2933df9eeccbe",
+      "bytes": 94950,
+      "width": 960,
+      "height": 320,
+      "prompt": "Use case: illustration-story. Asset type: compact educational comparison banner for Tensho, an East Asian mahjong roguelike. Generate one landscape 3:1 full-bleed image, two equally wide scenes blended gently at the center but clearly readable as alternatives. LEFT: a peaceful completed journey, a warmly sunlit jade-and-gold mountain tea pavilion reached by a broad stone path ending at its welcoming terrace, a small orderly ivory mahjong grouping on a jade table in the terrace foreground, mood of earned completion and rest. RIGHT: beyond a similar pavilion, an optional steep lantern-lit stone path winds upward through receding jade mountain peaks into luminous blue-green mist, boundless adventure rather than threat. Both halves equally beautiful, no implication that resting is failure. Golden morning light left, restrained luminous jade twilight right. Premium richly dimensional painterly East Asian fantasy game art, dark forest greens, jade, antique gold and warm ivory, legible large silhouettes, restrained detail. No people, no text, no numbers, no labels, no arrows, no UI or buttons, no border, no lettering, no watermark. No trophy, no western castle. Keep key storytelling in the central height and all important objects safely inside the image. Completion and optional Endless labels will be separate localized HTML."
+    }
+  ]
+}

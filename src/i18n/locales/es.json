@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Flor normal",
+    "optionalEndless": "Infinito (opcional)"
+  },
   "codexReference": {
     "titleConcept": "La idea principal",
     "titleTilesOverview": "Conoce las fichas",
@@ -1449,7 +1453,7 @@
       },
       "decree-infinite-loop": {
         "name": "Bucle Infinito",
-        "description": "Reactiva todas las fichas 3 veces"
+        "description": "Reactiva todas las fichas que puntúan 3 veces."
       },
       "decree-echo-dimension": {
         "name": "Dimensión de Eco",
@@ -2593,7 +2597,7 @@
       },
       "seal_of_fortune": {
         "name": "Sello del Azar",
-        "description": "1 de cada 4 veces añade Lámina/Holo/Prismática a un Decreto al azar"
+        "description": "1 de cada 4 veces añade Lámina, Holográfica o Policroma a un Decreto al azar."
       },
       "seal_of_the_immortal": {
         "name": "Sello del Inmortal",
@@ -2645,7 +2649,7 @@
       },
       "script_of_aura": {
         "name": "Guion del Aura",
-        "description": "Añade Lámina/Holo/Prismática a 1 ficha elegida"
+        "description": "Añade Lámina, Holográfica o Policroma a 1 ficha elegida."
       },
       "script_of_ectoplasm": {
         "name": "Guion del Ectoplasma",
@@ -2661,7 +2665,7 @@
       },
       "script_of_the_hex": {
         "name": "Guion del Maleficio",
-        "description": "Añade Prismática a un Decreto al azar y destruye el resto"
+        "description": "Añade Policroma a un Decreto al azar y destruye todos los demás Decretos."
       },
       "script_of_the_sigil": {
         "name": "Guion del Sigilo",

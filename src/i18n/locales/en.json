@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Ordinary Flower",
+    "optionalEndless": "Endless (optional)"
+  },
   "codexReference": {
     "titleConcept": "The Core Concept",
     "titleTilesOverview": "Understanding Tiles",
@@ -2485,7 +2489,7 @@
       },
       "seal_of_fortune": {
         "name": "Seal of Fortune",
-        "description": "1 in 4 chance to add Foil/Holo/Prismatic to random Decree"
+        "description": "1 in 4 chance to add Foil, Holographic or Polychrome to a random Decree."
       },
       "seal_of_the_immortal": {
         "name": "Seal of the Immortal",
@@ -2593,7 +2597,7 @@
       },
       "script_of_aura": {
         "name": "Script of Aura",
-        "description": "Add Foil/Holo/Prismatic to 1 selected tile"
+        "description": "Add Foil, Holographic or Polychrome to 1 selected tile."
       },
       "script_of_ectoplasm": {
         "name": "Script of Ectoplasm",
@@ -2609,7 +2613,7 @@
       },
       "script_of_the_hex": {
         "name": "Script of the Hex",
-        "description": "Add Prismatic to random Decree, destroy all others"
+        "description": "Add Polychrome to a random Decree and destroy all other Decrees."
       },
       "script_of_the_sigil": {
         "name": "Script of the Sigil",

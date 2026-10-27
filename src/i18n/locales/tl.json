@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Karaniwang Bulaklak",
+    "optionalEndless": "Walang Hanggan (opsyonal)"
+  },
   "codexReference": {
     "titleConcept": "Pangunahing Konsepto",
     "titleTilesOverview": "Pagkilala sa mga Tile",
@@ -607,7 +611,7 @@
       },
       "seal_of_fortune": {
         "name": "Selyo ng Suwerte",
-        "description": "May 1 sa 4 na tsansang lagyan ng Foil/Holo/Prismatic ang isang sapalarang Dekreto."
+        "description": "May 1 sa 4 na tsansang lagyan ng Foil, Holographic, o Polychrome ang isang sapalarang Dekreto."
       },
       "seal_of_the_immortal": {
         "name": "Selyo ng Walang Kamatayan",
@@ -1260,7 +1264,7 @@
       },
       "decree-infinite-loop": {
         "name": "Walang Hanggang Loop",
-        "description": "Sa dulo ng bawat Akto, nire-regenerate ang lahat ng charge ng Dekreto"
+        "description": "Muling pinapagana nang 3 beses ang lahat ng tile na nagbibigay ng puntos."
       },
       "decree-misty-jade": {
         "name": "Jade sa Hamog",
@@ -2682,7 +2686,7 @@
       },
       "script_of_aura": {
         "name": "Kasulatan ng Aura",
-        "description": "Nilalagyan ng Foil/Holo/Prismatic ang 1 napiling tile."
+        "description": "Nilalagyan ng Foil, Holographic, o Polychrome ang 1 napiling tile."
       },
       "script_of_the_wraith": {
         "name": "Kasulatan ng Multo",
@@ -2694,7 +2698,7 @@
       },
       "script_of_the_hex": {
         "name": "Kasulatan ng Sumpa",
-        "description": "Nilalagyan ng Prismatic ang isang sapalarang Dekreto at sinisira ang lahat ng iba pa."
+        "description": "Nilalagyan ng Polychrome ang isang sapalarang Dekreto at sinisira ang lahat ng iba pang Dekreto."
       },
       "script_of_the_sigil": {
         "name": "Kasulatan ng Sagisag",

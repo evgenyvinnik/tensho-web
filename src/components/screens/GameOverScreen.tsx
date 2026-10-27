@@ -19,6 +19,7 @@ import { illustrationAssets } from '../../utils/assets'
 import { ResultRoundDetails } from './ResultRoundDetails'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { NORMAL_RUN_ACTS } from '../../config/runProgression'
+import { TeachingIllustration } from '../ui/TeachingIllustration'
 
 const AnimatedMain = animated('main')
 
@@ -218,9 +219,15 @@ export function GameOverScreen() {
             </Button>
           </div>
           {isFreshVictory && (
-            <p className="mt-4 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
-              {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
-            </p>
+            <div className="mt-4 space-y-3 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
+              <p>{t('runJourney.optional', { total: NORMAL_RUN_ACTS })}</p>
+              <details data-journey-comparison className="text-left">
+                <summary className="min-h-11 cursor-pointer content-center py-2 font-semibold text-[var(--color-metallic-gold)] focus-visible:outline-2">
+                  {t('teachingArt.optionalEndless')}
+                </summary>
+                <TeachingIllustration kind="journey" />
+              </details>
+            </div>
           )}
         </AnimatedMain>
       </div>

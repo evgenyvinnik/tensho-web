@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Fiore normale",
+    "optionalEndless": "Infinito (facoltativo)"
+  },
   "codexReference": {
     "titleConcept": "Il concetto di base",
     "titleTilesOverview": "Conoscere le tessere",
@@ -1840,7 +1844,7 @@
       },
       "decree-infinite-loop": {
         "name": "Ciclo Infinito",
-        "description": "Alla fine di ogni Atto, rigenera tutte le cariche dei decreti"
+        "description": "Riattiva tutte le tessere che segnano punti 3 volte."
       }
     }
   },

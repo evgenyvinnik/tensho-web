@@ -144,6 +144,9 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(container.textContent).not.toMatch(
       /codexFlora\.|flora\.details\.|decrees\.items\.|{{/
     )
-    expect(container.querySelectorAll('img')).toHaveLength(28)
+    expect(container.querySelectorAll('img')).toHaveLength(29)
+    expect(
+      container.querySelectorAll('[data-teaching-art="awakening"]')
+    ).toHaveLength(1)
   }
 )

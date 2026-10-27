@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "通常の花",
+    "optionalEndless": "エンドレス（任意）"
+  },
   "codexReference": {
     "titleConcept": "ゲームの基本",
     "titleTilesOverview": "牌を知ろう",
@@ -2581,7 +2585,7 @@
       },
       "seal_of_fortune": {
         "name": "僥倖の符",
-        "description": "1/4の確率で無作為な法令に箔・幻影・虹彩を付ける"
+        "description": "1/4の確率で無作為な法令に箔・幻影・多彩のいずれかを付ける"
       },
       "seal_of_the_immortal": {
         "name": "不死の符",
@@ -2633,7 +2637,7 @@
       },
       "script_of_aura": {
         "name": "霊気の文",
-        "description": "選んだ牌1枚に箔・幻影・虹彩を付ける"
+        "description": "選んだ牌1枚に箔・幻影・多彩のいずれかを付ける"
       },
       "script_of_ectoplasm": {
         "name": "霊質の文",
@@ -2649,7 +2653,7 @@
       },
       "script_of_the_hex": {
         "name": "呪詛の文",
-        "description": "無作為な法令に虹彩を付け、他をすべて破壊する"
+        "description": "無作為な法令に多彩を付け、他の法令をすべて破壊する"
       },
       "script_of_the_sigil": {
         "name": "印形の文",

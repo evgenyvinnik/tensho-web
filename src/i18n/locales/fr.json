@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Fleur ordinaire",
+    "optionalEndless": "Infini (facultatif)"
+  },
   "codexReference": {
     "titleConcept": "Le principe de base",
     "titleTilesOverview": "Comprendre les tuiles",
@@ -1449,7 +1453,7 @@
       },
       "decree-infinite-loop": {
         "name": "Boucle Infinie",
-        "description": "Redéclenche toutes les tuiles 3 fois"
+        "description": "Redéclenche 3 fois toutes les tuiles qui marquent des points."
       },
       "decree-echo-dimension": {
         "name": "Dimension d'Écho",
@@ -2593,7 +2597,7 @@
       },
       "seal_of_fortune": {
         "name": "Sceau du Hasard",
-        "description": "1 chance sur 4 d'ajouter Feuille/Holo/Prismatique à un Décret au hasard"
+        "description": "1 chance sur 4 d'ajouter Feuille, Holographique ou Polychrome à un Décret au hasard."
       },
       "seal_of_the_immortal": {
         "name": "Sceau de l'Immortel",
@@ -2645,7 +2649,7 @@
       },
       "script_of_aura": {
         "name": "Guide de l'Aura",
-        "description": "Ajoute Feuille/Holo/Prismatique à 1 tuile choisie"
+        "description": "Ajoute Feuille, Holographique ou Polychrome à 1 tuile choisie."
       },
       "script_of_ectoplasm": {
         "name": "Guide de l'Ectoplasme",
@@ -2661,7 +2665,7 @@
       },
       "script_of_the_hex": {
         "name": "Guide du Maléfice",
-        "description": "Ajoute Prismatique à un Décret au hasard et détruit tous les autres"
+        "description": "Ajoute Polychrome à un Décret au hasard et détruit tous les autres Décrets."
       },
       "script_of_the_sigil": {
         "name": "Guide du Sigil",

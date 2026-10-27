@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Bunga biasa",
+    "optionalEndless": "Tanpa akhir (opsional)"
+  },
   "codexReference": {
     "titleConcept": "Konsep Dasar",
     "titleTilesOverview": "Mengenal Ubin",
@@ -1657,7 +1661,7 @@
       },
       "decree-infinite-loop": {
         "name": "Putaran Tak Terbatas",
-        "description": "Picu ulang semua ubin 3 kali"
+        "description": "Picu ulang semua ubin yang mencetak skor 3 kali."
       },
       "decree-echo-dimension": {
         "name": "Dimensi Gema",
@@ -2845,7 +2849,7 @@
       },
       "seal_of_fortune": {
         "name": "Segel Peruntungan",
-        "description": "Peluang 1 dari 4 menambahkan Foil/Holo/Prismatik ke Dekrit acak"
+        "description": "Peluang 1 dari 4 menambahkan Foil, Holografik, atau Polikrom ke Dekrit acak."
       },
       "seal_of_the_immortal": {
         "name": "Segel Sang Abadi",
@@ -2897,7 +2901,7 @@
       },
       "script_of_aura": {
         "name": "Naskah Aura",
-        "description": "Tambahkan Foil/Holo/Prismatik ke 1 ubin terpilih"
+        "description": "Tambahkan Foil, Holografik, atau Polikrom ke 1 ubin terpilih."
       },
       "script_of_ectoplasm": {
         "name": "Naskah Ektoplasma",
@@ -2913,7 +2917,7 @@
       },
       "script_of_the_hex": {
         "name": "Naskah Kutukan",
-        "description": "Tambahkan Prismatik ke Dekrit acak, hancurkan sisanya"
+        "description": "Tambahkan Polikrom ke Dekrit acak dan hancurkan semua Dekrit lainnya."
       },
       "script_of_the_sigil": {
         "name": "Naskah Sigil",

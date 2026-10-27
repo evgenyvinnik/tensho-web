@@ -144,6 +144,20 @@ test('Act 6 win settles once, unlocks the next Stake, and survives an Endless de
   const art = page.locator('[data-result-art]')
   await expect(art).toHaveAttribute('src', /results\/victory\.webp$/)
   await expect(art).toBeVisible()
+  const comparison = page.locator('[data-journey-comparison]')
+  await expect(comparison).not.toHaveAttribute('open')
+  await comparison.locator('summary').click()
+  const journeyArt = comparison.locator('[data-teaching-art="journey"] img')
+  await expect(journeyArt).toBeVisible()
+  await journeyArt.scrollIntoViewIfNeeded()
+  await expect
+    .poll(
+      () => journeyArt.evaluate((img: HTMLImageElement) => img.naturalWidth),
+      { timeout: 30000 }
+    )
+    .toBe(960)
+  await comparison.locator('summary').click()
+  await expect(comparison).not.toHaveAttribute('open')
   await expect
     .poll(
       () => art.evaluate((node) => (node as HTMLImageElement).naturalWidth),

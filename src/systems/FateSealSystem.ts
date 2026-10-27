@@ -548,7 +548,8 @@ export const FATE_SEALS: Record<
     type: 'FateSeal',
     name: 'Seal of Fortune',
     japaneseName: '運命の印',
-    description: '1 in 4 chance to add Foil/Holo/Prismatic to random Decree',
+    description:
+      '1 in 4 chance to add Foil, Holographic or Polychrome to a random Decree.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,

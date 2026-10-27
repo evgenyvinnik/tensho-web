@@ -6,6 +6,7 @@ import type { FlowerVariant, SeasonVariant } from '../../../systems/types'
 import { illustrationAssets } from '../../../utils/assets'
 import { getFlowerArt, getSeasonArt, getItemArt } from '../../../utils/itemArt'
 import { scoreMultiplier } from '../../../utils/scoreNumber'
+import { TeachingIllustration } from '../../ui/TeachingIllustration'
 
 export const FLORA_CODEX_SECTIONS = [
   ['flowers-system', 'flora.flowers', 'flowers'],
@@ -92,6 +93,7 @@ export function FloraCodex({ section }: { section: Section }) {
       )}
       {section === 'awakening' && (
         <>
+          <TeachingIllustration kind="awakening" />
           <p>{t('flora.mutations.locked')}</p>
           <p>{t('codexFlora.awakeningLifecycle')}</p>
           <div className={grid}>

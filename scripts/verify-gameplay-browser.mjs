@@ -97,6 +97,7 @@ try {
       'e2e/tile-return-guidance.spec.ts',
       'e2e/jade-controls.spec.ts',
       'e2e/pavilion.spec.ts',
+      'e2e/teaching-art.spec.ts',
       'e2e/audio.spec.ts',
       'e2e/flower-mutations.spec.ts',
       'e2e/bamboo-summer.spec.ts',

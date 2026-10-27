@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "ดอกไม้ธรรมดา",
+    "optionalEndless": "โหมดไม่สิ้นสุด (ทางเลือก)"
+  },
   "codexReference": {
     "titleConcept": "แนวคิดหลัก",
     "titleTilesOverview": "ทำความรู้จักไพ่",
@@ -1444,7 +1448,7 @@
       },
       "decree-infinite-loop": {
         "name": "วงจรอนันต์",
-        "description": "ตอนจบทุกองก์, คืนค่าทุกประจุประกาศิต"
+        "description": "กระตุ้นไพ่ที่ทำคะแนนทั้งหมดซ้ำ 3 ครั้ง"
       },
       "decree-misty-jade": {
         "name": "หยกกลางหมอก",

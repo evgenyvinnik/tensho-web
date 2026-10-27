@@ -45,6 +45,7 @@ import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
 import { HAND_BUILDING_EXAMPLE } from './handBuildingExample'
 import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
 import { DecreeBuildGuide } from '../../shop/DecreeBuildGuide'
+import { TeachingIllustration } from '../../ui/TeachingIllustration'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -1055,6 +1056,7 @@ export function useTutorialSteps(): TutorialStep[] {
         title: t('codexReference.titleActsRounds'),
         content: (
           <div className="space-y-3">
+            <TeachingIllustration kind="journey" />
             <InfoBox type="tip">
               {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
             </InfoBox>

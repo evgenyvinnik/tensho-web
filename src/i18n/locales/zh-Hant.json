@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "普通花卉",
+    "optionalEndless": "無盡模式（可選）"
+  },
   "codexReference": {
     "titleConcept": "核心玩法",
     "titleTilesOverview": "認識麻將牌",
@@ -2385,7 +2389,7 @@
       },
       "merchants_omen": {
         "name": "商賈之兆",
-        "description": "下次商店全部商品打75折。"
+        "description": "下次商店全部商品打7.5折。"
       },
       "seal_omen": {
         "name": "符印之兆",
@@ -2537,7 +2541,7 @@
       },
       "seal_of_fortune": {
         "name": "機運之符",
-        "description": "有1/4機率為隨機法令附加箔光／全息／稜彩"
+        "description": "有1/4機率為隨機法令附加箔光、全息或多彩。"
       },
       "seal_of_the_immortal": {
         "name": "不朽之符",
@@ -2645,7 +2649,7 @@
       },
       "script_of_aura": {
         "name": "靈光之文",
-        "description": "為選中的1張牌附加箔光／全息／稜彩"
+        "description": "為選中的1張牌附加箔光、全息或多彩。"
       },
       "script_of_ectoplasm": {
         "name": "靈質之文",
@@ -2661,7 +2665,7 @@
       },
       "script_of_the_hex": {
         "name": "咒詛之文",
-        "description": "為隨機法令附加稜彩，銷燬其餘全部"
+        "description": "為隨機法令附加多彩，銷燬其餘全部法令。"
       },
       "script_of_the_sigil": {
         "name": "符印之文",

@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Normal Çiçek",
+    "optionalEndless": "Sonsuz (isteğe bağlı)"
+  },
   "codexReference": {
     "titleConcept": "Temel Fikir",
     "titleTilesOverview": "Taşları Tanıyalım",
@@ -1260,7 +1264,7 @@
       },
       "decree-infinite-loop": {
         "name": "Sonsuz Döngü",
-        "description": "Her Perdenin sonunda, tüm Ferman şarjlarını yeniler"
+        "description": "Puan kazandıran tüm taşları 3 kez yeniden tetikler."
       },
       "decree-misty-jade": {
         "name": "Sisli Yeşim",

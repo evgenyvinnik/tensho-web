@@ -341,7 +341,7 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of Aura',
     japaneseName: '光輪の書',
-    description: 'Add Foil/Holo/Prismatic to 1 selected tile',
+    description: 'Add Foil, Holographic or Polychrome to 1 selected tile.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -431,14 +431,15 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of the Hex',
     japaneseName: '呪詛の書',
-    description: 'Add Prismatic to random Decree, destroy all others',
+    description:
+      'Add Polychrome to a random Decree and destroy all other Decrees.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_edition',
-      description: 'Add Prismatic edition to Decree',
+      description: 'Add Polychrome edition to Decree',
       editionType: EditionType.Polychrome,
     },
     penalty: {
