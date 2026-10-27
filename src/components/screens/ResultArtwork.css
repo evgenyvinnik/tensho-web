@@ -1,0 +1,90 @@
+.result-artwork {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.result-artwork__celebration {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.result-artwork__light {
+  position: absolute;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse,
+    #ffe8a38c 0%,
+    #f7bd4230 35%,
+    transparent 70%
+  );
+  animation: result-art-light var(--celebration-duration) ease-in-out;
+}
+
+.result-artwork__light--lantern {
+  left: 4%;
+  top: 8%;
+  width: 26%;
+  height: 72%;
+}
+
+.result-artwork__light--sunrise {
+  left: 56%;
+  top: -35%;
+  width: 34%;
+  height: 95%;
+}
+
+.result-artwork__petal {
+  position: absolute;
+  width: clamp(3px, 0.7vw, 6px);
+  height: clamp(5px, 1vw, 9px);
+  border-radius: 75% 15% 65% 35%;
+  background: linear-gradient(135deg, #fff5d6, #d6ab66);
+  opacity: 0;
+  animation: result-art-petal ease-in-out;
+}
+
+@keyframes result-art-light {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.65;
+  }
+  65% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes result-art-petal {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) rotate(-25deg);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  75% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--petal-drift), 65px, 0) rotate(125deg);
+  }
+}
+
+/* Also suppress motion before React processes a system-preference change. */
+@media (prefers-reduced-motion: reduce) {
+  .result-artwork__celebration {
+    display: none;
+  }
+  .result-artwork__light,
+  .result-artwork__petal {
+    animation: none;
+  }
+}
