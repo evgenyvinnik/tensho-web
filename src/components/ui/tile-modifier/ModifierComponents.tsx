@@ -21,8 +21,10 @@ import {
   getSealIcon,
   getEditionIcon,
 } from './constants'
+import { getTileImagePath } from '../../../utils/assets'
 import { getGeneratedArt } from '../../../utils/generatedArt'
 import { FRAME_REGISTRATION } from './frameRegistration'
+import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { scoreMultiplier } from '../../../utils/scoreNumber'
 
@@ -215,43 +217,97 @@ export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
+  const faceClipId = useId()
   const enhancement = getGeneratedArt('enhancements', tile.enhancement)
+  const enhancementRegistration =
+    FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]
+  const editionRegistration = FRAME_REGISTRATION[`edition:${tile.edition}`]
   const edition = getGeneratedArt('editions', tile.edition)
   const seal = getGeneratedArt('seals', tile.seal)
   return (
     <>
-      {enhancement && (
-        <span
+      {(enhancement || edition) && (
+        <svg
           aria-hidden="true"
-          data-tile-art-layer="enhancement"
-          className={`absolute inset-0 overflow-hidden rounded pointer-events-none ${className}`}
+          data-tile-frame-plane
+          viewBox="0 0 569 711"
+          preserveAspectRatio="xMidYMid meet"
+          className="absolute inset-0 h-full w-full pointer-events-none"
         >
-          <img
-            src={enhancement}
-            alt=""
-            draggable={false}
-            className="absolute max-w-none"
-            style={FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]}
-          />
-        </span>
-      )}
-      {edition && (
-        <span
-          aria-hidden="true"
-          data-tile-art-layer="edition"
-          className="absolute -inset-0.5 overflow-hidden rounded pointer-events-none"
-        >
-          <img
-            src={edition}
-            alt=""
-            draggable={false}
-            className="absolute max-w-none"
-            style={{
-              ...FRAME_REGISTRATION[`edition:${tile.edition}`],
-              opacity: enhancement ? 0.6 : 1,
-            }}
-          />
-        </span>
+          {/* Match the source tile's front face, not its full silhouette.
+              SVG meet uses the same contain/centering as the base image, so
+              letterboxing and responsive tile sizes cannot move the frame.
+              The right/bottom sidewall and red backing stay outside this box. */}
+          <defs>
+            <clipPath id={faceClipId}>
+              <rect width="526" height="661" rx="60" />
+            </clipPath>
+          </defs>
+          <svg
+            data-tile-front-face
+            width="526"
+            height="661"
+            viewBox="0 0 526 661"
+          >
+            <g clipPath={`url(#${faceClipId})`}>
+              {enhancement && (
+                <rect
+                  width="526"
+                  height="661"
+                  fill={
+                    tile.enhancement === EnhancementType.Stone
+                      ? '#57534e'
+                      : '#fffaf2'
+                  }
+                />
+              )}
+              {enhancement && tile.enhancement !== EnhancementType.Stone && (
+                // Shrink only the printed face into the ornate frame's opening.
+                // Cropping the source face excludes its baked sidewall/backing.
+                <svg
+                  data-tile-face-print
+                  x="20%"
+                  y="16%"
+                  width="60%"
+                  height="68%"
+                  viewBox="8 8 495 630"
+                  preserveAspectRatio="xMidYMid meet"
+                  overflow="hidden"
+                >
+                  <image
+                    href={getTileImagePath(tile.suit, tile.rank)}
+                    width="569"
+                    height="711"
+                  />
+                </svg>
+              )}
+              {enhancement && (
+                <image
+                  data-tile-art-layer="enhancement"
+                  className={className}
+                  href={enhancement}
+                  x={enhancementRegistration.left}
+                  y={enhancementRegistration.top}
+                  width={enhancementRegistration.width}
+                  height={enhancementRegistration.height}
+                  preserveAspectRatio="none"
+                />
+              )}
+              {edition && (
+                <image
+                  data-tile-art-layer="edition"
+                  href={edition}
+                  x={editionRegistration.left}
+                  y={editionRegistration.top}
+                  width={editionRegistration.width}
+                  height={editionRegistration.height}
+                  preserveAspectRatio="none"
+                  opacity={enhancement ? 0.6 : 1}
+                />
+              )}
+            </g>
+          </svg>
+        </svg>
       )}
       {seal && (
         <img

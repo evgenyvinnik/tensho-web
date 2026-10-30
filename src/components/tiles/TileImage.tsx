@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
-import { getTileImagePath } from '../../utils/assets'
+import { getTileImagePath, getTileBackPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
@@ -98,7 +98,7 @@ export const TileImage: React.FC<TileImageProps> = ({
   // A Stone tile has no rank or suit: its face is the stone itself.
   const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
   const enhancedFace =
-    !faceDown && tile && tile.enhancement !== EnhancementType.None
+    !faceDown && !!tile && tile.enhancement !== EnhancementType.None
   const indexHint =
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
@@ -238,26 +238,27 @@ export const TileImage: React.FC<TileImageProps> = ({
       aria-disabled={disabled}
       aria-describedby={tooltipOpen && isInteractive ? tooltipId : undefined}
     >
-      {stoneFace ? (
-        <span
-          role="img"
-          aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
-          className="absolute inset-0 rounded-md bg-stone-600"
-        />
-      ) : faceDown || !tile ? (
+      {faceDown || !tile ? (
         <TileBack label={tileInfo.name} />
       ) : (
         <img
-          src={getTileImagePath(tile.suit, tile.rank)}
-          alt={tileInfo.name}
+          // The art kit's blank front retains the same sidewall and red base
+          // while enhanced tiles redraw only their cropped print inside the frame.
+          // Stone deliberately omits that print, hiding its original rank/suit.
+          src={
+            enhancedFace
+              ? getTileBackPath()
+              : getTileImagePath(tile.suit, tile.rank)
+          }
+          alt={
+            stoneFace
+              ? t('tileMarks.items.stone.name', 'Stone Mark')
+              : tileInfo.name
+          }
+          data-tile-base-art
           className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
           draggable={false}
           loading={loading}
-          style={
-            enhancedFace
-              ? { padding: '12% 10%', backgroundColor: '#eee8d4' }
-              : undefined
-          }
         />
       )}
       {indexHint && (

@@ -1,4 +1,9 @@
-/** Alpha-bounds registration measured from the generated PNG masters. */
+/**
+ * Alpha-bounds registration measured from the generated PNG masters.
+ * Percentages are relative to the 526×661 front-face viewport, NOT the full
+ * 569×711 tile image (which includes its sidewall and red backing).
+ * The source tile family varies by at most one horizontal pixel.
+ */
 export const FRAME_REGISTRATION: Readonly<
   Record<string, { left: string; top: string; width: string; height: string }>
 > = {

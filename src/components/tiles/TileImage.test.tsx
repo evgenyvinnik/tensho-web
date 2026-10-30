@@ -157,7 +157,7 @@ it('keeps keyboard details and selection independent, including after a locale c
   expect(onClick).toHaveBeenCalledExactlyOnceWith(tile)
 })
 
-it('draws its one modifier layer without replacing a normal face', () => {
+it('draws one enhancement frame and retains the printed tile identity', () => {
   const tile = new Tile(TileSuit.Pinzu, 9, 'gold-mark').withEnhancement(
     EnhancementType.Gold
   )
@@ -167,8 +167,8 @@ it('draws its one modifier layer without replacing a normal face', () => {
   expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
   expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
   expect(
-    container.querySelector('[data-tile-art-layer="enhancement"] img')
-  ).toHaveAttribute('src', expect.stringMatching(/enhancements\/gold\.webp$/))
+    container.querySelector('[data-tile-art-layer="enhancement"]')
+  ).toHaveAttribute('href', expect.stringMatching(/enhancements\/gold\.webp$/))
   rerender(<TileImage tile={tile} faceDown />)
   expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(0)
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
@@ -185,9 +185,72 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
     i18n.t('tileMarks.items.stone.name')
   )
   expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
+  expect(container.querySelector('[data-tile-face-print]')).toBeNull()
   expect(container.querySelector('[data-tile-index]')).toBeNull()
   expect(screen.getByRole('tooltip')).toHaveTextContent(
     i18n.t('tileMarks.items.stone.description')
   )
   expect(screen.getByRole('tooltip')).not.toHaveTextContent('Red Dragon')
+})
+
+it.each([
+  EditionType.Foil,
+  EditionType.Holographic,
+  EditionType.Polychrome,
+  EditionType.Negative,
+])(
+  'registers %s to the clipped front face rather than the tile silhouette',
+  (edition) => {
+    const { container } = render(
+      <TileImage
+        tile={new Tile(TileSuit.Pinzu, 5, 'edition').withEdition(edition)}
+      />
+    )
+    const plane = container.querySelector('[data-tile-frame-plane]')!
+    expect(plane).toHaveAttribute('viewBox', '0 0 569 711')
+    expect(plane).toHaveAttribute('preserveAspectRatio', 'xMidYMid meet')
+    expect(plane.querySelector('[data-tile-front-face]')).toHaveAttribute(
+      'width',
+      '526'
+    )
+    expect(plane.querySelector('[data-tile-front-face]')).toHaveAttribute(
+      'height',
+      '661'
+    )
+    expect(plane.querySelector('clipPath rect')).toHaveAttribute('rx', '60')
+    expect(
+      plane.querySelector('[data-tile-art-layer="edition"]')
+    ).not.toHaveClass('-inset-0.5')
+  }
+)
+
+it('keeps enhancement base art full sized and selection/index outside the face clip', () => {
+  const tile = new Tile(TileSuit.Pinzu, 5, 'layers', false, {
+    enhancement: EnhancementType.Gold,
+    edition: EditionType.Base,
+    seal: SealType.None,
+  })
+  const { container } = render(<TileImage tile={tile} selected showIndex />)
+  expect(container.querySelector('[data-tile-base-art]')).not.toHaveAttribute(
+    'style'
+  )
+  const face = container.querySelector('[data-tile-front-face]')!
+  expect(face.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
+  expect(face.querySelector('[data-tile-face-print]')).toHaveAttribute(
+    'viewBox',
+    '8 8 495 630'
+  )
+  expect(face.querySelector('[data-tile-index]')).toBeNull()
+  expect(face.querySelector('[data-tile-art-layer="seal"]')).toBeNull()
+  expect(container.firstChild).toHaveClass('ring-2')
+})
+
+it('does not clip the seal to the front face', () => {
+  const { container } = render(
+    <TileImage
+      tile={new Tile(TileSuit.Pinzu, 5, 'seal').withSeal(SealType.Red)}
+    />
+  )
+  expect(container.querySelector('[data-tile-art-layer="seal"]')).not.toBeNull()
+  expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
 })
