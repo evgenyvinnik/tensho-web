@@ -113,6 +113,9 @@ export default defineConfig(({ mode }) => ({
           ) as string[]
         ).map((path) => `assets/illustrations/${path}`),
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB for large font files
+        // public/privacy/ is a static page, not a game route: never answer
+        // /privacy (no slash) with the game shell; the host redirects it.
+        navigateFallbackDenylist: [/\/privacy\/?$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
