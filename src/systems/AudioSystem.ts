@@ -43,6 +43,7 @@ export class AudioSystem {
     isCrossfading: false,
   }
   private unlocked = false
+  private appInactive = false
   private musicWanted = false
   private music: HTMLAudioElement[] = []
   private active = 0
@@ -84,6 +85,8 @@ export class AudioSystem {
     })
     this.state.isTabVisible = document.visibilityState !== 'hidden'
     document.addEventListener('visibilitychange', this.onVisibility)
+    document.addEventListener('appinactive', this.onAppActivity)
+    document.addEventListener('appactive', this.onAppActivity)
     this.state.isInitialized = true
     for (const id of getPreloadSounds()) this.pool(id)
     this.connectEvents()
@@ -116,6 +119,9 @@ export class AudioSystem {
     this.unsubscribeEvents.forEach((off) => off())
     this.unsubscribeEvents = []
     document.removeEventListener('visibilitychange', this.onVisibility)
+    document.removeEventListener('appinactive', this.onAppActivity)
+    document.removeEventListener('appactive', this.onAppActivity)
+    this.appInactive = false
     this.state.isInitialized = false
     this.notify()
   }
@@ -413,12 +419,34 @@ export class AudioSystem {
   private onMusicEnded = () => {
     if (this.canPlayMusic() && !this.state.isCrossfading) this.nextTrack()
   }
+  /** iOS app only: a locked screen deactivates the app without hiding the page. */
+  private onAppActivity = (event: Event) => {
+    this.appInactive = event.type === 'appinactive'
+    this.onVisibility()
+  }
   private onVisibility = () => {
-    this.state.isTabVisible = document.visibilityState !== 'hidden'
+    const visible = document.visibilityState !== 'hidden' && !this.appInactive
+    if (visible === this.state.isTabVisible) return
+    this.state.isTabVisible = visible
+    this.setElementsMuted(!visible)
     if (!this.state.isTabVisible) {
       this.stopEffects()
       this.pausePlayback()
     } else if (this.musicWanted) this.resumeMusic()
+  }
+  /**
+   * Once audio has played, every unmuted element, paused or not, stays
+   * eligible for the lock-screen media player. Only muted ones are not.
+   */
+  private setElementsMuted(muted: boolean) {
+    this.music.forEach((audio) => {
+      audio.muted = muted
+    })
+    this.pools.forEach((voices) =>
+      voices.forEach((v) => {
+        v.element.muted = muted
+      })
+    )
   }
 
   setMasterVolume(volume: number) {

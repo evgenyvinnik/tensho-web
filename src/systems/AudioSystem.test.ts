@@ -21,6 +21,7 @@ class MockAudio extends EventTarget {
   volume = 1
   playbackRate = 1
   currentTime = 0
+  muted = false
   paused = true
   play = vi.fn((): Promise<void> => {
     this.paused = false
@@ -275,6 +276,46 @@ describe('music and settings', () => {
     await flush()
     expect(audio.getState().isPlaying).toBe(true)
     expect(playedEffects()[0].play).toHaveBeenCalledTimes(1)
+  })
+
+  it('mutes every element while hidden so none claims the lock-screen player', async () => {
+    audio.initialize()
+    audio.playMusic('menu')
+    audio.unlock()
+    await flush()
+    audio.play(TILE_SOUNDS.draw)
+    const element = MockAudio.all.find(
+      (a) => !a.paused && a.src.endsWith('.mp3')
+    )!
+    element.currentTime = 37
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden')
+    document.dispatchEvent(new Event('visibilitychange'))
+    // A paused but unmuted element would still own the OS media player.
+    expect(MockAudio.all.every((a) => a.paused && a.muted)).toBe(true)
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible')
+    document.dispatchEvent(new Event('visibilitychange'))
+    await flush()
+    expect(MockAudio.all.some((a) => a.muted)).toBe(false)
+    expect(element.paused).toBe(false)
+    expect(element.currentTime).toBe(37)
+  })
+
+  it('goes quiet while the iOS app is deactivated under a still-visible page', async () => {
+    audio.initialize()
+    audio.playMusic('menu')
+    audio.unlock()
+    await flush()
+    // The lock screen deactivates the app; the page stays visible.
+    document.dispatchEvent(new Event('appinactive'))
+    expect(MockAudio.all.every((a) => a.paused)).toBe(true)
+    audio.play(TILE_SOUNDS.select)
+    expect(playedEffects()).toHaveLength(0)
+    // Unlocking can surface the page before the app is active again.
+    document.dispatchEvent(new Event('visibilitychange'))
+    expect(audio.getState().isPlaying).toBe(false)
+    document.dispatchEvent(new Event('appactive'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
   })
 
   it('cleans up a pending crossfade and can initialize again', async () => {

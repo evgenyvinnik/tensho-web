@@ -21,4 +21,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         SceneDelegateProxy.shared.scene(scene, continue: userActivity)
     }
+
+    // Locking the screen only deactivates the scene. WebKit still counts the
+    // page as visible, so no visibilitychange reaches it and the music would
+    // play on under the lock screen. AudioSystem listens for these instead.
+    func sceneWillResignActive(_ scene: UIScene) {
+        triggerPageEvent("appinactive")
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        triggerPageEvent("appactive")
+    }
+
+    private func triggerPageEvent(_ name: String) {
+        guard let bridge = (window?.rootViewController as? CAPBridgeViewController)?.bridge,
+              bridge.webView?.isLoading == false else { return }
+        bridge.triggerDocumentJSEvent(eventName: name)
+    }
 }
