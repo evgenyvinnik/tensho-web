@@ -509,6 +509,14 @@
     "fast": "速い",
     "resetSettings": "設定をリセット",
     "dangerZone": "危険な操作",
+    "privacy": {
+      "title": "プライバシー",
+      "policy": "プライバシーポリシー",
+      "policyDesc": "天翔が保存する情報と、広告が収集しうる情報を確認します",
+      "choices": "プライバシー設定",
+      "choicesDesc": "広告によるデータの利用方法を確認・変更します",
+      "choicesError": "プライバシー設定を開けませんでした。接続を確認して再試行してください。"
+    },
     "data": "データと進行状況",
     "gameplay": "ゲームプレイ",
     "muteMusic": "音楽をミュート",

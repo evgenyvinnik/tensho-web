@@ -6,6 +6,7 @@ import {
 } from '@capacitor-community/admob'
 import { audioSystem } from '../systems/AudioSystem'
 import type { InterstitialAds } from './adBreaks'
+import { offerPrivacyChoices } from './privacy'
 
 /**
  * Google's sample interstitial: it always serves test ads, and tapping one
@@ -17,8 +18,20 @@ const TEST_INTERSTITIAL = 'ca-app-pub-3940256099942544/4411468910'
 const adId: string =
   import.meta.env.VITE_ADMOB_INTERSTITIAL_IOS || TEST_INTERSTITIAL
 
-/** May ads be requested, and must they be non-personalized? */
-async function gatherConsent(): Promise<{ allowed: boolean; npa: boolean }> {
+// PrivacyOptionsRequirementStatus.REQUIRED: the plugin (8.2.1) declares the
+// enum but leaves it out of the package's exports.
+const PRIVACY_OPTIONS_REQUIRED: string = 'REQUIRED'
+
+interface Consent {
+  /** May ads be requested? */
+  allowed: boolean
+  /** Must they be non-personalized? */
+  npa: boolean
+  /** Must Settings let the player change their answer? */
+  changeable: boolean
+}
+
+async function gatherConsent(): Promise<Consent> {
   try {
     let consent = await AdMob.requestConsentInfo()
     if (
@@ -26,12 +39,17 @@ async function gatherConsent(): Promise<{ allowed: boolean; npa: boolean }> {
       consent.status === AdmobConsentStatus.REQUIRED
     )
       consent = await AdMob.showConsentForm()
-    return { allowed: consent.canRequestAds, npa: false }
+    return {
+      allowed: consent.canRequestAds,
+      npa: false,
+      changeable:
+        consent.privacyOptionsRequirementStatus === PRIVACY_OPTIONS_REQUIRED,
+    }
   } catch (error) {
     // Offline, or no consent message published in AdMob's Privacy &
     // messaging: keep earning, but with non-personalized ads only.
     console.warn('Consent unavailable; non-personalized ads only', error)
-    return { allowed: true, npa: true }
+    return { allowed: true, npa: true, changeable: false }
   }
 }
 
@@ -40,14 +58,24 @@ async function gatherConsent(): Promise<{ allowed: boolean; npa: boolean }> {
  * App Tracking Transparency, then start the SDK. Only loaded in the iOS app.
  */
 export async function startAdMob(): Promise<InterstitialAds> {
-  const consent = await gatherConsent()
+  let consent = await gatherConsent()
+  let ready = false
+  // Settings › Privacy Choices reopens Google's form. Ads requested after it
+  // closes follow the new answer; one loaded under the old answer is dropped.
+  const changeConsent = async () => {
+    await AdMob.showPrivacyOptionsForm()
+    consent = await gatherConsent()
+    ready = false
+    offerPrivacyChoices(consent.changeable ? changeConsent : null)
+  }
+  offerPrivacyChoices(consent.changeable ? changeConsent : null)
+
   if ((await AdMob.trackingAuthorizationStatus()).status === 'notDetermined')
     await AdMob.requestTrackingAuthorization()
   await AdMob.initialize({
     maxAdContentRating: MaxAdContentRating.ParentalGuidance,
   })
 
-  let ready = false
   // The game's music would otherwise play over the ad's sound.
   void AdMob.addListener(InterstitialAdPluginEvents.Showed, () =>
     audioSystem.pauseMusic()

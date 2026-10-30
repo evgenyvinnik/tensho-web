@@ -717,6 +717,14 @@
     "fast": "Cepat",
     "resetSettings": "Atur Ulang",
     "dangerZone": "Zona Berbahaya",
+    "privacy": {
+      "title": "Privasi",
+      "policy": "Kebijakan Privasi",
+      "policyDesc": "Apa yang disimpan Tensho dan apa yang mungkin dikumpulkan iklannya",
+      "choices": "Pilihan Privasi",
+      "choicesDesc": "Tinjau atau ubah cara iklan boleh menggunakan data Anda",
+      "choicesError": "Pilihan Privasi tidak dapat dibuka. Periksa koneksi Anda dan coba lagi."
+    },
     "data": "Data & Perkembangan",
     "gameplay": "Permainan",
     "muteMusic": "Bisukan Musik",

@@ -509,6 +509,14 @@
     "fast": "빠름",
     "resetSettings": "기본값으로 재설정",
     "dangerZone": "위험 구역",
+    "privacy": {
+      "title": "개인정보 보호",
+      "policy": "개인정보 처리방침",
+      "policyDesc": "텐쇼가 저장하는 정보와 광고가 수집할 수 있는 정보를 확인합니다",
+      "choices": "개인정보 설정",
+      "choicesDesc": "광고가 데이터를 사용하는 방식을 확인하거나 변경합니다",
+      "choicesError": "개인정보 설정을 열지 못했습니다. 연결을 확인하고 다시 시도하세요."
+    },
     "data": "데이터 및 진행",
     "gameplay": "게임플레이",
     "muteMusic": "음악 음소거",

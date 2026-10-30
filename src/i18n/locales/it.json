@@ -796,6 +796,14 @@
     "fast": "Veloce",
     "resetSettings": "Ripristina Predefiniti",
     "dangerZone": "Zona pericolosa",
+    "privacy": {
+      "title": "Privacy",
+      "policy": "Informativa sulla privacy",
+      "policyDesc": "Cosa salva Tensho e cosa possono raccogliere le sue pubblicità",
+      "choices": "Scelte sulla privacy",
+      "choicesDesc": "Rivedi o modifica come le pubblicità possono usare i tuoi dati",
+      "choicesError": "Impossibile aprire le scelte sulla privacy. Controlla la connessione e riprova."
+    },
     "data": "Dati e progressi",
     "gameplay": "Gioco",
     "muteMusic": "Disattiva musica",

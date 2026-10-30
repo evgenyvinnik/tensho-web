@@ -509,6 +509,14 @@
     "fast": "快",
     "resetSettings": "重設為預設",
     "dangerZone": "危險操作",
+    "privacy": {
+      "title": "隱私",
+      "policy": "隱私權政策",
+      "policyDesc": "了解天翔會儲存哪些內容，以及廣告可能收集哪些資訊",
+      "choices": "隱私選項",
+      "choicesDesc": "查看或變更廣告使用你資料的方式",
+      "choicesError": "無法開啟隱私選項。請檢查網路連線後重試。"
+    },
     "data": "資料與進度",
     "gameplay": "遊戲",
     "muteMusic": "靜音音樂",

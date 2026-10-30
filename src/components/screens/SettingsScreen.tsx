@@ -23,6 +23,8 @@ import { PavilionIcon } from '../ui/PavilionIcon'
 import { Slider } from '../ui/Slider'
 import { Toggle } from '../ui/Toggle'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { IS_NATIVE_APP } from '../../native/nativeStorage'
+import { privacyPolicyUrl, usePrivacyChoices } from '../../native/privacy'
 
 function downloadBackup(raw: string) {
   const url = URL.createObjectURL(new Blob([raw], { type: 'application/json' }))
@@ -48,6 +50,10 @@ export function SettingsScreen() {
   const [showFullUnlockConfirm, setShowFullUnlockConfirm] = useState(false)
   const [resetting, setResetting] = useState(false)
   const [fullUnlockError, setFullUnlockError] = useState(false)
+  // Google's form, in the iOS app only and only where UMP requires it.
+  const openPrivacyChoices = usePrivacyChoices((state) => state.open)
+  const [privacyChoicesOpen, setPrivacyChoicesOpen] = useState(false)
+  const [privacyChoicesError, setPrivacyChoicesError] = useState(false)
 
   // Confirmation dialog states
   const [showResetTutorialConfirm, setShowResetTutorialConfirm] =
@@ -91,6 +97,18 @@ export function SettingsScreen() {
     if (result.success) setShowTutorialResetSuccess(true)
     else setResetError(result.restored ? 'resetFailed' : 'resetPartial')
   }, [])
+
+  const handlePrivacyChoices = useCallback(async () => {
+    if (!openPrivacyChoices || privacyChoicesOpen) return
+    setPrivacyChoicesOpen(true)
+    try {
+      await openPrivacyChoices()
+    } catch (error) {
+      console.warn('Privacy choices unavailable', error)
+      setPrivacyChoicesError(true)
+    }
+    setPrivacyChoicesOpen(false)
+  }, [openPrivacyChoices, privacyChoicesOpen])
 
   // Reset all progress handler
   const handleResetProgress = useCallback(async () => {
@@ -275,6 +293,60 @@ export function SettingsScreen() {
           </div>
         </section>
 
+        {/* Privacy Section */}
+        <section className="pavilion-panel space-y-4">
+          <h2 className="pavilion-section-heading">
+            <ControlIcon name="lock" size={36} /> {t('settings.privacy.title')}
+          </h2>
+
+          {/* The app opens the public policy in Safari, not in the game. The
+                link looks like the buttons here, over the global link style. */}
+          <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <p className="text-[var(--color-beige-white)]">
+                {t('settings.privacy.policy')}
+              </p>
+              <p className="text-sm text-[var(--color-beige-white)] opacity-60">
+                {t('settings.privacy.policyDesc')}
+              </p>
+            </div>
+            <a
+              href={privacyPolicyUrl(IS_NATIVE_APP)}
+              target={IS_NATIVE_APP ? '_blank' : undefined}
+              rel={IS_NATIVE_APP ? 'noopener noreferrer' : undefined}
+              className="inline-flex w-full flex-shrink-0 items-center justify-center px-4 py-2 bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)] sm:w-auto
+                         !text-[var(--color-beige-white)] !font-bold rounded-lg text-sm
+                         border-2 border-[var(--color-metallic-gold)]
+                         transition-all hover:scale-105 active:scale-95"
+            >
+              {t('settings.privacy.policy')}
+            </a>
+          </div>
+
+          {IS_NATIVE_APP && openPrivacyChoices && (
+            <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[var(--color-beige-white)]">
+                  {t('settings.privacy.choices')}
+                </p>
+                <p className="text-sm text-[var(--color-beige-white)] opacity-60">
+                  {t('settings.privacy.choicesDesc')}
+                </p>
+              </div>
+              <button
+                aria-disabled={privacyChoicesOpen}
+                onClick={() => void handlePrivacyChoices()}
+                className="w-full flex-shrink-0 px-4 py-2 bg-[var(--color-forest-green)] hover:bg-[var(--color-vibrant-orange)] sm:w-auto
+                           text-[var(--color-beige-white)] font-bold rounded-lg text-sm
+                           border-2 border-[var(--color-metallic-gold)]
+                           transition-all hover:scale-105 active:scale-95"
+              >
+                {t('settings.privacy.choices')}
+              </button>
+            </div>
+          )}
+        </section>
+
         {/* Danger Zone Section */}
         <section className="pavilion-panel pavilion-danger space-y-4">
           <h2 className="pavilion-section-heading">
@@ -377,6 +449,14 @@ export function SettingsScreen() {
         onClose={() => setShowProgressResetSuccess(false)}
         title={t('settings.resetProgress')}
         message={t('settings.resetProgressSuccess')}
+        confirmText={t('common.ok')}
+      />
+
+      <AlertPopup
+        isOpen={privacyChoicesError}
+        onClose={() => setPrivacyChoicesError(false)}
+        title={t('common.error')}
+        message={t('settings.privacy.choicesError')}
         confirmText={t('common.ok')}
       />
 

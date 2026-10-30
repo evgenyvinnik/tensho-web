@@ -509,6 +509,14 @@
     "fast": "Rapide",
     "resetSettings": "Réinitialiser",
     "dangerZone": "Zone sensible",
+    "privacy": {
+      "title": "Confidentialité",
+      "policy": "Politique de confidentialité",
+      "policyDesc": "Ce que Tensho enregistre et ce que ses publicités peuvent collecter",
+      "choices": "Choix de confidentialité",
+      "choicesDesc": "Consultez ou modifiez l'utilisation de vos données par les publicités",
+      "choicesError": "Impossible d'ouvrir les choix de confidentialité. Vérifiez votre connexion et réessayez."
+    },
     "data": "Données et progression",
     "gameplay": "Jeu",
     "muteMusic": "Couper la musique",

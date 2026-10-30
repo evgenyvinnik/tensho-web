@@ -796,6 +796,14 @@
     "fast": "Mabilis",
     "resetSettings": "I-reset sa Default",
     "dangerZone": "Mapanganib na Bahagi",
+    "privacy": {
+      "title": "Privacy",
+      "policy": "Patakaran sa Privacy",
+      "policyDesc": "Ano ang iniimbak ng Tensho at ano ang maaaring kolektahin ng mga ad nito",
+      "choices": "Mga Pagpipilian sa Privacy",
+      "choicesDesc": "Suriin o baguhin kung paano magagamit ng mga ad ang iyong data",
+      "choicesError": "Hindi mabuksan ang Mga Pagpipilian sa Privacy. Suriin ang iyong koneksyon at subukang muli."
+    },
     "data": "Data at Progreso",
     "gameplay": "Paglalaro",
     "muteMusic": "I-mute ang Musika",

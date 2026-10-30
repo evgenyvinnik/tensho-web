@@ -796,6 +796,14 @@
     "fast": "Hızlı",
     "resetSettings": "Varsayılana Sıfırla",
     "dangerZone": "Tehlikeli Bölge",
+    "privacy": {
+      "title": "Gizlilik",
+      "policy": "Gizlilik Politikası",
+      "policyDesc": "Tensho'nun neleri sakladığı ve reklamlarının neler toplayabileceği",
+      "choices": "Gizlilik Seçenekleri",
+      "choicesDesc": "Reklamların verilerinizi nasıl kullanabileceğini gözden geçirin veya değiştirin",
+      "choicesError": "Gizlilik Seçenekleri açılamadı. Bağlantınızı kontrol edip tekrar deneyin."
+    },
     "data": "Veri ve İlerleme",
     "gameplay": "Oynanış",
     "muteMusic": "Müziği Sustur",

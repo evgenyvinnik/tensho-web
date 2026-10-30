@@ -526,6 +526,14 @@
     "resetProgressConfirm": "Are you sure? This will permanently delete all your achievements, statistics, and unlocks. This action cannot be undone.",
     "resetProgressSuccess": "All progress has been reset.",
     "dangerZone": "Danger Zone",
+    "privacy": {
+      "title": "Privacy",
+      "policy": "Privacy Policy",
+      "policyDesc": "What Tensho stores and what its ads may collect",
+      "choices": "Privacy Choices",
+      "choicesDesc": "Review or change how ads may use your data",
+      "choicesError": "Privacy Choices could not be opened. Check your connection and try again."
+    },
     "rankNumbers": "Numbers on tiles",
     "rankNumbersDesc": "Show a small 1–9 on numbered tiles and a letter on Dragons, while you learn the tile faces.",
     "unreadableSave": "Your saved run could not be read. You can download it as a file before starting a New Run, which replaces it."
