@@ -3148,7 +3148,10 @@
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",
     "specialTitle": "Tessere speciali",
-    "specialHelp": "Una cornice colorata con gemma è un marchio, un timbro di ceralacca è un sigillo e uno scintillio è un’edizione. Una tessera ne può avere solo uno. Passa sopra o seleziona una tessera per leggerne l’effetto.",
+    "specialHelp": "Una cornice colorata con gemma è un marchio, un timbro di ceralacca è un sigillo e uno scintillio è un’edizione. Una tessera ne può avere solo uno.",
+    "marks": "Marchi",
+    "seals": "Sigilli",
+    "editions": "Edizioni",
     "close": "Giochiamo"
   },
   "mandateConsequence": {

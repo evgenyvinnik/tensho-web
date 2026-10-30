@@ -3148,7 +3148,10 @@
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",
     "specialTitle": "Ubin khusus",
-    "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Satu ubin hanya bisa memiliki salah satunya. Arahkan atau fokuskan ke ubin untuk membaca efeknya.",
+    "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Satu ubin hanya bisa memiliki salah satunya.",
+    "marks": "Tanda",
+    "seals": "Segel",
+    "editions": "Edisi",
     "close": "Ayo main"
   },
   "mandateConsequence": {

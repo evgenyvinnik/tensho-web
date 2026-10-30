@@ -123,7 +123,9 @@ export function Popup({
       }}
     >
       {/* Nine-slice the existing scroll: fixed end caps cannot grow underneath
-          long content or crop the side ornaments on a tall, narrow phone. */}
+          long content or crop the side ornaments on a tall, narrow phone.
+          300px side slices hold each whole meander band (the right one ends
+          296px from the edge), so neither spills into the text column. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -132,7 +134,7 @@ export function Popup({
           borderColor: 'transparent',
           borderWidth: '64px 40px',
           borderImageSource: `url(${popupAssets.background})`,
-          borderImageSlice: '200 280 240 280 fill',
+          borderImageSlice: '200 300 240 300 fill',
           borderImageRepeat: 'stretch',
         }}
       />

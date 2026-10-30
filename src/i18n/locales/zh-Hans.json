@@ -3148,7 +3148,10 @@
     "tilesHelp": "万子用汉字一到九表示，筒子和索子用数量表示（一索是一只鸟）。可在设置中打开牌上的数字。",
     "honorsHelp": "风牌每张{{wind}}分，在组合中{{windGroup}}分。每张三元牌倍率+{{dragon}}，在组合中+{{dragonGroup}}。",
     "specialTitle": "特殊牌",
-    "specialHelp": "带宝石的彩色边框是印记，火漆印是封印，闪光是版本效果。每张牌只能拥有其中一种。将鼠标悬停或聚焦在牌上即可查看效果。",
+    "specialHelp": "带宝石的彩色边框是印记，火漆印是封印，闪光是版本效果。每张牌只能拥有其中一种。",
+    "marks": "印记",
+    "seals": "封印",
+    "editions": "版本效果",
     "close": "开始游戏"
   },
   "mandateConsequence": {

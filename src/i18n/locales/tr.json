@@ -3148,7 +3148,10 @@
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",
     "specialTitle": "Özel taşlar",
-    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Bir taşta bunlardan yalnızca biri olabilir. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
+    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Bir taşta bunlardan yalnızca biri olabilir.",
+    "marks": "İşaretler",
+    "seals": "Mühürler",
+    "editions": "Baskılar",
     "close": "Hadi oynayalım"
   },
   "mandateConsequence": {

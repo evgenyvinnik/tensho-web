@@ -3148,7 +3148,10 @@
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
     "honorsHelp": "Bawat Hangin ay {{wind}} puntos, {{windGroup}} sa loob ng grupo. Bawat Dragon ay +{{dragon}} Mult, +{{dragonGroup}} sa loob ng grupo.",
     "specialTitle": "Espesyal na tile",
-    "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. Isa lang sa mga ito ang puwede sa isang tile. I-hover o i-focus ang tile para mabasa ang epekto.",
+    "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. Isa lang sa mga ito ang puwede sa isang tile.",
+    "marks": "Mga Marka",
+    "seals": "Mga Selyo",
+    "editions": "Mga Edisyon",
     "close": "Tara, laro na"
   },
   "mandateConsequence": {

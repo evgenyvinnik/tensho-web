@@ -24,9 +24,11 @@ import {
 } from '../../rules/PlayPattern'
 import { useProgressionStore } from '../../stores/progressionStore'
 import {
+  DEFAULT_MODIFIERS,
   EditionType,
   EnhancementType,
   SealType,
+  type TileModifiers,
 } from '../../core/TileModifier'
 import { illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
@@ -125,7 +127,7 @@ function PatternRow({ id }: { id: PlayPatternId }) {
           </span>
         </span>
       </div>
-      <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
+      <p className="mt-0.5 text-[13px] leading-snug text-[var(--color-beige-white)]/90">
         {t(`patterns.${id}.explain`)}
       </p>
       <div
@@ -149,29 +151,63 @@ function PatternRow({ id }: { id: PlayPatternId }) {
   )
 }
 
-function SpecialTile({
-  label,
-  enhancement = EnhancementType.None,
-  seal = SealType.None,
-  edition = EditionType.Base,
+/**
+ * Every look a tile can carry, each with the name and effect its own tile
+ * details show. Phones have no hover, so this list is where they learn them.
+ */
+const SPECIAL_LOOKS = [
+  {
+    title: 'marks',
+    kind: 'tileMarks',
+    looks: Object.values(EnhancementType)
+      .filter((id) => id !== EnhancementType.None)
+      .map((id) => ({ id, modifiers: { enhancement: id } })),
+  },
+  {
+    title: 'seals',
+    kind: 'archiveSeals',
+    looks: Object.values(SealType)
+      .filter((id) => id !== SealType.None)
+      .map((id) => ({ id, modifiers: { seal: id } })),
+  },
+  {
+    title: 'editions',
+    kind: 'editions',
+    looks: Object.values(EditionType)
+      .filter((id) => id !== EditionType.Base)
+      .map((id) => ({ id, modifiers: { edition: id } })),
+  },
+] as const
+
+function SpecialLook({
+  kind,
+  id,
+  modifiers,
 }: {
-  label: string
-  enhancement?: EnhancementType
-  seal?: SealType
-  edition?: EditionType
+  kind: (typeof SPECIAL_LOOKS)[number]['kind']
+  id: string
+  modifiers: Partial<TileModifiers>
 }) {
-  const example = new Tile(P, 5, `guide-special-${label}`, false, {
-    enhancement,
-    seal,
-    edition,
+  const { t } = useTranslation()
+  const example = new Tile(P, 5, `guide-${kind}-${id}`, false, {
+    ...DEFAULT_MODIFIERS,
+    ...modifiers,
   })
   return (
-    <div className="flex min-w-0 flex-col items-center gap-1">
-      <TileImage tile={example} size="small" showTooltip={false} />
-      <span className="w-full text-center text-[11px] leading-tight text-[var(--color-beige-white)]/75">
-        {label}
+    <li
+      data-guide-special={`${kind}.${id}`}
+      className="flex items-start gap-2.5 rounded-lg bg-black/20 p-2"
+    >
+      <span aria-hidden="true" className="shrink-0">
+        <TileImage tile={example} size="small" showTooltip={false} />
       </span>
-    </div>
+      <span className="min-w-0 text-[13px] leading-snug text-[var(--color-beige-white)]/90">
+        <strong className="block text-sm text-[var(--color-golden-yellow)]">
+          {t(`${kind}.items.${id}.name`)}
+        </strong>
+        {t(`${kind}.items.${id}.description`)}
+      </span>
+    </li>
   )
 }
 
@@ -188,8 +224,10 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
     { label: t('tiles.dragons', 'Dragons'), tile: tile(TileSuit.Dragon, 3) },
   ]
 
+  // Full-strength 14px text: dimmed 12px copy fades into the red scroll.
   const heading =
-    'text-center text-xs font-black uppercase tracking-[0.18em] text-[var(--color-metallic-gold)]'
+    'text-center text-sm font-black uppercase tracking-[0.14em] text-[var(--color-golden-yellow)]'
+  const body = 'text-sm leading-relaxed text-[var(--color-beige-white)]'
 
   return (
     <Popup
@@ -208,14 +246,14 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
             height={56}
             className="h-14 w-14 shrink-0 object-contain"
           />
-          <p className="text-sm leading-relaxed text-[var(--color-beige-white)]/85">
+          <p className={body}>
             {t('guide.intro')}
           </p>
         </div>
 
         <section>
           <h3 className={heading}>{t('guide.turnsTitle', 'Your turn')}</h3>
-          <ol className="mt-2 grid gap-2 text-sm text-[var(--color-beige-white)]/85 sm:grid-cols-2">
+          <ol className={`mt-2 grid gap-2 sm:grid-cols-2 ${body}`}>
             <li className="rounded-lg bg-black/20 p-2">
               <strong className="text-[var(--color-golden-yellow)]">
                 {t('gameplay.playHand', 'Play hand')}
@@ -229,7 +267,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
               {t('guide.redrawHelp')}
             </li>
           </ol>
-          <p className="mt-2 text-center text-xs text-[var(--color-beige-white)]/70">
+          <p className={`mt-2 ${body}`}>
             {t('guide.turnsHelp', {
               turns: TURNS_PER_ROUND,
               spare: SWIFT_CLEAR_SPARE_TURNS,
@@ -249,7 +287,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
             </span>{' '}
             = {t('guide.score', 'Score')}
           </p>
-          <p className="mt-2 text-xs leading-relaxed text-[var(--color-beige-white)]/75">
+          <p className={`mt-2 ${body}`}>
             {t('guide.scoreHelp')}
           </p>
         </section>
@@ -261,7 +299,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
               <PatternRow key={id} id={id} />
             ))}
           </ul>
-          <p className="mt-2 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
+          <p className={`mt-2 ${body}`}>
             {t('guide.patternRule')}
           </p>
           {secrets.length > 0 && (
@@ -288,16 +326,16 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 className="flex max-w-full flex-col items-center gap-1"
               >
                 <TileImage tile={example} size="small" showTooltip={false} showIndex />
-                <span className="text-center text-[11px] leading-tight text-[var(--color-beige-white)]/75 [overflow-wrap:normal]">
+                <span className="text-center text-xs leading-tight text-[var(--color-beige-white)] [overflow-wrap:normal]">
                   {label}
                 </span>
               </div>
             ))}
           </div>
-          <p className="mt-2 text-xs leading-relaxed text-[var(--color-beige-white)]/75">
+          <p className={`mt-2 ${body}`}>
             {t('guide.tilesHelp')}
           </p>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--color-golden-yellow)]">
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-golden-yellow)]">
             {t('guide.honorsHelp', {
               wind: WIND_TILE_POINTS,
               windGroup: WIND_GROUP_POINTS,
@@ -309,17 +347,19 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
 
         <section>
           <h3 className={heading}>{t('guide.specialTitle', 'Special tiles')}</h3>
-          <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6">
-            <SpecialTile label={t('tileMarks.items.gold.name')} enhancement={EnhancementType.Gold} />
-            <SpecialTile label={t('tileMarks.items.bonus.name')} enhancement={EnhancementType.Bonus} />
-            <SpecialTile label={t('tileMarks.items.mult.name')} enhancement={EnhancementType.Mult} />
-            <SpecialTile label={t('tileMarks.items.glass.name')} enhancement={EnhancementType.Glass} />
-            <SpecialTile label={t('archiveSeals.items.red.name')} seal={SealType.Red} />
-            <SpecialTile label={t('editions.items.holographic.name')} edition={EditionType.Holographic} />
-          </div>
-          <p className="mt-2 text-xs leading-relaxed text-[var(--color-beige-white)]/75">
-            {t('guide.specialHelp')}
-          </p>
+          <p className={`mt-2 ${body}`}>{t('guide.specialHelp')}</p>
+          {SPECIAL_LOOKS.map(({ title, kind, looks }) => (
+            <div key={kind} data-guide-special-group={title}>
+              <h4 className="mt-4 text-sm font-bold text-[var(--color-golden-yellow)]">
+                {t(`guide.${title}`)}
+              </h4>
+              <ul className="mt-1.5 grid gap-1.5 sm:grid-cols-2">
+                {looks.map((look) => (
+                  <SpecialLook key={look.id} kind={kind} {...look} />
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
 
         <div className="flex justify-center">

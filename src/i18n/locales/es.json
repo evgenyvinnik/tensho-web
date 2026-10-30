@@ -3148,7 +3148,10 @@
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",
     "specialTitle": "Fichas especiales",
-    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Una ficha solo puede tener uno de ellos. Pasa el cursor o enfoca una ficha para leer qué hace.",
+    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Una ficha solo puede tener uno de ellos.",
+    "marks": "Marcas",
+    "seals": "Sellos",
+    "editions": "Ediciones",
     "close": "¡A jugar!"
   },
   "mandateConsequence": {

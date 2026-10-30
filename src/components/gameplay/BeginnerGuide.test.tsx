@@ -12,6 +12,11 @@ import {
   TAUGHT_PATTERNS,
   type PlayPatternId,
 } from '../../rules/PlayPattern'
+import {
+  EditionType,
+  EnhancementType,
+  SealType,
+} from '../../core/TileModifier'
 import en from '../../i18n/locales/en.json'
 
 const tiles = (suit: TileSuit, ranks: number[]) =>
@@ -66,6 +71,36 @@ describe('BeginnerGuide', () => {
   ] as const)('shows the shape bonus and Mult the engine pays for %s', (id, play) => {
     renderGuide()
     expect(shown(id)).toEqual(enginePays([...play]))
+  })
+
+  it('shows every mark, seal and edition with the effect its tile details give', () => {
+    renderGuide()
+    const looks = [
+      ...Object.values(EnhancementType)
+        .filter((id) => id !== EnhancementType.None)
+        .map((id) => ['tileMarks', id] as const),
+      ...Object.values(SealType)
+        .filter((id) => id !== SealType.None)
+        .map((id) => ['archiveSeals', id] as const),
+      ...Object.values(EditionType)
+        .filter((id) => id !== EditionType.Base)
+        .map((id) => ['editions', id] as const),
+    ]
+    expect(
+      Array.from(document.querySelectorAll('[data-guide-special]'), (row) =>
+        row.getAttribute('data-guide-special')
+      )
+    ).toEqual(looks.map(([kind, id]) => `${kind}.${id}`))
+    for (const [kind, id] of looks) {
+      const item = (en[kind].items as Record<string, { name: string; description: string }>)[id]
+      const row = document.querySelector(`[data-guide-special="${kind}.${id}"]`)!
+      expect(row).toHaveTextContent(item.name)
+      expect(row).toHaveTextContent(item.description)
+    }
+    for (const key of ['marks', 'seals', 'editions'] as const)
+      expect(
+        screen.getByRole('heading', { name: en.guide[key] })
+      ).toBeInTheDocument()
   })
 
   it('shows Mahjong’s flat Mult bonus', () => {

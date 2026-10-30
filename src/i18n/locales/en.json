@@ -3144,7 +3144,10 @@
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",
     "specialTitle": "Special tiles",
-    "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. A tile holds only one of them. Hover or focus a tile to read exactly what it does.",
+    "specialHelp": "A coloured frame with a gem is a mark, a wax stamp is a seal, and a shimmer is an edition. A tile holds only one of them.",
+    "marks": "Marks",
+    "seals": "Seals",
+    "editions": "Editions",
     "close": "Let’s play"
   },
   "mandateConsequence": {
