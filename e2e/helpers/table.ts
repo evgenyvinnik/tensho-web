@@ -43,7 +43,7 @@ export async function settleReveals(
 
 /**
  * Start a new run from the menu and wait for the table. Default paths have no
- * leading slash so they resolve under the production gate's /tensho-web/ base.
+ * leading slash so they resolve against baseURL, whatever the deployment base.
  */
 export async function startRun(page: Page, path = 'en'): Promise<void> {
   await page.goto(path)

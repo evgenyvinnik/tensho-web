@@ -1,5 +1,5 @@
 /** Real two-release upgrade test. Build two production folders with different
- * VITE_APP_VERSION values (pwa-before / pwa-after), both under /tensho-web/.
+ * VITE_APP_VERSION values (pwa-before / pwa-after), both served from the site root.
  * Updates install silently: never during a run, only at a safe boundary such
  * as the menu, after the run is saved, and not while another tab is open.
  * Usage: node scripts/verify-pwa-updates.mjs /abs/before /abs/after /abs/artifacts
@@ -22,7 +22,7 @@ assert.ok(
 )
 await mkdir(artifacts, { recursive: true })
 for (const dir of [before, after]) await stat(resolve(dir, 'sw.js'))
-const base = '/tensho-web/'
+const base = '/'
 const mime = {
   '.html': 'text/html',
   '.js': 'text/javascript',

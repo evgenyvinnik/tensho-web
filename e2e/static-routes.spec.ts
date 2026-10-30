@@ -33,7 +33,7 @@ test('all known locale routes have real HTTP 200 entry documents and initial ind
   const sitemap = await request.get('sitemap.xml')
   expect(sitemap.status()).toBe(200)
   expect((await sitemap.text()).match(/<loc>[^<]+<\/loc>/g)).toEqual([
-    '<loc>https://evgenyvinnik.github.io/tensho-web/</loc>',
+    '<loc>https://tensho.app/</loc>',
   ])
 })
 

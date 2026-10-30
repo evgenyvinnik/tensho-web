@@ -9,7 +9,7 @@ describe('sitemap', () => {
     )
     expect(doc.querySelector('parsererror')).toBeNull()
     expect([...doc.querySelectorAll('loc')].map((n) => n.textContent)).toEqual([
-      'https://evgenyvinnik.github.io/tensho-web/',
+      'https://tensho.app/',
     ])
     expect(doc.querySelector('lastmod')).toBeNull()
   })
@@ -22,7 +22,7 @@ describe('sitemap', () => {
       '<loc>https://example.com/game/</loc>'
     )
     expect(renderSitemap('https://example.com/game/')).not.toContain(
-      'github.io'
+      'tensho.app'
     )
   })
 

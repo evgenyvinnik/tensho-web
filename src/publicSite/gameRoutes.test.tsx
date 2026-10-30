@@ -31,7 +31,7 @@ it('emits every known language/screen from one route manifest, not unknown route
       // Locale entry shells are not invented translated editorial landing pages.
       expect(
         doc.querySelector('link[rel="canonical"]')?.getAttribute('href')
-      ).toBe('https://evgenyvinnik.github.io/tensho-web/')
+      ).toBe('https://tensho.app/')
     }
   }
   expect(entries.has('missing/index.html')).toBe(false)

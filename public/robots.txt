@@ -1,11 +1,11 @@
 # Tensho - Mahjong Roguelike
-# https://evgenyvinnik.github.io/tensho-web
+# https://tensho.app
 
 User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://evgenyvinnik.github.io/tensho-web/sitemap.xml
+Sitemap: https://tensho.app/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1

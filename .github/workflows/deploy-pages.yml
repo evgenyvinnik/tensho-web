@@ -139,10 +139,12 @@ jobs:
       - name: Verify application tests
         run: bun run test:run --maxWorkers=2
 
+      # tensho.app is this site's Pages custom domain (Settings > Pages), so the
+      # app is served from the root and evgenyvinnik.github.io/tensho-web/ redirects.
       - name: Build project site
         env:
           VITE_APP_VERSION: ${{ steps.version.outputs.version }}
-          VITE_BASE_PATH: /tensho-web/
+          VITE_BASE_PATH: /
         run: bun run build
 
       - name: Record release provenance

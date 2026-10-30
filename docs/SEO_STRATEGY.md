@@ -24,7 +24,7 @@ Tensho should describe itself as a **single-player Mahjong roguelike playable in
 
 ## Initial public pages
 
-Paths below are relative to the production project root, `/tensho-web/`.
+Paths below are relative to the production root, `https://tensho.app/`.
 
 | Page | Reader's question | Content and next action |
 | --- | --- | --- |
@@ -64,10 +64,10 @@ For a later translation release, agree terminology with the in-game locale, have
 
 ## Indexing, hosting and metadata boundaries
 
-- Keep GitHub Pages. The production public-guide canonical origin defaults to `https://evgenyvinnik.github.io/tensho-web/`; `VITE_BASE_PATH=/tensho-web/` controls local links. `VITE_SITE_URL` overrides guide/sitemap canonical origin for a future domain change. It does **not** automatically migrate hard-coded game-shell/social/robots URLs: audit those together before changing domains.
+- GitHub Pages serves the game at its custom domain, `https://tensho.app/` (Settings > Pages; DNS is on Vercel), and redirects the old `https://evgenyvinnik.github.io/tensho-web/` paths there. The canonical origin defaults to `https://tensho.app/`; `VITE_SITE_URL` overrides the sitemap origin and `VITE_BASE_PATH` serves a build from a sub-path. Neither migrates the hard-coded game-shell, social or robots URLs: audit those together before changing domains.
 - The generated sitemap lists the root and three guides, not seeded games, shop state, settings, achievements or collection state. It deliberately has no invented `lastmod` dates. Sitemap omission does not itself prevent indexing.
 - The static-route follow-up emits real entry files for all known language/screen routes and adds `noindex, follow` to state/reference screens, including during client navigation. Menu aliases retain the root canonical; this is not localized editorial prerendering. Deciding which languages warrant real translated landing pages remains open.
-- Important hosting limitation: crawlers look for robots rules at the **host root**. This project serves `robots.txt` under `/tensho-web/`; it cannot control `https://evgenyvinnik.github.io/robots.txt`. Do not modify another repository or the account site without authority. Use an owner-verified Search Console property to submit this project's sitemap. See [Google's robots.txt location rules](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt).
+- Crawlers look for robots rules at the **host root**. On tensho.app the project's `robots.txt` is at the root, so it applies; submit the sitemap from an owner-verified Search Console property for the domain. See [Google's robots.txt location rules](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt).
 - Public guide navigation is excluded from the service worker's game-shell fallback. Test both a first visit and an existing service-worker installation after deployment. Local build output alone does not prove an installed client updates correctly.
 - Do not invent ratings, review counts, awards, authors or social accounts. Unsupported aggregate rating and social-author claims were removed from the shell before this follow-up. Keep structured data representative of visible facts; even valid markup does not guarantee enhanced results. See [Google's structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies).
 
