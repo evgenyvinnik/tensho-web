@@ -31,6 +31,7 @@ import { tileName } from '../../i18n/tileText'
 import { useItemText } from '../../i18n/useItemText'
 import { getFateSealIllustration } from '../../utils/assets'
 import { TileImage } from '../tiles/TileImage'
+import { ControlIcon } from '../ui/ControlIcon'
 
 const GROUPS = [
   { suit: TileSuit.Manzu, label: 'tiles.manzu', columns: 9 },
@@ -179,9 +180,9 @@ export function SealWallDialog({
               data-seal-wall-close
               onClick={onClose}
               aria-label={t('common.close')}
-              className="absolute right-2 top-2 min-h-11 min-w-11 rounded-lg border border-white/20"
+              className="absolute right-2 top-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/20"
             >
-              ×
+              <ControlIcon name="close" size={24} />
             </button>
           )}
         </header>

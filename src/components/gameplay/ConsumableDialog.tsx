@@ -25,6 +25,7 @@ import {
 } from '../../utils/assets'
 import { TileImage } from '../tiles/TileImage'
 import { CharterArtwork } from '../ui/CharterArtwork'
+import { ControlIcon } from '../ui/ControlIcon'
 import { consumableMessage } from './consumableMessages'
 
 type Item = FateSeal | CelestialOrb | VoidScript
@@ -184,9 +185,9 @@ export function ConsumableDialog({
             type="button"
             onClick={onClose}
             aria-label={t('common.close')}
-            className="absolute right-2 top-2 min-h-11 min-w-11 rounded-lg border border-white/20"
+            className="absolute right-2 top-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/20"
           >
-            ×
+            <ControlIcon name="close" size={24} />
           </button>
         </header>
         <div className="min-h-0 overflow-y-auto overscroll-contain px-3 py-3 sm:px-5">

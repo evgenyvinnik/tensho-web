@@ -25,7 +25,7 @@ describe('generated control wiring', () => {
     ['Settings', ['controls-jade/settings.webp']],
     ['VolumeOn', ['controls-jade/sound.webp']],
     ['VolumeOff', ['controls-jade/sound-off.webp']],
-    ['Close', ['generated/controls/close.png']],
+    ['Close', ['controls-jade/close.webp']],
     ['Refresh', ['generated/controls/redraw.png']],
   ] as const)(
     'keeps %s decorative and preserves its owning button',

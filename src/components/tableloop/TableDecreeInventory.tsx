@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { getTableDecree } from '../../tableloop/content'
 import type { TableDecreeId } from '../../tableloop/types'
 import { TableDecreeArt } from './TableDecreeArt'
+import { ControlIcon } from '../ui/ControlIcon'
 
 function OwnedScroll({ id }: { id: TableDecreeId }) {
   const { t } = useTranslation()
@@ -118,9 +119,9 @@ function OwnedScroll({ id }: { id: TableDecreeId }) {
             type="button"
             aria-label={t('common.close', 'Close')}
             onClick={() => detail.current?.hidePopover()}
-            className="min-h-11 min-w-11 self-start rounded-lg border border-white/20 text-xl focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
+            className="flex min-h-11 min-w-11 items-center justify-center self-start rounded-lg border border-white/20 focus-visible:ring-2 focus-visible:ring-[var(--color-golden-yellow)]"
           >
-            ×
+            <ControlIcon name="close" size={24} />
           </button>
         </div>
         <p className="mt-2 text-sm leading-relaxed">{description}</p>

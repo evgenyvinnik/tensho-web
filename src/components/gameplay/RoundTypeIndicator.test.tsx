@@ -34,7 +34,7 @@ it.each(SHOWDOWN_MANDATES)(
     expect(portrait).toHaveAttribute('alt', '')
     expect(dialog.querySelector('button img')).toHaveAttribute(
       'src',
-      '/assets/illustrations/generated/controls/close.png'
+      '/assets/illustrations/controls-jade/close.webp'
     )
   }
 )

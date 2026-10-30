@@ -585,7 +585,7 @@ export const generatedArtPaths = {
     challenge: 'assets/illustrations/generated/controls/challenge.png',
     chart: 'assets/illustrations/generated/controls/chart.png',
     check: 'assets/illustrations/controls-jade/check.webp',
-    close: 'assets/illustrations/generated/controls/close.png',
+    close: 'assets/illustrations/controls-jade/close.webp',
     coin: 'assets/illustrations/generated/controls/coin.png',
     collection: 'assets/illustrations/generated/controls/collection.png',
     compass: 'assets/illustrations/generated/controls/compass.png',

@@ -1,5 +1,27 @@
 # Jade control icon set
 
+## Close control — October 30, 2026
+
+A painted close icon joins the set: two crossed ivory bars with antique-gold
+cloud-scroll end caps, a bronze outline and an emerald jade boss at the
+crossing, matching the help question mark. It replaces the flat generated X
+everywhere a close control appears: the scroll popups (now the bare image on
+the roller, no green plate), the Codex window, the table picker, item and tile
+detail popovers, the achievement toast, and the Seal wall picker, Seal/Script
+dialog and table-loop Decree details, which used a typed "×" before.
+
+Delivery: `public/assets/illustrations/controls-jade/close.webp`, 128px WebP
+with alpha, 5,670 bytes, converted with the set's command. The 1254px source
+was supplied in chat with no lasting copy elsewhere, so it is kept unserved at
+`assets/controls-jade/close-source.webp`. Brief prompt and provenance:
+[the extension manifest](jade-reference-icons-manifest.json). The original
+`generated/controls/close.png` stays for older clients.
+
+Visual QA: transparent corners, a bronze edge with no white fringe, the jade
+boss at the exact canvas centre; read at 18, 24 and 36px on the scroll roller
+(#D74B11), its yellow end cap (#FFF000), scroll paper (#A22706), dark forest
+(#1C3A2E) and forest green (#2D5F4A).
+
 ## Decree editions and Script alpha repair — October 21, 2026
 
 Four new transparent painted mounts give Foil, Holographic, Polychrome and

@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { popupAssets } from '../../utils/assets'
 import { Button } from './Button'
-import { IconButton, Icons } from './IconButton'
+import { ControlIcon } from './ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -138,17 +138,17 @@ export function Popup({
           borderImageRepeat: 'stretch',
         }}
       />
-      {/* Close button - positioned at top right edge */}
+      {/* Close button: the painted jade X alone on the roller, no plate,
+          centred on the roller's height just inside its gold end cap. */}
       {showCloseButton && (
-        <div className="absolute top-5 right-3 z-10">
-          <IconButton
-            icon={<Icons.Close />}
-            ariaLabel={t('common.close')}
-            variant="secondary"
-            size="md"
-            onClick={onClose}
-          />
-        </div>
+        <button
+          type="button"
+          aria-label={t('common.close')}
+          onClick={onClose}
+          className="absolute top-2 right-8 z-10 flex h-11 w-11 items-center justify-center rounded-full transition-transform hover:brightness-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] motion-reduce:transition-none"
+        >
+          <ControlIcon name="close" size={36} />
+        </button>
       )}
 
       {/* Inner container with padding for scroll background */}

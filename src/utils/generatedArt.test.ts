@@ -83,6 +83,7 @@ it.each([
   'info',
   'warning',
   'check',
+  'close',
 ] as const)('ships a compact transparent jade %s control', (id) => {
   const path = getControlArt(id)
   expect(path).toMatch(/controls-jade\/.+\.webp$/)
