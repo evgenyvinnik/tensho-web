@@ -413,10 +413,10 @@
     "saveLeave": "Salva ed esci"
   },
   "omens": {
-    "pending": "Effetti dei presagi",
     "effects": {
       "shopFee": "Costo: {{amount}} oro quando questa offerta appare nel negozio. Nessun addebito se viene rinviata.",
       "seasonLock": "Prossima Stagione pescata: {{season}}. Il vincolo termina con quella pesca.",
+      "seasonLockLabel": "Prossima Stagione: {{season}}",
       "noInterest": "Interessi bloccati · round rimanenti: {{rounds}}",
       "interestBoost": "Limite interessi +{{amount}} oro · round rimanenti: {{rounds}}"
     },

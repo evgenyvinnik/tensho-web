@@ -101,12 +101,14 @@ test('a new round clears old Seasons and an earned lock preserves the next draw 
   await page.getByRole('button', { name: 'Continue to Next Round' }).click()
   await expect(page).toHaveURL(/\/en\/play$/)
   await settleReveals(page, 2_000)
-  const effects = page.getByTestId('pending-omens')
-  await effects.locator('summary').click()
+  const rail = page.locator('[data-collectible-rail]')
+  const lock = rail.locator('[data-omen-effect="season-lock"]')
+  await expect(lock).toHaveAttribute('aria-label', 'Next Season: Winter')
+  await lock.click()
   await expect(
-    effects.locator('[data-omen-effect="season-lock"]')
-  ).toContainText('Winter')
-  await effects.locator('summary').click()
+    page.getByRole('dialog', { name: 'Next Season: Winter' })
+  ).toContainText('Next Season drawn: Winter')
+  await page.keyboard.press('Escape')
   const fixture = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const tilePath = '/src/core/Tile.ts'
@@ -152,10 +154,8 @@ test('a new round clears old Seasons and an earned lock preserves the next draw 
     else await tile.click()
   }
   await page.locator('[data-game-action="redraw"]').click()
-  await expect(effects.locator('[data-omen-effect="season-lock"]')).toHaveCount(
-    0
-  )
-  await expect(effects.locator('[data-omen-id="omen_of_ash"]')).toHaveCount(1)
+  await expect(lock).toHaveCount(0)
+  await expect(rail.locator('[data-omen-id="omen_of_ash"]')).toHaveCount(1)
   await expect(page.locator('[data-game-action="redraw"]')).toBeDisabled()
   expect(
     await page.evaluate(async () => {

@@ -413,10 +413,10 @@
     "saveLeave": "I-save at umalis"
   },
   "omens": {
-    "pending": "Mga epekto ng Pangitain",
     "effects": {
       "shopFee": "Halaga: {{amount}} ginto kapag naibigay ang alok na ito sa tindahan. Walang singil habang ipinagpapaliban.",
       "seasonLock": "Susunod na Season na mabubunot: {{season}}. Matatapos ang pagkakakandado sa pagbunot na iyon.",
+      "seasonLockLabel": "Susunod na Season: {{season}}",
       "noInterest": "Walang interes · natitirang round: {{rounds}}",
       "interestBoost": "Limitasyon ng interes +{{amount}} ginto · natitirang round: {{rounds}}"
     },

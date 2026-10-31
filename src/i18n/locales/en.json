@@ -2300,10 +2300,10 @@
     }
   },
   "omens": {
-    "pending": "Omen effects",
     "effects": {
       "shopFee": "Cost: {{amount}} gold when this shop offer is delivered. No charge while delivery is deferred.",
       "seasonLock": "Next Season drawn: {{season}}. This lock ends on that draw.",
+      "seasonLockLabel": "Next Season: {{season}}",
       "noInterest": "Interest blocked · rounds remaining: {{rounds}}",
       "interestBoost": "Interest cap +{{amount}} gold · rounds remaining: {{rounds}}"
     },
