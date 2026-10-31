@@ -3252,5 +3252,31 @@
   "orbReveal": {
     "used": "Celestial Orb used",
     "title": "{{name}} used: Yaku upgraded"
+  },
+  "omenReveal": {
+    "title": "Omen earned: {{name}}",
+    "swiftClear": "Swift clear",
+    "cleared": "{{round}} cleared",
+    "spareTurns_one": "{{formattedCount}} Turn to spare",
+    "spareTurns_other": "{{formattedCount}} Turns to spare",
+    "earned": "Omen earned",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copied by Double Omen: ×{{amount}}",
+    "when": "Takes effect",
+    "timing": {
+      "shop": "Now, in this Tea House. Its effect is already on the offers.",
+      "round": "At the start of the next round.",
+      "hand": "On your next scored hand.",
+      "voidScript": "The next time you use a Void Script.",
+      "now": "At once. It has already been applied.",
+      "run": "On every scored hand for the rest of the run.",
+      "nextOmen": "When you earn your next Omen."
+    },
+    "rail": {
+      "waits": "Until then it waits on the table with your items.",
+      "stays": "It stays on the table with your items."
+    },
+    "tradeoff": "Trade-off",
+    "rule": "Clear a Small or Large round with {{spare}} or more Turns to spare to earn an Omen. Boss rounds give none."
   }
 }

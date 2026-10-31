@@ -3256,5 +3256,31 @@
   "orbReveal": {
     "used": "Sfera Celeste usata",
     "title": "{{name}} usata: yaku potenziato"
+  },
+  "omenReveal": {
+    "title": "Presagio ottenuto: {{name}}",
+    "swiftClear": "Vittoria lampo",
+    "cleared": "{{round}} superato",
+    "spareTurns_one": "{{formattedCount}} turno di avanzo",
+    "spareTurns_other": "{{formattedCount}} turni di avanzo",
+    "earned": "Presagio ottenuto",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copiato dal Presagio doppio: ×{{amount}}",
+    "when": "Quando agisce",
+    "timing": {
+      "shop": "Adesso, in questa Casa del Tè. Il suo effetto è già sulle offerte.",
+      "round": "All’inizio del prossimo round.",
+      "hand": "Sulla tua prossima mano che segna punti.",
+      "voidScript": "La prossima volta che usi uno Scritto del Vuoto.",
+      "now": "Subito. È già stato applicato.",
+      "run": "Su ogni mano che segna punti per il resto della partita.",
+      "nextOmen": "Quando otterrai il tuo prossimo Presagio."
+    },
+    "rail": {
+      "waits": "Fino ad allora aspetta sul tavolo con i tuoi oggetti.",
+      "stays": "Resta sul tavolo con i tuoi oggetti."
+    },
+    "tradeoff": "Contropartita",
+    "rule": "Supera un Round Piccolo o Grande con {{spare}} o più turni di avanzo per ottenere un Presagio. I Round Boss non ne danno."
   }
 }
