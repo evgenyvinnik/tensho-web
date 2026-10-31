@@ -645,7 +645,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '牌袋',
     type: 'Tile',
     size: 'Normal',
-    description: 'Choose 1 from 3 modified tiles',
+    description: 'Choose 1 from 3 special tiles',
   },
   {
     id: 'tile_jumbo',
@@ -653,7 +653,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大牌袋',
     type: 'Tile',
     size: 'Jumbo',
-    description: 'Choose up to 2 from 5 modified tiles',
+    description: 'Choose up to 2 from 5 special tiles',
   },
   {
     id: 'tile_mega',
@@ -661,7 +661,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大牌袋',
     type: 'Tile',
     size: 'Mega',
-    description: 'Choose up to 3 from 6 modified tiles',
+    description: 'Choose up to 3 from 6 special tiles',
   },
   // Decree Packs
   {

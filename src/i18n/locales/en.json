@@ -2912,15 +2912,15 @@
       },
       "tile_normal": {
         "name": "Tile Pack",
-        "description": "Choose 1 from 3 modified tiles"
+        "description": "Choose 1 from 3 special tiles"
       },
       "tile_jumbo": {
         "name": "Jumbo Tile Pack",
-        "description": "Choose up to 2 from 5 modified tiles"
+        "description": "Choose up to 2 from 5 special tiles"
       },
       "tile_mega": {
         "name": "Mega Tile Pack",
-        "description": "Choose up to 3 from 6 modified tiles"
+        "description": "Choose up to 3 from 6 special tiles"
       },
       "decree_normal": {
         "name": "Decree Pack",
