@@ -89,7 +89,12 @@ export interface OmenEffect {
   value: number | string
   description: string
   /** For guaranteed_item: type of item guaranteed */
-  itemType?: 'Decree' | 'FateSeal' | 'CelestialOrb' | 'VoidScript' | 'BlessingPack'
+  itemType?:
+    | 'Decree'
+    | 'FateSeal'
+    | 'CelestialOrb'
+    | 'VoidScript'
+    | 'BlessingPack'
   /** Minimum rarity for a guaranteed shop Decree, including fallback selection. */
   minDecreeRarity?: DecreeRarity
   /** For edition_apply: the edition type */
@@ -108,7 +113,12 @@ export interface OmenEffect {
  * Trade-off for acquiring an omen
  */
 export interface OmenTradeoff {
-  type: 'lock_season' | 'lose_gold' | 'reduce_hand_size' | 'no_interest' | 'none'
+  type:
+    | 'lock_season'
+    | 'lose_gold'
+    | 'reduce_hand_size'
+    | 'no_interest'
+    | 'none'
   value?: SeasonVariant | number
   description: string
 }
@@ -474,7 +484,7 @@ export const POLYCHROME_OMEN: OmenDefinition = {
   id: 'polychrome_omen',
   name: 'Polychrome Omen',
   japaneseName: '極彩の兆',
-  description: 'Apply Polychrome edition to a random owned Decree.',
+  description: 'Adds a Polychrome Edition to a random owned Decree.',
   category: 'Consumable',
   rarity: 'Legendary',
   trigger: 'OnAcquire',
@@ -499,14 +509,14 @@ export const FOIL_OMEN: OmenDefinition = {
   id: 'foil_omen',
   name: 'Foil Omen',
   japaneseName: '箔押の兆',
-  description: 'Next purchased Decree gains Foil edition.',
+  description: 'Next purchased Decree gains a Foil Edition.',
   category: 'Shop',
   rarity: 'Uncommon',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Foil edition on next Decree',
+    description: 'Foil Edition on next Decree',
     editionType: 'Foil',
   },
   tradeoff: {
@@ -616,14 +626,14 @@ export const NEGATIVE_OMEN: OmenDefinition = {
   id: 'negative_omen',
   name: 'Negative Omen',
   japaneseName: '陰影の兆',
-  description: 'Next purchased Decree gains Negative edition (+1 slot).',
+  description: 'Next purchased Decree gains a Negative Edition (+1 slot).',
   category: 'Shop',
   rarity: 'Legendary',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Negative edition on next Decree',
+    description: 'Negative Edition on next Decree',
     editionType: 'Negative',
   },
   tradeoff: {
@@ -665,14 +675,14 @@ export const HOLOGRAPHIC_OMEN: OmenDefinition = {
   id: 'holographic_omen',
   name: 'Holographic Omen',
   japaneseName: '虹彩の兆',
-  description: 'Next purchased Decree gains Holographic edition.',
+  description: 'Next purchased Decree gains a Holographic Edition.',
   category: 'Shop',
   rarity: 'Rare',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Holographic edition on next Decree',
+    description: 'Holographic Edition on next Decree',
     editionType: 'Holographic',
   },
   tradeoff: {

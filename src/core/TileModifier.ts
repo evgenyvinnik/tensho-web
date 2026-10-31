@@ -3,10 +3,12 @@
  *
  * Implements Balatro-style card modifiers adapted for Mahjong:
  * - Enhancements (Marks): Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky
- * - Seals: Gold, Red, Blue, Purple
+ * - Seals (shown to players as Stamps): Gold, Red, Blue, Purple
  * - Editions: Base, Foil, Holographic, Polychrome, Negative
  *
  * Each tile holds at most ONE modifier: a Mark, a Seal or an Edition.
+ * Player-facing text calls such a tile a "special tile" and the Seal a
+ * "Stamp", so it never shares a name with the Fate Seal consumable.
  * Applying one replaces whatever the tile carried before.
  */
 
@@ -194,7 +196,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
     type: SealType.None,
     name: 'None',
     japaneseName: '無',
-    description: 'No seal',
+    description: 'No Stamp',
     goldOnPlay: 0,
     retriggers: 0,
     createsConsumable: 'none',
@@ -202,7 +204,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
   },
   [SealType.Gold]: {
     type: SealType.Gold,
-    name: 'Gold Seal',
+    name: 'Gold Stamp',
     japaneseName: '金封',
     description: 'Earn ¥3 when this tile is played',
     goldOnPlay: 3,
@@ -212,7 +214,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
   },
   [SealType.Red]: {
     type: SealType.Red,
-    name: 'Red Seal',
+    name: 'Red Stamp',
     japaneseName: '紅封',
     description: 'Retrigger this tile once when scored',
     goldOnPlay: 0,
@@ -222,7 +224,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
   },
   [SealType.Blue]: {
     type: SealType.Blue,
-    name: 'Blue Seal',
+    name: 'Blue Stamp',
     japaneseName: '青封',
     description:
       'Creates a random Celestial Orb if in the play that clears the round',
@@ -233,7 +235,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
   },
   [SealType.Purple]: {
     type: SealType.Purple,
-    name: 'Purple Seal',
+    name: 'Purple Stamp',
     japaneseName: '紫封',
     description: 'Creates a random Fate Seal when discarded or redrawn',
     goldOnPlay: 0,

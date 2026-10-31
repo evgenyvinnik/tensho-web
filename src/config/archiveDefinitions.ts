@@ -89,15 +89,15 @@ export const ARCHIVE_CATEGORIES: Record<
     id: 'tileMarks',
     name: 'Tile Marks',
     japaneseName: '牌印録',
-    description: 'Enhancement types that modify tile behavior',
+    description: 'Marks that change how a tile scores or behaves',
     expectedCount: 8, // Enhancement types
     icon: 'sparkle',
   },
   seals: {
     id: 'seals',
-    name: 'Seals',
+    name: 'Stamps',
     japaneseName: '封印録',
-    description: 'Special seals that add effects to tiles',
+    description: 'Wax stamps that give a tile an extra effect',
     expectedCount: 4, // Gold, Red, Blue, Purple
     icon: 'seal',
   },
@@ -105,7 +105,7 @@ export const ARCHIVE_CATEGORIES: Record<
     id: 'editions',
     name: 'Editions',
     japaneseName: '版録',
-    description: 'Visual and gameplay variants of items',
+    description: 'Shimmering finishes that add an effect to a tile or Decree',
     expectedCount: 5, // Base, Foil, Holo, Poly, Negative
     icon: 'shine',
   },
@@ -473,7 +473,7 @@ export interface SealDefinition {
 export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   {
     id: 'gold',
-    name: 'Gold Seal',
+    name: 'Gold Stamp',
     japaneseName: '金封',
     description: 'Earns gold when played',
     effect: '+3 Gold when scored in hand',
@@ -481,7 +481,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   },
   {
     id: 'red',
-    name: 'Red Seal',
+    name: 'Red Stamp',
     japaneseName: '赤封',
     description: 'Tile triggers twice',
     effect: 'Retriggers once when scored',
@@ -489,7 +489,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   },
   {
     id: 'blue',
-    name: 'Blue Seal',
+    name: 'Blue Stamp',
     japaneseName: '青封',
     description: 'Creates a random Celestial Orb',
     effect: 'When this tile is in the play that clears the round',
@@ -497,7 +497,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   },
   {
     id: 'purple',
-    name: 'Purple Seal',
+    name: 'Purple Stamp',
     japaneseName: '紫封',
     description: 'Creates Fate Seal on discard or redraw',
     effect: 'Creates a random Fate Seal when discarded or redrawn',
@@ -562,7 +562,8 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     name: 'Negative',
     japaneseName: '陰影',
     description: 'Inverted colors, transcendent',
-    effect: '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
+    effect:
+      '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
     visualStyle: 'inverted',
   },
 ]

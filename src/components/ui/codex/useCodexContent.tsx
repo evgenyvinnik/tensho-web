@@ -773,13 +773,13 @@ export function useCodexContent(): CodexCategory[] {
         },
         {
           id: 'marks',
-          title: t('codex.items.marks.title', 'Tile Marks & Editions'),
+          title: t('codex.items.marks.title', 'Special tiles'),
           content: (
             <div className="space-y-4">
               <p>
                 {t(
                   'codex.items.marks.p1',
-                  'Tiles can be enhanced with Marks, Seals, and Editions:'
+                  'A special tile carries one Mark, Stamp or Edition:'
                 )}
               </p>
               <DataTable
@@ -801,7 +801,7 @@ export function useCodexContent(): CodexCategory[] {
                     ),
                   ],
                   [
-                    t('codex.items.marks.seal', 'Seals'),
+                    t('codex.items.marks.seal', 'Stamps'),
                     t('codex.items.marks.sealEx', 'Gold, Red, Blue, Purple'),
                     t('codex.items.marks.sealEf', 'Special triggers'),
                   ],
@@ -818,7 +818,7 @@ export function useCodexContent(): CodexCategory[] {
               <InfoBox variant="tip">
                 {t(
                   'codex.items.marks.stacking',
-                  'A tile can have ONE Mark, ONE Seal, and ONE Edition simultaneously for massive bonuses!'
+                  'A special tile holds only one of these. Adding a new one replaces the old one.'
                 )}
               </InfoBox>
             </div>

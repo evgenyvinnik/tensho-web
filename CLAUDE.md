@@ -270,6 +270,15 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 | Planet | Celestial Orb |
 | Spectral | Void Script |
 | Voucher | Imperial Charter |
+| Enhanced card | Special tile |
+| Enhancement | Mark |
+| Seal (on a card) | Stamp |
+| Edition | Edition |
+
+Player-facing text never says "enhanced", "enhancement" or "modifier" for tiles,
+and "Seal" alone means a Fate Seal. A special tile holds one Mark, Stamp or
+Edition; "Glass tile" / "Stone tile" is the short form for a tile with that Mark.
+In code, Marks are `EnhancementType` and Stamps are `SealType`.
 
 ## UI Design
 
