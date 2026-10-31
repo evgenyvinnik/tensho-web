@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. La Sfera di Tutte le famiglie corrisponde a qualsiasi Yaku segnato.",
+    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. La Sfera del Buco Nero corrisponde a qualsiasi Yaku segnato.",
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
   },
   "closedHandAusterity": {
@@ -1110,7 +1110,7 @@
       "sealHelp": "Usato nell’istante in cui lo prendi: scegli le tessere del tuo muro da cambiare, e restano cambiate per tutta la partita.",
       "sealHelpInstant": "Usato nell’istante in cui lo prendi.",
       "orb": "Sfera Celeste · potenzia una famiglia di mani",
-      "orbPlanet": "Sfera Celeste · {{planet}}",
+      "orbFamily": "Sfera Celeste · {{family}}",
       "script": "Scritto del Vuoto · potente, con un prezzo",
       "consumableHelp": "Resta tra i tuoi oggetti finché non lo usi. Toccalo sul tavolo per usarlo.",
       "tile": "Tessera · aggiunta al tuo muro",
@@ -2734,68 +2734,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Sfera delle Coppie",
-        "planet": "Plutone",
+        "name": "Sfera di Plutone",
         "description": "Alza la famiglia «Coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Coppie» riceve altri +10 punti base e +1 Mult."
       },
       "mercury_orb": {
-        "name": "Sfera di Tutti semplici",
-        "planet": "Mercurio",
+        "name": "Sfera di Mercurio",
         "description": "Alza la famiglia «Tutti semplici» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tutti semplici» riceve altri +15 punti base e +1 Mult."
       },
       "uranus_orb": {
-        "name": "Sfera degli Onori",
-        "planet": "Urano",
+        "name": "Sfera di Urano",
         "description": "Alza la famiglia «Onori» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Onori» riceve altri +20 punti base e +1 Mult."
       },
       "venus_orb": {
-        "name": "Sfera delle Sequenze",
-        "planet": "Venere",
+        "name": "Sfera di Venere",
         "description": "Alza la famiglia «Sequenze» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sequenze» riceve altri +20 punti base e +2 Mult."
       },
       "saturn_orb": {
-        "name": "Sfera delle Scale",
-        "planet": "Saturno",
+        "name": "Sfera di Saturno",
         "description": "Alza la famiglia «Scale» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Scale» riceve altri +30 punti base e +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Sfera di Mezzo colore",
-        "planet": "Giove",
+        "name": "Sfera di Giove",
         "description": "Alza la famiglia «Mezzo colore» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mezzo colore» riceve altri +15 punti base e +2 Mult."
       },
       "earth_orb": {
-        "name": "Sfera di Tris e poker",
-        "planet": "Terra",
+        "name": "Sfera della Terra",
         "description": "Alza la famiglia «Tris e poker» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tris e poker» riceve altri +25 punti base e +2 Mult."
       },
       "mars_orb": {
-        "name": "Sfera di Colore puro",
-        "planet": "Marte",
+        "name": "Sfera di Marte",
         "description": "Alza la famiglia «Colore puro» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Colore puro» riceve altri +30 punti base e +3 Mult."
       },
       "neptune_orb": {
-        "name": "Sfera di Triplo misto",
-        "planet": "Nettuno",
+        "name": "Sfera di Nettuno",
         "description": "Alza la famiglia «Triplo misto» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Triplo misto» riceve altri +40 punti base e +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Sfera di Sette coppie",
-        "planet": "Pianeta X",
+        "name": "Sfera del Pianeta X",
         "description": "Alza la famiglia «Sette coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sette coppie» riceve altri +35 punti base e +3 Mult."
       },
       "ceres_orb": {
-        "name": "Sfera di Mano esterna",
-        "planet": "Cerere",
+        "name": "Sfera di Cerere",
         "description": "Alza la famiglia «Mano esterna» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mano esterna» riceve altri +40 punti base e +4 Mult."
       },
       "eris_orb": {
-        "name": "Sfera dei Tredici orfani",
-        "planet": "Eris",
+        "name": "Sfera di Eris",
         "description": "Alza la famiglia «Tredici orfani» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tredici orfani» riceve altri +50 punti base e +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Sfera di Tutte le famiglie",
-        "planet": "Buco nero",
+        "name": "Sfera del Buco Nero",
         "description": "Alza di 1 livello tutte le 12 famiglie di mani per questa partita (massimo 10 ciascuna). Ogni famiglia riceve i suoi soliti punti base e Mult; una famiglia già al livello 10 resta lì."
       }
     }

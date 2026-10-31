@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. El Orbe de Todas las familias coincide con cualquier Yaku puntuado.",
+    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. El Orbe de Agujero Negro coincide con cualquier Yaku puntuado.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
   },
   "closedHandAusterity": {
@@ -823,7 +823,7 @@
       "sealHelp": "Se usa en cuanto lo tomas: elige las fichas de tu muro que cambia, y siguen cambiadas toda la partida.",
       "sealHelpInstant": "Se usa en cuanto lo tomas.",
       "orb": "Orbe Celestial · mejora una familia de manos",
-      "orbPlanet": "Orbe Celestial · {{planet}}",
+      "orbFamily": "Orbe Celestial · {{family}}",
       "script": "Escrito del Vacío · poderoso, con un precio",
       "consumableHelp": "Se guarda con tus objetos hasta usarlo. Tócalo en la mesa para usarlo.",
       "tile": "Ficha · se añade a tu muro",
@@ -2350,68 +2350,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orbe de Pares",
-        "planet": "Plutón",
+        "name": "Orbe de Plutón",
         "description": "Sube la familia Pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Pares gana otros +10 puntos base y +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orbe de Todo simples",
-        "planet": "Mercurio",
+        "name": "Orbe de Mercurio",
         "description": "Sube la familia Todo simples 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Todo simples gana otros +15 puntos base y +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orbe de Honores",
-        "planet": "Urano",
+        "name": "Orbe de Urano",
         "description": "Sube la familia Honores 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Honores gana otros +20 puntos base y +1 Mult."
       },
       "venus_orb": {
-        "name": "Orbe de Secuencias",
-        "planet": "Venus",
+        "name": "Orbe de Venus",
         "description": "Sube la familia Secuencias 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Secuencias gana otros +20 puntos base y +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orbe de Escaleras",
-        "planet": "Saturno",
+        "name": "Orbe de Saturno",
         "description": "Sube la familia Escaleras 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Escaleras gana otros +30 puntos base y +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orbe de Medio color",
-        "planet": "Júpiter",
+        "name": "Orbe de Júpiter",
         "description": "Sube la familia Medio color 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Medio color gana otros +15 puntos base y +2 Mult."
       },
       "earth_orb": {
-        "name": "Orbe de Grupos iguales",
-        "planet": "Tierra",
+        "name": "Orbe de la Tierra",
         "description": "Sube la familia Grupos iguales 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Grupos iguales gana otros +25 puntos base y +2 Mult."
       },
       "mars_orb": {
-        "name": "Orbe de Color puro",
-        "planet": "Marte",
+        "name": "Orbe de Marte",
         "description": "Sube la familia Color puro 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Color puro gana otros +30 puntos base y +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orbe de Triple mixto",
-        "planet": "Neptuno",
+        "name": "Orbe de Neptuno",
         "description": "Sube la familia Triple mixto 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Triple mixto gana otros +40 puntos base y +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orbe de Siete pares",
-        "planet": "Planeta X",
+        "name": "Orbe del Planeta X",
         "description": "Sube la familia Siete pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Siete pares gana otros +35 puntos base y +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orbe de Mano exterior",
-        "planet": "Ceres",
+        "name": "Orbe de Ceres",
         "description": "Sube la familia Mano exterior 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Mano exterior gana otros +40 puntos base y +4 Mult."
       },
       "eris_orb": {
-        "name": "Orbe de Trece huérfanos",
-        "planet": "Eris",
+        "name": "Orbe de Eris",
         "description": "Sube la familia Trece huérfanos 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Trece huérfanos gana otros +50 puntos base y +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orbe de Todas las familias",
-        "planet": "Agujero negro",
+        "name": "Orbe de Agujero Negro",
         "description": "Sube 1 nivel las 12 familias de manos durante esta partida (máximo 10 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 10 se queda igual."
       }
     }

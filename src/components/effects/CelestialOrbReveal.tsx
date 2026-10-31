@@ -20,10 +20,7 @@ import {
 import { useItemText } from '../../i18n/useItemText'
 import { getItemArt } from '../../utils/itemArt'
 import { getGeneratedArt } from '../../utils/generatedArt'
-import {
-  CELESTIAL_ORBS,
-  getCelestialOrbByYaku,
-} from '../../systems/CelestialOrbSystem'
+import { getCelestialOrbByYaku } from '../../systems/CelestialOrbSystem'
 import { DEFAULT_FAMILY_TONE, FAMILY_TONES } from '../gameplay/yakuFamilyTones'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
@@ -162,24 +159,15 @@ export function CelestialOrbReveal({ paused = false }: { paused?: boolean }) {
           <h2 className="font-decorative text-xl font-bold text-[var(--color-golden-yellow)]">
             {name}
           </h2>
-          {/* The family names the Orb; its planet is flavor. */}
+          {/* The planet names the Orb; the family it raises is the subtitle. */}
           <p
-            data-orb-reveal-planet
+            data-orb-reveal-family
             className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-beige-white)]/60"
           >
-            {t(
-              `orbs.items.${orb.id}.planet`,
-              CELESTIAL_ORBS[orb.id]?.planetName ?? ''
-            )}
+            {orb.effect.targetYaku === 'All'
+              ? t('upgradeFamilies.All.upgrade')
+              : t(`upgradeFamilies.${orb.effect.targetYaku}.name`)}
           </p>
-          {levels.length > 1 && (
-            <p
-              className="mt-1 text-xs font-black uppercase tracking-widest"
-              style={{ color: ORB_TONE }}
-            >
-              {t('upgradeFamilies.All.upgrade')}
-            </p>
-          )}
           <ul
             data-orb-reveal-levels
             className="mt-3 max-h-[46vh] space-y-2 overflow-y-auto pr-0.5"

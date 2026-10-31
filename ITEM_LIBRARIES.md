@@ -50,37 +50,39 @@ Ouija rank changes as well as Unity's conversion to Winds.
 
 ## 🌟 A2) Complete Celestial Orb Library (天球)
 
-Each Orb is named after the upgrade family it raises; its planet is a flavor
-subtitle. All share a jade-and-gold shell showing that family's tile motif.
+Each Orb is named after its celestial body; the upgrade family it raises is
+its subtitle, with the same label as that family's upgrade. Each is painted as
+that body in its own colours, carved with the family's tile motif in ivory
+relief, on a small jade-and-gold mount.
 Using one raises the family by 1 level for the run (maximum 10); each level
 above 1 adds the bonus below to every play that scores the family.
 "Works with" lists what scores each family (`upgradeFamilies.*.covers`).
 
-| Orb | Planet | Bonus per Level | Works with |
+| Orb | Family | Bonus per Level | Works with |
 |-----|--------|-----------------|------------|
-| **Pairs Orb** | Pluto (冥王星) | +10 base points, +1 Mult | Pair, Two Pairs, Three Pairs (not Seven Pairs) |
-| **All Simples Orb** | Mercury (水星) | +15 base points, +1 Mult | Any play forming a group from 2–8 tiles only; All Simples hand |
-| **Honors Orb** | Uranus (天王星) | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
-| **Sequences Orb** | Venus (金星) | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
-| **Straights Orb** | Saturn (土星) | +30 base points, +3 Mult | Straights of Four and Five, Straight + Pair; 1–9 Straight hand |
-| **Half Flush Orb** | Jupiter (木星) | +15 base points, +2 Mult | Half Flush hand |
-| **Sets Orb** | Earth (地球) | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
-| **Full Flush Orb** | Mars (火星) | +30 base points, +3 Mult | Full Flush hand |
-| **Mixed Triple Orb** | Neptune (海王星) | +40 base points, +4 Mult | Mixed Triple Sequence hand |
+| **Pluto Orb** (冥王星) | Pairs | +10 base points, +1 Mult | Pair, Two Pairs, Three Pairs (not Seven Pairs) |
+| **Mercury Orb** (水星) | All Simples | +15 base points, +1 Mult | Any play forming a group from 2–8 tiles only; All Simples hand |
+| **Uranus Orb** (天王星) | Honors | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
+| **Venus Orb** (金星) | Sequences | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
+| **Saturn Orb** (土星) | Straights | +30 base points, +3 Mult | Straights of Four and Five, Straight + Pair; 1–9 Straight hand |
+| **Jupiter Orb** (木星) | Half Flush | +15 base points, +2 Mult | Half Flush hand |
+| **Earth Orb** (地球) | Sets | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
+| **Mars Orb** (火星) | Full Flush | +30 base points, +3 Mult | Full Flush hand |
+| **Neptune Orb** (海王星) | Mixed Triple | +40 base points, +4 Mult | Mixed Triple Sequence hand |
 
 ### Secret Celestial Orbs
 
-| Orb | Planet | Bonus per Level | Works with | Unlock Condition |
+| Orb | Family | Bonus per Level | Works with | Unlock Condition |
 |-----|--------|-----------------|------------|------------------|
-| **Seven Pairs Orb** | Planet X (惑星X) | +35 base points, +3 Mult | Seven Pairs hand | Play Seven Pairs |
-| **Outside Hand Orb** | Ceres (ケレス) | +40 base points, +4 Mult | Outside Hand and Pure Outside Hand | Score an Outside Hand |
-| **Thirteen Orphans Orb** | Eris (エリス) | +50 base points, +3 Mult | Thirteen Orphans hand | Score Thirteen Orphans |
+| **Planet X Orb** (惑星X) | Seven Pairs | +35 base points, +3 Mult | Seven Pairs hand | Play Seven Pairs |
+| **Ceres Orb** (ケレス) | Outside Hand | +40 base points, +4 Mult | Outside Hand and Pure Outside Hand | Score an Outside Hand |
+| **Eris Orb** (エリス) | Thirteen Orphans | +50 base points, +3 Mult | Thirteen Orphans hand | Score Thirteen Orphans |
 
 ### Mythic Orb
 
-| Orb | Planet | Effect | Unlock |
+| Orb | Family | Effect | Unlock |
 |-----|--------|--------|--------|
-| **Every Family Orb** | Black Hole (ブラックホール) | Raises all 12 families by 1 level (each capped at 10) | Discover all 12 orbs |
+| **Black Hole Orb** (ブラックホール) | Every family | Raises all 12 families by 1 level (each capped at 10) | Discover all 12 orbs |
 
 ---
 

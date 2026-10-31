@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. L’Orbe de Toutes les familles correspond à tout Yaku qui marque.",
+    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. L’Orbe du Trou Noir correspond à tout Yaku qui marque.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
   },
   "closedHandAusterity": {
@@ -823,7 +823,7 @@
       "sealHelp": "Utilisé dès que vous le prenez : choisissez les tuiles de votre mur qu’il change ; elles le restent pour toute la partie.",
       "sealHelpInstant": "Utilisé dès que vous le prenez.",
       "orb": "Orbe Céleste · améliore une famille de mains",
-      "orbPlanet": "Orbe Céleste · {{planet}}",
+      "orbFamily": "Orbe Céleste · {{family}}",
       "script": "Écrit du Vide · puissant, avec un prix",
       "consumableHelp": "Gardé avec vos objets jusqu’à utilisation. Touchez-le sur la table pour l’utiliser.",
       "tile": "Tuile · ajoutée à votre mur",
@@ -2350,68 +2350,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orbe des Paires",
-        "planet": "Pluton",
+        "name": "Orbe de Pluton",
         "description": "Monte la famille « Paires » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Paires » gagne encore +10 points de base et +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orbe de Tout simples",
-        "planet": "Mercure",
+        "name": "Orbe de Mercure",
         "description": "Monte la famille « Tout simples » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Tout simples » gagne encore +15 points de base et +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orbe des Honneurs",
-        "planet": "Uranus",
+        "name": "Orbe d'Uranus",
         "description": "Monte la famille « Honneurs » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Honneurs » gagne encore +20 points de base et +1 Mult."
       },
       "venus_orb": {
-        "name": "Orbe des Séquences",
-        "planet": "Vénus",
+        "name": "Orbe de Vénus",
         "description": "Monte la famille « Séquences » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Séquences » gagne encore +20 points de base et +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orbe des Suites",
-        "planet": "Saturne",
+        "name": "Orbe de Saturne",
         "description": "Monte la famille « Suites » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Suites » gagne encore +30 points de base et +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orbe de Semi-couleur",
-        "planet": "Jupiter",
+        "name": "Orbe de Jupiter",
         "description": "Monte la famille « Semi-couleur » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Semi-couleur » gagne encore +15 points de base et +2 Mult."
       },
       "earth_orb": {
-        "name": "Orbe des Brelans et carrés",
-        "planet": "Terre",
+        "name": "Orbe de la Terre",
         "description": "Monte la famille « Brelans et carrés » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Brelans et carrés » gagne encore +25 points de base et +2 Mult."
       },
       "mars_orb": {
-        "name": "Orbe de Couleur pure",
-        "planet": "Mars",
+        "name": "Orbe de Mars",
         "description": "Monte la famille « Couleur pure » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Couleur pure » gagne encore +30 points de base et +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orbe de Triple mixte",
-        "planet": "Neptune",
+        "name": "Orbe de Neptune",
         "description": "Monte la famille « Triple mixte » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Triple mixte » gagne encore +40 points de base et +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orbe de Sept paires",
-        "planet": "Planète X",
+        "name": "Orbe de la Planète X",
         "description": "Monte la famille « Sept paires » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Sept paires » gagne encore +35 points de base et +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orbe de Main extérieure",
-        "planet": "Cérès",
+        "name": "Orbe de Cérès",
         "description": "Monte la famille « Main extérieure » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Main extérieure » gagne encore +40 points de base et +4 Mult."
       },
       "eris_orb": {
-        "name": "Orbe des Treize orphelins",
-        "planet": "Éris",
+        "name": "Orbe d'Éris",
         "description": "Monte la famille « Treize orphelins » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Treize orphelins » gagne encore +50 points de base et +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orbe de Toutes les familles",
-        "planet": "Trou noir",
+        "name": "Orbe du Trou Noir",
         "description": "Monte les 12 familles de mains d’un niveau pour cette partie (maximum 10 chacune). Chaque famille reçoit ses points de base et son Mult habituels ; une famille déjà au niveau 10 y reste."
       }
     }

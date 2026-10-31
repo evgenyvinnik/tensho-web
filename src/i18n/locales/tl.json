@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Bawat hawak na Globo ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Globo sa bawat laro. Tugma ang Globo ng Lahat ng Pamilya sa anumang Yaku na nakapuntos.",
+    "description": "Bawat hawak na Globo ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Globo sa bawat laro. Tugma ang Globo ng Itim na Butas sa anumang Yaku na nakapuntos.",
     "holdingNote": "Ginagantimpalaan ng Bantayan ng mga Bituin ang paghawak sa Globong ito. Ang paggamit nito ay nagbibigay ng permanenteng upgrade ngunit inaalis ang bonus sa paghawak."
   },
   "closedHandAusterity": {
@@ -1110,7 +1110,7 @@
       "sealHelp": "Ginagamit sa sandaling kunin mo: piliin ang mga tile sa pader na babaguhin nito, at mananatili ang pagbabago sa buong run.",
       "sealHelpInstant": "Ginagamit sa sandaling kunin mo.",
       "orb": "Orb ng Kalangitan · ina-upgrade ang isang pamilya ng kamay",
-      "orbPlanet": "Orb ng Kalangitan · {{planet}}",
+      "orbFamily": "Orb ng Kalangitan · {{family}}",
       "script": "Balumbon ng Kawalan · malakas, may kapalit",
       "consumableHelp": "Nakatabi kasama ng mga gamit mo hanggang gamitin. I-tap ito sa mesa para gamitin.",
       "tile": "Tile · idinadagdag sa pader",
@@ -2868,68 +2868,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Globo ng Mga Pares",
-        "planet": "Pluto",
+        "name": "Globo ng Pluto",
         "description": "Itinataas ng 1 antas ang Mga Pares sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Pares ay may dagdag na +10 batayang puntos at +1 Mult."
       },
       "mercury_orb": {
-        "name": "Globo ng Lahat Simple",
-        "planet": "Merkuryo",
+        "name": "Globo ng Merkuryo",
         "description": "Itinataas ng 1 antas ang Lahat Simple sa run na ito (hanggang 10). Bawat larong umiiskor ng Lahat Simple ay may dagdag na +15 batayang puntos at +1 Mult."
       },
       "uranus_orb": {
-        "name": "Globo ng Honors",
-        "planet": "Uranus",
+        "name": "Globo ng Uranus",
         "description": "Itinataas ng 1 antas ang Honors sa run na ito (hanggang 10). Bawat larong umiiskor ng Honors ay may dagdag na +20 batayang puntos at +1 Mult."
       },
       "venus_orb": {
-        "name": "Globo ng Mga Sequence",
-        "planet": "Venus",
+        "name": "Globo ng Venus",
         "description": "Itinataas ng 1 antas ang Mga Sequence sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Sequence ay may dagdag na +20 batayang puntos at +2 Mult."
       },
       "saturn_orb": {
-        "name": "Globo ng Mga Straight",
-        "planet": "Saturno",
+        "name": "Globo ng Saturno",
         "description": "Itinataas ng 1 antas ang Mga Straight sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Straight ay may dagdag na +30 batayang puntos at +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Globo ng Kalahating Flush",
-        "planet": "Hupiter",
+        "name": "Globo ng Hupiter",
         "description": "Itinataas ng 1 antas ang Kalahating Flush sa run na ito (hanggang 10). Bawat larong umiiskor ng Kalahating Flush ay may dagdag na +15 batayang puntos at +2 Mult."
       },
       "earth_orb": {
-        "name": "Globo ng Mga Set",
-        "planet": "Daigdig",
+        "name": "Globo ng Daigdig",
         "description": "Itinataas ng 1 antas ang Mga Set sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Set ay may dagdag na +25 batayang puntos at +2 Mult."
       },
       "mars_orb": {
-        "name": "Globo ng Buong Flush",
-        "planet": "Marte",
+        "name": "Globo ng Marte",
         "description": "Itinataas ng 1 antas ang Buong Flush sa run na ito (hanggang 10). Bawat larong umiiskor ng Buong Flush ay may dagdag na +30 batayang puntos at +3 Mult."
       },
       "neptune_orb": {
-        "name": "Globo ng Halong Triple",
-        "planet": "Neptuno",
+        "name": "Globo ng Neptuno",
         "description": "Itinataas ng 1 antas ang Halong Triple sa run na ito (hanggang 10). Bawat larong umiiskor ng Halong Triple ay may dagdag na +40 batayang puntos at +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Globo ng Pitong Pares",
-        "planet": "Planetang X",
+        "name": "Globo ng Planetang X",
         "description": "Itinataas ng 1 antas ang Pitong pares sa run na ito (hanggang 10). Bawat larong umiiskor ng Pitong pares ay may dagdag na +35 batayang puntos at +3 Mult."
       },
       "ceres_orb": {
-        "name": "Globo ng Panlabas na Kamay",
-        "planet": "Ceres",
+        "name": "Globo ng Ceres",
         "description": "Itinataas ng 1 antas ang Panlabas na Kamay sa run na ito (hanggang 10). Bawat larong umiiskor ng Panlabas na Kamay ay may dagdag na +40 batayang puntos at +4 Mult."
       },
       "eris_orb": {
-        "name": "Globo ng Labintatlong Ulila",
-        "planet": "Eris",
+        "name": "Globo ng Eris",
         "description": "Itinataas ng 1 antas ang Labintatlong Ulila sa run na ito (hanggang 10). Bawat larong umiiskor ng Labintatlong Ulila ay may dagdag na +50 batayang puntos at +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Globo ng Lahat ng Pamilya",
-        "planet": "Itim na Butas",
+        "name": "Globo ng Itim na Butas",
         "description": "Itinataas ng 1 antas ang lahat ng 12 pamilya ng kamay sa run na ito (hanggang 10 bawat isa). Nakukuha ng bawat pamilya ang karaniwang batayang puntos at Mult nito; nananatili sa 10 ang pamilyang nasa antas 10 na."
       }
     }

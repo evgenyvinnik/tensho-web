@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Tüm Aileler Küresi, puan kazanan her Yaku ile eşleşir.",
+    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik Küresi, puan kazanan her Yaku ile eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
   },
   "closedHandAusterity": {
@@ -1110,7 +1110,7 @@
       "sealHelp": "Aldığın anda kullanılır: değiştireceği duvar taşlarını seç; tüm koşu boyunca öyle kalırlar.",
       "sealHelpInstant": "Aldığın anda kullanılır.",
       "orb": "Göksel Küre · bir el ailesini geliştirir",
-      "orbPlanet": "Göksel Küre · {{planet}}",
+      "orbFamily": "Göksel Küre · {{family}}",
       "script": "Hiçlik Tomarı · güçlü ama bedelli",
       "consumableHelp": "Kullanana dek eşyalarında kalır. Kullanmak için masada ona dokun.",
       "tile": "Taş · duvarına eklenir",
@@ -2868,68 +2868,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Çiftler Küresi",
-        "planet": "Plüton",
+        "name": "Plüton Küresi",
         "description": "Çiftler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Çiftler ile puan alan her oyun ek +10 temel puan ve +1 Çarpan kazanır."
       },
       "mercury_orb": {
-        "name": "Hep Basit Küresi",
-        "planet": "Merkür",
+        "name": "Merkür Küresi",
         "description": "Hep basit ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Hep basit ile puan alan her oyun ek +15 temel puan ve +1 Çarpan kazanır."
       },
       "uranus_orb": {
-        "name": "Onur Taşları Küresi",
-        "planet": "Uranüs",
+        "name": "Uranüs Küresi",
         "description": "Onur taşları ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Onur taşları ile puan alan her oyun ek +20 temel puan ve +1 Çarpan kazanır."
       },
       "venus_orb": {
-        "name": "Seriler Küresi",
-        "planet": "Venüs",
+        "name": "Venüs Küresi",
         "description": "Seriler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Seriler ile puan alan her oyun ek +20 temel puan ve +2 Çarpan kazanır."
       },
       "saturn_orb": {
-        "name": "Sıralar Küresi",
-        "planet": "Satürn",
+        "name": "Satürn Küresi",
         "description": "Sıralar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Sıralar ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
       },
       "jupiter_orb": {
-        "name": "Yarı Renk Küresi",
-        "planet": "Jüpiter",
+        "name": "Jüpiter Küresi",
         "description": "Yarı renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yarı renk ile puan alan her oyun ek +15 temel puan ve +2 Çarpan kazanır."
       },
       "earth_orb": {
-        "name": "Üçlü ve Dörtlüler Küresi",
-        "planet": "Dünya",
+        "name": "Dünya Küresi",
         "description": "Üçlü ve dörtlüler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Üçlü ve dörtlüler ile puan alan her oyun ek +25 temel puan ve +2 Çarpan kazanır."
       },
       "mars_orb": {
-        "name": "Tam Renk Küresi",
-        "planet": "Mars",
+        "name": "Mars Küresi",
         "description": "Tam renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Tam renk ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
       },
       "neptune_orb": {
-        "name": "Karışık Üçlü Küresi",
-        "planet": "Neptün",
+        "name": "Neptün Küresi",
         "description": "Karışık üçlü ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Karışık üçlü ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
       },
       "planet_x_orb": {
-        "name": "Yedi Çift Küresi",
-        "planet": "X Gezegeni",
+        "name": "X Gezegeni Küresi",
         "description": "Yedi çift ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yedi çift ile puan alan her oyun ek +35 temel puan ve +3 Çarpan kazanır."
       },
       "ceres_orb": {
-        "name": "Dış El Küresi",
-        "planet": "Ceres",
+        "name": "Ceres Küresi",
         "description": "Dış el ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Dış el ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
       },
       "eris_orb": {
-        "name": "On Üç Yetim Küresi",
-        "planet": "Eris",
+        "name": "Eris Küresi",
         "description": "On üç yetim ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). On üç yetim ile puan alan her oyun ek +50 temel puan ve +3 Çarpan kazanır."
       },
       "black_hole_orb": {
-        "name": "Tüm Aileler Küresi",
-        "planet": "Kara Delik",
+        "name": "Kara Delik Küresi",
         "description": "12 el ailesinin hepsini bu koşu boyunca 1 seviye yükseltir (her biri en fazla 10). Her aile kendi olağan temel puan ve Çarpan bonusunu alır; zaten 10. seviyede olan aile orada kalır."
       }
     }
