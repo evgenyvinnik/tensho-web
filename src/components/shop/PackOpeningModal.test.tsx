@@ -243,7 +243,10 @@ it('draws a reward big in its rarity glow and shows its details card on hover or
 
   fireEvent.pointerEnter(choice, { pointerType: 'mouse' })
   expect(details()).toHaveTextContent(description)
-  expect(details()).toHaveTextContent(i18n.t('shop.kinds.orb'))
+  // The kind line pairs the type with the Orb's planet.
+  expect(details()).toHaveTextContent(
+    i18n.t('shop.kinds.orbPlanet', { planet: 'Pluto' })
+  )
   // The card only shows; the reward stays the thing to press.
   expect(details()).toHaveClass('pointer-events-none')
   fireEvent.pointerLeave(choice, { pointerType: 'mouse' })

@@ -73,7 +73,7 @@ export interface CelestialOrbEffect {
  */
 export interface CelestialOrb extends BaseConsumable {
   type: 'CelestialOrb'
-  planetName: string // e.g., "Mercury", "Venus", etc.
+  planetName: string // Flavor subtitle under the family-first name, e.g. "Mercury"
   effect: CelestialOrbEffect
   currentLevel: number
   maxLevel: number
@@ -111,11 +111,11 @@ export const CELESTIAL_ORBS: Record<
   pluto_orb: {
     id: 'pluto_orb',
     type: 'CelestialOrb',
-    name: 'Pluto Orb',
+    name: 'Pairs Orb',
     japaneseName: '冥王星',
     planetName: 'Pluto',
     description:
-      'Upgrades Pairs: Pair, Two Pairs and Three Pairs. +1 Mult, +10 Points per level.',
+      'Raises Pairs by 1 level for this run (maximum 10). Every play that scores Pairs gains another +10 base points and +1 Mult.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -125,18 +125,18 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Pairs',
       multPerLevel: 1,
       chipsPerLevel: 10,
-      description: '+1 Mult, +10 Points per level when Pairs are scored',
+      description: '+10 base points and +1 Mult per level when Pairs scores',
     },
   },
 
   mercury_orb: {
     id: 'mercury_orb',
     type: 'CelestialOrb',
-    name: 'Mercury Orb',
+    name: 'All Simples Orb',
     japaneseName: '水星',
     planetName: 'Mercury',
     description:
-      'Upgrades All Simples: plays of only 2–8 tiles and the All Simples hand. +1 Mult, +15 Points per level.',
+      'Raises All Simples by 1 level for this run (maximum 10). Every play that scores All Simples gains another +15 base points and +1 Mult.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -147,18 +147,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 1,
       chipsPerLevel: 15,
       description:
-        '+1 Mult, +15 Points per level when the All Simples family scores',
+        '+15 base points and +1 Mult per level when All Simples scores',
     },
   },
 
   uranus_orb: {
     id: 'uranus_orb',
     type: 'CelestialOrb',
-    name: 'Uranus Orb',
+    name: 'Honors Orb',
     japaneseName: '天王星',
     planetName: 'Uranus',
     description:
-      'Upgrades Honors: any Wind or Dragon group and the Value Tiles hand. +1 Mult, +20 Points per level.',
+      'Raises Honors by 1 level for this run (maximum 10). Every play that scores Honors gains another +20 base points and +1 Mult.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -168,19 +168,18 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Yakuhai',
       multPerLevel: 1,
       chipsPerLevel: 20,
-      description:
-        '+1 Mult, +20 Points per level when the Honors family scores',
+      description: '+20 base points and +1 Mult per level when Honors scores',
     },
   },
 
   venus_orb: {
     id: 'venus_orb',
     type: 'CelestialOrb',
-    name: 'Venus Orb',
+    name: 'Sequences Orb',
     japaneseName: '金星',
     planetName: 'Venus',
     description:
-      'Upgrades Sequences: Sequence, Sequence + Pair, Two Sequences and the All Sequences hand. +2 Mult, +20 Points per level.',
+      'Raises Sequences by 1 level for this run (maximum 10). Every play that scores Sequences gains another +20 base points and +2 Mult.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -191,18 +190,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 2,
       chipsPerLevel: 20,
       description:
-        '+2 Mult, +20 Points per level when the Sequences family scores',
+        '+20 base points and +2 Mult per level when Sequences scores',
     },
   },
 
   saturn_orb: {
     id: 'saturn_orb',
     type: 'CelestialOrb',
-    name: 'Saturn Orb',
+    name: 'Straights Orb',
     japaneseName: '土星',
     planetName: 'Saturn',
     description:
-      'Upgrades Straights: Straights of Four and Five and the 1–9 Straight hand. +3 Mult, +30 Points per level.',
+      'Raises Straights by 1 level for this run (maximum 10). Every play that scores Straights gains another +30 base points and +3 Mult.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -213,18 +212,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 3,
       chipsPerLevel: 30,
       description:
-        '+3 Mult, +30 Points per level when the Straights family scores',
+        '+30 base points and +3 Mult per level when Straights scores',
     },
   },
 
   jupiter_orb: {
     id: 'jupiter_orb',
     type: 'CelestialOrb',
-    name: 'Jupiter Orb',
+    name: 'Half Flush Orb',
     japaneseName: '木星',
     planetName: 'Jupiter',
     description:
-      'Upgrades Half Flush: complete hands of one suit plus Honors. +2 Mult, +15 Points per level.',
+      'Raises Half Flush by 1 level for this run (maximum 10). Every play that scores Half Flush gains another +15 base points and +2 Mult.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -235,18 +234,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 2,
       chipsPerLevel: 15,
       description:
-        '+2 Mult, +15 Points per level when a Half Flush hand scores',
+        '+15 base points and +2 Mult per level when Half Flush scores',
     },
   },
 
   earth_orb: {
     id: 'earth_orb',
     type: 'CelestialOrb',
-    name: 'Earth Orb',
+    name: 'Sets Orb',
     japaneseName: '地球',
     planetName: 'Earth',
     description:
-      'Upgrades Sets: any Triplet or Quad play and the All Triplets hand. +2 Mult, +25 Points per level.',
+      'Raises Sets by 1 level for this run (maximum 10). Every play that scores Sets gains another +25 base points and +2 Mult.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -256,18 +255,18 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Toitoi',
       multPerLevel: 2,
       chipsPerLevel: 25,
-      description: '+2 Mult, +25 Points per level when the Sets family scores',
+      description: '+25 base points and +2 Mult per level when Sets scores',
     },
   },
 
   mars_orb: {
     id: 'mars_orb',
     type: 'CelestialOrb',
-    name: 'Mars Orb',
+    name: 'Full Flush Orb',
     japaneseName: '火星',
     planetName: 'Mars',
     description:
-      'Upgrades Full Flush: complete hands of a single suit. +3 Mult, +30 Points per level.',
+      'Raises Full Flush by 1 level for this run (maximum 10). Every play that scores Full Flush gains another +30 base points and +3 Mult.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -278,18 +277,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 3,
       chipsPerLevel: 30,
       description:
-        '+3 Mult, +30 Points per level when a Full Flush hand scores',
+        '+30 base points and +3 Mult per level when Full Flush scores',
     },
   },
 
   neptune_orb: {
     id: 'neptune_orb',
     type: 'CelestialOrb',
-    name: 'Neptune Orb',
+    name: 'Mixed Triple Orb',
     japaneseName: '海王星',
     planetName: 'Neptune',
     description:
-      'Upgrades Mixed Triple: complete hands with the same sequence in all three suits. +4 Mult, +40 Points per level.',
+      'Raises Mixed Triple by 1 level for this run (maximum 10). Every play that scores Mixed Triple gains another +40 base points and +4 Mult.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -300,7 +299,7 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 4,
       chipsPerLevel: 40,
       description:
-        '+4 Mult, +40 Points per level when a Mixed Triple Sequence hand scores',
+        '+40 base points and +4 Mult per level when Mixed Triple scores',
     },
   },
 
@@ -310,11 +309,11 @@ export const CELESTIAL_ORBS: Record<
   planet_x_orb: {
     id: 'planet_x_orb',
     type: 'CelestialOrb',
-    name: 'Planet X Orb',
+    name: 'Seven Pairs Orb',
     japaneseName: '惑星X',
     planetName: 'Planet X',
     description:
-      'Upgrades Seven Pairs: the Seven Pairs hand. +3 Mult, +35 Points per level.',
+      'Raises Seven Pairs by 1 level for this run (maximum 10). Every play that scores Seven Pairs gains another +35 base points and +3 Mult.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -325,18 +324,18 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 3,
       chipsPerLevel: 35,
       description:
-        '+3 Mult, +35 Points per level when a Seven Pairs hand scores',
+        '+35 base points and +3 Mult per level when Seven Pairs scores',
     },
   },
 
   ceres_orb: {
     id: 'ceres_orb',
     type: 'CelestialOrb',
-    name: 'Ceres Orb',
+    name: 'Outside Hand Orb',
     japaneseName: 'ケレス',
     planetName: 'Ceres',
     description:
-      'Upgrades Outside Hand: complete hands with a terminal or Honor in every group. +4 Mult, +40 Points per level.',
+      'Raises Outside Hand by 1 level for this run (maximum 10). Every play that scores Outside Hand gains another +40 base points and +4 Mult.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -346,18 +345,19 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'Chanta',
       multPerLevel: 4,
       chipsPerLevel: 40,
-      description: '+4 Mult, +40 Points per level when an Outside Hand scores',
+      description:
+        '+40 base points and +4 Mult per level when Outside Hand scores',
     },
   },
 
   eris_orb: {
     id: 'eris_orb',
     type: 'CelestialOrb',
-    name: 'Eris Orb',
+    name: 'Thirteen Orphans Orb',
     japaneseName: 'エリス',
     planetName: 'Eris',
     description:
-      'Upgrades Thirteen Orphans: the Thirteen Orphans hand. +3 Mult, +50 Points per level.',
+      'Raises Thirteen Orphans by 1 level for this run (maximum 10). Every play that scores Thirteen Orphans gains another +50 base points and +3 Mult.',
     rarity: 'Legendary',
     edition: 'Base',
     cost: 8,
@@ -368,7 +368,7 @@ export const CELESTIAL_ORBS: Record<
       multPerLevel: 3,
       chipsPerLevel: 50,
       description:
-        '+3 Mult, +50 Points per level when a Thirteen Orphans hand scores',
+        '+50 base points and +3 Mult per level when Thirteen Orphans scores',
     },
   },
 
@@ -378,10 +378,11 @@ export const CELESTIAL_ORBS: Record<
   black_hole_orb: {
     id: 'black_hole_orb',
     type: 'CelestialOrb',
-    name: 'Black Hole Orb',
+    name: 'Every Family Orb',
     japaneseName: 'ブラックホール',
     planetName: 'Black Hole',
-    description: 'Upgrades ALL Yaku by 1 level when used.',
+    description:
+      'Raises all 12 hand families by 1 level for this run (maximum 10 each). Each family gains its usual base points and Mult; one already at level 10 stays there.',
     rarity: 'Legendary',
     edition: 'Base',
     cost: 10,
@@ -391,7 +392,7 @@ export const CELESTIAL_ORBS: Record<
       targetYaku: 'All',
       multPerLevel: 0,
       chipsPerLevel: 0,
-      description: 'Upgrades all yaku levels by 1',
+      description: 'Raises every hand family by 1 level',
     },
   },
 }

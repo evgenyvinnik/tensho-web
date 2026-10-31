@@ -210,7 +210,7 @@ function PackChoiceDetails({
           </p>
         )}
         {text.extra && (
-          <p className="rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
+          <p className="whitespace-pre-line rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
             {text.extra}
           </p>
         )}

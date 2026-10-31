@@ -275,7 +275,7 @@
     }
   },
   "observatory": {
-    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik, puan kazanan her Yaku ile eşleşir.",
+    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Tüm Aileler Küresi, puan kazanan her Yaku ile eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
   },
   "closedHandAusterity": {
@@ -1114,6 +1114,7 @@
       "sealHelp": "Aldığın anda kullanılır: değiştireceği duvar taşlarını seç; tüm koşu boyunca öyle kalırlar.",
       "sealHelpInstant": "Aldığın anda kullanılır.",
       "orb": "Göksel Küre · bir el ailesini geliştirir",
+      "orbPlanet": "Göksel Küre · {{planet}}",
       "script": "Hiçlik Yazıtı · güçlü ama bedelli",
       "consumableHelp": "Kullanana dek eşyalarında kalır. Kullanmak için masada ona dokun.",
       "tile": "Taş · duvarına eklenir",
@@ -2871,56 +2872,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Plüton Küresi",
-        "description": "Çiftleri geliştirir: Çift, İki çift ve Üç çift. Seviye başına +1 Çarpan, +10 Puan."
+        "name": "Çiftler Küresi",
+        "planet": "Plüton",
+        "description": "Çiftler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Çiftler ile puan alan her oyun ek +10 temel puan ve +1 Çarpan kazanır."
       },
       "mercury_orb": {
-        "name": "Merkür Küresi",
-        "description": "Hep basiti geliştirir: yalnız 2–8 taşlı oyunlar ve Hep basit eli. Seviye başına +1 Çarpan, +15 Puan."
+        "name": "Hep Basit Küresi",
+        "planet": "Merkür",
+        "description": "Hep basit ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Hep basit ile puan alan her oyun ek +15 temel puan ve +1 Çarpan kazanır."
       },
       "uranus_orb": {
-        "name": "Uranüs Küresi",
-        "description": "Onur taşlarını geliştirir: her Rüzgar veya Ejderha grubu ve Değerli taşlar eli. Seviye başına +1 Çarpan, +20 Puan."
+        "name": "Onur Taşları Küresi",
+        "planet": "Uranüs",
+        "description": "Onur taşları ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Onur taşları ile puan alan her oyun ek +20 temel puan ve +1 Çarpan kazanır."
       },
       "venus_orb": {
-        "name": "Venüs Küresi",
-        "description": "Serileri geliştirir: Seri, Seri + Çift, İki seri ve Hep seri eli. Seviye başına +2 Çarpan, +20 Puan."
+        "name": "Seriler Küresi",
+        "planet": "Venüs",
+        "description": "Seriler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Seriler ile puan alan her oyun ek +20 temel puan ve +2 Çarpan kazanır."
       },
       "saturn_orb": {
-        "name": "Satürn Küresi",
-        "description": "Sıraları geliştirir: dörtlü ve beşli sıralar ve 1–9 sırası eli. Seviye başına +3 Çarpan, +30 Puan."
+        "name": "Sıralar Küresi",
+        "planet": "Satürn",
+        "description": "Sıralar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Sıralar ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
       },
       "jupiter_orb": {
-        "name": "Jüpiter Küresi",
-        "description": "Yarı rengi geliştirir: tek tür artı onur taşlı tam eller. Seviye başına +2 Çarpan, +15 Puan."
+        "name": "Yarı Renk Küresi",
+        "planet": "Jüpiter",
+        "description": "Yarı renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yarı renk ile puan alan her oyun ek +15 temel puan ve +2 Çarpan kazanır."
       },
       "earth_orb": {
-        "name": "Dünya Küresi",
-        "description": "Üçlü ve dörtlü oyunlarını ve Hep üçlü elini geliştirir. Seviye başına +2 Çarpan, +25 Puan."
+        "name": "Üçlü ve Dörtlüler Küresi",
+        "planet": "Dünya",
+        "description": "Üçlü ve dörtlüler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Üçlü ve dörtlüler ile puan alan her oyun ek +25 temel puan ve +2 Çarpan kazanır."
       },
       "mars_orb": {
-        "name": "Mars Küresi",
-        "description": "Tam rengi geliştirir: tek türden tam eller. Seviye başına +3 Çarpan, +30 Puan."
+        "name": "Tam Renk Küresi",
+        "planet": "Mars",
+        "description": "Tam renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Tam renk ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
       },
       "neptune_orb": {
-        "name": "Neptün Küresi",
-        "description": "Üç rengi geliştirir: üç türde aynı seri olan tam eller. Seviye başına +4 Çarpan, +40 Puan."
+        "name": "Karışık Üçlü Küresi",
+        "planet": "Neptün",
+        "description": "Karışık üçlü ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Karışık üçlü ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
       },
       "planet_x_orb": {
-        "name": "X Gezegeni Küresi",
-        "description": "Yedi çifti geliştirir: Yedi çift eli. Seviye başına +3 Çarpan, +35 Puan."
+        "name": "Yedi Çift Küresi",
+        "planet": "X Gezegeni",
+        "description": "Yedi çift ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yedi çift ile puan alan her oyun ek +35 temel puan ve +3 Çarpan kazanır."
       },
       "ceres_orb": {
-        "name": "Ceres Küresi",
-        "description": "Dış eli geliştirir: her grupta uç ya da onur taşı olan tam eller. Seviye başına +4 Çarpan, +40 Puan."
+        "name": "Dış El Küresi",
+        "planet": "Ceres",
+        "description": "Dış el ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Dış el ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
       },
       "eris_orb": {
-        "name": "Eris Küresi",
-        "description": "On üç yetimi geliştirir: On üç yetim eli. Seviye başına +3 Çarpan, +50 Puan."
+        "name": "On Üç Yetim Küresi",
+        "planet": "Eris",
+        "description": "On üç yetim ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). On üç yetim ile puan alan her oyun ek +50 temel puan ve +3 Çarpan kazanır."
       },
       "black_hole_orb": {
-        "name": "Kara Delik Küresi",
-        "description": "Kullanıldığında TÜM Yakuları 1 seviye yükseltir."
+        "name": "Tüm Aileler Küresi",
+        "planet": "Kara Delik",
+        "description": "12 el ailesinin hepsini bu koşu boyunca 1 seviye yükseltir (her biri en fazla 10). Her aile kendi olağan temel puan ve Çarpan bonusunu alır; zaten 10. seviyede olan aile orada kalır."
       }
     }
   },
@@ -3193,55 +3207,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Çiftler",
-      "covers": "Çift, İki çift ve Üç çift"
+      "covers": "Çift, İki çift veya Üç çift (çift, iki aynı taştır). Yedi Çift elinin kendi ailesi vardır."
     },
     "Pinfu": {
       "name": "Seriler",
-      "covers": "Seri, Seri + Çift, İki seri ve Hep seri eli"
+      "covers": "Seri, Seri + Çift veya İki seri (seri, aynı türden ardışık üç sayıdır) ve Hep Seri: dört seri ile Ejderha ya da Doğu Rüzgârı olmayan bir çiftten oluşan tam el."
     },
     "Ittsu": {
       "name": "Sıralar",
-      "covers": "Dörtlü ve beşli sıralar, ve 1–9 sırası eli"
+      "covers": "Dörtlü sıra, Beşli sıra veya Sıra + Çift (aynı türden ardışık sayılar) ve 1–9 Sırası: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
     },
     "Toitoi": {
       "name": "Üçlü ve dörtlüler",
-      "covers": "Üçlü veya dörtlü içeren her oyun ve Hep üçlü eli"
+      "covers": "Üçlü, Full house, İki üçlü, Üçlü + Seri, Dörtlü veya Dörtlü + Çift (üçlü üç aynı taş, dörtlü dört aynı taştır) ve Hep Üçlü: dört üçlü veya dörtlü ile bir çiftten oluşan tam el."
     },
     "Yakuhai": {
       "name": "Onur taşları",
-      "covers": "Her Rüzgar veya Ejderha grubu ve Değerli taşlar elleri"
+      "covers": "Yalnızca Rüzgârlardan veya Ejderhalardan oluşan bir grup içeren her oyun ve Değerli Taşlar: Ejderhalardan ya da Doğu Rüzgârından bir üçlü veya dörtlü içeren tam el."
     },
     "Tanyao": {
       "name": "Hep basit",
-      "covers": "Yalnızca 2–8 taşlarıyla oyunlar ve Hep basit eli"
+      "covers": "Yalnızca 2–8 arası taşlarla grup oluşturan her oyun (1, 9, Rüzgâr veya Ejderha yok; Taş İşaretli taşlar dikkate alınmaz) ve Hep Basit: yalnızca 2–8 arası taşlardan oluşan tam el."
     },
     "Honitsu": {
       "name": "Yarı renk",
-      "covers": "Tek tür artı onur taşlı tam eller"
+      "covers": "Yarı Renk: tek tür artı Rüzgârlar veya Ejderhalardan oluşan tam el. Tek türden daha kısa bir oyun sayılmaz."
     },
     "Chinitsu": {
       "name": "Tam renk",
-      "covers": "Tek türden tam eller"
+      "covers": "Tam Renk: Rüzgâr veya Ejderha içermeyen, yalnızca tek türden oluşan tam el. Tek türden daha kısa bir oyun sayılmaz."
     },
     "Sanshoku": {
-      "name": "Üç renk",
-      "covers": "Üç türde aynı seri olan tam eller"
+      "name": "Karışık üçlü",
+      "covers": "Karışık Üçlü Seri: üç türün hepsinde aynı seriyi içeren tam el; örneğin Karakterler, Daireler ve Bambularda 2-3-4."
     },
     "SevenPairs": {
       "name": "Yedi çift",
-      "covers": "Yedi çift eli"
+      "covers": "Yedi Çift: tam olarak yedi farklı çiftten oluşan tam el (14 taş). Çiftlerden oluşan daha kısa oyunlar Çiftler ailesine aittir."
     },
     "Chanta": {
       "name": "Dış el",
-      "covers": "Her grupta uç ya da onur taşı olan tam eller"
+      "covers": "Dış El: en az bir seri içeren ve her grubunda ve çiftinde bir 1, 9, Rüzgâr veya Ejderha bulunan tam el. Saf Dış El (aynısı, ama Rüzgâr veya Ejderha olmadan) de sayılır."
     },
     "Kokushi": {
       "name": "On üç yetim",
-      "covers": "On üç yetim eli"
+      "covers": "On Üç Yetim: her 1, 9, Rüzgâr ve Ejderhadan birer tane, artı bir eş içeren tam el."
     },
     "All": {
       "name": "Tüm aileler",
-      "covers": "Tüm geliştirme aileleri",
+      "covers": "Çiftler ve Yedi çift dahil 12 el ailesinin tümü.",
       "upgrade": "Tüm aileler +1 seviye"
     },
     "levelChange": "{{family}}: seviye {{from}} → {{to}}",

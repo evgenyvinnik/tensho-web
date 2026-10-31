@@ -275,8 +275,8 @@
     }
   },
   "observatory": {
-    "description": "Bawat hawak na Orb ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Orb sa bawat laro ng kamay. Tugma ang Black Hole sa anumang Yaku na nakapuntos.",
-    "holdingNote": "Ginagantimpalaan ng Observatory ang paghawak sa Orb na ito. Ang paggamit nito ay nagbibigay ng permanenteng pag-upgrade ngunit inaalis ang bonus sa paghawak."
+    "description": "Bawat hawak na Globo ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Globo sa bawat laro. Tugma ang Globo ng Lahat ng Pamilya sa anumang Yaku na nakapuntos.",
+    "holdingNote": "Ginagantimpalaan ng Bantayan ng mga Bituin ang paghawak sa Globong ito. Ang paggamit nito ay nagbibigay ng permanenteng upgrade ngunit inaalis ang bonus sa paghawak."
   },
   "closedHandAusterity": {
     "name": "Disiplina ng Saradong Kamay",
@@ -1114,6 +1114,7 @@
       "sealHelp": "Ginagamit sa sandaling kunin mo: piliin ang mga tile sa pader na babaguhin nito, at mananatili ang pagbabago sa buong run.",
       "sealHelpInstant": "Ginagamit sa sandaling kunin mo.",
       "orb": "Makalangit na Globo · ina-upgrade ang isang pamilya ng kamay",
+      "orbPlanet": "Makalangit na Globo · {{planet}}",
       "script": "Kasulatan ng Kawalan · malakas, may kapalit",
       "consumableHelp": "Nakatabi kasama ng mga gamit mo hanggang gamitin. I-tap ito sa mesa para gamitin.",
       "tile": "Tile · idinadagdag sa pader",
@@ -2871,56 +2872,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Globo ng Pluto",
-        "description": "Ina-upgrade ang Pares: Pares, Dalawang pares at Tatlong pares. +1 Mult, +10 batayang puntos bawat antas."
+        "name": "Globo ng Mga Pares",
+        "planet": "Pluto",
+        "description": "Itinataas ng 1 antas ang Mga Pares sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Pares ay may dagdag na +10 batayang puntos at +1 Mult."
       },
       "mercury_orb": {
-        "name": "Globo ng Merkuryo",
-        "description": "Ina-upgrade ang Lahat Simple: mga larong 2–8 lang at ang kamay na Lahat Simple. +1 Mult, +15 batayang puntos bawat antas."
+        "name": "Globo ng Lahat Simple",
+        "planet": "Merkuryo",
+        "description": "Itinataas ng 1 antas ang Lahat Simple sa run na ito (hanggang 10). Bawat larong umiiskor ng Lahat Simple ay may dagdag na +15 batayang puntos at +1 Mult."
       },
       "uranus_orb": {
-        "name": "Globo ng Uranus",
-        "description": "Ina-upgrade ang Honors: anumang grupo ng Hangin o Dragon at ang kamay na Mga Tile na May Halaga. +1 Mult, +20 batayang puntos bawat antas."
+        "name": "Globo ng Honors",
+        "planet": "Uranus",
+        "description": "Itinataas ng 1 antas ang Honors sa run na ito (hanggang 10). Bawat larong umiiskor ng Honors ay may dagdag na +20 batayang puntos at +1 Mult."
       },
       "venus_orb": {
-        "name": "Globo ng Venus",
-        "description": "Ina-upgrade ang Sequence: Sequence, Sequence + Pares, Dalawang sequence at ang kamay na Lahat Sequence. +2 Mult, +20 batayang puntos bawat antas."
+        "name": "Globo ng Mga Sequence",
+        "planet": "Venus",
+        "description": "Itinataas ng 1 antas ang Mga Sequence sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Sequence ay may dagdag na +20 batayang puntos at +2 Mult."
       },
       "saturn_orb": {
-        "name": "Globo ng Saturno",
-        "description": "Ina-upgrade ang Straight: na apat at lima, at ang kamay na Straight na 1–9. +3 Mult, +30 batayang puntos bawat antas."
+        "name": "Globo ng Mga Straight",
+        "planet": "Saturno",
+        "description": "Itinataas ng 1 antas ang Mga Straight sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Straight ay may dagdag na +30 batayang puntos at +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Globo ng Hupiter",
-        "description": "Ina-upgrade ang Kalahating Flush: buong kamay ng isang suit at Honors. +2 Mult, +15 batayang puntos bawat antas."
+        "name": "Globo ng Kalahating Flush",
+        "planet": "Hupiter",
+        "description": "Itinataas ng 1 antas ang Kalahating Flush sa run na ito (hanggang 10). Bawat larong umiiskor ng Kalahating Flush ay may dagdag na +15 batayang puntos at +2 Mult."
       },
       "earth_orb": {
-        "name": "Globo ng Daigdig",
-        "description": "Ina-upgrade ang Set: anumang larong may triplet o quad at ang kamay na Lahat Triplet. +2 Mult, +25 batayang puntos bawat antas."
+        "name": "Globo ng Mga Set",
+        "planet": "Daigdig",
+        "description": "Itinataas ng 1 antas ang Mga Set sa run na ito (hanggang 10). Bawat larong umiiskor ng Mga Set ay may dagdag na +25 batayang puntos at +2 Mult."
       },
       "mars_orb": {
-        "name": "Globo ng Marte",
-        "description": "Ina-upgrade ang Buong Flush: buong kamay ng iisang suit. +3 Mult, +30 batayang puntos bawat antas."
+        "name": "Globo ng Buong Flush",
+        "planet": "Marte",
+        "description": "Itinataas ng 1 antas ang Buong Flush sa run na ito (hanggang 10). Bawat larong umiiskor ng Buong Flush ay may dagdag na +30 batayang puntos at +3 Mult."
       },
       "neptune_orb": {
-        "name": "Globo ng Neptuno",
-        "description": "Ina-upgrade ang Halong Triple: buong kamay na may parehong sequence sa tatlong suit. +4 Mult, +40 batayang puntos bawat antas."
+        "name": "Globo ng Halong Triple",
+        "planet": "Neptuno",
+        "description": "Itinataas ng 1 antas ang Halong Triple sa run na ito (hanggang 10). Bawat larong umiiskor ng Halong Triple ay may dagdag na +40 batayang puntos at +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Globo ng Planetang X",
-        "description": "Ina-upgrade ang Pitong Pares: ang kamay na Pitong Pares. +3 Mult, +35 batayang puntos bawat antas."
+        "name": "Globo ng Pitong Pares",
+        "planet": "Planetang X",
+        "description": "Itinataas ng 1 antas ang Pitong pares sa run na ito (hanggang 10). Bawat larong umiiskor ng Pitong pares ay may dagdag na +35 batayang puntos at +3 Mult."
       },
       "ceres_orb": {
-        "name": "Globo ng Ceres",
-        "description": "Ina-upgrade ang Panlabas na Kamay: buong kamay na may terminal o Honor sa bawat grupo. +4 Mult, +40 batayang puntos bawat antas."
+        "name": "Globo ng Panlabas na Kamay",
+        "planet": "Ceres",
+        "description": "Itinataas ng 1 antas ang Panlabas na Kamay sa run na ito (hanggang 10). Bawat larong umiiskor ng Panlabas na Kamay ay may dagdag na +40 batayang puntos at +4 Mult."
       },
       "eris_orb": {
-        "name": "Globo ng Eris",
-        "description": "Ina-upgrade ang Labintatlong Ulila: ang kamay na Labintatlong Ulila. +3 Mult, +50 batayang puntos bawat antas."
+        "name": "Globo ng Labintatlong Ulila",
+        "planet": "Eris",
+        "description": "Itinataas ng 1 antas ang Labintatlong Ulila sa run na ito (hanggang 10). Bawat larong umiiskor ng Labintatlong Ulila ay may dagdag na +50 batayang puntos at +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Globo ng Itim na Butas",
-        "description": "Itinataas ng 1 antas ang LAHAT ng Yaku kapag ginamit."
+        "name": "Globo ng Lahat ng Pamilya",
+        "planet": "Itim na Butas",
+        "description": "Itinataas ng 1 antas ang lahat ng 12 pamilya ng kamay sa run na ito (hanggang 10 bawat isa). Nakukuha ng bawat pamilya ang karaniwang batayang puntos at Mult nito; nananatili sa 10 ang pamilyang nasa antas 10 na."
       }
     }
   },
@@ -3193,55 +3207,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Mga Pares",
-      "covers": "Pares, Dalawang pares at Tatlong pares"
+      "covers": "Pares, Dalawang pares o Tatlong pares (ang pares ay dalawang magkaparehong tile). May sariling pamilya ang kamay na Pitong Pares."
     },
     "Pinfu": {
       "name": "Mga Sequence",
-      "covers": "Sequence, Sequence + Pares, Dalawang sequence, at ang kamay na Lahat Sequence"
+      "covers": "Sequence, Sequence + Pares o Dalawang sequence (ang sequence ay tatlong magkakasunod na numero ng iisang suit), at Lahat Sequence: buong kamay na may apat na sequence at isang pares na hindi Dragon o Hanging Silangan."
     },
     "Ittsu": {
       "name": "Mga Straight",
-      "covers": "Straight na apat at lima, at ang kamay na Straight na 1–9"
+      "covers": "Straight na apat, Straight na lima o Straight + Pares (magkakasunod na numero ng iisang suit), at Straight na 1–9: buong kamay na may 1-2-3, 4-5-6 at 7-8-9 ng iisang suit."
     },
     "Toitoi": {
       "name": "Mga Set",
-      "covers": "Anumang larong may triplet o quad, at ang kamay na Lahat Triplet"
+      "covers": "Triplet, Full House, Dalawang triplet, Triplet + Sequence, Quad o Quad + Pares (ang triplet ay tatlong magkaparehong tile, ang quad ay apat), at Lahat Triplet: buong kamay na may apat na triplet o quad at isang pares."
     },
     "Yakuhai": {
       "name": "Honors",
-      "covers": "Anumang grupo ng Hangin o Dragon, at ang kamay na Mga Tile na May Halaga"
+      "covers": "Anumang larong may grupong puro Hangin o Dragon, at Mga Tile na May Halaga: buong kamay na may triplet o quad ng Dragon o Hanging Silangan."
     },
     "Tanyao": {
       "name": "Lahat Simple",
-      "covers": "Mga larong 2–8 lang ang tile, at ang kamay na Lahat Simple"
+      "covers": "Anumang larong bumubuo ng grupo gamit lang ang mga tile na 2–8, walang 1, 9, Hangin o Dragon (hindi binibilang ang mga tile na Bato), at Lahat Simple: buong kamay na puro tile na 2–8."
     },
     "Honitsu": {
       "name": "Kalahating Flush",
-      "covers": "Buong kamay ng isang suit at Honors"
+      "covers": "Kalahating Flush: buong kamay ng iisang suit kasama ang Hangin o Dragon. Hindi binibilang ang mas maikling laro ng iisang suit."
     },
     "Chinitsu": {
       "name": "Buong Flush",
-      "covers": "Buong kamay ng iisang suit"
+      "covers": "Buong Flush: buong kamay na iisang suit lang, walang Hangin o Dragon. Hindi binibilang ang mas maikling laro ng iisang suit."
     },
     "Sanshoku": {
       "name": "Halong Triple",
-      "covers": "Buong kamay na may parehong sequence sa tatlong suit"
+      "covers": "Halong Tripleng Sequence: buong kamay na may parehong sequence sa lahat ng tatlong suit, gaya ng 2-3-4 sa Mga Karakter, Mga Bilog at Mga Kawayan."
     },
     "SevenPairs": {
       "name": "Pitong pares",
-      "covers": "Ang kamay na Pitong pares"
+      "covers": "Pitong Pares: buong kamay na may eksaktong pitong magkakaibang pares (14 na tile). Ang mas maiikling laro ng pares ay sa pamilyang Mga Pares."
     },
     "Chanta": {
       "name": "Panlabas na Kamay",
-      "covers": "Buong kamay na may terminal o Honor sa bawat grupo"
+      "covers": "Panlabas na Kamay: buong kamay na may hindi bababa sa isang sequence, kung saan may 1, 9, Hangin o Dragon ang bawat grupo at ang pares. Kasama rin ang Purong Panlabas na Kamay (ganoon din, pero walang Hangin o Dragon)."
     },
     "Kokushi": {
       "name": "Labintatlong Ulila",
-      "covers": "Ang kamay na Labintatlong Ulila"
+      "covers": "Labintatlong Ulila: buong kamay na may tig-isa ng bawat 1, 9, Hangin at Dragon, at isang dagdag na kapareho."
     },
     "All": {
       "name": "Lahat ng pamilya",
-      "covers": "Lahat ng pamilya ng upgrade",
+      "covers": "Lahat ng 12 pamilya ng kamay, kasama ang Mga Pares at Pitong pares.",
       "upgrade": "Lahat ng pamilya +1 antas"
     },
     "levelChange": "{{family}}: antas {{from}} → {{to}}",

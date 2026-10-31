@@ -403,7 +403,7 @@
     }
   },
   "observatory": {
-    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb per permainan tangan. Lubang Hitam cocok dengan Yaku mana pun yang mencetak poin.",
+    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb tiap kali main. Orb Semua Keluarga cocok dengan Yaku mana pun yang mencetak poin.",
     "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."
   },
   "closedHandAusterity": {
@@ -1035,6 +1035,7 @@
       "sealHelp": "Dipakai saat kamu mengambilnya: pilih ubin dinding yang diubah, dan perubahannya bertahan sepanjang permainan.",
       "sealHelpInstant": "Dipakai saat kamu mengambilnya.",
       "orb": "Orb Langit · meningkatkan satu keluarga tangan",
+      "orbPlanet": "Orb Langit · {{planet}}",
       "script": "Naskah Kehampaan · kuat, ada harganya",
       "consumableHelp": "Disimpan bersama barangmu sampai dipakai. Ketuk di meja untuk memakainya.",
       "tile": "Ubin · ditambahkan ke dinding",
@@ -2605,56 +2606,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orb Pluto",
-        "description": "Meningkatkan Pasangan: Pasangan, Dua pasangan, dan Tiga pasangan. +1 Mult, +10 Poin per level."
+        "name": "Orb Pasangan",
+        "planet": "Pluto",
+        "description": "Menaikkan keluarga Pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Pasangan mencetak skor, dapat tambahan +10 poin dasar dan +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orb Merkurius",
-        "description": "Meningkatkan Semua Sederhana: mainan hanya ubin 2–8 dan tangan Semua sederhana. +1 Mult, +15 Poin per level."
+        "name": "Orb Semua Sederhana",
+        "planet": "Merkurius",
+        "description": "Menaikkan keluarga Semua sederhana 1 level selama permainan ini (maksimal 10). Setiap kali Semua sederhana mencetak skor, dapat tambahan +15 poin dasar dan +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orb Uranus",
-        "description": "Meningkatkan Kehormatan: kelompok Angin atau Naga dan tangan Ubin bernilai. +1 Mult, +20 Poin per level."
+        "name": "Orb Kehormatan",
+        "planet": "Uranus",
+        "description": "Menaikkan keluarga Kehormatan 1 level selama permainan ini (maksimal 10). Setiap kali Kehormatan mencetak skor, dapat tambahan +20 poin dasar dan +1 Mult."
       },
       "venus_orb": {
-        "name": "Orb Venus",
-        "description": "Meningkatkan Urutan: Urutan, Urutan + Pasangan, Dua urutan dan tangan Semua urutan. +2 Mult, +20 Poin per level."
+        "name": "Orb Urutan",
+        "planet": "Venus",
+        "description": "Menaikkan keluarga Urutan 1 level selama permainan ini (maksimal 10). Setiap kali Urutan mencetak skor, dapat tambahan +20 poin dasar dan +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orb Saturnus",
-        "description": "Meningkatkan Lurus: lurus empat dan lima serta tangan Lurus 1–9. +3 Mult, +30 Poin per level."
+        "name": "Orb Lurus",
+        "planet": "Saturnus",
+        "description": "Menaikkan keluarga Lurus 1 level selama permainan ini (maksimal 10). Setiap kali Lurus mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orb Jupiter",
-        "description": "Meningkatkan Setengah warna: tangan lengkap satu jenis ditambah kehormatan. +2 Mult, +15 Poin per level."
+        "name": "Orb Setengah Warna",
+        "planet": "Jupiter",
+        "description": "Menaikkan keluarga Setengah warna 1 level selama permainan ini (maksimal 10). Setiap kali Setengah warna mencetak skor, dapat tambahan +15 poin dasar dan +2 Mult."
       },
       "earth_orb": {
-        "name": "Orb Bumi",
-        "description": "Meningkatkan Set: mainan dengan triplet atau kuartet dan tangan Semua Triplet. +2 Mult, +25 Poin per level."
+        "name": "Orb Set",
+        "planet": "Bumi",
+        "description": "Menaikkan keluarga Set 1 level selama permainan ini (maksimal 10). Setiap kali Set mencetak skor, dapat tambahan +25 poin dasar dan +2 Mult."
       },
       "mars_orb": {
-        "name": "Orb Mars",
-        "description": "Meningkatkan Warna penuh: tangan lengkap satu jenis. +3 Mult, +30 Poin per level."
+        "name": "Orb Warna Penuh",
+        "planet": "Mars",
+        "description": "Menaikkan keluarga Warna penuh 1 level selama permainan ini (maksimal 10). Setiap kali Warna penuh mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orb Neptunus",
-        "description": "Meningkatkan Tiga warna: tangan lengkap dengan urutan sama di tiga jenis. +4 Mult, +40 Poin per level."
+        "name": "Orb Tiga Warna",
+        "planet": "Neptunus",
+        "description": "Menaikkan keluarga Tiga warna 1 level selama permainan ini (maksimal 10). Setiap kali Tiga warna mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orb Planet X",
-        "description": "Meningkatkan Tujuh pasangan: tangan Tujuh pasangan. +3 Mult, +35 Poin per level."
+        "name": "Orb Tujuh Pasangan",
+        "planet": "Planet X",
+        "description": "Menaikkan keluarga Tujuh pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Tujuh pasangan mencetak skor, dapat tambahan +35 poin dasar dan +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orb Ceres",
-        "description": "Meningkatkan Tangan luar: tangan lengkap dengan ubin ujung atau kehormatan di tiap kelompok. +4 Mult, +40 Poin per level."
+        "name": "Orb Tangan Luar",
+        "planet": "Ceres",
+        "description": "Menaikkan keluarga Tangan luar 1 level selama permainan ini (maksimal 10). Setiap kali Tangan luar mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
       },
       "eris_orb": {
-        "name": "Orb Eris",
-        "description": "Meningkatkan Tiga belas yatim: tangan Tiga belas yatim. +3 Mult, +50 Poin per level."
+        "name": "Orb Tiga Belas Yatim",
+        "planet": "Eris",
+        "description": "Menaikkan keluarga Tiga belas yatim 1 level selama permainan ini (maksimal 10). Setiap kali Tiga belas yatim mencetak skor, dapat tambahan +50 poin dasar dan +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orb Lubang Hitam",
-        "description": "Saat dipakai, menaikkan SEMUA Yaku 1 level."
+        "name": "Orb Semua Keluarga",
+        "planet": "Lubang Hitam",
+        "description": "Menaikkan ke-12 keluarga tangan masing-masing 1 level selama permainan ini (maksimal 10). Setiap keluarga mendapat poin dasar dan Mult seperti biasa; keluarga yang sudah level 10 tetap di sana."
       }
     }
   },
@@ -3193,55 +3207,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Pasangan",
-      "covers": "Pasangan, Dua pasangan dan Tiga pasangan"
+      "covers": "Pasangan, Dua pasangan, atau Tiga pasangan (pasangan adalah dua ubin yang sama). Tangan Tujuh pasangan punya keluarga sendiri."
     },
     "Pinfu": {
       "name": "Urutan",
-      "covers": "Urutan, Urutan + Pasangan, Dua urutan, dan tangan Semua urutan"
+      "covers": "Urutan, Urutan + Pasangan, atau Dua urutan (urutan adalah tiga angka berurutan dari satu jenis); juga Semua Urutan: tangan lengkap berisi empat urutan ditambah pasangan yang bukan Naga atau Angin Timur."
     },
     "Ittsu": {
       "name": "Lurus",
-      "covers": "Lurus empat dan lima, dan tangan Lurus 1–9"
+      "covers": "Lurus empat, Lurus lima, atau Lurus + Pasangan (angka berurutan dari satu jenis); juga Lurus 1–9: tangan lengkap yang memuat 1-2-3, 4-5-6, dan 7-8-9 dari satu jenis."
     },
     "Toitoi": {
       "name": "Set",
-      "covers": "Mainan dengan triplet atau kuartet, dan tangan Semua Triplet"
+      "covers": "Triplet, Full house, Dua triplet, Triplet + Urutan, Kuartet, atau Kuartet + Pasangan (triplet adalah tiga ubin yang sama, kuartet empat); juga Semua Triplet: tangan lengkap berisi empat triplet atau kuartet ditambah pasangan."
     },
     "Yakuhai": {
       "name": "Kehormatan",
-      "covers": "Kelompok Angin atau Naga, dan tangan Ubin bernilai"
+      "covers": "Ubin yang dimainkan berisi kelompok yang hanya terdiri dari Angin atau Naga; juga Ubin Bernilai: tangan lengkap dengan triplet atau kuartet Naga atau Angin Timur."
     },
     "Tanyao": {
       "name": "Semua sederhana",
-      "covers": "Mainan hanya dengan ubin 2–8, dan tangan Semua sederhana"
+      "covers": "Ubin yang dimainkan membentuk kelompok dan semuanya 2–8, tanpa 1, 9, Angin, atau Naga (ubin Batu diabaikan); juga Semua Sederhana: tangan lengkap yang hanya berisi ubin 2–8."
     },
     "Honitsu": {
       "name": "Setengah warna",
-      "covers": "Tangan lengkap satu jenis ditambah kehormatan"
+      "covers": "Setengah Warna: tangan lengkap dari satu jenis ditambah Angin atau Naga. Ubin satu jenis yang dimainkan tanpa membentuk tangan lengkap tidak dihitung."
     },
     "Chinitsu": {
       "name": "Warna penuh",
-      "covers": "Tangan lengkap satu jenis"
+      "covers": "Warna Penuh: tangan lengkap dari satu jenis saja, tanpa Angin atau Naga. Ubin satu jenis yang dimainkan tanpa membentuk tangan lengkap tidak dihitung."
     },
     "Sanshoku": {
       "name": "Tiga warna",
-      "covers": "Tangan lengkap dengan urutan sama di tiga jenis"
+      "covers": "Urutan Tiga Campuran: tangan lengkap dengan urutan yang sama di ketiga jenis, misalnya 2-3-4 di Karakter, Lingkaran, dan Bambu."
     },
     "SevenPairs": {
       "name": "Tujuh pasangan",
-      "covers": "Tangan Tujuh pasangan"
+      "covers": "Tujuh pasangan: tangan lengkap berisi tepat tujuh pasangan berbeda (14 ubin). Pasangan yang dimainkan tanpa tangan lengkap masuk keluarga Pasangan."
     },
     "Chanta": {
       "name": "Tangan luar",
-      "covers": "Tangan lengkap dengan ubin ujung atau kehormatan di tiap kelompok"
+      "covers": "Tangan Luar: tangan lengkap dengan setidaknya satu urutan, yang setiap grup dan pasangannya memuat 1, 9, Angin, atau Naga. Tangan Luar Murni (sama, tetapi tanpa Angin atau Naga) juga dihitung."
     },
     "Kokushi": {
       "name": "Tiga belas yatim",
-      "covers": "Tangan Tiga belas yatim"
+      "covers": "Tiga Belas Yatim: tangan lengkap dengan satu dari setiap 1, 9, Angin, dan Naga, ditambah satu duplikat."
     },
     "All": {
       "name": "Semua keluarga",
-      "covers": "Semua keluarga peningkatan",
+      "covers": "Ke-12 keluarga tangan, termasuk Pasangan dan Tujuh pasangan.",
       "upgrade": "Semua keluarga +1 level"
     },
     "levelChange": "{{family}}: level {{from}} → {{to}}",
