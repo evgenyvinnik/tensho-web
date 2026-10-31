@@ -400,11 +400,11 @@ export const TANYAO_DISPENSATION: Decree = {
 }
 
 /**
- * Moonlit Seal (Uncommon) - Honor tiles add stacking multiplier
+ * Moonlit Emblem (Uncommon) - Honor tiles add stacking multiplier
  */
 export const MOONLIT_SEAL: Decree = {
   id: 'moonlit_seal',
-  name: 'Moonlit Seal',
+  name: 'Moonlit Emblem',
   description: 'Each Honor tile in your winning hand adds +0.1x to multiplier.',
   category: 'Scaling',
   rarity: 'RegionalMandate',

@@ -204,7 +204,7 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   })
   const { container } = render(<TileImage tile={tile} detailsVisible />)
   expect(screen.getByRole('img')).toHaveAccessibleName(
-    i18n.t('tileMarks.items.stone.name')
+    i18n.t('tileDetails.stoneName')
   )
   expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
   expect(container.querySelector('[data-tile-index]')).toBeNull()

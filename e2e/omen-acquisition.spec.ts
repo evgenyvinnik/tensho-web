@@ -59,6 +59,63 @@ test('swift clears earn a Rare+ Omen and charge its fee in the next shop', async
   ).toEqual({ fee: 5, rare: true, pending: 0, consumed: 1 })
 })
 
+test('the Tea House reveals a swift clear’s Omen centre stage before its pay', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await openTable(page)
+  await page.evaluate(async () => {
+    const path = '/src/game/GameOrchestrator.ts'
+    const { gameOrchestrator: game } = await import(path)
+    game.startNewRun(73)
+  })
+  await clearReveals(page)
+  await swiftClear(page, { keepReveal: true })
+  const summary = await page.evaluate(async () => {
+    const path = '/src/game/GameOrchestrator.ts'
+    const { gameOrchestrator: game } = await import(path)
+    return game.getState().lastRoundSummary
+  })
+  expect(summary.omenId).toBeTruthy()
+  const reveal = page.locator(`[data-omen-reveal="${summary.omenId}"]`)
+  // First the sign: the clear that earned it, as the talisman descends.
+  await expect(reveal).toHaveAttribute('data-omen-reveal-stage', 'sign')
+  await expect(reveal).toContainText('Swift clear')
+  await expect(reveal).toContainText(
+    `Small Round cleared · ${summary.spareTurns} Turns to spare`
+  )
+  // The pay waits for the Omen.
+  await expect(page.locator('[data-cash-out-toast]')).toHaveCount(0)
+  // Then the card, by itself: what it does and when.
+  const done = reveal.getByRole('button', { name: 'Got it' })
+  await expect(done).toBeVisible()
+  await expect(reveal.locator('[data-omen-reveal-timing]')).toBeVisible()
+  await expect(reveal.locator('[data-omen-reveal-origin]')).toBeVisible()
+  const card = reveal.locator('[data-omen-reveal-card]')
+  await page.waitForTimeout(500)
+  const box = (await card.boundingBox())!
+  expect(box.x).toBeGreaterThanOrEqual(0)
+  expect(box.x + box.width).toBeLessThanOrEqual(320)
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true)
+  await page.screenshot({ path: testInfo.outputPath('omen-reveal.png') })
+  await done.click()
+  await expect(reveal).toHaveCount(0)
+  // Only now does the round's pay arrive, without a separate Omen toast.
+  await expect(page.locator('[data-cash-out-toast="clear"]')).toBeVisible()
+  await expect(page.locator('[data-cash-out-toast="omen"]')).toHaveCount(0)
+  // Returning to the same Tea House replays neither.
+  await page.getByRole('button', { name: 'Settings' }).click()
+  await expect(page).toHaveURL(/\/settings$/)
+  await page.goBack()
+  await expect(page.locator('[data-shop-continue]')).toBeVisible()
+  await page.waitForTimeout(800)
+  await expect(page.locator('[data-omen-reveal]')).toHaveCount(0)
+})
+
 test('a new round clears old Seasons and an earned lock preserves the next draw stack through redraw', async ({
   page,
   isMobile,

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { buyOffer, offerCard, collectCashOut } from './helpers/shop'
-import { openTable, settleReveals } from './helpers/table'
+import { closeOmenReveal, openTable, settleReveals } from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -79,6 +79,8 @@ for (const [language, copy] of [
     }
     await page.locator('[data-game-action="play"]').click()
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+    // The swift clear's Omen is revealed first; the pay follows it.
+    await closeOmenReveal(page)
     // The settlement arrives as toasts: one per source, rentals charged back.
     const seen = await collectCashOut(page, {
       screenshot: testInfo.outputPath('frostbite-cash-out.png'),

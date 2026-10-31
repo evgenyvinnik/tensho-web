@@ -178,6 +178,10 @@ export interface RoundCashOutSummary {
   omenId?: string | null
   /** Gold the swift-clear Omen paid at once, included in netGoldChange. */
   omenGold?: number
+  /** Copies of that Omen earned: more than one when Double Omen was held. */
+  omenCopies?: number
+  /** Turns left unspent when the round was cleared. */
+  spareTurns?: number
 }
 
 /**
@@ -4186,6 +4190,8 @@ export class GameOrchestrator {
       nextTarget: hasUpcomingRound ? upcomingRound.scoreTarget : null,
       omenId: swiftOmen?.omen?.id ?? null,
       omenGold,
+      omenCopies: swiftOmen?.omen ? swiftOmen.copies : 0,
+      spareTurns: this.state.handsRemaining,
     }
 
     eventBus.emit('roundEnd', {

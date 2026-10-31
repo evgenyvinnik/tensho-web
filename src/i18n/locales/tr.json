@@ -487,7 +487,7 @@
       },
       "polychrome_omen": {
         "name": "Polikrom Alameti",
-        "description": "Sahip olduğunuz rastgele bir Fermana Polikrom sürüm uygulanır."
+        "description": "Sahip olduğunuz rastgele bir Fermana Polikrom sürüm ekler."
       },
       "foil_omen": {
         "name": "Folyo Alameti",
@@ -543,23 +543,23 @@
       },
       "seal_of_harmony": {
         "name": "Uyum Mührü",
-        "description": "1 taşı Joker taşına dönüştürür (her türden sayılır)."
+        "description": "Seçilen 1 taşa Joker İşareti ekler (tüm türlerden sayılır)."
       },
       "seal_of_fortitude": {
         "name": "Metanet Mührü",
-        "description": "1 taşa Çelik İşareti ekler (elde tutulurken Çarpan ×1,5)."
+        "description": "Seçilen 1 taşa Çelik İşareti ekler (elde tutulurken Çarpan ×1,5)."
       },
       "seal_of_glass": {
         "name": "Cam Mührü",
-        "description": "1 taşa Cam İşareti ekler (Çarpan ×2; kırılabilir)."
+        "description": "Seçilen 1 taşa Cam İşareti ekler (Çarpan ×2; kırılabilir)."
       },
       "seal_of_wealth": {
         "name": "Servet Mührü",
-        "description": "1 taşa Altın İşareti ekler (tur sonunda elde tutuluyorsa +3 Altın)."
+        "description": "Seçilen 1 taşa Altın İşareti ekler (tur sonunda elde tutuluyorsa +3 Altın)."
       },
       "seal_of_stone": {
-        "name": "Taş Mührü",
-        "description": "1 taşa Taş İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
+        "name": "Kaya Mührü",
+        "description": "Seçilen 1 taşa Kaya İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
       },
       "seal_of_manzu": {
         "name": "Karakterlerin Mührü",
@@ -646,7 +646,7 @@
         "description": "Oynanmadan elde tutulurken ×1,5 Çarpan."
       },
       "stone": {
-        "name": "Taş İşareti",
+        "name": "Kaya İşareti",
         "description": "+100 Puan. Taşın sayısı ve türü yoktur; hiçbir gruba girmez ama her zaman tam puan kazandırır."
       },
       "gold": {
@@ -686,20 +686,20 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Altın Mühür",
+        "name": "Altın Damga",
         "description": "Taş puan kazandırdığında +3 Altın."
       },
       "red": {
-        "name": "Kırmızı Mühür",
+        "name": "Kırmızı Damga",
         "description": "Puan kazandırdığında taşı bir kez daha tetikler."
       },
       "blue": {
-        "name": "Mavi Mühür",
+        "name": "Mavi Damga",
         "description": "Bu taş turu geçen oyunda yer alırsa rastgele bir Göksel Küre oluşturur."
       },
       "purple": {
-        "name": "Mor Mühür",
-        "description": "Bu taş yeniden çekildiğinde rastgele bir Kader Mühürü yaratır."
+        "name": "Mor Damga",
+        "description": "Bu taş yeniden çekildiğinde rastgele bir Kader Mührü yaratır."
       }
     }
   },
@@ -728,7 +728,7 @@
     "targets": "Hedef taşlar",
     "count": "Hedefler: {{selected}} / {{required}}",
     "copyOrder": "1. taş, 2. taşın kopyası olur. Önce değiştirmek istediğiniz taşı seçin.",
-    "replacesModifier": "{{names}} yerine geçer: bir taşta yalnızca bir işaret, mühür ya da baskı olabilir.",
+    "replacesModifier": "{{names}} yerine geçer: bir özel taşta yalnızca bir işaret, damga ya da sürüm olabilir.",
     "cost": "Hiçliğin bedeli",
     "failed": "Bu eşya kullanılamadı.",
     "unavailable": "Bu eşya şu anda kullanılamaz.",
@@ -1064,7 +1064,7 @@
       "nextRound": "Sonraki Tura Geç",
       "confirmPurchase": "Satın Almayı Onayla",
       "purchasePrompt": "{{name}}, {{cost}}G karşılığında satın alınsın mı?",
-      "baseEdition": "Temel Sürüm",
+      "standardCharter": "Standart",
       "goldBalance": "{{amount}} altın",
       "rerollsUsed": "Kullanılan yenileme: {{count}}",
       "forSale": "Satışta"
@@ -1106,7 +1106,7 @@
     "kinds": {
       "decree": "Ferman · {{rarity}}",
       "decreeHelp": "Ferman bu oyun için kalıcı bir kuraldır. Bir Ferman yuvası kaplar; istediğin zaman satabilirsin.",
-      "seal": "Kader Mühürü · hemen etki eder",
+      "seal": "Kader Mührü · hemen etki eder",
       "sealHelp": "Aldığın anda kullanılır: değiştireceği duvar taşlarını seç; tüm koşu boyunca öyle kalırlar.",
       "sealHelpInstant": "Aldığın anda kullanılır.",
       "orb": "Göksel Küre · bir el ailesini geliştirir",
@@ -1124,9 +1124,9 @@
     "buyFor": "Satın al · {{price}} altın",
     "help": {
       "what": "Çay Evi, turlar arasındaki dükkândır.",
-      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Fermanlar kuralları değiştirir, Küreler ve Mühürler hemen etki eder (bir Mühür duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Beratlar tüm oyunu geliştirir.",
+      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Fermanlar kuralları değiştirir, Küreler ve Kader Mühürleri hemen etki eder (bir Kader Mührü duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Beratlar tüm oyunu geliştirir.",
       "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
-      "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar, altın taşlar ve kesilen kiralar.",
+      "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar, Altın taşlar ve kesilen kiralar.",
       "build": "Yapın sahip olduğun Fermanları Yaku geliştirmelerinin yanında gösterir: kurallarını okumak veya satmak için parşömeni, seviyesini görmek için geliştirmeyi aç. Her alım kendi Satın Al düğmesiyle yapılır."
     },
     "sealUsed": "{{name}} kullanıldı",
@@ -1169,11 +1169,11 @@
       },
       "lucky_sixes": {
         "name": "Şanslı Altılılar",
-        "description": "Oynanan her 6 numaralı sayı taşı için +6 Çarpan. Taş İşaretli taşlar sayılmaz."
+        "description": "Oynanan her 6 numaralı sayı taşı için +6 Çarpan. Kaya taşları sayılmaz."
       },
       "the_idol": {
         "name": "Put",
-        "description": "En az iki taş oynandığında ve oynanan tüm taşların basılı türü ve değeri aynı olduğunda Çarpan ×3. Taş İşaretli taşlar koşulu bozar; Joker taşlar basılı kimliklerini korur."
+        "description": "En az iki taş oynandığında ve oynanan tüm taşların basılı türü ve değeri aynı olduğunda Çarpan ×3. Kaya taşları koşulu bozar; Joker taşlar basılı kimliklerini korur."
       },
       "stuntman": {
         "name": "Dublör",
@@ -1232,7 +1232,7 @@
         "description": "Uç taşlar (1 ve 9) Hep basit ellerinde kullanılabilir; onur taşları yine kullanılamaz."
       },
       "moonlit_seal": {
-        "name": "Ay Işığı Mührü",
+        "name": "Ay Işığı Amblemi",
         "description": "Oynanan eldeki her onur taşı çarpana +0,1x ekler."
       },
       "pure_suit_asceticism": {
@@ -1296,7 +1296,7 @@
         "description": "+5 Çarpan."
       },
       "decree-golden-seal": {
-        "name": "Altın Mühür",
+        "name": "Altın Nişan",
         "description": "+6 Çarpan."
       },
       "decree-manzu-master": {
@@ -1961,6 +1961,7 @@
     "windName": "{{name}} Rüzgârı",
     "flowerName": "{{name}} Çiçeği",
     "seasonName": "{{name}} Mevsimi",
+    "stoneName": "Kaya taşı",
     "numberedRule": "Aynı taşlarla çift veya üçlü oluştur. Aynı türden ardışık üç sayı bir seri oluşturur.",
     "honorRule": "Onur taşları aynı taşlardan çift veya üçlü oluşturur, sayısal seri oluşturmaz.",
     "basePoints": "Grup bonusları, azaltmalar ve diğer etkilerden önce {{points}} temel puan.",
@@ -1984,9 +1985,10 @@
     "white": "Beyaz Ejderha",
     "green": "Yeşil Ejderha",
     "red": "Kırmızı Ejderha",
-    "modifiers": "Değiştiriciler:",
-    "tileModifiers": "Taş Değiştiricileri",
-    "enhancement": "Geliştirme",
+    "modifiers": "Özel taş:",
+    "tileModifiers": "Özel taş",
+    "enhancement": "İşaret",
+    "stamp": "Damga",
     "edition": "Sürüm",
     "debuffed": "Zayıflatılmış taş",
     "lockedMustPlay": "Kilitli taş: oynanmalı",
@@ -2134,7 +2136,7 @@
         "description": "Oynanan her taş için 1 Altın kaybedilir."
       },
       "the_mark": {
-        "name": "İşaret",
+        "name": "Örtü",
         "description": "Tüm Onur taşları yüzleri kapalı çekilir."
       },
       "the_manacle": {
@@ -2237,7 +2239,7 @@
       "p5": "Ejderhalar <1>Onur taşıdır</1>, <4>15 puan</4> eder ve puan alan her Ejderha Çarpana +2, grupta +4 ekler. Sıra oluşturamazlar."
     },
     "bonus_tiles": {
-      "p1": "<0>Bonus taşlar</0>, elinizin parçası olmayan özel taşlardır:"
+      "p1": "<0>Bonus taşlar</0>, elinizin parçası olmayan ek taşlardır:"
     },
     "sequences": {
       "note1": "Bonus taş çektiğinizde anında açılır ve yerine bir taş çekersiniz. Çiçekler ve Mevsimler büyüyen bonuslar ve etkiler verir!",
@@ -2487,15 +2489,15 @@
       },
       "tileMarks": {
         "name": "Taş İşaretleri",
-        "description": "Taşların özelliklerini değiştiren geliştirmeler."
+        "description": "Taşın puan kazanma biçimini veya davranışını değiştiren işaretler."
       },
       "seals": {
-        "name": "Mühürler",
-        "description": "Taşlara ek etkiler veren özel mühürler."
+        "name": "Damgalar",
+        "description": "Taşa ek bir etki veren mum damgalar."
       },
       "editions": {
         "name": "Sürümler",
-        "description": "Eşyaların özel görünümlü ve etkili çeşitleri."
+        "description": "Bir taşa veya Fermana etki ekleyen parıltılı kaplamalar."
       },
       "packs": {
         "name": "Lütuf Paketleri",
@@ -2527,7 +2529,7 @@
       },
       "sharp_edge": {
         "name": "Keskin Kenar",
-        "description": "Özel sürümler 2× daha sık çıkar."
+        "description": "Sürümler 2× daha sık çıkar."
       },
       "reroll_surplus": {
         "name": "Yenileme Fazlası",
@@ -2587,7 +2589,7 @@
       },
       "radiant_edge": {
         "name": "Işıltılı Kenar",
-        "description": "Özel sürümler 4× daha sık çıkar."
+        "description": "Sürümler 4× daha sık çıkar."
       },
       "reroll_abundance": {
         "name": "Yenileme Bolluğu",
@@ -2627,7 +2629,7 @@
       },
       "illusion_tiles": {
         "name": "Yanılsama Taşları",
-        "description": "Mağazadaki taşlar özel sürümlere sahip olabilir."
+        "description": "Mağazadaki taşların sürümü olabilir."
       },
       "stone_script": {
         "name": "Taş Yazıtı",
@@ -2651,15 +2653,15 @@
       },
       "script_of_kinship": {
         "name": "Akrabalık Yazıtı",
-        "description": "Rastgele 1 taşı yok eder; rastgele 3 geliştirilmiş Onur taşı (Rüzgâr/Ejderha) ekler."
+        "description": "Rastgele 1 taşı yok eder, ardından her biri rastgele bir Bonus, Çarpan veya Şans İşareti taşıyan rastgele 3 Onur taşı (Rüzgâr/Ejderha) ekler."
       },
       "script_of_the_grave": {
         "name": "Mezar Yazıtı",
-        "description": "Rastgele 1 taşı yok eder; rastgele 2 geliştirilmiş uç taş ekler."
+        "description": "Rastgele 1 taşı yok eder, ardından her biri rastgele bir Bonus, Çarpan veya Şans İşareti taşıyan rastgele 2 uç taş (1 ve 9) ekler."
       },
       "script_of_incantation": {
         "name": "Büyü Yazıtı",
-        "description": "Rastgele 1 taşı yok eder; rastgele 4 geliştirilmiş sayı taşı ekler."
+        "description": "Rastgele 1 taşı yok eder, ardından her biri rastgele bir Bonus, Çarpan veya Şans İşareti taşıyan rastgele 4 sayı taşı (2–8) ekler."
       },
       "script_of_immolation": {
         "name": "Kurban Ateşi Yazıtı",
@@ -2670,20 +2672,20 @@
         "description": "Elden seçilen 1 taşın 2 kopyasını oluşturur."
       },
       "script_of_the_gold_seal": {
-        "name": "Altın Mühür Yazıtı",
-        "description": "Seçilen 1 taşa Altın Mühür ekler."
+        "name": "Altın Damga Yazıtı",
+        "description": "Seçilen 1 taşa Altın Damga ekler."
       },
       "script_of_deja_vu": {
         "name": "Dejavu Yazıtı",
-        "description": "Seçilen 1 taşa Kırmızı Mühür ekler (yeniden tetikleme)."
+        "description": "Seçilen 1 taşa Kırmızı Damga ekler (yeniden tetikleme)."
       },
       "script_of_the_trance": {
         "name": "Trans Yazıtı",
-        "description": "1 taşa Mavi Mühür ekler (son el için Küre oluşturur)."
+        "description": "Seçilen 1 taşa Mavi Damga ekler (taş, turu geçen oyunda yer alırsa bir Göksel Küre oluşturur)."
       },
       "script_of_the_medium": {
         "name": "Medyum Yazıtı",
-        "description": "1 taşa Mor Mühür ekler (yeniden çekilince Kader Mühürü yaratır)"
+        "description": "Seçilen 1 taşa Mor Damga ekler (yeniden çekildiğinde bir Kader Mührü oluşturur)."
       },
       "script_of_aura": {
         "name": "Hale Yazıtı",
@@ -3013,15 +3015,15 @@
       },
       "tile_normal": {
         "name": "Taş Paketi",
-        "description": "3 değiştirilmiş taştan 1'ini seçin."
+        "description": "3 özel taştan 1'ini seçin."
       },
       "tile_jumbo": {
         "name": "Büyük Taş Paketi",
-        "description": "5 değiştirilmiş taştan 2'sini seçin."
+        "description": "5 özel taştan 2'sini seçin."
       },
       "tile_mega": {
         "name": "Dev Taş Paketi",
-        "description": "6 değiştirilmiş taştan 3'ünü seçin."
+        "description": "6 özel taştan 3'ünü seçin."
       },
       "decree_normal": {
         "name": "Ferman Paketi",
@@ -3153,7 +3155,7 @@
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",
     "specialTitle": "Özel taşlar",
-    "specialHelp": "Taşlı renkli çerçeve bir işaret, mühür mumu bir mühür, parıltı ise bir baskıdır. Bir taşta bunlardan yalnızca biri olabilir. Ne yaptığını görmek için taşın üzerine gel veya odaklan.",
+    "specialHelp": "Özel taş tek bir ek etki taşır: bir işaret (mücevherli renkli çerçeve), bir damga (muma basılmış iz) ya da bir sürüm (parıltı). Ne yaptığını tam olarak görmek için taşın üzerine gel veya odaklan.",
     "close": "Hadi oynayalım"
   },
   "mandateConsequence": {
@@ -3207,7 +3209,7 @@
     },
     "Tanyao": {
       "name": "Hep basit",
-      "covers": "Yalnızca 2–8 arası taşlarla grup oluşturan her oyun (1, 9, Rüzgâr veya Ejderha yok; Taş İşaretli taşlar dikkate alınmaz) ve Hep Basit: yalnızca 2–8 arası taşlardan oluşan tam el."
+      "covers": "Yalnızca 2–8 arası taşlarla grup oluşturan her oyun (1, 9, Rüzgâr veya Ejderha yok; Kaya taşları dikkate alınmaz) ve Hep Basit: yalnızca 2–8 arası taşlardan oluşan tam el."
     },
     "Honitsu": {
       "name": "Yarı renk",
@@ -3256,5 +3258,31 @@
   "orbReveal": {
     "used": "Göksel Küre kullanıldı",
     "title": "{{name}} kullanıldı: yaku geliştirildi"
+  },
+  "omenReveal": {
+    "title": "Alamet kazanıldı: {{name}}",
+    "swiftClear": "Hızlı galibiyet",
+    "cleared": "{{round}} geçildi",
+    "spareTurns_one": "{{formattedCount}} hamle arttı",
+    "spareTurns_other": "{{formattedCount}} hamle arttı",
+    "earned": "Alamet kazanıldı",
+    "copies": "×{{amount}}",
+    "copiesNote": "Çifte Alamet kopyaladı: ×{{amount}}",
+    "when": "Ne zaman etkili",
+    "timing": {
+      "shop": "Şimdi, bu Çay Evi’nde. Etkisi tekliflere zaten yansıdı.",
+      "round": "Sonraki turun başında.",
+      "hand": "Puan kazandıran sonraki elinde.",
+      "voidScript": "Bir sonraki Hiçlik Tomarı kullanımında.",
+      "now": "Hemen. Zaten uygulandı.",
+      "run": "Oyunun geri kalanında puan kazandıran her elde.",
+      "nextOmen": "Bir sonraki Alameti kazandığında."
+    },
+    "rail": {
+      "waits": "O zamana kadar masada eşyalarınla birlikte bekler.",
+      "stays": "Masada eşyalarınla birlikte kalır."
+    },
+    "tradeoff": "Bedeli",
+    "rule": "Küçük ya da Büyük turu {{spare}} veya daha fazla hamle artırarak geçersen bir Alamet kazanırsın. Patron turları Alamet vermez."
   }
 }

@@ -1,6 +1,11 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { clearReveals, handScoreTotal, settleReveals } from './helpers/table'
+import {
+  clearReveals,
+  closeOmenReveal,
+  handScoreTotal,
+  settleReveals,
+} from './helpers/table'
 
 for (const language of ['en', 'es', 'ru'])
   for (const kind of ['single', 'all'])
@@ -130,6 +135,7 @@ for (const language of ['en', 'es', 'ru'])
       const play = page.locator('[data-game-action="play"]')
       await activate(play)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+      await closeOmenReveal(page)
       const shop = await saved()
       expect(
         new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(

@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "패의 변경은 다음 라운드를 포함해 이번 런 내내 유지됩니다. 새 런에서는 초기화됩니다.",
-    "negativeTile": "이 네거티브 패가 자신의 패산에 남아 있는 동안 법령 슬롯 +1. 뽑거나 버려도 유지되며, 파괴하거나 에디션을 바꾸면 사라집니다.",
+    "negativeTile": "이 음영 실물 패가 자신의 패산에 남아 있는 동안 법령 슬롯 +1. 뽑거나 버려도 유지되며, 파괴하거나 에디션을 바꾸면 사라집니다.",
     "overCapacity": "용량 감소: 보유 법령은 사라지지 않습니다. 더 획득하려면 공간을 확보하세요."
   },
   "yakuUpgrades": {
@@ -441,7 +441,7 @@
     "targets": "대상 패",
     "count": "대상: {{selected}} / {{required}}",
     "copyOrder": "패 1이 패 2의 복사본이 됩니다. 바꿀 패를 먼저 고르세요.",
-    "replacesModifier": "{{names}}을(를) 대체해요. 패 하나에는 표식, 인장, 에디션 중 하나만 붙어요.",
+    "replacesModifier": "{{names}}을(를) 대체해요. 특수 패 하나에는 표식, 스탬프, 에디션 중 하나만 붙어요.",
     "cost": "공허의 대가",
     "failed": "이 아이템을 사용할 수 없습니다.",
     "unavailable": "이 아이템은 지금 사용할 수 없습니다.",
@@ -777,7 +777,7 @@
       "nextRound": "다음 라운드로",
       "confirmPurchase": "구매 확인",
       "purchasePrompt": "{{name}}을(를) {{cost}}G에 구매하시겠습니까?",
-      "baseEdition": "기본판",
+      "standardCharter": "기본",
       "goldBalance": "보유 골드: {{amount}}",
       "rerollsUsed": "새로고침 횟수: {{count}}",
       "forSale": "판매 중"
@@ -837,7 +837,7 @@
     "buyFor": "구매 · {{price}} 골드",
     "help": {
       "what": "찻집은 라운드 사이의 상점이에요.",
-      "buy": "아이템을 탭하면 효과가 보이고, 구매를 누르면 사요. 법령은 규칙을 바꾸고, 구슬과 인장은 바로 적용되고(인장은 패산에서 바꿀 패를 물어봐요), 두루마리는 라운드 중에 쓰고, 팩은 보상을 고르게 하고, 칙허장은 런 전체를 강화해요.",
+      "buy": "아이템을 탭하면 효과가 보이고, 구매를 누르면 사요. 법령은 규칙을 바꾸고, 구슬과 운명의 인장은 바로 적용되고(운명의 인장은 패산에서 바꿀 패를 물어봐요), 두루마리는 라운드 중에 쓰고, 팩은 보상을 고르게 하고, 칙허장은 런 전체를 강화해요.",
       "interest": "보유한 골드에 이자가 붙어요: 라운드 종료 시 5골드마다 +1 (최대 +{{cap}}).",
       "cashOut": "입장하면 지난 라운드의 골드가 지갑에 들어와요. 라운드 완료, 이자, 법령, 황금 패, 대여료 등 항목마다 알림이 떠요.",
       "build": "‘내 구성’에는 보유 법령과 역 강화가 나란히 있어요. 두루마리를 열어 효과를 확인하거나 판매하고, 강화를 열어 레벨을 볼 수 있어요. 구매는 각 구매 버튼으로 해요."
@@ -937,7 +937,7 @@
         "description": "+5 배율"
       },
       "decree-golden-seal": {
-        "name": "금인",
+        "name": "황금 옥새",
         "description": "+6 배율"
       },
       "decree-manzu-master": {
@@ -1517,7 +1517,7 @@
         "description": "탄야오 손에 노두패(1과 9)를 허용합니다."
       },
       "moonlit_seal": {
-        "name": "달빛의 봉인",
+        "name": "달빛 휘장",
         "description": "화료한 손의 자패 1장마다 배수 +0.1x."
       },
       "pure_suit_asceticism": {
@@ -1674,6 +1674,7 @@
     "windName": "{{name}} 바람패",
     "flowerName": "{{name}} 꽃패",
     "seasonName": "{{name}} 계절패",
+    "stoneName": "돌 패",
     "numberedRule": "같은 패로 쌍이나 트리플을 만드세요. 같은 종류의 연속된 숫자 세 개로 시퀀스를 만들 수 있습니다.",
     "honorRule": "자패는 같은 패로 쌍이나 트리플을 만들지만 숫자 시퀀스는 만들 수 없습니다.",
     "basePoints": "그룹 보너스, 감점 및 기타 효과 적용 전 기본 점수: {{points}}.",
@@ -1697,9 +1698,10 @@
     "white": "백",
     "green": "발",
     "red": "중",
-    "modifiers": "수식:",
-    "tileModifiers": "패 수식",
-    "enhancement": "강화",
+    "modifiers": "특수 패:",
+    "tileModifiers": "특수 패",
+    "enhancement": "표식",
+    "stamp": "스탬프",
     "edition": "에디션",
     "debuffed": "약화된 패",
     "lockedMustPlay": "잠긴 패: 반드시 내야 합니다",
@@ -1721,7 +1723,7 @@
     "shortfall": "부족한 점수",
     "remainingGold": "남은 골드",
     "rentalPaid": "부과된 임대료",
-    "defeatIncome": "패배해도 임대료는 부과되지만, 라운드 보상, 이자, 법령 수입 및 보유한 골드 패의 수입은 지급되지 않습니다.",
+    "defeatIncome": "패배해도 임대료는 부과되지만, 라운드 보상, 이자, 법령 수입 및 보유한 황금 패의 수입은 지급되지 않습니다.",
     "endlessComplete": "무한 등반 종료",
     "victorySubtitle": "제{{act}}막 결전에서 승리했습니다. 승리는 기록되었습니다.",
     "endlessSubtitle": "이번 등반은 끝났지만 승리 기록은 유지됩니다.",
@@ -1837,7 +1839,7 @@
         "description": "낸 패 1장마다 1골드를 잃음"
       },
       "the_mark": {
-        "name": "표식",
+        "name": "장막",
         "description": "모든 자패가 뒷면으로 뽑힘"
       },
       "the_manacle": {
@@ -1950,7 +1952,7 @@
       "p5": "삼원패는 <1>자패</1>이며 <4>15점</4>이고, 득점한 삼원패마다 배수 +2, 묶음 안에서는 +4. 순자는 만들 수 없습니다."
     },
     "bonus_tiles": {
-      "p1": "<0>보너스 패</0>는 손패에 포함되지 않는 특별한 패입니다:"
+      "p1": "<0>보너스 패</0>는 손패에 포함되지 않는 추가 패입니다:"
     },
     "sequences": {
       "note1": "보너스 패를 뽑으면 즉시 공개되고 대체 패를 한 장 뽑습니다. 꽃과 계절은 점점 커지는 보너스와 효과를 줍니다!",
@@ -2250,8 +2252,8 @@
         "description": "라운드당 무료 다시 뽑기 +1"
       },
       "seal_merchant": {
-        "name": "부적 상인",
-        "description": "운명 부적 등장 확률 2배"
+        "name": "인장 상인",
+        "description": "운명의 인장 등장 확률 2배"
       },
       "orb_merchant": {
         "name": "천구 상인",
@@ -2314,8 +2316,8 @@
         "description": "라운드당 무료 다시 뽑기 +1 추가"
       },
       "seal_tycoon": {
-        "name": "부적 거상",
-        "description": "운명 부적 등장 확률 4배"
+        "name": "인장 거상",
+        "description": "운명의 인장 등장 확률 4배"
       },
       "orb_tycoon": {
         "name": "천구 거상",
@@ -2449,8 +2451,8 @@
         "description": "다음 상점의 모든 물품이 25% 할인됩니다."
       },
       "seal_omen": {
-        "name": "부적의 징조",
-        "description": "다음 상점의 물품 칸에 운명 부적이 반드시 등장합니다."
+        "name": "인장의 징조",
+        "description": "다음 상점의 물품 칸에 운명의 인장이 반드시 등장합니다."
       },
       "decree_omen": {
         "name": "법령의 징조",
@@ -2513,99 +2515,99 @@
   "seals": {
     "items": {
       "seal_of_the_alchemist": {
-        "name": "연금술사의 부적",
-        "description": "선택한 2장에 행운 표식을 부여"
+        "name": "연금술사의 인장",
+        "description": "선택한 패 2장에 행운 표식을 부여"
       },
       "seal_of_the_empress": {
-        "name": "여제의 부적",
-        "description": "선택한 2장에 점수 보너스 표식을 부여"
+        "name": "여제의 인장",
+        "description": "선택한 패 2장에 보너스 표식을 부여"
       },
       "seal_of_the_sage": {
-        "name": "현자의 부적",
-        "description": "선택한 2장에 보너스 표식을 부여"
+        "name": "현자의 인장",
+        "description": "선택한 패 2장에 보너스 표식을 부여"
       },
       "seal_of_harmony": {
-        "name": "조화의 부적",
-        "description": "패 1장을 만능패로 전환 (어떤 종류로도 계산)"
+        "name": "조화의 인장",
+        "description": "선택한 패 1장에 만능 표식을 부여 (모든 종류로 계산)"
       },
       "seal_of_fortitude": {
-        "name": "불굴의 부적",
-        "description": "패 1장을 강철 표식으로 강화 (들고 있으면 ×1.5 배수)"
+        "name": "불굴의 인장",
+        "description": "선택한 패 1장에 강철 표식을 부여 (들고 있는 동안 ×1.5 배수)"
       },
       "seal_of_glass": {
-        "name": "유리의 부적",
-        "description": "패 1장을 유리 표식으로 강화 (×2 배수, 깨질 수 있음)"
+        "name": "유리의 인장",
+        "description": "선택한 패 1장에 유리 표식을 부여 (×2 배수, 깨질 수 있음)"
       },
       "seal_of_wealth": {
-        "name": "부의 부적",
-        "description": "패 1장을 황금 표식으로 강화 (라운드 종료 시 들고 있으면 +3골드)"
+        "name": "부의 인장",
+        "description": "선택한 패 1장에 황금 표식을 부여 (라운드 종료 시 들고 있으면 +3골드)"
       },
       "seal_of_stone": {
-        "name": "돌의 부적",
-        "description": "패 1장을 돌 표식으로 강화 (+100점, 색도 숫자도 없어 어떤 묶음에도 들지 않음, 항상 온전히 계산)"
+        "name": "돌의 인장",
+        "description": "선택한 패 1장에 돌 표식을 부여 (+100점, 색도 숫자도 없어 어떤 묶음에도 들지 않음, 항상 온전히 계산)"
       },
       "seal_of_manzu": {
-        "name": "만수의 부적",
+        "name": "만수의 인장",
         "description": "최대 3장을 만수로 전환"
       },
       "seal_of_pinzu": {
-        "name": "통수의 부적",
+        "name": "통수의 인장",
         "description": "최대 3장을 통수로 전환"
       },
       "seal_of_souzu": {
-        "name": "삭수의 부적",
+        "name": "삭수의 인장",
         "description": "최대 3장을 삭수로 전환"
       },
       "seal_of_unity": {
-        "name": "통합의 부적",
+        "name": "통합의 인장",
         "description": "수패를 최대 3장까지 풍패로 바꿉니다. 숫자는 동·남·서·북 순서로 순환합니다."
       },
       "seal_of_the_oracle": {
-        "name": "예언자의 부적",
+        "name": "예언자의 인장",
         "description": "무작위 천구를 2개 생성"
       },
       "seal_of_the_emperor": {
-        "name": "황제의 부적",
-        "description": "무작위 운명 부적을 2개 생성"
+        "name": "황제의 인장",
+        "description": "무작위 운명의 인장을 2개 생성"
       },
       "seal_of_the_fool": {
-        "name": "바보의 부적",
-        "description": "이번 판에서 마지막으로 쓴 운명 부적이나 천구를 생성"
+        "name": "바보의 인장",
+        "description": "이번 판에서 마지막으로 쓴 운명의 인장이나 천구를 생성"
       },
       "seal_of_judgment": {
-        "name": "심판의 부적",
+        "name": "심판의 인장",
         "description": "무작위 법령을 1개 생성 (자리가 있으면)"
       },
       "seal_of_the_hermit": {
-        "name": "은둔자의 부적",
+        "name": "은둔자의 인장",
         "description": "골드를 두 배로 (최대 +20골드)"
       },
       "seal_of_balance": {
-        "name": "균형의 부적",
+        "name": "균형의 인장",
         "description": "보유한 모든 법령의 판매가 총합을 획득 (최대 50골드)"
       },
       "seal_of_strength": {
-        "name": "힘의 부적",
+        "name": "힘의 인장",
         "description": "최대 2장의 숫자를 1 올림 (최대 9)"
       },
       "seal_of_release": {
-        "name": "해방의 부적",
+        "name": "해방의 인장",
         "description": "선택한 최대 2장을 영구히 파괴"
       },
       "seal_of_transmutation": {
-        "name": "변성의 부적",
+        "name": "변성의 인장",
         "description": "2장을 선택해 왼쪽을 오른쪽의 복제로 만듦"
       },
       "seal_of_fortune": {
-        "name": "요행의 부적",
-        "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 중 하나를 부여"
+        "name": "요행의 인장",
+        "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 에디션 중 하나를 부여"
       },
       "seal_of_the_immortal": {
-        "name": "불멸의 부적",
+        "name": "불멸의 인장",
         "description": "신화 등급 법령을 생성 (자리가 있으면)"
       },
       "seal_of_the_void": {
-        "name": "공허의 부적",
+        "name": "공허의 인장",
         "description": "모든 역을 1레벨 상승"
       }
     }
@@ -2614,15 +2616,15 @@
     "items": {
       "script_of_kinship": {
         "name": "혈연의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 자패 3장을 무작위로 추가 (바람/삼원)"
+        "description": "무작위 패 1장을 파괴하고 무작위 자패(풍패/삼원패) 3장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_the_grave": {
         "name": "무덤의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 노두패 2장을 무작위로 추가"
+        "description": "무작위 패 1장을 파괴하고 무작위 노두패(1과 9) 2장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_incantation": {
         "name": "주문의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 수패 4장을 무작위로 추가"
+        "description": "무작위 패 1장을 파괴하고 무작위 수패(2~8) 4장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_immolation": {
         "name": "분신의 문서",
@@ -2633,28 +2635,28 @@
         "description": "손패에서 선택한 1장의 복제 2장을 생성"
       },
       "script_of_the_gold_seal": {
-        "name": "금인의 문서",
-        "description": "선택한 패 1장에 금색 봉인을 부여"
+        "name": "금색 스탬프의 문서",
+        "description": "선택한 패 1장에 금색 스탬프를 부여"
       },
       "script_of_deja_vu": {
         "name": "기시감의 문서",
-        "description": "선택한 패 1장에 붉은 봉인을 부여 (재계산)"
+        "description": "선택한 패 1장에 붉은 스탬프를 부여 (재계산)"
       },
       "script_of_the_trance": {
         "name": "황홀의 문서",
-        "description": "패 1장에 푸른 봉인을 부여 (마지막 손에서 천구 생성)"
+        "description": "선택한 패 1장에 푸른 스탬프를 부여 (라운드를 클리어하는 플레이에 포함되면 천구 생성)"
       },
       "script_of_the_medium": {
         "name": "영매의 문서",
-        "description": "패 한 장에 보라 인장 추가 (다시 뽑으면 운명의 인장 생성)"
+        "description": "선택한 패 1장에 보라 스탬프를 부여 (다시 뽑으면 운명의 인장 생성)"
       },
       "script_of_aura": {
         "name": "영기의 문서",
-        "description": "선택한 패 1장에 박막/홀로그램/다색 중 하나를 부여"
+        "description": "선택한 패 1장에 박막/홀로그램/다색 에디션 중 하나를 부여"
       },
       "script_of_ectoplasm": {
         "name": "영질의 문서",
-        "description": "무작위 법령에 음영을 부여 (법령 칸 +1)"
+        "description": "무작위 법령에 음영 에디션을 부여 (법령 칸 +1)"
       },
       "script_of_the_wraith": {
         "name": "망령의 문서",
@@ -2666,10 +2668,10 @@
       },
       "script_of_the_hex": {
         "name": "저주의 문서",
-        "description": "무작위 법령에 다색을 부여하고 나머지 법령을 모두 파괴"
+        "description": "무작위 법령에 다색 에디션을 부여하고 나머지 법령을 모두 파괴"
       },
       "script_of_the_sigil": {
-        "name": "인장의 문서",
+        "name": "문양의 문서",
         "description": "손패의 모든 패를 무작위 단일 종류로 전환"
       },
       "script_of_the_ouija": {
@@ -2714,26 +2716,26 @@
       },
       "consumables": {
         "name": "소모품",
-        "description": "일회용 물품: 운명 부적, 천구, 공허 문서"
+        "description": "일회용 물품: 운명의 인장, 천구, 공허 문서"
       },
       "tileMarks": {
         "name": "패 표식",
-        "description": "패의 작동을 바꾸는 강화 종류"
+        "description": "패의 득점이나 작동 방식을 바꾸는 표식"
       },
       "seals": {
-        "name": "봉인",
-        "description": "패에 효과를 더하는 특별한 봉인"
+        "name": "스탬프",
+        "description": "패에 추가 효과를 주는 밀랍 스탬프"
       },
       "editions": {
         "name": "에디션",
-        "description": "물품의 외형과 효과 변형"
+        "description": "패나 법령에 효과를 더하는 반짝이는 마감"
       },
       "packs": {
         "name": "축복 팩",
         "description": "여러 강화가 담긴 보충 팩"
       },
       "omens": {
-        "name": "징조 표식",
+        "name": "징조 태그",
         "description": "턴을 남기고 라운드를 깬 보상"
       },
       "mandates": {
@@ -2845,19 +2847,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "금색 봉인",
+        "name": "금색 스탬프",
         "description": "낼 때 골드를 얻습니다. 손에서 계산되면 +3골드"
       },
       "red": {
-        "name": "붉은 봉인",
+        "name": "붉은 스탬프",
         "description": "패가 두 번 발동합니다. 계산 시 한 번 더 계산"
       },
       "blue": {
-        "name": "푸른 봉인",
+        "name": "푸른 스탬프",
         "description": "이 패가 라운드를 클리어한 플레이에 포함되면 무작위 천구를 만듭니다."
       },
       "purple": {
-        "name": "보라 봉인",
+        "name": "보라 스탬프",
         "description": "이 패를 다시 뽑으면 무작위 운명의 인장을 만들어요."
       }
     }
@@ -2890,15 +2892,15 @@
     "items": {
       "arcana_normal": {
         "name": "비의 팩",
-        "description": "운명 부적 3개 중 1개 선택"
+        "description": "운명의 인장 3개 중 1개 선택"
       },
       "arcana_jumbo": {
         "name": "대형 비의 팩",
-        "description": "운명 부적 5개 중 2개 선택"
+        "description": "운명의 인장 5개 중 2개 선택"
       },
       "arcana_mega": {
         "name": "초대형 비의 팩",
-        "description": "운명 부적 6개 중 3개 선택"
+        "description": "운명의 인장 6개 중 3개 선택"
       },
       "celestial_normal": {
         "name": "천구 팩",
@@ -2914,15 +2916,15 @@
       },
       "tile_normal": {
         "name": "패 팩",
-        "description": "가공된 패 3장 중 1장 선택"
+        "description": "특수 패 3장 중 1장 선택"
       },
       "tile_jumbo": {
         "name": "대형 패 팩",
-        "description": "가공된 패 5장 중 2장 선택"
+        "description": "특수 패 5장 중 2장 선택"
       },
       "tile_mega": {
         "name": "초대형 패 팩",
-        "description": "가공된 패 6장 중 3장 선택"
+        "description": "특수 패 6장 중 3장 선택"
       },
       "decree_normal": {
         "name": "법령 팩",
@@ -3153,7 +3155,7 @@
     "tilesHelp": "만수는 한자 숫자 一~九, 통수와 삭수는 개수로 표시해요 (삭수 1은 새). 패 숫자 표시는 설정에서 켤 수 있어요.",
     "honorsHelp": "풍패는 장당 {{wind}}점, 조합 안에서는 {{windGroup}}점. 삼원패 한 장마다 배수 +{{dragon}}, 조합 안에서는 +{{dragonGroup}}.",
     "specialTitle": "특수 패",
-    "specialHelp": "보석이 달린 색 테두리는 표식, 밀랍 도장은 인장, 반짝임은 에디션이에요. 패 하나에는 그중 하나만 붙어요. 패에 마우스를 올리거나 포커스하면 효과를 볼 수 있어요.",
+    "specialHelp": "특수 패에는 추가 효과가 하나 붙어요. 표식(보석이 달린 색 테두리), 스탬프(밀랍으로 찍은 자국), 에디션(반짝임) 중 하나예요. 패에 마우스를 올리거나 포커스하면 정확한 효과를 볼 수 있어요.",
     "close": "시작하기"
   },
   "mandateConsequence": {
@@ -3207,7 +3209,7 @@
     },
     "Tanyao": {
       "name": "탕야오",
-      "covers": "2~8 패로만 조합을 만든 패(1, 9, 풍패, 삼원패 없음. 돌 표식 패는 판정에 영향 없음)와 탕야오(2~8 패로만 된 완성패)."
+      "covers": "2~8 패로만 조합을 만든 패(1, 9, 풍패, 삼원패 없음. 돌 패는 판정에 영향 없음)와 탕야오(2~8 패로만 된 완성패)."
     },
     "Honitsu": {
       "name": "혼이쯔",
@@ -3256,5 +3258,31 @@
   "orbReveal": {
     "used": "천상의 구슬 사용",
     "title": "{{name}} 사용: 역 강화"
+  },
+  "omenReveal": {
+    "title": "징조 획득: {{name}}",
+    "swiftClear": "빠른 클리어",
+    "cleared": "{{round}} 클리어",
+    "spareTurns_one": "턴 {{formattedCount}}개 남김",
+    "spareTurns_other": "턴 {{formattedCount}}개 남김",
+    "earned": "징조 획득",
+    "copies": "×{{amount}}",
+    "copiesNote": "쌍둥이 징조로 복제됨: ×{{amount}}",
+    "when": "효과 시점",
+    "timing": {
+      "shop": "지금 이 찻집에서. 효과가 이미 상품에 적용되어 있습니다.",
+      "round": "다음 라운드가 시작될 때.",
+      "hand": "다음에 계산되는 손에서.",
+      "voidScript": "다음에 공허의 두루마리를 사용할 때.",
+      "now": "즉시. 이미 적용되었습니다.",
+      "run": "런이 끝날 때까지 계산되는 모든 손에서.",
+      "nextOmen": "다음 징조를 얻을 때."
+    },
+    "rail": {
+      "waits": "그때까지 테이블의 보유 아이템에서 기다립니다.",
+      "stays": "테이블의 보유 아이템에 계속 남아 있습니다."
+    },
+    "tradeoff": "대가",
+    "rule": "소국이나 대국을 턴 {{spare}}개 이상 남기고 클리어하면 징조를 얻습니다. 보스국에서는 얻을 수 없습니다."
   }
 }

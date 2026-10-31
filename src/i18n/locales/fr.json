@@ -128,7 +128,7 @@
     "payout": "La récompense de base d’une manche réussie est de 3 pièces d’or pour une Petite, 5 pour une Grande et 10 pour un Boss ; dépasser davantage l’objectif ne l’augmente pas. Les mises peuvent supprimer la récompense Petite ; les Décrets et Présages peuvent modifier le paiement final.",
     "interest": "Les intérêts utilisent l’or détenu avant le paiement de la manche : 1 pour 5, avec un plafond initial de 5. Chartes et Présages peuvent relever ce plafond ; certains Présages bloquent les intérêts. Une défaite ne rapporte aucun intérêt.",
     "sale": "Consultez le bouton Vendre d’un Décret pour connaître sa valeur réelle. Les Décrets payés en Fleurs ou obtenus gratuitement peuvent se vendre pour 0 pièce d’or ; les Éternels sont invendables. Vendre retire leurs effets et libère l’emplacement occupé.",
-    "prices": "Consultez le prix de chaque offre et le coût actuel du renouvellement. Réductions, éditions, Chartes et autres effets peuvent modifier les prix. Renouveler ne rétablit ni les Chartes achetées ni l’offre gratuite du Cartomancien."
+    "prices": "Consultez le prix de chaque offre et le coût actuel du renouvellement. Réductions, Éditions, Chartes et autres effets peuvent modifier les prix. Renouveler ne rétablit ni les Chartes achetées ni l’offre gratuite du Cartomancien."
   },
   "achievements": {
     "firstSteps": {
@@ -335,7 +335,7 @@
     "waiting": "En attente d’un autre Décret.",
     "missing": "Cible retirée ; nouveau choix à la prochaine manche.",
     "inactive": "Le copieur ou sa cible est inactif.",
-    "rules": "La cible reste fixe pendant la manche. Copie les effets et les coûts, pas les éditions ni les chaînes de copie. Retirer ou désactiver la cible ne la remplace pas."
+    "rules": "La cible reste fixe pendant la manche. Copie les effets et les coûts, pas les Éditions ni les chaînes de copie. Retirer ou désactiver la cible ne la remplace pas."
   },
   "screenDownload": {
     "title": "Impossible de télécharger cet écran",
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "Les changements des tuiles durent toute cette partie, y compris les manches suivantes. Une nouvelle partie repart de zéro.",
-    "negativeTile": "+1 emplacement de Décret tant que cette tuile Négative reste dans votre mur. La piocher ou la défausser conserve cet emplacement ; la détruire ou remplacer son édition le retire.",
+    "negativeTile": "+1 emplacement de Décret tant que cette tuile Négative reste dans votre mur. La piocher ou la défausser conserve cet emplacement ; la détruire ou remplacer son Édition le retire.",
     "overCapacity": "Capacité réduite : vous conservez vos Décrets. Libérez de la place avant d’en acquérir d’autres."
   },
   "yakuUpgrades": {
@@ -441,7 +441,7 @@
     "targets": "Tuiles ciblées",
     "count": "Cibles : {{selected}} / {{required}}",
     "copyOrder": "La tuile 1 devient une copie de la tuile 2. Choisissez d’abord celle à modifier.",
-    "replacesModifier": "Remplace {{names}} : une tuile ne porte qu’une marque, un sceau ou une édition.",
+    "replacesModifier": "Remplace {{names}} : une tuile spéciale ne porte qu’une Marque, un Cachet ou une Édition.",
     "cost": "Coût du Vide",
     "failed": "Cet objet n’a pas pu être utilisé.",
     "unavailable": "Cet objet ne peut pas être utilisé pour le moment.",
@@ -777,7 +777,7 @@
       "nextRound": "Passer à la manche suivante",
       "confirmPurchase": "Confirmer l’achat",
       "purchasePrompt": "Acheter {{name}} pour {{cost}}G ?",
-      "baseEdition": "Édition de base",
+      "standardCharter": "Standard",
       "goldBalance": "{{amount}} pièces d’or",
       "rerollsUsed": "Renouvellements utilisés : {{count}}",
       "forSale": "En vente"
@@ -785,7 +785,7 @@
     "payout": {
       "interest": "Intérêts",
       "decrees": "Décrets",
-      "goldTiles": "Tuiles d’or",
+      "goldTiles": "Tuiles d’Or",
       "bonus": "Ajustement de récompense",
       "rentals": "Locations",
       "omenEarned": "Présage : {{name}}",
@@ -837,7 +837,7 @@
     "buyFor": "Acheter · {{price}} or",
     "help": {
       "what": "La Maison de Thé est la boutique entre les manches.",
-      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les Orbes et les Sceaux agissent aussitôt (un Sceau vous demande quelles tuiles de votre mur changer), les Écrits s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
+      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les Orbes et les Sceaux du Destin agissent aussitôt (un Sceau du Destin vous demande quelles tuiles de votre mur changer), les Écrits s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
       "interest": "L’or conservé rapporte des intérêts : +1 pour chaque tranche de 5 en fin de manche, jusqu’à +{{cap}}.",
       "cashOut": "La paie de la manche arrive dans votre bourse à votre entrée, une notification par source : la manche réussie, les intérêts, les Décrets, les tuiles d’or et les locations prélevées.",
       "build": "Votre configuration montre vos Décrets à côté de vos améliorations de yaku : ouvrez un parchemin pour lire ses règles ou le vendre, ou une amélioration pour voir son niveau. Chaque achat se fait avec son propre bouton Acheter."
@@ -937,7 +937,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Sceau Doré",
+        "name": "Insignes d'Or",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1513,7 +1513,7 @@
         "description": "Les tuiles terminales (1 et 9) sont autorisées dans les mains Tout simples ; les Honneurs restent exclus."
       },
       "moonlit_seal": {
-        "name": "Sceau de Clair de Lune",
+        "name": "Emblème de Lune",
         "description": "Chaque tuile d'Honneur de votre main gagnante ajoute +0,1x au multiplicateur."
       },
       "pure_suit_asceticism": {
@@ -1674,6 +1674,7 @@
     "windName": "Vent {{name}}",
     "flowerName": "Fleur {{name}}",
     "seasonName": "Saison {{name}}",
+    "stoneName": "Tuile de Pierre",
     "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une suite.",
     "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des suites numériques.",
     "basePoints": "{{points}} points de base avant les bonus de groupe, réductions et autres effets.",
@@ -1697,9 +1698,10 @@
     "white": "Dragon Blanc",
     "green": "Dragon Vert",
     "red": "Dragon Rouge",
-    "modifiers": "Modificateurs :",
-    "tileModifiers": "Modificateurs de tuile",
-    "enhancement": "Amélioration",
+    "modifiers": "Tuile spéciale :",
+    "tileModifiers": "Tuile spéciale",
+    "enhancement": "Marque",
+    "stamp": "Cachet",
     "edition": "Édition",
     "debuffed": "Tuile affaiblie",
     "lockedMustPlay": "Tuile verrouillée : doit être jouée",
@@ -1721,7 +1723,7 @@
     "shortfall": "Points manquants",
     "remainingGold": "Or restant",
     "rentalPaid": "Location prélevée",
-    "defeatIncome": "En cas de défaite, la location est prélevée, mais aucune récompense de manche, aucun intérêt ni revenu des Décrets ou des tuiles Or conservées n’est versé.",
+    "defeatIncome": "En cas de défaite, la location est prélevée, mais aucune récompense de manche, aucun intérêt ni revenu des Décrets ou des tuiles d’Or conservées n’est versé.",
     "endlessComplete": "Ascension infinie terminée",
     "victorySubtitle": "Vous avez remporté le duel de l’acte {{act}}. Votre victoire est acquise.",
     "endlessSubtitle": "Votre victoire reste acquise, même si cette ascension est terminée.",
@@ -1837,7 +1839,7 @@
         "description": "Vous perdez 1 pièce d'or par tuile jouée"
       },
       "the_mark": {
-        "name": "La Marque",
+        "name": "Le Voile",
         "description": "Toutes les tuiles d'Honneur sont piochées face cachée"
       },
       "the_manacle": {
@@ -1950,7 +1952,7 @@
       "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon qui marque ajoute +2 au Mult, +4 dans un groupe. Ils ne peuvent pas former de suites."
     },
     "bonus_tiles": {
-      "p1": "Les <0>tuiles bonus</0> sont des tuiles spéciales qui ne font pas partie de votre main :"
+      "p1": "Les <0>tuiles bonus</0> sont des tuiles supplémentaires qui ne font pas partie de votre main :"
     },
     "sequences": {
       "note1": "Quand vous piochez une tuile bonus, elle est aussitôt révélée et vous piochez une tuile de remplacement. Fleurs et Saisons offrent des bonus et des effets évolutifs !",
@@ -2227,7 +2229,7 @@
       },
       "sharp_edge": {
         "name": "Bordure acérée",
-        "description": "Les éditions apparaissent 2 fois plus souvent"
+        "description": "Les Éditions apparaissent 2 fois plus souvent"
       },
       "reroll_surplus": {
         "name": "Surplus de relance",
@@ -2291,7 +2293,7 @@
       },
       "radiant_edge": {
         "name": "Bordure radieuse",
-        "description": "Les éditions apparaissent 4 fois plus souvent"
+        "description": "Les Éditions apparaissent 4 fois plus souvent"
       },
       "reroll_abundance": {
         "name": "Abondance de relance",
@@ -2331,7 +2333,7 @@
       },
       "illusion_tiles": {
         "name": "Tuiles d'illusion",
-        "description": "Les tuiles de la boutique peuvent porter des éditions"
+        "description": "Les tuiles de la boutique peuvent porter des Éditions"
       },
       "stone_script": {
         "name": "Écriture sur pierre",
@@ -2474,11 +2476,11 @@
       },
       "polychrome_omen": {
         "name": "Présage Polychrome",
-        "description": "Applique l'édition Polychrome à un Décret possédé au hasard."
+        "description": "Ajoute une Édition Polychrome à un Décret possédé au hasard."
       },
       "foil_omen": {
         "name": "Présage de Feuille",
-        "description": "Le prochain Décret acheté gagne l'édition Feuille."
+        "description": "Le prochain Décret acheté gagne une Édition Feuille."
       },
       "interest_omen": {
         "name": "Présage d'Intérêts",
@@ -2498,7 +2500,7 @@
       },
       "negative_omen": {
         "name": "Présage Négatif",
-        "description": "Le prochain Décret acheté gagne l'édition Négative (+1 emplacement)."
+        "description": "Le prochain Décret acheté gagne une Édition Négative (+1 emplacement)."
       },
       "austerity_omen": {
         "name": "Présage d'Austérité",
@@ -2506,7 +2508,7 @@
       },
       "holographic_omen": {
         "name": "Présage Holographique",
-        "description": "Le prochain Décret acheté gagne l'édition Holographique."
+        "description": "Le prochain Décret acheté gagne une Édition Holographique."
       }
     }
   },
@@ -2514,35 +2516,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Sceau de l'Alchimiste",
-        "description": "Améliore 2 tuiles choisies avec la Marque de Chance"
+        "description": "Ajoute une Marque de Chance à 2 tuiles choisies"
       },
       "seal_of_the_empress": {
         "name": "Sceau de l'Impératrice",
-        "description": "Améliore 2 tuiles choisies avec la Marque de Bonus"
+        "description": "Ajoute une Marque de Bonus à 2 tuiles choisies"
       },
       "seal_of_the_sage": {
         "name": "Sceau du Sage",
-        "description": "Améliore 2 tuiles choisies avec la Marque de Bonus"
+        "description": "Ajoute une Marque de Bonus à 2 tuiles choisies"
       },
       "seal_of_harmony": {
         "name": "Sceau de l'Harmonie",
-        "description": "Convertit 1 tuile en Joker (compte comme n'importe quelle famille)"
+        "description": "Ajoute une Marque Joker à 1 tuile choisie (compte comme toutes les familles)"
       },
       "seal_of_fortitude": {
         "name": "Sceau de la Ténacité",
-        "description": "Améliore 1 tuile en Marque d'Acier (×1,5 Mult tant qu'elle est en main)"
+        "description": "Ajoute une Marque d'Acier à 1 tuile choisie (×1,5 Mult tant qu'elle est en main)"
       },
       "seal_of_glass": {
         "name": "Sceau de Verre",
-        "description": "Améliore 1 tuile en Marque de Verre (×2 Mult, peut se briser)"
+        "description": "Ajoute une Marque de Verre à 1 tuile choisie (×2 Mult, peut se briser)"
       },
       "seal_of_wealth": {
         "name": "Sceau de la Richesse",
-        "description": "Améliore 1 tuile en Marque d'Or (+3 pièces d'or si conservée en fin de manche)"
+        "description": "Ajoute une Marque d'Or à 1 tuile choisie (+3 pièces d'or si conservée en fin de manche)"
       },
       "seal_of_stone": {
         "name": "Sceau de Pierre",
-        "description": "Améliore 1 tuile en Marque de Pierre (+100 Points ; ni valeur ni famille, n'entre jamais dans un groupe, marque toujours en entier)"
+        "description": "Ajoute une Marque de Pierre à 1 tuile choisie (+100 Points ; ni valeur ni famille, n'entre jamais dans un groupe, marque toujours en entier)"
       },
       "seal_of_manzu": {
         "name": "Sceau des Caractères",
@@ -2598,7 +2600,7 @@
       },
       "seal_of_fortune": {
         "name": "Sceau du Hasard",
-        "description": "1 chance sur 4 d'ajouter Feuille, Holographique ou Polychrome à un Décret au hasard."
+        "description": "1 chance sur 4 d'ajouter une Édition Feuille, Holographique ou Polychrome à un Décret au hasard."
       },
       "seal_of_the_immortal": {
         "name": "Sceau de l'Immortel",
@@ -2614,15 +2616,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Guide de la Parenté",
-        "description": "Détruit 1 tuile au hasard, ajoute 3 tuiles d'Honneur améliorées au hasard (Vents/Dragons)"
+        "description": "Détruit 1 tuile au hasard, puis ajoute 3 tuiles d'Honneur au hasard (Vents/Dragons), chacune avec une Marque de Bonus, de Mult ou de Chance aléatoire"
       },
       "script_of_the_grave": {
         "name": "Guide de la Tombe",
-        "description": "Détruit 1 tuile au hasard, ajoute 2 tuiles Terminales améliorées au hasard"
+        "description": "Détruit 1 tuile au hasard, puis ajoute 2 tuiles Terminales au hasard (1 et 9), chacune avec une Marque de Bonus, de Mult ou de Chance aléatoire"
       },
       "script_of_incantation": {
         "name": "Guide de l'Incantation",
-        "description": "Détruit 1 tuile au hasard, ajoute 4 tuiles numérotées améliorées au hasard"
+        "description": "Détruit 1 tuile au hasard, puis ajoute 4 tuiles numérotées au hasard (2 à 8), chacune avec une Marque de Bonus, de Mult ou de Chance aléatoire"
       },
       "script_of_immolation": {
         "name": "Guide de l'Immolation",
@@ -2633,28 +2635,28 @@
         "description": "Crée 2 copies d'une tuile choisie dans la main"
       },
       "script_of_the_gold_seal": {
-        "name": "Guide du Sceau d'Or",
-        "description": "Ajoute le Sceau d'Or à 1 tuile choisie"
+        "name": "Guide du Cachet d'Or",
+        "description": "Ajoute un Cachet d'Or à 1 tuile choisie"
       },
       "script_of_deja_vu": {
         "name": "Guide du Déjà-vu",
-        "description": "Ajoute le Sceau Rouge à 1 tuile choisie (recompte)"
+        "description": "Ajoute un Cachet Rouge à 1 tuile choisie (recompte)"
       },
       "script_of_the_trance": {
         "name": "Guide de la Transe",
-        "description": "Ajoute le Sceau Bleu à 1 tuile (crée un Orbe à la dernière main)"
+        "description": "Ajoute un Cachet Bleu à 1 tuile choisie (crée un Orbe céleste si elle fait partie du coup qui remporte la manche)"
       },
       "script_of_the_medium": {
         "name": "Guide du Médium",
-        "description": "Ajoute un Sceau violet à 1 tuile (crée un Sceau du Destin quand elle est repiochée)"
+        "description": "Ajoute un Cachet Violet à 1 tuile choisie (crée un Sceau du Destin quand elle est repiochée)"
       },
       "script_of_aura": {
         "name": "Guide de l'Aura",
-        "description": "Ajoute Feuille, Holographique ou Polychrome à 1 tuile choisie."
+        "description": "Ajoute une Édition Feuille, Holographique ou Polychrome à 1 tuile choisie."
       },
       "script_of_ectoplasm": {
         "name": "Guide de l'Ectoplasme",
-        "description": "Ajoute Négative à un Décret au hasard (+1 emplacement de Décret)"
+        "description": "Ajoute une Édition Négative à un Décret au hasard (+1 emplacement de Décret)"
       },
       "script_of_the_wraith": {
         "name": "Guide du Spectre",
@@ -2666,7 +2668,7 @@
       },
       "script_of_the_hex": {
         "name": "Guide du Maléfice",
-        "description": "Ajoute Polychrome à un Décret au hasard et détruit tous les autres Décrets."
+        "description": "Ajoute une Édition Polychrome à un Décret au hasard et détruit tous les autres Décrets."
       },
       "script_of_the_sigil": {
         "name": "Guide du Sigil",
@@ -2718,22 +2720,22 @@
       },
       "tileMarks": {
         "name": "Marques de tuile",
-        "description": "Types d'amélioration qui modifient le comportement des tuiles"
+        "description": "Marques qui modifient les points ou le comportement d'une tuile"
       },
       "seals": {
-        "name": "Sceaux",
-        "description": "Sceaux spéciaux qui ajoutent des effets aux tuiles"
+        "name": "Cachets",
+        "description": "Cachets de cire qui donnent un effet supplémentaire à une tuile"
       },
       "editions": {
         "name": "Éditions",
-        "description": "Variantes visuelles et de jeu des objets"
+        "description": "Finitions chatoyantes qui ajoutent un effet à une tuile ou à un Décret"
       },
       "packs": {
         "name": "Paquets de Bénédiction",
         "description": "Paquets contenant des améliorations variées"
       },
       "omens": {
-        "name": "Marques de Présage",
+        "name": "Présages",
         "description": "Récompenses uniques pour une manche gagnée avec des tours d’avance"
       },
       "mandates": {
@@ -2845,19 +2847,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Sceau d'Or",
+        "name": "Cachet d'Or",
         "description": "Rapporte de l'or quand la tuile est jouée. +3 pièces d'or au décompte"
       },
       "red": {
-        "name": "Sceau Rouge",
+        "name": "Cachet Rouge",
         "description": "La tuile se déclenche deux fois. Recompte une fois"
       },
       "blue": {
-        "name": "Sceau Bleu",
+        "name": "Cachet Bleu",
         "description": "Crée un Orbe céleste aléatoire si cette tuile fait partie du coup qui remporte la manche."
       },
       "purple": {
-        "name": "Sceau Violet",
+        "name": "Cachet Violet",
         "description": "Crée un Sceau du Destin aléatoire quand cette tuile est repiochée."
       }
     }
@@ -2914,15 +2916,15 @@
       },
       "tile_normal": {
         "name": "Paquet de Tuiles",
-        "description": "Choisissez 1 tuile modifiée parmi 3"
+        "description": "Choisissez 1 tuile spéciale parmi 3"
       },
       "tile_jumbo": {
         "name": "Grand Paquet de Tuiles",
-        "description": "Choisissez 2 tuiles modifiées parmi 5"
+        "description": "Choisissez 2 tuiles spéciales parmi 5"
       },
       "tile_mega": {
         "name": "Méga Paquet de Tuiles",
-        "description": "Choisissez 3 tuiles modifiées parmi 6"
+        "description": "Choisissez 3 tuiles spéciales parmi 6"
       },
       "decree_normal": {
         "name": "Paquet de Décrets",
@@ -3153,7 +3155,7 @@
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",
     "specialTitle": "Tuiles spéciales",
-    "specialHelp": "Un cadre coloré avec une gemme est une marque, un cachet de cire est un sceau et un reflet est une édition. Une tuile n’en porte qu’un seul. Survolez ou sélectionnez une tuile pour lire son effet.",
+    "specialHelp": "Une tuile spéciale porte un effet supplémentaire : une Marque (cadre coloré avec une gemme), un Cachet (empreinte de cire) ou une Édition (reflet). Survolez ou sélectionnez une tuile pour lire exactement son effet.",
     "close": "C’est parti"
   },
   "mandateConsequence": {
@@ -3256,5 +3258,31 @@
   "orbReveal": {
     "used": "Orbe Céleste utilisé",
     "title": "{{name}} utilisé : yaku amélioré"
+  },
+  "omenReveal": {
+    "title": "Présage obtenu : {{name}}",
+    "swiftClear": "Victoire éclair",
+    "cleared": "{{round}} remportée",
+    "spareTurns_one": "{{formattedCount}} tour d’avance",
+    "spareTurns_other": "{{formattedCount}} tours d’avance",
+    "earned": "Présage obtenu",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copié par le Présage double : ×{{amount}}",
+    "when": "Prend effet",
+    "timing": {
+      "shop": "Maintenant, dans cette Maison de Thé. Son effet est déjà sur les offres.",
+      "round": "Au début de la prochaine manche.",
+      "hand": "Sur votre prochaine main comptée.",
+      "voidScript": "La prochaine fois que vous utilisez un Écrit du Vide.",
+      "now": "Immédiatement. Il est déjà appliqué.",
+      "run": "Sur chaque main comptée jusqu’à la fin de la partie.",
+      "nextOmen": "Quand vous obtiendrez votre prochain Présage."
+    },
+    "rail": {
+      "waits": "D’ici là, il attend sur la table avec vos objets.",
+      "stays": "Il reste sur la table avec vos objets."
+    },
+    "tradeoff": "Contrepartie",
+    "rule": "Remportez une Petite ou une Grande Manche avec {{spare}} tours d’avance ou plus pour gagner un Présage. Les Manches Boss n’en donnent aucun."
   }
 }

@@ -54,9 +54,6 @@ export function ClassicResumeCard() {
               className="h-16 w-16 shrink-0 rounded-lg object-cover"
             />
             <div className="min-w-0">
-              <h2 className="font-decorative text-lg text-[var(--color-golden-yellow)]">
-                {t('classicSave.savedTitle')}
-              </h2>
               <p className="break-words text-sm">
                 {table
                   ? itemText.name('tableStyles', {

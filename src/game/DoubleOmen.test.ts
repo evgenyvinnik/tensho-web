@@ -47,9 +47,10 @@ it('atomically queues both copied round rewards and consumes them once', () => {
 
 it('banks consecutive Double Omens without recursion or losing a copy', () => {
   const system = new OmenTagSystem()
-  award(system, 'double_omen')
-  award(system, 'double_omen')
-  award(system, 'omen_of_rivers')
+  expect(award(system, 'double_omen').copies).toBe(1)
+  expect(award(system, 'double_omen').copies).toBe(1)
+  // The reveal reports every copy the banked Double Omens produced.
+  expect(award(system, 'omen_of_rivers').copies).toBe(3)
   expect(system.triggerRoundStartOmens().discardBonus).toBe(3)
   expect(
     system.getOmenHistory().filter((o) => o.definitionId === 'double_omen')

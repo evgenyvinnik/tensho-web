@@ -577,7 +577,7 @@ it('localizes every shop navigation and Charter presentation label with matching
   }
 })
 
-it('provides Purple Seal names and current trigger descriptions in every locale', () => {
+it('provides Purple Stamp names and current trigger descriptions in every locale', () => {
   for (const [lang, locale] of Object.entries(LOCALES)) {
     const archive = locale.archiveSeals as {
       items: { purple: { name: string; description: string } }
@@ -918,6 +918,7 @@ const FULLY_TRANSLATED_PATHS = [
   'mandateConsequence',
   'floraReveal',
   'decreeReveal',
+  'omenReveal',
   'upgradeFamilies',
 ]
 
@@ -952,7 +953,15 @@ describe('fully translated namespaces', () => {
         if (lang === 'en') continue
         const actual = leafKeys(readPath(locale, path) ?? {}).sort()
         const missing = expected.filter((key) => !actual.includes(key))
-        const stale = actual.filter((key) => !expected.includes(key))
+        // A language may need plural forms English lacks (Russian `_few`,
+        // `_many`) for a key English already pluralizes.
+        const pluralOfExpected = (key: string) => {
+          const match = /^(.*)_(zero|two|few|many)$/.exec(key)
+          return match !== null && expected.includes(`${match[1]}_other`)
+        }
+        const stale = actual.filter(
+          (key) => !expected.includes(key) && !pluralOfExpected(key)
+        )
         if (missing.length)
           problems.push(`${lang} missing ${missing.join(', ')}`)
         if (stale.length) problems.push(`${lang} stale ${stale.join(', ')}`)

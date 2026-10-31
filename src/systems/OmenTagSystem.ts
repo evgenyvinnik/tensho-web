@@ -134,6 +134,8 @@ export class OmenTagSystem {
     excludeOmenIds: string[] = []
   ): {
     omen: OmenDefinition | null
+    /** Copies of the Omen earned: more than one when Double Omen was held. */
+    copies: number
     immediateGold: number
     lockedSeason: SeasonVariant | null
     decreeSlotBonus: number
@@ -143,6 +145,7 @@ export class OmenTagSystem {
     if (roundType === 'Boss') {
       return {
         omen: null,
+        copies: 0,
         immediateGold: 0,
         lockedSeason: null,
         decreeSlotBonus: 0,
@@ -168,6 +171,7 @@ export class OmenTagSystem {
     if (!selectedOmen) {
       return {
         omen: null,
+        copies: 0,
         immediateGold: 0,
         lockedSeason: null,
         decreeSlotBonus: 0,
@@ -250,6 +254,7 @@ export class OmenTagSystem {
 
     return {
       omen: selectedOmen,
+      copies,
       immediateGold,
       lockedSeason,
       decreeSlotBonus,

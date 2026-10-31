@@ -152,30 +152,37 @@ export function useScreenShake() {
 
 /**
  * Hook for screen flash effect
+ *
+ * Each flash fades up and back down by itself (the `screen-flash` keyframes
+ * end clear), and a timer removes its overlay afterwards. A new flash
+ * replaces the one showing, and an old flash's timer cannot remove a newer
+ * flash, so rapid flashes never leave the screen tinted.
  */
 export function useScreenFlash() {
   const reducedMotion = useReducedMotion();
-  const [flashConfig, setFlashConfig] = useState<FlashConfig | null>(null);
-  const [isActive, setIsActive] = useState(false);
-
-  const spring = useSpring({
-    opacity: isActive ? (flashConfig?.intensity ?? 0.5) : 0,
-    config: {
-      duration: reducedMotion ? 0 : flashConfig?.duration ?? DURATIONS.fast,
-    },
-    onRest: () => {
-      if (isActive) {
-        setIsActive(false);
-        setFlashConfig(null);
-      }
-    },
-  });
+  const [current, setCurrent] = useState<{ id: number; config: FlashConfig } | null>(null);
+  const lastId = useRef(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const flash = useCallback(
     (preset: keyof typeof FLASH_PRESETS | FlashConfig = 'win') => {
+      // A full-screen flash is motion; reduced motion shows none.
+      if (reducedMotion) return;
       const config = typeof preset === 'string' ? FLASH_PRESETS[preset] : preset;
-      setFlashConfig(config);
-      setIsActive(true);
+      const id = ++lastId.current;
+      if (timer.current) clearTimeout(timer.current);
+      setCurrent({ id, config });
+      timer.current = setTimeout(() => {
+        timer.current = null;
+        setCurrent((shown) => (shown?.id === id ? null : shown));
+      }, flashLength(config));
+    },
+    [reducedMotion]
+  );
+
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
     },
     []
   );
@@ -188,33 +195,44 @@ export function useScreenFlash() {
     return unsubscribe;
   }, [flash]);
 
+  const shown = reducedMotion ? null : current;
+
   // Overlay component
   const FlashOverlay: React.FC = useCallback(
     () =>
-      flashConfig ? (
-        <animated.div
+      shown ? (
+        <div
+          key={shown.id}
+          data-screen-flash
+          aria-hidden="true"
+          className="screen-flash"
           style={{
             position: 'fixed',
             inset: 0,
             pointerEvents: 'none',
             zIndex: ANIMATION_Z_INDEX.screenEffect,
-            backgroundColor: flashConfig.color,
-            opacity: spring.opacity,
-            mixBlendMode: flashConfig.blendMode ?? 'screen',
-            background: flashConfig.radial
-              ? `radial-gradient(ellipse at center, ${flashConfig.color}, transparent 70%)`
-              : flashConfig.color,
+            mixBlendMode: shown.config.blendMode ?? 'screen',
+            background: shown.config.radial
+              ? `radial-gradient(ellipse at center, ${shown.config.color}, transparent 70%)`
+              : shown.config.color,
+            ['--flash-opacity' as string]: shown.config.intensity,
+            ['--flash-ms' as string]: `${flashLength(shown.config)}ms`,
           }}
         />
       ) : null,
-    [flashConfig, spring.opacity]
+    [shown]
   );
 
   return {
     flash,
-    isActive,
+    isActive: shown !== null,
     FlashOverlay,
   };
+}
+
+/** A flash takes its duration to fade up and as long again to fade away. */
+function flashLength(settings: FlashConfig): number {
+  return Math.max(0, settings.duration * 2);
 }
 
 // =============================================================================

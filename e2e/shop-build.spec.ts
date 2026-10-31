@@ -1,5 +1,5 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
-import { clearReveals, settleReveals } from './helpers/table'
+import { clearReveals, closeOmenReveal, settleReveals } from './helpers/table'
 
 async function activate(control: Locator, touch: boolean) {
   if (touch) await control.tap()
@@ -112,6 +112,7 @@ for (const negative of [false, true]) {
       }
     })
     await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
+    await closeOmenReveal(page)
     await clearReveals(page)
     const panel = page.locator('[data-shop-build]')
     await expect(panel.getByRole('heading')).toHaveText(

@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Tile, TileSuit } from '../../core/Tile'
-import { HandRack } from './HandRack'
+import { HINT_FADE_DELAY_MS, HINT_FADE_MS, HandRack } from './HandRack'
+import { useSettingsStore } from '../../stores/settingsStore'
 
 const tiles = [1, 2, 3, 4, 5].map(
   (rank) => new Tile(TileSuit.Manzu, rank, `m${rank}`)
@@ -10,6 +11,10 @@ const ids = (zone: Element | null) =>
   [...(zone?.querySelectorAll('[data-play-tile]') ?? [])].map((node) =>
     node.getAttribute('data-play-tile')
   )
+
+afterEach(() => {
+  act(() => useSettingsStore.setState({ reducedMotion: false }))
+})
 
 describe('HandRack and the felt', () => {
   it('keeps every tile in the rack, and no felt, while nothing is picked', () => {
@@ -53,7 +58,11 @@ describe('HandRack and the felt', () => {
   it('moves a tile either way with one tap', () => {
     const onToggle = vi.fn()
     const { container } = render(
-      <HandRack tiles={tiles} selectedIds={new Set(['m2'])} onToggle={onToggle} />
+      <HandRack
+        tiles={tiles}
+        selectedIds={new Set(['m2'])}
+        onToggle={onToggle}
+      />
     )
     fireEvent.click(
       container.querySelector('[data-play-zone="hand"] [data-play-tile="m3"]')!
@@ -76,5 +85,55 @@ describe('HandRack and the felt', () => {
     )
     for (const button of screen.getAllByRole('button'))
       expect(button).toBeDisabled()
+  })
+
+  it('holds the group brackets back during the deal, then fades them in after a beat', () => {
+    useSettingsStore.setState({ reducedMotion: false })
+    const pair = [
+      new Tile(TileSuit.Pinzu, 5, 'p5a'),
+      new Tile(TileSuit.Pinzu, 5, 'p5b'),
+    ]
+    const props = {
+      tiles: pair,
+      selectedIds: new Set<string>(),
+      onToggle: vi.fn(),
+    }
+    const { container, rerender } = render(
+      <HandRack {...props} groupRules={{}} hintsHeld />
+    )
+    const label = () =>
+      container.querySelector<HTMLElement>('[data-hand-group-label]')!
+    // The bracket keeps its place but shows nothing while tiles fly in.
+    expect(label()).toHaveAttribute('data-hint-held', 'true')
+    expect(label().style.opacity).toBe('0')
+    expect(label().style.transition).toBe('none')
+
+    rerender(<HandRack {...props} groupRules={{}} hintsHeld={false} />)
+    expect(label()).not.toHaveAttribute('data-hint-held')
+    expect(label().style.opacity).toBe('1')
+    expect(label().style.transition).toBe(
+      `opacity ${HINT_FADE_MS}ms ease-out ${HINT_FADE_DELAY_MS}ms`
+    )
+  })
+
+  it('shows the brackets at once with reduced motion', () => {
+    useSettingsStore.setState({ reducedMotion: true })
+    const pair = [
+      new Tile(TileSuit.Pinzu, 5, 'p5a'),
+      new Tile(TileSuit.Pinzu, 5, 'p5b'),
+    ]
+    const { container } = render(
+      <HandRack
+        tiles={pair}
+        selectedIds={new Set()}
+        onToggle={vi.fn()}
+        groupRules={{}}
+      />
+    )
+    const label = container.querySelector<HTMLElement>(
+      '[data-hand-group-label]'
+    )!
+    expect(label.style.opacity).toBe('1')
+    expect(label.style.transition).toBe('none')
   })
 })

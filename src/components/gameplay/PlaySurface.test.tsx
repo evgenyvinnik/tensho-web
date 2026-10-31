@@ -979,10 +979,10 @@ it('announces a Stone tile consistently in the playable stage and return control
       onTilesStaged={vi.fn()}
     />
   )
-  const stage = screen.getByRole('button', { name: 'Stage Stone Mark' })
+  const stage = screen.getByRole('button', { name: 'Stage Stone tile' })
   expect(stage).not.toHaveAccessibleName(/Dragon/)
   fireEvent.keyDown(stage, { key: 'Enter' })
   expect(
-    screen.getByRole('button', { name: 'Return Stone Mark to hand' })
+    screen.getByRole('button', { name: 'Return Stone tile to hand' })
   ).toBeInTheDocument()
 })

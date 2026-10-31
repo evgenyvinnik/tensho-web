@@ -902,7 +902,7 @@ export class MandateEffectSystem {
   }
 
   /**
-   * Check if honor tiles should be face-down (The Mark)
+   * Check if honor tiles should be face-down (The Veil)
    */
   areHonorTilesFaceDown(): boolean {
     if (!this.state.activeMandate) return false
