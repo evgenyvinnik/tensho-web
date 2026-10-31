@@ -403,7 +403,7 @@
     }
   },
   "observatory": {
-    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb tiap kali main. Orb Semua Keluarga cocok dengan Yaku mana pun yang mencetak poin.",
+    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb tiap kali main. Orb Lubang Hitam cocok dengan Yaku mana pun yang mencetak poin.",
     "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."
   },
   "closedHandAusterity": {
@@ -1035,7 +1035,7 @@
       "sealHelp": "Dipakai saat kamu mengambilnya: pilih ubin dinding yang diubah, dan perubahannya bertahan sepanjang permainan.",
       "sealHelpInstant": "Dipakai saat kamu mengambilnya.",
       "orb": "Orb Langit · meningkatkan satu keluarga tangan",
-      "orbPlanet": "Orb Langit · {{planet}}",
+      "orbFamily": "Orb Langit · {{family}}",
       "script": "Naskah Kehampaan · kuat, ada harganya",
       "consumableHelp": "Disimpan bersama barangmu sampai dipakai. Ketuk di meja untuk memakainya.",
       "tile": "Ubin · ditambahkan ke dinding",
@@ -2606,68 +2606,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orb Pasangan",
-        "planet": "Pluto",
+        "name": "Orb Pluto",
         "description": "Menaikkan keluarga Pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Pasangan mencetak skor, dapat tambahan +10 poin dasar dan +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orb Semua Sederhana",
-        "planet": "Merkurius",
+        "name": "Orb Merkurius",
         "description": "Menaikkan keluarga Semua sederhana 1 level selama permainan ini (maksimal 10). Setiap kali Semua sederhana mencetak skor, dapat tambahan +15 poin dasar dan +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orb Kehormatan",
-        "planet": "Uranus",
+        "name": "Orb Uranus",
         "description": "Menaikkan keluarga Kehormatan 1 level selama permainan ini (maksimal 10). Setiap kali Kehormatan mencetak skor, dapat tambahan +20 poin dasar dan +1 Mult."
       },
       "venus_orb": {
-        "name": "Orb Urutan",
-        "planet": "Venus",
+        "name": "Orb Venus",
         "description": "Menaikkan keluarga Urutan 1 level selama permainan ini (maksimal 10). Setiap kali Urutan mencetak skor, dapat tambahan +20 poin dasar dan +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orb Lurus",
-        "planet": "Saturnus",
+        "name": "Orb Saturnus",
         "description": "Menaikkan keluarga Lurus 1 level selama permainan ini (maksimal 10). Setiap kali Lurus mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orb Setengah Warna",
-        "planet": "Jupiter",
+        "name": "Orb Jupiter",
         "description": "Menaikkan keluarga Setengah warna 1 level selama permainan ini (maksimal 10). Setiap kali Setengah warna mencetak skor, dapat tambahan +15 poin dasar dan +2 Mult."
       },
       "earth_orb": {
-        "name": "Orb Set",
-        "planet": "Bumi",
+        "name": "Orb Bumi",
         "description": "Menaikkan keluarga Set 1 level selama permainan ini (maksimal 10). Setiap kali Set mencetak skor, dapat tambahan +25 poin dasar dan +2 Mult."
       },
       "mars_orb": {
-        "name": "Orb Warna Penuh",
-        "planet": "Mars",
+        "name": "Orb Mars",
         "description": "Menaikkan keluarga Warna penuh 1 level selama permainan ini (maksimal 10). Setiap kali Warna penuh mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orb Tiga Warna",
-        "planet": "Neptunus",
+        "name": "Orb Neptunus",
         "description": "Menaikkan keluarga Tiga warna 1 level selama permainan ini (maksimal 10). Setiap kali Tiga warna mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orb Tujuh Pasangan",
-        "planet": "Planet X",
+        "name": "Orb Planet X",
         "description": "Menaikkan keluarga Tujuh pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Tujuh pasangan mencetak skor, dapat tambahan +35 poin dasar dan +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orb Tangan Luar",
-        "planet": "Ceres",
+        "name": "Orb Ceres",
         "description": "Menaikkan keluarga Tangan luar 1 level selama permainan ini (maksimal 10). Setiap kali Tangan luar mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
       },
       "eris_orb": {
-        "name": "Orb Tiga Belas Yatim",
-        "planet": "Eris",
+        "name": "Orb Eris",
         "description": "Menaikkan keluarga Tiga belas yatim 1 level selama permainan ini (maksimal 10). Setiap kali Tiga belas yatim mencetak skor, dapat tambahan +50 poin dasar dan +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orb Semua Keluarga",
-        "planet": "Lubang Hitam",
+        "name": "Orb Lubang Hitam",
         "description": "Menaikkan ke-12 keluarga tangan masing-masing 1 level selama permainan ini (maksimal 10). Setiap keluarga mendapat poin dasar dan Mult seperti biasa; keluarga yang sudah level 10 tetap di sana."
       }
     }

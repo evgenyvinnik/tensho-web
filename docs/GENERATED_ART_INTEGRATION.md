@@ -10,7 +10,7 @@ player-feedback rework. On main:
 - `getItemArt` (`src/utils/itemArt.ts`), which the table rail, Tea House
   offers and reveals use, prefers this art: Decrees, Orbs, Fate Seals,
   Charters, Mandates, packs, upgrade families (by their hand's medallion;
-  Pairs by its own two-tile portrait, Every family by the Every Family Orb), tile marks and
+  Pairs by its own two-tile portrait, Every family by the Black Hole Orb), tile marks and
   all 24 Omens (`src/utils/omenArt.ts`; Double Omen keeps its original
   portrait). Every catalog item now has its own picture — see
   `docs/ART_PRODUCTION_MANIFEST.md`.
@@ -69,21 +69,29 @@ base revision. The existing 40 MiB offline cache policy is unchanged; rerun
 `bun run build` (its asset verifier reports the cache margin) after adding
 art.
 
-## Matching Orbs (2026-10-30)
+## Orbs V4 (2026-10-30)
 
-The 13 Orb portraits in `generated/orbs/` were replaced by the "matching
-spheres" set: one jade-and-gold vessel for every Orb, each showing the tile
-motif of the upgrade family it raises, so an Orb and its family's upgrade
-token read as the same thing. The Every Family Orb (Black Hole) shows tiles
-of every kind under a rising arrow, and also serves as the Every family
-upgrade emblem. Runtime copies are 256 px transparent WebP, quality 72
-(`cwebp -m 6 -alpha_q 100`), slightly larger than the 192 px set so the tile
-glyphs stay sharp in the 128 px reveal. The manifest records each source PNG
-hash; the 1254 px masters stay in the delivery archives
-(`Tensho_Matching_Spheres_Part_1.zip` and `_Part_2.zip`), not in the repo.
+The 13 Orb portraits in `generated/orbs/` are the V4 "carved celestial orb"
+set, which replaced the short-lived matching-spheres set the same day. Each
+Orb is its own celestial body in gemstone or enamel (Earth blue and green,
+Mars rust, Saturn ringed, Black Hole a gold-rimmed void), carved with its
+upgrade family's tile motif in ivory relief and set on a small jade-and-gold
+mount. The Black Hole Orb (tiles of every kind under a rising arrow) also
+serves as the Every family upgrade emblem. The body colours match
+`FAMILY_TONES` (`src/components/gameplay/yakuFamilyTones.ts`), so an Orb and
+its family's upgrade share colour and motif.
 
-With the art, each Orb is now named after its family ("Pairs Orb") with the
-planet as a subtitle (`orbs.items.<id>.planet`), shown in the Tea House kind
-line and the Orb reveal. The motifs are decorative identifiers, not rule
-diagrams: the family's "works with" text (`upgradeFamilies.*.covers`) is the
-rule.
+The masters are 1254 px PNGs with uneven padding and faint low-alpha specks
+at the edges. Each runtime copy is cropped to its visible bounds (alpha above
+3%), fitted in 244 px, centred on a 256 px transparent canvas and saved as
+WebP quality 72 (`cwebp -m 6 -alpha_q 100`), so every Orb fills its slot
+alike. The manifest records each source PNG hash; the masters stay in the
+delivery archives (`Tensho_Orbs_V4_Part_1.zip` to `_Part_3.zip`), not in the
+repo.
+
+Each Orb keeps its celestial name ("Pluto Orb"). The family it raises is the
+subtitle, read from `upgradeFamilies.<family>.name` so the Orb and the upgrade
+always share one label. It shows in the Tea House kind line
+(`shop.kinds.orbFamily`) and under the name in the Orb reveal. The motifs are
+decorative identifiers, not rule diagrams: the family's "works with" text
+(`upgradeFamilies.*.covers`) is the rule.

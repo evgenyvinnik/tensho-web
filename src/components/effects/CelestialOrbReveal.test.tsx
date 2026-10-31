@@ -94,12 +94,12 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
     })
     render(<CelestialOrbReveal />)
     const dialog = screen.getByRole('dialog', {
-      name: 'Pairs Orb used: Yaku upgraded',
+      name: 'Pluto Orb used: Yaku upgraded',
     })
     expect(dialog).toHaveAttribute('data-orb-reveal', 'pluto_orb')
-    // The family names the Orb; its planet is the subtitle.
-    expect(dialog.querySelector('[data-orb-reveal-planet]')).toHaveTextContent(
-      'Pluto'
+    // The planet names the Orb; the family it raises is the subtitle.
+    expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
+      'Pairs'
     )
     expect(dialog).toHaveTextContent('Celestial Orb used')
     const row = dialog.querySelector('[data-orb-reveal-level="SevenPairs"]')!
@@ -123,7 +123,7 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
         key: 1,
         orb: {
           id: 'black_hole_orb',
-          name: 'Every Family Orb',
+          name: 'Black Hole Orb',
           description: '',
           effect: {
             targetYaku: 'All',
@@ -142,7 +142,7 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
         key: 2,
         orb: {
           id: 'pluto_orb',
-          name: 'Pairs Orb',
+          name: 'Pluto Orb',
           description: '',
           effect: {
             targetYaku: 'SevenPairs',
@@ -157,7 +157,9 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
   })
   render(<CelestialOrbReveal />)
   const dialog = screen.getByRole('dialog')
-  expect(dialog).toHaveTextContent('Every family +1 level')
+  expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
+    'Every family +1 level'
+  )
   expect(dialog.querySelectorAll('[data-orb-reveal-level]')).toHaveLength(3)
   fireEvent.click(screen.getByRole('button', { name: 'Next (1 more)' }))
   expect(screen.getByRole('dialog')).toHaveAttribute(

@@ -73,7 +73,7 @@ export interface CelestialOrbEffect {
  */
 export interface CelestialOrb extends BaseConsumable {
   type: 'CelestialOrb'
-  planetName: string // Flavor subtitle under the family-first name, e.g. "Mercury"
+  planetName: string // The title's celestial body, e.g. "Mercury"; the family label is the subtitle
   effect: CelestialOrbEffect
   currentLevel: number
   maxLevel: number
@@ -111,7 +111,7 @@ export const CELESTIAL_ORBS: Record<
   pluto_orb: {
     id: 'pluto_orb',
     type: 'CelestialOrb',
-    name: 'Pairs Orb',
+    name: 'Pluto Orb',
     japaneseName: '冥王星',
     planetName: 'Pluto',
     description:
@@ -132,7 +132,7 @@ export const CELESTIAL_ORBS: Record<
   mercury_orb: {
     id: 'mercury_orb',
     type: 'CelestialOrb',
-    name: 'All Simples Orb',
+    name: 'Mercury Orb',
     japaneseName: '水星',
     planetName: 'Mercury',
     description:
@@ -154,7 +154,7 @@ export const CELESTIAL_ORBS: Record<
   uranus_orb: {
     id: 'uranus_orb',
     type: 'CelestialOrb',
-    name: 'Honors Orb',
+    name: 'Uranus Orb',
     japaneseName: '天王星',
     planetName: 'Uranus',
     description:
@@ -175,7 +175,7 @@ export const CELESTIAL_ORBS: Record<
   venus_orb: {
     id: 'venus_orb',
     type: 'CelestialOrb',
-    name: 'Sequences Orb',
+    name: 'Venus Orb',
     japaneseName: '金星',
     planetName: 'Venus',
     description:
@@ -197,7 +197,7 @@ export const CELESTIAL_ORBS: Record<
   saturn_orb: {
     id: 'saturn_orb',
     type: 'CelestialOrb',
-    name: 'Straights Orb',
+    name: 'Saturn Orb',
     japaneseName: '土星',
     planetName: 'Saturn',
     description:
@@ -219,7 +219,7 @@ export const CELESTIAL_ORBS: Record<
   jupiter_orb: {
     id: 'jupiter_orb',
     type: 'CelestialOrb',
-    name: 'Half Flush Orb',
+    name: 'Jupiter Orb',
     japaneseName: '木星',
     planetName: 'Jupiter',
     description:
@@ -241,7 +241,7 @@ export const CELESTIAL_ORBS: Record<
   earth_orb: {
     id: 'earth_orb',
     type: 'CelestialOrb',
-    name: 'Sets Orb',
+    name: 'Earth Orb',
     japaneseName: '地球',
     planetName: 'Earth',
     description:
@@ -262,7 +262,7 @@ export const CELESTIAL_ORBS: Record<
   mars_orb: {
     id: 'mars_orb',
     type: 'CelestialOrb',
-    name: 'Full Flush Orb',
+    name: 'Mars Orb',
     japaneseName: '火星',
     planetName: 'Mars',
     description:
@@ -284,7 +284,7 @@ export const CELESTIAL_ORBS: Record<
   neptune_orb: {
     id: 'neptune_orb',
     type: 'CelestialOrb',
-    name: 'Mixed Triple Orb',
+    name: 'Neptune Orb',
     japaneseName: '海王星',
     planetName: 'Neptune',
     description:
@@ -309,7 +309,7 @@ export const CELESTIAL_ORBS: Record<
   planet_x_orb: {
     id: 'planet_x_orb',
     type: 'CelestialOrb',
-    name: 'Seven Pairs Orb',
+    name: 'Planet X Orb',
     japaneseName: '惑星X',
     planetName: 'Planet X',
     description:
@@ -331,7 +331,7 @@ export const CELESTIAL_ORBS: Record<
   ceres_orb: {
     id: 'ceres_orb',
     type: 'CelestialOrb',
-    name: 'Outside Hand Orb',
+    name: 'Ceres Orb',
     japaneseName: 'ケレス',
     planetName: 'Ceres',
     description:
@@ -353,7 +353,7 @@ export const CELESTIAL_ORBS: Record<
   eris_orb: {
     id: 'eris_orb',
     type: 'CelestialOrb',
-    name: 'Thirteen Orphans Orb',
+    name: 'Eris Orb',
     japaneseName: 'エリス',
     planetName: 'Eris',
     description:
@@ -378,7 +378,7 @@ export const CELESTIAL_ORBS: Record<
   black_hole_orb: {
     id: 'black_hole_orb',
     type: 'CelestialOrb',
-    name: 'Every Family Orb',
+    name: 'Black Hole Orb',
     japaneseName: 'ブラックホール',
     planetName: 'Black Hole',
     description:

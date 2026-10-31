@@ -275,7 +275,7 @@
     }
   },
   "observatory": {
-    "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. The Every Family Orb matches any scored Yaku.",
+    "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. The Black Hole Orb matches any scored Yaku.",
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
   },
   "closedHandAusterity": {
@@ -823,7 +823,7 @@
       "sealHelp": "Used the moment you take it: choose the wall tiles it changes, and they stay changed for the whole run.",
       "sealHelpInstant": "Used the moment you take it.",
       "orb": "Celestial Orb · upgrades a family of hands",
-      "orbPlanet": "Celestial Orb · {{planet}}",
+      "orbFamily": "Celestial Orb · {{family}}",
       "script": "Void Script · powerful, with a cost",
       "consumableHelp": "Kept with your items until used. Tap it on the table to use it.",
       "tile": "Tile · added to your wall",
@@ -2509,68 +2509,55 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Pairs Orb",
-        "planet": "Pluto",
+        "name": "Pluto Orb",
         "description": "Raises Pairs by 1 level for this run (maximum 10). Every play that scores Pairs gains another +10 base points and +1 Mult."
       },
       "mercury_orb": {
-        "name": "All Simples Orb",
-        "planet": "Mercury",
+        "name": "Mercury Orb",
         "description": "Raises All Simples by 1 level for this run (maximum 10). Every play that scores All Simples gains another +15 base points and +1 Mult."
       },
       "uranus_orb": {
-        "name": "Honors Orb",
-        "planet": "Uranus",
+        "name": "Uranus Orb",
         "description": "Raises Honors by 1 level for this run (maximum 10). Every play that scores Honors gains another +20 base points and +1 Mult."
       },
       "venus_orb": {
-        "name": "Sequences Orb",
-        "planet": "Venus",
+        "name": "Venus Orb",
         "description": "Raises Sequences by 1 level for this run (maximum 10). Every play that scores Sequences gains another +20 base points and +2 Mult."
       },
       "saturn_orb": {
-        "name": "Straights Orb",
-        "planet": "Saturn",
+        "name": "Saturn Orb",
         "description": "Raises Straights by 1 level for this run (maximum 10). Every play that scores Straights gains another +30 base points and +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Half Flush Orb",
-        "planet": "Jupiter",
+        "name": "Jupiter Orb",
         "description": "Raises Half Flush by 1 level for this run (maximum 10). Every play that scores Half Flush gains another +15 base points and +2 Mult."
       },
       "earth_orb": {
-        "name": "Sets Orb",
-        "planet": "Earth",
+        "name": "Earth Orb",
         "description": "Raises Sets by 1 level for this run (maximum 10). Every play that scores Sets gains another +25 base points and +2 Mult."
       },
       "mars_orb": {
-        "name": "Full Flush Orb",
-        "planet": "Mars",
+        "name": "Mars Orb",
         "description": "Raises Full Flush by 1 level for this run (maximum 10). Every play that scores Full Flush gains another +30 base points and +3 Mult."
       },
       "neptune_orb": {
-        "name": "Mixed Triple Orb",
-        "planet": "Neptune",
+        "name": "Neptune Orb",
         "description": "Raises Mixed Triple by 1 level for this run (maximum 10). Every play that scores Mixed Triple gains another +40 base points and +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Seven Pairs Orb",
-        "planet": "Planet X",
+        "name": "Planet X Orb",
         "description": "Raises Seven Pairs by 1 level for this run (maximum 10). Every play that scores Seven Pairs gains another +35 base points and +3 Mult."
       },
       "ceres_orb": {
-        "name": "Outside Hand Orb",
-        "planet": "Ceres",
+        "name": "Ceres Orb",
         "description": "Raises Outside Hand by 1 level for this run (maximum 10). Every play that scores Outside Hand gains another +40 base points and +4 Mult."
       },
       "eris_orb": {
-        "name": "Thirteen Orphans Orb",
-        "planet": "Eris",
+        "name": "Eris Orb",
         "description": "Raises Thirteen Orphans by 1 level for this run (maximum 10). Every play that scores Thirteen Orphans gains another +50 base points and +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Every Family Orb",
-        "planet": "Black Hole",
+        "name": "Black Hole Orb",
         "description": "Raises all 12 hand families by 1 level for this run (maximum 10 each). Each family gains its usual base points and Mult; one already at level 10 stays there."
       }
     }
