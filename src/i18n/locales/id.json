@@ -997,7 +997,8 @@
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
       "omenEarned": "Pertanda: {{name}}",
-      "omen": "Pertanda"
+      "omen": "Pertanda",
+      "stakeWithheld": "{{stake}}: hadiah {{amount}}G ronde ini ditahan"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
     "packInventoryFull": "Slot Dekrit tidak cukup untuk pilihan ini. Jual Dekrit, pilih lebih sedikit, atau lewati paket.",

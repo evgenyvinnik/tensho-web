@@ -85,6 +85,25 @@ it.each(TABLE_STYLE_DEFINITIONS.map((t) => t.id))(
   }
 )
 
+it('keeps the Red Stake withheld reward through save and load, and rejects a negative one', () => {
+  const game = start(7, 2)
+  const state = game.getState() as OrchestratorState
+  state.targetScore = 1
+  state.roundManager.getCurrentRound()!.scoreTarget = 1
+  game.processAction({
+    type: 'play',
+    tileIds: game
+      .getHandTiles()
+      .slice(0, 2)
+      .map((t) => t.id),
+  })
+  expect(state.phase).toBe('shop')
+  const saved = check(game)
+  expect(saved.state.lastRoundSummary?.stakeWithheldReward).toBe(3)
+  saved.state.lastRoundSummary!.stakeWithheldReward = -3
+  expect(() => parseClassicRunSnapshot(saved)).toThrow()
+})
+
 it.each([7, 19, 413, 991, 2026])(
   'accepts shop, paid pack, claim and next-round checkpoints (seed %i)',
   (seed) => {

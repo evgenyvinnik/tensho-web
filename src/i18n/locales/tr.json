@@ -1076,7 +1076,8 @@
       "bonus": "Ödül düzeltmesi",
       "rentals": "Kiralar",
       "omenEarned": "Alamet: {{name}}",
-      "omen": "Alamet"
+      "omen": "Alamet",
+      "stakeWithheld": "{{stake}}: bu turun {{amount}}G ödülü verilmez"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
     "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Bir Ferman satarak yer açın, daha az seçin ya da paketi atlayın.",

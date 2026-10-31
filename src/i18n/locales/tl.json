@@ -1076,7 +1076,8 @@
       "bonus": "Pagsasaayos ng gantimpala",
       "rentals": "Upa",
       "omenEarned": "Pangitain: {{name}}",
-      "omen": "Pangitain"
+      "omen": "Pangitain",
+      "stakeWithheld": "{{stake}}: hindi ibinibigay ang {{amount}}G na gantimpala ng round na ito"
     },
     "packChoices": "Pumili ng hanggang {{max}} sa {{count}} gantimpala",
     "packInventoryFull": "Kulang ang puwesto ng Dekreto para sa napiling gantimpala. Magbenta ng Dekreto, bawasan ang pinili, o laktawan ang pack.",

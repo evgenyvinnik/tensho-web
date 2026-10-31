@@ -513,6 +513,45 @@ describe('GameOrchestrator', () => {
       expect(game.getState().targetScore).toBe(800)
       expect(game.getState().phase).toBe('gameplay')
     })
+
+    it('reports the Small reward Red Stake withholds, so the payout can say why it is 0', () => {
+      game.startNewRun(12345, 2)
+      clearDecrees(game)
+      const before = game.getState().gold
+      clearRound(game)
+      const summary = game.getState().lastRoundSummary!
+      expect(summary).toMatchObject({
+        roundType: 'Small',
+        baseReward: 0,
+        stakeWithheldReward: 3,
+      })
+      // Withheld Gold is reported, never paid.
+      expect(summary.netGoldChange).toBe(game.getState().gold - before)
+      expect(summary.netGoldChange).toBe(summary.interest)
+
+      // Only the Small reward is withheld.
+      game.exitShop()
+      clearRound(game)
+      expect(game.getState().lastRoundSummary).toMatchObject({
+        roundType: 'Large',
+        baseReward: 5,
+      })
+      expect(game.getState().lastRoundSummary).not.toHaveProperty(
+        'stakeWithheldReward'
+      )
+    })
+
+    it('withholds nothing on White Stake', () => {
+      game.startNewRun(12345, 1)
+      clearRound(game)
+      expect(game.getState().lastRoundSummary).toMatchObject({
+        roundType: 'Small',
+        baseReward: 3,
+      })
+      expect(game.getState().lastRoundSummary).not.toHaveProperty(
+        'stakeWithheldReward'
+      )
+    })
   })
 
   describe('shop rewards and upgrades', () => {

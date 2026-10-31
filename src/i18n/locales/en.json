@@ -785,7 +785,8 @@
       "bonus": "Reward adjustment",
       "rentals": "Rentals",
       "omenEarned": "Omen: {{name}}",
-      "omen": "Omen"
+      "omen": "Omen",
+      "stakeWithheld": "{{stake}}: this round's {{amount}}G reward is withheld"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
     "packInventoryFull": "Not enough Decree slots for this selection. Sell a Decree, choose fewer, or skip the pack.",

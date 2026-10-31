@@ -789,7 +789,8 @@
       "bonus": "報酬調整",
       "rentals": "レンタル料",
       "omenEarned": "兆し：{{name}}",
-      "omen": "兆し"
+      "omen": "兆し",
+      "stakeWithheld": "{{stake}}：このラウンドの報酬{{amount}}Gは支払われません"
     },
     "packChoices": "{{count}} 個の報酬から最大 {{max}} 個を選択",
     "packInventoryFull": "この選択に必要な法令枠が足りません。法令を売却するか、選ぶ数を減らすか、パックをスキップしてください。",

@@ -789,7 +789,8 @@
       "bonus": "Ajustement de récompense",
       "rentals": "Locations",
       "omenEarned": "Présage : {{name}}",
-      "omen": "Présage"
+      "omen": "Présage",
+      "stakeWithheld": "{{stake}} : cette manche ne verse pas sa récompense de {{amount}}G"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
     "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Vendez un Décret, choisissez-en moins ou passez le paquet.",

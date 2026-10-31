@@ -789,7 +789,8 @@
       "bonus": "보상 조정",
       "rentals": "대여료",
       "omenEarned": "징조: {{name}}",
-      "omen": "징조"
+      "omen": "징조",
+      "stakeWithheld": "{{stake}}: 이번 라운드 보상 {{amount}}G가 지급되지 않습니다"
     },
     "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
     "packInventoryFull": "선택한 보상을 받을 법령 슬롯이 부족합니다. 법령을 판매하거나, 선택을 줄이거나, 팩을 건너뛰세요.",

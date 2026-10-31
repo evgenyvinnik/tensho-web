@@ -199,7 +199,17 @@ export function CashOutToasts({
                   className="h-6 w-6 shrink-0 object-contain"
                 />
               )}
-              <span className="min-w-0">{entry.label}</span>
+              <span className="flex min-w-0 flex-col">
+                <span>{entry.label}</span>
+                {entry.note && (
+                  <span
+                    data-cash-out-note
+                    className="text-xs leading-snug text-[var(--color-beige-white)]/75"
+                  >
+                    {entry.note}
+                  </span>
+                )}
+              </span>
               {entry.id !== 'omen' && (
                 <span
                   data-cash-out-amount

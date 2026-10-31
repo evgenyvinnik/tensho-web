@@ -789,7 +789,8 @@
       "bonus": "奖励调整",
       "rentals": "租金",
       "omenEarned": "征兆：{{name}}",
-      "omen": "征兆"
+      "omen": "征兆",
+      "stakeWithheld": "{{stake}}：本回合的 {{amount}}G 奖励不予发放"
     },
     "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
     "packInventoryFull": "法令槽位不足，无法领取所选奖励。请出售法令、减少选择或跳过卡包。",

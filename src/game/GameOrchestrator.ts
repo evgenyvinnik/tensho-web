@@ -178,6 +178,11 @@ export interface RoundCashOutSummary {
   omenId?: string | null
   /** Gold the swift-clear Omen paid at once, included in netGoldChange. */
   omenGold?: number
+  /**
+   * Clear reward the Stake withheld (Red Stake's Small round), not paid and
+   * not in netGoldChange. Absent when nothing was withheld.
+   */
+  stakeWithheldReward?: number
 }
 
 /**
@@ -4098,14 +4103,14 @@ export class GameOrchestrator {
 
     const roundState = completedRound
     let goldReward = 0
+    let stakeWithheldReward = 0
 
     if (roundState) {
       switch (roundState.roundType) {
         case 'Small':
-          goldReward = this.state.roundManager.getStakeModifiers()
-            .noSmallRoundReward
-            ? 0
-            : 3
+          if (this.state.roundManager.getStakeModifiers().noSmallRoundReward)
+            stakeWithheldReward = 3
+          else goldReward = 3
           break
         case 'Large':
           goldReward = 5
@@ -4186,6 +4191,7 @@ export class GameOrchestrator {
       nextTarget: hasUpcomingRound ? upcomingRound.scoreTarget : null,
       omenId: swiftOmen?.omen?.id ?? null,
       omenGold,
+      ...(stakeWithheldReward ? { stakeWithheldReward } : {}),
     }
 
     eventBus.emit('roundEnd', {

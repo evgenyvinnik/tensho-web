@@ -1076,7 +1076,8 @@
       "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio"
+      "omen": "Presagio",
+      "stakeWithheld": "{{stake}}: questo round non paga la ricompensa di {{amount}}G"
     },
     "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
     "packInventoryFull": "Spazi Decreto insufficienti per questa selezione. Vendi un Decreto, scegline meno oppure salta il pacchetto.",

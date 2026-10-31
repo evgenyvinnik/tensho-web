@@ -789,7 +789,8 @@
       "bonus": "Ajuste de recompensa",
       "rentals": "Alquileres",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio"
+      "omen": "Presagio",
+      "stakeWithheld": "{{stake}}: esta ronda no paga su recompensa de {{amount}}G"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
     "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Vende un Decreto, elige menos o salta el paquete.",

@@ -7,7 +7,9 @@
  */
 
 import type { TFunction } from 'i18next'
+import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
+import { STAKE_NAME_KEYS } from '../../i18n/stakeRules'
 
 export interface CashOutEntry {
   id:
@@ -22,8 +24,15 @@ export interface CashOutEntry {
   label: string
   /** Gold this toast carries; 0 for the Omen itself. */
   amount: number
+  /** Why the amount is not what the player expects, e.g. a Stake rule. */
+  note?: string
   omenId?: string
 }
+
+/** The Stake whose rule withholds the clear reward: the tier introducing it. */
+const WITHHOLDING_STAKE_TIER =
+  STAKE_DEFINITIONS.find((stake) => stake.modifier.noSmallRoundReward)?.tier ??
+  2
 
 /** The toasts one settlement produces, in the order they are paid. */
 export function cashOutEntries(
@@ -41,7 +50,19 @@ export function cashOutEntries(
     summary.heldGoldMarkReward -
     (summary.omenGold ?? 0)
   const sources: CashOutEntry[] = [
-    { id: 'clear', label: t('shop.roundCleared'), amount: summary.baseReward },
+    {
+      id: 'clear',
+      label: t('shop.roundCleared'),
+      amount: summary.baseReward,
+      ...(summary.stakeWithheldReward
+        ? {
+            note: t('shop.payout.stakeWithheld', {
+              stake: t(`stakes.${STAKE_NAME_KEYS[WITHHOLDING_STAKE_TIER - 1]}`),
+              amount: summary.stakeWithheldReward,
+            }),
+          }
+        : {}),
+    },
     {
       id: 'interest',
       label: t('shop.payout.interest'),
