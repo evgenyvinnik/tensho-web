@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { SUPPORTED_LANGUAGES } from '../src/router/routeManifest'
-import { openTable, settleReveals } from './helpers/table'
+import { openTable, rackTiles, settleReveals } from './helpers/table'
 
 for (const language of SUPPORTED_LANGUAGES) {
   test(`action labels and counters fit without shrinking or clipping (${language})`, async ({
@@ -118,3 +118,70 @@ for (const language of SUPPORTED_LANGUAGES) {
     await expect(dialog).toBeHidden()
   })
 }
+
+// The reason for a blocked play floats over the table: showing it must not
+// grow the action bar and squeeze the board above it.
+test('the blocked-play reason never moves the table', async ({
+  page,
+  isMobile,
+}) => {
+  const copy = JSON.parse(readFileSync('src/i18n/locales/en.json', 'utf8'))
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize(
+    isMobile ? { width: 320, height: 568 } : { width: 390, height: 844 }
+  )
+  await page.addInitScript(() => {
+    localStorage.setItem('tensho_hints_disabled', 'true')
+  })
+  await openTable(page, 'en/play')
+  const bar = page.locator('[data-action-bar]')
+  const reason = page.locator('[data-action-reason]')
+  const tap = async (id: string) => {
+    const tile = page.locator(`[data-play-tile="${id}"]`)
+    if (isMobile) await tile.tap()
+    else await tile.click()
+  }
+  // Bar and board boxes from one frame, so a reflow can't split them.
+  const layout = () =>
+    page.evaluate(() => {
+      const box = (selector: string) => {
+        const { top, height } = document
+          .querySelector(selector)!
+          .getBoundingClientRect()
+        return { top, height }
+      }
+      return {
+        bar: box('[data-action-bar]'),
+        board: box('[data-gameplay-scroll]'),
+      }
+    })
+  await expect(reason).toHaveCount(0)
+  const idle = await layout()
+
+  const ids = await rackTiles(page).evaluateAll((tiles) =>
+    tiles.map((tile) => tile.getAttribute('data-play-tile')!)
+  )
+  expect(ids.length).toBeGreaterThan(6)
+  await tap(ids[0])
+  await expect(reason).toHaveText(
+    copy.gameplay.reasonMinimum.replace('{{count}}', '2')
+  )
+  expect(await layout()).toEqual(idle)
+
+  // Seven tiles: the longest English reason, wrapping over two lines.
+  for (const id of ids.slice(1, 7)) await tap(id)
+  await expect(reason).toHaveText(
+    copy.gameplay.reasonMaximumRedraw.replace('{{count}}', '6')
+  )
+  expect(await layout()).toEqual(idle)
+  // It sits just above the bar, inside the screen.
+  const [floating, base] = await Promise.all([
+    reason.boundingBox(),
+    bar.boundingBox(),
+  ])
+  expect(floating!.y + floating!.height).toBeLessThanOrEqual(base!.y)
+  expect(floating!.x).toBeGreaterThanOrEqual(0)
+  expect(floating!.x + floating!.width).toBeLessThanOrEqual(
+    page.viewportSize()!.width
+  )
+})
