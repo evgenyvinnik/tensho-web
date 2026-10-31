@@ -28,19 +28,20 @@ Winning deals and starting gold are controlled fixtures after actual seeded skip
 
 ## Player-facing effects
 
-The optional disclosure now says **Omen effects**, since an acquisition tag may
-be consumed before its effect ends. It reads the engine's live Season lock and
-interest durations rather than inferring them from historical tags. The panel
-remains available when only a live restriction or benefit remains, and disappears
-when both active tags and ongoing effects are gone.
+An acquisition tag may be consumed before its effect ends, so each live effect
+keeps its own icon on the collectible rail after the Omen icons: the locked
+Season's picture with a lock badge, and the Austerity or Interest Omen's picture
+badged with the rounds left. The rail reads the engine's live Season lock and
+interest durations rather than inferring them from historical tags, and each
+icon leaves when its effect ends.
 
 Each pending Rare+ guarantee shows its own five-gold fee and says the fee is only
 charged when that offer is delivered. Deferral keeps both the guarantee and its
 fee pending. Copied guarantees show two distinct fees. Applied/replaced Season
 locks and expired interest restrictions do not remain as stale instructions.
 The generated Double Omen illustration remains; no new bitmap is needed for
-these live costs and durations. All four effect messages and the revised heading
-are supplied in thirteen languages, without claiming native-speaker review.
+these live costs and durations. All four effect messages and the locked Season's
+icon label are supplied in thirteen languages, without claiming native-speaker review.
 
 ## Verification
 

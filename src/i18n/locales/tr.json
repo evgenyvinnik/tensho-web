@@ -417,10 +417,10 @@
     "saveLeave": "Kaydet ve çık"
   },
   "omens": {
-    "pending": "Alamet etkileri",
     "effects": {
       "shopFee": "Maliyet: Bu mağaza teklifi sunulduğunda {{amount}} altın. Ertelendiği sürece ücret alınmaz.",
       "seasonLock": "Çekilecek sonraki Mevsim: {{season}}. Kilit o çekilişte sona erer.",
+      "seasonLockLabel": "Sonraki Mevsim: {{season}}",
       "noInterest": "Faiz engellendi · kalan tur: {{rounds}}",
       "interestBoost": "Faiz sınırı +{{amount}} altın · kalan tur: {{rounds}}"
     },

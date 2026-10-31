@@ -31,10 +31,10 @@ idempotent timing; duplication does not extend them into additional rounds.
 
 ## UI and localization
 
-Pending Omens now have an optional, initially closed native disclosure on the
-game screen. It has no timer, overlay or automatic focus change and does not
-require hovering. Names/descriptions use the item-localization helper. Double
-Omen and the disclosure label have text in all thirteen locales. Other legacy
+Each pending Omen is an icon on the table's collectible rail, beside the
+Flowers and Seasons; tapping it opens its name and description, like any other
+rail item. Names/descriptions use the item-localization helper. Double Omen has
+text in all thirteen locales. Other legacy
 Omen translations may still fall back to English; native-speaker review remains
 open. The new image appears while copies are armed and in the discovered Archive
 card/detail; undiscovered cards retain their existing hidden presentation.

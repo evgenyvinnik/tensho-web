@@ -2404,10 +2404,10 @@
     }
   },
   "omens": {
-    "pending": "Efectos de presagios",
     "effects": {
       "shopFee": "Coste: {{amount}} de oro al recibir esta oferta en la tienda. Sin cargo mientras se aplace.",
       "seasonLock": "Próxima Estación robada: {{season}}. El bloqueo termina al robarla.",
+      "seasonLockLabel": "Próxima Estación: {{season}}",
       "noInterest": "Sin intereses · rondas restantes: {{rounds}}",
       "interestBoost": "Límite de intereses +{{amount}} de oro · rondas restantes: {{rounds}}"
     },
