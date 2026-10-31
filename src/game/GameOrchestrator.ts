@@ -33,7 +33,11 @@ import {
   createScoringContext,
   ScoreBreakdown,
 } from '../rules/ScoringEngine'
-import { findOneAwayCompletion, validateHand } from '../rules/HandValidator'
+import {
+  findLooseGroupCompletion,
+  findOneAwayCompletion,
+  validateHand,
+} from '../rules/HandValidator'
 import {
   findCompleteHandSubset,
   REGULAR_TILE_TYPES,
@@ -1581,8 +1585,11 @@ export class GameOrchestrator {
     const minimum =
       (options.meldMayServeAsPair ? 12 : 14) -
       Number(options.allowSequenceOverlap)
-    const clemency = !genuineOnly && this.isDecreeRuleActive('shanten_clemency')
-    if (visible.length < minimum - Number(clemency)) return null
+    const oneAway =
+      !genuineOnly &&
+      (this.isDecreeRuleActive('shanten_clemency') ||
+        this.state.voidScriptSystem.isShantenScoringAllowed())
+    if (visible.length < minimum - Number(oneAway)) return null
     if (this.isDecreeRuleActive('all_wild') && visible.length >= 14) {
       const chosen = [...visible]
         .sort(
@@ -1653,7 +1660,7 @@ export class GameOrchestrator {
       const found = withWildcard(variant)
       if (found) return found
     }
-    if (clemency)
+    if (oneAway)
       for (const variant of variants)
         for (const [suit, maximum] of REGULAR_TILE_TYPES)
           for (let rank = 1; rank <= maximum; rank++) {
@@ -1752,6 +1759,7 @@ export class GameOrchestrator {
     return Boolean(
       complete &&
       !complete.usedShantenClemency &&
+      !complete.completedBy &&
       complete.parsedHand.isConcealed &&
       this.state.melds.every((meld) => meld.isConcealed)
     )
@@ -1791,7 +1799,9 @@ export class GameOrchestrator {
         completeHand.parsedHand,
         undefined,
         true,
-        !completeHand.usedShantenClemency && completeHand.parsedHand.isConcealed
+        !completeHand.usedShantenClemency &&
+          !completeHand.completedBy &&
+          completeHand.parsedHand.isConcealed
       )
       if (completeHand.usedShantenClemency) {
         complete.finalScore = Math.floor(complete.finalScore * 0.5)
@@ -1823,6 +1833,8 @@ export class GameOrchestrator {
     parsedHand: ParsedHand
     tilesToScore: Tile[]
     usedShantenClemency: boolean
+    /** A Void Script, not the tiles, made this hand complete. */
+    completedBy?: 'script_of_eclipse' | 'script_of_silence'
   } | null {
     const validationOptions = this.getValidationOptions()
     const hand = new Hand()
@@ -1853,23 +1865,43 @@ export class GameOrchestrator {
       }
     }
 
-    if (!this.isDecreeRuleActive('shanten_clemency')) return null
-    const completion = findOneAwayCompletion(
+    // Eclipse completes the same way as Shanten Clemency, without its
+    // penalty, so it is tried first.
+    const eclipse = this.state.voidScriptSystem.isShantenScoringAllowed()
+    const completion =
+      eclipse || this.isDecreeRuleActive('shanten_clemency')
+        ? findOneAwayCompletion(
+            tilesToScore,
+            this.state.melds,
+            validationOptions
+          )
+        : null
+    if (completion) {
+      const effectiveById = new Map(
+        completion.effectiveTiles?.map((tile) => [tile.id, tile])
+      )
+      return {
+        parsedHand: completion.parsedHand,
+        tilesToScore: [...tilesToScore, completion.completionTile].map(
+          (tile) => effectiveById.get(tile.id) ?? tile
+        ),
+        usedShantenClemency: !eclipse,
+        completedBy: eclipse ? 'script_of_eclipse' : undefined,
+      }
+    }
+
+    if (!this.state.voidScriptSystem.isMeldValidationBypassed()) return null
+    const loose = findLooseGroupCompletion(
       tilesToScore,
       this.state.melds,
       validationOptions
     )
-    if (!completion) return null
-
-    const effectiveById = new Map(
-      completion.effectiveTiles?.map((tile) => [tile.id, tile])
-    )
+    if (!loose) return null
     return {
-      parsedHand: completion.parsedHand,
-      tilesToScore: [...tilesToScore, completion.completionTile].map(
-        (tile) => effectiveById.get(tile.id) ?? tile
-      ),
-      usedShantenClemency: true,
+      parsedHand: loose.parsedHand,
+      tilesToScore,
+      usedShantenClemency: false,
+      completedBy: 'script_of_silence',
     }
   }
 
@@ -1924,7 +1956,9 @@ export class GameOrchestrator {
       completeHand.parsedHand,
       undefined,
       false,
-      !completeHand.usedShantenClemency && completeHand.parsedHand.isConcealed
+      !completeHand.usedShantenClemency &&
+        !completeHand.completedBy &&
+        completeHand.parsedHand.isConcealed
     )
     if (completeHand.usedShantenClemency) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore * 0.5)
@@ -1932,6 +1966,19 @@ export class GameOrchestrator {
         type: 'decree_triggered',
         description:
           'Shanten Clemency completed the hand at a 50% score penalty',
+      })
+    }
+    if (completeHand.completedBy === 'script_of_eclipse') {
+      effects.push({
+        type: 'consumable_effect',
+        description: 'Script of Eclipse completed the hand',
+      })
+    }
+    if (completeHand.completedBy === 'script_of_silence') {
+      this.state.voidScriptSystem.useMeldValidationBypass()
+      effects.push({
+        type: 'consumable_effect',
+        description: 'Script of Silence let one group stand that did not fit',
       })
     }
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
@@ -1952,6 +1999,7 @@ export class GameOrchestrator {
     this.state.playsThisRound = this.getPlaysThisRound() + 1
     if (
       !completeHand.usedShantenClemency &&
+      !completeHand.completedBy &&
       completeHand.parsedHand.isConcealed
     )
       this.state.completeConcealedHandsPlayed =

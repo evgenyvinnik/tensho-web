@@ -605,9 +605,14 @@ matching hands earn the reward rather than being a prerequisite XP grind.*
 **Mahjong Twist:** Scripts can corrupt Seasons or weaken Decrees temporarily.
 
 **Example Effects (Original):**
-- **Script of Eclipse:** Score at 1-shanten, lose a Decree slot next round.
+- **Script of Eclipse:** For the rest of the round, a hand one tile short of
+  complete scores as complete, without Shanten Clemency's half-score penalty;
+  lose a Decree slot next round.
 - **Script of Mirrors:** Duplicate one tile, but lock a random tile in Dead Pool.
-- **Script of Silence:** Ignore one invalid meld, but halve base score.
+- **Script of Silence:** The next complete hand that needs it may hold three
+  tiles that form no group in one group's place. They score their tile points
+  but no group bonus, and no Yaku reads them. The bypass waits through other
+  plays and rounds until a hand uses it; the next play scores half.
 
 ### 7d. Imperial Charters (Voucher analog)
 

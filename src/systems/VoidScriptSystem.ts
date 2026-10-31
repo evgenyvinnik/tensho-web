@@ -899,7 +899,7 @@ export class VoidScriptSystem {
       this.allowShantenScoring = true
       return {
         success: true,
-        message: `${script.name}: You may score at 1-shanten this round`,
+        message: `${script.name}: A hand one tile short of complete scores as complete this round`,
         effects: [
           {
             type: 'shanten_allowed',
@@ -913,7 +913,7 @@ export class VoidScriptSystem {
       this.bypassMeldValidation = true
       return {
         success: true,
-        message: `${script.name}: One invalid meld will be ignored`,
+        message: `${script.name}: Your next complete hand may include one group that does not fit`,
         effects: [
           {
             type: 'meld_bypass',
@@ -1308,6 +1308,14 @@ export class VoidScriptSystem {
   }
 
   /**
+   * Spend Silence's bypass on the complete hand that needed it. It waits
+   * through other plays and rounds until then.
+   */
+  useMeldValidationBypass(): void {
+    this.bypassMeldValidation = false
+  }
+
+  /**
    * Check if base score is halved this hand
    */
   isBaseScoreHalved(): boolean {
@@ -1319,7 +1327,6 @@ export class VoidScriptSystem {
    */
   onRoundEnd(): void {
     this.allowShantenScoring = false
-    this.bypassMeldValidation = false
     this.baseScoreHalved = false
     // Apply pending decree slot losses
     // (This would be handled by the consumable store/game orchestrator)
@@ -1331,7 +1338,6 @@ export class VoidScriptSystem {
    */
   onHandEnd(): void {
     this.baseScoreHalved = false
-    this.bypassMeldValidation = false
   }
 
   /**

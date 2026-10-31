@@ -2,7 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { Hand } from '../core/Hand'
 import { Tile, TileSuit } from '../core/Tile'
 import { calculateScore, createScoringContext } from './ScoringEngine'
-import { findOneAwayCompletion, validateHand } from './HandValidator'
+import {
+  findLooseGroupCompletion,
+  findOneAwayCompletion,
+  validateHand,
+} from './HandValidator'
 
 let tileCounter = 0
 
@@ -131,6 +135,38 @@ describe('HandValidator Decree rules and special hands', () => {
     expect(completion).not.toBeNull()
     expect(completion?.completionTile.suit).toBe(TileSuit.Souzu)
     expect(completion?.completionTile.rank).toBe(5)
+  })
+
+  it('lets three loose tiles hold one group slot for Script of Silence', () => {
+    const hand = handFrom([
+      [TileSuit.Manzu, [1, 2, 3, 4, 5, 6]],
+      [TileSuit.Pinzu, [7, 7, 7, 2, 2]],
+      [TileSuit.Souzu, [1, 5]],
+      [TileSuit.Wind, [3]],
+    ])
+    expect(validateHand(hand).isComplete).toBe(false)
+
+    const completion = findLooseGroupCompletion(hand.allTiles)!
+    expect(completion.looseTiles.map((t) => [t.suit, t.rank]).sort()).toEqual(
+      [
+        [TileSuit.Souzu, 1],
+        [TileSuit.Souzu, 5],
+        [TileSuit.Wind, 3],
+      ].sort()
+    )
+    // The loose trio is no group: three melds and the pair remain.
+    expect(completion.parsedHand.melds).toHaveLength(3)
+    expect(completion.parsedHand.pair.tiles[0].rank).toBe(2)
+  })
+
+  it('lets Silence excuse only one group', () => {
+    const hand = handFrom([
+      [TileSuit.Manzu, [1, 2, 3, 4, 5, 9]],
+      [TileSuit.Pinzu, [7, 7, 7, 2, 2]],
+      [TileSuit.Souzu, [1, 5]],
+      [TileSuit.Wind, [3]],
+    ])
+    expect(findLooseGroupCompletion(hand.allTiles)).toBeNull()
   })
 
   it('uses one Celestial Wildcard to repair an otherwise invalid structure', () => {
