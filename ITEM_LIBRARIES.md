@@ -92,7 +92,7 @@ above 1 adds the bonus below to every play that scores the family.
 | **Script of Kinship** | 眷属の書 | Destroys 1 random tile, then adds 3 random Honor tiles (Winds/Dragons), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
 | **Script of the Grave** | 墓場の書 | Destroys 1 random tile, then adds 2 random Terminal tiles (1s and 9s), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
 | **Script of Incantation** | 呪文の書 | Destroys 1 random tile, then adds 4 random numbered tiles (2–8), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
-| **Script of the Gold Stamp** | 金印の書 | Adds a Gold Stamp to 1 selected tile | None (rare find) |
+| **Script of the Gold Stamp** | 金封蝋の書 | Adds a Gold Stamp to 1 selected tile | None (rare find) |
 | **Script of Aura** | 光輪の書 | Adds a Foil, Holographic or Polychrome Edition to 1 selected tile | None (rare) |
 | **Script of the Wraith** | 亡霊の書 | Creates a random Rare Decree | Gold set to ¥0 |
 | **Script of the Sigil** | 印形の書 | Converts ALL tiles in hand to a single random suit | Massive commitment |
@@ -150,14 +150,14 @@ Mark. "Seal" means only the Fate Seal consumable. In code, Marks are
 
 | Mark | Japanese | Effect |
 |------|----------|--------|
-| **Bonus Mark** | 加点印 | +30 Points when scored |
-| **Mult Mark** | 倍点印 | +4 Mult when scored |
-| **Wild Mark** | 万能印 | Counts as every suit simultaneously |
-| **Glass Mark** | 硝子印 | ×2 Mult when scored; 1/4 chance to shatter after |
-| **Steel Mark** | 鋼印 | ×1.5 Mult while held in hand (not played) |
-| **Stone Mark** | 石印 | +100 Points, always scores, no rank/suit |
-| **Gold Mark** | 金印 | ¥3 if held at end of round |
-| **Lucky Mark** | 幸運印 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
+| **Bonus Mark** | 加点紋 | +30 Points when scored |
+| **Mult Mark** | 倍率紋 | +4 Mult when scored |
+| **Wild Mark** | 万能紋 | Counts as every suit simultaneously |
+| **Glass Mark** | 硝子紋 | ×2 Mult when scored; 1/4 chance to shatter after |
+| **Steel Mark** | 鋼紋 | ×1.5 Mult while held in hand (not played) |
+| **Stone Mark** | 石紋 | +100 Points, always scores, no rank/suit |
+| **Gold Mark** | 金紋 | ¥3 if held at end of round |
+| **Lucky Mark** | 幸運紋 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
 
 ### Stamps (replace a Mark or Edition)
 

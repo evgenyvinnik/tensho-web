@@ -88,7 +88,7 @@ export const ARCHIVE_CATEGORIES: Record<
   tileMarks: {
     id: 'tileMarks',
     name: 'Tile Marks',
-    japaneseName: '牌印録',
+    japaneseName: '牌紋録',
     description: 'Marks that change how a tile scores or behaves',
     expectedCount: 8, // Enhancement types
     icon: 'sparkle',
@@ -96,7 +96,7 @@ export const ARCHIVE_CATEGORIES: Record<
   seals: {
     id: 'seals',
     name: 'Stamps',
-    japaneseName: '封印録',
+    japaneseName: '封蝋録',
     description: 'Wax stamps that give a tile an extra effect',
     expectedCount: 4, // Gold, Red, Blue, Purple
     icon: 'seal',
@@ -394,42 +394,42 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   {
     id: 'bonus',
     name: 'Bonus Mark',
-    japaneseName: '点印',
+    japaneseName: '加点紋',
     description: 'Tile scores extra points',
     effect: '+30 Points when scored',
   },
   {
     id: 'mult',
     name: 'Mult Mark',
-    japaneseName: '倍印',
+    japaneseName: '倍率紋',
     description: 'Tile adds multiplier',
     effect: '+4 Mult when scored',
   },
   {
     id: 'wild',
     name: 'Wild Mark',
-    japaneseName: '万印',
+    japaneseName: '万能紋',
     description: 'Tile can act as any suit',
     effect: 'Counts as any suit for yaku',
   },
   {
     id: 'glass',
     name: 'Glass Mark',
-    japaneseName: '硝印',
+    japaneseName: '硝子紋',
     description: 'Fragile but powerful',
     effect: 'x2 Mult when scored, 25% chance to shatter',
   },
   {
     id: 'steel',
     name: 'Steel Mark',
-    japaneseName: '鋼印',
+    japaneseName: '鋼紋',
     description: 'Bonus when held',
     effect: 'x1.5 Mult while held in hand',
   },
   {
     id: 'stone',
     name: 'Stone Mark',
-    japaneseName: '石印',
+    japaneseName: '石紋',
     description: 'No rank or suit',
     effect:
       '+100 Points. The tile has no rank or suit, so it never joins a group, but it always scores in full.',
@@ -437,14 +437,14 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   {
     id: 'gold',
     name: 'Gold Mark',
-    japaneseName: '金印',
+    japaneseName: '金紋',
     description: 'Generates gold',
     effect: '+3 Gold when held at round end',
   },
   {
     id: 'lucky',
     name: 'Lucky Mark',
-    japaneseName: '運印',
+    japaneseName: '幸運紋',
     description: 'Random bonus chance',
     effect:
       'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',

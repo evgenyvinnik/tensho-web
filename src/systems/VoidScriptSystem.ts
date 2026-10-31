@@ -243,7 +243,7 @@ export const VOID_SCRIPTS: Record<
     id: 'script_of_the_gold_seal',
     type: 'VoidScript',
     name: 'Script of the Gold Stamp',
-    japaneseName: '金印の書',
+    japaneseName: '金封蝋の書',
     description: 'Adds a Gold Stamp to 1 selected tile',
     rarity: 'Uncommon',
     edition: 'Base',

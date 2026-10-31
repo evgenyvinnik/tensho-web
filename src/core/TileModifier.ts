@@ -70,7 +70,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Bonus]: {
     type: EnhancementType.Bonus,
     name: 'Bonus Mark',
-    japaneseName: '増印',
+    japaneseName: '加点紋',
     description: '+30 Points when this tile scores',
     chipBonus: 30,
     multBonus: 0,
@@ -81,7 +81,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Mult]: {
     type: EnhancementType.Mult,
     name: 'Mult Mark',
-    japaneseName: '倍印',
+    japaneseName: '倍率紋',
     description: '+4 Mult when this tile scores',
     chipBonus: 0,
     multBonus: 4,
@@ -92,7 +92,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Wild]: {
     type: EnhancementType.Wild,
     name: 'Wild Mark',
-    japaneseName: '萬能印',
+    japaneseName: '万能紋',
     description: 'Counts as every suit simultaneously',
     chipBonus: 0,
     multBonus: 0,
@@ -103,7 +103,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Glass]: {
     type: EnhancementType.Glass,
     name: 'Glass Mark',
-    japaneseName: '硝子印',
+    japaneseName: '硝子紋',
     description: '×2 Mult when scored, 1/4 chance to shatter after',
     chipBonus: 0,
     multBonus: 0,
@@ -114,7 +114,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Steel]: {
     type: EnhancementType.Steel,
     name: 'Steel Mark',
-    japaneseName: '鋼印',
+    japaneseName: '鋼紋',
     description: '×1.5 Mult while held in hand (not played)',
     chipBonus: 0,
     multBonus: 0,
@@ -125,7 +125,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Stone]: {
     type: EnhancementType.Stone,
     name: 'Stone Mark',
-    japaneseName: '石印',
+    japaneseName: '石紋',
     description: '+100 Points, always scores regardless of hand',
     // Double a Wind tile's 50: a Stone gives up grouping for a sure payout.
     chipBonus: 100,
@@ -137,7 +137,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Gold]: {
     type: EnhancementType.Gold,
     name: 'Gold Mark',
-    japaneseName: '金印',
+    japaneseName: '金紋',
     description: 'Earn ¥3 at end of round if in hand',
     chipBonus: 0,
     multBonus: 0,
@@ -148,7 +148,7 @@ export const ENHANCEMENT_DEFINITIONS: Record<
   [EnhancementType.Lucky]: {
     type: EnhancementType.Lucky,
     name: 'Lucky Mark',
-    japaneseName: '幸運印',
+    japaneseName: '幸運紋',
     description: '1/5 chance for +20 Mult, 1/15 chance for ¥20',
     chipBonus: 0,
     multBonus: 0, // Calculated randomly
@@ -215,7 +215,7 @@ export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
   [SealType.Red]: {
     type: SealType.Red,
     name: 'Red Stamp',
-    japaneseName: '紅封',
+    japaneseName: '赤封',
     description: 'Retrigger this tile once when scored',
     goldOnPlay: 0,
     retriggers: 1,
