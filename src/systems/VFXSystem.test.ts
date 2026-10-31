@@ -25,4 +25,25 @@ describe('VFXSystem lifecycle', () => {
     eventBus.emit('roundEnd', { won: true, score: 900, target: 800 })
     expect(scorePopups).toEqual([420])
   })
+
+  it('flashes the screen for a purchase but leaves a reroll to the Tea House cards', () => {
+    system = new VFXSystem()
+    const flashes: string[] = []
+    system.onFlash((flash) => flashes.push(flash.color))
+    system.initialize()
+
+    eventBus.emit('itemPurchased', {
+      itemType: 'Reroll',
+      itemId: 'reroll',
+      cost: 5,
+    })
+    expect(flashes).toHaveLength(0)
+
+    eventBus.emit('itemPurchased', {
+      itemType: 'Decree',
+      itemId: 'decree-wealth-engine',
+      cost: 6,
+    })
+    expect(flashes).toHaveLength(1)
+  })
 })

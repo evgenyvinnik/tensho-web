@@ -226,7 +226,11 @@ export function AnchoredPopover({
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onKeyDown={onPanelKeyDown}
-      className="fixed z-[90] overflow-y-auto overscroll-contain rounded-xl border border-[var(--color-metallic-gold)]/80 bg-[#0b1b15]/[0.98] p-3 text-left text-[var(--color-beige-white)] shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
+      // No transitions: reduced motion gives every element a one-frame one,
+      // which would sweep the panel from its measuring spot across the page
+      // under a resting mouse, and closing it then reads as re-entering the
+      // trigger, reopening a hover panel.
+      className="fixed z-[90] overflow-y-auto overscroll-contain rounded-xl transition-none border border-[var(--color-metallic-gold)]/80 bg-[#0b1b15]/[0.98] p-3 text-left text-[var(--color-beige-white)] shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
       style={
         placement
           ? {

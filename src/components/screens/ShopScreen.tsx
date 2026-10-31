@@ -6,8 +6,9 @@
  * - Item Slots (2-4 slots): Random items (Decrees, Fate Seals, Celestial Orbs)
  * - Blessing Packs (2 packs): Booster packs with random contents
  * - Imperial Charter (1 slot): Voucher-style permanent upgrade (after boss rounds)
- * - Reroll Button: Refresh item slots (5 gold base, +1 per reroll)
  * - Gold Display: Current gold amount
+ * - Reroll Button: Refresh item slots (5 gold base, +1 per reroll), right
+ *   above Next Round; the old item cards fade away and the new ones fade in
  * - Next Round Button: Proceed to next round
  *
  * Uses the run-owned ShopSession for purchases and pack settlement.
@@ -33,6 +34,7 @@ import {
 import { consumableMessage } from '../gameplay/consumableMessages'
 import { Button } from '../ui/Button'
 import { ShopHeader } from '../shop/ShopHeader'
+import { ShopRerollButton } from '../shop/ShopRerollButton'
 import { ShopOfferCard } from '../shop/ShopOfferCard'
 import { DecreeReveal } from '../effects/DecreeReveal'
 import { CelestialOrbReveal } from '../effects/CelestialOrbReveal'
@@ -62,6 +64,9 @@ import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
 /** A Seal that is laid on wall tiles, so buying it first asks which. */
 const takesWallTiles = (seal: FateSeal) =>
   consumableTargetRange(seal.effect).max > 0
+
+/** How long a reroll's old item cards take to fade away (CSS matches). */
+const REROLL_LEAVE_MS = 180
 
 /** A pack claim waiting on the wall tiles for each of its chosen Seals. */
 interface PackSealSteps {
@@ -113,6 +118,17 @@ export function ShopScreen() {
     changes: SealedTile[]
   } | null>(null)
   const handleSealToastDone = useCallback(() => setSealUsed(null), [])
+  // A reroll swaps the item cards on screen: the ones showing fade away,
+  // then the new stock fades in. The engine has restocked already.
+  const [leavingItems, setLeavingItems] = useState<
+    TeaHouseOffering[] | null
+  >(null)
+  const [restocked, setRestocked] = useState(false)
+  useEffect(() => {
+    if (!leavingItems) return
+    const timer = setTimeout(() => setLeavingItems(null), REROLL_LEAVE_MS)
+    return () => clearTimeout(timer)
+  }, [leavingItems])
 
   useEffect(() => {
     triggerHints('shopEntered')
@@ -181,11 +197,18 @@ export function ShopScreen() {
   const handleArrivalDone = useCallback(() => setArrival(null), [])
   const displayGold = game.gold - (arrival?.pending ?? 0)
 
+  const shownItems = leavingItems ?? availableItems
   const offers: TeaHouseOffering[] = [
-    ...availableItems,
+    ...shownItems,
     ...availablePacks,
     ...(availableCharter ? [availableCharter] : []),
   ]
+  const itemTransition = (offering: TeaHouseOffering) => {
+    const index = shownItems.indexOf(offering)
+    if (index < 0 || reducedMotion) return undefined
+    if (leavingItems) return { phase: 'leave' as const, index }
+    return restocked ? { phase: 'enter' as const, index } : undefined
+  }
 
   /** The engine's own refusal, in words, before the player tries to buy. */
   const unavailableReasonFor = (offering: TeaHouseOffering) => {
@@ -384,8 +407,13 @@ export function ShopScreen() {
   )
 
   const handleReroll = useCallback(() => {
-    showResult(shop.reroll())
-  }, [shop, showResult])
+    const result = shop.reroll()
+    showResult(result)
+    if (!result.success || reducedMotion) return
+    // A reroll while cards are still leaving keeps those cards leaving.
+    setLeavingItems((leaving) => leaving ?? shownItems)
+    setRestocked(true)
+  }, [shop, showResult, reducedMotion, shownItems])
 
   const handleNextRound = useCallback(() => {
     if (shop.pendingPack) return
@@ -410,16 +438,12 @@ export function ShopScreen() {
         className="absolute inset-0 bg-[var(--color-dark-forest)]/45"
       />
 
-      {/* Header with gold, reroll, settings */}
+      {/* Header with gold and settings */}
       <ShopHeader
         interestCap={interestCap}
         gold={displayGold}
         purseBump={purseBump}
-        rerollCost={rerollCost}
-        canAffordReroll={game.gold >= rerollCost}
-        onReroll={handleReroll}
         onSettings={handleSettings}
-        rerollCount={shopState.rerollsThisVisit}
         status={<ClassicSaveNotice inline />}
       />
 
@@ -467,6 +491,7 @@ export function ShopScreen() {
                   canAfford={game.gold >= offering.finalCost}
                   unavailableReason={unavailableReasonFor(offering)}
                   onBuy={() => handleItemPurchase(offering)}
+                  transition={itemTransition(offering)}
                   onOfferFlower={
                     offering.itemType === 'Decree' &&
                     acceptsFlowerCatalyst(offering.item as Decree)
@@ -537,7 +562,12 @@ export function ShopScreen() {
       )}
 
       <div className="relative z-10 flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
-        <div className="screen-canvas px-3 py-3 sm:px-5 sm:py-4">
+        <div className="screen-canvas flex flex-col gap-2 px-3 py-3 sm:px-5 sm:py-4">
+          <ShopRerollButton
+            cost={rerollCost}
+            canAfford={game.gold >= rerollCost}
+            onReroll={handleReroll}
+          />
           <Button
             data-shop-continue
             variant="primary"

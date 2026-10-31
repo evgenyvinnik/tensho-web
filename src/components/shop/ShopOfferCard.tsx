@@ -28,7 +28,15 @@ export interface ShopOfferCardProps {
   onBuy: () => void
   /** Decrees that accept a Flower as payment. */
   onOfferFlower?: () => void
+  /**
+   * A reroll's swap: the old card fades away, untouchable, then the new one
+   * fades in, `index` places after the first.
+   */
+  transition?: { phase: 'enter' | 'leave'; index: number }
 }
+
+/** Gap between one arriving card and the next. */
+const ENTER_STAGGER_MS = 60
 
 export function ShopOfferCard({
   offering,
@@ -36,6 +44,7 @@ export function ShopOfferCard({
   unavailableReason,
   onBuy,
   onOfferFlower,
+  transition,
 }: ShopOfferCardProps) {
   const { t, i18n } = useTranslation()
   const text = useOfferText(offering)
@@ -46,6 +55,7 @@ export function ShopOfferCard({
   const pinned = useRef(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const buying = useRef(false)
+  const leaving = transition?.phase === 'leave'
   const canBuy =
     canAfford && !unavailableReason && !offering.isLocked && !offering.isPurchased
   const rarityColor = RARITY_COLORS[text.rarity] ?? '#A0A0A0'
@@ -76,9 +86,12 @@ export function ShopOfferCard({
         type="button"
         data-shop-offer={offering.id}
         data-shop-offer-type={offering.itemType}
+        data-shop-offer-transition={transition?.phase}
+        inert={leaving}
+        aria-hidden={leaving || undefined}
         aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
+        aria-expanded={open && !leaving}
+        aria-controls={open && !leaving ? panelId : undefined}
         aria-label={t('shop.offerLabel', { name: text.name, price })}
         onPointerEnter={(event) => {
           if (
@@ -108,10 +121,16 @@ export function ShopOfferCard({
             setOpen(true)
           }
         }}
-        className="shop-offer-card group relative flex shrink-0 flex-col items-center overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)]/95 p-1.5 text-center shadow-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]"
+        className={`shop-offer-card ${
+          transition ? `shop-offer-${transition.phase}` : ''
+        } group relative flex shrink-0 flex-col items-center overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)]/95 p-1.5 text-center shadow-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]`}
         style={{
           borderColor: rarityColor,
           boxShadow: `0 0 14px ${rarityColor}35`,
+          animationDelay:
+            transition?.phase === 'enter'
+              ? `${transition.index * ENTER_STAGGER_MS}ms`
+              : undefined,
         }}
       >
         <span className="shop-offer-art flex w-full items-center justify-center">
@@ -135,7 +154,7 @@ export function ShopOfferCard({
         </span>
       </button>
       <AnchoredPopover
-        open={open}
+        open={open && !leaving}
         anchorRef={anchorRef}
         id={panelId}
         title={text.name}
