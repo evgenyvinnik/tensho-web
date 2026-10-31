@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "역행",
-      "description": "역의 레벨을 10으로 올리세요."
+      "description": "역의 레벨을 9로 올리세요."
     },
     "keeperOfWinds": {
       "name": "바람의 수호자",
@@ -873,7 +873,7 @@
       },
       "satellite": {
         "name": "위성",
-        "description": "승리한 각 라운드가 끝날 때 레벨 1을 초과한 천상의 구슬 계열마다 +1골드."
+        "description": "승리한 각 라운드가 끝날 때 레벨 0을 초과한 천상의 구슬 계열마다 +1골드."
       },
       "swift_andy": {
         "name": "날쌘 앤디",

@@ -37,7 +37,7 @@ const englishDecrees = {
   satellite: {
     name: 'Satellite',
     description:
-      '+1 Gold per Orb family above level 1 at the end of each won round.',
+      '+1 Gold per Orb family above level 0 at the end of each won round.',
   },
   swift_andy: {
     name: 'Swift Andy',
@@ -104,7 +104,7 @@ const numericSignature = (text: string) =>
 const expectedNumbers: Record<RewardId, string[]> = {
   stage_master: ['+1', '+25'],
   flower_pot: ['×3'],
-  satellite: ['+1', '1'],
+  satellite: ['+1', '0'],
   swift_andy: ['+2', '−2'],
   lucky_sixes: ['+6', '6'],
   the_idol: ['×3'],

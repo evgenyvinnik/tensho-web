@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrograde",
-      "description": "Naikkan satu Yaku ke level 10."
+      "description": "Naikkan satu Yaku ke level 9."
     },
     "keeperOfWinds": {
       "name": "Penjaga Angin",
@@ -1081,7 +1081,7 @@
       },
       "satellite": {
         "name": "Satelit",
-        "description": "+1 Emas per keluarga Bola Langit di atas level 1 pada akhir setiap ronde yang dimenangkan."
+        "description": "+1 Emas per keluarga Bola Langit di atas level 0 pada akhir setiap ronde yang dimenangkan."
       },
       "swift_andy": {
         "name": "Andy Gesit",

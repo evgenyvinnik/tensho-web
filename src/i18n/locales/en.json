@@ -203,7 +203,7 @@
     },
     "retrograde": {
       "name": "Retrograde",
-      "description": "Raise a Yaku to level 10."
+      "description": "Raise a Yaku to level 9."
     },
     "keeperOfWinds": {
       "name": "Keeper of Winds",
@@ -869,7 +869,7 @@
       },
       "satellite": {
         "name": "Satellite",
-        "description": "+1 Gold per Orb family above level 1 at the end of each won round."
+        "description": "+1 Gold per Orb family above level 0 at the end of each won round."
       },
       "swift_andy": {
         "name": "Swift Andy",

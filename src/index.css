@@ -720,24 +720,71 @@ a {
   }
 }
 
+/*
+ * The Tea House build on a phone: owned Decrees and Yaku upgrades as two
+ * three-column grids. Side by side, divided, while the panel fits both at a
+ * 44px tap target, with the upgrades growing to 52px as room allows; stacked
+ * on the narrowest phones. A Decree scroll stays 44px wide at these sizes, so
+ * the Decree column is 3 × 44px + 2 × 4px = 140px, and the divider takes
+ * 8px of gap, 1px of border and 8px of padding.
+ */
+@media (max-width: 639px) {
+  .shop-build-row {
+    container: shop-build / inline-size;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 12px;
+  }
+
+  .shop-build-row > [data-shop-build-content] {
+    flex: 1 1 140px;
+  }
+
+  .shop-build-row > * {
+    --collectible-h: 52px;
+  }
+
+  .shop-build-grid {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    gap: 4px;
+  }
+
+  @container shop-build (min-width: 300px) {
+    .shop-build-row > * {
+      --collectible-h: clamp(44px, calc((100cqw - 170px) / 3), 52px);
+    }
+
+    .shop-build-row > [data-shop-build-upgrades] {
+      border-left-width: 1px;
+      padding-left: 8px;
+    }
+  }
+}
+
 /* Every Tea House offer is one size, whatever it is: its art, as wide as the
-   card allows, over its price. The name lives in the card's label and popup. */
+   card allows, over its price. The name lives in the card's label and popup.
+   A phone lays them out three to a row, each card a third of the row, and
+   the page scrolls down to the rest; wider screens use a fixed size. */
 .shop-offer-card {
-  width: 7.5rem;
-  height: 9.75rem;
+  width: 100%;
+  aspect-ratio: 7.5 / 9.75;
 }
 
 .shop-offer-art {
-  height: 6.75rem;
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 @media (min-width: 640px) {
   .shop-offer-card {
     width: 9rem;
     height: 11.25rem;
+    aspect-ratio: auto;
   }
 
   .shop-offer-art {
+    flex: none;
     height: 8.25rem;
   }
 }

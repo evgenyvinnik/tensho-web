@@ -452,17 +452,14 @@ export function ShopScreen() {
             decrees={game.state.decreeSystem.getOwnedDecrees()}
             maxSlots={game.state.decreeSystem.getMaxSlots()}
             onSell={handleSellDecree}
-            upgrades={
-              game.yakuUpgrades.length > 0 ? (
-                <YakuUpgradeRow upgrades={game.yakuUpgrades} />
-              ) : undefined
-            }
+            upgrades={<YakuUpgradeRow upgrades={game.yakuFamilies} />}
           />
 
-          {/* One row: items, Blessing Packs and the Imperial Charter alike. */}
+          {/* Items, Blessing Packs and the Imperial Charter alike: three to a
+              row on a phone, scrolling down with the page, never sideways. */}
           <section data-shop-row className="mt-3 min-w-0">
             <h2 className="sr-only">{t('shop.ui.forSale', 'For sale')}</h2>
-            <div className="scroll-rail flex min-w-0 gap-2 overflow-x-auto px-3 py-2 sm:flex-wrap sm:justify-center sm:gap-3 sm:px-5">
+            <div className="grid min-w-0 grid-cols-3 gap-2 px-3 py-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3 sm:px-5">
               {offers.map((offering) => (
                 <ShopOfferCard
                   key={offering.id}
@@ -482,7 +479,7 @@ export function ShopScreen() {
                 />
               ))}
               {offers.length === 0 && (
-                <p className="w-full py-6 text-center text-[var(--color-beige-white)] opacity-50">
+                <p className="col-span-3 w-full py-6 text-center text-[var(--color-beige-white)] opacity-50">
                   {t('shop.ui.allPurchased')}
                 </p>
               )}

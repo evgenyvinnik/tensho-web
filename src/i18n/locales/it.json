@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrogrado",
-      "description": "Porta uno Yaku al livello 10."
+      "description": "Porta uno Yaku al livello 9."
     },
     "keeperOfWinds": {
       "name": "Custode dei venti",
@@ -1160,7 +1160,7 @@
       },
       "satellite": {
         "name": "Satellite",
-        "description": "+1 Oro per ogni famiglia di Sfere Celesti sopra il livello 1 alla fine di ogni round vinto."
+        "description": "+1 Oro per ogni famiglia di Sfere Celesti sopra il livello 0 alla fine di ogni round vinto."
       },
       "swift_andy": {
         "name": "Andy Scattante",

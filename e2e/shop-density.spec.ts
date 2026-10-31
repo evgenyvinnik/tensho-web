@@ -80,8 +80,11 @@ for (const [index, language] of languages.entries()) {
     await expect(page.getByTestId('round-cash-out')).toHaveCount(0)
     await expect(hint.locator('details')).not.toHaveAttribute('open')
     await expect(next).toBeInViewport({ ratio: 1 })
-    // The first product, not just a title, is now discoverable on arrival.
-    await expect(page.locator('[data-shop-offer]').first()).toBeInViewport()
+    // The first product, not just a title, is discoverable on arrival. On the
+    // narrowest phone the build's two grids stack, so it sits straight below
+    // them, down the page (checked once the pay has landed, below).
+    const firstOffer = page.locator('[data-shop-offer]').first()
+    if (!isMobile) await expect(firstOffer).toBeInViewport()
     // The ledger marks each pay toast.
     const ledger = toasts.locator('img').first()
     await expect(ledger).toHaveAttribute('src', /settlement-ledger\.webp$/)
@@ -109,6 +112,56 @@ for (const [index, language] of languages.entries()) {
       pageFits: document.documentElement.scrollWidth <= innerWidth,
     }))
     expect(geometry.pageFits).toBe(true)
+    if (isMobile) {
+      // Offers run three to a row down the page, never off to the side.
+      const row = await page.locator('[data-shop-row]').evaluate((node) => {
+        const grid = node.querySelector('div')!
+        const cards = [...node.querySelectorAll('[data-shop-offer]')].map(
+          (card) => card.getBoundingClientRect()
+        )
+        return {
+          fits:
+            grid.scrollWidth <= grid.clientWidth + 1 &&
+            cards.every((card) => card.left >= 0 && card.right <= innerWidth),
+          firstRow: cards.filter((card) => card.top === cards[0].top).length,
+        }
+      })
+      expect(row).toEqual({ fits: true, firstRow: 3 })
+      // Every family any run can upgrade shows from level 0, three by three.
+      const { minSize, ...grid } = await page
+        .locator('[data-yaku-upgrade-grid]')
+        .evaluate((node) => {
+          const tokens = [
+            ...node.querySelectorAll('[data-yaku-upgrade-level="0"]'),
+          ].map((token) => token.getBoundingClientRect())
+          const distinct = (values: number[]) =>
+            new Set(values.map(Math.round)).size
+          return {
+            count: tokens.length,
+            columns: distinct(tokens.map((token) => token.left)),
+            rows: distinct(tokens.map((token) => token.top)),
+            minSize: Math.min(
+              ...tokens.flatMap((token) => [token.width, token.height])
+            ),
+          }
+        })
+      expect(grid).toEqual({ count: 9, columns: 3, rows: 3 })
+      expect(minSize).toBeGreaterThanOrEqual(44)
+      // A common phone fits Decrees and upgrades side by side, offers in view.
+      await page.setViewportSize({ width: 390, height: 844 })
+      const sides = await page.evaluate(() => {
+        const box = (selector: string) =>
+          document.querySelector(selector)!.getBoundingClientRect()
+        return {
+          decrees: box('[data-shop-build-content]'),
+          upgrades: box('[data-shop-build-upgrades]'),
+        }
+      })
+      expect(sides.upgrades.top).toBe(sides.decrees.top)
+      expect(sides.upgrades.left).toBeGreaterThan(sides.decrees.right)
+      await expect(firstOffer).toBeInViewport()
+      await page.setViewportSize({ width: 320, height: 568 })
+    }
     expect(
       await page.locator('[data-shop-build]').evaluate((node) =>
         [...node.querySelectorAll<HTMLElement>('h2,[data-build-slots],button')]

@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Paurong",
-      "description": "Itaas ang isang Yaku sa antas 10."
+      "description": "Itaas ang isang Yaku sa antas 9."
     },
     "keeperOfWinds": {
       "name": "Tagapag-ingat ng Hangin",
@@ -1160,7 +1160,7 @@
       },
       "satellite": {
         "name": "Satelayt",
-        "description": "+1 Ginto sa bawat pamilya ng Orb ng Kalangitan na lampas sa antas 1 sa pagtatapos ng bawat round na napanalunan."
+        "description": "+1 Ginto sa bawat pamilya ng Orb ng Kalangitan na lampas sa antas 0 sa pagtatapos ng bawat round na napanalunan."
       },
       "swift_andy": {
         "name": "Maliksing Andy",

@@ -21,8 +21,10 @@ interface Props {
 /**
  * The player's actual ordered build, not a predicted shopping
  * recommendation: owned Decrees on the left and, on the same line, the
- * run's Yaku upgrades on the right. Each side wraps within its own column,
- * so a phone shows the whole build without opening anything.
+ * run's Yaku upgrades on the right. On a phone each side is a three-column
+ * grid, side by side where the panel is wide enough and stacked where it is
+ * not; wider screens let each side wrap within its own column. Either way
+ * the whole build shows without opening anything.
  */
 export function ShopBuildPanel({
   decrees,
@@ -56,7 +58,10 @@ export function ShopBuildPanel({
         {aside && <div className="ml-auto shrink-0">{aside}</div>}
       </div>
       <DecreeCapacityNotice owned={decrees.length} slots={maxSlots} />
-      <div data-shop-build-row className="mt-1 flex items-start gap-3">
+      <div
+        data-shop-build-row
+        className="shop-build-row mt-1 flex items-start gap-3"
+      >
         <div data-shop-build-content className="min-w-0 flex-[1_1_auto]">
           <p
             data-build-slots
@@ -76,6 +81,7 @@ export function ShopBuildPanel({
             yakuHistory={yakuHistory}
             completeConcealedHandsPlayed={completeConcealedHandsPlayed}
             tutorialTarget="decrees"
+            grid
             empty={
               <p className="mt-1 text-sm text-[var(--color-beige-white)]/60">
                 {t('shop.build.empty')}
@@ -84,7 +90,10 @@ export function ShopBuildPanel({
           />
         </div>
         {upgrades && (
-          <div className="min-w-0 flex-[0_1_auto] border-l border-[var(--color-metallic-gold)]/25 pl-3">
+          <div
+            data-shop-build-upgrades
+            className="min-w-0 flex-[0_1_auto] border-[var(--color-metallic-gold)]/25 sm:border-l sm:pl-3"
+          >
             {upgrades}
           </div>
         )}
