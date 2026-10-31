@@ -34,7 +34,7 @@ it('renders localized Charter art, identity, rules and tier without escape text'
   expect(
     screen.getByRole('heading', { name: 'Escritura antigua' })
   ).not.toHaveClass('truncate')
-  expect(screen.getByText('Edición básica')).toBeVisible()
+  expect(screen.getByText('Estándar')).toBeVisible()
   expect(screen.getByRole('button')).toHaveAccessibleName(
     'Escritura antigua 10G'
   )
