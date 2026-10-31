@@ -8,7 +8,8 @@
  * redraw from an item is spent first, and shown on the button).
  *
  * The labels never change. When an action cannot be taken, the button is
- * disabled and one short reason is shown beside the counter and announced.
+ * disabled and one short reason floats just above the bar and is announced;
+ * it never takes layout space, so showing it does not move the table.
  *
  * @module components/gameplay/ActionBar
  */
@@ -70,12 +71,13 @@ export function ActionBar({
       data-action-bar
       className="gameplay-action-bar gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 flex-col gap-1 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:px-4"
     >
+      {/* Floats just above the bar so showing it never reflows the table. */}
       {reason && (
         <p
           id={reasonId}
           role="status"
           data-action-reason
-          className="text-center text-[11px] leading-tight text-amber-200 [overflow-wrap:anywhere]"
+          className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 w-max max-w-[calc(100%-1rem)] -translate-x-1/2 rounded-full border border-amber-200/40 bg-[var(--color-dark-forest)]/95 px-3 py-1 text-center text-[11px] leading-tight text-amber-200 shadow-[0_4px_12px_rgba(0,0,0,0.45)] [overflow-wrap:anywhere]"
         >
           {reason}
         </p>
