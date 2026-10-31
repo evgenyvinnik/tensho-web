@@ -3256,5 +3256,31 @@
   "orbReveal": {
     "used": "已使用天體寶珠",
     "title": "已使用{{name}}：役種升級"
+  },
+  "omenReveal": {
+    "title": "獲得徵兆：{{name}}",
+    "swiftClear": "速通",
+    "cleared": "{{round}}過關",
+    "spareTurns_one": "剩餘{{formattedCount}}次行動",
+    "spareTurns_other": "剩餘{{formattedCount}}次行動",
+    "earned": "獲得徵兆",
+    "copies": "×{{amount}}",
+    "copiesNote": "雙生徵兆複製：×{{amount}}",
+    "when": "生效時機",
+    "timing": {
+      "shop": "現在，就在這間茶寮。效果已體現在商品上。",
+      "round": "下一局開始時。",
+      "hand": "下一次計分的手牌。",
+      "voidScript": "下次使用虛空卷軸時。",
+      "now": "立即生效，已經套用。",
+      "run": "本局結束前的每一次計分手牌。",
+      "nextOmen": "獲得下一個徵兆時。"
+    },
+    "rail": {
+      "waits": "在此之前，它會在牌桌上與你的物品一起等待。",
+      "stays": "它會一直留在牌桌上你的物品中。"
+    },
+    "tradeoff": "代價",
+    "rule": "在小局或大局剩餘{{spare}}次或更多行動時過關，即可獲得徵兆。Boss局不會給予。"
   }
 }
