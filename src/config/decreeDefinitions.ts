@@ -131,8 +131,8 @@ export const COMMON_DECREES: DecreeDefinition[] = [
   },
   {
     id: 'decree-golden-seal',
-    name: 'Golden Seal',
-    japaneseName: '金印',
+    name: 'Golden Regalia',
+    japaneseName: '金璽',
     description: '+6 Mult',
     rarity: 'common',
     effects: [createEffect('additive_mult', 6)],

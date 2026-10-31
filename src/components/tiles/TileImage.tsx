@@ -317,7 +317,7 @@ export const TileImage: React.FC<TileImageProps> = ({
       {stoneFace ? (
         <span
           role="img"
-          aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
+          aria-label={t('tileDetails.stoneName', 'Stone tile')}
           className="absolute inset-0 rounded-md bg-stone-600"
         />
       ) : faceDown || !tile ? (
@@ -399,7 +399,7 @@ export const TileImage: React.FC<TileImageProps> = ({
               {tile.hasModifiers && (
                 <div className="mt-2 pt-2 border-t border-gray-600">
                   <div className="text-golden-yellow text-xs font-medium mb-1">
-                    {t('tiles.modifiers', 'Modifiers:')}
+                    {t('tiles.modifiers', 'Special tile:')}
                   </div>
                   {tileInfo.modifiers.map((entry) => (
                     <div

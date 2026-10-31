@@ -62,7 +62,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'Lucky Sixes',
     japaneseName: '六福',
     description:
-      '+6 Mult per played natural suited rank-6 tile; Stones do not count and Wild does not change rank',
+      '+6 Mult per played natural suited rank-6 tile; Stone tiles do not count and Wild tiles do not change rank',
     rarity: 'uncommon',
     effects: [
       {
@@ -79,7 +79,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'The Idol',
     japaneseName: '偶像',
     description:
-      '×3 Mult if at least 2 tiles are played and all have the same natural suit and rank; Stones break the match and Wild cannot impersonate faces',
+      '×3 Mult if at least 2 tiles are played and all have the same natural suit and rank; Stone tiles break the match and Wild tiles cannot impersonate faces',
     rarity: 'rare',
     effects: [
       {

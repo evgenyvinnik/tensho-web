@@ -72,7 +72,7 @@ Application verification so far:
   or hydration keep the old engine blocked. Twelve application tests and native
   desktop/touch handoff checks include profile equality and another real play.
   This does not make concurrent multi-key profile writes crash-atomic.
-- Snapshot comparisons caught forecasts mutating Moonlit Seal's saved scaling
+- Snapshot comparisons caught forecasts mutating Moonlit Emblem's saved scaling
   value. Two regressions failed before repair; preview context now suppresses
   that mutation while real scoring still updates it. The corrected focused
   scoring/orchestrator/snapshot suite passed **101/101**.

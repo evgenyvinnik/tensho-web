@@ -32,7 +32,7 @@ export function tileName(
 ): string {
   if (!tile || faceDown) return t('tileDetails.faceDown')
   if (tile.enhancement === EnhancementType.Stone)
-    return t('tileMarks.items.stone.name', 'Stone Mark')
+    return t('tileDetails.stoneName', 'Stone tile')
   if (tile.isSuited) {
     const name = t('tileDetails.suitedName', {
       rank: tile.rank,

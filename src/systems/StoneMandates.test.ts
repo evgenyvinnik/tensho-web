@@ -1,6 +1,6 @@
 /**
  * A Stone has no rank or suit, so nothing that reads a tile's face sees it:
- * suit and tile-kind Boss Mandates do not debuff it, The Mark does not hide it
+ * suit and tile-kind Boss Mandates do not debuff it, The Veil does not hide it
  * as an Honor, it neither makes nor breaks the All Simples Orb family, and a
  * red 5 under a Stone Mark is no red five.
  */
@@ -80,7 +80,7 @@ describe('suit and tile-kind Mandates read no Stone face', () => {
     }
   )
 
-  it('The Mark hides an Honor face-down, but a Stone Honor stays face-up', () => {
+  it('The Veil hides an Honor face-down, but a Stone Honor stays face-up', () => {
     const { mandates } = activate(THE_MARK, [])
 
     expect(mandates.shouldTileBeFaceDown(dragon('plain'))).toBe(true)

@@ -577,7 +577,7 @@ it('localizes every shop navigation and Charter presentation label with matching
   }
 })
 
-it('provides Purple Seal names and current trigger descriptions in every locale', () => {
+it('provides Purple Stamp names and current trigger descriptions in every locale', () => {
   for (const [lang, locale] of Object.entries(LOCALES)) {
     const archive = locale.archiveSeals as {
       items: { purple: { name: string; description: string } }
