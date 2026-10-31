@@ -200,7 +200,7 @@
       "description": "在不弃掉字牌的情况下赢得3局。"
     },
     "sealBearer": {
-      "name": "印记持有者",
+      "name": "符印持有者",
       "description": "使用10个命运符印。"
     },
     "score10k": {
@@ -216,7 +216,7 @@
       "description": "一次出牌获得100,000,000分。"
     },
     "sealScholar": {
-      "name": "印记学者",
+      "name": "符印学者",
       "description": "发现全部命运符印。"
     },
     "starGazer": {
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "牌的变化会持续整个本局，包括后续回合。新开一局会重置。",
-    "negativeTile": "只要这张负片牌仍属于你的牌山，就提供+1法令槽位。摸牌或弃牌不会移除槽位；销毁此牌或更换版本会移除槽位。",
+    "negativeTile": "只要这张负影牌仍属于你的牌山，就提供+1法令槽位。摸牌或弃牌不会移除槽位；销毁此牌或更换版本会移除槽位。",
     "overCapacity": "容量减少：已有法令不会丢失。获得更多法令前需腾出空间。"
   },
   "yakuUpgrades": {
@@ -441,7 +441,7 @@
     "targets": "目标牌",
     "count": "目标：{{selected}} / {{required}}",
     "copyOrder": "牌1将变成牌2的复制品。请先选择要改变的牌。",
-    "replacesModifier": "将替换{{names}}：每张牌只能拥有一种印记、封印或版本效果。",
+    "replacesModifier": "将替换{{names}}：每张特殊牌只能拥有一种印记、蜡封或版本。",
     "cost": "虚空代价",
     "failed": "无法使用此道具。",
     "unavailable": "此道具当前无法使用。",
@@ -777,7 +777,7 @@
       "nextRound": "进入下一局",
       "confirmPurchase": "确认购买",
       "purchasePrompt": "花费{{cost}}G购买「{{name}}」？",
-      "standardCharter": "基础版",
+      "standardCharter": "标准",
       "goldBalance": "金币：{{amount}}",
       "rerollsUsed": "已刷新次数：{{count}}",
       "forSale": "出售中"
@@ -785,7 +785,7 @@
     "payout": {
       "interest": "利息",
       "decrees": "法令",
-      "goldTiles": "金牌",
+      "goldTiles": "黄金牌",
       "bonus": "奖励调整",
       "rentals": "租金",
       "omenEarned": "征兆：{{name}}",
@@ -837,9 +837,9 @@
     "buyFor": "购买 · {{price}}金币",
     "help": {
       "what": "茶寮是两局之间的商店。",
-      "buy": "点击任意物品查看效果，再点购买。法令改变规则，宝珠和符印立即生效（符印会让你选择要改变牌山中的哪些牌），虚空卷轴在回合中使用，祝福包可挑选奖励，特许状强化整局游戏。",
+      "buy": "点击任意物品查看效果，再点购买。法令改变规则，宝珠和命运符印立即生效（命运符印会让你选择要改变牌山中的哪些牌），虚空卷轴在回合中使用，祝福包可挑选奖励，特许状强化整局游戏。",
       "interest": "保留的金币会产生利息：回合结束时每持有5金币+1（最多+{{cap}}）。",
-      "cashOut": "进入茶寮时，上一局的金币会进入钱袋，每个来源各有一条提示：回合通过、利息、法令、金牌以及扣除的租金。",
+      "cashOut": "进入茶寮时，上一局的金币会进入钱袋，每个来源各有一条提示：回合通过、利息、法令、黄金牌以及扣除的租金。",
       "build": "“你的配置”列出持有的法令，旁边是役种升级。打开卷轴可查看规则或出售，打开升级可查看等级。每次购买都通过对应的购买按钮完成。"
     },
     "sealUsed": "已使用{{name}}",
@@ -1674,7 +1674,7 @@
     "windName": "{{name}}风",
     "flowerName": "{{name}}花牌",
     "seasonName": "{{name}}季节牌",
-    "stoneName": "Stone tile",
+    "stoneName": "磐石牌",
     "numberedRule": "相同的牌可组成对子或刻子。同一花色连续的三个数字可组成顺子。",
     "honorRule": "字牌可组成相同的对子或刻子，不能组成数字顺子。",
     "basePoints": "应用牌组加成、减分和其他效果之前的基础分：{{points}}。",
@@ -1698,10 +1698,10 @@
     "white": "白",
     "green": "发",
     "red": "中",
-    "modifiers": "修饰：",
-    "tileModifiers": "牌面修饰",
-    "enhancement": "强化",
-    "stamp": "Stamp",
+    "modifiers": "特殊牌：",
+    "tileModifiers": "特殊牌",
+    "enhancement": "印记",
+    "stamp": "蜡封",
     "edition": "版本",
     "debuffed": "被削弱的牌",
     "lockedMustPlay": "锁定牌：必须打出",
@@ -1723,7 +1723,7 @@
     "shortfall": "差额分数",
     "remainingGold": "剩余金币",
     "rentalPaid": "扣除租金",
-    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、法令收益或手中金牌的收益。",
+    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、法令收益或手中黄金牌的收益。",
     "endlessComplete": "无尽攀登结束",
     "victorySubtitle": "你已赢得第{{act}}幕的决战。胜利已被记录。",
     "endlessSubtitle": "本次攀登虽已结束，你的胜利记录仍然保留。",
@@ -1952,7 +1952,7 @@
       "p5": "箭牌是<1>字牌</1>，价值<4>15分</4>，每计分一张箭牌，倍率+2，在组合中+4。箭牌不能组成顺子。"
     },
     "bonus_tiles": {
-      "p1": "<0>花牌</0>是不计入手牌的特殊牌："
+      "p1": "<0>花牌</0>是不计入手牌的额外牌："
     },
     "sequences": {
       "note1": "摸到花牌时会立即亮出，并补摸一张。花与季节提供可成长的加成与效果！",
@@ -2253,7 +2253,7 @@
       },
       "seal_merchant": {
         "name": "符商",
-        "description": "命运符出现率提高2倍"
+        "description": "命运符印出现率提高2倍"
       },
       "orb_merchant": {
         "name": "天球商",
@@ -2317,7 +2317,7 @@
       },
       "seal_tycoon": {
         "name": "符业巨贾",
-        "description": "命运符出现率提高4倍"
+        "description": "命运符印出现率提高4倍"
       },
       "orb_tycoon": {
         "name": "天球巨贾",
@@ -2452,7 +2452,7 @@
       },
       "seal_omen": {
         "name": "符印之兆",
-        "description": "下次商店的商品栏必定出现命运符。"
+        "description": "下次商店的商品栏必定出现命运符印。"
       },
       "decree_omen": {
         "name": "法令之兆",
@@ -2528,23 +2528,23 @@
       },
       "seal_of_harmony": {
         "name": "和谐之符",
-        "description": "将1张牌转为万能牌（可当作任意花色）"
+        "description": "为选中的1张牌附加万能印记（视为所有花色）"
       },
       "seal_of_fortitude": {
         "name": "坚毅之符",
-        "description": "将1张牌强化为钢铁印记（持有时×1.5倍率）"
+        "description": "为选中的1张牌附加钢铁印记（持有时×1.5倍率）"
       },
       "seal_of_glass": {
         "name": "琉璃之符",
-        "description": "将1张牌强化为玻璃印记（×2倍率，可能碎裂）"
+        "description": "为选中的1张牌附加玻璃印记（×2倍率，可能碎裂）"
       },
       "seal_of_wealth": {
         "name": "财富之符",
-        "description": "将1张牌强化为黄金印记（回合结束时持有则+3金币）"
+        "description": "为选中的1张牌附加黄金印记（回合结束时持有则+3金币）"
       },
       "seal_of_stone": {
         "name": "磐石之符",
-        "description": "将1张牌强化为石之印记（+100分，无花色和数字，不加入任何组合，始终全额计分）"
+        "description": "为选中的1张牌附加磐石印记（+100分，无花色和数字，不加入任何组合，始终全额计分）"
       },
       "seal_of_manzu": {
         "name": "万子之符",
@@ -2568,11 +2568,11 @@
       },
       "seal_of_the_emperor": {
         "name": "皇帝之符",
-        "description": "创造2个随机命运符"
+        "description": "创造2个随机命运符印"
       },
       "seal_of_the_fool": {
         "name": "愚者之符",
-        "description": "创造本次旅程最后使用的命运符或天球"
+        "description": "创造本次旅程最后使用的命运符印或天球"
       },
       "seal_of_judgment": {
         "name": "审判之符",
@@ -2600,7 +2600,7 @@
       },
       "seal_of_fortune": {
         "name": "机运之符",
-        "description": "有1/4概率为随机法令附加箔光、全息或多彩。"
+        "description": "有1/4概率为随机法令附加箔光、全息或多彩版本。"
       },
       "seal_of_the_immortal": {
         "name": "不朽之符",
@@ -2616,15 +2616,15 @@
     "items": {
       "script_of_kinship": {
         "name": "血亲之文",
-        "description": "销毁1张随机牌，加入3张随机强化字牌（风／箭）"
+        "description": "销毁1张随机牌，再加入3张随机字牌（风牌／三元牌），每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_the_grave": {
         "name": "坟茔之文",
-        "description": "销毁1张随机牌，加入2张随机强化幺九牌"
+        "description": "销毁1张随机牌，再加入2张随机老头牌（1和9），每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_incantation": {
         "name": "咒言之文",
-        "description": "销毁1张随机牌，加入4张随机强化数牌"
+        "description": "销毁1张随机牌，再加入4张随机数牌（2–8），每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_immolation": {
         "name": "焚身之文",
@@ -2635,28 +2635,28 @@
         "description": "为手中选中的1张牌创造2份复制"
       },
       "script_of_the_gold_seal": {
-        "name": "金印之文",
-        "description": "为选中的1张牌附加金封"
+        "name": "金蜡封之文",
+        "description": "为选中的1张牌附加金蜡封"
       },
       "script_of_deja_vu": {
         "name": "既视之文",
-        "description": "为选中的1张牌附加红封（重复计分）"
+        "description": "为选中的1张牌附加红蜡封（重复计分）"
       },
       "script_of_the_trance": {
         "name": "恍惚之文",
-        "description": "为1张牌附加蓝封（最终手牌时生成天球）"
+        "description": "为选中的1张牌附加蓝蜡封（此牌所在的出牌达成回合目标时生成天球）"
       },
       "script_of_the_medium": {
         "name": "通灵之文",
-        "description": "为1张牌添加紫色封印（重抽时生成命运符印）"
+        "description": "为选中的1张牌附加紫蜡封（重抽时生成命运符印）"
       },
       "script_of_aura": {
         "name": "灵光之文",
-        "description": "为选中的1张牌附加箔光、全息或多彩。"
+        "description": "为选中的1张牌附加箔光、全息或多彩版本。"
       },
       "script_of_ectoplasm": {
         "name": "灵质之文",
-        "description": "为随机法令附加负影（法令栏位+1）"
+        "description": "为随机法令附加负影版本（法令栏位+1）"
       },
       "script_of_the_wraith": {
         "name": "幽魂之文",
@@ -2668,7 +2668,7 @@
       },
       "script_of_the_hex": {
         "name": "咒诅之文",
-        "description": "为随机法令附加多彩，销毁其余全部法令。"
+        "description": "为随机法令附加多彩版本，并销毁其余全部法令。"
       },
       "script_of_the_sigil": {
         "name": "符印之文",
@@ -2716,19 +2716,19 @@
       },
       "consumables": {
         "name": "消耗品",
-        "description": "一次性物品：命运符、天球、虚空文"
+        "description": "一次性物品：命运符印、天球、虚空文"
       },
       "tileMarks": {
-        "name": "牌印",
-        "description": "改变牌之行为的强化类型"
+        "name": "牌面印记",
+        "description": "改变牌的计分方式或行为的印记"
       },
       "seals": {
-        "name": "封印",
-        "description": "为牌附加效果的特殊封印"
+        "name": "蜡封",
+        "description": "盖在牌上、赋予额外效果的蜡封"
       },
       "editions": {
         "name": "版本",
-        "description": "物品的外观与效果变体"
+        "description": "为牌或法令附加效果的闪光涂层"
       },
       "packs": {
         "name": "祝福包",
@@ -2847,19 +2847,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "金封",
+        "name": "金蜡封",
         "description": "打出时获得金币。在手牌中计分时+3金币"
       },
       "red": {
-        "name": "红封",
+        "name": "红蜡封",
         "description": "该牌触发两次。计分时额外重复一次"
       },
       "blue": {
-        "name": "蓝封",
+        "name": "蓝蜡封",
         "description": "这张牌所在的出牌达成回合目标时，生成一个随机天球。"
       },
       "purple": {
-        "name": "紫封",
+        "name": "紫蜡封",
         "description": "重抽这张牌时，生成随机命运符印。"
       }
     }
@@ -2892,15 +2892,15 @@
     "items": {
       "arcana_normal": {
         "name": "秘仪包",
-        "description": "从3个命运符中选1个"
+        "description": "从3个命运符印中选1个"
       },
       "arcana_jumbo": {
         "name": "大秘仪包",
-        "description": "从5个命运符中选2个"
+        "description": "从5个命运符印中选2个"
       },
       "arcana_mega": {
         "name": "特大秘仪包",
-        "description": "从6个命运符中选3个"
+        "description": "从6个命运符印中选3个"
       },
       "celestial_normal": {
         "name": "天球包",
@@ -2916,15 +2916,15 @@
       },
       "tile_normal": {
         "name": "牌包",
-        "description": "从3张改造牌中选1张"
+        "description": "从3张特殊牌中选1张"
       },
       "tile_jumbo": {
         "name": "大牌包",
-        "description": "从5张改造牌中选2张"
+        "description": "从5张特殊牌中选2张"
       },
       "tile_mega": {
         "name": "特大牌包",
-        "description": "从6张改造牌中选3张"
+        "description": "从6张特殊牌中选3张"
       },
       "decree_normal": {
         "name": "法令包",
@@ -3155,7 +3155,7 @@
     "tilesHelp": "万子用汉字一到九表示，筒子和索子用数量表示（一索是一只鸟）。可在设置中打开牌上的数字。",
     "honorsHelp": "风牌每张{{wind}}分，在组合中{{windGroup}}分。每张三元牌倍率+{{dragon}}，在组合中+{{dragonGroup}}。",
     "specialTitle": "特殊牌",
-    "specialHelp": "带宝石的彩色边框是印记，火漆印是封印，闪光是版本效果。每张牌只能拥有其中一种。将鼠标悬停或聚焦在牌上即可查看效果。",
+    "specialHelp": "特殊牌带有一种额外效果：印记（带宝石的彩色边框）、蜡封（火漆）或版本（闪光）。将鼠标悬停或聚焦在牌上即可查看具体效果。",
     "close": "开始游戏"
   },
   "mandateConsequence": {
@@ -3209,7 +3209,7 @@
     },
     "Tanyao": {
       "name": "断幺九",
-      "covers": "只用2–8的牌组成组合的出牌（没有1、9、风牌和三元牌，磐石印记牌不影响判定），以及断幺九：只由2–8的牌组成的和牌。"
+      "covers": "只用2–8的牌组成组合的出牌（没有1、9、风牌和三元牌，磐石牌不影响判定），以及断幺九：只由2–8的牌组成的和牌。"
     },
     "Honitsu": {
       "name": "混一色",
