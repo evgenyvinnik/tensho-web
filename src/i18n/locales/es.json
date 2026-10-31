@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. Agujero Negro coincide con cualquier Yaku puntuado.",
+    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. El Orbe de Todas las familias coincide con cualquier Yaku puntuado.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
   },
   "closedHandAusterity": {
@@ -823,6 +823,7 @@
       "sealHelp": "Se usa en cuanto lo tomas: elige las fichas de tu muro que cambia, y siguen cambiadas toda la partida.",
       "sealHelpInstant": "Se usa en cuanto lo tomas.",
       "orb": "Orbe Celestial · mejora una familia de manos",
+      "orbPlanet": "Orbe Celestial · {{planet}}",
       "script": "Escrito del Vacío · poderoso, con un precio",
       "consumableHelp": "Se guarda con tus objetos hasta usarlo. Tócalo en la mesa para usarlo.",
       "tile": "Ficha · se añade a tu muro",
@@ -2349,56 +2350,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orbe de Plutón",
-        "description": "Mejora los pares: Par, Doble par y Tres pares. +1 Mult y +10 puntos por nivel."
+        "name": "Orbe de Pares",
+        "planet": "Plutón",
+        "description": "Sube la familia Pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Pares gana otros +10 puntos base y +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orbe de Mercurio",
-        "description": "Mejora Todo simples: jugadas solo de 2 a 8 y la mano Todo simples. +1 Mult y +15 puntos por nivel."
+        "name": "Orbe de Todo simples",
+        "planet": "Mercurio",
+        "description": "Sube la familia Todo simples 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Todo simples gana otros +15 puntos base y +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orbe de Urano",
-        "description": "Mejora los Honores: cualquier grupo de Vientos o Dragones y la mano Fichas de valor. +1 Mult y +20 puntos por nivel."
+        "name": "Orbe de Honores",
+        "planet": "Urano",
+        "description": "Sube la familia Honores 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Honores gana otros +20 puntos base y +1 Mult."
       },
       "venus_orb": {
-        "name": "Orbe de Venus",
-        "description": "Mejora las secuencias: Secuencia, Secuencia + Par, Dos secuencias y la mano Todo secuencias. +2 Mult y +20 puntos por nivel."
+        "name": "Orbe de Secuencias",
+        "planet": "Venus",
+        "description": "Sube la familia Secuencias 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Secuencias gana otros +20 puntos base y +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orbe de Saturno",
-        "description": "Mejora las escaleras: de cuatro y de cinco, y la mano Escalera 1–9. +3 Mult y +30 puntos por nivel."
+        "name": "Orbe de Escaleras",
+        "planet": "Saturno",
+        "description": "Sube la familia Escaleras 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Escaleras gana otros +30 puntos base y +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orbe de Júpiter",
-        "description": "Mejora Medio color: manos completas de un palo más Honores. +2 Mult y +15 puntos por nivel."
+        "name": "Orbe de Medio color",
+        "planet": "Júpiter",
+        "description": "Sube la familia Medio color 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Medio color gana otros +15 puntos base y +2 Mult."
       },
       "earth_orb": {
-        "name": "Orbe de la Tierra",
-        "description": "Mejora los grupos iguales: jugadas con triplete o cuarteto y la mano Todo tripletes. +2 Mult y +25 puntos por nivel."
+        "name": "Orbe de Grupos iguales",
+        "planet": "Tierra",
+        "description": "Sube la familia Grupos iguales 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Grupos iguales gana otros +25 puntos base y +2 Mult."
       },
       "mars_orb": {
-        "name": "Orbe de Marte",
-        "description": "Mejora Color puro: manos completas de un solo palo. +3 Mult y +30 puntos por nivel."
+        "name": "Orbe de Color puro",
+        "planet": "Marte",
+        "description": "Sube la familia Color puro 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Color puro gana otros +30 puntos base y +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orbe de Neptuno",
-        "description": "Mejora Triple mixto: manos completas con la misma secuencia en los tres palos. +4 Mult y +40 puntos por nivel."
+        "name": "Orbe de Triple mixto",
+        "planet": "Neptuno",
+        "description": "Sube la familia Triple mixto 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Triple mixto gana otros +40 puntos base y +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orbe del Planeta X",
-        "description": "Mejora Siete pares: la mano Siete pares. +3 Mult y +35 puntos por nivel."
+        "name": "Orbe de Siete pares",
+        "planet": "Planeta X",
+        "description": "Sube la familia Siete pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Siete pares gana otros +35 puntos base y +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orbe de Ceres",
-        "description": "Mejora Mano exterior: manos completas con un terminal u Honor en cada grupo. +4 Mult y +40 puntos por nivel."
+        "name": "Orbe de Mano exterior",
+        "planet": "Ceres",
+        "description": "Sube la familia Mano exterior 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Mano exterior gana otros +40 puntos base y +4 Mult."
       },
       "eris_orb": {
-        "name": "Orbe de Eris",
-        "description": "Mejora Trece huérfanos: la mano Trece huérfanos. +3 Mult y +50 puntos por nivel."
+        "name": "Orbe de Trece huérfanos",
+        "planet": "Eris",
+        "description": "Sube la familia Trece huérfanos 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Trece huérfanos gana otros +50 puntos base y +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orbe de Agujero Negro",
-        "description": "Al usarlo sube TODOS los Yaku 1 nivel."
+        "name": "Orbe de Todas las familias",
+        "planet": "Agujero negro",
+        "description": "Sube 1 nivel las 12 familias de manos durante esta partida (máximo 10 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 10 se queda igual."
       }
     }
   },
@@ -3186,55 +3200,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Pares",
-      "covers": "Par, Doble par y Tres pares"
+      "covers": "Par, Doble par o Tres pares (un par son dos fichas idénticas). La mano Siete pares tiene su propia familia."
     },
     "Pinfu": {
       "name": "Secuencias",
-      "covers": "Secuencia, Secuencia + Par, Dos secuencias y la mano Todo secuencias"
+      "covers": "Secuencia, Secuencia + Par o Dos secuencias (una secuencia son tres números seguidos de un palo), y Todo secuencias: una mano completa de cuatro secuencias más un par que no sea de Dragones ni de Viento del Este."
     },
     "Ittsu": {
       "name": "Escaleras",
-      "covers": "Escaleras de cuatro y cinco, y la mano Escalera 1–9"
+      "covers": "Escalera de cuatro, Escalera de cinco o Escalera + Par (números seguidos de un palo), y Escalera 1–9: una mano completa con 1-2-3, 4-5-6 y 7-8-9 de un mismo palo."
     },
     "Toitoi": {
       "name": "Grupos iguales",
-      "covers": "Cualquier jugada con triplete o cuarteto, y la mano Todo tripletes"
+      "covers": "Triplete, Full, Dos tripletes, Triplete + Secuencia, Cuarteto o Cuarteto + Par (un triplete son tres fichas idénticas; un cuarteto, cuatro), y Todo tripletes: una mano completa de cuatro tripletes o cuartetos más un par."
     },
     "Yakuhai": {
       "name": "Honores",
-      "covers": "Cualquier grupo de Vientos o Dragones, y las manos Fichas de valor"
+      "covers": "Cualquier jugada con un grupo formado solo por Vientos o Dragones, y Fichas de valor: una mano completa con un triplete o cuarteto de Dragones o de Viento del Este."
     },
     "Tanyao": {
       "name": "Todo simples",
-      "covers": "Jugadas solo con fichas de 2 a 8, y la mano Todo simples"
+      "covers": "Cualquier jugada que forme un grupo usando solo fichas del 2 al 8, sin 1, 9, Vientos ni Dragones (las fichas de Piedra se ignoran), y Todo simples: una mano completa solo con fichas del 2 al 8."
     },
     "Honitsu": {
       "name": "Medio color",
-      "covers": "Manos completas de un palo más Honores"
+      "covers": "Medio color: una mano completa de un palo más Vientos o Dragones. Una jugada más corta de un solo palo no cuenta."
     },
     "Chinitsu": {
       "name": "Color puro",
-      "covers": "Manos completas de un solo palo"
+      "covers": "Color puro: una mano completa de un solo palo, sin Vientos ni Dragones. Una jugada más corta de un solo palo no cuenta."
     },
     "Sanshoku": {
       "name": "Triple mixto",
-      "covers": "Manos completas con la misma secuencia en los tres palos"
+      "covers": "Triple secuencia mixta: una mano completa con la misma secuencia en los tres palos, como 2-3-4 en Caracteres, Círculos y Bambúes."
     },
     "SevenPairs": {
       "name": "Siete pares",
-      "covers": "La mano Siete pares"
+      "covers": "Siete pares: una mano completa de exactamente siete pares distintos (14 fichas). Las jugadas más cortas de pares son de la familia Pares."
     },
     "Chanta": {
       "name": "Mano exterior",
-      "covers": "Manos completas con un terminal u Honor en cada grupo"
+      "covers": "Mano exterior: una mano completa con al menos una secuencia, en la que cada grupo y el par incluyen un 1, un 9, un Viento o un Dragón. La Mano exterior pura (igual, pero sin Vientos ni Dragones) también cuenta."
     },
     "Kokushi": {
       "name": "Trece huérfanos",
-      "covers": "La mano Trece huérfanos"
+      "covers": "Trece huérfanos: una mano completa con uno de cada 1, 9, Viento y Dragón, más uno repetido."
     },
     "All": {
       "name": "Todas las familias",
-      "covers": "Todas las familias de mejora",
+      "covers": "Las 12 familias de manos, incluidas Pares y Siete pares.",
       "upgrade": "Todas las familias +1 nivel"
     },
     "levelChange": "{{family}}: nivel {{from}} → {{to}}",

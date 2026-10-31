@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. Trou noir correspond à tout Yaku qui marque.",
+    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. L’Orbe de Toutes les familles correspond à tout Yaku qui marque.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
   },
   "closedHandAusterity": {
@@ -823,6 +823,7 @@
       "sealHelp": "Utilisé dès que vous le prenez : choisissez les tuiles de votre mur qu’il change ; elles le restent pour toute la partie.",
       "sealHelpInstant": "Utilisé dès que vous le prenez.",
       "orb": "Orbe Céleste · améliore une famille de mains",
+      "orbPlanet": "Orbe Céleste · {{planet}}",
       "script": "Écrit du Vide · puissant, avec un prix",
       "consumableHelp": "Gardé avec vos objets jusqu’à utilisation. Touchez-le sur la table pour l’utiliser.",
       "tile": "Tuile · ajoutée à votre mur",
@@ -2349,56 +2350,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Orbe de Pluton",
-        "description": "Améliore les paires : Paire, Double paire et Trois paires. +1 Mult et +10 points par niveau."
+        "name": "Orbe des Paires",
+        "planet": "Pluton",
+        "description": "Monte la famille « Paires » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Paires » gagne encore +10 points de base et +1 Mult."
       },
       "mercury_orb": {
-        "name": "Orbe de Mercure",
-        "description": "Améliore Tout simples : mains uniquement de 2 à 8 et la main Tout simples. +1 Mult et +15 points par niveau."
+        "name": "Orbe de Tout simples",
+        "planet": "Mercure",
+        "description": "Monte la famille « Tout simples » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Tout simples » gagne encore +15 points de base et +1 Mult."
       },
       "uranus_orb": {
-        "name": "Orbe d'Uranus",
-        "description": "Améliore les Honneurs : tout groupe de Vents ou de Dragons et la main Tuiles de valeur. +1 Mult et +20 points par niveau."
+        "name": "Orbe des Honneurs",
+        "planet": "Uranus",
+        "description": "Monte la famille « Honneurs » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Honneurs » gagne encore +20 points de base et +1 Mult."
       },
       "venus_orb": {
-        "name": "Orbe de Vénus",
-        "description": "Améliore les séquences : Séquence, Séquence + Paire, Deux séquences et la main Tout séquences. +2 Mult et +20 points par niveau."
+        "name": "Orbe des Séquences",
+        "planet": "Vénus",
+        "description": "Monte la famille « Séquences » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Séquences » gagne encore +20 points de base et +2 Mult."
       },
       "saturn_orb": {
-        "name": "Orbe de Saturne",
-        "description": "Améliore les suites : de quatre et de cinq, et la main Suite 1–9. +3 Mult et +30 points par niveau."
+        "name": "Orbe des Suites",
+        "planet": "Saturne",
+        "description": "Monte la famille « Suites » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Suites » gagne encore +30 points de base et +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Orbe de Jupiter",
-        "description": "Améliore Semi-couleur : mains complètes d’une famille plus des Honneurs. +2 Mult et +15 points par niveau."
+        "name": "Orbe de Semi-couleur",
+        "planet": "Jupiter",
+        "description": "Monte la famille « Semi-couleur » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Semi-couleur » gagne encore +15 points de base et +2 Mult."
       },
       "earth_orb": {
-        "name": "Orbe de la Terre",
-        "description": "Améliore brelans et carrés, et la main Tout brelans. +2 Mult et +25 points par niveau."
+        "name": "Orbe des Brelans et carrés",
+        "planet": "Terre",
+        "description": "Monte la famille « Brelans et carrés » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Brelans et carrés » gagne encore +25 points de base et +2 Mult."
       },
       "mars_orb": {
-        "name": "Orbe de Mars",
-        "description": "Améliore Couleur pure : mains complètes d’une seule famille. +3 Mult et +30 points par niveau."
+        "name": "Orbe de Couleur pure",
+        "planet": "Mars",
+        "description": "Monte la famille « Couleur pure » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Couleur pure » gagne encore +30 points de base et +3 Mult."
       },
       "neptune_orb": {
-        "name": "Orbe de Neptune",
-        "description": "Améliore Triple mixte : mains complètes avec la même séquence dans les trois familles. +4 Mult et +40 points par niveau."
+        "name": "Orbe de Triple mixte",
+        "planet": "Neptune",
+        "description": "Monte la famille « Triple mixte » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Triple mixte » gagne encore +40 points de base et +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Orbe de la Planète X",
-        "description": "Améliore Sept paires : la main Sept paires. +3 Mult et +35 points par niveau."
+        "name": "Orbe de Sept paires",
+        "planet": "Planète X",
+        "description": "Monte la famille « Sept paires » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Sept paires » gagne encore +35 points de base et +3 Mult."
       },
       "ceres_orb": {
-        "name": "Orbe de Cérès",
-        "description": "Améliore Main extérieure : mains complètes avec un terminal ou un Honneur dans chaque groupe. +4 Mult et +40 points par niveau."
+        "name": "Orbe de Main extérieure",
+        "planet": "Cérès",
+        "description": "Monte la famille « Main extérieure » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Main extérieure » gagne encore +40 points de base et +4 Mult."
       },
       "eris_orb": {
-        "name": "Orbe d'Éris",
-        "description": "Améliore Treize orphelins : la main Treize orphelins. +3 Mult et +50 points par niveau."
+        "name": "Orbe des Treize orphelins",
+        "planet": "Éris",
+        "description": "Monte la famille « Treize orphelins » d’un niveau pour cette partie (maximum 10). Chaque coup qui marque « Treize orphelins » gagne encore +50 points de base et +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Orbe du Trou Noir",
-        "description": "À l'usage, monte TOUS les Yaku d'un niveau."
+        "name": "Orbe de Toutes les familles",
+        "planet": "Trou noir",
+        "description": "Monte les 12 familles de mains d’un niveau pour cette partie (maximum 10 chacune). Chaque famille reçoit ses points de base et son Mult habituels ; une famille déjà au niveau 10 y reste."
       }
     }
   },
@@ -3186,55 +3200,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Paires",
-      "covers": "Paire, Double paire et Trois paires"
+      "covers": "Paire, Double paire ou Trois paires (une paire, ce sont deux tuiles identiques). La main Sept paires a sa propre famille."
     },
     "Pinfu": {
       "name": "Séquences",
-      "covers": "Séquence, Séquence + Paire, Deux séquences et la main Tout séquences"
+      "covers": "Séquence, Séquence + Paire ou Deux séquences (une séquence, ce sont trois nombres consécutifs d’une même famille), et Tout Séquences : une main complète de quatre séquences et d’une paire qui n’est ni de Dragons ni de Vent d’Est."
     },
     "Ittsu": {
       "name": "Suites",
-      "covers": "Suites de quatre et cinq, et la main Suite 1–9"
+      "covers": "Suite de quatre, Suite de cinq ou Suite + Paire (nombres consécutifs d’une même famille), et Suite 1–9 : une main complète contenant 1-2-3, 4-5-6 et 7-8-9 d’une même famille."
     },
     "Toitoi": {
       "name": "Brelans et carrés",
-      "covers": "Toute main avec brelan ou carré, et la main Tout brelans"
+      "covers": "Brelan, Full, Deux brelans, Brelan + Séquence, Carré ou Carré + Paire (un brelan, ce sont trois tuiles identiques ; un carré, quatre), et Tout Brelans : une main complète de quatre brelans ou carrés et d’une paire."
     },
     "Yakuhai": {
       "name": "Honneurs",
-      "covers": "Tout groupe de Vents ou de Dragons, et les mains Tuiles de valeur"
+      "covers": "Tout coup avec un groupe composé uniquement de Vents ou de Dragons, et Tuiles de Valeur : une main complète avec un brelan ou un carré de Dragons ou de Vent d’Est."
     },
     "Tanyao": {
       "name": "Tout simples",
-      "covers": "Mains uniquement de 2 à 8, et la main Tout simples"
+      "covers": "Tout coup qui forme un groupe avec uniquement des tuiles de 2 à 8, sans 1, 9, Vents ni Dragons (les tuiles de Pierre sont ignorées), et Tout Simples : une main complète uniquement de tuiles de 2 à 8."
     },
     "Honitsu": {
       "name": "Semi-couleur",
-      "covers": "Mains complètes d’une famille plus des Honneurs"
+      "covers": "Semi-Couleur : une main complète d’une seule famille plus des Vents ou des Dragons. Un coup plus court d’une seule famille ne compte pas."
     },
     "Chinitsu": {
       "name": "Couleur pure",
-      "covers": "Mains complètes d’une seule famille"
+      "covers": "Couleur Pure : une main complète d’une seule famille, sans Vents ni Dragons. Un coup plus court d’une seule famille ne compte pas."
     },
     "Sanshoku": {
       "name": "Triple mixte",
-      "covers": "Mains complètes avec la même séquence dans les trois familles"
+      "covers": "Triple Séquence Mixte : une main complète avec la même séquence dans les trois familles, par exemple 2-3-4 en Caractères, Cercles et Bambous."
     },
     "SevenPairs": {
       "name": "Sept paires",
-      "covers": "La main Sept paires"
+      "covers": "Sept Paires : une main complète d’exactement sept paires différentes (14 tuiles). Les coups plus courts faits de paires relèvent de la famille Paires."
     },
     "Chanta": {
       "name": "Main extérieure",
-      "covers": "Mains complètes avec un terminal ou un Honneur dans chaque groupe"
+      "covers": "Main Extérieure : une main complète avec au moins une séquence, dont chaque groupe et la paire contiennent un 1, un 9, un Vent ou un Dragon. Une Main Extérieure Pure (la même, mais sans Vents ni Dragons) compte aussi."
     },
     "Kokushi": {
       "name": "Treize orphelins",
-      "covers": "La main Treize orphelins"
+      "covers": "Treize Orphelins : une main complète avec un exemplaire de chaque 1, 9, Vent et Dragon, plus un doublon."
     },
     "All": {
       "name": "Toutes les familles",
-      "covers": "Toutes les familles d’amélioration",
+      "covers": "Les 12 familles de mains, Paires et Sept paires comprises.",
       "upgrade": "Toutes les familles +1 niveau"
     },
     "levelChange": "{{family}} : niveau {{from}} → {{to}}",

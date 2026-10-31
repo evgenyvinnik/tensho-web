@@ -50,31 +50,37 @@ Ouija rank changes as well as Unity's conversion to Winds.
 
 ## 🌟 A2) Complete Celestial Orb Library (天球)
 
-| Orb | Japanese | Target Yaku | Base Bonus per Level |
-|-----|----------|-------------|---------------------|
-| **Pluto Orb** | 冥王星 | Riichi | +1 Mult, +10 Chips |
-| **Mercury Orb** | 水星 | All Simples | +1 Mult, +15 Chips |
-| **Uranus Orb** | 天王星 | Honors (Value Tiles) | +1 Mult, +20 Chips |
-| **Venus Orb** | 金星 | Sequences (All Sequences) | +2 Mult, +20 Chips |
-| **Saturn Orb** | 土星 | Straights (1–9 Straight) | +3 Mult, +30 Chips |
-| **Jupiter Orb** | 木星 | Half Flush | +2 Mult, +15 Chips |
-| **Earth Orb** | 地球 | Sets (All Triplets) | +2 Mult, +25 Chips |
-| **Mars Orb** | 火星 | Full Flush | +3 Mult, +30 Chips |
-| **Neptune Orb** | 海王星 | Mixed Triple Sequence | +4 Mult, +40 Chips |
+Each Orb is named after the upgrade family it raises; its planet is a flavor
+subtitle. All share a jade-and-gold shell showing that family's tile motif.
+Using one raises the family by 1 level for the run (maximum 10); each level
+above 1 adds the bonus below to every play that scores the family.
+"Works with" lists what scores each family (`upgradeFamilies.*.covers`).
+
+| Orb | Planet | Bonus per Level | Works with |
+|-----|--------|-----------------|------------|
+| **Pairs Orb** | Pluto (冥王星) | +10 base points, +1 Mult | Pair, Two Pairs, Three Pairs (not Seven Pairs) |
+| **All Simples Orb** | Mercury (水星) | +15 base points, +1 Mult | Any play forming a group from 2–8 tiles only; All Simples hand |
+| **Honors Orb** | Uranus (天王星) | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
+| **Sequences Orb** | Venus (金星) | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
+| **Straights Orb** | Saturn (土星) | +30 base points, +3 Mult | Straights of Four and Five, Straight + Pair; 1–9 Straight hand |
+| **Half Flush Orb** | Jupiter (木星) | +15 base points, +2 Mult | Half Flush hand |
+| **Sets Orb** | Earth (地球) | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
+| **Full Flush Orb** | Mars (火星) | +30 base points, +3 Mult | Full Flush hand |
+| **Mixed Triple Orb** | Neptune (海王星) | +40 base points, +4 Mult | Mixed Triple Sequence hand |
 
 ### Secret Celestial Orbs
 
-| Orb | Target Yaku | Bonus | Unlock Condition |
-|-----|-------------|-------|------------------|
-| **Planet X Orb** | Seven Pairs | +3 Mult, +35 Chips | Play Seven Pairs |
-| **Ceres Orb** | Outside Hand | +4 Mult, +40 Chips | Score an Outside Hand |
-| **Eris Orb** | Thirteen Orphans | +3 Mult, +50 Chips | Score Thirteen Orphans |
+| Orb | Planet | Bonus per Level | Works with | Unlock Condition |
+|-----|--------|-----------------|------------|------------------|
+| **Seven Pairs Orb** | Planet X (惑星X) | +35 base points, +3 Mult | Seven Pairs hand | Play Seven Pairs |
+| **Outside Hand Orb** | Ceres (ケレス) | +40 base points, +4 Mult | Outside Hand and Pure Outside Hand | Score an Outside Hand |
+| **Thirteen Orphans Orb** | Eris (エリス) | +50 base points, +3 Mult | Thirteen Orphans hand | Score Thirteen Orphans |
 
 ### Mythic Orb
 
-| Orb | Effect | Unlock |
-|-----|--------|--------|
-| **Black Hole Orb** | Upgrades ALL Yaku by 1 level | Discover all 12 orbs |
+| Orb | Planet | Effect | Unlock |
+|-----|--------|--------|--------|
+| **Every Family Orb** | Black Hole (ブラックホール) | Raises all 12 families by 1 level (each capped at 10) | Discover all 12 orbs |
 
 ---
 

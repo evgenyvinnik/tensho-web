@@ -1,4 +1,8 @@
-/** Border and glow colours matched to each family's Celestial Orb palette. */
+/**
+ * Border and glow colours, one hue per upgrade family. Every Orb now shares a
+ * jade-and-gold shell and shows its family's tile motif, so these hues (first
+ * taken from the planets, still named below) only tell the families apart.
+ */
 
 import type { YakuCategory } from '../../systems/CelestialOrbSystem'
 

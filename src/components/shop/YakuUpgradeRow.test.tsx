@@ -40,7 +40,7 @@ it('shows each upgrade inline with its level and opens its details on tap', () =
   expect(panel).toHaveTextContent('Level 2 / 10')
   expect(panel).toHaveTextContent('+35 base points · +3 Mult')
   expect(panel).toHaveTextContent('Times scored: 1')
-  expect(panel).toHaveTextContent('Upgraded by Planet X Orb')
+  expect(panel).toHaveTextContent('Upgraded by Seven Pairs Orb')
 })
 
 it('flashes a family that rises while the shop is open, never one already there', () => {

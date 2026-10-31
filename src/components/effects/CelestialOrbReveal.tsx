@@ -20,7 +20,10 @@ import {
 import { useItemText } from '../../i18n/useItemText'
 import { getItemArt } from '../../utils/itemArt'
 import { getGeneratedArt } from '../../utils/generatedArt'
-import { getCelestialOrbByYaku } from '../../systems/CelestialOrbSystem'
+import {
+  CELESTIAL_ORBS,
+  getCelestialOrbByYaku,
+} from '../../systems/CelestialOrbSystem'
 import { DEFAULT_FAMILY_TONE, FAMILY_TONES } from '../gameplay/yakuFamilyTones'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
@@ -159,6 +162,16 @@ export function CelestialOrbReveal({ paused = false }: { paused?: boolean }) {
           <h2 className="font-decorative text-xl font-bold text-[var(--color-golden-yellow)]">
             {name}
           </h2>
+          {/* The family names the Orb; its planet is flavor. */}
+          <p
+            data-orb-reveal-planet
+            className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-beige-white)]/60"
+          >
+            {t(
+              `orbs.items.${orb.id}.planet`,
+              CELESTIAL_ORBS[orb.id]?.planetName ?? ''
+            )}
+          </p>
           {levels.length > 1 && (
             <p
               className="mt-1 text-xs font-black uppercase tracking-widest"

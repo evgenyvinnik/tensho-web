@@ -279,7 +279,7 @@
     }
   },
   "observatory": {
-    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. Buco Nero corrisponde a qualsiasi Yaku segnato.",
+    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. La Sfera di Tutte le famiglie corrisponde a qualsiasi Yaku segnato.",
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
   },
   "closedHandAusterity": {
@@ -1110,6 +1110,7 @@
       "sealHelp": "Usato nell’istante in cui lo prendi: scegli le tessere del tuo muro da cambiare, e restano cambiate per tutta la partita.",
       "sealHelpInstant": "Usato nell’istante in cui lo prendi.",
       "orb": "Sfera Celeste · potenzia una famiglia di mani",
+      "orbPlanet": "Sfera Celeste · {{planet}}",
       "script": "Scritto del Vuoto · potente, con un prezzo",
       "consumableHelp": "Resta tra i tuoi oggetti finché non lo usi. Toccalo sul tavolo per usarlo.",
       "tile": "Tessera · aggiunta al tuo muro",
@@ -2733,56 +2734,69 @@
   "orbs": {
     "items": {
       "pluto_orb": {
-        "name": "Sfera di Plutone",
-        "description": "Potenzia le coppie: Coppia, Doppia coppia e Tre coppie. +1 Mult e +10 punti per livello."
+        "name": "Sfera delle Coppie",
+        "planet": "Plutone",
+        "description": "Alza la famiglia «Coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Coppie» riceve altri +10 punti base e +1 Mult."
       },
       "mercury_orb": {
-        "name": "Sfera di Mercurio",
-        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tutti semplici. +1 Mult e +15 punti per livello."
+        "name": "Sfera di Tutti semplici",
+        "planet": "Mercurio",
+        "description": "Alza la famiglia «Tutti semplici» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tutti semplici» riceve altri +15 punti base e +1 Mult."
       },
       "uranus_orb": {
-        "name": "Sfera di Urano",
-        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Tessere di valore. +1 Mult e +20 punti per livello."
+        "name": "Sfera degli Onori",
+        "planet": "Urano",
+        "description": "Alza la famiglia «Onori» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Onori» riceve altri +20 punti base e +1 Mult."
       },
       "venus_orb": {
-        "name": "Sfera di Venere",
-        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze. +2 Mult e +20 punti per livello."
+        "name": "Sfera delle Sequenze",
+        "planet": "Venere",
+        "description": "Alza la famiglia «Sequenze» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sequenze» riceve altri +20 punti base e +2 Mult."
       },
       "saturn_orb": {
-        "name": "Sfera di Saturno",
-        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala 1–9. +3 Mult e +30 punti per livello."
+        "name": "Sfera delle Scale",
+        "planet": "Saturno",
+        "description": "Alza la famiglia «Scale» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Scale» riceve altri +30 punti base e +3 Mult."
       },
       "jupiter_orb": {
-        "name": "Sfera di Giove",
-        "description": "Potenzia Mezzo colore: mani complete di un seme più Onori. +2 Mult e +15 punti per livello."
+        "name": "Sfera di Mezzo colore",
+        "planet": "Giove",
+        "description": "Alza la famiglia «Mezzo colore» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mezzo colore» riceve altri +15 punti base e +2 Mult."
       },
       "earth_orb": {
-        "name": "Sfera della Terra",
-        "description": "Potenzia tris e poker, e la mano Tutti tris. +2 Mult e +25 punti per livello."
+        "name": "Sfera di Tris e poker",
+        "planet": "Terra",
+        "description": "Alza la famiglia «Tris e poker» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tris e poker» riceve altri +25 punti base e +2 Mult."
       },
       "mars_orb": {
-        "name": "Sfera di Marte",
-        "description": "Potenzia Colore puro: mani complete di un solo seme. +3 Mult e +30 punti per livello."
+        "name": "Sfera di Colore puro",
+        "planet": "Marte",
+        "description": "Alza la famiglia «Colore puro» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Colore puro» riceve altri +30 punti base e +3 Mult."
       },
       "neptune_orb": {
-        "name": "Sfera di Nettuno",
-        "description": "Potenzia Triplo misto: mani complete con la stessa sequenza nei tre semi. +4 Mult e +40 punti per livello."
+        "name": "Sfera di Triplo misto",
+        "planet": "Nettuno",
+        "description": "Alza la famiglia «Triplo misto» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Triplo misto» riceve altri +40 punti base e +4 Mult."
       },
       "planet_x_orb": {
-        "name": "Sfera del Pianeta X",
-        "description": "Potenzia Sette coppie: la mano Sette coppie. +3 Mult e +35 punti per livello."
+        "name": "Sfera di Sette coppie",
+        "planet": "Pianeta X",
+        "description": "Alza la famiglia «Sette coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sette coppie» riceve altri +35 punti base e +3 Mult."
       },
       "ceres_orb": {
-        "name": "Sfera di Cerere",
-        "description": "Potenzia Mano esterna: mani complete con un terminale o Onore in ogni gruppo. +4 Mult e +40 punti per livello."
+        "name": "Sfera di Mano esterna",
+        "planet": "Cerere",
+        "description": "Alza la famiglia «Mano esterna» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mano esterna» riceve altri +40 punti base e +4 Mult."
       },
       "eris_orb": {
-        "name": "Sfera di Eris",
-        "description": "Potenzia Tredici orfani: la mano Tredici orfani. +3 Mult e +50 punti per livello."
+        "name": "Sfera dei Tredici orfani",
+        "planet": "Eris",
+        "description": "Alza la famiglia «Tredici orfani» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tredici orfani» riceve altri +50 punti base e +3 Mult."
       },
       "black_hole_orb": {
-        "name": "Sfera del Buco Nero",
-        "description": "Potenzia TUTTI gli Yaku di 1 livello quando viene usata."
+        "name": "Sfera di Tutte le famiglie",
+        "planet": "Buco nero",
+        "description": "Alza di 1 livello tutte le 12 famiglie di mani per questa partita (massimo 10 ciascuna). Ogni famiglia riceve i suoi soliti punti base e Mult; una famiglia già al livello 10 resta lì."
       }
     }
   },
@@ -3186,55 +3200,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Coppie",
-      "covers": "Coppia, Doppia coppia e Tre coppie"
+      "covers": "Coppia, Doppia coppia o Tre coppie (una coppia sono due tessere identiche). La mano Sette coppie ha una famiglia tutta sua."
     },
     "Pinfu": {
       "name": "Sequenze",
-      "covers": "Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze"
+      "covers": "Sequenza, Sequenza + Coppia o Due sequenze (una sequenza sono tre numeri consecutivi dello stesso seme), e Tutte sequenze: una mano completa di quattro sequenze più una coppia che non sia di Draghi o di Vento d’Est."
     },
     "Ittsu": {
       "name": "Scale",
-      "covers": "Scale di quattro e cinque, e la mano Scala 1–9"
+      "covers": "Scala di quattro, Scala di cinque o Scala + Coppia (numeri consecutivi dello stesso seme), e Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme."
     },
     "Toitoi": {
       "name": "Tris e poker",
-      "covers": "Ogni giocata con tris o poker, e la mano Tutti tris"
+      "covers": "Tris, Full, Due tris, Tris + Sequenza, Poker o Poker + Coppia (un tris sono tre tessere identiche, un poker quattro), e Tutti tris: una mano completa di quattro tris o poker più una coppia."
     },
     "Yakuhai": {
       "name": "Onori",
-      "covers": "Ogni gruppo di Venti o Draghi, e le mani Tessere di valore"
+      "covers": "Ogni giocata con un gruppo di soli Venti o Draghi, e Tessere di valore: una mano completa con un tris o un poker di Draghi o di Vento d’Est."
     },
     "Tanyao": {
       "name": "Tutti semplici",
-      "covers": "Giocate solo con tessere da 2 a 8, e la mano Tutti semplici"
+      "covers": "Ogni giocata che forma un gruppo usando solo tessere da 2 a 8, senza 1, 9, Venti o Draghi (le tessere Pietra vengono ignorate), e Tutti semplici: una mano completa di sole tessere da 2 a 8."
     },
     "Honitsu": {
       "name": "Mezzo colore",
-      "covers": "Mani complete di un seme più Onori"
+      "covers": "Mezzo colore: una mano completa di un seme più Venti o Draghi. Una giocata più corta di un solo seme non conta."
     },
     "Chinitsu": {
       "name": "Colore puro",
-      "covers": "Mani complete di un solo seme"
+      "covers": "Colore puro: una mano completa di un solo seme, senza Venti né Draghi. Una giocata più corta di un solo seme non conta."
     },
     "Sanshoku": {
       "name": "Triplo misto",
-      "covers": "Mani complete con la stessa sequenza nei tre semi"
+      "covers": "Tripla sequenza mista: una mano completa con la stessa sequenza in tutti e tre i semi, come 2-3-4 in Caratteri, Cerchi e Bambù."
     },
     "SevenPairs": {
       "name": "Sette coppie",
-      "covers": "La mano Sette coppie"
+      "covers": "Sette coppie: una mano completa di esattamente sette coppie diverse (14 tessere). Le giocate più corte di coppie appartengono alla famiglia Coppie."
     },
     "Chanta": {
       "name": "Mano esterna",
-      "covers": "Mani complete con un terminale o Onore in ogni gruppo"
+      "covers": "Mano esterna: una mano completa con almeno una sequenza, in cui ogni gruppo e la coppia includono un 1, un 9, un Vento o un Drago. Vale anche la Mano esterna pura (uguale, ma senza Venti né Draghi)."
     },
     "Kokushi": {
       "name": "Tredici orfani",
-      "covers": "La mano Tredici orfani"
+      "covers": "Tredici orfani: una mano completa con uno di ogni 1, 9, Vento e Drago, più un doppione."
     },
     "All": {
       "name": "Tutte le famiglie",
-      "covers": "Tutte le famiglie di potenziamento",
+      "covers": "Tutte le 12 famiglie di mani, Coppie e Sette coppie comprese.",
       "upgrade": "Tutte le famiglie +1 livello"
     },
     "levelChange": "{{family}}: livello {{from}} → {{to}}",
