@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Rétrograde",
-      "description": "Montez un Yaku au niveau 10."
+      "description": "Montez un Yaku au niveau 9."
     },
     "keeperOfWinds": {
       "name": "Gardien des vents",
@@ -873,7 +873,7 @@
       },
       "satellite": {
         "name": "Satellite",
-        "description": "+1 Or par famille d’Orbes au-dessus du niveau 1 à la fin de chaque manche gagnée."
+        "description": "+1 Or par famille d’Orbes au-dessus du niveau 0 à la fin de chaque manche gagnée."
       },
       "swift_andy": {
         "name": "Andy l’Agile",

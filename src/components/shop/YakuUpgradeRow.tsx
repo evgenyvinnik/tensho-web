@@ -1,11 +1,12 @@
 /**
  * YakuUpgradeRow: the run's Yaku upgrades, in the Tea House.
  *
- * One token per upgraded family with its level, wrapping under its label at
- * the right end of the build's line, across from the Decrees. Nothing shows
- * until an Orb has been used, so a fresh run's build panel stays clean. A
- * family that rises while the shop is open (an Orb or a Seal of the Void
- * just bought) flashes once; opening a token only reads.
+ * One token per family with its level, counted from 0, under its label at the
+ * right end of the build's line, across from the Decrees. Every family a run
+ * can upgrade shows from the start, so a new player sees what Orbs level; on
+ * a phone the nine sit in a three-by-three grid. A family that rises while
+ * the shop is open (an Orb or a Seal of the Void just bought) flashes once;
+ * opening a token only reads.
  *
  * @module components/shop/YakuUpgradeRow
  */
@@ -51,7 +52,8 @@ export function YakuUpgradeRow({ upgrades }: { upgrades: YakuUpgrade[] }) {
       </span>
       <div
         role="list"
-        className="mt-1 flex flex-wrap items-center gap-1.5 p-0.5 sm:gap-2"
+        data-yaku-upgrade-grid
+        className="shop-build-grid mt-1 sm:flex sm:flex-wrap sm:items-center sm:gap-2 sm:p-0.5"
       >
         {upgrades.map((upgrade) => (
           <div role="listitem" key={upgrade.yaku} className="shrink-0">

@@ -12,6 +12,7 @@
  */
 
 import {
+  getConsumableUnlockCondition,
   isConsumableAvailable,
   type ConsumableUnlockResolver,
 } from '../config/consumableUnlocks'
@@ -5045,6 +5046,33 @@ export class GameOrchestrator {
           upgrade.yaku
         ),
       }))
+  }
+
+  /**
+   * Every family the Tea House lists, in catalog order: the nine whose Orbs
+   * any run can find, from level 1, and a secret family (its Orb earned on
+   * the profile) only once an upgrade has reached it. Detached like
+   * `getYakuUpgradeState`.
+   */
+  getYakuFamilyState() {
+    const orbs = this.state.celestialOrbSystem
+    return Object.values(CELESTIAL_ORBS)
+      .filter((orb) => orb.effect.targetYaku !== 'All')
+      .map((orb) => ({
+        orb,
+        upgrade: {
+          yaku: orb.effect.targetYaku,
+          level: orbs.getYakuLevel(orb.effect.targetYaku),
+          mult: orbs.calculateYakuMult(orb.effect.targetYaku),
+          chips: orbs.calculateYakuChips(orb.effect.targetYaku),
+          timesScored: orbs.getYakuTriggerCount(orb.effect.targetYaku),
+        },
+      }))
+      .filter(
+        ({ orb, upgrade }) =>
+          upgrade.level > 1 || !getConsumableUnlockCondition(orb.id)
+      )
+      .map(({ upgrade }) => upgrade)
   }
 
   /** Get current state (for UI binding). */

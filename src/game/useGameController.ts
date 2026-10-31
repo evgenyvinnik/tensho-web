@@ -42,7 +42,8 @@ export interface GameController {
   shop: GameOrchestrator['shop']
   flora: ReturnType<GameOrchestrator['getFloraState']>
   partialHandRules: ReturnType<GameOrchestrator['getPartialHandRules']>
-  yakuUpgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
+  /** Every family the Tea House lists, upgraded or not. */
+  yakuFamilies: ReturnType<GameOrchestrator['getYakuFamilyState']>
   // State (reactive)
   state: OrchestratorState
   handTiles: Tile[]
@@ -480,7 +481,7 @@ export function useGameController(
     shop: orchestrator.shop,
     flora: orchestrator.getFloraState(),
     partialHandRules: orchestrator.getPartialHandRules(),
-    yakuUpgrades: orchestrator.getYakuUpgradeState(),
+    yakuFamilies: orchestrator.getYakuFamilyState(),
     // State
     state,
     handTiles,

@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Geri Hareket",
-      "description": "Bir Yaku’yu 10. seviyeye yükseltin."
+      "description": "Bir Yaku’yu 9. seviyeye yükseltin."
     },
     "keeperOfWinds": {
       "name": "Rüzgârların Bekçisi",
@@ -1160,7 +1160,7 @@
       },
       "satellite": {
         "name": "Uydu",
-        "description": "Kazanılan her turun sonunda, seviyesi 1’in üzerinde olan her Göksel Küre ailesi için +1 Altın."
+        "description": "Kazanılan her turun sonunda, seviyesi 0’ın üzerinde olan her Göksel Küre ailesi için +1 Altın."
       },
       "swift_andy": {
         "name": "Çevik Andy",

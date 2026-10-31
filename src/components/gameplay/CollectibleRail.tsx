@@ -34,6 +34,7 @@ import { CollectibleToken } from '../ui/CollectibleToken'
 import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
 import { consumableMessage } from './consumableMessages'
+import { shownUpgradeLevel } from './yakuUpgradeLevel'
 
 type ConsumableAction = Extract<
   PlayerAction,
@@ -219,9 +220,11 @@ export function CollectibleRail({
                   ? t('upgradeFamilies.All.upgrade', 'Every family +1 level')
                   : t('upgradeFamilies.levelChange', {
                       family: familyName(family),
-                      from: number(level ?? 1),
+                      from: number(shownUpgradeLevel(level ?? 1)),
                       to: number(
-                        Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        shownUpgradeLevel(
+                          Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        )
                       ),
                     })}
               </p>

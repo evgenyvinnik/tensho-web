@@ -46,7 +46,7 @@ Act 5, and Challenge achievements remain deferred.
 | --- | --- |
 | Stage Master | +25 Points and +1 Mult per completed Act. |
 | Flower Pot | ×3 Mult while owning all four distinct Flower variants; duplicates do not substitute. |
-| Satellite | +1 Gold per Orb family above level 1 at each won round's settlement. No income on defeat. |
+| Satellite | +1 Gold per upgraded Orb family (shown level above 0) at each won round's settlement. No income on defeat. |
 | Swift Andy | +2 free REDRAW each round; −2 rack size. |
 | Lucky Sixes | +6 Mult per played natural suited rank-6 tile. Stones do not count; Wild does not change its natural rank. |
 | The Idol | ×3 Mult when at least two tiles are played and every tile has the same natural suit and rank. Stones break the match; Wild does not impersonate a different face. |

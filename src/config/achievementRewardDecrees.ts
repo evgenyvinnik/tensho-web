@@ -36,7 +36,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'Satellite',
     japaneseName: '衛星',
     description:
-      '+1 Gold per Orb family above level 1 at the end of each won round',
+      '+1 Gold per Orb family above level 0 at the end of each won round',
     rarity: 'rare',
     effects: [
       { type: 'gold_gain', value: 1, condition: 'per upgraded Orb family' },

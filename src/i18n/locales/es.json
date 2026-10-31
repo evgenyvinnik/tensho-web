@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrógrado",
-      "description": "Sube un Yaku al nivel 10."
+      "description": "Sube un Yaku al nivel 9."
     },
     "keeperOfWinds": {
       "name": "Guardián de los vientos",
@@ -873,7 +873,7 @@
       },
       "satellite": {
         "name": "Satélite",
-        "description": "+1 de Oro por cada familia de Orbes por encima del nivel 1 al final de cada ronda ganada."
+        "description": "+1 de Oro por cada familia de Orbes por encima del nivel 0 al final de cada ronda ganada."
       },
       "swift_andy": {
         "name": "Andy Veloz",

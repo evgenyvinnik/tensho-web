@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "逆行",
-      "description": "役のレベルを10に上げる。"
+      "description": "役のレベルを9に上げる。"
     },
     "keeperOfWinds": {
       "name": "風の守り手",
@@ -873,7 +873,7 @@
       },
       "satellite": {
         "name": "衛星",
-        "description": "勝利した各ラウンドの終了時、レベル1を超えている天球の系統ごとに+1金貨。"
+        "description": "勝利した各ラウンドの終了時、レベル0を超えている天球の系統ごとに+1金貨。"
       },
       "swift_andy": {
         "name": "俊足のアンディ",

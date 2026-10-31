@@ -827,7 +827,7 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 | **Charter Collector** | 皇勅収集 | Buy 5 Charters in one run by the end of Act 5 | — |
 | **Shattered** | 粉砕 | Break 2 Glass tiles in one hand | — |
 | **Royal Hand** | 帝王手 | Complete a Yakuman | — |
-| **Retrograde** | 逆行 | Get any yaku to level 10 | — |
+| **Retrograde** | 逆行 | Get any yaku to level 9 (its ninth upgrade) | — |
 
 ### Scoring Accolades
 

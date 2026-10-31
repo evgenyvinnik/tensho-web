@@ -99,8 +99,10 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
     expect(dialog).toHaveAttribute('data-orb-reveal', 'pluto_orb')
     expect(dialog).toHaveTextContent('Celestial Orb used')
     const row = dialog.querySelector('[data-orb-reveal-level="SevenPairs"]')!
+    // The engine's level 3 is the family's second upgrade: players count
+    // upgrades from 0.
     expect(row).toHaveAttribute('data-orb-reveal-to', '3')
-    expect(row).toHaveTextContent('Seven Pairs: level 2 → 3')
+    expect(row).toHaveTextContent('Seven Pairs: level 1 → 2')
     expect(row).toHaveTextContent('+70 base points · +6 Mult')
     expect(dialog).not.toHaveTextContent('Every family')
     fireEvent.click(screen.getByRole('button', { name: 'Got it' }))

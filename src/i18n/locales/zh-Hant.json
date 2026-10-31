@@ -189,7 +189,7 @@
     },
     "retrograde": {
       "name": "逆行",
-      "description": "將一種役提升到10級。"
+      "description": "將一種役提升到9級。"
     },
     "keeperOfWinds": {
       "name": "風之守護者",
@@ -873,7 +873,7 @@
       },
       "satellite": {
         "name": "衛星",
-        "description": "每個獲勝回合結束時，每個等級高於1的天體寶珠牌型家族提供+1金幣。"
+        "description": "每個獲勝回合結束時，每個等級高於0的天體寶珠牌型家族提供+1金幣。"
       },
       "swift_andy": {
         "name": "迅捷安迪",
