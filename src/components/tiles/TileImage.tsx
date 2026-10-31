@@ -21,6 +21,7 @@ import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { EnhancementType } from '../../core/TileModifier'
 import { TileBack } from './TileBack'
+import { enhancedFaceLayout, TILE_FACE_BACKGROUND } from './enhancedFaceLayout'
 
 export type TileSize = keyof typeof tileSizes
 
@@ -111,8 +112,11 @@ export const TileImage: React.FC<TileImageProps> = ({
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
   // A Stone tile has no rank or suit: its face is the stone itself.
   const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
-  const enhancedFace =
+  // A Mark frames the tile: its face is fitted to the frame's opening.
+  const faceLayout =
     !faceDown && tile && tile.enhancement !== EnhancementType.None
+      ? enhancedFaceLayout(tile.enhancement)
+      : null
   const indexHint =
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
@@ -318,10 +322,27 @@ export const TileImage: React.FC<TileImageProps> = ({
         <span
           role="img"
           aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
-          className="absolute inset-0 rounded-md bg-stone-600"
+          data-tile-face="stone"
+          className={`absolute bg-stone-600 ${faceLayout ? 'rounded-sm' : 'inset-0 rounded-md'}`}
+          style={faceLayout?.panel}
         />
       ) : faceDown || !tile ? (
         <TileBack label={tileInfo.name} />
+      ) : faceLayout ? (
+        <span
+          data-tile-face="framed"
+          className="absolute overflow-hidden rounded-sm pointer-events-none"
+          style={{ ...faceLayout.panel, background: TILE_FACE_BACKGROUND }}
+        >
+          <img
+            src={getTileImagePath(tile.suit, tile.rank)}
+            alt={tileInfo.name}
+            className="absolute max-w-none select-none pointer-events-none"
+            draggable={false}
+            loading={loading}
+            style={faceLayout.art}
+          />
+        </span>
       ) : (
         <img
           src={getTileImagePath(tile.suit, tile.rank)}
@@ -329,11 +350,6 @@ export const TileImage: React.FC<TileImageProps> = ({
           className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
           draggable={false}
           loading={loading}
-          style={
-            enhancedFace
-              ? { padding: '12% 10%', backgroundColor: '#eee8d4' }
-              : undefined
-          }
         />
       )}
       {indexHint && (
