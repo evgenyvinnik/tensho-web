@@ -39,6 +39,12 @@ it('a swift clear clears round-scoped Seasons and REDRAW penalties, pays out and
   expect(state.phase).toBe('shop')
   expect(state.gold).toBeGreaterThan(100)
   expect(state.lastRoundSummary?.omenId).toBe('blessing_pack_omen')
+  // The Tea House's Omen reveal names where it came from.
+  expect(state.lastRoundSummary).toMatchObject({
+    roundType: 'Small',
+    spareTurns: SWIFT_CLEAR_SPARE_TURNS,
+    omenCopies: 1,
+  })
   expect(state.seasonSystem.getSeasonStack()).toEqual([])
   expect(state.seasonSystem.toState().discardCount).toBe(0)
   expect(
@@ -59,6 +65,10 @@ it('a clear on the last Turn earns no Omen', () => {
   clearRound(game, { spareTurns: SWIFT_CLEAR_SPARE_TURNS - 1 })
   expect(state.phase).toBe('shop')
   expect(state.lastRoundSummary?.omenId).toBeNull()
+  expect(state.lastRoundSummary).toMatchObject({
+    spareTurns: SWIFT_CLEAR_SPARE_TURNS - 1,
+    omenCopies: 0,
+  })
   expect(useOmenStore.getState().activeTags).toHaveLength(0)
   expect(state.omenSystem.getTotalSkippedRounds()).toBe(0)
 })

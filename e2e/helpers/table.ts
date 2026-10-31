@@ -1,13 +1,15 @@
 import { expect, type Page } from '@playwright/test'
 
-const REVEALS = '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
+const REVEALS =
+  '[data-wall-draw], [data-decree-reveal], [data-orb-reveal], [data-omen-reveal]'
 
 /**
- * Close every wall draw, Decree and Orb reveal on screen. Each round opens
- * with its deal from the Wall and any draw can fly a Flower or Season to the
- * collection (both end by themselves; a tap skips them), a new run reveals
- * its starting Decrees, and an Orb taken in the Tea House reveals the family
- * it raised; the reveals wait for the player before the screen can be used.
+ * Close every wall draw, Decree, Orb and Omen reveal on screen. Each round
+ * opens with its deal from the Wall and any draw can fly a Flower or Season
+ * to the collection (both end by themselves; a tap skips them), a new run
+ * reveals its starting Decrees, an Orb taken in the Tea House reveals the
+ * family it raised, and a swift clear's Omen is revealed as the Tea House
+ * opens; the reveals wait for the player before the screen can be used.
  */
 export async function settleReveals(
   page: Page,
@@ -168,9 +170,13 @@ export async function parkMouse(page: Page): Promise<void> {
  * Clear the current round with a real play and Turns to spare. Only the deal
  * is controlled: a target of 1 and a Pair on the rack. Clearing a Small or
  * Large round with two Turns left earns its Omen (Skip no longer exists).
- * Resolves once the round's Tea House is open.
+ * Resolves once the round's Tea House is open and, unless `keepReveal` is
+ * set, its Omen reveal has been closed.
  */
-export async function swiftClear(page: Page): Promise<void> {
+export async function swiftClear(
+  page: Page,
+  { keepReveal = false }: { keepReveal?: boolean } = {}
+): Promise<void> {
   const ids = await page.evaluate(async () => {
     const gamePath = '/src/game/GameOrchestrator.ts'
     const tilePath = '/src/core/Tile.ts'
@@ -210,4 +216,25 @@ export async function swiftClear(page: Page): Promise<void> {
       })
     )
     .toBe(true)
+  if (!keepReveal) await closeOmenReveal(page)
+}
+
+/**
+ * Close the Omen a swift clear earned. It is revealed as the Tea House opens,
+ * before the round's pay arrives, and waits for the player. Resolves at once
+ * if the round earned no Omen (or its reveal was already shown).
+ */
+export async function closeOmenReveal(
+  page: Page,
+  timeout = 2_000
+): Promise<void> {
+  const reveal = page.locator('[data-omen-reveal]')
+  const shown = await reveal
+    .waitFor({ state: 'visible', timeout })
+    .then(() => true)
+    .catch(() => false)
+  if (!shown) return
+  // The sign stage gives way to the card and its button by itself.
+  await reveal.getByRole('button').last().click()
+  await reveal.waitFor({ state: 'detached' })
 }

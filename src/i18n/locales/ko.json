@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "천상의 구슬 사용",
     "title": "{{name}} 사용: 역 강화"
+  },
+  "omenReveal": {
+    "title": "징조 획득: {{name}}",
+    "swiftClear": "빠른 클리어",
+    "cleared": "{{round}} 클리어",
+    "spareTurns_one": "턴 {{formattedCount}}개 남김",
+    "spareTurns_other": "턴 {{formattedCount}}개 남김",
+    "earned": "징조 획득",
+    "copies": "×{{amount}}",
+    "copiesNote": "쌍둥이 징조로 복제됨: ×{{amount}}",
+    "when": "효과 시점",
+    "timing": {
+      "shop": "지금 이 찻집에서. 효과가 이미 상품에 적용되어 있습니다.",
+      "round": "다음 라운드가 시작될 때.",
+      "hand": "다음에 계산되는 손에서.",
+      "voidScript": "다음에 공허의 두루마리를 사용할 때.",
+      "now": "즉시. 이미 적용되었습니다.",
+      "run": "런이 끝날 때까지 계산되는 모든 손에서.",
+      "nextOmen": "다음 징조를 얻을 때."
+    },
+    "rail": {
+      "waits": "그때까지 테이블의 보유 아이템에서 기다립니다.",
+      "stays": "테이블의 보유 아이템에 계속 남아 있습니다."
+    },
+    "tradeoff": "대가",
+    "rule": "소국이나 대국을 턴 {{spare}}개 이상 남기고 클리어하면 징조를 얻습니다. 보스국에서는 얻을 수 없습니다."
   }
 }

@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "天球を使用",
     "title": "{{name}}を使用：役を強化"
+  },
+  "omenReveal": {
+    "title": "兆しを獲得：{{name}}",
+    "swiftClear": "速攻クリア",
+    "cleared": "{{round}}をクリア",
+    "spareTurns_one": "手番{{formattedCount}}回を残す",
+    "spareTurns_other": "手番{{formattedCount}}回を残す",
+    "earned": "兆しを獲得",
+    "copies": "×{{amount}}",
+    "copiesNote": "双子の兆で複製：×{{amount}}",
+    "when": "効果のタイミング",
+    "timing": {
+      "shop": "今すぐ、この茶寮で。効果はすでに商品に反映されている。",
+      "round": "次のラウンドの開始時。",
+      "hand": "次に計上する手で。",
+      "voidScript": "次に虚無の書を使う時。",
+      "now": "即座に。すでに適用済み。",
+      "run": "ラン終了まで、計上するすべての手で。",
+      "nextOmen": "次の兆しを獲得した時。"
+    },
+    "rail": {
+      "waits": "それまでは卓の所持品に置かれる。",
+      "stays": "卓の所持品に置かれ続ける。"
+    },
+    "tradeoff": "代償",
+    "rule": "小局か大局を手番{{spare}}回以上残してクリアすると兆しを得る。親局では得られない。"
   }
 }

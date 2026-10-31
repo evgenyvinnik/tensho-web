@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "Orbe Celestial usado",
     "title": "{{name}} usado: yaku mejorado"
+  },
+  "omenReveal": {
+    "title": "Presagio obtenido: {{name}}",
+    "swiftClear": "Ronda veloz",
+    "cleared": "{{round}} superada",
+    "spareTurns_one": "{{formattedCount}} turno de sobra",
+    "spareTurns_other": "{{formattedCount}} turnos de sobra",
+    "earned": "Presagio obtenido",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copiado por Presagio Doble: ×{{amount}}",
+    "when": "Cuándo actúa",
+    "timing": {
+      "shop": "Ahora, en esta Casa de Té. Su efecto ya está en las ofertas.",
+      "round": "Al empezar la próxima ronda.",
+      "hand": "En tu próxima mano puntuada.",
+      "voidScript": "La próxima vez que uses un Escrito del Vacío.",
+      "now": "De inmediato. Ya se ha aplicado.",
+      "run": "En cada mano puntuada durante el resto de la partida.",
+      "nextOmen": "Cuando ganes tu próximo Presagio."
+    },
+    "rail": {
+      "waits": "Hasta entonces espera en la mesa con tus objetos.",
+      "stays": "Se queda en la mesa con tus objetos."
+    },
+    "tradeoff": "Contrapartida",
+    "rule": "Supera una Ronda Pequeña o Grande con {{spare}} turnos o más de sobra para ganar un Presagio. Las rondas de Jefe no dan ninguno."
   }
 }

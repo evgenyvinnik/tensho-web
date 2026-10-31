@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "Orbe Céleste utilisé",
     "title": "{{name}} utilisé : yaku amélioré"
+  },
+  "omenReveal": {
+    "title": "Présage obtenu : {{name}}",
+    "swiftClear": "Victoire éclair",
+    "cleared": "{{round}} remportée",
+    "spareTurns_one": "{{formattedCount}} tour d’avance",
+    "spareTurns_other": "{{formattedCount}} tours d’avance",
+    "earned": "Présage obtenu",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copié par le Présage double : ×{{amount}}",
+    "when": "Prend effet",
+    "timing": {
+      "shop": "Maintenant, dans cette Maison de Thé. Son effet est déjà sur les offres.",
+      "round": "Au début de la prochaine manche.",
+      "hand": "Sur votre prochaine main comptée.",
+      "voidScript": "La prochaine fois que vous utilisez un Écrit du Vide.",
+      "now": "Immédiatement. Il est déjà appliqué.",
+      "run": "Sur chaque main comptée jusqu’à la fin de la partie.",
+      "nextOmen": "Quand vous obtiendrez votre prochain Présage."
+    },
+    "rail": {
+      "waits": "D’ici là, il attend sur la table avec vos objets.",
+      "stays": "Il reste sur la table avec vos objets."
+    },
+    "tradeoff": "Contrepartie",
+    "rule": "Remportez une Petite ou une Grande Manche avec {{spare}} tours d’avance ou plus pour gagner un Présage. Les Manches Boss n’en donnent aucun."
   }
 }

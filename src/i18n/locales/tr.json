@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "Göksel Küre kullanıldı",
     "title": "{{name}} kullanıldı: yaku geliştirildi"
+  },
+  "omenReveal": {
+    "title": "Alamet kazanıldı: {{name}}",
+    "swiftClear": "Hızlı galibiyet",
+    "cleared": "{{round}} geçildi",
+    "spareTurns_one": "{{formattedCount}} hamle arttı",
+    "spareTurns_other": "{{formattedCount}} hamle arttı",
+    "earned": "Alamet kazanıldı",
+    "copies": "×{{amount}}",
+    "copiesNote": "Çifte Alamet kopyaladı: ×{{amount}}",
+    "when": "Ne zaman etkili",
+    "timing": {
+      "shop": "Şimdi, bu Çay Evi’nde. Etkisi tekliflere zaten yansıdı.",
+      "round": "Sonraki turun başında.",
+      "hand": "Puan kazandıran sonraki elinde.",
+      "voidScript": "Bir sonraki Hiçlik Tomarı kullanımında.",
+      "now": "Hemen. Zaten uygulandı.",
+      "run": "Oyunun geri kalanında puan kazandıran her elde.",
+      "nextOmen": "Bir sonraki Alameti kazandığında."
+    },
+    "rail": {
+      "waits": "O zamana kadar masada eşyalarınla birlikte bekler.",
+      "stays": "Masada eşyalarınla birlikte kalır."
+    },
+    "tradeoff": "Bedeli",
+    "rule": "Küçük ya da Büyük turu {{spare}} veya daha fazla hamle artırarak geçersen bir Alamet kazanırsın. Patron turları Alamet vermez."
   }
 }
