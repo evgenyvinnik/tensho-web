@@ -38,6 +38,7 @@ import { ShopRerollButton } from '../shop/ShopRerollButton'
 import { ShopOfferCard } from '../shop/ShopOfferCard'
 import { DecreeReveal } from '../effects/DecreeReveal'
 import { CelestialOrbReveal } from '../effects/CelestialOrbReveal'
+import { OmenReveal } from '../effects/OmenReveal'
 import { CashOutToasts } from '../shop/CashOutToasts'
 import type { CashOutEntry } from '../shop/cashOutEntries'
 import {
@@ -156,18 +157,22 @@ export function ShopScreen() {
     game.state.charterSystem.calculateEffects().interestCap +
     game.state.omenSystem.getInterestCapBonus()
 
-  // The round's pay arrives on screen once: toasts in the corner, coins into
-  // the purse, and the balance counting up as each lands. The engine settled
-  // it already; `pending` is only what has not landed yet. The count-up
-  // starts from the settled balance only while the purse still holds it: a
-  // run resumed after spending shows its real balance throughout.
+  // The round's pay arrives on screen once: a swift clear's Omen revealed
+  // centre stage first, then toasts in the corner, coins into the purse, and
+  // the balance counting up as each lands. The engine settled it already;
+  // `pending` is only what has not landed yet. The count-up starts from the
+  // settled balance only while the purse still holds it: a run resumed after
+  // spending shows its real balance throughout.
   const arrivalFor = (summary: NonNullable<typeof roundSummary>) => ({
     key: cashOutKey(summary),
     pending: game.gold === summary.goldAfter ? summary.netGoldChange : 0,
+    omen: Boolean(summary.omenId),
   })
   const [arrival, setArrival] = useState<{
     key: string
     pending: number
+    /** The earned Omen is still being revealed; the pay waits for it. */
+    omen: boolean
   } | null>(() => {
     if (!roundSummary) return null
     return wasCashOutShown(cashOutKey(roundSummary))
@@ -195,6 +200,12 @@ export function ShopScreen() {
     setPurseBump((count) => count + 1)
   }, [])
   const handleArrivalDone = useCallback(() => setArrival(null), [])
+  const handleOmenRevealed = useCallback(
+    () =>
+      setArrival((current) => (current ? { ...current, omen: false } : null)),
+    []
+  )
+  const revealingOmen = Boolean(arrival?.omen && roundSummary?.omenId)
   const displayGold = game.gold - (arrival?.pending ?? 0)
 
   const shownItems = leavingItems ?? availableItems
@@ -516,8 +527,19 @@ export function ShopScreen() {
         </div>
       </div>
 
-      {/* The last round's pay, arriving in the purse. */}
-      {arrival && roundSummary && (
+      {/* A swift clear's Omen, then the last round's pay arriving in the purse. */}
+      {revealingOmen && arrival && roundSummary?.omenId && (
+        <OmenReveal
+          key={arrival.key}
+          omenId={roundSummary.omenId}
+          roundType={roundSummary.roundType}
+          spareTurns={roundSummary.spareTurns}
+          copies={roundSummary.omenCopies}
+          onDone={handleOmenRevealed}
+          reducedMotion={reducedMotion}
+        />
+      )}
+      {arrival && !revealingOmen && roundSummary && (
         <CashOutToasts
           key={arrival.key}
           summary={roundSummary}
@@ -660,6 +682,7 @@ export function ShopScreen() {
         seals={game.fateSeals}
         wall={game.state.wallTemplate}
         paused={
+          revealingOmen ||
           sealOffering !== null ||
           packSeals !== null ||
           currentPackOffering !== null ||
@@ -668,8 +691,8 @@ export function ShopScreen() {
         settle={game.settleHeldFateSeal}
         onUsed={announceSeals}
       />
-      <DecreeReveal />
-      <CelestialOrbReveal />
+      <DecreeReveal paused={revealingOmen} />
+      <CelestialOrbReveal paused={revealingOmen} />
       <PackOpeningModal
         isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}

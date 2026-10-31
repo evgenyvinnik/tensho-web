@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "Bola Langit digunakan",
     "title": "{{name}} digunakan: yaku ditingkatkan"
+  },
+  "omenReveal": {
+    "title": "Pertanda didapat: {{name}}",
+    "swiftClear": "Kemenangan cepat",
+    "cleared": "{{round}} selesai",
+    "spareTurns_one": "Sisa {{formattedCount}} Giliran",
+    "spareTurns_other": "Sisa {{formattedCount}} Giliran",
+    "earned": "Pertanda didapat",
+    "copies": "×{{amount}}",
+    "copiesNote": "Disalin oleh Pertanda Ganda: ×{{amount}}",
+    "when": "Kapan berlaku",
+    "timing": {
+      "shop": "Sekarang, di Rumah Teh ini. Efeknya sudah ada pada penawaran.",
+      "round": "Saat ronde berikutnya dimulai.",
+      "hand": "Pada tangan berikutnya yang dinilai.",
+      "voidScript": "Saat kamu memakai Gulungan Kehampaan berikutnya.",
+      "now": "Langsung. Efeknya sudah diterapkan.",
+      "run": "Pada setiap tangan yang dinilai sampai permainan usai.",
+      "nextOmen": "Saat kamu mendapat Pertanda berikutnya."
+    },
+    "rail": {
+      "waits": "Sampai saat itu, ia menunggu di meja bersama barangmu.",
+      "stays": "Ia tetap di meja bersama barangmu."
+    },
+    "tradeoff": "Imbalannya",
+    "rule": "Selesaikan ronde Kecil atau Besar dengan sisa {{spare}} Giliran atau lebih untuk mendapat Pertanda. Ronde Bos tidak memberinya."
   }
 }

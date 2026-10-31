@@ -57,7 +57,7 @@ export async function buyOffer(page: Page, offerId: string): Promise<void> {
  */
 export const packModal = (page: Page): Locator =>
   page.locator(
-    '[role="dialog"][aria-modal="true"]:not([data-orb-reveal]):not([data-decree-reveal])'
+    '[role="dialog"][aria-modal="true"]:not([data-orb-reveal]):not([data-decree-reveal]):not([data-omen-reveal])'
   )
 
 export interface CashOutToastSeen {

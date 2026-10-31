@@ -3258,5 +3258,31 @@
   "orbReveal": {
     "used": "Nagamit ang Orb ng Kalangitan",
     "title": "Nagamit ang {{name}}: na-upgrade ang yaku"
+  },
+  "omenReveal": {
+    "title": "Nakuha ang Pangitain: {{name}}",
+    "swiftClear": "Mabilis na panalo",
+    "cleared": "Natapos ang {{round}}",
+    "spareTurns_one": "{{formattedCount}} turno ang natira",
+    "spareTurns_other": "{{formattedCount}} turno ang natira",
+    "earned": "Nakuha ang Pangitain",
+    "copies": "×{{amount}}",
+    "copiesNote": "Kinopya ng Dobleng Pangitain: ×{{amount}}",
+    "when": "Kailan gagana",
+    "timing": {
+      "shop": "Ngayon, sa Bahay ng Tsaa na ito. Nasa mga alok na ang epekto nito.",
+      "round": "Sa simula ng susunod na round.",
+      "hand": "Sa susunod mong kamay na umiskor.",
+      "voidScript": "Sa susunod na gamitin mo ang isang Balumbon ng Kawalan.",
+      "now": "Agad-agad. Nailapat na ito.",
+      "run": "Sa bawat kamay na umiskor hanggang matapos ang laro.",
+      "nextOmen": "Kapag nakuha mo ang susunod mong Pangitain."
+    },
+    "rail": {
+      "waits": "Hanggang doon, naghihintay ito sa mesa kasama ng mga gamit mo.",
+      "stays": "Nananatili ito sa mesa kasama ng mga gamit mo."
+    },
+    "tradeoff": "Kapalit",
+    "rule": "Tapusin ang Small o Large round na may {{spare}} o higit pang natitirang turno para makakuha ng Pangitain. Walang ibinibigay ang Boss round."
   }
 }

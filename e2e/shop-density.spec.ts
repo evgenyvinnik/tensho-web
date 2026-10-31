@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import type { ClassicRunSnapshot } from '../src/game/ClassicRunSnapshot'
 import { collectCashOut, offerCard } from './helpers/shop'
-import { settleReveals } from './helpers/table'
+import { closeOmenReveal, settleReveals } from './helpers/table'
 
 // A valid, deliberately funded shop fixture, not evidence of an organic win.
 const fixture = execFileSync('bun', ['e2e/fixtures/shop-layout.mts'], {
@@ -71,6 +71,8 @@ for (const [index, language] of languages.entries()) {
     const toasts = page.locator('[data-cash-out-toasts]')
     const hint = page.locator('[data-progressive-hint="shop-intro"]')
     const next = page.locator('[data-shop-continue]')
+    // A swift clear's Omen is revealed first and closed like any reveal.
+    await closeOmenReveal(page)
     // The round's pay arrives as toasts in the corner; nothing to open.
     await expect(toasts).toHaveAttribute(
       'aria-label',

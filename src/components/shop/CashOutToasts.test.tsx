@@ -108,13 +108,15 @@ it('shows everything at once without coins under reduced motion and still fades'
     />
   )
   act(() => vi.advanceTimersByTime(0))
-  expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(7)
+  // The Omen itself is revealed centre stage first; only its Gold is a toast.
+  expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(6)
   expect(container.querySelectorAll('[data-cash-out-coin]')).toHaveLength(0)
-  expect(onLanded).toHaveBeenCalledTimes(7)
+  expect(onLanded).toHaveBeenCalledTimes(6)
   expect(values(container).reduce((sum, value) => sum + value, 0)).toBe(15)
   const omen = container.querySelector('[data-payout-omen="abundance_omen"]')!
+  expect(omen).toHaveAttribute('data-cash-out-toast', 'omenGold')
   expect(omen).toHaveTextContent('Omen: Abundance Omen')
-  expect(omen).not.toHaveAttribute('data-payout-value')
+  expect(omen).toHaveAttribute('data-payout-value', '5')
   expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite')
   act(() => vi.advanceTimersByTime(3000))
   expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(0)
