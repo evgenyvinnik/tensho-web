@@ -107,6 +107,7 @@ export type GateCondition =
   | 'contains_souzu'
   | 'contains_wind'
   | 'contains_dragon'
+  | 'contains_honor'
   | 'half_manzu'
   | 'half_pinzu'
   | 'half_souzu'

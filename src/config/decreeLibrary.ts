@@ -126,6 +126,7 @@ const GATE_CONDITIONS: Record<string, GateCondition> = {
   'if hand contains Souzu': 'contains_souzu',
   'if hand contains Wind': 'contains_wind',
   'if hand contains Dragon': 'contains_dragon',
+  'if hand contains Honor': 'contains_honor',
   'if hand is half Manzu': 'half_manzu',
   'if hand is half Pinzu': 'half_pinzu',
   'if hand is half Souzu': 'half_souzu',

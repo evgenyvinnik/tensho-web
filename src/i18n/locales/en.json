@@ -1310,7 +1310,7 @@
       },
       "decree-photograph": {
         "name": "Photograph",
-        "description": "The first scoring tile scores twice"
+        "description": "×2 Mult if the play includes an Honor (a Wind or Dragon)"
       },
       "decree-ancient-scroll": {
         "name": "Ancient Scroll",
@@ -2414,7 +2414,7 @@
       },
       "seal_of_the_empress": {
         "name": "Seal of the Empress",
-        "description": "Adds a Bonus Mark (+30 Points when scored) to 2 tiles you choose"
+        "description": "Adds a Mult Mark (+4 Mult when scored) to 2 tiles you choose"
       },
       "seal_of_the_sage": {
         "name": "Seal of the Sage",

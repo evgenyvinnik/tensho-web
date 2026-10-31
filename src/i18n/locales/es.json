@@ -1314,7 +1314,7 @@
       },
       "decree-photograph": {
         "name": "Fotografía",
-        "description": "La primera ficha que puntúa lo hace dos veces"
+        "description": "×2 Mult si la jugada incluye un Honor (un Viento o un Dragón)"
       },
       "decree-ancient-scroll": {
         "name": "Pergamino Antiguo",
@@ -2535,7 +2535,7 @@
       },
       "seal_of_the_empress": {
         "name": "Sello de la Emperatriz",
-        "description": "Añade una Marca de Bonificación (+30 Puntos al puntuar) a 2 fichas que elijas"
+        "description": "Añade una Marca de Mult (+4 Mult al puntuar) a 2 fichas que elijas"
       },
       "seal_of_the_sage": {
         "name": "Sello del Sabio",

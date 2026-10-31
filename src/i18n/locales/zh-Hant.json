@@ -1314,7 +1314,7 @@
       },
       "decree-photograph": {
         "name": "照片",
-        "description": "第一張得分牌計分兩次"
+        "description": "打出的牌含字牌（風牌或三元牌）時×2倍率"
       },
       "decree-ancient-scroll": {
         "name": "古代卷軸",
@@ -2466,7 +2466,7 @@
       },
       "seal_of_the_empress": {
         "name": "女帝之符",
-        "description": "為你選擇的2張牌附加加分印記（計分時+30分）"
+        "description": "為你選擇的2張牌附加倍率印記（計分時+4倍率）"
       },
       "seal_of_the_sage": {
         "name": "賢者之符",

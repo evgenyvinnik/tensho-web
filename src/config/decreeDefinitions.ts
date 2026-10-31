@@ -1090,9 +1090,11 @@ export const RARE_DECREES: DecreeDefinition[] = [
     id: 'decree-photograph',
     name: 'Photograph',
     japaneseName: '写真',
-    description: 'The first scoring tile scores twice',
+    description: '×2 Mult if the play includes an Honor (a Wind or Dragon)',
     rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 2.0, 'first scoring tile')],
+    effects: [
+      createEffect('multiplicative_mult', 2.0, 'if hand contains Honor'),
+    ],
     baseSellValue: 7,
   },
   {

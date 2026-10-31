@@ -1522,7 +1522,7 @@
       },
       "decree-photograph": {
         "name": "Foto",
-        "description": "Ubin pertama yang mencetak skor dihitung dua kali"
+        "description": "×2 Mult jika Kehormatan (Angin atau Naga) ikut dimainkan"
       },
       "decree-ancient-scroll": {
         "name": "Gulungan Kuno",
@@ -2787,7 +2787,7 @@
       },
       "seal_of_the_empress": {
         "name": "Segel Sang Permaisuri",
-        "description": "Memberi Tanda Bonus (+30 Poin saat mencetak skor) pada 2 ubin pilihanmu"
+        "description": "Memberi Tanda Mult (+4 Mult saat mencetak skor) pada 2 ubin pilihanmu"
       },
       "seal_of_the_sage": {
         "name": "Segel Sang Bijak",

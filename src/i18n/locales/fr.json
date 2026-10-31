@@ -1314,7 +1314,7 @@
       },
       "decree-photograph": {
         "name": "Photographie",
-        "description": "La première tuile qui marque compte deux fois"
+        "description": "×2 Mult si le coup contient un Honneur (un Vent ou un Dragon)"
       },
       "decree-ancient-scroll": {
         "name": "Rouleau Ancien",
@@ -2535,7 +2535,7 @@
       },
       "seal_of_the_empress": {
         "name": "Sceau de l'Impératrice",
-        "description": "Ajoute une Marque de Bonus (+30 Points au décompte) à 2 tuiles de votre choix"
+        "description": "Ajoute une Marque de Mult (+4 Mult au décompte) à 2 tuiles de votre choix"
       },
       "seal_of_the_sage": {
         "name": "Sceau du Sage",

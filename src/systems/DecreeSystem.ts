@@ -238,6 +238,8 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       return tiles.some((tile) => tile.suit === TileSuit.Wind)
     case 'contains_dragon':
       return tiles.some((tile) => tile.suit === TileSuit.Dragon)
+    case 'contains_honor':
+      return tiles.some((tile) => tile.isHonor)
     case 'half_manzu':
       return halfOfSuit(TileSuit.Manzu)
     case 'half_pinzu':

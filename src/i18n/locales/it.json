@@ -527,7 +527,7 @@
       },
       "seal_of_the_empress": {
         "name": "Sigillo dell’imperatrice",
-        "description": "Aggiunge un Marchio Bonus (+30 Punti quando segna punti) a 2 tessere a tua scelta"
+        "description": "Aggiunge un Marchio Moltiplicatore (+4 Mult quando segna punti) a 2 tessere a tua scelta"
       },
       "seal_of_the_sage": {
         "name": "Sigillo del saggio",
@@ -1829,7 +1829,7 @@
       },
       "decree-photograph": {
         "name": "Fotografia",
-        "description": "La prima tessera che segna punti lo fa due volte"
+        "description": "×2 Mult se la giocata include un Onore (un Vento o un Drago)"
       },
       "decree-polished-stone": {
         "name": "Pietra Levigata",

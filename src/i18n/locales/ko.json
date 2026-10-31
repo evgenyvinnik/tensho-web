@@ -1314,7 +1314,7 @@
       },
       "decree-photograph": {
         "name": "사진",
-        "description": "첫 번째로 득점하는 패가 두 번 득점"
+        "description": "낸 패에 자패(풍패 또는 삼원패)가 있으면 배수 ×2"
       },
       "decree-ancient-scroll": {
         "name": "고대 두루마리",
@@ -2535,7 +2535,7 @@
       },
       "seal_of_the_empress": {
         "name": "여제의 부적",
-        "description": "고른 패 2장에 보너스 표식(득점 시 점수 +30)을 부여"
+        "description": "고른 패 2장에 배수 표식(득점 시 배수 +4)을 부여"
       },
       "seal_of_the_sage": {
         "name": "현자의 부적",

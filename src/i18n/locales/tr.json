@@ -531,7 +531,7 @@
       },
       "seal_of_the_empress": {
         "name": "İmparatoriçe Mührü",
-        "description": "Seçtiğin 2 taşa Bonus İşareti ekler (puan kazandırınca +30 Puan)."
+        "description": "Seçtiğin 2 taşa Çarpan İşareti ekler (puan kazandırınca +4 Çarpan)."
       },
       "seal_of_the_sage": {
         "name": "Bilge Mührü",
@@ -1249,7 +1249,7 @@
       },
       "decree-photograph": {
         "name": "Fotoğraf",
-        "description": "Puan kazandıran ilk taş iki kez sayılır."
+        "description": "Oyunda bir Onur taşı (Rüzgâr veya Ejderha) varsa Çarpan ×2."
       },
       "decree-polished-stone": {
         "name": "Cilalı Taş",

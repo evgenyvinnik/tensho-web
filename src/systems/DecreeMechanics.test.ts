@@ -592,21 +592,6 @@ describe('per-count scaling Decrees', () => {
     expect(three.mult).toBeGreaterThan(1)
   })
 
-  it('maps a first-tile multiplier to a retrigger of that tile', () => {
-    // Photograph reads "x2.0 first scoring tile", which is that tile scoring
-    // twice rather than a hand-wide multiplier.
-    const photograph = ALL_DECREES.find((d) => d.id === 'decree-photograph')
-    expect(photograph).toBeDefined()
-    expect(photograph!.effect.type).toBe('retrigger')
-
-    const system = new DecreeSystem(10)
-    system.acquireDecree(photograph!)
-    const extra = system.calculateRetriggers([souzu(2, 'a'), souzu(3, 'b')])
-
-    expect(extra.get('a')).toBe(1)
-    expect(extra.has('b')).toBe(false)
-  })
-
   it('leaves no authored condition without engine meaning', () => {
     const conditioned = LIBRARY_DECREES.filter((d) =>
       [d.effect, ...(d.extraEffects ?? [])].some(
@@ -747,6 +732,33 @@ describe('gated (conditional) Decrees', () => {
 
     expect(enough.mult).toBeGreaterThan(1)
     expect(notEnough.mult).toBe(1)
+  })
+
+  it('pays Photograph ×2 only when the play includes an Honor', () => {
+    const photograph = decreeById('decree-photograph')
+
+    const windOnly = multiplierWith(
+      photograph,
+      contextFor({
+        tiles: [manzu(2, 'a'), Tile.createWind(WindType.East, 'w1')],
+        decrees: [],
+      })
+    )
+    const dragonOnly = multiplierWith(
+      photograph,
+      contextFor({
+        tiles: [manzu(2, 'a'), Tile.createDragon(DragonType.Red, 'd1')],
+        decrees: [],
+      })
+    )
+    const noHonor = multiplierWith(
+      photograph,
+      contextFor({ tiles: [manzu(2, 'a'), manzu(3, 'b')], decrees: [] })
+    )
+
+    expect(windOnly.mult).toBe(2)
+    expect(dragonOnly.mult).toBe(2)
+    expect(noHonor.mult).toBe(1)
   })
 
   it('pays a structure Decree only when the meld is present', () => {

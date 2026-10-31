@@ -531,7 +531,7 @@
       },
       "seal_of_the_empress": {
         "name": "Selyo ng Emperatris",
-        "description": "Nilalagyan ng Markang Bonus (+30 Puntos kapag nagbigay ng puntos) ang 2 tile na pipiliin mo"
+        "description": "Nilalagyan ng Markang Mult (+4 Mult kapag nagbigay ng puntos) ang 2 tile na pipiliin mo"
       },
       "seal_of_the_sage": {
         "name": "Selyo ng Pantas",
@@ -1249,7 +1249,7 @@
       },
       "decree-photograph": {
         "name": "Larawan",
-        "description": "Binibilang nang dalawang beses ang unang tile na nagbibigay ng puntos"
+        "description": "×2 Mult kung may Honor (Hangin o Dragon) sa laro"
       },
       "decree-polished-stone": {
         "name": "Pinakintab na Bato",
