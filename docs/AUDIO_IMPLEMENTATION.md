@@ -1,16 +1,32 @@
 # Audio implementation and asset provenance
 
-Updated September 9, 2026. Audio is now connected to the live application, not just an unused system definition.
+Updated October 31, 2026. Audio is now connected to the live application, not just an unused system definition.
 
 ## Assets
 
 `public/assets/sfx/` contains 55 original synthesized cues covering every declared sound ID. These are dependency-free procedural sounds, not recordings or AI-generated music. No third-party samples were downloaded or incorporated. The existing four music tracks are unchanged; this work does not establish new licensing provenance for those pre-existing tracks.
 
-The sound palette uses short wood-like resonances/noise for tiles and interfaces, pentatonic bell phrases for rewards, and descending phrases for negative feedback. Ordinary actions stay short; dramatic cues are reserved for larger payoffs. This is a first-pass mix, not a claim of professional sound mastering or verified listener preference.
+Second pass (October 31, 2026): the first palette built every cue from pitched sine partials, so all seven tile sounds were near-identical ~800 Hz beeps and every button played a 620 Hz blip. Players found them tonal and tiring. Each cue is now assembled from physically-inspired voices instead:
 
-- Mono, 24 kHz, 16-bit PCM WAV.
-- Approximately 1,438 KiB across all 55 files.
-- Cues run from 80 ms to 2.4 seconds; the longest are optional ambient assets, not routine interactions.
+| Voice | Model | Used for |
+| --- | --- | --- |
+| Clack | Sub-millisecond contact snap + a cluster of 5–10 ms damped modes (1–8 kHz), optional micro-bounce | Every tile action; hand played is a staggered group slap with a settle |
+| Thump | Felt-muffled low body with a pitch drop | Discards, seals |
+| Tick | Dry 1.5–3 kHz wood tick, ~30 ms | Buttons, toggles, tabs |
+| Bead | Soroban bead | Score chip and tally |
+| Woodblock | Hollow two-knock "tok-tok" | Invalid action, error, can't afford: refusals never buzz |
+| Hyoshigi / taiko | Wooden clappers; low drum with pitch drop | Round, Act, Yakuman and result accents |
+| Coin | Inharmonic partials with beating pairs | Gold, purchases, sales |
+| Koto / rin bell / glass | Karplus-Strong pluck in the *yo* pentatonic (D E G A B), *in* scale for losses; inharmonic bell | Yaku, Decrees, Flowers, reveals, results |
+| Noise | Friction, curtain swish, paper tear, tile shuffle | Draw/slide, shop, packs, reroll |
+
+Loudness is matched on a K-weighted 50 ms RMS (a short-term loudness proxy) with a soft-knee ceiling, so a 30 ms click and a one-second phrase land at intended levels rather than at equal peaks. Button ticks play at roughly the same level as before; tiles slightly louder but shorter; refusals about 6 dB softer. This is still a synthesized mix verified by measurement and spectrograms, not by listening tests.
+
+- Mono, 44.1 kHz, 16-bit PCM WAV (crisper transients than the former 24 kHz).
+- Approximately 3,000 KiB across all 55 files; inaudible tails are trimmed.
+- Tile and interface cues are under 0.25 s (most 30–120 ms); payoffs run up to 2.4 s.
+- Percussive cues (tiles, interface, coins, score beads, hand played) vary pitch by a few percent per play with `preservesPitch` disabled, so repeats do not machine-gun and clicks are never time-stretched. Tonal phrases stay at concert pitch.
+- All tile cues and the most frequent payoffs preload, so their first play is not delayed by a fetch.
 - Deterministic generation, bounded peaks, and a short tail fade avoid clipped samples and abrupt waveform endings.
 - `node scripts/generate-sfx.mjs` rebuilds the files.
 - `node scripts/generate-sfx.mjs --check` compares every asset byte-for-byte against its recipe without writing files.
@@ -49,7 +65,7 @@ Table Loop feedback is emitted after a live action resolves. Forecasts, journal 
 
 ## Verification
 
-- Thirteen audio-system tests cover assets, native-format headers/peak bounds, initialization/cleanup, gesture gating, pooling, rejected playback, synchronous setter failures, mute/volume changes, crossfade races, visibility, and settings synchronization. The interaction browser suite additionally injects a failing native tile-SFX setter and verifies selection still succeeds.
+- Fourteen audio-system tests cover assets, native-format headers/peak bounds/tap-length bounds, per-play pitch variation, initialization/cleanup, gesture gating, pooling, rejected playback, synchronous setter failures, mute/volume changes, crossfade races, visibility, and settings synchronization. The interaction browser suite additionally injects a failing native tile-SFX setter and verifies selection still succeeds.
 - Four Table Loop audio tests cover escalating intensity and the live-action versus forecast/reload boundary.
 - Six browser checks across desktop Chromium and mobile Chrome observe real `HTMLMediaElement.play()` promises, not a fake audio implementation. They verify decoded scoring sound, music continuity, persisted mute, independent SFX enabling, and silent saved-run restoration.
 - The original audio pass ran 442 unit/component tests in 41 files, plus TypeScript and production builds. See [the wrap-up ledger](IMPLEMENTATION_WRAP_UP.md) for the latest full-suite evidence.

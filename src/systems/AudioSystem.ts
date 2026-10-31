@@ -131,6 +131,15 @@ export class AudioSystem {
   private createVoice(config: SoundEffectConfig): Voice {
     const element = new Audio(config.path)
     element.preload = config.preload ? 'auto' : 'none'
+    // Pitch variation must change pitch, not time-stretch a 40 ms click.
+    const media = element as HTMLAudioElement & {
+      preservesPitch?: boolean
+      webkitPreservesPitch?: boolean
+      mozPreservesPitch?: boolean
+    }
+    media.preservesPitch = false
+    media.webkitPreservesPitch = false
+    media.mozPreservesPitch = false
     const voice: Voice = {
       element,
       active: false,

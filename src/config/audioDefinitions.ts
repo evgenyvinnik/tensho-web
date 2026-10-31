@@ -170,7 +170,10 @@ export interface SoundEffectConfig {
   preload: boolean
 }
 
-/** Every declared cue has an original generated WAV, rebuilt by scripts/generate-sfx.mjs. */
+/**
+ * Every declared cue has an original generated WAV, rebuilt by
+ * scripts/generate-sfx.mjs. Tiles are percussive clacks with no pitched tone.
+ */
 export const ALL_SOUND_IDS: SoundEffectId[] = [
   ...Object.values(TILE_SOUNDS),
   ...Object.values(UI_SOUNDS),
@@ -182,6 +185,31 @@ export const ALL_SOUND_IDS: SoundEffectId[] = [
   ...Object.values(AMBIENT_SOUNDS),
 ]
 
+/**
+ * Percussive cues that repeat often. A few percent of random pitch per play
+ * keeps ten taps in a row from sounding like one sample on a loop. Tonal
+ * phrases stay in tune with the music, so they are not varied.
+ */
+const PITCH_VARIED: Partial<Record<SoundEffectId, [number, number]>> = {
+  [GAME_SOUNDS.handPlayed]: [0.97, 1.03],
+  [GAME_SOUNDS.scoreChip]: [0.95, 1.05],
+  [GAME_SOUNDS.scoreTally]: [0.97, 1.03],
+  [GAME_SOUNDS.goldEarned]: [0.97, 1.03],
+  [GAME_SOUNDS.goldSpent]: [0.97, 1.03],
+  [SHOP_SOUNDS.reroll]: [0.96, 1.04],
+}
+
+/** Small, frequent or timing-critical cues load up front so the first play is instant. */
+const PRELOADED = new Set<SoundEffectId>([
+  ...Object.values(TILE_SOUNDS),
+  GAME_SOUNDS.handPlayed,
+  GAME_SOUNDS.goldEarned,
+  UI_SOUNDS.buttonClick,
+  FEEDBACK_SOUNDS.invalidAction,
+  SPECIAL_SOUNDS.yakuScored,
+  SPECIAL_SOUNDS.decreeTriggered,
+])
+
 export const SOUND_EFFECT_CONFIG = Object.fromEntries(
   ALL_SOUND_IDS.map((id) => {
     const category = id.split('_')[0] as SoundCategory
@@ -191,18 +219,20 @@ export const SOUND_EFFECT_CONFIG = Object.fromEntries(
       id,
       {
         path: withBasePath(`assets/sfx/${id}.wav`),
-        volume: category === 'ui' ? 0.22 : category === 'tile' ? 0.35 : 0.55,
+        // Button ticks sit well under tiles; tiles under scoring payoffs.
+        volume: category === 'ui' ? 0.2 : category === 'tile' ? 0.45 : 0.5,
         category,
         allowOverlap: category === 'tile' || id === GAME_SOUNDS.scoreChip,
         maxInstances: category === 'tile' ? 3 : 1,
+        pitchVariation:
+          PITCH_VARIED[id] ??
+          (category === 'tile'
+            ? [0.94, 1.06]
+            : category === 'ui'
+              ? [0.97, 1.03]
+              : undefined),
         priority: dramatic ? 10 : category === 'ui' ? 2 : 6,
-        preload: [
-          TILE_SOUNDS.select,
-          TILE_SOUNDS.deselect,
-          TILE_SOUNDS.draw,
-          GAME_SOUNDS.handPlayed,
-          UI_SOUNDS.buttonClick,
-        ].includes(id as never),
+        preload: PRELOADED.has(id),
       } satisfies SoundEffectConfig,
     ]
   })

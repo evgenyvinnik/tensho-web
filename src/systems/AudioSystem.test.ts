@@ -9,6 +9,7 @@ import {
   MUSIC_CONFIG,
   TILE_SOUNDS,
   GAME_SOUNDS,
+  SPECIAL_SOUNDS,
 } from '../config/audioDefinitions'
 import { eventBus } from '../game/EventBus'
 import { useAudioLifecycle } from '../hooks/useAudioLifecycle'
@@ -92,14 +93,18 @@ describe('sound assets', () => {
       expect(bytes.toString('ascii', 8, 12)).toBe('WAVE')
       expect(bytes.readUInt16LE(20)).toBe(1)
       expect(bytes.readUInt16LE(22)).toBe(1)
-      expect(bytes.readUInt32LE(24)).toBe(24000)
+      const rate = bytes.readUInt32LE(24)
+      expect(rate).toBe(44100)
       expect(bytes.readUInt32LE(40)).toBe(bytes.length - 44)
       let peak = 0
       for (let i = 44; i < bytes.length; i += 2)
         peak = Math.max(peak, Math.abs(bytes.readInt16LE(i)))
       expect(peak, id).toBeGreaterThan(1000)
       expect(peak, id).toBeLessThan(24000)
-      expect(bytes.length / 48000, id).toBeLessThan(2.5)
+      const seconds = (bytes.length - 44) / (rate * 2)
+      expect(seconds, id).toBeLessThan(2.5)
+      // Tile and interface cues are taps: short enough to never smear together.
+      if (/^(tile|ui)_/.test(id)) expect(seconds, id).toBeLessThan(0.25)
     }
     for (const track of MUSIC_CONFIG)
       expect(
@@ -130,7 +135,7 @@ describe('audio lifetime and effects', () => {
     const voice = playedEffects()[0]
     audio.setSfxVolume(0.5)
     audio.setMasterVolume(0.4)
-    expect(voice.volume).toBeCloseTo(0.35 * 0.5 * 0.4)
+    expect(voice.volume).toBeCloseTo(0.45 * 0.5 * 0.4)
     audio.setSfxMuted(true)
     expect(voice.paused).toBe(true)
     advance(100)
@@ -176,6 +181,20 @@ describe('audio lifetime and effects', () => {
           a.src.endsWith('/special_yakuman.wav') && a.play.mock.calls.length
       )
     ).toBe(true)
+  })
+
+  it('varies tile pitch per play without time-stretching the click', () => {
+    audio.initialize()
+    audio.unlock()
+    audio.play(TILE_SOUNDS.select)
+    const voice = playedEffects()[0] as MockAudio & { preservesPitch?: boolean }
+    expect(voice.preservesPitch).toBe(false)
+    expect(voice.playbackRate).toBeGreaterThanOrEqual(0.94)
+    expect(voice.playbackRate).toBeLessThanOrEqual(1.06)
+    // Tonal payoffs stay in tune with the music.
+    audio.play(SPECIAL_SOUNDS.yakuScored)
+    const phrase = effects().find((a) => a.src.endsWith('/special_yaku_scored.wav'))!
+    expect(phrase.playbackRate).toBe(1)
   })
 
   it('rejects invalid volume/pitch without throwing or exceeding browser bounds', () => {
