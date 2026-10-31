@@ -2168,6 +2168,7 @@
     "rules": {
       "base": "Batayang hirap: walang dagdag na parusa.",
       "noSmallRoundReward": "Walang gantimpalang ginto mula sa Maliliit na Round.",
+      "emergencyTurn": "Pang-emergency na turno mula Akto {{act}}: sa huling turno, bumili ng isa pang turno gamit ang ginto ({{cost}} ginto sa Akto {{act}}, {{nextCost}} sa Akto {{nextAct}}, at iba pa; doble sa bawat bili sa parehong round).",
       "scoreScaling": "Target na puntos: kapareho ng Puti sa Akto 1, saka tumataas bawat Akto hanggang ×{{multiplier}} kumpara sa Puti mula Akto {{act}}. Nalalapat pa rin ang mga modifier ng mesa.",
       "redrawPenalty": "Mga turno bawat round: −{{amount}}.",
       "eternalChance": "Mga Dekreto sa tindahan: {{chance}} tsansang maging Walang Hanggan (hindi maibebenta o masisira).",
@@ -2372,7 +2373,7 @@
       "redraw": "ipadala sa ilog ang kahit ilang piniling tile at bumunot ng bago.",
       "p2": "Abutin ang target ng round bago maubos ang iyong mga turno. Laging laro ang huling turno, at may mga item na nagbibigay ng libreng redraw na hindi gumagamit ng turno.",
       "warning": "Kapag naubos ang turno na kulang pa sa target, tapos na ang laro.",
-      "emergency": "Mula Akto {{act}}, mapapahaba mo ang huling turno: bumili ng isa pang turno gamit ang ginto. Tumataas ang presyo bawat Akto at dumodoble sa bawat dagdag na turnong binili sa parehong round."
+      "emergency": "Sa {{stake}} pataas, mula Akto {{act}}, mapapahaba mo ang huling turno: bumili ng isa pang turno gamit ang ginto. Tumataas ang presyo bawat Akto at dumodoble sa bawat dagdag na turnong binili sa parehong round."
     },
     "select": {
       "title": "Pagpili ng mga tile",

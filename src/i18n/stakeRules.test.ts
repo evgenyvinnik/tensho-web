@@ -24,6 +24,8 @@ it.each([1, 2, 3, 4, 5, 6, 7, 8])(
       expect(text).toContain(`from Act ${STAKE_SCALING_FULL_ACT} on`)
     }
     expect(text.includes('Small Rounds')).toBe(modifiers.noSmallRoundReward)
+    expect(text.includes('Emergency Turns from Act 2')).toBe(tier >= 2)
+    if (tier >= 2) expect(text).toContain('10G in Act 2, 15G in Act 3')
     expect(text.includes('Turns each round')).toBe(modifiers.redrawPenalty > 0)
     expect(text.includes('Eternal')).toBe(modifiers.eternalChance > 0)
     expect(text.includes('Perishable')).toBe(modifiers.perishableChance > 0)

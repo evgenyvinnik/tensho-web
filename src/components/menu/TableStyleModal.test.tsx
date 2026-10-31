@@ -53,11 +53,12 @@ it('shows cumulative engine rules only in an optional disclosure', () => {
   expect(details).not.toHaveAttribute('open')
   expect(
     within(details).getAllByRole('listitem', { hidden: true })
-  ).toHaveLength(6)
+  ).toHaveLength(7)
   expect(details).toHaveTextContent('×1.95')
   expect(details).toHaveTextContent('30%')
   expect(details).toHaveTextContent('Turns each round: −1')
   expect(details).toHaveTextContent('No reward gold from Small Rounds')
+  expect(details).toHaveTextContent('Emergency Turns from Act 2')
   expect(details).not.toHaveTextContent('per Act')
 })
 

@@ -1881,6 +1881,7 @@
     "rules": {
       "base": "Difficulté de base : aucune pénalité supplémentaire.",
       "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
+      "emergencyTurn": "Tours d’urgence dès l’Acte {{act}} : à votre dernier tour, achetez un tour de plus avec de l’or ({{cost}} or à l’Acte {{act}}, {{nextCost}} à l’Acte {{nextAct}}, et ainsi de suite ; doublé pour chaque tour acheté dans la même manche).",
       "scoreScaling": "Objectifs de score du palier : identiques au Blanc à l’Acte 1, puis en hausse à chaque acte jusqu’à ×{{multiplier}} par rapport au Blanc à partir de l’Acte {{act}}. Les modificateurs de table s’appliquent aussi.",
       "redrawPenalty": "Tours par manche : −{{amount}}.",
       "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
@@ -2085,7 +2086,7 @@
       "redraw": "envoyer à la rivière autant de tuiles choisies que vous voulez et en piocher de nouvelles.",
       "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
       "warning": "À court de tours sous l'objectif, la partie est terminée.",
-      "emergency": "À partir de l’Acte {{act}}, votre dernier tour peut être prolongé : achetez un tour de plus avec de l’or. Le prix augmente à chaque Acte et double pour chaque tour supplémentaire acheté dans la même manche."
+      "emergency": "Au {{stake}} et au-delà, à partir de l’Acte {{act}}, votre dernier tour peut être prolongé : achetez un tour de plus avec de l’or. Le prix augmente à chaque Acte et double pour chaque tour supplémentaire acheté dans la même manche."
     },
     "select": {
       "title": "Sélectionner des tuiles",

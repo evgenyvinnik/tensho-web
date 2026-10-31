@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 import { openTable, settleReveals } from './helpers/table'
+import { chooseStake } from './helpers/stake'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 
 /** Put the open table on the last Turn of an Act with the given Gold. */
@@ -21,6 +22,8 @@ async function lastTurn(page: Page, act: number, gold: number) {
         state.targetScore = state.roundManager.getCurrentRound().scoreTarget
       }
       state.handsRemaining = 1
+      // A free redraw keeps REDRAW in its slot; this is the plain last Turn.
+      state.redrawsRemaining = 0
       const previousGold = state.gold
       state.gold = gold
       eventBus.emit('goldChanged', {
@@ -37,11 +40,20 @@ async function lastTurn(page: Page, act: number, gold: number) {
 const label = (cost: number) =>
   en.gameplay.emergencyTurn.label.replace('{{cost}}', String(cost))
 
-test('the last Turn can be extended with Gold from Act 2', async ({
+test('White Stake never offers an emergency Turn', async ({ page }) => {
+  await openTable(page, '/en/play')
+  await settleReveals(page)
+  await lastTurn(page, 3, 999)
+  await expect(page.locator('[data-turns-left="1"]')).toBeVisible()
+  await expect(page.locator('[data-emergency-turn]')).toHaveCount(0)
+})
+
+test('on Red Stake the last Turn can be extended with Gold from Act 2', async ({
   page,
   isMobile,
 }, testInfo) => {
   if (isMobile) await page.setViewportSize({ width: 320, height: 740 })
+  await chooseStake(page, 2)
   await openTable(page, '/en/play')
   await settleReveals(page)
 
@@ -62,7 +74,9 @@ test('the last Turn can be extended with Gold from Act 2', async ({
   expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1)
   await page.screenshot({ path: testInfo.outputPath('emergency-turn.png') })
 
-  // In the bar, not over the rack: no rack tile sits under the offer.
+  // It takes REDRAW's slot (unusable on the last Turn), so the bar keeps its
+  // height and no rack tile sits under it, even with a larger hand.
+  await expect(page.locator('[data-game-action="redraw"]')).toHaveCount(0)
   const covered = await page.evaluate(() => {
     const offer = document
       .querySelector('[data-emergency-turn]')!
@@ -85,6 +99,8 @@ test('the last Turn can be extended with Gold from Act 2', async ({
   else await buy.click()
   await expect(page.locator('[data-turns-left="2"]')).toBeVisible()
   await expect(page.locator('[data-emergency-turn]')).toHaveCount(0)
+  // REDRAW is back, and with two Turns it can be used again.
+  await expect(page.locator('[data-game-action="redraw"]')).toBeVisible()
   // The run with a bought Turn saves cleanly: no invalid-save notice.
   await expect(page.getByRole('button', { name: en.menu.newRun })).toHaveCount(
     0
@@ -107,6 +123,7 @@ test('a short purse still shows the price, disabled', async ({
   isMobile,
 }) => {
   if (isMobile) await page.setViewportSize({ width: 320, height: 740 })
+  await chooseStake(page, 2)
   await openTable(page, '/en/play')
   await settleReveals(page)
   await lastTurn(page, 3, 4)

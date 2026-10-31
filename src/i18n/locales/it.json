@@ -2168,6 +2168,7 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
+      "emergencyTurn": "Turni di emergenza dall’Atto {{act}}: all’ultimo turno, compra un turno in più con l’oro ({{cost}} oro nell’Atto {{act}}, {{nextCost}} nell’Atto {{nextAct}} e così via; raddoppia per ogni turno comprato nello stesso round).",
       "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Turni per round: −{{amount}}.",
       "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
@@ -2372,7 +2373,7 @@
       "redraw": "manda nel fiume quante tessere scelte vuoi e pescane di nuove.",
       "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
       "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita.",
-      "emergency": "Dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
+      "emergency": "Dal {{stake}} in su, dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
     },
     "select": {
       "title": "Selezionare le tessere",

@@ -2168,6 +2168,7 @@
     "rules": {
       "base": "Temel zorluk: ek ceza yok.",
       "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
+      "emergencyTurn": "{{act}}. Perde'den itibaren acil hamle: son hamlende altınla bir hamle daha satın al ({{act}}. Perde'de {{cost}} altın, {{nextAct}}. Perde'de {{nextCost}} altın ve böyle devam eder; aynı turda her alımda iki katı).",
       "scoreScaling": "Puan hedefleri Perde 1’de Beyaz kademeyle aynıdır; ardından her perdede artar ve Perde {{act}} itibarıyla Beyaz kademenin {{multiplier}} katına ulaşır. Masa değiştiricileri de uygulanır.",
       "redrawPenalty": "Tur başına hamle: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
@@ -2372,7 +2373,7 @@
       "redraw": "seçtiğin taşları istediğin kadar nehre gönder ve yenilerini çek.",
       "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
       "warning": "Hedefin altında hamlelerin biterse oyun sona erer.",
-      "emergency": "{{act}}. Perde'den itibaren son hamlende altınla bir hamle daha satın alabilirsin. Fiyat her Perde'de artar ve aynı turda alınan her ek hamlede iki katına çıkar."
+      "emergency": "{{stake}} ve üzerinde, {{act}}. Perde'den itibaren son hamlende altınla bir hamle daha satın alabilirsin. Fiyat her Perde'de artar ve aynı turda alınan her ek hamlede iki katına çıkar."
     },
     "select": {
       "title": "Taş seçmek",

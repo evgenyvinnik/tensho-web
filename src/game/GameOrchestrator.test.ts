@@ -424,9 +424,9 @@ describe('GameOrchestrator', () => {
   })
 
   describe('emergency Turn', () => {
-    /** Start Act 2's Small round with no Decrees and one Turn left. */
-    function lastTurnInAct(act: number, gold: number) {
-      game.startNewRun(12345)
+    /** Start an Act's Small round on Red Stake, no Decrees, one Turn left. */
+    function lastTurnInAct(act: number, gold: number, stake = 2) {
+      game.startNewRun(12345, stake)
       clearDecrees(game)
       const state = game.getState() as OrchestratorState
       for (let i = 1; i < act; i++) {
@@ -439,6 +439,27 @@ describe('GameOrchestrator', () => {
       state.gold = gold
       return state
     }
+
+    it('is never sold on White Stake', () => {
+      const state = lastTurnInAct(3, 999, 1)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(false)
+      expect(result.errors?.[0]).toContain('Stake 2')
+      expect(state.handsRemaining).toBe(1)
+      expect(state.gold).toBe(999)
+    })
+
+    it('is sold on every Stake from Red up', () => {
+      for (const stake of [2, 5, 8]) {
+        lastTurnInAct(2, 999, stake)
+        expect(game.getEmergencyTurnOffer(), `Stake ${stake}`).toEqual({
+          cost: 10,
+          affordable: true,
+        })
+      }
+    })
 
     it('is never sold in Act 1', () => {
       const state = lastTurnInAct(1, 999)
@@ -509,7 +530,7 @@ describe('GameOrchestrator', () => {
     })
 
     it('cannot buy a second Play past The Needle', () => {
-      game.startNewRun(12345)
+      game.startNewRun(12345, 2)
       advanceToRound(game, 'Boss')
       advanceRound(game)
       enterBossWithMandate(game, THE_NEEDLE)

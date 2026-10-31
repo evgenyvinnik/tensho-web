@@ -27,6 +27,13 @@ export const SWIFT_CLEAR_SPARE_TURNS = 2
  */
 export const EMERGENCY_TURN_FIRST_ACT = 2
 
+/**
+ * Emergency Turns are a rule of Red Stake (tier 2) and every Stake above it.
+ * White Stake is untouched; on Red, the Small-round Gold the Stake withholds
+ * is Gold that could have bought a rescue.
+ */
+export const EMERGENCY_TURN_FIRST_STAKE = 2
+
 /** Gold per Act for the first emergency Turn bought in a round. */
 export const EMERGENCY_TURN_COST_PER_ACT = 5
 

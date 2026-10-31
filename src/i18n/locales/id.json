@@ -2089,6 +2089,7 @@
     "rules": {
       "base": "Kesulitan dasar: tanpa penalti tambahan.",
       "noSmallRoundReward": "Ronde Kecil tidak memberi hadiah emas.",
+      "emergencyTurn": "Giliran darurat mulai Babak {{act}}: di giliran terakhir, beli satu giliran lagi dengan emas ({{cost}} emas di Babak {{act}}, {{nextCost}} di Babak {{nextAct}}, dan seterusnya; berlipat dua untuk tiap pembelian di ronde yang sama).",
       "scoreScaling": "Target skor tingkat ini: sama dengan Putih di Babak 1, lalu naik setiap babak hingga ×{{multiplier}} dibanding Putih mulai Babak {{act}}. Pengubah meja tetap berlaku.",
       "redrawPenalty": "Giliran per ronde: −{{amount}}.",
       "eternalChance": "Dekrit toko: peluang {{chance}} mendapat Abadi (tidak dapat dijual atau dihancurkan).",
@@ -2293,7 +2294,7 @@
       "redraw": "kirim ubin terpilih sebanyak apa pun ke sungai dan ambil yang baru.",
       "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
       "warning": "Jika Giliran habis di bawah target, permainan berakhir.",
-      "emergency": "Mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
+      "emergency": "Di {{stake}} ke atas, mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
     },
     "select": {
       "title": "Memilih ubin",

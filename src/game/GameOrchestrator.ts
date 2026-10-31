@@ -132,6 +132,7 @@ import {
 import { getMandateById } from '../config/mandateDefinitions'
 import {
   EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
@@ -1505,11 +1506,13 @@ export class GameOrchestrator {
 
   /**
    * The emergency Turn on offer right now, or null when there is none: it is
-   * sold only on the last Turn of a round, from Act 2 on. `affordable` is
-   * false when the player is short of Gold, so the offer can still be shown.
+   * sold only on Red Stake and above, on the last Turn of a round, from Act 2
+   * on. `affordable` is false when the player is short of Gold, so the offer
+   * can still be shown.
    */
   getEmergencyTurnOffer(): { cost: number; affordable: boolean } | null {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return null
+    if (this.state.stake < EMERGENCY_TURN_FIRST_STAKE) return null
     if (this.state.currentAct < EMERGENCY_TURN_FIRST_ACT) return null
     if (this.state.handsRemaining !== 1) return null
     if (this.state.score >= this.state.targetScore) return null
@@ -1526,7 +1529,7 @@ export class GameOrchestrator {
       return {
         isValid: false,
         errors: [
-          `An extra Turn can be bought only on the last Turn of a round, from Act ${EMERGENCY_TURN_FIRST_ACT}`,
+          `An extra Turn can be bought only on Stake ${EMERGENCY_TURN_FIRST_STAKE} or higher, on the last Turn of a round, from Act ${EMERGENCY_TURN_FIRST_ACT}`,
         ],
       }
     if (!offer.affordable)

@@ -1,41 +1,15 @@
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { collectCashOut } from './helpers/shop'
 import { openTable, settleReveals } from './helpers/table'
+import { chooseStake } from './helpers/stake'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
-
-/**
- * A profile that has won White on Green Felt and chose Red there: the run
- * starts through the real setup path, not a direct engine call.
- */
-async function chooseRedStake(page: Page) {
-  await page.addInitScript(() => {
-    localStorage.setItem(
-      'tensho-stake-progress',
-      JSON.stringify({
-        state: {
-          currentWallId: 'green_felt',
-          currentStakeTier: 2,
-          wallProgress: {
-            green_felt: {
-              wallId: 'green_felt',
-              highestCompleted: 1,
-              victories: [],
-            },
-          },
-          globalHighestCompleted: 1,
-        },
-        version: 0,
-      })
-    )
-  })
-}
 
 test('the run header shows the Stake and opens its rules on tap', async ({
   page,
   isMobile,
 }, testInfo) => {
   if (isMobile) await page.setViewportSize({ width: 320, height: 740 })
-  await chooseRedStake(page)
+  await chooseStake(page, 2)
   await openTable(page, '/en/play')
   expect(
     await page.evaluate(async () => {
@@ -81,7 +55,7 @@ test('a Red Stake Small round says why it paid no clear reward', async ({
 }, testInfo) => {
   if (isMobile) await page.setViewportSize({ width: 320, height: 740 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await chooseRedStake(page)
+  await chooseStake(page, 2)
   await openTable(page, '/en/play')
   await page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'

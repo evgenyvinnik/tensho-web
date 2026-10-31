@@ -82,6 +82,7 @@ it('opens the Stake rules on tap, so a phone player can read them', () => {
   fireEvent.click(opener)
   const dialog = screen.getByRole('dialog', { name: 'Red Stake' })
   expect(dialog).toHaveTextContent('No reward gold from Small Rounds.')
+  expect(dialog).toHaveTextContent('Emergency Turns from Act 2')
   expect(dialog).toHaveTextContent(
     'Higher tiers include the earlier tiers’ rules.'
   )
@@ -93,7 +94,7 @@ it('lists every cumulative rule at the top Stake and the base rule on White', ()
     screen.getByRole('button', { name: 'Gold Stake · Active rules' })
   )
   const dialog = screen.getByRole('dialog', { name: 'Gold Stake' })
-  expect(dialog.querySelectorAll('li')).toHaveLength(6)
+  expect(dialog.querySelectorAll('li')).toHaveLength(7)
   unmount()
   render(<StakeBadge stake={1} />)
   fireEvent.click(
@@ -102,6 +103,7 @@ it('lists every cumulative rule at the top Stake and the base rule on White', ()
   const white = screen.getByRole('dialog', { name: 'White Stake' })
   expect(white).toHaveTextContent('Base difficulty: no added penalties.')
   expect(white).not.toHaveTextContent('Higher tiers')
+  expect(white).not.toHaveTextContent('Emergency Turns')
 })
 
 it('shows the Stake in the run header instead of hiding it in the Gold tooltip', () => {

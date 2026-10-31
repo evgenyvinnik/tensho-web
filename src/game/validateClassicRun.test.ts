@@ -106,7 +106,7 @@ it('keeps the Red Stake withheld reward through save and load, and rejects a neg
 })
 
 it('saves emergency Turns bought this round, and loads saves from before them', () => {
-  const game = start(7)
+  const game = start(7, 2)
   advanceToRound(game, 'Boss')
   advanceRound(game)
   const state = game.getState() as OrchestratorState

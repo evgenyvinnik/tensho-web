@@ -1881,6 +1881,7 @@
     "rules": {
       "base": "Dificultad básica: sin penalizaciones añadidas.",
       "noSmallRoundReward": "Las rondas pequeñas no dan oro de recompensa.",
+      "emergencyTurn": "Turnos de emergencia desde el Acto {{act}}: en tu último turno, compra un turno más con oro ({{cost}} de oro en el Acto {{act}}, {{nextCost}} en el Acto {{nextAct}}, y así sucesivamente; el doble por cada uno comprado en la misma ronda).",
       "scoreScaling": "Objetivos de puntuación del nivel: iguales al Blanco en el Acto 1; luego suben en cada acto hasta ×{{multiplier}} respecto al Blanco desde el Acto {{act}}. Los modificadores de la mesa también se aplican.",
       "redrawPenalty": "Turnos por ronda: −{{amount}}.",
       "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
@@ -2085,7 +2086,7 @@
       "redraw": "envía al río las fichas elegidas que quieras y roba otras nuevas.",
       "p2": "Alcanza el objetivo de la ronda antes de quedarte sin turnos. Tu último turno siempre es una jugada, y algunos objetos dan recambios gratis que no gastan turno.",
       "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina.",
-      "emergency": "Desde el Acto {{act}}, puedes alargar tu último turno: compra un turno más con oro. El precio sube cada Acto y se duplica por cada turno extra comprado en la misma ronda."
+      "emergency": "En {{stake}} o superior, desde el Acto {{act}}, puedes alargar tu último turno: compra un turno más con oro. El precio sube cada Acto y se duplica por cada turno extra comprado en la misma ronda."
     },
     "select": {
       "title": "Seleccionar fichas",

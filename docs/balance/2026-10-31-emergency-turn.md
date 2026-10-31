@@ -44,20 +44,27 @@ No income cut was made.
 
 ## The emergency Turn
 
-From Act 2, on the last Turn of a round, the player can buy one more Turn
-with Gold. The price is `5 × Act` and doubles with each Turn bought in the
-same round (Act 2: 10, 20, 40; Act 6: 30, 60, 120). Act 1 is unchanged. It
-is offered only while the round is still short of its target, and a bought
-Turn cannot earn a swift-clear Omen (at most one Turn is ever spare after
-it) or bypass The Needle's single Play.
+On **Red Stake and above** (tier 2+), from Act 2, on the last Turn of a
+round, the player can buy one more Turn with Gold. White Stake and Act 1 are
+unchanged. The price is `5 × Act` and doubles with each Turn bought in the
+same round (Act 2: 10, 20, 40; Act 6: 30, 60, 120). It is offered only while
+the round is still short of its target. A bought Turn cannot earn a
+swift-clear Omen (at most one Turn is ever spare after it) or bypass The
+Needle's single Play.
 
-- Rule: `emergencyTurnCost` and `EMERGENCY_TURN_FIRST_ACT` in
-  `src/game/playRules.ts`; `GameOrchestrator.getEmergencyTurnOffer` and the
-  `buyTurn` action.
+On Red the Stake now has a felt economy: the Small-round Gold it withholds is
+Gold that could have bought a rescue.
+
+- Rule: `emergencyTurnCost`, `EMERGENCY_TURN_FIRST_ACT` and
+  `EMERGENCY_TURN_FIRST_STAKE` in `src/game/playRules.ts`;
+  `GameOrchestrator.getEmergencyTurnOffer` and the `buyTurn` action.
 - Saves carry `emergencyTurnsBoughtThisRound`; older saves load as zero.
-- UI: a "+1 Turn · price" row in the action bar on the last Turn, shown
-  disabled when Gold is short. The tutorial's Turns step explains it. All
-  13 languages.
+- UI: on the last Turn REDRAW cannot be used, so its slot offers "+1 Turn"
+  with the price (disabled when Gold is short). Buying one brings REDRAW
+  back. Taking an existing slot keeps the bar's height, so the offer never
+  covers the rack, even with a larger hand. While a free redraw is left,
+  REDRAW keeps its slot. The Stake rules list (header badge and table
+  picker) and the tutorial's Turns step describe it. All 13 languages.
 
 ### Price tuning
 
@@ -66,11 +73,14 @@ buy when the best visible play cannot reach the target and the Turn is
 affordable.
 
 ```sh
-bun scripts/classic-balance.mts 300 --build-shop --resources --consumables --emergency-turns --table=green_felt --stake=1 --seed=1
+bun scripts/classic-balance.mts 300 --build-shop --resources --consumables --emergency-turns --table=green_felt --stake=2 --seed=1
 ```
 
-Stake 1, 300 seeds. "Rescued" counts seeds that lost without the feature and
-won with it; no seed went the other way in any cell.
+The price was tuned before the feature was limited to Red and above, with
+the rule temporarily enabled on Stake 1 so it could be compared against
+three shopping behaviours. 300 seeds; "rescued" counts seeds that lost
+without the feature and won with it. No seed went the other way in any
+cell.
 
 | Policy       |   Off | 3 / Act |           **5 / Act** | 8 / Act |
 | ------------ | ----: | ------: | --------------------: | ------: |
@@ -78,14 +88,22 @@ won with it; no seed went the other way in any cell.
 | Saver        | 68.7% |   71.0% | **70.0%** (4 rescued) |   69.3% |
 | Decrees only | 40.3% |   44.0% | **42.0%** (5 rescued) |   41.0% |
 
-5 per Act keeps White within two points of today for every policy, as
-requested. No run ends in Act 1 in any cell. Higher Stakes move similarly
-(saver at Stake 3: 56.0% → 58.0%; Stake 6: 32.7% → 35.3%).
+5 per Act moves win rates by two points or less for every policy. No run
+ends in Act 1 in any cell.
 
-The emergency Turn gives stored Gold a purpose, as insurance, but does not
-drain it: the Decrees-only player still finishes near 186 Gold, because a
-rich player seldom needs a rescue. Spending more of the surplus would need a
-further sink, such as Act-scaled shop prices or more late-run purchases.
+As shipped (Red and above only), same 300 seeds:
+
+| Stake    | Policy   |   Off |                                     On |
+| -------- | -------- | ----: | -------------------------------------: |
+| 1 White  | Standard | 65.0% | 65.0% (0 Turns bought; identical runs) |
+| 2 Red    | Standard | 59.0% |      59.7% (27 Turns bought, 455 Gold) |
+| 3 Green  | Saver    | 56.0% |                                  58.0% |
+| 6 Purple | Saver    | 32.7% |                                  35.3% |
+
+Red stays clearly harder than White. The emergency Turn gives stored Gold a
+purpose, as insurance, but does not drain it: a rich player seldom needs a
+rescue. Spending more of the surplus would need a further sink, such as
+Act-scaled shop prices or more late-run purchases.
 
 These are heuristic-policy outcomes, not human win rates.
 

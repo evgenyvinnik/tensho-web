@@ -1877,6 +1877,7 @@
     "rules": {
       "base": "Base difficulty: no added penalties.",
       "noSmallRoundReward": "No reward gold from Small Rounds.",
+      "emergencyTurn": "Emergency Turns from Act {{act}}: on your last Turn, buy one more Turn with Gold ({{cost}}G in Act {{act}}, {{nextCost}}G in Act {{nextAct}}, and so on; doubling for each one bought in the same round).",
       "scoreScaling": "Stake score targets: same as White in Act 1, then rising each Act to ×{{multiplier}} compared with White from Act {{act}} on. Table modifiers still apply.",
       "redrawPenalty": "Turns each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
@@ -2081,7 +2082,7 @@
       "redraw": "send any number of selected tiles to the river and draw new ones.",
       "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
       "warning": "Run out of Turns below the target and the run is over.",
-      "emergency": "From Act {{act}}, your last Turn can be extended: buy one more Turn with Gold. The price rises each Act and doubles for each extra Turn bought in the same round."
+      "emergency": "On {{stake}} and higher, from Act {{act}}, your last Turn can be extended: buy one more Turn with Gold. The price rises each Act and doubles for each extra Turn bought in the same round."
     },
     "select": {
       "title": "Selecting Tiles",

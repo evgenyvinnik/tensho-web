@@ -105,7 +105,8 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Red Stake',
     japaneseName: '赤場',
     color: '#E53935',
-    description: 'Small Round gives no reward Gold',
+    description:
+      'Small Round gives no reward Gold; from Act 2, the last Turn of a round can be extended with Gold',
     modifier: { noSmallRoundReward: true },
     unlocksWall: 'crimson_wall',
   },

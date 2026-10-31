@@ -191,7 +191,7 @@ describe('ActionBar', () => {
       expect(container.querySelector('[data-emergency-turn]')).toBeNull()
     })
 
-    it('sits in the bar, above the controls, with its price and buys on tap', () => {
+    it("takes REDRAW's place on the last Turn, with its price, and buys on tap", () => {
       const onBuyTurn = vi.fn()
       const { container } = renderActionBar({
         turnsLeft: 1,
@@ -204,19 +204,29 @@ describe('ActionBar', () => {
       expect(buy).toHaveTextContent('+1 Turn')
       expect(buy).toHaveTextContent('15')
       expect(buy).toBeEnabled()
-      // Its own row in the bar, before the controls: it never floats over
-      // the rack.
-      const row = container.querySelector('[data-emergency-turn-row]')!
-      expect(row.parentElement).toBe(
-        container.querySelector('[data-action-bar]')
+      // Same slot, same bar height: REDRAW is gone, Play hand stays.
+      expect(container.querySelector('[data-game-action="redraw"]')).toBeNull()
+      expect(buy.parentElement).toBe(
+        container.querySelector('.gameplay-action-controls')
       )
       expect(
-        row.compareDocumentPosition(
-          container.querySelector('.gameplay-action-controls')!
-        ) & Node.DOCUMENT_POSITION_FOLLOWING
-      ).toBeTruthy()
+        buttons().map(
+          (button) => button.getAttribute('aria-label') ?? button.textContent
+        )
+      ).toEqual(['Buy one more Turn for 15 Gold', 'Play hand'])
       fireEvent.click(buy)
       expect(onBuyTurn).toHaveBeenCalledOnce()
+    })
+
+    it('leaves REDRAW in place while a free redraw is left', () => {
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        freeRedraws: 1,
+        redrawAllowed: true,
+        emergencyTurn: { cost: 15, affordable: true },
+      })
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+      expect(screen.getByRole('button', { name: /REDRAW/ })).toBeEnabled()
     })
 
     it('stays visible but disabled, with the reason, when Gold is short', () => {

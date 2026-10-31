@@ -11,11 +11,15 @@
  * disabled and one short reason floats just above the bar and is announced;
  * it never takes layout space, so showing it does not move the table.
  *
- * From Act 2, the last Turn of a round can be extended with Gold. The offer
- * is a slim row at the top of the bar, shown only on the last Turn (disabled
- * when the player cannot afford it, so the option is learned before it is
- * needed). It sits in the bar rather than floating so it never covers the
- * rack on the Turn where every tile matters.
+ * On Red Stake and above, from Act 2, the last Turn of a round can be
+ * extended with Gold. On that Turn REDRAW cannot be used (the last Turn is
+ * always a Play), so its place offers "+1 Turn" with the price instead:
+ * buying one is what makes REDRAW possible again. It is shown disabled when
+ * the player cannot afford it, so the option is learned before it is needed.
+ * Taking an existing slot keeps the bar's height, so the offer never pushes
+ * the bar over the rack on the Turn where every tile matters. While a free
+ * redraw is left, REDRAW still works and keeps its place; the offer appears
+ * once those are spent.
  *
  * @module components/gameplay/ActionBar
  */
@@ -77,6 +81,8 @@ export function ActionBar({
   // Only explain a disabled action once the player has chosen tiles.
   const reason =
     selectedCount > 0 ? (!playAllowed ? playReason : undefined) : undefined
+  // REDRAW's slot sells the emergency Turn only while REDRAW is unusable.
+  const offer = freeRedraws > 0 ? null : emergencyTurn
 
   return (
     <div
@@ -94,47 +100,6 @@ export function ActionBar({
         >
           {reason}
         </p>
-      )}
-      {emergencyTurn && (
-        <div data-emergency-turn-row className="flex justify-center">
-          <button
-            type="button"
-            data-emergency-turn={emergencyTurn.cost}
-            onClick={onBuyTurn}
-            disabled={!emergencyTurn.affordable}
-            aria-label={t('gameplay.emergencyTurn.label', {
-              cost: number(emergencyTurn.cost),
-            })}
-            aria-describedby={
-              emergencyTurn.affordable ? undefined : emergencyHintId
-            }
-            title={
-              emergencyTurn.affordable
-                ? t('gameplay.emergencyTurn.label', {
-                    cost: number(emergencyTurn.cost),
-                  })
-                : t('gameplay.emergencyTurn.short', {
-                    cost: number(emergencyTurn.cost),
-                  })
-            }
-            className="flex min-h-11 max-w-full items-center gap-2 rounded-full border-2 border-[var(--color-golden-yellow)] bg-black/25 px-4 py-1 text-sm font-black text-[var(--color-beige-white)] shadow-[0_0_14px_rgba(255,213,79,0.3)] hover:bg-[var(--color-forest-green)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:border-white/25 disabled:text-white/55 disabled:shadow-none"
-          >
-            <span className="[overflow-wrap:anywhere]">
-              {t('gameplay.emergencyTurn.buy')}
-            </span>
-            <span className="inline-flex shrink-0 items-center gap-1 tabular-nums text-[var(--color-golden-yellow)]">
-              <GoldIcon className="h-4 w-4" />
-              {number(emergencyTurn.cost)}
-            </span>
-          </button>
-          {!emergencyTurn.affordable && (
-            <span id={emergencyHintId} className="sr-only">
-              {t('gameplay.emergencyTurn.short', {
-                cost: number(emergencyTurn.cost),
-              })}
-            </span>
-          )}
-        </div>
       )}
       <div className="gameplay-action-controls items-center gap-1.5 sm:gap-3">
         <p
@@ -166,30 +131,72 @@ export function ActionBar({
           </div>
         )}
 
-        <Button
-          data-game-action="redraw"
-          variant="secondary"
-          size="sm"
-          onClick={onRedraw}
-          disabled={!redrawAllowed}
-          title={!redrawAllowed && selectedCount > 0 ? redrawReason : undefined}
-          className="flex !min-h-11 min-w-0 flex-1 flex-col items-center justify-center !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:!px-2 sm:text-sm sm:tracking-wide"
-        >
-          <span className="max-w-full [overflow-wrap:anywhere]">
-            {t('gameplay.redraw', 'REDRAW')}
-          </span>
-          {freeRedraws > 0 && (
-            <span
-              data-free-redraws={freeRedraws}
-              className="max-w-full text-[10px] font-black normal-case leading-none tracking-normal text-emerald-200 [overflow-wrap:anywhere]"
-            >
-              {t('gameplay.freeRedraws', {
-                count: freeRedraws,
-                formattedCount: number(freeRedraws),
+        {offer ? (
+          <>
+            <button
+              type="button"
+              data-emergency-turn={offer.cost}
+              onClick={onBuyTurn}
+              disabled={!offer.affordable}
+              aria-label={t('gameplay.emergencyTurn.label', {
+                cost: number(offer.cost),
               })}
+              aria-describedby={offer.affordable ? undefined : emergencyHintId}
+              title={
+                offer.affordable
+                  ? t('gameplay.emergencyTurn.label', {
+                      cost: number(offer.cost),
+                    })
+                  : t('gameplay.emergencyTurn.short', {
+                      cost: number(offer.cost),
+                    })
+              }
+              className="flex !min-h-11 min-w-0 flex-1 flex-wrap items-center justify-center gap-x-1.5 rounded-lg border-2 border-[var(--color-golden-yellow)] bg-black/25 px-1 py-1 text-[13px] font-black uppercase leading-tight text-[var(--color-beige-white)] shadow-[0_0_14px_rgba(255,213,79,0.3)] hover:bg-[var(--color-forest-green)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:border-white/25 disabled:text-white/55 disabled:shadow-none sm:px-2 sm:text-sm"
+            >
+              <span className="[overflow-wrap:anywhere]">
+                {t('gameplay.emergencyTurn.buy')}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1 tabular-nums text-[var(--color-golden-yellow)]">
+                <GoldIcon className="h-4 w-4" />
+                {number(offer.cost)}
+              </span>
+            </button>
+            {!offer.affordable && (
+              <span id={emergencyHintId} className="sr-only">
+                {t('gameplay.emergencyTurn.short', {
+                  cost: number(offer.cost),
+                })}
+              </span>
+            )}
+          </>
+        ) : (
+          <Button
+            data-game-action="redraw"
+            variant="secondary"
+            size="sm"
+            onClick={onRedraw}
+            disabled={!redrawAllowed}
+            title={
+              !redrawAllowed && selectedCount > 0 ? redrawReason : undefined
+            }
+            className="flex !min-h-11 min-w-0 flex-1 flex-col items-center justify-center !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:!px-2 sm:text-sm sm:tracking-wide"
+          >
+            <span className="max-w-full [overflow-wrap:anywhere]">
+              {t('gameplay.redraw', 'REDRAW')}
             </span>
-          )}
-        </Button>
+            {freeRedraws > 0 && (
+              <span
+                data-free-redraws={freeRedraws}
+                className="max-w-full text-[10px] font-black normal-case leading-none tracking-normal text-emerald-200 [overflow-wrap:anywhere]"
+              >
+                {t('gameplay.freeRedraws', {
+                  count: freeRedraws,
+                  formattedCount: number(freeRedraws),
+                })}
+              </span>
+            )}
+          </Button>
+        )}
 
         <Button
           data-game-action="play"
