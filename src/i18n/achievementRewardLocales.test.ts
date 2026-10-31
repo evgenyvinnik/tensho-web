@@ -37,24 +37,24 @@ const englishDecrees = {
   satellite: {
     name: 'Satellite',
     description:
-      '+1 Gold per Orb family above level 1 at the end of each won round.',
+      'At the end of each won round, +1 Gold for each hand family you have raised above level 1 with Orbs.',
   },
   swift_andy: {
     name: 'Swift Andy',
-    description: '+2 free REDRAWs each round; −2 rack size.',
+    description: '+2 free redraws each round; −2 rack spaces.',
   },
   lucky_sixes: {
     name: 'Lucky Sixes',
-    description: '+6 Mult per played numbered 6. Stones do not count.',
+    description: '+6 Mult per numbered 6 played. Stones do not count.',
   },
   the_idol: {
     name: 'The Idol',
     description:
-      '×3 Mult when at least two played tiles all have the same printed suit and rank. Stones break the condition; Wild tiles keep their printed identity.',
+      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stones break it; Wild tiles keep their printed face.',
   },
   stuntman: {
     name: 'Stuntman',
-    description: '+250 Points; −3 rack size.',
+    description: '+250 Points; −3 rack spaces.',
   },
   cartomancer: {
     name: 'Cartomancer',
@@ -207,15 +207,6 @@ describe('achievement reward localization', () => {
       const [four, two, one] = cardinalities[language]
       expect(locale.decrees.items.flower_pot.description).toContain(four)
       expect(locale.decrees.items.the_idol.description).toContain(two)
-      // Russian inflects the button label when describing multiple uses.
-      if (language === 'ru')
-        expect(locale.decrees.items.swift_andy.description).toContain(
-          'ПЕРЕСДАЧИ'
-        )
-      else
-        expect(locale.decrees.items.swift_andy.description).toContain(
-          locale.gameplay.redraw
-        )
       for (const id of ['cartomancer', 'astronomer']) {
         expect(locale.decrees.items[id].description).toContain(one)
         expect(locale.decrees.items[id].description).toContain(

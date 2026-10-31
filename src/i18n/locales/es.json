@@ -157,7 +157,7 @@
     },
     "discardArtist": {
       "name": "Artista del cambio",
-      "description": "Cambia 2.500 fichas entre todas tus partidas."
+      "description": "Recambia 2.500 fichas entre todas tus partidas."
     },
     "fortuneBuilt": {
       "name": "Fortuna acumulada",
@@ -165,11 +165,11 @@
     },
     "wildFlush": {
       "name": "Color salvaje",
-      "description": "Puntúa un Medio Color formado solo por fichas Comodín."
+      "description": "Puntúa un Medio color (un palo más Vientos o Dragones) formado solo por fichas Comodín."
     },
     "speedRun": {
       "name": "A toda velocidad",
-      "description": "Gana una partida gastando 48 turnos o menos. Los cambios de fichas gratuitos no cuentan."
+      "description": "Gana una partida gastando 48 turnos o menos. Los recambios gratis no cuentan."
     },
     "charterCollector": {
       "name": "Coleccionista de cartas",
@@ -181,19 +181,19 @@
     },
     "royalHand": {
       "name": "Mano real",
-      "description": "Puntúa un Yakuman."
+      "description": "Puntúa un Yakuman, una mano de máximo nivel como Tres Grandes Dragones."
     },
     "retrograde": {
       "name": "Retrógrado",
-      "description": "Sube un Yaku al nivel 10."
+      "description": "Sube una familia de manos al nivel 10."
     },
     "keeperOfWinds": {
       "name": "Guardián de los vientos",
-      "description": "Puntúa 10 Yaku de Viento en una sola partida."
+      "description": "Puntúa un triplete o cuarteto de Viento del Este en una mano completa 5 veces en una partida."
     },
     "masterOfSilence": {
       "name": "Maestro del silencio",
-      "description": "Gana 3 rondas sin descartar ninguna ficha de Honor."
+      "description": "Gana 3 rondas sin recambiar ningún Viento ni Dragón."
     },
     "sealBearer": {
       "name": "Portador de sellos",
@@ -217,11 +217,11 @@
     },
     "starGazer": {
       "name": "Observador de estrellas",
-      "description": "Descubre todos los Orbes Celestiales."
+      "description": "Descubre todos los Orbes Celestes."
     },
     "voidWalker": {
       "name": "Caminante del vacío",
-      "description": "Descubre todos los Escritos del Vacío."
+      "description": "Descubre todos los Guiones del Vacío."
     },
     "charterComplete": {
       "name": "Cartas completas",
@@ -280,39 +280,39 @@
   },
   "closedHandAusterity": {
     "name": "Austeridad de mano cerrada",
-    "description": "Las manos completas y cerradas ganan ×1,5, creciendo ×1,2 por cada mano completa y cerrada anterior de esta partida, hasta ×4 antes del refuerzo de las Flores. Las jugadas tácticas y la Clemencia Shanten no cuentan.",
-    "progress": "Manos completas y cerradas: {{count}}. Próxima mano válida: ×{{factor}} antes de las Flores."
+    "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten no cuentan.",
+    "progress": "Manos completas hasta ahora: {{count}}. Siguiente: ×{{factor}} antes de las Flores."
   },
   "yakuRepetition": {
     "name": "Edicto de Repetición de Yaku",
-    "description": "Cada yaku que puntúa en rondas consecutivas acumula ×1.2 por ronda previa de su racha (hasta ×4). Fallar una ronda rompe la racha. El tope se aplica antes del potenciador de Flores.",
+    "description": "Un Yaku puntuado en rondas consecutivas gana ×1,2 por cada ronda anterior de su racha, hasta ×4 antes de las bonificaciones de Flores. Una ronda sin él termina esa racha.",
     "title": "Patrones para repetir",
     "streak": "{{name}} · {{rounds}} rondas anteriores consecutivas",
     "empty": "No hay rachas previas. Puntúa un Yaku esta ronda para iniciar una."
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "Puntúa un Yakuman.",
+    "seal_of_the_immortal": "Puntúa un Yakuman, una mano de máximo nivel como Tres Grandes Dragones.",
     "seal_of_the_void": "Puntúa los 20 tipos de Yaku en una sola partida.",
     "planet_x_orb": "Puntúa Siete Pares.",
-    "ceres_orb": "Puntúa una Mano exterior.",
-    "eris_orb": "Puntúa Trece huérfanos.",
-    "black_hole_orb": "Descubre los otros 12 Orbes Celestiales."
+    "ceres_orb": "Puntúa una Mano exterior: una mano completa con un 1, un 9, un Viento o un Dragón en cada grupo y en el par.",
+    "eris_orb": "Puntúa Trece huérfanos: uno de cada 1, 9, Viento y Dragón, más uno repetido.",
+    "black_hole_orb": "Descubre los otros 12 Orbes Celestes."
   },
   "decreeUnlocks": {
     "stage_master": "Llega al Acto 4.",
     "flower_pot": "Llega al Acto 8 en el modo infinito opcional.",
     "satellite": "Acumula 400 de oro en una sola partida.",
-    "swift_andy": "Gana una partida gastando 48 turnos o menos. Los cambios de fichas gratuitos no cuentan.",
+    "swift_andy": "Gana una partida gastando 48 turnos o menos. Los recambios gratis no cuentan.",
     "lucky_sixes": "Consigue 10.000 puntos en una sola jugada.",
     "the_idol": "Consigue 1.000.000 puntos en una sola jugada.",
     "stuntman": "Consigue 100.000.000 puntos en una sola jugada.",
     "cartomancer": "Descubre todos los Sellos del Destino.",
-    "astronomer": "Descubre todos los Orbes Celestiales.",
+    "astronomer": "Descubre todos los Orbes Celestes.",
     "decree-blueprint": "Gana una partida.",
     "decree-brainstorm": "Gana una partida con al menos cinco Decretos.",
-    "decree-heavenly-ordinance": "Puntúa un Yakuman.",
-    "decree-clone-army": "Gana una partida en la apuesta de Oro.",
-    "decree-yakuman-blessing": "Puntúa tres patrones Yakuman en una misma partida.",
+    "decree-heavenly-ordinance": "Puntúa un Yakuman, una mano de máximo nivel como Tres Grandes Dragones.",
+    "decree-clone-army": "Gana una partida en Nivel Oro.",
+    "decree-yakuman-blessing": "Puntúa tres manos Yakuman en una misma partida.",
     "decree-omega": "Completa el acto 8 en el modo infinito opcional."
   },
   "scoreThresholds": {
@@ -345,7 +345,7 @@
   },
   "runOwnership": {
     "fateSeal": "Los cambios en las fichas duran toda esta partida, incluidas las rondas futuras. Una nueva partida empieza de cero.",
-    "negativeTile": "+1 espacio de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o descartarla conserva el espacio; destruirla o cambiar su edición lo elimina.",
+    "negativeTile": "+1 ranura de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o enviarla al río conserva la ranura; destruirla o cambiar su edición la elimina.",
     "overCapacity": "Capacidad reducida: conservas tus Decretos. Libera espacio antes de conseguir más."
   },
   "yakuUpgrades": {
@@ -424,10 +424,10 @@
     "available": "{{name}} ({{count}} disponibles)",
     "penalty_lose_tile": "Pierdes 1 ficha aleatoria.",
     "penalty_lose_gold": "Pierdes todo el oro.",
-    "penalty_lose_hand_size": "Pierdes {{count}} espacio de la mano permanentemente.",
-    "penalty_lock_tile": "Se bloquea 1 ficha aleatoria en la reserva muerta.",
-    "penalty_lose_decree_slot": "Pierdes {{count}} espacio de Decreto en la próxima ronda.",
-    "penalty_halve_base_score": "Los puntos base se reducen a la mitad en la próxima mano.",
+    "penalty_lose_hand_size": "Pierdes {{count}} espacio del atril durante el resto de esta partida.",
+    "penalty_lock_tile": "Se bloquea 1 ficha al azar en el río: no se puede volver a robar.",
+    "penalty_lose_decree_slot": "Pierdes {{count}} ranura de Decreto en la próxima ronda.",
+    "penalty_halve_base_score": "Los Puntos base se reducen a la mitad en la próxima jugada.",
     "penalty_destroy_decrees": "Se destruyen todos los demás Decretos.",
     "penalty_none": "Sin penalización adicional.",
     "protected": "La protección del Augurio anula la penalización adicional.",
@@ -443,8 +443,8 @@
     "unavailable": "Este objeto no se puede usar ahora.",
     "confirm": "Usar objeto",
     "fateSeals": "Sellos del Destino",
-    "celestialOrbs": "Orbes Celestiales",
-    "voidScripts": "Escritos del Vacío",
+    "celestialOrbs": "Orbes Celestes",
+    "voidScripts": "Guiones del Vacío",
     "chooseTargets": "Elegir fichas"
   },
   "common": {
@@ -536,7 +536,7 @@
       "normal": "Normal",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Agrupa tu mano en Pares, Secuencias y Tripletes bajo el atril, y señala una mano de Mahjong completa",
+    "tileHintsDesc": "Muestra Pares, Secuencias y Tripletes sugeridos bajo tu atril, y señala una mano de Mahjong completa",
     "visual": "Visual",
     "rankNumbers": "Números en las fichas",
     "rankNumbersDesc": "Muestra un pequeño 1–9 en las fichas numeradas y una letra en los Dragones mientras aprendes las caras.",
@@ -569,7 +569,7 @@
     "deadWallDraw": "Robar del muro muerto",
     "winsRound": "Gana la ronda",
     "tilesInWall": "Fichas en el muro",
-    "handsRemaining": "Manos restantes",
+    "handsRemaining": "Turnos restantes",
     "redrawsRemaining": "Recambios restantes",
     "redrawSelected": "Recambiar fichas seleccionadas",
     "redrawHint": "Devuelve hasta 3 fichas seleccionadas y roba reemplazos",
@@ -597,7 +597,7 @@
       "label": "Previsión",
       "selectOneMore": "Selecciona una ficha más para jugar este grupo",
       "notCompleteHand": "Esta selección no es una mano completa de Mahjong",
-      "returnTiles": "Devuelve fichas hasta que queden 5, o completa la mano",
+      "returnTiles": "Devuelve fichas hasta que queden {{max}}, o completa la mano",
       "groupToScore": "Agrupa tus fichas para puntuar al completo; las manos completas desbloquean Yaku"
     },
     "previewConcealed": "Vista previa oculta",
@@ -624,18 +624,18 @@
     "beginnerFullHand": "Más adelante, cuatro figuras y una pareja forman una mano completa y desbloquean potentes multiplicadores Yaku.",
     "showGuidedMove": "Enséñame una jugada",
     "guidedMove": "Primera jugada guiada",
-    "beginnerPatternReady": "{{pattern}} lista",
+    "beginnerPatternReady": "Combinación lista: {{pattern}}",
     "beginnerTapGlowing": "Toca las {{count}} fichas brillantes de abajo. Ya forman una figura que puntúa.",
     "beginnerRedrawTitle": "Renueva fichas aisladas",
     "beginnerRedrawHelp": "Toca las fichas aisladas brillantes y pulsa Recambiar para buscar una Pareja, Escalera o Trío.",
     "beginnerRedrawReady": "Listo: pulsa Recambiar para sustituir estas fichas aisladas.",
-    "beginnerPatternComplete": "¡Bien! Esta {{pattern}} otorga +{{points}} puntos de figura. Consulta la previsión y juega.",
+    "beginnerPatternComplete": "¡Bien! {{pattern}} otorga +{{points}} puntos de figura. Consulta la previsión y juega.",
     "beginnerSelectedProgress": "{{current}} de {{total}} fichas brillantes preparadas",
     "tilesReady": "{{count}} fichas listas para jugar",
     "beginnerRedrawForecast": "Listo para recambiar",
     "beginnerPatternForecast": "{{pattern}} · +{{points}} puntos de figura",
     "beginnerChooseRedraw": "Elige las fichas brillantes",
-    "beginnerFindPattern": "Encuentra la {{pattern}} brillante",
+    "beginnerFindPattern": "Encuentra la combinación brillante: {{pattern}}",
     "stageUnlockHint": "Las manos completas desbloquean la declaración Mano Preparada en dos pasos",
     "gameOver": "Fin de la partida",
     "redraw": "RECAMBIAR",
@@ -761,7 +761,7 @@
     },
     "build": {
       "title": "Tu combinación",
-      "slots": "{{used}} / {{max}} espacios de Decreto",
+      "slots": "{{used}} / {{max}} ranuras de Decreto",
       "empty": "Aún no tienes Decretos. Los pergaminos comprados aparecen aquí.",
       "sellPrompt": "¿Vender {{name}} por {{gold}} de oro? Se eliminará de tu combinación.",
       "sold": "Has vendido {{name}}.",
@@ -796,7 +796,7 @@
       "omen": "Presagio"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
-    "packInventoryFull": "No hay espacios de Decreto suficientes para esta selección. Vende un Decreto, elige menos o salta el paquete.",
+    "packInventoryFull": "No hay ranuras de Decreto suficientes para esta selección. Vende un Decreto, elige menos o salta el paquete.",
     "inventoryFull": "No hay espacio en el inventario para esta recompensa.",
     "skipRewards": "Omitir recompensas",
     "purchaseFailed": "No se pudo completar la compra.",
@@ -822,12 +822,12 @@
     "packSkipped": "Sobre omitido",
     "kinds": {
       "decree": "Decreto · {{rarity}}",
-      "decreeHelp": "Un decreto es una regla permanente para esta partida. Ocupa un espacio de decreto y puedes venderlo cuando quieras.",
+      "decreeHelp": "Un Decreto cambia las reglas mientras lo tengas. Normalmente ocupa una ranura de Decreto. Puedes venderlo salvo que sea Eterno.",
       "seal": "Sello del Destino · actúa al instante",
       "sealHelp": "Se usa en cuanto lo tomas: elige las fichas de tu muro que cambia, y siguen cambiadas toda la partida.",
       "sealHelpInstant": "Se usa en cuanto lo tomas.",
-      "orb": "Orbe Celestial · mejora una familia de manos",
-      "script": "Escrito del Vacío · poderoso, con un precio",
+      "orb": "Orbe Celeste · mejora una familia de manos",
+      "script": "Guion del Vacío · poderoso, con un precio",
       "consumableHelp": "Se guarda con tus objetos hasta usarlo. Tócalo en la mesa para usarlo.",
       "tile": "Ficha · se añade a tu muro",
       "tileHelp": "Añade esta ficha a tu muro el resto de la partida.",
@@ -877,23 +877,23 @@
       },
       "satellite": {
         "name": "Satélite",
-        "description": "+1 de Oro por cada familia de Orbes por encima del nivel 1 al final de cada ronda ganada."
+        "description": "Al final de cada ronda ganada, +1 de oro por cada familia de manos que hayas subido por encima del nivel 1 con Orbes."
       },
       "swift_andy": {
         "name": "Andy Veloz",
-        "description": "+2 usos gratuitos de RECAMBIAR por ronda; −2 al tamaño del atril."
+        "description": "+2 recambios gratis por ronda; −2 espacios del atril."
       },
       "lucky_sixes": {
         "name": "Seises de la Suerte",
-        "description": "+6 Mult por cada ficha numérica de valor 6 jugada. Las fichas de Piedra no cuentan."
+        "description": "+6 Mult por cada ficha numerada de valor 6 jugada. Las fichas de Piedra no cuentan."
       },
       "the_idol": {
         "name": "El Ídolo",
-        "description": "×3 Mult si juegas al menos dos fichas y todas tienen el mismo palo y valor impresos. Las fichas de Piedra invalidan la condición; las fichas Comodín conservan su identidad impresa."
+        "description": "×3 Mult si juegas al menos dos fichas y todas son la misma ficha impresa. Las fichas de Piedra lo impiden; las fichas Comodín conservan su cara impresa."
       },
       "stuntman": {
         "name": "Doble de Riesgo",
-        "description": "+250 Puntos; −3 al tamaño del atril."
+        "description": "+250 Puntos; −3 espacios del atril."
       },
       "cartomancer": {
         "name": "Cartomante",
@@ -901,7 +901,7 @@
       },
       "astronomer": {
         "name": "Astrónomo",
-        "description": "Añade una oferta gratuita de un Orbe Celestial al entrar en la Casa de Té. Renovar la tienda no repone esta oferta."
+        "description": "Añade una oferta gratuita de un Orbe Celeste al entrar en la Casa de Té. Renovar la tienda no repone esta oferta."
       },
       "decree-half-suited": {
         "name": "Medio Palo",
@@ -945,59 +945,59 @@
       },
       "decree-manzu-master": {
         "name": "Maestro de Caracteres",
-        "description": "+3 Mult si la mano contiene Caracteres"
+        "description": "+3 Mult si la jugada incluye una ficha de Caracteres"
       },
       "decree-pinzu-perfectionist": {
         "name": "Perfeccionista de Círculos",
-        "description": "+3 Mult si la mano contiene Círculos"
+        "description": "+3 Mult si la jugada incluye una ficha de Círculos"
       },
       "decree-souzu-scholar": {
         "name": "Erudito de Bambúes",
-        "description": "+3 Mult si la mano contiene Bambúes"
+        "description": "+3 Mult si la jugada incluye una ficha de Bambúes"
       },
       "decree-wind-walker": {
         "name": "Caminante del Viento",
-        "description": "+4 Mult si la mano contiene Viento"
+        "description": "+4 Mult si la jugada incluye un Viento"
       },
       "decree-dragon-disciple": {
         "name": "Discípulo del Dragón",
-        "description": "+4 Mult si la mano contiene Dragón"
+        "description": "+4 Mult si la jugada incluye un Dragón"
       },
       "decree-edge-runner": {
         "name": "Corredor de Bordes",
-        "description": "+20 Puntos por Terminal en mano"
+        "description": "+20 Puntos por cada ficha Terminal (un 1 o un 9) jugada"
       },
       "decree-middle-way": {
         "name": "Camino Medio",
-        "description": "+10 Puntos por Simple en mano"
+        "description": "+10 Puntos por cada ficha Simple (del 2 al 8) jugada"
       },
       "decree-green-fortune": {
         "name": "Fortuna Verde",
-        "description": "+15 Puntos por ficha verde (2,3,4,6,8 de Bambúes)"
+        "description": "+15 Puntos por cada ficha totalmente verde jugada: 2, 3, 4, 6 y 8 de Bambúes, y el Dragón Verde"
       },
       "decree-coin-collector": {
-        "name": "Colector de Monedas",
-        "description": "+1G al final de la ronda"
+        "name": "Coleccionista de Monedas",
+        "description": "+1 de oro al final de cada ronda"
       },
       "decree-merchants-favor": {
         "name": "Favor del Mercader",
-        "description": "+2G al final de la ronda"
+        "description": "+2 de oro al final de cada ronda"
       },
       "decree-lucky-coin": {
         "name": "Moneda de la Suerte",
-        "description": "+3G al final de la ronda"
+        "description": "+3 de oro al final de cada ronda"
       },
       "decree-pair-lover": {
         "name": "Amante de Pares",
-        "description": "+30 Puntos si la mano contiene un par"
+        "description": "+30 Puntos si la jugada incluye un par"
       },
       "decree-sequence-seeker": {
         "name": "Buscador de Secuencias",
-        "description": "+30 Puntos si la mano contiene una secuencia"
+        "description": "+30 Puntos si la jugada incluye una secuencia"
       },
       "decree-triplet-tracker": {
         "name": "Rastreador de Tripletes",
-        "description": "+40 Puntos si la mano contiene un triplete"
+        "description": "+40 Puntos si la jugada incluye un triplete"
       },
       "decree-flower-friend": {
         "name": "Amigo de las Flores",
@@ -1009,7 +1009,7 @@
       },
       "decree-wide-grip": {
         "name": "Agarre Amplio",
-        "description": "+1 Tamaño de Mano"
+        "description": "+1 espacio del atril"
       },
       "decree-second-chance": {
         "name": "Segunda Oportunidad",
@@ -1021,111 +1021,111 @@
       },
       "decree-modest-fortune": {
         "name": "Fortuna Modesta",
-        "description": "+20 Puntos y +1G por ronda"
+        "description": "+20 Puntos y +1 de oro al final de cada ronda"
       },
       "decree-humble-power": {
         "name": "Poder Humilde",
-        "description": "+2 Mult y +1G por ronda"
+        "description": "+2 Mult y +1 de oro al final de cada ronda"
       },
       "decree-one-mastery": {
         "name": "Maestría del Uno",
-        "description": "+25 Puntos por ficha de 1 en mano"
+        "description": "+25 Puntos por cada ficha numerada de valor 1 jugada"
       },
       "decree-nine-mastery": {
         "name": "Maestría del Nueve",
-        "description": "+25 Puntos por ficha de 9 en mano"
+        "description": "+25 Puntos por cada ficha numerada de valor 9 jugada"
       },
       "decree-five-blessing": {
         "name": "Bendición del Cinco",
-        "description": "+35 Puntos por ficha de 5 en mano"
+        "description": "+35 Puntos por cada ficha numerada de valor 5 jugada"
       },
       "decree-spark": {
         "name": "Chispa",
-        "description": "x1.2 Mult"
+        "description": "×1,2 Mult"
       },
       "decree-ember": {
         "name": "Brasa",
-        "description": "x1.3 Mult"
+        "description": "×1,3 Mult"
       },
       "decree-riichi-devotee": {
         "name": "Devoto de los pares",
-        "description": "+4 Mult si la jugada tiene dos o más pares"
+        "description": "+4 Mult si la jugada incluye dos o más pares"
       },
       "decree-tanyao-tactician": {
         "name": "Táctico de Simples",
-        "description": "+3 Mult al puntuar una mano Todo simples"
+        "description": "+3 Mult al puntuar Todo simples: una mano completa solo con fichas del 2 al 8, sin 1, 9, Vientos ni Dragones"
       },
       "decree-pinfu-purist": {
         "name": "Purista de Secuencias",
-        "description": "+3 Mult al puntuar una mano Todo secuencias"
+        "description": "+3 Mult al puntuar Todo secuencias: una mano completa de cuatro secuencias más un par que no sea de Dragones ni de Viento del Este"
       },
       "decree-manzu-emperor": {
         "name": "Emperador de Caracteres",
-        "description": "+8 Mult si la mitad o más son Caracteres"
+        "description": "+8 Mult si al menos la mitad de las fichas jugadas son Caracteres"
       },
       "decree-pinzu-princess": {
         "name": "Princesa de Círculos",
-        "description": "+8 Mult si la mitad o más son Círculos"
+        "description": "+8 Mult si al menos la mitad de las fichas jugadas son Círculos"
       },
       "decree-souzu-sage": {
         "name": "Sabio de Bambúes",
-        "description": "+8 Mult si la mitad o más son Bambúes"
+        "description": "+8 Mult si al menos la mitad de las fichas jugadas son Bambúes"
       },
       "decree-flush-fever": {
         "name": "Fiebre de Color",
-        "description": "x1.5 Mult si la mano es de un solo palo"
+        "description": "×1,5 Mult si todas las fichas numeradas jugadas son de un mismo palo (se permiten Vientos y Dragones)"
       },
       "decree-honor-guard": {
         "name": "Guardia de Honor",
-        "description": "x1.5 Mult si hay 3+ Honores"
+        "description": "×1,5 Mult si la jugada incluye 3 o más Honores (Vientos o Dragones)"
       },
       "decree-terminal-tide": {
         "name": "Marea Terminal",
-        "description": "x1.5 Mult si hay 4+ Terminales"
+        "description": "×1,5 Mult si la jugada incluye 4 o más Terminales (1 o 9)"
       },
       "decree-straight-arrow": {
         "name": "Flecha Recta",
-        "description": "+80 Puntos si hay 3 secuencias"
+        "description": "+80 Puntos si la jugada incluye 3 o más secuencias"
       },
       "decree-run-master": {
-        "name": "Maestro de Carreras",
-        "description": "+6 Mult por secuencia en mano"
+        "name": "Maestro de Secuencias",
+        "description": "+6 Mult por cada secuencia jugada"
       },
       "decree-triple-threat": {
         "name": "Triple Amenaza",
-        "description": "+80 Puntos si hay 2+ tripletes"
+        "description": "+80 Puntos si la jugada incluye 2 o más tripletes"
       },
       "decree-triplet-thunder": {
         "name": "Trueno de Tripletes",
-        "description": "+8 Mult por triplete en mano"
+        "description": "+8 Mult por cada triplete jugado"
       },
       "decree-echo-stone": {
         "name": "Piedra de Eco",
-        "description": "Reactiva la primera ficha puntuable"
+        "description": "La primera ficha que puntúa lo hace dos veces"
       },
       "decree-mirror-shard": {
         "name": "Fragmento de Espejo",
-        "description": "Reactiva la última ficha puntuable"
+        "description": "La última ficha que puntúa lo hace dos veces"
       },
       "decree-dragon-echo": {
         "name": "Eco del Dragón",
-        "description": "Reactiva todas las fichas de Dragón"
+        "description": "Cada Dragón jugado puntúa dos veces"
       },
       "decree-wind-echo": {
         "name": "Eco del Viento",
-        "description": "Reactiva todas las fichas de Viento"
+        "description": "Cada Viento jugado puntúa dos veces"
       },
       "decree-golden-ratio": {
         "name": "Proporción Áurea",
-        "description": "+1 Mult por cada 5G (máx +10)"
+        "description": "+1 Mult por cada 5 de oro que tengas (máx. +10)"
       },
       "decree-treasure-hunter": {
         "name": "Cazador de Tesoros",
-        "description": "+1G por cada palo distinto que quede en tu mano al ganar una ronda. Vientos y Dragones cuentan por separado."
+        "description": "Al ganar una ronda, +1 de oro por cada palo distinto que quede en tu atril. Vientos y Dragones cuentan como palos aparte."
       },
       "decree-tax-collector": {
         "name": "Recaudador",
-        "description": "+4G al final de la ronda"
+        "description": "+4 de oro al final de cada ronda"
       },
       "decree-garden-keeper": {
         "name": "Guardián del Jardín",
@@ -1133,7 +1133,7 @@
       },
       "decree-blossom-storm": {
         "name": "Tormenta de Flores",
-        "description": "x1.2 Mult por Flor recolectada"
+        "description": "×1,2 Mult por cada Flor recolectada"
       },
       "decree-seasonal-wind": {
         "name": "Viento Estacional",
@@ -1141,15 +1141,15 @@
       },
       "decree-slow-burn": {
         "name": "Combustión Lenta",
-        "description": "+2 Mult por ronda jugada esta partida"
+        "description": "+2 Mult por cada ronda completada en esta partida"
       },
       "decree-momentum": {
         "name": "Impulso",
-        "description": "+15 Puntos por mano jugada esta ronda"
+        "description": "+15 Puntos por cada jugada anterior en esta ronda"
       },
       "decree-crescendo": {
         "name": "Crescendo",
-        "description": "x1.1 Mult por mano jugada esta ronda"
+        "description": "×1,1 Mult por cada jugada anterior en esta ronda"
       },
       "decree-waste-not": {
         "name": "Sin Desperdiciar",
@@ -1161,27 +1161,27 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Fanático del Valor",
-        "description": "x1.5 Mult al puntuar una mano Fichas de valor"
+        "description": "×1,5 Mult al puntuar Fichas de valor: una mano completa con un triplete o cuarteto de Dragones o de Viento del Este"
       },
       "decree-toitoi-titan": {
         "name": "Titán de Tripletes",
-        "description": "x1.5 Mult al puntuar una mano Todo tripletes"
+        "description": "×1,5 Mult al puntuar Todo tripletes: una mano completa de cuatro tripletes o cuartetos más un par"
       },
       "decree-ittsu-initiate": {
         "name": "Iniciado de los Nueve",
-        "description": "x1.5 Mult al puntuar una mano Escalera 1–9"
+        "description": "×1,5 Mult al puntuar Escalera 1–9: una mano completa con 1-2-3, 4-5-6 y 7-8-9 de un mismo palo"
       },
       "decree-chinitsu-champion": {
         "name": "Campeón del Color Puro",
-        "description": "x2.0 Mult al puntuar una mano Color puro"
+        "description": "×2 Mult al puntuar Color puro: una mano completa de un solo palo, sin Vientos ni Dragones"
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+30 Puntos por Acto completado"
+        "description": "+30 Puntos por cada Acto completado"
       },
       "decree-experience": {
         "name": "Experiencia",
-        "description": "x1.1 Mult por Acto completado"
+        "description": "×1,1 Mult por cada Acto completado"
       },
       "decree-greater-jade": {
         "name": "Gran Jade",
@@ -1193,23 +1193,23 @@
       },
       "decree-flame": {
         "name": "Llama",
-        "description": "x1.5 Mult"
+        "description": "×1,5 Mult"
       },
       "decree-wind-dragon": {
         "name": "Viento y Dragón",
-        "description": "+5 Mult si hay Viento y Dragón"
+        "description": "+5 Mult si la jugada incluye un Viento y un Dragón"
       },
       "decree-all-suits": {
         "name": "Todos los Palos",
-        "description": "+8 Mult si hay los 3 palos"
+        "description": "+8 Mult si la jugada incluye Caracteres, Círculos y Bambúes"
       },
       "decree-bookends": {
         "name": "Extremos",
-        "description": "+60 Puntos si hay 1 y 9"
+        "description": "+60 Puntos si la jugada incluye un 1 y un 9"
       },
       "decree-expansive-grip": {
         "name": "Agarre Expansivo",
-        "description": "+2 Tamaño de Mano"
+        "description": "+2 espacios del atril"
       },
       "decree-careful-player": {
         "name": "Jugador Cuidadoso",
@@ -1217,7 +1217,7 @@
       },
       "decree-inferno": {
         "name": "Infierno",
-        "description": "x2.0 Mult"
+        "description": "×2 Mult"
       },
       "decree-supernova": {
         "name": "Supernova",
@@ -1229,43 +1229,43 @@
       },
       "decree-compound-interest": {
         "name": "Interés Compuesto",
-        "description": "+2 Mult por cada 10G"
+        "description": "+2 Mult por cada 10 de oro que tengas"
       },
       "decree-wealth-engine": {
         "name": "Motor de Riqueza",
-        "description": "+1G por cada Decreto que posees al final de la ronda"
+        "description": "+1 de oro por cada Decreto que poseas al final de cada ronda"
       },
       "decree-perpetual-motion": {
         "name": "Movimiento Perpetuo",
-        "description": "+2 Mult por mano jugada esta partida"
+        "description": "+2 Mult por cada jugada anterior en esta partida"
       },
       "decree-triple-echo": {
         "name": "Triple Eco",
-        "description": "Reactiva todas las fichas una vez"
+        "description": "Cada ficha que puntúa lo hace dos veces"
       },
       "decree-terminal-resonance": {
         "name": "Resonancia Terminal",
-        "description": "Reactiva Terminales dos veces"
+        "description": "Cada ficha Terminal (1 o 9) jugada puntúa tres veces"
       },
       "decree-honor-resonance": {
         "name": "Resonancia de Honor",
-        "description": "Reactiva Honores dos veces"
+        "description": "Cada Honor (Viento o Dragón) jugado puntúa tres veces"
       },
       "decree-manzu-monarch": {
         "name": "Monarca de Caracteres",
-        "description": "x2.0 Mult si toda la mano son Caracteres"
+        "description": "×2 Mult si todas las fichas jugadas son Caracteres"
       },
       "decree-pinzu-potentate": {
         "name": "Potentado de Círculos",
-        "description": "x2.0 Mult si toda la mano son Círculos"
+        "description": "×2 Mult si todas las fichas jugadas son Círculos"
       },
       "decree-souzu-sovereign": {
         "name": "Soberano de Bambúes",
-        "description": "x2.0 Mult si toda la mano son Bambúes"
+        "description": "×2 Mult si todas las fichas jugadas son Bambúes"
       },
       "decree-flower-emperor": {
         "name": "Emperador de las Flores",
-        "description": "x1.5 Mult por Flor recolectada"
+        "description": "×1,5 Mult por cada Flor recolectada"
       },
       "decree-season-lord": {
         "name": "Señor de las Estaciones",
@@ -1277,27 +1277,27 @@
       },
       "decree-honitsu-herald": {
         "name": "Heraldo del Medio Color",
-        "description": "x2.0 Mult al puntuar una mano Medio color"
+        "description": "×2 Mult al puntuar Medio color: una mano completa de un palo más Vientos o Dragones"
       },
       "decree-sanshoku-sage": {
         "name": "Sabio de la Triple Secuencia",
-        "description": "x2.0 Mult al puntuar una mano Triple secuencia mixta"
+        "description": "×2 Mult al puntuar Triple secuencia mixta: una mano completa con la misma secuencia en los tres palos"
       },
       "decree-chanta-champion": {
         "name": "Campeón de la Mano Exterior",
-        "description": "x2.0 Mult al puntuar una Mano exterior o Mano exterior pura"
+        "description": "×2 Mult al puntuar Mano exterior: una mano completa con al menos una secuencia, en la que cada grupo y el par incluyen un 1, un 9, un Viento o un Dragón. La Mano exterior pura (igual, pero sin Vientos ni Dragones, de modo que cada grupo y el par incluyen un 1 o un 9) también cuenta."
       },
       "decree-mandate-breaker": {
         "name": "Rompe Mandatos",
-        "description": "+15 Mult, x1.5 Mult en rondas de Jefe"
+        "description": "En rondas de Jefe: +15 Mult y ×1,5 Mult"
       },
       "decree-boss-slayer": {
         "name": "Mata Jefes",
-        "description": "x2.0 Mult en rondas de Jefe"
+        "description": "×2 Mult en rondas de Jefe"
       },
       "decree-fortune-and-glory": {
         "name": "Fortuna y Gloria",
-        "description": "+60 Puntos, +8 Mult, +3G por ronda"
+        "description": "+60 Puntos y +8 Mult, y +3 de oro al final de cada ronda"
       },
       "decree-emperors-blessing": {
         "name": "Bendición del Emperador",
@@ -1305,43 +1305,43 @@
       },
       "decree-golden-age": {
         "name": "Era Dorada",
-        "description": "+8G al final de la ronda"
+        "description": "+8 de oro al final de cada ronda"
       },
       "decree-blueprint": {
         "name": "Plano",
-        "description": "Copia el efecto del Decreto a la derecha"
+        "description": "Copia el efecto del Decreto a su derecha"
       },
       "decree-photograph": {
         "name": "Fotografía",
-        "description": "La primera ficha da x2 Mult"
+        "description": "La primera ficha que puntúa lo hace dos veces"
       },
       "decree-ancient-scroll": {
         "name": "Pergamino Antiguo",
-        "description": "+150 Puntos, -2 Tamaño de Mano"
+        "description": "+150 Puntos; −2 espacios del atril"
       },
       "decree-sacrifice": {
         "name": "Sacrificio",
-        "description": "×3.0 Mult, −1 turno por ronda"
+        "description": "×3 Mult; −1 turno por ronda"
       },
       "decree-transmuter": {
         "name": "Transmutador",
-        "description": "Los Simples se vuelven Terminales"
+        "description": "Las fichas del 2 al 8 jugadas puntúan como Terminales (1 y 9)"
       },
       "decree-harmonizer": {
         "name": "Armonizador",
-        "description": "Todos los palos coinciden para secuencias"
+        "description": "Las secuencias pueden mezclar palos (por ejemplo, 1 de Caracteres, 2 de Círculos y 3 de Bambúes)"
       },
       "decree-final-act": {
         "name": "Acto Final",
-        "description": "x1.5 Mult por Acto después del 4"
+        "description": "×1,5 Mult por cada Acto después del Acto 4"
       },
       "decree-endless-journey": {
         "name": "Viaje Sin Fin",
-        "description": "x1.2 Mult por Acto completado"
+        "description": "×1,2 Mult por cada Acto completado"
       },
       "decree-master-grip": {
         "name": "Agarre Maestro",
-        "description": "+3 Tamaño de Mano"
+        "description": "+3 espacios del atril"
       },
       "decree-infinite-patience": {
         "name": "Paciencia Infinita",
@@ -1349,75 +1349,75 @@
       },
       "decree-divine-flame": {
         "name": "Llama Divina",
-        "description": "x3.0 Mult"
+        "description": "×3 Mult"
       },
       "decree-heavens-wrath": {
         "name": "Ira del Cielo",
-        "description": "x4.0 Mult si no hay Simples"
+        "description": "×4 Mult si la jugada no tiene fichas del 2 al 8 (solo 1, 9, Vientos y Dragones)"
       },
       "decree-void-blessing": {
         "name": "Bendición del Vacío",
-        "description": "x5.0 Mult si todo son Honores"
+        "description": "×5 Mult si todas las fichas jugadas son Vientos o Dragones"
       },
       "decree-eternal-echo": {
         "name": "Eco Eterno",
-        "description": "Reactiva todas las fichas dos veces"
+        "description": "Cada ficha que puntúa lo hace tres veces"
       },
       "decree-dragon-king": {
         "name": "Rey Dragón",
-        "description": "Reactiva Dragones 3 veces"
+        "description": "Cada Dragón jugado puntúa cuatro veces"
       },
       "decree-yaku-amplifier": {
         "name": "Amplificador de Yaku",
-        "description": "Todos los Yaku aumentan x1.5"
+        "description": "Cuando una mano completa puntúa Yaku, su multiplicador de Yaku combinado se multiplica por 1,5"
       },
       "decree-yakuman-seeker": {
         "name": "Buscador de Yakuman",
-        "description": "x5.0 Mult al puntuar Yakuman"
+        "description": "×5 Mult al puntuar un Yakuman, una mano de máximo nivel como Tres Grandes Dragones o Trece huérfanos"
       },
       "decree-four-seasons-master": {
         "name": "Maestro de las Estaciones",
-        "description": "x2.0 Mult por Estación activa"
+        "description": "×2 Mult por cada Estación activa"
       },
       "decree-eternal-garden": {
         "name": "Jardín Eterno",
-        "description": "+10 Mult por Flor, no se pierden"
+        "description": "+10 Mult por cada Flor. La Sequía no puede anular tus Flores."
       },
       "decree-midas-touch": {
         "name": "Toque de Midas",
-        "description": "+10G al final de la ronda"
+        "description": "+10 de oro al final de cada ronda"
       },
       "decree-infinite-wealth": {
         "name": "Riqueza Infinita",
-        "description": "x1.1 Mult por cada 10G"
+        "description": "×1,1 Mult por cada 10 de oro que tengas"
       },
       "decree-brainstorm": {
         "name": "Tormenta de Ideas",
-        "description": "Copia el Decreto más a la izquierda"
+        "description": "Copia el efecto de tu Decreto más a la izquierda"
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda."
+        "description": "Copia un Decreto al azar sin efecto de copia al obtenerlo y al iniciar cada ronda."
       },
       "decree-manzu-god": {
         "name": "Dios de Caracteres",
-        "description": "x3.0 Mult si todas las fichas son Caracteres"
+        "description": "×3 Mult si todas las fichas jugadas son Caracteres"
       },
       "decree-pinzu-god": {
         "name": "Dios de Círculos",
-        "description": "x3.0 Mult si todas las fichas son Círculos"
+        "description": "×3 Mult si todas las fichas jugadas son Círculos"
       },
       "decree-souzu-god": {
         "name": "Dios de Bambúes",
-        "description": "x3.0 Mult si todas las fichas son Bambúes"
+        "description": "×3 Mult si todas las fichas jugadas son Bambúes"
       },
       "decree-glass-cannon": {
         "name": "Cañón de Cristal",
-        "description": "x6.0 Mult, destruido si pierdes Jefe"
+        "description": "×6 Mult. Se destruye si pierdes una ronda de Jefe."
       },
       "decree-phoenix": {
         "name": "Fénix",
-        "description": "Previene una derrota, luego se vende"
+        "description": "Si fueras a perder una ronda, la superas. Después, este Decreto se destruye."
       },
       "decree-time-lord": {
         "name": "Señor del Tiempo",
@@ -1425,71 +1425,71 @@
       },
       "decree-exponential": {
         "name": "Exponencial",
-        "description": "x1.3 Mult por 100 puntos base"
+        "description": "×1,3 Mult por cada 100 Puntos base de la jugada"
       },
       "decree-chain-reaction": {
         "name": "Reacción en Cadena",
-        "description": "x1.5 Mult por Yaku puntuado"
+        "description": "×1,5 Mult por cada Yaku de la mano puntuada"
       },
       "decree-cosmic-jade": {
         "name": "Jade Cósmico",
-        "description": "+200 Puntos, x1.5 Mult"
+        "description": "+200 Puntos y ×1,5 Mult"
       },
       "decree-solar-banner": {
         "name": "Estandarte Solar",
-        "description": "+25 Mult, x2.0 Mult"
+        "description": "+25 Mult y ×2 Mult"
       },
       "decree-universal-grip": {
         "name": "Agarre Universal",
-        "description": "+4 Tamaño de Mano"
+        "description": "+4 espacios del atril"
       },
       "decree-heavenly-ordinance": {
         "name": "Ordenanza Celestial",
-        "description": "x5.0 Mult"
+        "description": "×5 Mult"
       },
       "decree-celestial-throne": {
         "name": "Trono Celestial",
-        "description": "×10.0 Mult, −2 de atril, −1 turno por ronda"
+        "description": "×10 Mult; −2 espacios del atril y −1 turno por ronda"
       },
       "decree-void-emperor": {
         "name": "Emperador del Vacío",
-        "description": "x8.0 Mult si la última mano fue 0"
+        "description": "×8 Mult si tu jugada anterior puntuó 0"
       },
       "decree-infinite-loop": {
         "name": "Bucle Infinito",
-        "description": "Reactiva todas las fichas 3 veces"
+        "description": "Cada ficha que puntúa lo hace cuatro veces"
       },
       "decree-echo-dimension": {
         "name": "Dimensión de Eco",
-        "description": "Los reactivadores actúan 2 veces"
+        "description": "Duplica las puntuaciones extra que dan tus otros Decretos (una ficha que puntúa dos veces lo hace tres veces)"
       },
       "decree-clone-army": {
         "name": "Ejército de Clones",
-        "description": "Copia todos los demás Decretos"
+        "description": "Copia los efectos de todos tus demás Decretos"
       },
       "decree-world-tree": {
         "name": "Árbol del Mundo",
-        "description": "x2.0 Mult por Flor, x1.5 por Estación"
+        "description": "×2 Mult por cada Flor y ×1,5 Mult por cada Estación activa"
       },
       "decree-philosophers-stone": {
         "name": "Piedra Filosofal",
-        "description": "Duplica todo el oro ganado"
+        "description": "Duplica el oro que ganas con jugadas, RECAMBIAR, objetos y pagos de ronda (no al vender Decretos ni con Presagios)"
       },
       "decree-dragon-hoard": {
         "name": "Tesoro del Dragón",
-        "description": "x1.2 Mult por cada 10G"
+        "description": "×1,2 Mult por cada 10 de oro que tengas"
       },
       "decree-yaku-nexus": {
         "name": "Nexo de Yaku",
-        "description": "Todos los Yaku +1 nivel"
+        "description": "Cada Yaku puntúa como si fuera de un nivel superior (un Nivel 1 de ×1,3 pasa a ×1,6)"
       },
       "decree-yakuman-blessing": {
         "name": "Bendición Yakuman",
-        "description": "x10.0 Mult al puntuar Yakuman"
+        "description": "×10 Mult al puntuar un Yakuman, una mano de máximo nivel como Tres Grandes Dragones o Trece huérfanos"
       },
       "decree-reality-warp": {
         "name": "Distorsión de Realidad",
-        "description": "Las fichas cuentan como todo"
+        "description": "Cualquier grupo de 14 fichas que elijas puede formar una mano completa"
       },
       "decree-time-master": {
         "name": "Maestro del Tiempo",
@@ -1497,11 +1497,11 @@
       },
       "decree-immortal-decree": {
         "name": "Decreto Inmortal",
-        "description": "Previene derrotas (mitad de puntos)"
+        "description": "Siempre que fueras a perder una ronda, la superas. Tras el primer rescate, tus puntuaciones se reducen a la mitad el resto de la partida, aunque vendas este Decreto."
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 Puntos, +50 Mult, x2.0 Mult"
+        "description": "+500 Puntos, +50 Mult y ×2 Mult"
       },
       "river_tax": {
         "name": "Impuesto del Río",
@@ -1513,55 +1513,55 @@
       },
       "tanyao_dispensation": {
         "name": "Dispensa de Simples",
-        "description": "Las fichas terminales (1 y 9) se permiten en manos Todo simples; los Honores siguen sin permitirse."
+        "description": "Todo simples (normalmente solo fichas del 2 al 8) también acepta 1 y 9. Los Vientos y Dragones siguen invalidándolo."
       },
       "moonlit_seal": {
         "name": "Sello de Luz de Luna",
-        "description": "Cada ficha de Honor en tu mano ganadora suma +0,1x al multiplicador."
+        "description": "Cada Viento o Dragón jugado suma 0,1 al ×Mult de este Decreto (tres dan ×1,3)."
       },
       "pure_suit_asceticism": {
         "name": "Ascetismo de Palo Puro",
-        "description": "Cada ficha de tu palo dominante da +10% de puntuación. Se acumula multiplicando."
+        "description": "×1,1 Mult por cada ficha jugada del palo más común de la jugada, de forma compuesta (cinco dan aproximadamente ×1,6)."
       },
       "broken_stair_edict": {
         "name": "Edicto de la Escalera Rota",
-        "description": "Las escaleras pueden saltar un número (1-3-4 es válida)."
+        "description": "Las secuencias pueden saltarse un número (1-3-4 o 1-2-4 cuentan)."
       },
       "false_eye_mandate": {
         "name": "Mandato del Ojo Falso",
-        "description": "Una combinación puede servir también de pareja."
+        "description": "Una mano completa puede usar uno de sus grupos en lugar del par."
       },
       "honor_transmutation": {
         "name": "Transmutación de Honores",
-        "description": "Las fichas de Honor pueden contar como fichas de tu palo más común."
+        "description": "Los Vientos y Dragones pueden contar como fichas numeradas de tu palo más común."
       },
       "yakuman_succession": {
         "name": "Sucesión de Yakuman",
-        "description": "Con al menos 2 flores, Medio color, Color puro, Doble secuencia pura doble, Mano exterior pura y Siete pares ascienden a Yakuman (×4 cada uno). Los patrones rebajados por un Mandato no ascienden. Las copias no se acumulan."
+        "description": "Mientras tengas al menos 2 Flores, estas manos se convierten en Yakuman, el nivel máximo (×4 cada una): Medio color, Color puro, Doble secuencia pura doble (dos veces dos secuencias idénticas), Mano exterior pura (un 1 o un 9 en cada grupo y en el par) y Siete pares. Una mano debilitada por un Mandato no puede ascender. Las copias no se acumulan."
       },
       "celestial_wildcard": {
         "name": "Comodín Celestial",
-        "description": "Una ficha por mano puede hacerse pasar por cualquier otra."
+        "description": "Una ficha por jugada puede sustituir a cualquier ficha que necesites."
       },
       "dead_wall_writ": {
         "name": "Auto del Muro Muerto",
-        "description": "Una vez por ronda, cambia una ficha elegida por una del muro muerto sin gastar turno."
+        "description": "Una vez por ronda, cambia una ficha elegida por una del muro muerto (las fichas reservadas al fondo del muro) sin gastar turno."
       },
       "shanten_clemency": {
         "name": "Clemencia de Shanten",
-        "description": "Las manos pueden puntuar a 1-shanten con un 50% de penalización."
+        "description": "Una mano a la que le falta una ficha para estar completa se puede jugar como mano completa, con la mitad de puntuación."
       },
       "closed_hand_austerity": {
         "name": "Austeridad de Mano Cerrada",
-        "description": "Las manos totalmente cerradas ganan ×1,5 al multiplicador."
+        "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten no cuentan."
       },
       "terminal_devotion": {
         "name": "Devoción Terminal",
-        "description": "Cada ficha terminal en tu mano suma +5% a la puntuación final."
+        "description": "Cada ficha Terminal (1 o 9) jugada suma 0,05 al ×Mult de este Decreto (cuatro dan ×1,2)."
       },
       "yaku_repetition_charter": {
         "name": "Carta de Repetición de Yaku",
-        "description": "Repetir un yaku de la ronda anterior aumenta el multiplicador."
+        "description": "Un Yaku puntuado en rondas consecutivas gana ×1,2 por cada ronda anterior de su racha, hasta ×4 antes de las bonificaciones de Flores. Una ronda sin él termina esa racha."
       }
     }
   },
@@ -1604,13 +1604,13 @@
       "decayPenalty": "Penalización por jugada de Decadencia: −{{points}} puntos.",
       "partial": "Algunas reglas estacionales siguen en desarrollo. Solo se muestran los efectos actuales.",
       "unwired": "Aún no implementado.",
-      "spring": "+2 espacios en la mano esta ronda. Los nuevos espacios se llenan desde el muro vivo. Se acumula; Serpiente sigue reponiendo solo 3 fichas.",
+      "spring": "+2 espacios del atril esta ronda. Los nuevos espacios se llenan desde el muro vivo. Se acumula; Serpiente sigue reponiendo solo 3 fichas.",
       "summer": "Puntuación ×1,3. Aparta el 20% del muro vivo restante durante esta ronda (las fichas disponibles se redondean hacia abajo).",
       "summerSheltered": "Puntuación ×1,3. Protección de Bambú obtenida: Verano ya no puede reducir el muro esta ronda.",
       "autumn": "Multiplicador de yaku +20%. Cada Otoño normal robado da 1 RECAMBIO gratis esta ronda.",
       "winter": "Las secuencias del mismo palo pueden saltar un número (1–2–4 o 1–3–4). Puntuación ×0,75.",
       "drought": "Anula las bonificaciones de puntuación de flores no protegidas.",
-      "frostbite": "Cada Congelación vuelve a reducir a la mitad las recompensas de puntos, multiplicador, oro y repeticiones de los Decretos. No cambia los efectos propios de las fichas, permisos, capacidades, acciones ni costes.",
+      "frostbite": "Cada Congelación vuelve a reducir a la mitad las recompensas de Puntos, Mult, oro y puntuación extra de los Decretos. No cambia las recompensas propias de las fichas, los permisos de reglas, las capacidades, los presupuestos de acciones ni los costes.",
       "decay": "−10 de puntuación por cada RECAMBIO de esta ronda, nunca por debajo de cero.",
       "droughtName": "Sequía",
       "monsoonName": "Monzón",
@@ -1623,7 +1623,7 @@
       "orchidBloom": "La orquídea robó fichas adicionales: {{count}}. Los robos adicionales no se encadenan.",
       "flowerChrysanthemum": "+{{percent}}% de puntuación por grupo oculto.",
       "flowerBamboo": "+{{percent}}% de puntuación por ficha terminal.",
-      "setTwo": "2 flores: +1 espacio de Decreto.",
+      "setTwo": "2 flores: +1 ranura de Decreto.",
       "setThree": "3 flores: desbloquean Decretos potenciados por flores en la tienda y los sobres de Decretos.",
       "setFour": "4 flores: bonificaciones de flores dobles."
     },
@@ -1761,7 +1761,7 @@
       },
       "the_wall": {
         "name": "El Muro",
-        "description": "Requisito de puntuación enorme (4x en vez de 2x)"
+        "description": "Objetivo de puntuación ×4 en vez del ×2 habitual de Jefe"
       },
       "the_eye": {
         "name": "El Ojo",
@@ -1781,7 +1781,7 @@
       },
       "the_pillar": {
         "name": "El Pilar",
-        "description": "Las fichas usadas en rondas previas de este Acto quedan debilitadas"
+        "description": "Las fichas jugadas en rondas anteriores de este Acto no puntúan"
       },
       "the_water": {
         "name": "El Agua",
@@ -1797,23 +1797,23 @@
       },
       "the_club": {
         "name": "La Porra",
-        "description": "Todas las fichas de Bambúes quedan debilitadas"
+        "description": "Las fichas de Bambúes no puntúan"
       },
       "the_goad": {
         "name": "La Aguijada",
-        "description": "Todas las fichas de Círculos quedan debilitadas"
+        "description": "Las fichas de Círculos no puntúan"
       },
       "the_window": {
         "name": "La Ventana",
-        "description": "Todas las fichas de Caracteres quedan debilitadas"
+        "description": "Las fichas de Caracteres no puntúan"
       },
       "the_head": {
         "name": "La Cabeza",
-        "description": "Todas las fichas de Dragón quedan debilitadas"
+        "description": "Los Dragones no puntúan"
       },
       "the_plant": {
         "name": "La Planta",
-        "description": "Todas las fichas de Honor quedan debilitadas"
+        "description": "Los Vientos y Dragones no puntúan"
       },
       "the_ox": {
         "name": "El Buey",
@@ -1821,7 +1821,7 @@
       },
       "the_house": {
         "name": "La Casa",
-        "description": "La primera mano se reparte boca abajo"
+        "description": "Tu atril inicial se reparte boca abajo"
       },
       "the_wheel": {
         "name": "La Rueda",
@@ -1829,7 +1829,7 @@
       },
       "the_fish": {
         "name": "El Pez",
-        "description": "Las fichas se roban boca abajo tras cada mano"
+        "description": "Las fichas robadas tras cada jugada llegan boca abajo"
       },
       "the_serpent": {
         "name": "La Serpiente",
@@ -1841,7 +1841,7 @@
       },
       "the_mark": {
         "name": "La Marca",
-        "description": "Todas las fichas de Honor se roban boca abajo"
+        "description": "Los Vientos y Dragones se roban boca abajo"
       },
       "the_manacle": {
         "name": "El Grillete",
@@ -1853,19 +1853,19 @@
       },
       "verdant_leaf": {
         "name": "Hoja Verdeante",
-        "description": "Todas las fichas debilitadas hasta vender 1 Decreto"
+        "description": "Ninguna ficha puntúa hasta que vendas un Decreto"
       },
       "violet_vessel": {
         "name": "Vasija Violeta",
-        "description": "Objetivo descomunal (6x en vez de 2x)"
+        "description": "Objetivo de puntuación ×6 en vez del ×2 habitual de Jefe"
       },
       "crimson_heart": {
         "name": "Corazón Carmesí",
-        "description": "Un Decreto al azar se desactiva cada ciclo de mano"
+        "description": "Un Decreto al azar se desactiva en cada jugada"
       },
       "cerulean_bell": {
         "name": "Campana Cerúlea",
-        "description": "Tras cada ciclo de robo, debes jugar una ficha aleatoria; el bloqueo anterior se libera."
+        "description": "Tras cada robo, una ficha al azar del atril queda bloqueada y debe ir en tu siguiente jugada. El bloqueo anterior se libera."
       }
     }
   },
@@ -1881,7 +1881,7 @@
       "scoreScaling": "Objetivos de puntuación del nivel: iguales al Blanco en el Acto 1; luego suben en cada acto hasta ×{{multiplier}} respecto al Blanco desde el Acto {{act}}. Los modificadores de la mesa también se aplican.",
       "redrawPenalty": "Turnos por ronda: −{{amount}}.",
       "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
-      "perishableChance": "Decretos no Eternos de la tienda: {{chance}} de probabilidad de Perecedero (se debilita tras {{rounds}} rondas).",
+      "perishableChance": "Decretos no Eternos de la tienda: {{chance}} de probabilidad de Perecedero (deja de funcionar tras {{rounds}} rondas).",
       "rentalChance": "Decretos de la tienda: {{chance}} de probabilidad de Alquiler ({{price}} de oro al comprar y {{fee}} de oro por ronda)."
     },
     "title": "Niveles de Mesa",
@@ -1919,7 +1919,7 @@
       "note1": "Puedes <1>renovar</1> la oferta de la tienda por 5 de oro. Cada renovación cuesta 1 más.",
       "note2": "¡Guardar <1>25 o más de oro</1> maximiza los intereses! Aunque gastar en buenos decretos suele rendir más.",
       "p1": "No te preocupes por memorizarlo todo: ¡aprenderás jugando!",
-      "note3": "Siempre puedes volver a este códice desde el menú de ajustes si necesitas repasar."
+      "note3": "Abre el Códice desde el menú principal siempre que necesites repasar."
     },
     "game_concept": {
       "p1": "A diferencia del Mahjong tradicional, que se juega contra rivales, Tensho es un <1>juego de puzles para un jugador</1>. Compites contra la puntuación objetivo, no contra otros jugadores.",
@@ -1930,7 +1930,7 @@
       "p1": "El juego usa <1>144 fichas</1> en total:"
     },
     "numbered_suits": {
-      "note1": "Cada ficha estándar aparece <1>4 veces</1> en el juego. ¡Es importante para planificar tu mano!",
+      "note1": "En el muro estándar, cada ficha aparece <1>4 veces</1>. ¡Es importante para planificar tu mano!",
       "p1": "Hay <1>tres palos numerados</1>, cada uno con fichas del 1 al 9:",
       "p2": "<0>Caracteres (萬子 / Manzu)</0> — Muestran numerales chinos con el carácter 萬 (wan, «diez mil»)",
       "p3": "<0>Círculos (筒子 / Pinzu)</0> — Muestran patrones circulares que representan monedas o puntos",
@@ -1976,7 +1976,7 @@
       "li2": "<2>No pueden dar la vuelta</2> (no vale 9-1-2)",
       "li3": "Las fichas de Honor <2>no pueden formar escaleras</2>",
       "p1": "Un <1>cuarteto</1> (también llamado «kong» o «kan») son <4>4 fichas idénticas</4>.",
-      "p2": "¡Los cuartetos son el grupo más raro, ya que necesitas las 4 copias de una ficha!"
+      "p2": "¡Los cuartetos son el grupo más raro: en el muro estándar usan las 4 copias de una ficha!"
     },
     "pairs": {
       "li1": "Tres 5 de Bambú",
@@ -1986,7 +1986,7 @@
       "p2": "Toda mano ganadora estándar necesita <2>exactamente una pareja</2>. A veces se la llama la «cabeza» (雀頭) de la mano."
     },
     "winning_hand": {
-      "note1": "Los tríos valen <1>+40 puntos</1>, más que las escaleras (+30). Sin embargo, son más difíciles de completar: necesitas 3 fichas iguales y cada ficha solo aparece 4 veces.",
+      "note1": "Los tripletes valen <1>+40 puntos</1>, más que las secuencias (+30). Sin embargo, son más difíciles de completar: necesitas 3 fichas iguales y el muro estándar solo tiene 4 copias de cada una.",
       "li1": "Vale <1>+65 puntos</1>: lo máximo de cualquier grupo",
       "li2": "Cuenta como un solo grupo pese a tener 4 fichas",
       "li3": "Al declararlo, robas una ficha de reemplazo",
@@ -2091,7 +2091,7 @@
     },
     "refill": {
       "title": "Robar fichas",
-      "p1": "Tu atril se rellena desde el muro después de cada jugada y cada recambio, así que siempre eliges entre una mano completa."
+      "p1": "Tras una jugada o un recambio, se roban fichas de reposición del muro. Normalmente esto rellena tu atril, pero un muro casi vacío o un efecto activo pueden cambiar el robo."
     },
     "redraw": {
       "title": "RECAMBIAR",
@@ -2115,7 +2115,7 @@
       "terminals": "Terminales (1 y 9)",
       "dragonValue": "{{points}}, y +{{mult}} al Mult (+{{groupMult}} en un grupo)",
       "windValue": "{{points}} ({{groupPoints}} en un grupo)",
-      "note": "Los Vientos valen diez veces una ficha simple; los Dragones suben el Mult. Una pareja o un grupo mayor duplica ambos. Una ficha numerada fuera de todo grupo puntúa la mitad."
+      "note": "Los Vientos valen diez veces una ficha simple; los Dragones suben el Mult. Un par o un grupo mayor duplica ambos. Una ficha numerada fuera de todo grupo puntúa la mitad."
     },
     "groups": {
       "title": "Bonos de grupo",
@@ -2213,7 +2213,7 @@
     "unlockProgress": "Progreso hacia {{name}}",
     "title": "Elegir mesa",
     "titleJp": "卓風",
-    "subtitle": "Elige un estilo de mesa para tu partida",
+    "subtitle": "Elige tu mesa inicial y sus reglas",
     "table": "Preparar partida",
     "selected": "Seleccionado:",
     "chooseTable": "Elige mesa y apuesta"
@@ -2230,7 +2230,7 @@
       },
       "sharp_edge": {
         "name": "Filo afilado",
-        "description": "Las ediciones aparecen 2 veces más a menudo"
+        "description": "Las ediciones aparecen el doble de a menudo"
       },
       "reroll_surplus": {
         "name": "Excedente de renovación",
@@ -2238,11 +2238,11 @@
       },
       "crystal_lens": {
         "name": "Lente de cristal",
-        "description": "Los Paquetes de Arcanos ofrecen +1 opción"
+        "description": "Los Paquetes de Arcanos muestran una recompensa más para elegir; el número que puedes tomar no cambia"
       },
       "star_chart": {
         "name": "Carta estelar",
-        "description": "Los Paquetes Celestes traen el orbe del yaku más usado"
+        "description": "Los Paquetes Celestes siempre incluyen el Orbe de tu familia de manos más jugada"
       },
       "steady_hand": {
         "name": "Mano firme",
@@ -2254,11 +2254,11 @@
       },
       "seal_merchant": {
         "name": "Mercader de sellos",
-        "description": "Los Sellos del Destino aparecen 2 veces más a menudo"
+        "description": "Los Sellos del Destino aparecen el doble de a menudo"
       },
       "orb_merchant": {
         "name": "Mercader de orbes",
-        "description": "Los Orbes Celestes aparecen 2 veces más a menudo"
+        "description": "Los Orbes Celestes aparecen el doble de a menudo"
       },
       "seed_pouch": {
         "name": "Bolsa de semillas",
@@ -2270,19 +2270,19 @@
       },
       "tile_trading": {
         "name": "Comercio de fichas",
-        "description": "Se pueden comprar fichas en la tienda"
+        "description": "Se pueden comprar fichas en la Casa de Té"
       },
       "ancient_script": {
         "name": "Escritura antigua",
-        "description": "−1 acto, −1 turno por ronda"
+        "description": "Te hace retroceder un Acto (objetivos más bajos, un Acto más por jugar); −1 turno por ronda"
       },
       "directors_take": {
         "name": "Parte del director",
-        "description": "Renovar el Mandato del Jefe 1 vez por Acto (10 de oro)"
+        "description": "Renueva el próximo Mandato del Jefe una vez por Acto (10 de oro)"
       },
       "brush_stroke": {
         "name": "Pincelada",
-        "description": "+1 al tamaño de la mano"
+        "description": "+1 espacio del atril"
       },
       "plentiful_stock": {
         "name": "Surtido copioso",
@@ -2294,7 +2294,7 @@
       },
       "radiant_edge": {
         "name": "Filo radiante",
-        "description": "Las ediciones aparecen 4 veces más a menudo"
+        "description": "Las ediciones aparecen cuatro veces más a menudo"
       },
       "reroll_abundance": {
         "name": "Abundancia de renovación",
@@ -2318,11 +2318,11 @@
       },
       "seal_tycoon": {
         "name": "Magnate de sellos",
-        "description": "Los Sellos del Destino aparecen 4 veces más a menudo"
+        "description": "Los Sellos del Destino aparecen cuatro veces más a menudo"
       },
       "orb_tycoon": {
         "name": "Magnate de orbes",
-        "description": "Los Orbes Celestes aparecen 4 veces más a menudo"
+        "description": "Los Orbes Celestes aparecen cuatro veces más a menudo"
       },
       "money_tree": {
         "name": "Árbol del dinero",
@@ -2334,19 +2334,19 @@
       },
       "illusion_tiles": {
         "name": "Fichas ilusorias",
-        "description": "Las fichas de la tienda pueden tener ediciones"
+        "description": "Las fichas de la Casa de Té pueden venir con ediciones"
       },
       "stone_script": {
         "name": "Escritura en piedra",
-        "description": "−1 acto más, −1 turno por ronda"
+        "description": "Te hace retroceder un Acto más; −1 turno más por ronda"
       },
       "final_cut": {
         "name": "Corte final",
-        "description": "Renovar el Mandato del Jefe sin límite (10 de oro cada vez)"
+        "description": "Renueva el próximo Mandato del Jefe tantas veces como quieras (10 de oro cada vez)"
       },
       "full_palette": {
         "name": "Paleta completa",
-        "description": "+1 al tamaño de la mano otra vez"
+        "description": "+1 espacio del atril más"
       }
     }
   },
@@ -2433,11 +2433,11 @@
       },
       "speed_omen": {
         "name": "Presagio de Velocidad",
-        "description": "Da 5 de oro por cada victoria rápida de la partida."
+        "description": "Gana 5 de oro por cada ronda veloz de esta partida (una ronda pequeña o grande superada con turnos de sobra)."
       },
       "throwback_omen": {
         "name": "Presagio de Retorno",
-        "description": "Gana ×0.25 Mult por victoria rápida el resto de la partida."
+        "description": "Durante el resto de la partida, la puntuación de cada jugada se multiplica por 1 + 0,25 por cada ronda veloz (una da ×1,25; dos dan ×1,5)."
       },
       "fortune_omen": {
         "name": "Presagio de Fortuna",
@@ -2465,11 +2465,11 @@
       },
       "expansion_omen": {
         "name": "Presagio de Expansión",
-        "description": "Ganas +1 ranura de Decreto de forma permanente."
+        "description": "Ganas +1 ranura de Decreto durante el resto de esta partida."
       },
       "precision_omen": {
         "name": "Presagio de Precisión",
-        "description": "Próxima ronda: +2 al tamaño de la mano."
+        "description": "Próxima ronda: +2 espacios del atril."
       },
       "abundance_omen": {
         "name": "Presagio de Abundancia",
@@ -2489,11 +2489,11 @@
       },
       "score_surge_omen": {
         "name": "Presagio de Oleada",
-        "description": "La próxima mano puntuada gana +100 puntos base."
+        "description": "La próxima jugada puntuada gana +100 Puntos base."
       },
       "multiplication_omen": {
         "name": "Presagio de Multiplicación",
-        "description": "La próxima mano puntuada gana ×1,5 Mult."
+        "description": "La próxima jugada puntuada gana ×1,5 Mult."
       },
       "blessing_pack_omen": {
         "name": "Presagio de Bendición",
@@ -2517,15 +2517,15 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Sello del Alquimista",
-        "description": "Mejora 2 fichas elegidas con la Marca de la Suerte"
+        "description": "Añade una Marca de Suerte (probabilidad de +20 Mult o +20 de oro al puntuar) a 2 fichas que elijas"
       },
       "seal_of_the_empress": {
         "name": "Sello de la Emperatriz",
-        "description": "Mejora 2 fichas elegidas con la Marca de Bonificación"
+        "description": "Añade una Marca de Bonificación (+30 Puntos al puntuar) a 2 fichas que elijas"
       },
       "seal_of_the_sage": {
         "name": "Sello del Sabio",
-        "description": "Mejora 2 fichas elegidas con la Marca de Bonificación"
+        "description": "Añade una Marca de Bonificación (+30 Puntos al puntuar) a 2 fichas que elijas"
       },
       "seal_of_harmony": {
         "name": "Sello de la Armonía",
@@ -2533,19 +2533,19 @@
       },
       "seal_of_fortitude": {
         "name": "Sello de la Fortaleza",
-        "description": "Mejora 1 ficha a Marca de Acero (×1,5 Mult mientras la tengas)"
+        "description": "Añade una Marca de Acero a 1 ficha (×1,5 Mult mientras se quede en tu atril)"
       },
       "seal_of_glass": {
         "name": "Sello de Cristal",
-        "description": "Mejora 1 ficha a Marca de Cristal (×2 Mult, puede romperse)"
+        "description": "Añade una Marca de Cristal a 1 ficha (×2 Mult al puntuar, pero puede romperse)"
       },
       "seal_of_wealth": {
         "name": "Sello de la Riqueza",
-        "description": "Mejora 1 ficha a Marca de Oro (+3 de oro si la conservas al final de ronda)"
+        "description": "Añade una Marca de Oro a 1 ficha (+3 de oro si está en tu atril al terminar la ronda)"
       },
       "seal_of_stone": {
         "name": "Sello de Piedra",
-        "description": "Mejora 1 ficha a Marca de Piedra (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
+        "description": "Añade una Marca de Piedra a 1 ficha (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
       },
       "seal_of_manzu": {
         "name": "Sello de Caracteres",
@@ -2581,35 +2581,35 @@
       },
       "seal_of_the_hermit": {
         "name": "Sello del Ermitaño",
-        "description": "Duplica el oro (máx. +20 de oro)"
+        "description": "Duplica tu oro (hasta +20 de oro)"
       },
       "seal_of_balance": {
         "name": "Sello del Equilibrio",
-        "description": "Da el valor de venta total de todos los Decretos (máx. 50 de oro)"
+        "description": "Ganas oro igual al valor de venta total de tus Decretos (hasta 50 de oro)"
       },
       "seal_of_strength": {
         "name": "Sello de la Fuerza",
-        "description": "Sube 1 el número de hasta 2 fichas (máx. 9)"
+        "description": "Sube en 1 el número de hasta 2 fichas (hasta 9)"
       },
       "seal_of_release": {
         "name": "Sello de la Liberación",
-        "description": "Destruye hasta 2 fichas elegidas de forma permanente"
+        "description": "Destruye hasta 2 fichas que elijas durante el resto de esta partida"
       },
       "seal_of_transmutation": {
         "name": "Sello de la Transmutación",
-        "description": "Elige 2 fichas: la izquierda se vuelve copia de la derecha"
+        "description": "Elige 2 fichas: la primera se convierte en copia de la segunda"
       },
       "seal_of_fortune": {
         "name": "Sello del Azar",
-        "description": "1 de cada 4 veces añade Lámina/Holo/Prismática a un Decreto al azar"
+        "description": "1 de cada 4 veces da a un Decreto al azar la edición Lámina, Holográfica o Policroma"
       },
       "seal_of_the_immortal": {
         "name": "Sello del Inmortal",
-        "description": "Crea un Decreto Mítico (si hay sitio)"
+        "description": "Crea el Decreto Ordenanza Celestial, de la máxima rareza (si tienes sitio)"
       },
       "seal_of_the_void": {
         "name": "Sello del Vacío",
-        "description": "Sube todos los Yaku 1 nivel"
+        "description": "Sube 1 nivel todas las familias de manos"
       }
     }
   },
@@ -2617,35 +2617,35 @@
     "items": {
       "script_of_kinship": {
         "name": "Guion del Parentesco",
-        "description": "Destruye 1 ficha al azar y añade 3 fichas de Honor mejoradas al azar (Vientos/Dragones)"
+        "description": "Destruye 1 ficha al azar y añade 3 Vientos o Dragones al azar, cada uno con una Marca"
       },
       "script_of_the_grave": {
         "name": "Guion de la Tumba",
-        "description": "Destruye 1 ficha al azar y añade 2 fichas Terminales mejoradas al azar"
+        "description": "Destruye 1 ficha al azar y añade 2 fichas de 1 o 9 al azar, cada una con una Marca"
       },
       "script_of_incantation": {
         "name": "Guion del Conjuro",
-        "description": "Destruye 1 ficha al azar y añade 4 fichas numeradas mejoradas al azar"
+        "description": "Destruye 1 ficha al azar y añade 4 fichas del 2 al 8 al azar, cada una con una Marca"
       },
       "script_of_immolation": {
         "name": "Guion de la Inmolación",
-        "description": "Destruye 5 fichas al azar de la mano. Ganas 20 de oro."
+        "description": "Destruye 5 fichas al azar de tu atril. Ganas 20 de oro."
       },
       "script_of_the_cryptid": {
         "name": "Guion del Críptido",
-        "description": "Crea 2 copias de 1 ficha elegida de la mano"
+        "description": "Crea 2 copias de 1 ficha del atril que elijas"
       },
       "script_of_the_gold_seal": {
         "name": "Guion del Sello Dorado",
-        "description": "Añade el Sello Dorado a 1 ficha elegida"
+        "description": "Añade un Sello Dorado a 1 ficha que elijas (+3 de oro cuando puntúa)"
       },
       "script_of_deja_vu": {
         "name": "Guion del Déjà Vu",
-        "description": "Añade el Sello Rojo a 1 ficha elegida (vuelve a puntuar)"
+        "description": "Añade un Sello Rojo a 1 ficha que elijas (puntúa dos veces)"
       },
       "script_of_the_trance": {
         "name": "Guion del Trance",
-        "description": "Añade el Sello Azul a 1 ficha (crea un Orbe en la mano final)"
+        "description": "Añade un Sello Azul a 1 ficha (crea un Orbe Celeste si la ficha está en la jugada que supera la ronda)"
       },
       "script_of_the_medium": {
         "name": "Guion del Médium",
@@ -2653,7 +2653,7 @@
       },
       "script_of_aura": {
         "name": "Guion del Aura",
-        "description": "Añade Lámina/Holo/Prismática a 1 ficha elegida"
+        "description": "Da a 1 ficha que elijas una edición al azar: Lámina, Holográfica o Policroma"
       },
       "script_of_ectoplasm": {
         "name": "Guion del Ectoplasma",
@@ -2669,35 +2669,35 @@
       },
       "script_of_the_hex": {
         "name": "Guion del Maleficio",
-        "description": "Añade Prismática a un Decreto al azar y destruye el resto"
+        "description": "Da a un Decreto al azar la edición Policroma y destruye todos los demás Decretos"
       },
       "script_of_the_sigil": {
         "name": "Guion del Sigilo",
-        "description": "Convierte TODAS las fichas de la mano a un solo palo al azar"
+        "description": "Convierte todas las fichas de tu atril a un mismo palo al azar"
       },
       "script_of_the_ouija": {
         "name": "Guion de la Ouija",
-        "description": "Convierte TODAS las fichas de la mano a un solo número al azar"
+        "description": "Convierte todas las fichas de tu atril a un mismo número al azar"
       },
       "script_of_the_soul": {
         "name": "Guion del Alma",
-        "description": "Crea un Decreto Legendario (Ordenanza Celestial)"
+        "description": "Crea el Decreto Ordenanza Celestial, de la máxima rareza"
       },
       "script_of_the_singularity": {
         "name": "Guion de la Singularidad",
-        "description": "Sube todos los Yaku 1 nivel"
+        "description": "Sube 1 nivel todas las familias de manos"
       },
       "script_of_eclipse": {
         "name": "Guion del Eclipse",
-        "description": "Puntúa a 1-shanten esta ronda"
+        "description": "Esta ronda, una mano a la que le falta una ficha para estar completa puede puntuar como mano completa"
       },
       "script_of_mirrors": {
         "name": "Guion de los Espejos",
-        "description": "Duplica una ficha de la mano"
+        "description": "Duplica una ficha del atril que elijas"
       },
       "script_of_silence": {
         "name": "Guion del Silencio",
-        "description": "Ignora una combinación inválida en esta mano"
+        "description": "Tu próxima mano completa puede incluir un grupo que no encaje"
       }
     }
   },
@@ -2709,11 +2709,11 @@
       },
       "walls": {
         "name": "Muros",
-        "description": "Variantes de muro con composiciones de fichas propias"
+        "description": "Variantes de muro con distintas mezclas de fichas"
       },
       "charters": {
         "name": "Cartas Imperiales",
-        "description": "Mejoras permanentes que se compran tras vencer Mandatos de Jefe"
+        "description": "Mejoras permanentes para la partida que se compran en la Casa de Té"
       },
       "consumables": {
         "name": "Consumibles",
@@ -2821,15 +2821,15 @@
       },
       "wild": {
         "name": "Marca Comodín",
-        "description": "La ficha puede hacer de cualquier palo. Cuenta como cualquier palo para los yaku"
+        "description": "Cuenta como cualquier palo, también para los Yaku"
       },
       "glass": {
         "name": "Marca de Cristal",
-        "description": "Frágil pero poderosa. ×2 Mult al puntuar, 25% de probabilidad de romperse"
+        "description": "Frágil pero poderosa. ×2 Mult al puntuar; 1 de cada 4 veces se rompe"
       },
       "steel": {
         "name": "Marca de Acero",
-        "description": "Bonificación al conservarla. ×1,5 Mult mientras esté en la mano"
+        "description": "×1,5 Mult mientras se quede en tu atril en lugar de jugarse"
       },
       "stone": {
         "name": "Marca de Piedra",
@@ -2837,11 +2837,11 @@
       },
       "gold": {
         "name": "Marca de Oro",
-        "description": "Genera oro. +3 de oro si la conservas al final de la ronda"
+        "description": "+3 de oro si sigue en tu atril al terminar la ronda"
       },
       "lucky": {
         "name": "Marca de Suerte",
-        "description": "Bonificación aleatoria. Al puntuar: 1 de cada 5 veces da +20 Mult y 1 de cada 15, +20 de oro"
+        "description": "Al puntuar: 1 de cada 5 veces da +20 Mult y 1 de cada 15, +20 de oro"
       }
     }
   },
@@ -2849,11 +2849,11 @@
     "items": {
       "gold": {
         "name": "Sello Dorado",
-        "description": "Da oro al jugarse. +3 de oro al puntuar en la mano"
+        "description": "+3 de oro cada vez que esta ficha puntúa"
       },
       "red": {
         "name": "Sello Rojo",
-        "description": "La ficha se activa dos veces. Vuelve a puntuar una vez"
+        "description": "Esta ficha puntúa dos veces"
       },
       "blue": {
         "name": "Sello Azul",
@@ -2885,7 +2885,7 @@
       },
       "negative": {
         "name": "Negativa",
-        "description": "+1 espacio de Decreto por cada Decreto Negativo que poseas o ficha Negativa física en el muro de esta partida."
+        "description": "+1 ranura de Decreto por cada Decreto Negativo que poseas o ficha Negativa física en el muro de esta partida."
       }
     }
   },
@@ -3120,7 +3120,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Una mano completa: cuatro grupos y un par, normalmente 14 fichas. Sus yaku multiplican la puntuación."
+      "explain": "Una mano completa: cuatro grupos (secuencias, tripletes o cuartetos) y un par, normalmente 14 fichas. Siete pares y Trece huérfanos son excepciones especiales. Sus yaku multiplican la puntuación."
     },
     "three_dragons": {
       "name": "Tres Dragones",
@@ -3141,7 +3141,7 @@
     "turnsTitle": "Tu turno",
     "playHelp": "puntúa las fichas elegidas.",
     "redrawHelp": "manda al río cualquier número de fichas elegidas y roba nuevas.",
-    "turnsHelp": "Cada ronda te da {{turns}} turnos. Jugar mano y RECAMBIAR cuestan uno cada uno. Supera una ronda pequeña o grande con {{spare}} turnos de sobra para ganar un presagio.",
+    "turnsHelp": "Cada ronda te da {{turns}} turnos. Jugar mano y RECAMBIAR cuestan uno cada uno; los recambios gratis no cuestan ninguno, y tu último turno debe ser una jugada. Supera una ronda pequeña o grande con {{spare}} turnos de sobra para ganar un presagio.",
     "scoreTitle": "Tu puntuación",
     "points": "Puntos",
     "mult": "Mult",
@@ -3151,7 +3151,7 @@
     "secretTitle": "Manos secretas",
     "secretFound": "Mano secreta descubierta",
     "secretInGuide": "Ya aparece en la guía ?.",
-    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Cada ficha cuenta una vez; hasta 6 fichas por jugada salvo una mano de Mahjong completa.",
+    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",
@@ -3260,7 +3260,7 @@
     "acquired": "Nuevo decreto"
   },
   "orbReveal": {
-    "used": "Orbe Celestial usado",
+    "used": "Orbe Celeste usado",
     "title": "{{name}} usado: yaku mejorado"
   }
 }

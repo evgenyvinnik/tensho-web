@@ -179,11 +179,11 @@
     },
     "wildFlush": {
       "name": "Wild Flush",
-      "description": "Score a Half Flush made entirely of Wild tiles."
+      "description": "Score a Half Flush (one suit plus Winds or Dragons) made entirely of Wild tiles."
     },
     "speedRun": {
       "name": "Speed Run",
-      "description": "Win a run spending 48 Turns or fewer. Free REDRAWs do not count."
+      "description": "Win a run spending 48 Turns or fewer. Free redraws do not count."
     },
     "charterCollector": {
       "name": "Charter Collector",
@@ -195,19 +195,19 @@
     },
     "royalHand": {
       "name": "Royal Hand",
-      "description": "Score a Yakuman."
+      "description": "Score a Yakuman, a top-tier hand such as Big Three Dragons."
     },
     "retrograde": {
       "name": "Retrograde",
-      "description": "Raise a Yaku to level 10."
+      "description": "Raise a hand family to level 10."
     },
     "keeperOfWinds": {
       "name": "Keeper of Winds",
-      "description": "Score 10 Wind Yaku in a single run."
+      "description": "Score an East Wind triplet or quad in a complete hand 5 times in one run."
     },
     "masterOfSilence": {
       "name": "Master of Silence",
-      "description": "Win 3 rounds without discarding any Honor tiles."
+      "description": "Win 3 rounds without redrawing any Wind or Dragon."
     },
     "sealBearer": {
       "name": "Seal Bearer",
@@ -280,29 +280,29 @@
   },
   "closedHandAusterity": {
     "name": "Closed-Hand Austerity",
-    "description": "Complete concealed hands gain ×1.5, growing ×1.2 per earlier complete concealed hand this run, up to ×4 before Flower empowerment. Tactical plays and Shanten Clemency do not qualify.",
-    "progress": "Completed concealed hands: {{count}}. Next qualifying hand: ×{{factor}} before Flowers."
+    "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.",
+    "progress": "Complete hands so far: {{count}}. Next one: ×{{factor}} before Flowers."
   },
   "yakuRepetition": {
     "name": "Yaku Repetition Charter",
-    "description": "Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 total). Missing a round breaks that Yaku’s streak. The cap is before Flower empowerment.",
+    "description": "A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.",
     "title": "Patterns to repeat",
     "streak": "{{name}} · {{rounds}} consecutive prior rounds",
     "empty": "No prior streaks. Score a Yaku this round to start one."
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "Score a Yakuman.",
+    "seal_of_the_immortal": "Score a Yakuman, a top-tier hand such as Big Three Dragons.",
     "seal_of_the_void": "Score all 20 Yaku types in a single run.",
     "planet_x_orb": "Score Seven Pairs.",
-    "ceres_orb": "Score an Outside Hand.",
-    "eris_orb": "Score Thirteen Orphans.",
+    "ceres_orb": "Score an Outside Hand: a complete hand with a 1, 9, Wind or Dragon in every group and the pair.",
+    "eris_orb": "Score Thirteen Orphans: one of every 1, 9, Wind and Dragon, plus one duplicate.",
     "black_hole_orb": "Discover all 12 other Celestial Orbs."
   },
   "decreeUnlocks": {
     "stage_master": "Reach Act 4.",
     "flower_pot": "Reach Act 8 in optional Endless.",
     "satellite": "Hold 400 Gold in a single run.",
-    "swift_andy": "Win a run spending 48 Turns or fewer. Free REDRAWs do not count.",
+    "swift_andy": "Win a run spending 48 Turns or fewer. Free redraws do not count.",
     "lucky_sixes": "Score 10,000 points in a single play.",
     "the_idol": "Score 1,000,000 points in a single play.",
     "stuntman": "Score 100,000,000 points in a single play.",
@@ -310,9 +310,9 @@
     "astronomer": "Discover all Celestial Orbs.",
     "decree-blueprint": "Win a run.",
     "decree-brainstorm": "Win a run with at least five Decrees owned.",
-    "decree-heavenly-ordinance": "Score a Yakuman.",
+    "decree-heavenly-ordinance": "Score a Yakuman, a top-tier hand such as Big Three Dragons.",
     "decree-clone-army": "Win a run on Gold Stake.",
-    "decree-yakuman-blessing": "Score three Yakuman patterns in one run.",
+    "decree-yakuman-blessing": "Score three Yakuman hands in one run.",
     "decree-omega": "Complete Act 8 in optional Endless."
   },
   "scoreThresholds": {
@@ -345,7 +345,7 @@
   },
   "runOwnership": {
     "fateSeal": "Tile changes last for this run, including future rounds. A new run starts fresh.",
-    "negativeTile": "+1 Decree slot while this physical Negative tile remains in your wall. Drawing or discarding it keeps the slot; destruction or replacing its edition removes it.",
+    "negativeTile": "+1 Decree slot while this physical Negative tile remains in your wall. Drawing it or sending it to the river keeps the slot; destruction or replacing its edition removes it.",
     "overCapacity": "Capacity reduced: you keep your owned Decrees. Make room before acquiring more."
   },
   "yakuUpgrades": {
@@ -424,10 +424,10 @@
     "available": "{{name}} ({{count}} available)",
     "penalty_lose_tile": "Lose 1 random tile.",
     "penalty_lose_gold": "Lose all gold.",
-    "penalty_lose_hand_size": "Permanently lose {{count}} rack space.",
-    "penalty_lock_tile": "Lock 1 random tile in the Dead Pool.",
+    "penalty_lose_hand_size": "Lose {{count}} rack space for the rest of this run.",
+    "penalty_lock_tile": "Lock 1 random tile in the river: it cannot be drawn again.",
     "penalty_lose_decree_slot": "Lose {{count}} Decree slot next round.",
-    "penalty_halve_base_score": "Halve base points for the next hand.",
+    "penalty_halve_base_score": "Halve base Points for the next play.",
     "penalty_destroy_decrees": "Destroy all other Decrees.",
     "penalty_none": "No additional penalty.",
     "protected": "Omen protection cancels the additional penalty.",
@@ -504,7 +504,7 @@
     "gameplay": "Gameplay",
     "language": "Language",
     "tileHints": "Hand Hints",
-    "tileHintsDesc": "Group your hand into Pairs, Sequences and Triplets under the rack, and point out a complete Mahjong hand",
+    "tileHintsDesc": "Show suggested Pairs, Sequences and Triplets under your rack, and point out a complete Mahjong hand",
     "animationSpeed": "Animation Speed",
     "reducedMotion": "Reduced Motion",
     "reducedMotionDesc": "Minimize animations for accessibility",
@@ -565,7 +565,7 @@
     "deadWallDraw": "Draw from the Dead Wall",
     "winsRound": "Wins round",
     "tilesInWall": "Tiles in wall",
-    "handsRemaining": "Hands remaining",
+    "handsRemaining": "Turns left",
     "redrawsRemaining": "Redraws remaining",
     "redrawSelected": "Redraw selected tiles",
     "redrawHint": "Return up to 3 selected tiles and draw replacements",
@@ -593,7 +593,7 @@
       "label": "Forecast",
       "selectOneMore": "Select one more tile to play this group",
       "notCompleteHand": "This selection is not a complete Mahjong hand",
-      "returnTiles": "Return tiles until 5 remain, or finish a complete hand",
+      "returnTiles": "Return tiles until {{max}} remain, or finish a complete hand",
       "groupToScore": "Group your tiles to score in full; complete hands unlock Yaku"
     },
     "previewConcealed": "Score preview concealed",
@@ -818,7 +818,7 @@
     "packSkipped": "Pack Skipped",
     "kinds": {
       "decree": "Decree · {{rarity}}",
-      "decreeHelp": "A Decree is a permanent rule for this run. It takes one Decree slot; you can sell it any time.",
+      "decreeHelp": "A Decree changes the rules while you own it. It normally uses one Decree slot. You can sell it unless it is Eternal.",
       "seal": "Fate Seal · works at once",
       "sealHelp": "Used the moment you take it: choose the wall tiles it changes, and they stay changed for the whole run.",
       "sealHelpInstant": "Used the moment you take it.",
@@ -873,23 +873,23 @@
       },
       "satellite": {
         "name": "Satellite",
-        "description": "+1 Gold per Orb family above level 1 at the end of each won round."
+        "description": "At the end of each won round, +1 Gold for each hand family you have raised above level 1 with Orbs."
       },
       "swift_andy": {
         "name": "Swift Andy",
-        "description": "+2 free REDRAWs each round; −2 rack size."
+        "description": "+2 free redraws each round; −2 rack spaces."
       },
       "lucky_sixes": {
         "name": "Lucky Sixes",
-        "description": "+6 Mult per played numbered 6. Stones do not count."
+        "description": "+6 Mult per numbered 6 played. Stones do not count."
       },
       "the_idol": {
         "name": "The Idol",
-        "description": "×3 Mult when at least two played tiles all have the same printed suit and rank. Stones break the condition; Wild tiles keep their printed identity."
+        "description": "×3 Mult when you play at least two tiles and all of them are the same printed tile. Stones break it; Wild tiles keep their printed face."
       },
       "stuntman": {
         "name": "Stuntman",
-        "description": "+250 Points; −3 rack size."
+        "description": "+250 Points; −3 rack spaces."
       },
       "cartomancer": {
         "name": "Cartomancer",
@@ -941,59 +941,59 @@
       },
       "decree-manzu-master": {
         "name": "Master of Characters",
-        "description": "+3 Mult if hand contains Characters"
+        "description": "+3 Mult if the play includes a Characters tile"
       },
       "decree-pinzu-perfectionist": {
         "name": "Perfectionist of Circles",
-        "description": "+3 Mult if hand contains Circles"
+        "description": "+3 Mult if the play includes a Circles tile"
       },
       "decree-souzu-scholar": {
         "name": "Scholar of Bamboo",
-        "description": "+3 Mult if hand contains Bamboo"
+        "description": "+3 Mult if the play includes a Bamboo tile"
       },
       "decree-wind-walker": {
         "name": "Wind Walker",
-        "description": "+4 Mult if hand contains Wind tile"
+        "description": "+4 Mult if the play includes a Wind"
       },
       "decree-dragon-disciple": {
         "name": "Dragon Disciple",
-        "description": "+4 Mult if hand contains Dragon tile"
+        "description": "+4 Mult if the play includes a Dragon"
       },
       "decree-edge-runner": {
         "name": "Edge Runner",
-        "description": "+20 Points per Terminal tile in hand"
+        "description": "+20 Points per Terminal (a 1 or 9) played"
       },
       "decree-middle-way": {
         "name": "Middle Way",
-        "description": "+10 Points per Simple tile in hand"
+        "description": "+10 Points per Simple (a 2–8 tile) played"
       },
       "decree-green-fortune": {
         "name": "Green Fortune",
-        "description": "+15 Points per green tile (2,3,4,6,8 of Bamboo)"
+        "description": "+15 Points per all-green tile played: 2, 3, 4, 6 and 8 of Bamboo, and the Green Dragon"
       },
       "decree-coin-collector": {
         "name": "Coin Collector",
-        "description": "+1G at end of round"
+        "description": "+1 Gold at the end of each round"
       },
       "decree-merchants-favor": {
         "name": "Merchant's Favor",
-        "description": "+2G at end of round"
+        "description": "+2 Gold at the end of each round"
       },
       "decree-lucky-coin": {
         "name": "Lucky Coin",
-        "description": "+3G at end of round"
+        "description": "+3 Gold at the end of each round"
       },
       "decree-pair-lover": {
         "name": "Pair Lover",
-        "description": "+30 Points if hand contains a pair"
+        "description": "+30 Points if the play includes a pair"
       },
       "decree-sequence-seeker": {
         "name": "Sequence Seeker",
-        "description": "+30 Points if hand contains a sequence"
+        "description": "+30 Points if the play includes a sequence"
       },
       "decree-triplet-tracker": {
         "name": "Triplet Tracker",
-        "description": "+40 Points if hand contains a triplet"
+        "description": "+40 Points if the play includes a triplet"
       },
       "decree-flower-friend": {
         "name": "Flower Friend",
@@ -1005,11 +1005,11 @@
       },
       "decree-wide-grip": {
         "name": "Wide Grip",
-        "description": "+1 Hand Size"
+        "description": "+1 rack space"
       },
       "decree-second-chance": {
         "name": "Second Chance",
-        "description": "+1 free Redraw per round"
+        "description": "+1 free redraw per round"
       },
       "decree-balanced-path": {
         "name": "Balanced Path",
@@ -1017,111 +1017,111 @@
       },
       "decree-modest-fortune": {
         "name": "Modest Fortune",
-        "description": "+20 Points and +1G per round"
+        "description": "+20 Points, and +1 Gold at the end of each round"
       },
       "decree-humble-power": {
         "name": "Humble Power",
-        "description": "+2 Mult and +1G per round"
+        "description": "+2 Mult, and +1 Gold at the end of each round"
       },
       "decree-one-mastery": {
         "name": "One Mastery",
-        "description": "+25 Points per 1-tile in hand"
+        "description": "+25 Points per numbered 1 played"
       },
       "decree-nine-mastery": {
         "name": "Nine Mastery",
-        "description": "+25 Points per 9-tile in hand"
+        "description": "+25 Points per numbered 9 played"
       },
       "decree-five-blessing": {
         "name": "Five Blessing",
-        "description": "+35 Points per 5-tile in hand"
+        "description": "+35 Points per numbered 5 played"
       },
       "decree-spark": {
         "name": "Spark",
-        "description": "x1.2 Mult"
+        "description": "×1.2 Mult"
       },
       "decree-ember": {
         "name": "Ember",
-        "description": "x1.3 Mult"
+        "description": "×1.3 Mult"
       },
       "decree-riichi-devotee": {
         "name": "Pair Devotee",
-        "description": "+4 Mult if the play has two or more Pairs"
+        "description": "+4 Mult if the play includes two or more pairs"
       },
       "decree-tanyao-tactician": {
         "name": "Simples Tactician",
-        "description": "+3 Mult when scoring an All Simples hand"
+        "description": "+3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons"
       },
       "decree-pinfu-purist": {
         "name": "Sequence Purist",
-        "description": "+3 Mult when scoring an All Sequences hand"
+        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind"
       },
       "decree-manzu-emperor": {
         "name": "Emperor of Characters",
-        "description": "+8 Mult if hand is half or more Characters"
+        "description": "+8 Mult if at least half the played tiles are Characters"
       },
       "decree-pinzu-princess": {
         "name": "Princess of Circles",
-        "description": "+8 Mult if hand is half or more Circles"
+        "description": "+8 Mult if at least half the played tiles are Circles"
       },
       "decree-souzu-sage": {
         "name": "Sage of Bamboo",
-        "description": "+8 Mult if hand is half or more Bamboo"
+        "description": "+8 Mult if at least half the played tiles are Bamboo"
       },
       "decree-flush-fever": {
         "name": "Flush Fever",
-        "description": "x1.5 Mult if hand is single suit"
+        "description": "×1.5 Mult if every numbered tile played is from one suit (Winds and Dragons allowed)"
       },
       "decree-honor-guard": {
         "name": "Honor Guard",
-        "description": "x1.5 Mult if hand contains 3+ Honor tiles"
+        "description": "×1.5 Mult if the play includes 3 or more Honors (Winds or Dragons)"
       },
       "decree-terminal-tide": {
         "name": "Terminal Tide",
-        "description": "x1.5 Mult if hand contains 4+ Terminal tiles"
+        "description": "×1.5 Mult if the play includes 4 or more Terminals (1s or 9s)"
       },
       "decree-straight-arrow": {
         "name": "Straight Arrow",
-        "description": "+80 Points if hand contains 3 sequences"
+        "description": "+80 Points if the play includes 3 or more sequences"
       },
       "decree-run-master": {
         "name": "Run Master",
-        "description": "+6 Mult per sequence in hand"
+        "description": "+6 Mult per sequence played"
       },
       "decree-triple-threat": {
         "name": "Triple Threat",
-        "description": "+80 Points if hand contains 2+ triplets"
+        "description": "+80 Points if the play includes 2 or more triplets"
       },
       "decree-triplet-thunder": {
         "name": "Triplet Thunder",
-        "description": "+8 Mult per triplet in hand"
+        "description": "+8 Mult per triplet played"
       },
       "decree-echo-stone": {
         "name": "Echo Stone",
-        "description": "Retrigger first scoring tile"
+        "description": "The first scoring tile scores twice"
       },
       "decree-mirror-shard": {
         "name": "Mirror Shard",
-        "description": "Retrigger last scoring tile"
+        "description": "The last scoring tile scores twice"
       },
       "decree-dragon-echo": {
         "name": "Dragon Echo",
-        "description": "Retrigger all Dragon tiles"
+        "description": "Every Dragon played scores twice"
       },
       "decree-wind-echo": {
         "name": "Wind Echo",
-        "description": "Retrigger all Wind tiles"
+        "description": "Every Wind played scores twice"
       },
       "decree-golden-ratio": {
         "name": "Golden Ratio",
-        "description": "+1 Mult per 5G you have (max +10)"
+        "description": "+1 Mult per 5 Gold you hold (max +10)"
       },
       "decree-treasure-hunter": {
         "name": "Treasure Hunter",
-        "description": "+1G per distinct suit left in your rack when you win a round. Winds and Dragons count separately."
+        "description": "When you win a round, +1 Gold for each different suit left on your rack. Winds and Dragons count as separate suits."
       },
       "decree-tax-collector": {
         "name": "Tax Collector",
-        "description": "+4G at end of round"
+        "description": "+4 Gold at the end of each round"
       },
       "decree-garden-keeper": {
         "name": "Garden Keeper",
@@ -1129,7 +1129,7 @@
       },
       "decree-blossom-storm": {
         "name": "Blossom Storm",
-        "description": "x1.2 Mult per collected Flower"
+        "description": "×1.2 Mult per collected Flower"
       },
       "decree-seasonal-wind": {
         "name": "Seasonal Wind",
@@ -1137,15 +1137,15 @@
       },
       "decree-slow-burn": {
         "name": "Slow Burn",
-        "description": "+2 Mult per round played this run"
+        "description": "+2 Mult per round completed this run"
       },
       "decree-momentum": {
         "name": "Momentum",
-        "description": "+15 Points per hand played this round"
+        "description": "+15 Points for each earlier play this round"
       },
       "decree-crescendo": {
         "name": "Crescendo",
-        "description": "x1.1 Mult per hand played this round"
+        "description": "×1.1 Mult for each earlier play this round"
       },
       "decree-waste-not": {
         "name": "Waste Not",
@@ -1157,27 +1157,27 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Value Zealot",
-        "description": "x1.5 Mult when scoring a Value Tiles hand"
+        "description": "×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind"
       },
       "decree-toitoi-titan": {
         "name": "Triplet Titan",
-        "description": "x1.5 Mult when scoring an All Triplets hand"
+        "description": "×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair"
       },
       "decree-ittsu-initiate": {
         "name": "Ninefold Initiate",
-        "description": "x1.5 Mult when scoring a 1–9 Straight hand"
+        "description": "×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit"
       },
       "decree-chinitsu-champion": {
         "name": "Full Flush Champion",
-        "description": "x2.0 Mult when scoring a Full Flush hand"
+        "description": "×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons"
       },
       "decree-veteran": {
         "name": "Veteran",
-        "description": "+30 Points per Act completed"
+        "description": "+30 Points per completed Act"
       },
       "decree-experience": {
         "name": "Experience",
-        "description": "x1.1 Mult per Act completed"
+        "description": "×1.1 Mult per completed Act"
       },
       "decree-greater-jade": {
         "name": "Greater Jade",
@@ -1189,31 +1189,31 @@
       },
       "decree-flame": {
         "name": "Flame",
-        "description": "x1.5 Mult"
+        "description": "×1.5 Mult"
       },
       "decree-wind-dragon": {
         "name": "Wind and Dragon",
-        "description": "+5 Mult if hand has both Wind and Dragon"
+        "description": "+5 Mult if the play includes both a Wind and a Dragon"
       },
       "decree-all-suits": {
         "name": "All Suits",
-        "description": "+8 Mult if hand contains all 3 suits"
+        "description": "+8 Mult if the play includes Characters, Circles and Bamboo"
       },
       "decree-bookends": {
         "name": "Bookends",
-        "description": "+60 Points if hand has both 1 and 9"
+        "description": "+60 Points if the play includes both a 1 and a 9"
       },
       "decree-expansive-grip": {
         "name": "Expansive Grip",
-        "description": "+2 Hand Size"
+        "description": "+2 rack spaces"
       },
       "decree-careful-player": {
         "name": "Careful Player",
-        "description": "+2 free Redraws per round"
+        "description": "+2 free redraws per round"
       },
       "decree-inferno": {
         "name": "Inferno",
-        "description": "x2.0 Mult"
+        "description": "×2 Mult"
       },
       "decree-supernova": {
         "name": "Supernova",
@@ -1225,43 +1225,43 @@
       },
       "decree-compound-interest": {
         "name": "Compound Interest",
-        "description": "+2 Mult per 10G you have"
+        "description": "+2 Mult per 10 Gold you hold"
       },
       "decree-wealth-engine": {
         "name": "Wealth Engine",
-        "description": "+1G per Decree owned at end of round"
+        "description": "+1 Gold per Decree owned at the end of each round"
       },
       "decree-perpetual-motion": {
         "name": "Perpetual Motion",
-        "description": "+2 Mult per hand played this run"
+        "description": "+2 Mult for each earlier play this run"
       },
       "decree-triple-echo": {
         "name": "Triple Echo",
-        "description": "Retrigger all scoring tiles once"
+        "description": "Every scoring tile scores twice"
       },
       "decree-terminal-resonance": {
         "name": "Terminal Resonance",
-        "description": "Retrigger Terminal tiles twice"
+        "description": "Every Terminal (1 or 9) played scores three times"
       },
       "decree-honor-resonance": {
         "name": "Honor Resonance",
-        "description": "Retrigger Honor tiles twice"
+        "description": "Every Honor (Wind or Dragon) played scores three times"
       },
       "decree-manzu-monarch": {
         "name": "Monarch of Characters",
-        "description": "x2.0 Mult if entire hand is Characters"
+        "description": "×2 Mult if every played tile is Characters"
       },
       "decree-pinzu-potentate": {
         "name": "Potentate of Circles",
-        "description": "x2.0 Mult if entire hand is Circles"
+        "description": "×2 Mult if every played tile is Circles"
       },
       "decree-souzu-sovereign": {
         "name": "Sovereign of Bamboo",
-        "description": "x2.0 Mult if entire hand is Bamboo"
+        "description": "×2 Mult if every played tile is Bamboo"
       },
       "decree-flower-emperor": {
         "name": "Flower Emperor",
-        "description": "x1.5 Mult per collected Flower"
+        "description": "×1.5 Mult per collected Flower"
       },
       "decree-season-lord": {
         "name": "Season Lord",
@@ -1273,27 +1273,27 @@
       },
       "decree-honitsu-herald": {
         "name": "Half Flush Herald",
-        "description": "x2.0 Mult when scoring a Half Flush hand"
+        "description": "×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons"
       },
       "decree-sanshoku-sage": {
         "name": "Triple Sequence Sage",
-        "description": "x2.0 Mult when scoring a Mixed Triple Sequence hand"
+        "description": "×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits"
       },
       "decree-chanta-champion": {
         "name": "Outside Hand Champion",
-        "description": "x2.0 Mult when scoring an Outside Hand or Pure Outside Hand"
+        "description": "×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts."
       },
       "decree-mandate-breaker": {
         "name": "Mandate Breaker",
-        "description": "+15 Mult, x1.5 Mult during Boss rounds"
+        "description": "During Boss rounds: +15 Mult and ×1.5 Mult"
       },
       "decree-boss-slayer": {
         "name": "Boss Slayer",
-        "description": "x2.0 Mult during Boss rounds"
+        "description": "×2 Mult during Boss rounds"
       },
       "decree-fortune-and-glory": {
         "name": "Fortune and Glory",
-        "description": "+60 Points, +8 Mult, +3G per round"
+        "description": "+60 Points and +8 Mult, and +3 Gold at the end of each round"
       },
       "decree-emperors-blessing": {
         "name": "Emperor's Blessing",
@@ -1301,95 +1301,95 @@
       },
       "decree-golden-age": {
         "name": "Golden Age",
-        "description": "+8G at end of round"
+        "description": "+8 Gold at the end of each round"
       },
       "decree-blueprint": {
         "name": "Blueprint",
-        "description": "Copies the effect of the Decree to the right"
+        "description": "Copies the effect of the Decree to its right"
       },
       "decree-photograph": {
         "name": "Photograph",
-        "description": "First scoring tile gives x2 Mult"
+        "description": "The first scoring tile scores twice"
       },
       "decree-ancient-scroll": {
         "name": "Ancient Scroll",
-        "description": "+150 Points, -2 Hand Size"
+        "description": "+150 Points; −2 rack spaces"
       },
       "decree-sacrifice": {
         "name": "Sacrifice",
-        "description": "×3.0 Mult, −1 Turn per round"
+        "description": "×3 Mult; −1 Turn per round"
       },
       "decree-transmuter": {
         "name": "Transmuter",
-        "description": "All Simples become Terminals in scoring"
+        "description": "Played 2–8 tiles score as Terminals (1s and 9s)"
       },
       "decree-harmonizer": {
         "name": "Harmonizer",
-        "description": "All suits count as matching for sequences"
+        "description": "Sequences may mix suits (for example, 1 of Characters, 2 of Circles, 3 of Bamboo)"
       },
       "decree-final-act": {
         "name": "Final Act",
-        "description": "x1.5 Mult per Act beyond 4"
+        "description": "×1.5 Mult per Act past Act 4"
       },
       "decree-endless-journey": {
         "name": "Endless Journey",
-        "description": "x1.2 Mult per Act completed"
+        "description": "×1.2 Mult per completed Act"
       },
       "decree-master-grip": {
         "name": "Master Grip",
-        "description": "+3 Hand Size"
+        "description": "+3 rack spaces"
       },
       "decree-infinite-patience": {
         "name": "Infinite Patience",
-        "description": "+3 free Redraws per round"
+        "description": "+3 free redraws per round"
       },
       "decree-divine-flame": {
         "name": "Divine Flame",
-        "description": "x3.0 Mult"
+        "description": "×3 Mult"
       },
       "decree-heavens-wrath": {
         "name": "Heaven's Wrath",
-        "description": "x4.0 Mult if hand has no Simples"
+        "description": "×4 Mult if the play has no 2–8 tiles (only 1s, 9s, Winds and Dragons)"
       },
       "decree-void-blessing": {
         "name": "Void Blessing",
-        "description": "x5.0 Mult if hand is all Honors"
+        "description": "×5 Mult if every played tile is a Wind or Dragon"
       },
       "decree-eternal-echo": {
         "name": "Eternal Echo",
-        "description": "Retrigger all scoring tiles twice"
+        "description": "Every scoring tile scores three times"
       },
       "decree-dragon-king": {
         "name": "Dragon King",
-        "description": "Retrigger Dragon tiles 3 times"
+        "description": "Every Dragon played scores four times"
       },
       "decree-yaku-amplifier": {
         "name": "Yaku Amplifier",
-        "description": "All Yaku multipliers increased by x1.5"
+        "description": "When a complete hand scores Yaku, its combined Yaku multiplier is multiplied by 1.5"
       },
       "decree-yakuman-seeker": {
         "name": "Yakuman Seeker",
-        "description": "x5.0 Mult when scoring Yakuman"
+        "description": "×5 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans"
       },
       "decree-four-seasons-master": {
         "name": "Four Seasons Master",
-        "description": "x2.0 Mult per active Season"
+        "description": "×2 Mult per active Season"
       },
       "decree-eternal-garden": {
         "name": "Eternal Garden",
-        "description": "+10 Mult per Flower, Flowers cannot be lost"
+        "description": "+10 Mult per Flower. Drought cannot suppress your Flowers."
       },
       "decree-midas-touch": {
         "name": "Midas Touch",
-        "description": "+10G at end of round"
+        "description": "+10 Gold at the end of each round"
       },
       "decree-infinite-wealth": {
         "name": "Infinite Wealth",
-        "description": "x1.1 Mult per 10G you have"
+        "description": "×1.1 Mult per 10 Gold you hold"
       },
       "decree-brainstorm": {
         "name": "Brainstorm",
-        "description": "Copies effect of leftmost Decree"
+        "description": "Copies the effect of your leftmost Decree"
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
@@ -1397,23 +1397,23 @@
       },
       "decree-manzu-god": {
         "name": "God of Characters",
-        "description": "x3.0 Mult if all tiles are Characters"
+        "description": "×3 Mult if every played tile is Characters"
       },
       "decree-pinzu-god": {
         "name": "God of Circles",
-        "description": "x3.0 Mult if all tiles are Circles"
+        "description": "×3 Mult if every played tile is Circles"
       },
       "decree-souzu-god": {
         "name": "God of Bamboo",
-        "description": "x3.0 Mult if all tiles are Bamboo"
+        "description": "×3 Mult if every played tile is Bamboo"
       },
       "decree-glass-cannon": {
         "name": "Glass Cannon",
-        "description": "x6.0 Mult, destroyed if boss round lost"
+        "description": "×6 Mult. Destroyed if you lose a Boss round."
       },
       "decree-phoenix": {
         "name": "Phoenix",
-        "description": "Prevents one loss per run, then sells itself"
+        "description": "If you would lose a round, you clear it instead. This Decree is then destroyed."
       },
       "decree-time-lord": {
         "name": "Time Lord",
@@ -1421,71 +1421,71 @@
       },
       "decree-exponential": {
         "name": "Exponential",
-        "description": "x1.3 Mult per 100 base points scored"
+        "description": "×1.3 Mult per 100 base Points in the play"
       },
       "decree-chain-reaction": {
         "name": "Chain Reaction",
-        "description": "x1.5 Mult per Yaku scored this hand"
+        "description": "×1.5 Mult per Yaku in the scored hand"
       },
       "decree-cosmic-jade": {
         "name": "Cosmic Jade",
-        "description": "+200 Points, x1.5 Mult"
+        "description": "+200 Points and ×1.5 Mult"
       },
       "decree-solar-banner": {
         "name": "Solar Banner",
-        "description": "+25 Mult, x2.0 Mult"
+        "description": "+25 Mult and ×2 Mult"
       },
       "decree-universal-grip": {
         "name": "Universal Grip",
-        "description": "+4 Hand Size"
+        "description": "+4 rack spaces"
       },
       "decree-heavenly-ordinance": {
         "name": "Heavenly Ordinance",
-        "description": "x5.0 Mult"
+        "description": "×5 Mult"
       },
       "decree-celestial-throne": {
         "name": "Celestial Throne",
-        "description": "×10.0 Mult, −2 Hand Size, −1 Turn per round"
+        "description": "×10 Mult; −2 rack spaces and −1 Turn per round"
       },
       "decree-void-emperor": {
         "name": "Void Emperor",
-        "description": "x8.0 Mult if score was 0 last hand"
+        "description": "×8 Mult if your previous play scored 0"
       },
       "decree-infinite-loop": {
         "name": "Infinite Loop",
-        "description": "Retrigger all scoring tiles 3 times"
+        "description": "Every scoring tile scores four times"
       },
       "decree-echo-dimension": {
         "name": "Echo Dimension",
-        "description": "All retrigger effects trigger twice"
+        "description": "Doubles the extra scorings your other Decrees grant (a tile that scores twice scores three times)"
       },
       "decree-clone-army": {
         "name": "Clone Army",
-        "description": "Copies effects of all other Decrees"
+        "description": "Copies the effects of all your other Decrees"
       },
       "decree-world-tree": {
         "name": "World Tree",
-        "description": "x2.0 Mult per Flower, x1.5 per Season"
+        "description": "×2 Mult per Flower and ×1.5 Mult per active Season"
       },
       "decree-philosophers-stone": {
         "name": "Philosopher's Stone",
-        "description": "Double all gold gained"
+        "description": "Doubles the Gold you earn from plays, REDRAW, items and round payouts (not from selling Decrees or from Omens)"
       },
       "decree-dragon-hoard": {
         "name": "Dragon Hoard",
-        "description": "x1.2 Mult per 10G you have"
+        "description": "×1.2 Mult per 10 Gold you hold"
       },
       "decree-yaku-nexus": {
         "name": "Yaku Nexus",
-        "description": "All Yaku score at +1 tier"
+        "description": "Every Yaku scores as if it were one tier higher (a Tier 1 ×1.3 becomes ×1.6)"
       },
       "decree-yakuman-blessing": {
         "name": "Yakuman Blessing",
-        "description": "x10.0 Mult when scoring Yakuman"
+        "description": "×10 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans"
       },
       "decree-reality-warp": {
         "name": "Reality Warp",
-        "description": "All tiles count as every suit and rank"
+        "description": "Any 14 tiles you select can form a complete hand"
       },
       "decree-time-master": {
         "name": "Time Master",
@@ -1493,11 +1493,11 @@
       },
       "decree-immortal-decree": {
         "name": "Immortal Decree",
-        "description": "Prevents all losses (but halves score)"
+        "description": "Whenever you would lose a round, you clear it instead. After the first rescue, your scores are halved for the rest of the run, even if you sell this Decree."
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 Points, +50 Mult, x2.0 Mult"
+        "description": "+500 Points, +50 Mult and ×2 Mult"
       },
       "river_tax": {
         "name": "River Tax",
@@ -1509,55 +1509,55 @@
       },
       "tanyao_dispensation": {
         "name": "Simples Dispensation",
-        "description": "Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not."
+        "description": "All Simples (normally only 2–8 tiles) also accepts 1s and 9s. Winds and Dragons still break it."
       },
       "moonlit_seal": {
         "name": "Moonlit Seal",
-        "description": "Each Honor tile in your winning hand adds +0.1x to multiplier."
+        "description": "Each Wind or Dragon played adds 0.1 to this Decree’s ×Mult (three give ×1.3)."
       },
       "pure_suit_asceticism": {
         "name": "Pure Suit Asceticism",
-        "description": "Tiles of your dominant suit gain +10% score each. Stacks multiplicatively."
+        "description": "×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6)."
       },
       "broken_stair_edict": {
         "name": "Broken Stair Edict",
-        "description": "Sequences may skip one rank (e.g., 1-3-4 is valid)."
+        "description": "Sequences may skip one number (1-3-4 or 1-2-4 counts)."
       },
       "false_eye_mandate": {
         "name": "False Eye Mandate",
-        "description": "One meld may serve as the pair for hand validation."
+        "description": "A complete hand may use one of its groups in place of the pair."
       },
       "honor_transmutation": {
         "name": "Honor Transmutation",
-        "description": "Honor tiles may count as suited tiles of your most common suit."
+        "description": "Winds and Dragons may count as numbered tiles of your most common suit."
       },
       "yakuman_succession": {
         "name": "Yakuman Succession",
-        "description": "While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack."
+        "description": "While you hold at least 2 Flowers, these hands become Yakuman, the top tier (×4 each): Half Flush, Full Flush, Twice Pure Double Sequence (two pairs of identical sequences), Pure Outside Hand (a 1 or 9 in every group and the pair) and Seven Pairs. A hand weakened by a Mandate cannot rise. Copies do not stack."
       },
       "celestial_wildcard": {
         "name": "Celestial Wildcard",
-        "description": "One tile per hand may impersonate any other tile."
+        "description": "One tile per play can stand in for any tile you need."
       },
       "dead_wall_writ": {
         "name": "Dead Wall Writ",
-        "description": "Once per round, swap one selected tile for a Dead Wall tile without spending a Turn."
+        "description": "Once per round, swap one selected tile for a tile from the Dead Wall (the reserved tiles at the back of the wall) without spending a Turn."
       },
       "shanten_clemency": {
         "name": "Shanten Clemency",
-        "description": "Hands may score at 1-shanten with a 50% score penalty."
+        "description": "A hand one tile short of complete can be played as a complete hand, at half score."
       },
       "closed_hand_austerity": {
         "name": "Closed-Hand Austerity",
-        "description": "Fully concealed hands gain x1.5 score multiplier."
+        "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count."
       },
       "terminal_devotion": {
         "name": "Terminal Devotion",
-        "description": "Each terminal tile in your hand adds +5% to final score."
+        "description": "Each Terminal (1 or 9) played adds 0.05 to this Decree’s ×Mult (four give ×1.2)."
       },
       "yaku_repetition_charter": {
         "name": "Yaku Repetition Charter",
-        "description": "Scoring the same yaku type in consecutive rounds compounds multipliers."
+        "description": "A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak."
       }
     }
   },
@@ -1606,7 +1606,7 @@
       "autumn": "Yaku multiplier +20%. Each normal Autumn drawn gives 1 free REDRAW this round.",
       "winter": "Same-suit sequences may skip one rank (1–2–4 or 1–3–4). Score ×0.75.",
       "drought": "Suppresses Flower scoring bonuses unless protected.",
-      "frostbite": "Each Frostbite halves Decree point, multiplier, gold and retrigger rewards again. Native tile rewards, rule permissions, capacities, action budgets and costs stay unchanged.",
+      "frostbite": "Each Frostbite halves Decree Points, Mult, Gold and extra-scoring rewards again. Native tile rewards, rule permissions, capacities, action budgets and costs stay unchanged.",
       "decay": "−10 score for each REDRAW this round, never below zero.",
       "droughtName": "Drought",
       "monsoonName": "Monsoon",
@@ -1757,7 +1757,7 @@
       },
       "the_wall": {
         "name": "The Wall",
-        "description": "Extra large score requirement (4x instead of 2x)"
+        "description": "Score target ×4 instead of the usual Boss ×2"
       },
       "the_eye": {
         "name": "The Eye",
@@ -1777,7 +1777,7 @@
       },
       "the_pillar": {
         "name": "The Pillar",
-        "description": "Tiles used in previous rounds this Act are debuffed"
+        "description": "Tiles played in earlier rounds of this Act score nothing"
       },
       "the_water": {
         "name": "The Water",
@@ -1793,23 +1793,23 @@
       },
       "the_club": {
         "name": "The Club",
-        "description": "All Bamboo tiles are debuffed"
+        "description": "Bamboo tiles score nothing"
       },
       "the_goad": {
         "name": "The Goad",
-        "description": "All Circles are debuffed"
+        "description": "Circles tiles score nothing"
       },
       "the_window": {
         "name": "The Window",
-        "description": "All Characters are debuffed"
+        "description": "Characters tiles score nothing"
       },
       "the_head": {
         "name": "The Head",
-        "description": "All Dragon tiles are debuffed"
+        "description": "Dragons score nothing"
       },
       "the_plant": {
         "name": "The Plant",
-        "description": "All Honor tiles are debuffed"
+        "description": "Winds and Dragons score nothing"
       },
       "the_ox": {
         "name": "The Ox",
@@ -1817,7 +1817,7 @@
       },
       "the_house": {
         "name": "The House",
-        "description": "First hand drawn face-down"
+        "description": "Your starting rack is dealt face-down"
       },
       "the_wheel": {
         "name": "The Wheel",
@@ -1825,7 +1825,7 @@
       },
       "the_fish": {
         "name": "The Fish",
-        "description": "Tiles drawn face-down after each hand"
+        "description": "Tiles drawn after each play arrive face-down"
       },
       "the_serpent": {
         "name": "The Serpent",
@@ -1837,7 +1837,7 @@
       },
       "the_mark": {
         "name": "The Mark",
-        "description": "All Honor tiles drawn face-down"
+        "description": "Winds and Dragons are drawn face-down"
       },
       "the_manacle": {
         "name": "The Manacle",
@@ -1849,19 +1849,19 @@
       },
       "verdant_leaf": {
         "name": "Verdant Leaf",
-        "description": "All tiles debuffed until 1 Decree is sold"
+        "description": "Every tile scores nothing until you sell a Decree"
       },
       "violet_vessel": {
         "name": "Violet Vessel",
-        "description": "Extra-extra large target (6x instead of 2x)"
+        "description": "Score target ×6 instead of the usual Boss ×2"
       },
       "crimson_heart": {
         "name": "Crimson Heart",
-        "description": "One random Decree disabled every hand cycle"
+        "description": "A random Decree is switched off for each play"
       },
       "cerulean_bell": {
         "name": "Cerulean Bell",
-        "description": "After each draw cycle, one random tile must be played; the previous lock is released."
+        "description": "After each draw, one random rack tile is locked and must be in your next play. The previous lock is released."
       }
     }
   },
@@ -1877,7 +1877,7 @@
       "scoreScaling": "Stake score targets: same as White in Act 1, then rising each Act to ×{{multiplier}} compared with White from Act {{act}} on. Table modifiers still apply.",
       "redrawPenalty": "Turns each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
-      "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (weakened after {{rounds}} rounds).",
+      "perishableChance": "Non-Eternal shop Decrees: {{chance}} chance of Perishable (stops working after {{rounds}} rounds).",
       "rentalChance": "Shop Decrees: {{chance}} chance of Rental ({{price}} gold to buy, then {{fee}} gold each round)."
     },
     "title": "Table Stakes",
@@ -1915,7 +1915,7 @@
       "note1": "You can <1>reroll</1> the shop offerings for 5 gold. Each reroll costs +1 more.",
       "note2": "Holding <1>25+ gold</1> maximizes interest! But spending on good decrees is usually worth more.",
       "p1": "Don't worry about memorizing everything — you'll learn by playing!",
-      "note3": "You can always return to this codex from the Settings menu if you need a refresher."
+      "note3": "Open the Codex from the main menu whenever you need a refresher."
     },
     "game_concept": {
       "p1": "Unlike traditional Mahjong which is played against opponents, Tensho is a <1>single-player puzzle game</1>. You're racing against the score target, not other players.",
@@ -1926,7 +1926,7 @@
       "p1": "The game uses <1>144 tiles</1> in total:"
     },
     "numbered_suits": {
-      "note1": "Each standard tile appears <1>4 times</1> in the game. This is important for planning your hand!",
+      "note1": "In the standard wall, each tile appears <1>4 times</1>. This is important for planning your hand!",
       "p1": "There are <1>three numbered suits</1>, each with tiles ranked 1-9:",
       "p2": "<0>Characters (萬子 / Manzu)</0> — Feature Chinese numerals with the character 萬 (wan, meaning \"ten thousand\")",
       "p3": "<0>Circles (筒子 / Pinzu)</0> — Show circular patterns representing coins or dots",
@@ -1972,7 +1972,7 @@
       "li2": "They <2>cannot wrap around</2> (no 9-1-2)",
       "li3": "Honor tiles <2>cannot form sequences</2>",
       "p1": "A <1>quad</1> (also called \"kong\" or \"kan\") is <4>4 identical tiles</4>.",
-      "p2": "Quads are the rarest meld type since you need all 4 copies of a tile!"
+      "p2": "Quads are the rarest meld type: in the standard wall they use all 4 copies of a tile!"
     },
     "pairs": {
       "li1": "Three 5s of Bamboo",
@@ -1982,7 +1982,7 @@
       "p2": "Every standard winning hand requires <2>exactly one pair</2>. This is sometimes called the \"head\" (雀頭) of the hand."
     },
     "winning_hand": {
-      "note1": "Triplets are worth <1>+40 points</1> — more than sequences (+30)! However, they're harder to complete since you need 3 of the same tile, and each tile only appears 4 times in the game.",
+      "note1": "Triplets are worth <1>+40 points</1> — more than sequences (+30)! However, they're harder to complete since you need 3 of the same tile, and the standard wall holds only 4 copies of each.",
       "li1": "Worth <1>+65 points</1> — the most of any meld",
       "li2": "Counts as a single meld despite having 4 tiles",
       "li3": "When declared, you draw a replacement tile",
@@ -2007,7 +2007,7 @@
     },
     "yaku_intro": {
       "p1": "<0>Yaku (役)</0> are special patterns that <3>multiply your score</3>. This is where the big points come from!",
-      "p2": "There are <1>21 yaku</1> in Tensho, organized into 4 tiers:"
+      "p2": "There are <1>20 yaku</1> in Tensho, organized into 4 tiers:"
     },
     "yaku_examples": {
       "p1": "Here are some yaku you'll encounter often:"
@@ -2087,7 +2087,7 @@
     },
     "refill": {
       "title": "Drawing Tiles",
-      "p1": "Your rack refills from the wall after every play and every REDRAW, so you always have a full hand to choose from."
+      "p1": "After a play or REDRAW, replacement tiles are drawn from the wall. Normally this refills your rack, but a nearly empty wall or an active effect can change the draw."
     },
     "redraw": {
       "title": "REDRAW",
@@ -2178,7 +2178,7 @@
       },
       "sharp_edge": {
         "name": "Sharp Edge",
-        "description": "Editions appear 2x more often"
+        "description": "Editions appear twice as often"
       },
       "reroll_surplus": {
         "name": "Reroll Surplus",
@@ -2186,11 +2186,11 @@
       },
       "crystal_lens": {
         "name": "Crystal Lens",
-        "description": "Arcana Packs offer +1 choice"
+        "description": "Arcana Packs show one extra reward to choose from; the number you may take is unchanged"
       },
       "star_chart": {
         "name": "Star Chart",
-        "description": "Celestial Packs contain orb for most-used yaku"
+        "description": "Celestial Packs always include the Orb for your most-played hand family"
       },
       "steady_hand": {
         "name": "Steady Hand",
@@ -2198,15 +2198,15 @@
       },
       "frugal_discard": {
         "name": "Frugal Redraw",
-        "description": "+1 free Redraw per round"
+        "description": "+1 free redraw per round"
       },
       "seal_merchant": {
         "name": "Seal Merchant",
-        "description": "Fate Seals appear 2x more often"
+        "description": "Fate Seals appear twice as often"
       },
       "orb_merchant": {
         "name": "Orb Merchant",
-        "description": "Celestial Orbs appear 2x more often"
+        "description": "Celestial Orbs appear twice as often"
       },
       "seed_pouch": {
         "name": "Seed Pouch",
@@ -2218,19 +2218,19 @@
       },
       "tile_trading": {
         "name": "Tile Trading",
-        "description": "Tiles can be purchased from shop"
+        "description": "Tiles can be bought in the Tea House"
       },
       "ancient_script": {
         "name": "Ancient Script",
-        "description": "−1 Act, −1 Turn per round"
+        "description": "Sends you back one Act (lower targets, one more Act to play); −1 Turn per round"
       },
       "directors_take": {
         "name": "Director's Take",
-        "description": "Reroll Boss Mandate 1x per Act (10 Gold)"
+        "description": "Reroll the upcoming Boss Mandate once per Act (10 Gold)"
       },
       "brush_stroke": {
         "name": "Brush Stroke",
-        "description": "+1 hand size"
+        "description": "+1 rack space"
       },
       "plentiful_stock": {
         "name": "Plentiful Stock",
@@ -2242,7 +2242,7 @@
       },
       "radiant_edge": {
         "name": "Radiant Edge",
-        "description": "Editions appear 4x more often"
+        "description": "Editions appear four times as often"
       },
       "reroll_abundance": {
         "name": "Reroll Abundance",
@@ -2254,7 +2254,7 @@
       },
       "observatory": {
         "name": "Observatory",
-        "description": "Held Celestial Orbs give x1.5 Mult"
+        "description": "Held Celestial Orbs give ×1.5 Mult"
       },
       "swift_hand": {
         "name": "Swift Hand",
@@ -2262,15 +2262,15 @@
       },
       "wasteful_plenty": {
         "name": "Wasteful Plenty",
-        "description": "+1 more free Redraw per round"
+        "description": "+1 more free redraw per round"
       },
       "seal_tycoon": {
         "name": "Seal Tycoon",
-        "description": "Fate Seals appear 4x more often"
+        "description": "Fate Seals appear four times as often"
       },
       "orb_tycoon": {
         "name": "Orb Tycoon",
-        "description": "Celestial Orbs appear 4x more often"
+        "description": "Celestial Orbs appear four times as often"
       },
       "money_tree": {
         "name": "Money Tree",
@@ -2282,19 +2282,19 @@
       },
       "illusion_tiles": {
         "name": "Illusion Tiles",
-        "description": "Shop tiles may have editions"
+        "description": "Tiles in the Tea House may come with editions"
       },
       "stone_script": {
         "name": "Stone Script",
-        "description": "−1 Act again, −1 Turn per round"
+        "description": "Sends you back one more Act; −1 more Turn per round"
       },
       "final_cut": {
         "name": "Final Cut",
-        "description": "Reroll Boss Mandate unlimited times (10 Gold each)"
+        "description": "Reroll the upcoming Boss Mandate any number of times (10 Gold each)"
       },
       "full_palette": {
         "name": "Full Palette",
-        "description": "+1 hand size again"
+        "description": "+1 more rack space"
       }
     }
   },
@@ -2321,15 +2321,15 @@
       },
       "omen_of_rivers": {
         "name": "Omen of Rivers",
-        "description": "Next round starts with +1 free Redraw."
+        "description": "Next round starts with +1 free redraw."
       },
       "speed_omen": {
         "name": "Speed Omen",
-        "description": "Grants 5 Gold per swift clear this run."
+        "description": "Gain 5 Gold for each swift clear this run (a Small or Large round cleared with Turns to spare)."
       },
       "throwback_omen": {
         "name": "Throwback Omen",
-        "description": "Gains ×0.25 Mult per swift clear for the rest of the run."
+        "description": "For the rest of the run, each play’s score is multiplied by 1 + 0.25 per swift clear (one gives ×1.25, two give ×1.5)."
       },
       "fortune_omen": {
         "name": "Fortune Omen",
@@ -2357,15 +2357,15 @@
       },
       "expansion_omen": {
         "name": "Expansion Omen",
-        "description": "Gain +1 decree slot permanently."
+        "description": "Gain +1 Decree slot for the rest of this run."
       },
       "precision_omen": {
         "name": "Precision Omen",
-        "description": "Next round: +2 hand size."
+        "description": "Next round: +2 rack spaces."
       },
       "abundance_omen": {
         "name": "Abundance Omen",
-        "description": "Next round starts with +2 free Redraws."
+        "description": "Next round starts with +2 free redraws."
       },
       "polychrome_omen": {
         "name": "Polychrome Omen",
@@ -2381,11 +2381,11 @@
       },
       "score_surge_omen": {
         "name": "Score Surge Omen",
-        "description": "Next scored hand gains +100 base points."
+        "description": "Next scored play gains +100 base Points."
       },
       "multiplication_omen": {
         "name": "Multiplication Omen",
-        "description": "Next scored hand gains x1.5 Mult."
+        "description": "Next scored play gains ×1.5 Mult."
       },
       "blessing_pack_omen": {
         "name": "Blessing Pack Omen",
@@ -2409,35 +2409,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Seal of the Alchemist",
-        "description": "Enhances 2 selected tiles with Lucky Mark"
+        "description": "Adds a Lucky Mark (a chance of +20 Mult or +20 Gold when scored) to 2 tiles you choose"
       },
       "seal_of_the_empress": {
         "name": "Seal of the Empress",
-        "description": "Enhances 2 selected tiles with Score Bonus Mark"
+        "description": "Adds a Bonus Mark (+30 Points when scored) to 2 tiles you choose"
       },
       "seal_of_the_sage": {
         "name": "Seal of the Sage",
-        "description": "Enhances 2 selected tiles with Bonus Mark"
+        "description": "Adds a Bonus Mark (+30 Points when scored) to 2 tiles you choose"
       },
       "seal_of_harmony": {
         "name": "Seal of Harmony",
-        "description": "Converts 1 tile to Wild (counts as any suit)"
+        "description": "Makes 1 tile Wild (it counts as any suit)"
       },
       "seal_of_fortitude": {
         "name": "Seal of Fortitude",
-        "description": "Enhances 1 tile to Steel Mark (x1.5 Mult when held)"
+        "description": "Adds a Steel Mark to 1 tile (×1.5 Mult while it stays on your rack)"
       },
       "seal_of_glass": {
         "name": "Seal of Glass",
-        "description": "Enhances 1 tile to Glass Mark (x2 Mult, may shatter)"
+        "description": "Adds a Glass Mark to 1 tile (×2 Mult when scored, but it may shatter)"
       },
       "seal_of_wealth": {
         "name": "Seal of Wealth",
-        "description": "Enhances 1 tile to Gold Mark (+3 gold if held at round end)"
+        "description": "Adds a Gold Mark to 1 tile (+3 Gold if it is on your rack when the round ends)"
       },
       "seal_of_stone": {
         "name": "Seal of Stone",
-        "description": "Enhances 1 tile to Stone Mark (+100 Points; no rank or suit, never joins a group, always scores in full)"
+        "description": "Adds a Stone Mark to 1 tile (+100 Points; no number or suit, never joins a group, always scores in full)"
       },
       "seal_of_manzu": {
         "name": "Seal of Characters",
@@ -2473,35 +2473,35 @@
       },
       "seal_of_the_hermit": {
         "name": "Seal of the Hermit",
-        "description": "Doubles gold (max +20 gold)"
+        "description": "Doubles your Gold (up to +20 Gold)"
       },
       "seal_of_balance": {
         "name": "Seal of Balance",
-        "description": "Gives total sell value of all Decrees (max 50 gold)"
+        "description": "Gain Gold equal to the total sell value of your Decrees (up to 50 Gold)"
       },
       "seal_of_strength": {
         "name": "Seal of Strength",
-        "description": "Increases rank of up to 2 tiles by 1 (max 9)"
+        "description": "Raises the number on up to 2 tiles by 1 (up to 9)"
       },
       "seal_of_release": {
         "name": "Seal of Release",
-        "description": "Destroys up to 2 selected tiles permanently"
+        "description": "Destroys up to 2 tiles you choose for the rest of this run"
       },
       "seal_of_transmutation": {
         "name": "Seal of Transmutation",
-        "description": "Select 2 tiles, left becomes copy of right"
+        "description": "Choose 2 tiles: the first becomes a copy of the second"
       },
       "seal_of_fortune": {
         "name": "Seal of Fortune",
-        "description": "1 in 4 chance to add Foil/Holo/Prismatic to random Decree"
+        "description": "1 in 4 chance to give a random Decree the Foil, Holographic or Polychrome edition"
       },
       "seal_of_the_immortal": {
         "name": "Seal of the Immortal",
-        "description": "Creates a Mythic Decree (if room)"
+        "description": "Creates a Heavenly Ordinance Decree, the rarest tier (if you have room)"
       },
       "seal_of_the_void": {
         "name": "Seal of the Void",
-        "description": "Upgrades every Yaku by 1 level"
+        "description": "Raises every hand family by 1 level"
       }
     }
   },
@@ -2565,35 +2565,35 @@
     "items": {
       "script_of_kinship": {
         "name": "Script of Kinship",
-        "description": "Destroy 1 random tile, add 3 random Enhanced Face tiles (Winds/Dragons)"
+        "description": "Destroys 1 random tile and adds 3 random Winds or Dragons, each with a Mark"
       },
       "script_of_the_grave": {
         "name": "Script of the Grave",
-        "description": "Destroy 1 random tile, add 2 random Enhanced Terminal tiles"
+        "description": "Destroys 1 random tile and adds 2 random 1s or 9s, each with a Mark"
       },
       "script_of_incantation": {
         "name": "Script of Incantation",
-        "description": "Destroy 1 random tile, add 4 random Enhanced Number tiles"
+        "description": "Destroys 1 random tile and adds 4 random 2–8 tiles, each with a Mark"
       },
       "script_of_immolation": {
         "name": "Script of Immolation",
-        "description": "Destroys 5 random tiles from hand. Gain 20 gold."
+        "description": "Destroys 5 random tiles on your rack. Gain 20 Gold."
       },
       "script_of_the_cryptid": {
         "name": "Script of the Cryptid",
-        "description": "Create 2 copies of 1 selected tile in hand"
+        "description": "Creates 2 copies of 1 rack tile you choose"
       },
       "script_of_the_gold_seal": {
         "name": "Script of the Gold Seal",
-        "description": "Add Gold Seal to 1 selected tile"
+        "description": "Adds a Gold Seal to 1 tile you choose (+3 Gold when it scores)"
       },
       "script_of_deja_vu": {
         "name": "Script of Deja Vu",
-        "description": "Add Red Seal to 1 selected tile (retrigger)"
+        "description": "Adds a Red Seal to 1 tile you choose (it scores twice)"
       },
       "script_of_the_trance": {
         "name": "Script of the Trance",
-        "description": "Add Blue Seal to 1 tile (creates Orb for final hand)"
+        "description": "Adds a Blue Seal to 1 tile (creates a Celestial Orb if the tile is in the play that clears the round)"
       },
       "script_of_the_medium": {
         "name": "Script of the Medium",
@@ -2601,7 +2601,7 @@
       },
       "script_of_aura": {
         "name": "Script of Aura",
-        "description": "Add Foil/Holo/Prismatic to 1 selected tile"
+        "description": "Gives 1 tile you choose a random edition: Foil, Holographic or Polychrome"
       },
       "script_of_ectoplasm": {
         "name": "Script of Ectoplasm",
@@ -2617,35 +2617,35 @@
       },
       "script_of_the_hex": {
         "name": "Script of the Hex",
-        "description": "Add Prismatic to random Decree, destroy all others"
+        "description": "Gives a random Decree the Polychrome edition and destroys all other Decrees"
       },
       "script_of_the_sigil": {
         "name": "Script of the Sigil",
-        "description": "Converts ALL tiles in hand to a single random suit"
+        "description": "Converts every tile on your rack to one random suit"
       },
       "script_of_the_ouija": {
         "name": "Script of the Ouija",
-        "description": "Converts ALL tiles in hand to a single random rank"
+        "description": "Converts every tile on your rack to one random number"
       },
       "script_of_the_soul": {
         "name": "Script of the Soul",
-        "description": "Creates a Legendary (Heavenly Ordinance) Decree"
+        "description": "Creates a Heavenly Ordinance Decree, the rarest tier"
       },
       "script_of_the_singularity": {
         "name": "Script of the Singularity",
-        "description": "Upgrade every Yaku by 1 level"
+        "description": "Raises every hand family by 1 level"
       },
       "script_of_eclipse": {
         "name": "Script of Eclipse",
-        "description": "Score at 1-shanten this round"
+        "description": "This round, a hand one tile short of complete can score as a complete hand"
       },
       "script_of_mirrors": {
         "name": "Script of Mirrors",
-        "description": "Duplicate one tile in hand"
+        "description": "Duplicates one rack tile you choose"
       },
       "script_of_silence": {
         "name": "Script of Silence",
-        "description": "Ignore one invalid meld this hand"
+        "description": "Your next complete hand may include one group that does not fit"
       }
     }
   },
@@ -2692,7 +2692,7 @@
     "unlockProgress": "Progress toward {{name}}",
     "title": "Choose Table",
     "titleJp": "卓風",
-    "subtitle": "Select a table style for your run",
+    "subtitle": "Choose your starting table and its rules",
     "table": "Run setup",
     "selected": "Selected:",
     "chooseTable": "Choose table and stake"
@@ -2705,11 +2705,11 @@
       },
       "walls": {
         "name": "Walls",
-        "description": "Deck variants with unique tile compositions"
+        "description": "Wall variants with different tile mixes"
       },
       "charters": {
         "name": "Imperial Charters",
-        "description": "Permanent upgrades purchased after defeating Boss Mandates"
+        "description": "Permanent run upgrades bought in the Tea House"
       },
       "consumables": {
         "name": "Consumables",
@@ -2817,15 +2817,15 @@
       },
       "wild": {
         "name": "Wild Mark",
-        "description": "Tile can act as any suit. Counts as any suit for yaku"
+        "description": "Counts as any suit, including for Yaku"
       },
       "glass": {
         "name": "Glass Mark",
-        "description": "Fragile but powerful. x2 Mult when scored, 25% chance to shatter"
+        "description": "Fragile but powerful. ×2 Mult when scored; 1 in 4 chance to shatter"
       },
       "steel": {
         "name": "Steel Mark",
-        "description": "Bonus when held. x1.5 Mult while held in hand"
+        "description": "×1.5 Mult while it stays on your rack instead of being played"
       },
       "stone": {
         "name": "Stone Mark",
@@ -2833,11 +2833,11 @@
       },
       "gold": {
         "name": "Gold Mark",
-        "description": "Generates gold. +3 Gold when held at round end"
+        "description": "+3 Gold if it is still on your rack when the round ends"
       },
       "lucky": {
         "name": "Lucky Mark",
-        "description": "Random bonus chance. When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold"
+        "description": "When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold"
       }
     }
   },
@@ -2845,11 +2845,11 @@
     "items": {
       "gold": {
         "name": "Gold Seal",
-        "description": "Earns gold when played. +3 Gold when scored in hand"
+        "description": "+3 Gold each time this tile scores"
       },
       "red": {
         "name": "Red Seal",
-        "description": "Tile triggers twice. Retriggers once when scored"
+        "description": "This tile scores twice"
       },
       "blue": {
         "name": "Blue Seal",
@@ -2877,7 +2877,7 @@
       },
       "polychrome": {
         "name": "Polychrome",
-        "description": "Prismatic color shifting. x1.5 Mult when scored"
+        "description": "Prismatic color shifting. ×1.5 Mult when scored"
       },
       "negative": {
         "name": "Negative",
@@ -3116,7 +3116,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "A complete hand: four groups and a pair, usually 14 tiles. Its Yaku multiply the score."
+      "explain": "A complete hand: four groups (sequences, triplets or quads) and a pair, usually 14 tiles. Seven Pairs and Thirteen Orphans are special exceptions. Its Yaku multiply the score."
     },
     "three_dragons": {
       "name": "Three Dragons",
@@ -3137,7 +3137,7 @@
     "turnsTitle": "Your turn",
     "playHelp": "scores the selected tiles.",
     "redrawHelp": "sends any number of selected tiles to the river and draws new ones.",
-    "turnsHelp": "Each round gives you {{turns}} Turns. Play hand and REDRAW each cost one. Clear a Small or Large round with {{spare}} Turns to spare to earn an Omen.",
+    "turnsHelp": "Each round gives you {{turns}} Turns. Play hand and REDRAW each cost one; free redraws cost none, and your last Turn must be a play. Clear a Small or Large round with {{spare}} Turns to spare to earn an Omen.",
     "scoreTitle": "Your score",
     "points": "Points",
     "mult": "Mult",
@@ -3147,7 +3147,7 @@
     "secretTitle": "Secret hands",
     "secretFound": "Secret hand found",
     "secretInGuide": "Now listed in the ? guide.",
-    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Each tile counts once; up to 6 tiles per play unless it is a full Mahjong hand.",
+    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Normally each tile counts once, and a play holds up to 6 tiles unless it is a full Mahjong hand.",
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",

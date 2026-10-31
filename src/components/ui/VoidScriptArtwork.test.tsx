@@ -10,7 +10,7 @@ describe('VoidScriptArtwork', () => {
     render(<VoidScriptArtwork script={script} />)
 
     const artwork = screen.getByRole('img', {
-      name: /Script of Eclipse.*Score at 1-shanten/i,
+      name: /Script of Eclipse.*one tile short of complete/i,
     })
     const image = artwork.querySelector('img')
 
@@ -23,7 +23,9 @@ describe('VoidScriptArtwork', () => {
 
     const tooltip = await screen.findByRole('tooltip')
     expect(tooltip).toHaveTextContent('Script of Eclipse')
-    expect(tooltip).toHaveTextContent('Score at 1-shanten this round')
+    expect(tooltip).toHaveTextContent(
+      'This round, a hand one tile short of complete can score as a complete hand'
+    )
     expect(tooltip).toHaveTextContent('Lose a Decree slot next round')
     expect(tooltip).toHaveTextContent('Darkness bends the rules')
   })

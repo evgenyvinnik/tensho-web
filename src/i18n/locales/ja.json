@@ -161,15 +161,15 @@
     },
     "fortuneBuilt": {
       "name": "築いた財産",
-      "description": "一回のランで金400を所持する。"
+      "description": "一回のランで金貨400枚を所持する。"
     },
     "wildFlush": {
-      "name": "ワイルド混一色",
-      "description": "すべて万能牌で構成された混一色で得点する。"
+      "name": "万能混一色",
+      "description": "すべて万能牌で構成された混一色（一種類の数牌と風牌・三元牌）で得点する。"
     },
     "speedRun": {
       "name": "疾走",
-      "description": "消費ターン数48以下でランに勝利する。無料の引き直しは数えない。"
+      "description": "消費した手番が48回以下でランに勝利する。無料の引き直しは数えない。"
     },
     "charterCollector": {
       "name": "勅許の収集家",
@@ -181,19 +181,19 @@
     },
     "royalHand": {
       "name": "王者の手",
-      "description": "役満で得点する。"
+      "description": "役満（大三元などの最上位の役）で得点する。"
     },
     "retrograde": {
       "name": "逆行",
-      "description": "役のレベルを10に上げる。"
+      "description": "役の系統のどれかをレベル10に上げる。"
     },
     "keeperOfWinds": {
       "name": "風の守り手",
-      "description": "一度の挑戦で風の役を合計10個成立させる。"
+      "description": "一回のランで、東の刻子か槓子を含む和了形で5回得点する。"
     },
     "masterOfSilence": {
       "name": "静寂の達人",
-      "description": "字牌を捨てずに3ラウンド勝利する。"
+      "description": "風牌と三元牌を一度も引き直さずに3ラウンド勝利する。"
     },
     "sealBearer": {
       "name": "印の使い手",
@@ -221,7 +221,7 @@
     },
     "voidWalker": {
       "name": "虚空の旅人",
-      "description": "すべての虚無の書を発見する。"
+      "description": "すべての虚空文を発見する。"
     },
     "charterComplete": {
       "name": "勅許の完全収集",
@@ -257,7 +257,7 @@
     },
     "purist": {
       "name": "純粋主義者",
-      "description": "ショップを再抽選せずにランに勝利する。"
+      "description": "店の商品を更新せずにランに勝利する。"
     },
     "title": "天の栄誉",
     "shortTitle": "栄誉",
@@ -280,29 +280,29 @@
   },
   "closedHandAusterity": {
     "name": "門前の修行",
-    "description": "完成した門前手に×1.5。このランで以前に完成させた門前手1回につき×1.2で成長し、花による強化前の上限は×4。戦術プレイとシャンテンの恩赦は対象外。",
-    "progress": "完成した門前手：{{count}}回。次の対象手：花の強化前に×{{factor}}。"
+    "description": "和了形1回ごとに×1.5。このランで先に完成させた和了形1回につき×1.2ずつ伸び、花牌のボーナス前で最大×4。小さな打牌と向聴の恩赦で完成させた手は対象外。",
+    "progress": "これまでの和了形：{{count}}回。次回：花牌の前で×{{factor}}。"
   },
   "yakuRepetition": {
     "name": "連続役の勅令",
-    "description": "連続したラウンドで得点した役は、連続回数ごとに×1.2で累積（最大×4）。1ラウンド抜けると連続は途切れます。上限は花牌の強化前に適用。",
+    "description": "連続するラウンドで得点した役は、連続中の前のラウンド1つにつき×1.2を得ます（花牌のボーナス前で最大×4）。その役のないラウンドがあると連続は途切れます。",
     "title": "繰り返す役",
     "streak": "{{name}} · 直前まで{{rounds}}ラウンド連続",
     "empty": "まだ連続記録はありません。このラウンドで役を得点して始めましょう。"
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "役満で得点する。",
+    "seal_of_the_immortal": "役満（大三元などの最上位の役）で得点する。",
     "seal_of_the_void": "1回の挑戦で全20種類の役で得点する。",
     "planet_x_orb": "七対子で得点する。",
-    "ceres_orb": "混全帯么九で得点する。",
-    "eris_orb": "国士無双で得点する。",
-    "black_hole_orb": "ほかの12種類の天体の珠をすべて発見する。"
+    "ceres_orb": "混全帯幺九（すべての面子と雀頭に1・9・風牌・三元牌のいずれかを含む和了形）で得点する。",
+    "eris_orb": "国士無双（1・9・風牌・三元牌をすべて1枚ずつと、そのうち1枚をもう1枚）で得点する。",
+    "black_hole_orb": "ほかの12種類の天球をすべて発見する。"
   },
   "decreeUnlocks": {
     "stage_master": "第4幕に到達する。",
     "flower_pot": "任意の追加挑戦である無限モードで第8幕に到達する。",
-    "satellite": "一回のランで金400を所持する。",
-    "swift_andy": "消費ターン数48以下でランに勝利する。無料の引き直しは数えない。",
+    "satellite": "一回のランで金貨400枚を所持する。",
+    "swift_andy": "消費した手番が48回以下でランに勝利する。無料の引き直しは数えない。",
     "lucky_sixes": "一回のプレイで10,000点を獲得する。",
     "the_idol": "一回のプレイで1,000,000点を獲得する。",
     "stuntman": "一回のプレイで100,000,000点を獲得する。",
@@ -310,9 +310,9 @@
     "astronomer": "すべての天球を発見する。",
     "decree-blueprint": "ランをクリアする。",
     "decree-brainstorm": "法令を5枚以上所持してランをクリアする。",
-    "decree-heavenly-ordinance": "役満で得点する。",
-    "decree-clone-army": "ゴールドステークでランをクリアする。",
-    "decree-yakuman-blessing": "1回のランで役満を3つ得点する。",
+    "decree-heavenly-ordinance": "役満（大三元などの最上位の役）で得点する。",
+    "decree-clone-army": "金場でランをクリアする。",
+    "decree-yakuman-blessing": "1回のランで役満を3回得点する。",
     "decree-omega": "任意の追加挑戦である無限モードで第8幕をクリアする。"
   },
   "scoreThresholds": {
@@ -345,7 +345,7 @@
   },
   "runOwnership": {
     "fateSeal": "牌への変更は次のラウンドも含め、このランの終了まで続きます。新しいランではリセットされます。",
-    "negativeTile": "このネガティブ牌が自分の山に残る間、法令スロット+1。引いたり捨てたりしても維持され、破壊やエディションの変更で失われます。",
+    "negativeTile": "この負影の牌が牌山に残っている間、法令枠+1。引いても河へ送っても枠は残り、破壊されるかエディションが置き換わると失われる。",
     "overCapacity": "容量が減りました。所持する法令は失われません。追加で獲得する前に空きを作ってください。"
   },
   "yakuUpgrades": {
@@ -394,7 +394,7 @@
     "remaining": "あと{{remaining}}ラウンドを終えると期限切れ。",
     "expired": "期限切れ：有効な効果は無効です。",
     "rentalName": "賃貸",
-    "rentalDescription": "各ラウンド終了時に{{amount}}ゴールドを支払います。"
+    "rentalDescription": "各ラウンド終了時に金貨{{amount}}枚を支払います。"
   },
   "classicSave": {
     "savedTitle": "クラシックの対局",
@@ -424,10 +424,10 @@
     "available": "{{name}}（残り{{count}}個）",
     "penalty_lose_tile": "ランダムな牌を1枚失う。",
     "penalty_lose_gold": "すべての金を失う。",
-    "penalty_lose_hand_size": "手牌の上限が永続的に{{count}}枚減る。",
-    "penalty_lock_tile": "ランダムな牌1枚をデッドプールに封じる。",
+    "penalty_lose_hand_size": "このランの残りの間、手牌枠が{{count}}減る。",
+    "penalty_lock_tile": "無作為な牌1枚を河に封じる。その牌は二度と引けない。",
     "penalty_lose_decree_slot": "次のラウンドの法令枠が{{count}}つ減る。",
-    "penalty_halve_base_score": "次の手の基礎点が半分になる。",
+    "penalty_halve_base_score": "次の打牌の基礎点数が半分になる。",
     "penalty_destroy_decrees": "他の法令をすべて破壊する。",
     "penalty_none": "追加の代償なし。",
     "protected": "前兆の加護が追加の代償を無効にする。",
@@ -536,7 +536,7 @@
       "normal": "標準",
       "slow": "遅い"
     },
-    "tileHintsDesc": "手牌を対子・順子・刻子ごとに牌立ての下でまとめ、和了の形がそろったら知らせます",
+    "tileHintsDesc": "手牌の下に対子・順子・刻子の候補を表示し、和了形がそろったら知らせます",
     "visual": "表示",
     "rankNumbers": "牌に数字を表示",
     "rankNumbersDesc": "牌の絵柄を覚えるまで、数牌に1〜9、三元牌に文字を小さく表示します。",
@@ -569,7 +569,7 @@
     "deadWallDraw": "王牌から引く",
     "winsRound": "局に勝利",
     "tilesInWall": "山の残り牌",
-    "handsRemaining": "残り手数",
+    "handsRemaining": "残り手番",
     "redrawsRemaining": "残り引き直し数",
     "redrawSelected": "選択した牌を引き直す",
     "redrawHint": "選んだ牌を最大3枚戻して引き直します",
@@ -597,7 +597,7 @@
       "label": "予測",
       "selectOneMore": "この面子を打つにはもう一枚選びます",
       "notCompleteHand": "この選択は完成した手ではありません",
-      "returnTiles": "五枚まで戻すか、手を完成させます",
+      "returnTiles": "{{max}}枚になるまで牌を戻すか、和了形を完成させます",
       "groupToScore": "面子にすれば満額で入ります。完成した手は役を開きます"
     },
     "previewConcealed": "得点プレビュー非表示",
@@ -822,7 +822,7 @@
     "packSkipped": "パックをスキップ",
     "kinds": {
       "decree": "法令・{{rarity}}",
-      "decreeHelp": "法令はこのラン中ずっと有効なルールです。法令枠を1つ使い、いつでも売れます。",
+      "decreeHelp": "法令は所持している間ルールを変えます。通常は法令枠を1つ使います。「永久」でなければ売却できます。",
       "seal": "運命の印・即座に発動",
       "sealHelp": "入手した瞬間に使用されます。変える山の牌を選ぶと、このランの間ずっとその状態が続きます。",
       "sealHelpInstant": "入手した瞬間に使用されます。",
@@ -877,23 +877,23 @@
       },
       "satellite": {
         "name": "衛星",
-        "description": "勝利した各ラウンドの終了時、レベル1を超えている天球の系統ごとに+1金貨。"
+        "description": "勝利した各ラウンドの終了時、天球でレベル1を超えて強化した役の系統ごとに金貨+1。"
       },
       "swift_andy": {
         "name": "俊足のアンディ",
-        "description": "毎ラウンド、無料の引き直し回数+2。手牌上限−2。"
+        "description": "毎ラウンド無料の引き直し+2。手牌枠−2。"
       },
       "lucky_sixes": {
         "name": "幸運の六",
-        "description": "打った数字6の数牌ごとに+6倍率。石の牌は数えない。"
+        "description": "打った6の数牌ごとに倍率+6。石の牌は数えない。"
       },
       "the_idol": {
         "name": "偶像",
-        "description": "二枚以上の牌を打ち、そのすべての牌面に印刷された種類と数字が同じなら倍率×3。石の牌があると条件を満たさない。万能牌も印刷された牌面のまま判定する。"
+        "description": "二枚以上を打ち、そのすべてが印刷上同じ牌なら倍率×3。石の牌があると成立しない。万能牌は印刷された牌面のまま扱う。"
       },
       "stuntman": {
         "name": "スタントマン",
-        "description": "+250点。手牌上限−3。"
+        "description": "点数+250。手牌枠−3。"
       },
       "cartomancer": {
         "name": "札占い師",
@@ -945,59 +945,59 @@
       },
       "decree-manzu-master": {
         "name": "萬子師",
-        "description": "萬子を含む場合+3倍率"
+        "description": "打牌に萬子が含まれていれば倍率+3"
       },
       "decree-pinzu-perfectionist": {
         "name": "筒子匠",
-        "description": "筒子を含む場合+3倍率"
+        "description": "打牌に筒子が含まれていれば倍率+3"
       },
       "decree-souzu-scholar": {
         "name": "索子学",
-        "description": "索子を含む場合+3倍率"
+        "description": "打牌に索子が含まれていれば倍率+3"
       },
       "decree-wind-walker": {
         "name": "風歩者",
-        "description": "風牌を含む場合+4倍率"
+        "description": "打牌に風牌が含まれていれば倍率+4"
       },
       "decree-dragon-disciple": {
         "name": "竜弟子",
-        "description": "三元牌を含む場合+4倍率"
+        "description": "打牌に三元牌が含まれていれば倍率+4"
       },
       "decree-edge-runner": {
         "name": "端走者",
-        "description": "老頭牌1枚につき+20点"
+        "description": "打った老頭牌（1か9）1枚につき点数+20"
       },
       "decree-middle-way": {
         "name": "中道",
-        "description": "中張牌1枚につき+10点"
+        "description": "打った中張牌（2〜8の牌）1枚につき点数+10"
       },
       "decree-green-fortune": {
         "name": "緑運",
-        "description": "緑牌1枚につき+15点（2,3,4,6,8索）"
+        "description": "打った緑の牌1枚につき点数+15：索子の2・3・4・6・8と發"
       },
       "decree-coin-collector": {
         "name": "銭集",
-        "description": "ラウンド終了時+1金貨"
+        "description": "各ラウンド終了時に金貨+1"
       },
       "decree-merchants-favor": {
         "name": "商人恩",
-        "description": "ラウンド終了時+2金貨"
+        "description": "各ラウンド終了時に金貨+2"
       },
       "decree-lucky-coin": {
         "name": "幸運銭",
-        "description": "ラウンド終了時+3金貨"
+        "description": "各ラウンド終了時に金貨+3"
       },
       "decree-pair-lover": {
         "name": "対好者",
-        "description": "対子を含む場合+30点"
+        "description": "打牌に対子が含まれていれば点数+30"
       },
       "decree-sequence-seeker": {
         "name": "順子求",
-        "description": "順子を含む場合+30点"
+        "description": "打牌に順子が含まれていれば点数+30"
       },
       "decree-triplet-tracker": {
         "name": "刻子追",
-        "description": "刻子を含む場合+40点"
+        "description": "打牌に刻子が含まれていれば点数+40"
       },
       "decree-flower-friend": {
         "name": "花友",
@@ -1009,7 +1009,7 @@
       },
       "decree-wide-grip": {
         "name": "広握",
-        "description": "+1手牌サイズ"
+        "description": "手牌枠+1"
       },
       "decree-second-chance": {
         "name": "再機会",
@@ -1021,111 +1021,111 @@
       },
       "decree-modest-fortune": {
         "name": "謙運",
-        "description": "+20点とラウンドごとに+1金貨"
+        "description": "点数+20、さらに各ラウンド終了時に金貨+1"
       },
       "decree-humble-power": {
         "name": "謙力",
-        "description": "+2倍率とラウンドごとに+1金貨"
+        "description": "倍率+2、さらに各ラウンド終了時に金貨+1"
       },
       "decree-one-mastery": {
         "name": "壱極",
-        "description": "1牌1枚につき+25点"
+        "description": "打った1の数牌1枚につき点数+25"
       },
       "decree-nine-mastery": {
         "name": "九極",
-        "description": "9牌1枚につき+25点"
+        "description": "打った9の数牌1枚につき点数+25"
       },
       "decree-five-blessing": {
         "name": "五福",
-        "description": "5牌1枚につき+35点"
+        "description": "打った5の数牌1枚につき点数+35"
       },
       "decree-spark": {
         "name": "火花",
-        "description": "x1.2倍率"
+        "description": "倍率×1.2"
       },
       "decree-ember": {
         "name": "残火",
-        "description": "x1.3倍率"
+        "description": "倍率×1.3"
       },
       "decree-riichi-devotee": {
         "name": "対子信者",
-        "description": "対子を2組以上含むと倍率+4"
+        "description": "打牌に対子が2組以上含まれていれば倍率+4"
       },
       "decree-tanyao-tactician": {
-        "name": "断么戦術家",
-        "description": "断么九得点時+3倍率"
+        "name": "断幺戦術家",
+        "description": "断幺九（1・9・風牌・三元牌を含まず、2〜8の牌だけでできた和了形）で得点すると倍率+3"
       },
       "decree-pinfu-purist": {
         "name": "平和純粋者",
-        "description": "平和得点時+3倍率"
+        "description": "平和（順子4組と、三元牌・東以外の対子でできた和了形）で得点すると倍率+3"
       },
       "decree-manzu-emperor": {
         "name": "萬子皇帝",
-        "description": "手牌の半分以上が萬子の場合+8倍率"
+        "description": "打った牌の半分以上が萬子なら倍率+8"
       },
       "decree-pinzu-princess": {
         "name": "筒子姫",
-        "description": "手牌の半分以上が筒子の場合+8倍率"
+        "description": "打った牌の半分以上が筒子なら倍率+8"
       },
       "decree-souzu-sage": {
         "name": "索子賢者",
-        "description": "手牌の半分以上が索子の場合+8倍率"
+        "description": "打った牌の半分以上が索子なら倍率+8"
       },
       "decree-flush-fever": {
         "name": "一色熱",
-        "description": "一色手の場合x1.5倍率"
+        "description": "打った数牌がすべて1種類なら倍率×1.5（風牌・三元牌は含んでよい）"
       },
       "decree-honor-guard": {
         "name": "字牌守護",
-        "description": "字牌3枚以上の場合x1.5倍率"
+        "description": "打牌に字牌（風牌・三元牌）が3枚以上含まれていれば倍率×1.5"
       },
       "decree-terminal-tide": {
         "name": "端牌潮流",
-        "description": "老頭牌4枚以上の場合x1.5倍率"
+        "description": "打牌に老頭牌（1か9）が4枚以上含まれていれば倍率×1.5"
       },
       "decree-straight-arrow": {
         "name": "直矢",
-        "description": "順子3組の場合+80点"
+        "description": "打牌に順子が3組以上含まれていれば点数+80"
       },
       "decree-run-master": {
         "name": "連続師",
-        "description": "順子1組につき+6倍率"
+        "description": "打った順子1組につき倍率+6"
       },
       "decree-triple-threat": {
         "name": "三重脅威",
-        "description": "刻子2組以上の場合+80点"
+        "description": "打牌に刻子が2組以上含まれていれば点数+80"
       },
       "decree-triplet-thunder": {
         "name": "刻子雷",
-        "description": "刻子1組につき+8倍率"
+        "description": "打った刻子1組につき倍率+8"
       },
       "decree-echo-stone": {
         "name": "反響石",
-        "description": "最初の得点牌を再発動"
+        "description": "最初に得点する牌が2回得点する"
       },
       "decree-mirror-shard": {
         "name": "鏡片",
-        "description": "最後の得点牌を再発動"
+        "description": "最後に得点する牌が2回得点する"
       },
       "decree-dragon-echo": {
         "name": "竜響",
-        "description": "全ての三元牌を再発動"
+        "description": "打った三元牌がすべて2回得点する"
       },
       "decree-wind-echo": {
         "name": "風響",
-        "description": "全ての風牌を再発動"
+        "description": "打った風牌がすべて2回得点する"
       },
       "decree-golden-ratio": {
         "name": "黄金比",
-        "description": "5金貨ごとに+1倍率（最大+10）"
+        "description": "所持金貨5枚につき倍率+1（最大+10）"
       },
       "decree-treasure-hunter": {
         "name": "宝探し",
-        "description": "ラウンド勝利時に手元に残っている牌の種類ごとに+1ゴールド。風牌と三元牌は別々に数えます。"
+        "description": "ラウンドに勝利したとき、手牌に残っている牌の種類1つにつき金貨+1。風牌と三元牌はそれぞれ別の種類として数える。"
       },
       "decree-tax-collector": {
         "name": "徴税官",
-        "description": "ラウンド終了時+4金貨"
+        "description": "各ラウンド終了時に金貨+4"
       },
       "decree-garden-keeper": {
         "name": "庭師",
@@ -1133,7 +1133,7 @@
       },
       "decree-blossom-storm": {
         "name": "花嵐",
-        "description": "収集した花牌1枚につきx1.2倍率"
+        "description": "集めた花牌1枚につき倍率×1.2"
       },
       "decree-seasonal-wind": {
         "name": "季節風",
@@ -1141,15 +1141,15 @@
       },
       "decree-slow-burn": {
         "name": "遅火",
-        "description": "このランでプレイしたラウンドごとに+2倍率"
+        "description": "このランで完了したラウンド1つにつき倍率+2"
       },
       "decree-momentum": {
         "name": "勢い",
-        "description": "このラウンドでプレイした手ごとに+15点"
+        "description": "このラウンドで先に打った1回ごとに点数+15"
       },
       "decree-crescendo": {
         "name": "漸強",
-        "description": "このラウンドでプレイした手ごとにx1.1倍率"
+        "description": "このラウンドで先に打った1回ごとに倍率×1.1"
       },
       "decree-waste-not": {
         "name": "無駄無",
@@ -1161,27 +1161,27 @@
       },
       "decree-yakuhai-zealot": {
         "name": "役牌狂信者",
-        "description": "役牌得点時x1.5倍率"
+        "description": "役牌（三元牌か東の刻子・槓子を含む和了形）で得点すると倍率×1.5"
       },
       "decree-toitoi-titan": {
         "name": "対々巨人",
-        "description": "対々和得点時x1.5倍率"
+        "description": "対々和（刻子か槓子4組と対子でできた和了形）で得点すると倍率×1.5"
       },
       "decree-ittsu-initiate": {
         "name": "一通入門",
-        "description": "一気通貫得点時x1.5倍率"
+        "description": "一気通貫（同じ種類の1-2-3・4-5-6・7-8-9を含む和了形）で得点すると倍率×1.5"
       },
       "decree-chinitsu-champion": {
         "name": "清一色王者",
-        "description": "清一色得点時x2.0倍率"
+        "description": "清一色（風牌・三元牌を含まず、1種類だけでできた和了形）で得点すると倍率×2"
       },
       "decree-veteran": {
         "name": "古参",
-        "description": "完了した幕ごとに+30点"
+        "description": "完了した幕1つにつき点数+30"
       },
       "decree-experience": {
         "name": "経験",
-        "description": "完了した幕ごとにx1.1倍率"
+        "description": "完了した幕1つにつき倍率×1.1"
       },
       "decree-greater-jade": {
         "name": "大玉",
@@ -1193,23 +1193,23 @@
       },
       "decree-flame": {
         "name": "炎",
-        "description": "x1.5倍率"
+        "description": "倍率×1.5"
       },
       "decree-wind-dragon": {
         "name": "風竜",
-        "description": "風牌と三元牌両方がある場合+5倍率"
+        "description": "打牌に風牌と三元牌の両方が含まれていれば倍率+5"
       },
       "decree-all-suits": {
         "name": "三色揃",
-        "description": "3色全てを含む場合+8倍率"
+        "description": "打牌に萬子・筒子・索子がすべて含まれていれば倍率+8"
       },
       "decree-bookends": {
         "name": "端揃",
-        "description": "1と9両方がある場合+60点"
+        "description": "打牌に1と9の両方が含まれていれば点数+60"
       },
       "decree-expansive-grip": {
         "name": "拡張握",
-        "description": "+2手牌サイズ"
+        "description": "手牌枠+2"
       },
       "decree-careful-player": {
         "name": "慎重者",
@@ -1217,7 +1217,7 @@
       },
       "decree-inferno": {
         "name": "業火",
-        "description": "x2.0倍率"
+        "description": "倍率×2"
       },
       "decree-supernova": {
         "name": "超新星",
@@ -1229,43 +1229,43 @@
       },
       "decree-compound-interest": {
         "name": "複利",
-        "description": "10金貨ごとに+2倍率"
+        "description": "所持金貨10枚につき倍率+2"
       },
       "decree-wealth-engine": {
         "name": "富の機関",
-        "description": "ラウンド終了時に所有法令ごとに+1金貨"
+        "description": "各ラウンド終了時、所持している法令1つにつき金貨+1"
       },
       "decree-perpetual-motion": {
         "name": "永久機関",
-        "description": "このランでプレイした手ごとに+2倍率"
+        "description": "このランで先に打った1回ごとに倍率+2"
       },
       "decree-triple-echo": {
         "name": "三重響",
-        "description": "全ての得点牌を1回再発動"
+        "description": "得点する牌がすべて2回得点する"
       },
       "decree-terminal-resonance": {
         "name": "端牌共鳴",
-        "description": "老頭牌を2回再発動"
+        "description": "打った老頭牌（1か9）がすべて3回得点する"
       },
       "decree-honor-resonance": {
         "name": "字牌共鳴",
-        "description": "字牌を2回再発動"
+        "description": "打った字牌（風牌か三元牌）がすべて3回得点する"
       },
       "decree-manzu-monarch": {
         "name": "萬子王",
-        "description": "全て萬子の場合x2.0倍率"
+        "description": "打った牌がすべて萬子なら倍率×2"
       },
       "decree-pinzu-potentate": {
         "name": "筒子君主",
-        "description": "全て筒子の場合x2.0倍率"
+        "description": "打った牌がすべて筒子なら倍率×2"
       },
       "decree-souzu-sovereign": {
         "name": "索子主権",
-        "description": "全て索子の場合x2.0倍率"
+        "description": "打った牌がすべて索子なら倍率×2"
       },
       "decree-flower-emperor": {
         "name": "花帝",
-        "description": "収集した花牌1枚につきx1.5倍率"
+        "description": "集めた花牌1枚につき倍率×1.5"
       },
       "decree-season-lord": {
         "name": "季節主",
@@ -1277,27 +1277,27 @@
       },
       "decree-honitsu-herald": {
         "name": "混一色先駆",
-        "description": "混一色得点時x2.0倍率"
+        "description": "混一色（1種類の数牌と風牌・三元牌でできた和了形）で得点すると倍率×2"
       },
       "decree-sanshoku-sage": {
         "name": "三色賢者",
-        "description": "三色同順得点時x2.0倍率"
+        "description": "三色同順（3種類すべてに同じ順子がある和了形）で得点すると倍率×2"
       },
       "decree-chanta-champion": {
         "name": "全帯幺王者",
-        "description": "混全帯幺九得点時x2.0倍率"
+        "description": "混全帯幺九（順子を1つ以上含み、すべての面子と雀頭に1・9・風牌・三元牌のいずれかを含む和了形）で得点すると倍率×2。純全帯幺九（同じ形で風牌・三元牌を含まず、すべての面子と雀頭に1か9を含むもの）も対象。"
       },
       "decree-mandate-breaker": {
         "name": "令破壊者",
-        "description": "親局中+15倍率、x1.5倍率"
+        "description": "親局中：倍率+15と倍率×1.5"
       },
       "decree-boss-slayer": {
-        "name": "親衛殺し",
-        "description": "親局中x2.0倍率"
+        "name": "親局狩り",
+        "description": "親局中、倍率×2"
       },
       "decree-fortune-and-glory": {
         "name": "運と栄光",
-        "description": "+60点、+8倍率、ラウンドごとに+3金貨"
+        "description": "点数+60と倍率+8、さらに各ラウンド終了時に金貨+3"
       },
       "decree-emperors-blessing": {
         "name": "皇帝祝福",
@@ -1305,43 +1305,43 @@
       },
       "decree-golden-age": {
         "name": "黄金時代",
-        "description": "ラウンド終了時+8金貨"
+        "description": "各ラウンド終了時に金貨+8"
       },
       "decree-blueprint": {
         "name": "設計図",
-        "description": "右隣の法令の効果をコピー"
+        "description": "右隣の法令の効果をコピーする"
       },
       "decree-photograph": {
         "name": "写真",
-        "description": "最初の得点牌がx2倍率を与える"
+        "description": "最初に得点する牌が2回得点する"
       },
       "decree-ancient-scroll": {
         "name": "古代巻物",
-        "description": "+150点、-2手牌サイズ"
+        "description": "点数+150。手牌枠−2"
       },
       "decree-sacrifice": {
         "name": "犠牲",
-        "description": "倍率×3.0、ラウンドごとに手番−1"
+        "description": "倍率×3。ラウンドごとに手番−1"
       },
       "decree-transmuter": {
         "name": "変成者",
-        "description": "得点計算時に中張牌が老頭牌になる"
+        "description": "打った2〜8の牌は老頭牌（1と9）として得点する"
       },
       "decree-harmonizer": {
         "name": "調和者",
-        "description": "全ての色が順子のために一致とみなされる"
+        "description": "順子に異なる種類を混ぜてよい（例：萬子の1・筒子の2・索子の3）"
       },
       "decree-final-act": {
         "name": "終幕",
-        "description": "第4幕以降の幕ごとにx1.5倍率"
+        "description": "第4幕より後の幕1つにつき倍率×1.5"
       },
       "decree-endless-journey": {
         "name": "無限旅",
-        "description": "完了した幕ごとにx1.2倍率"
+        "description": "完了した幕1つにつき倍率×1.2"
       },
       "decree-master-grip": {
         "name": "達人握",
-        "description": "+3手牌サイズ"
+        "description": "手牌枠+3"
       },
       "decree-infinite-patience": {
         "name": "無限忍耐",
@@ -1349,51 +1349,51 @@
       },
       "decree-divine-flame": {
         "name": "神炎",
-        "description": "x3.0倍率"
+        "description": "倍率×3"
       },
       "decree-heavens-wrath": {
         "name": "天罰",
-        "description": "中張牌がない場合x4.0倍率"
+        "description": "打牌に2〜8の牌がなければ倍率×4（1・9・風牌・三元牌のみ）"
       },
       "decree-void-blessing": {
         "name": "虚空祝福",
-        "description": "全て字牌の場合x5.0倍率"
+        "description": "打った牌がすべて風牌か三元牌なら倍率×5"
       },
       "decree-eternal-echo": {
         "name": "永遠響",
-        "description": "全ての得点牌を2回再発動"
+        "description": "得点する牌がすべて3回得点する"
       },
       "decree-dragon-king": {
         "name": "竜王",
-        "description": "三元牌を3回再発動"
+        "description": "打った三元牌がすべて4回得点する"
       },
       "decree-yaku-amplifier": {
         "name": "役増幅器",
-        "description": "全ての役倍率がx1.5増加"
+        "description": "和了形が役で得点するとき、役による合計倍率に1.5を掛ける"
       },
       "decree-yakuman-seeker": {
         "name": "役満求道者",
-        "description": "役満得点時x5.0倍率"
+        "description": "役満（大三元や国士無双などの最上位の役）で得点すると倍率×5"
       },
       "decree-four-seasons-master": {
         "name": "四季達人",
-        "description": "有効な季節1つにつきx2.0倍率"
+        "description": "有効な季節1つにつき倍率×2"
       },
       "decree-eternal-garden": {
         "name": "永遠庭園",
-        "description": "花牌1枚につき+10倍率、花牌を失わない"
+        "description": "花牌1枚につき倍率+10。干ばつでも花牌は無効にならない。"
       },
       "decree-midas-touch": {
         "name": "黄金の手",
-        "description": "ラウンド終了時+10金貨"
+        "description": "各ラウンド終了時に金貨+10"
       },
       "decree-infinite-wealth": {
         "name": "無限財宝",
-        "description": "10金貨ごとにx1.1倍率"
+        "description": "所持金貨10枚につき倍率×1.1"
       },
       "decree-brainstorm": {
         "name": "脳嵐",
-        "description": "最左の法令の効果をコピー"
+        "description": "いちばん左の法令の効果をコピーする"
       },
       "decree-doppelganger": {
         "name": "分身",
@@ -1401,23 +1401,23 @@
       },
       "decree-manzu-god": {
         "name": "萬子神",
-        "description": "全て萬子の場合x3.0倍率"
+        "description": "打った牌がすべて萬子なら倍率×3"
       },
       "decree-pinzu-god": {
         "name": "筒子神",
-        "description": "全て筒子の場合x3.0倍率"
+        "description": "打った牌がすべて筒子なら倍率×3"
       },
       "decree-souzu-god": {
         "name": "索子神",
-        "description": "全て索子の場合x3.0倍率"
+        "description": "打った牌がすべて索子なら倍率×3"
       },
       "decree-glass-cannon": {
         "name": "硝子砲",
-        "description": "x6.0倍率、親局敗北時に破壊"
+        "description": "倍率×6。親局で敗北すると破壊される。"
       },
       "decree-phoenix": {
         "name": "鳳凰",
-        "description": "ランにつき1回敗北を防ぐ、その後売却"
+        "description": "ラウンドに敗北する場合、代わりにクリア扱いになる。その後この法令は破壊される。"
       },
       "decree-time-lord": {
         "name": "時の主",
@@ -1425,71 +1425,71 @@
       },
       "decree-exponential": {
         "name": "指数的",
-        "description": "基礎点100ごとにx1.3倍率"
+        "description": "打牌の基礎点数100につき倍率×1.3"
       },
       "decree-chain-reaction": {
         "name": "連鎖反応",
-        "description": "この手で得点した役ごとにx1.5倍率"
+        "description": "得点した手に含まれる役1つにつき倍率×1.5"
       },
       "decree-cosmic-jade": {
         "name": "宇宙玉",
-        "description": "+200点、x1.5倍率"
+        "description": "点数+200と倍率×1.5"
       },
       "decree-solar-banner": {
         "name": "太陽旗",
-        "description": "+25倍率、x2.0倍率"
+        "description": "倍率+25と倍率×2"
       },
       "decree-universal-grip": {
         "name": "万能握",
-        "description": "+4手牌サイズ"
+        "description": "手牌枠+4"
       },
       "decree-heavenly-ordinance": {
         "name": "天命",
-        "description": "x5.0倍率"
+        "description": "倍率×5"
       },
       "decree-celestial-throne": {
         "name": "天座",
-        "description": "倍率×10.0、手牌−2、ラウンドごとに手番−1"
+        "description": "倍率×10。手牌枠−2、ラウンドごとに手番−1"
       },
       "decree-void-emperor": {
         "name": "虚帝",
-        "description": "前の手が0点の場合x8.0倍率"
+        "description": "前回の打牌が0点なら倍率×8"
       },
       "decree-infinite-loop": {
         "name": "無限回廊",
-        "description": "全ての得点牌を3回再発動"
+        "description": "得点する牌がすべて4回得点する"
       },
       "decree-echo-dimension": {
         "name": "響次元",
-        "description": "全ての再発動効果が2回発動"
+        "description": "他の法令による追加の得点回数を倍にする（2回得点する牌は3回得点する）"
       },
       "decree-clone-army": {
         "name": "複製軍",
-        "description": "他の全ての法令の効果をコピー"
+        "description": "他のすべての法令の効果をコピーする"
       },
       "decree-world-tree": {
         "name": "世界樹",
-        "description": "花牌1枚につきx2.0倍率、季節1つにつきx1.5倍率"
+        "description": "花牌1枚につき倍率×2、有効な季節1つにつき倍率×1.5"
       },
       "decree-philosophers-stone": {
         "name": "賢者の石",
-        "description": "獲得金貨を2倍"
+        "description": "打牌・引き直し・アイテム・ラウンド報酬で得る金貨を2倍にする（法令の売却や兆しによる金貨は対象外）"
       },
       "decree-dragon-hoard": {
         "name": "竜の宝庫",
-        "description": "10金貨ごとにx1.2倍率"
+        "description": "所持金貨10枚につき倍率×1.2"
       },
       "decree-yaku-nexus": {
         "name": "役結節",
-        "description": "全ての役が+1ティアで得点"
+        "description": "すべての役が1段階上の役として得点する（第1段階の×1.3が×1.6になる）"
       },
       "decree-yakuman-blessing": {
         "name": "役満祝福",
-        "description": "役満得点時x10.0倍率"
+        "description": "役満（大三元や国士無双などの最上位の役）で得点すると倍率×10"
       },
       "decree-reality-warp": {
         "name": "現実歪曲",
-        "description": "全ての牌が全ての色と数字として扱われる"
+        "description": "選んだ牌14枚なら、どんな組み合わせでも和了形にできる"
       },
       "decree-time-master": {
         "name": "時の支配者",
@@ -1497,15 +1497,15 @@
       },
       "decree-immortal-decree": {
         "name": "不死法令",
-        "description": "全ての敗北を防ぐ（ただし得点半減）"
+        "description": "ラウンドに敗北する場合は毎回、代わりにクリア扱いになる。最初に救われた後は、この法令を売っても、ランが終わるまで得点が半分になる。"
       },
       "decree-omega": {
         "name": "終極",
-        "description": "+500点、+50倍率、x2.0倍率"
+        "description": "点数+500、倍率+50、倍率×2"
       },
       "yakuman_succession": {
         "name": "役満継承",
-        "description": "花牌を2種類以上持つ間、混一色・清一色・二盃口・純全帯幺九・七対子が役満に昇格（各×4）。勅命で格下げされた役は昇格できません。複製は重複しません。"
+        "description": "花牌を2枚以上持っている間、次の役が最上位の役満になる（各×4）：混一色、清一色、二盃口（同じ順子の組が2組）、純全帯幺九（すべての面子と雀頭に1か9）、七対子。勅命で弱められた役は昇格しない。複製は重複しない。"
       },
       "river_tax": {
         "name": "河の税",
@@ -1516,52 +1516,52 @@
         "description": "ラウンドごとに手番+3。"
       },
       "tanyao_dispensation": {
-        "name": "断么の特免",
-        "description": "断么九の手に么九牌（1と9）を認める。"
+        "name": "断幺の特免",
+        "description": "断幺九（通常は2〜8の牌のみ）に1と9も使える。風牌と三元牌は引き続き成立を妨げる。"
       },
       "moonlit_seal": {
         "name": "月光の封",
-        "description": "和了手の字牌1枚につき倍率+0.1x。"
+        "description": "打った風牌・三元牌1枚につき、この法令の×倍率が0.1増える（3枚で×1.3）。"
       },
       "pure_suit_asceticism": {
         "name": "純色の苦行",
-        "description": "主要な種類の牌1枚につき得点+10%。乗算で累積。"
+        "description": "打牌の中で最も多い種類の牌1枚につき倍率×1.1、乗算で累積する（5枚で約×1.6）。"
       },
       "broken_stair_edict": {
         "name": "破階の勅",
-        "description": "順子は1つ飛ばしてよい（1-3-4も有効）。"
+        "description": "順子は数字を1つ飛ばしてよい（1-3-4や1-2-4も成立）。"
       },
       "false_eye_mandate": {
         "name": "仮眼の勅命",
-        "description": "面子1つを雀頭として扱ってよい。"
+        "description": "和了形で、面子1つを雀頭の代わりに使ってよい。"
       },
       "honor_transmutation": {
         "name": "字牌変成",
-        "description": "字牌を最も多い種類の数牌として数えてよい。"
+        "description": "風牌と三元牌を、最も多い種類の数牌として数えてよい。"
       },
       "celestial_wildcard": {
         "name": "天の万能牌",
-        "description": "1手につき1枚が他のどの牌にもなれる。"
+        "description": "1回の打牌につき1枚が、必要などの牌の代わりにもなる。"
       },
       "dead_wall_writ": {
         "name": "王牌の令状",
-        "description": "ラウンドに1回、選んだ牌1枚を王牌の牌と交換（手番を使わない）。"
+        "description": "ラウンドに1回、手番を使わずに、選んだ牌1枚を王牌（牌山の奥に取り置かれた牌）の1枚と交換できる。"
       },
       "shanten_clemency": {
         "name": "向聴の恩赦",
-        "description": "1向聴でも50%減点で計上できる。"
+        "description": "あと1枚で完成する手を、和了形として半分の得点で打てる。"
       },
       "closed_hand_austerity": {
         "name": "門前の禁欲",
-        "description": "完全な門前手は×1.5倍率を得る。"
+        "description": "和了形1回ごとに×1.5。このランで先に完成させた和了形1回につき×1.2ずつ伸び、花牌のボーナス前で最大×4。小さな打牌と向聴の恩赦で完成させた手は対象外。"
       },
       "terminal_devotion": {
-        "name": "么九の献身",
-        "description": "手牌の么九牌1枚につき最終得点+5%。"
+        "name": "老頭の献身",
+        "description": "打った老頭牌（1か9）1枚につき、この法令の×倍率が0.05増える（4枚で×1.2）。"
       },
       "yaku_repetition_charter": {
         "name": "役反復の勅許",
-        "description": "前局と同じ役を再び計上すると倍率が増す。"
+        "description": "連続するラウンドで得点した役は、連続中の前のラウンド1つにつき×1.2を得る（花牌のボーナス前で最大×4）。その役のないラウンドがあると連続は途切れる。"
       }
     }
   },
@@ -1610,7 +1610,7 @@
       "autumn": "役の倍率+20%。通常の秋を引くたび、このラウンドの無料引き直し+1。",
       "winter": "同じ種類の数牌の順子で数字を1つ飛ばせます（1–2–4、1–3–4）。得点×0.75。",
       "drought": "保護されていない花牌の得点ボーナスを無効にします。",
-      "frostbite": "凍傷が重なるたび、法令による点数・倍率・ゴールド・再発動の報酬が半減します。牌自体の効果、ルールの許可、容量、行動回数、コストは変わりません。",
+      "frostbite": "凍傷が重なるたび、法令による点数・倍率・金貨・追加得点の報酬がさらに半減します。牌自体の効果、ルールの許可、容量、行動回数、コストは変わりません。",
       "decay": "このラウンドの引き直し1回ごとに得点−10（0未満にはならない）。",
       "droughtName": "干ばつ",
       "monsoonName": "モンスーン",
@@ -1761,7 +1761,7 @@
       },
       "the_wall": {
         "name": "壁",
-        "description": "必要点が特大（2倍ではなく4倍）"
+        "description": "目標点が通常の親局の×2ではなく×4"
       },
       "the_eye": {
         "name": "眼",
@@ -1781,7 +1781,7 @@
       },
       "the_pillar": {
         "name": "柱",
-        "description": "この幕で既に使った牌が弱体化する"
+        "description": "この幕の以前のラウンドで打った牌は得点しない"
       },
       "the_water": {
         "name": "水",
@@ -1797,31 +1797,31 @@
       },
       "the_club": {
         "name": "棍",
-        "description": "索子がすべて弱体化"
+        "description": "索子は得点しない"
       },
       "the_goad": {
         "name": "刺",
-        "description": "筒子がすべて弱体化"
+        "description": "筒子は得点しない"
       },
       "the_window": {
         "name": "窓",
-        "description": "萬子がすべて弱体化"
+        "description": "萬子は得点しない"
       },
       "the_head": {
         "name": "首",
-        "description": "三元牌がすべて弱体化"
+        "description": "三元牌は得点しない"
       },
       "the_plant": {
         "name": "草",
-        "description": "字牌がすべて弱体化"
+        "description": "風牌と三元牌は得点しない"
       },
       "the_ox": {
         "name": "牛",
-        "description": "最も多く打った役を打つとゴールドが0になる"
+        "description": "最も多く打った役を打つと金貨が0になる"
       },
       "the_house": {
         "name": "家",
-        "description": "最初の手が伏せて配られる"
+        "description": "最初の手牌が伏せて配られる"
       },
       "the_wheel": {
         "name": "輪",
@@ -1829,7 +1829,7 @@
       },
       "the_fish": {
         "name": "魚",
-        "description": "各手のあと、牌が伏せて配られる"
+        "description": "打牌のあとに引いた牌は伏せて届く"
       },
       "the_serpent": {
         "name": "蛇",
@@ -1837,11 +1837,11 @@
       },
       "the_tooth": {
         "name": "歯",
-        "description": "打った牌1枚につき1ゴールドを失う"
+        "description": "打った牌1枚につき金貨1枚を失う"
       },
       "the_mark": {
         "name": "印",
-        "description": "字牌はすべて伏せて配られる"
+        "description": "風牌と三元牌は伏せて引かれる"
       },
       "the_manacle": {
         "name": "枷",
@@ -1853,19 +1853,19 @@
       },
       "verdant_leaf": {
         "name": "翠の葉",
-        "description": "法令を1つ売るまで全ての牌が弱体化"
+        "description": "法令を売るまで、すべての牌が得点しない"
       },
       "violet_vessel": {
         "name": "菫の器",
-        "description": "目標が超特大（2倍ではなく6倍）"
+        "description": "目標点が通常の親局の×2ではなく×6"
       },
       "crimson_heart": {
         "name": "緋の心",
-        "description": "1手ごとに無作為な法令1つが無効化される"
+        "description": "打牌ごとに無作為な法令1つが無効になる"
       },
       "cerulean_bell": {
         "name": "蒼の鈴",
-        "description": "ツモの処理ごとにランダムな牌1枚が必須牌になります。前の牌の固定は解除されます。"
+        "description": "牌を引くたびに手牌の牌1枚が無作為に固定され、次の打牌に含めなければなりません。前の固定は解除されます。"
       }
     }
   },
@@ -1881,7 +1881,7 @@
       "scoreScaling": "目標点は第1幕では白場と同じで、幕ごとに上がり、第{{act}}幕以降は白場の{{multiplier}}倍。卓の補正も適用されます。",
       "redrawPenalty": "ラウンドごとの手番：−{{amount}}。",
       "eternalChance": "店の法令は{{chance}}の確率で永劫付きになります（売却・破壊不可）。",
-      "perishableChance": "永劫が付いていない店の法令は{{chance}}の確率で腐朽付きになります（{{rounds}}ラウンド後に弱体化）。",
+      "perishableChance": "永劫が付いていない店の法令は{{chance}}の確率で腐朽付きになります（{{rounds}}ラウンド後に効果を失う）。",
       "rentalChance": "店の法令は{{chance}}の確率で租借付きになります（購入時に金{{price}}、以降は毎ラウンド金{{fee}}）。"
     },
     "title": "場代",
@@ -1919,7 +1919,7 @@
       "note1": "商品は5ゴールドで<1>引き直せ</1>ます。引き直すたびに費用が1ずつ増えます。",
       "note2": "<1>25ゴールド以上</1>を保つと利息が最大になります。ただし良い法令に使う方が有利なことも多いです。",
       "p1": "すべてを覚える必要はありません。遊びながら身につきます。",
-      "note3": "設定メニューからいつでもこのコーデックスに戻れます。"
+      "note3": "復習したいときは、メインメニューからいつでもコーデックスを開けます。"
     },
     "game_concept": {
       "p1": "相手と競い合う通常の麻雀と違い、天翔は<1>一人用のパズルゲーム</1>です。競う相手は他家ではなく目標点です。",
@@ -1930,7 +1930,7 @@
       "p1": "このゲームでは合計<1>144枚の牌</1>を使います。"
     },
     "numbered_suits": {
-      "note1": "同じ牌はそれぞれ<1>4枚ずつ</1>存在します。手を組み立てるうえで重要な前提です。",
+      "note1": "標準の牌山では、同じ牌がそれぞれ<1>4枚ずつ</1>あります。手を組み立てるうえで重要な前提です。",
       "p1": "<1>3種類の数牌</1>があり、それぞれ1から9まであります。",
       "p2": "<0>萬子（マンズ）</0> — 漢数字と「萬」の字が描かれます（萬は「一万」の意）",
       "p3": "<0>筒子（ピンズ）</0> — 硬貨や点を表す円形の模様が描かれます",
@@ -1940,7 +1940,7 @@
       "p1": "数牌は重要な2つの区分に分かれます。"
     },
     "wind_tiles": {
-      "note1": "么九牌の点数は中張牌の2倍です。多くの役が么九牌を必要とし、あるいは禁じます。",
+      "note1": "老頭牌（1・9の数牌）の点数は中張牌の2倍です。多くの役が老頭牌を必要とし、あるいは禁じます。",
       "p1": "方角を表す<1>4種類の風牌</1>があります。",
       "p2": "風牌は<1>字牌</1>で、1枚<4>50点</4>、組の中なら100点 — 基礎点は最も高い区分です。"
     },
@@ -1976,7 +1976,7 @@
       "li2": "<2>1周して繋げること</2>はできません（9-1-2は不可）",
       "li3": "字牌では<2>順子を作れません</2>",
       "p1": "<1>槓子</1>（カン）とは<4>同じ牌4枚</4>です。",
-      "p2": "4枚すべてを揃える必要があるため、槓子は最も珍しい面子です。"
+      "p2": "槓子は最も珍しい面子です。標準の牌山では、同じ牌4枚をすべて使います。"
     },
     "pairs": {
       "li1": "索子の5が3枚",
@@ -1986,7 +1986,7 @@
       "p2": "標準的な和了形には<2>対子がちょうど1つ</2>必要です。これを手の「頭」（雀頭）と呼びます。"
     },
     "winning_hand": {
-      "note1": "刻子は<1>+40点</1>で順子（+30）より高得点です。ただし同じ牌が3枚必要で、各牌は4枚しかないため揃えるのは難しくなります。",
+      "note1": "刻子は<1>+40点</1>で順子（+30）より高得点です。ただし同じ牌が3枚必要で、標準の牌山には各牌が4枚しかないため、揃えるのは難しくなります。",
       "li1": "<1>+65点</1> — すべての面子で最高",
       "li2": "4枚でも1つの面子として数えます",
       "li3": "宣言すると代わりの牌を引きます",
@@ -2091,7 +2091,7 @@
     },
     "refill": {
       "title": "牌を引く",
-      "p1": "役の提出や引き直しのたびに、手牌は牌山から補充されます。いつでも満杯の手牌から選べます。"
+      "p1": "打牌や引き直しの後、牌山から代わりの牌を引きます。通常は手牌が満杯に戻りますが、牌山が残りわずかなときや有効な効果によって、引く牌が変わることがあります。"
     },
     "redraw": {
       "title": "引き直し",
@@ -2104,7 +2104,7 @@
     "score": {
       "title": "得点のしくみ",
       "p1": "提出ごとの得点：",
-      "note": "大きな役、三元牌、星球、法令が倍率を上げ、倍率がすべてを掛け合わせます。"
+      "note": "大きな役、三元牌、天球、法令が倍率を上げ、倍率がすべてを掛け合わせます。"
     },
     "points": {
       "title": "牌の点数",
@@ -2123,12 +2123,12 @@
       "headerGroup": "組",
       "headerMeaning": "牌",
       "headerBonus": "ボーナス",
-      "example": "例：ツーペア = {{pair}} + {{pair}} = ボーナス+{{total}}点。2つ目の組で倍率+1。"
+      "example": "例：二対子 = {{pair}} + {{pair}} = ボーナス+{{total}}点。2つ目の組で倍率+1。"
     },
     "swift": {
       "title": "速攻クリア",
       "p1": "ラウンドは飛ばせません。小局か大局を手番{{spare}}回以上残してクリアすると、兆しを得ます。",
-      "li1": "ラウンドのゴールドも受け取り、茶寮にも寄れます。",
+      "li1": "ラウンドの金貨も受け取り、茶寮にも寄れます。",
       "li2": "親局では兆しは得られません。",
       "note": "序盤の強い役は手番を節約し、残した手番が兆しになります。"
     },
@@ -2222,15 +2222,15 @@
       },
       "reroll_surplus": {
         "name": "引き直しの余裕",
-        "description": "引き直しの費用が2ゴールド安く"
+        "description": "引き直しの費用が金貨2枚安く"
       },
       "crystal_lens": {
         "name": "水晶の眼鏡",
-        "description": "秘儀パックの選択肢+1"
+        "description": "秘儀パックの選択肢が1つ増える。選べる数は変わらない"
       },
       "star_chart": {
         "name": "星図",
-        "description": "天球パックに最も使った役の天球が入る"
+        "description": "天球の袋に、最も多く打った役の系統の天球が必ず入る"
       },
       "steady_hand": {
         "name": "安定した手",
@@ -2242,7 +2242,7 @@
       },
       "seal_merchant": {
         "name": "符の商人",
-        "description": "運命符の出現率2倍"
+        "description": "運命の印の出現率2倍"
       },
       "orb_merchant": {
         "name": "天球の商人",
@@ -2250,7 +2250,7 @@
       },
       "seed_pouch": {
         "name": "種袋",
-        "description": "利息上限が10ゴールドに"
+        "description": "利息上限が金貨10枚に"
       },
       "empty_scroll": {
         "name": "白紙の巻物",
@@ -2258,19 +2258,19 @@
       },
       "tile_trading": {
         "name": "牌の商い",
-        "description": "店で牌を購入できる"
+        "description": "茶寮で牌を購入できる"
       },
       "ancient_script": {
         "name": "古文書",
-        "description": "幕−1、ラウンドごとに手番−1"
+        "description": "1幕前に戻る（目標点が下がり、遊ぶ幕が1つ増える）。ラウンドごとに手番−1"
       },
       "directors_take": {
         "name": "興行主の取り分",
-        "description": "勅命を1幕につき1回引き直せる（10ゴールド）"
+        "description": "次の親局の勅命を1幕につき1回引き直せる（金貨10枚）"
       },
       "brush_stroke": {
         "name": "一筆",
-        "description": "手牌の枚数+1"
+        "description": "手牌枠+1"
       },
       "plentiful_stock": {
         "name": "潤沢な品揃え",
@@ -2286,7 +2286,7 @@
       },
       "reroll_abundance": {
         "name": "引き直しの潤沢",
-        "description": "引き直しの費用が4ゴールド安く"
+        "description": "引き直しの費用が金貨4枚安く"
       },
       "omen_lens": {
         "name": "兆しの眼鏡",
@@ -2294,7 +2294,7 @@
       },
       "observatory": {
         "name": "観星台",
-        "description": "所持している天球1つにつき×1.5倍率"
+        "description": "所持している天球1つにつき倍率×1.5"
       },
       "swift_hand": {
         "name": "迅速な手",
@@ -2302,11 +2302,11 @@
       },
       "wasteful_plenty": {
         "name": "浪費の豊穣",
-        "description": "ラウンドごとに無料の引き直しさらに+1"
+        "description": "ラウンドごとに無料の引き直しがさらに+1"
       },
       "seal_tycoon": {
         "name": "符の豪商",
-        "description": "運命符の出現率4倍"
+        "description": "運命の印の出現率4倍"
       },
       "orb_tycoon": {
         "name": "天球の豪商",
@@ -2314,7 +2314,7 @@
       },
       "money_tree": {
         "name": "金のなる木",
-        "description": "利息上限が20ゴールドに"
+        "description": "利息上限が金貨20枚に"
       },
       "void_matter": {
         "name": "虚空の物質",
@@ -2322,19 +2322,19 @@
       },
       "illusion_tiles": {
         "name": "幻の牌",
-        "description": "店の牌にエディションが付くことがある"
+        "description": "茶寮の牌にエディションが付くことがある"
       },
       "stone_script": {
         "name": "石文",
-        "description": "さらに幕−1、ラウンドごとに手番−1"
+        "description": "さらに1幕前に戻る。ラウンドごとの手番がさらに−1"
       },
       "final_cut": {
         "name": "最終編集",
-        "description": "勅命を何度でも引き直せる（各10ゴールド）"
+        "description": "次の親局の勅命を何度でも引き直せる（1回につき金貨10枚）"
       },
       "full_palette": {
-        "name": "満ちた 画帳",
-        "description": "手牌の枚数がさらに+1"
+        "name": "満ちた画帳",
+        "description": "手牌枠がさらに+1"
       }
     }
   },
@@ -2421,15 +2421,15 @@
       },
       "speed_omen": {
         "name": "疾風の兆し",
-        "description": "このランの速攻クリア1回ごとに金貨5。"
+        "description": "このランの速攻クリア（手番を残して小局・大局をクリア）1回につき金貨5枚を得る。"
       },
       "throwback_omen": {
         "name": "回顧の兆し",
-        "description": "速攻クリアごとに倍率×0.25（ラン終了まで）。"
+        "description": "ランの残りの間、各打牌の得点に「1＋速攻クリア1回につき0.25」を掛ける（1回で×1.25、2回で×1.5）。"
       },
       "fortune_omen": {
         "name": "幸運の兆し",
-        "description": "即座に10ゴールドを得る。"
+        "description": "即座に金貨10枚を得る。"
       },
       "oracles_omen": {
         "name": "神託の兆し",
@@ -2441,7 +2441,7 @@
       },
       "seal_omen": {
         "name": "符の兆し",
-        "description": "次の店の商品枠に運命符が必ず並ぶ。"
+        "description": "次の店の商品枠に運命の印が必ず並ぶ。"
       },
       "decree_omen": {
         "name": "法令の兆し",
@@ -2453,11 +2453,11 @@
       },
       "expansion_omen": {
         "name": "拡張の兆し",
-        "description": "法令枠を恒久的に+1する。"
+        "description": "このランの残りの間、法令枠+1。"
       },
       "precision_omen": {
         "name": "精緻の兆し",
-        "description": "次の局は手牌+2枚。"
+        "description": "次のラウンド：手牌枠+2。"
       },
       "abundance_omen": {
         "name": "豊穣の兆し",
@@ -2477,11 +2477,11 @@
       },
       "score_surge_omen": {
         "name": "高波の兆し",
-        "description": "次に計上する手の基礎点+100。"
+        "description": "次に得点する打牌の基礎点数+100。"
       },
       "multiplication_omen": {
         "name": "増倍の兆し",
-        "description": "次に計上する手が×1.5倍率を得る。"
+        "description": "次に得点する打牌が倍率×1.5を得る。"
       },
       "blessing_pack_omen": {
         "name": "祝福袋の兆し",
@@ -2493,7 +2493,7 @@
       },
       "austerity_omen": {
         "name": "倹約の兆し",
-        "description": "即座に15ゴールドを得るが、次の局は利息なし。"
+        "description": "即座に金貨15枚を得るが、次の局は利息なし。"
       },
       "holographic_omen": {
         "name": "幻影の兆し",
@@ -2505,15 +2505,15 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "錬金術師の符",
-        "description": "選んだ2枚を幸運の印にする"
+        "description": "選んだ牌2枚に幸運の印（得点時に一定確率で倍率+20か金貨+20）を付ける"
       },
       "seal_of_the_empress": {
         "name": "女帝の符",
-        "description": "選んだ2枚を加点の印にする"
+        "description": "選んだ牌2枚に加点の印（得点時に点数+30）を付ける"
       },
       "seal_of_the_sage": {
         "name": "賢者の符",
-        "description": "選んだ2枚を加点の印にする"
+        "description": "選んだ牌2枚に加点の印（得点時に点数+30）を付ける"
       },
       "seal_of_harmony": {
         "name": "調和の符",
@@ -2521,19 +2521,19 @@
       },
       "seal_of_fortitude": {
         "name": "剛毅の符",
-        "description": "牌1枚を鋼の印にする（手に持つ間×1.5倍率）"
+        "description": "牌1枚に鋼の印を付ける（手牌に残している間、倍率×1.5）"
       },
       "seal_of_glass": {
         "name": "硝子の符",
-        "description": "牌1枚を硝子の印にする（×2倍率、砕けることがある）"
+        "description": "牌1枚に硝子の印を付ける（得点時に倍率×2、ただし砕けることがある）"
       },
       "seal_of_wealth": {
         "name": "富貴の符",
-        "description": "牌1枚を黄金の印にする（局終了時に持っていれば+3ゴールド）"
+        "description": "牌1枚に黄金の印を付ける（ラウンド終了時に手牌にあれば金貨+3）"
       },
       "seal_of_stone": {
         "name": "石の符",
-        "description": "牌1枚を石の印にする（+100点、色も数字もなくどの組にも入らない、常に満額で計上）"
+        "description": "牌1枚に石の印を付ける（点数+100。数字も種類もなく、どの面子にも入らず、常に満額で得点）"
       },
       "seal_of_manzu": {
         "name": "萬子の符",
@@ -2557,11 +2557,11 @@
       },
       "seal_of_the_emperor": {
         "name": "皇帝の符",
-        "description": "無作為な運命符を2つ作る"
+        "description": "無作為な運命の印を2つ作る"
       },
       "seal_of_the_fool": {
         "name": "愚者の符",
-        "description": "この挑戦で最後に使った運命符か天球を作る"
+        "description": "この挑戦で最後に使った運命の印か天球を作る"
       },
       "seal_of_judgment": {
         "name": "審判の符",
@@ -2569,35 +2569,35 @@
       },
       "seal_of_the_hermit": {
         "name": "隠者の符",
-        "description": "ゴールドを2倍にする（最大+20ゴールド）"
+        "description": "所持金貨を2倍にする（最大で金貨+20）"
       },
       "seal_of_balance": {
         "name": "均衡の符",
-        "description": "所持する法令の売却額の合計を得る（最大50ゴールド）"
+        "description": "所持する法令の売却額の合計に等しい金貨を得る（最大金貨50枚）"
       },
       "seal_of_strength": {
         "name": "剛力の符",
-        "description": "最大2枚の数を1上げる（最大9）"
+        "description": "最大2枚の牌の数字を1上げる（最大9）"
       },
       "seal_of_release": {
         "name": "解放の符",
-        "description": "選んだ最大2枚を永久に破壊する"
+        "description": "選んだ牌を最大2枚破壊する（このランの間は戻らない）"
       },
       "seal_of_transmutation": {
         "name": "変成の符",
-        "description": "2枚を選び、左を右の複製にする"
+        "description": "牌を2枚選ぶ：1枚目が2枚目の複製になる"
       },
       "seal_of_fortune": {
         "name": "僥倖の符",
-        "description": "1/4の確率で無作為な法令に箔・幻影・虹彩を付ける"
+        "description": "1/4の確率で、無作為な法令1つに箔・幻影・多彩のいずれかのエディションを付ける"
       },
       "seal_of_the_immortal": {
         "name": "不死の符",
-        "description": "神話級の法令を作る（空きがあれば）"
+        "description": "最上位のレアリティである天命の法令を作る（空きがあれば）"
       },
       "seal_of_the_void": {
         "name": "虚無の符",
-        "description": "すべての役を1段階上げる"
+        "description": "すべての役の系統を1レベル上げる"
       }
     }
   },
@@ -2605,19 +2605,19 @@
     "items": {
       "script_of_kinship": {
         "name": "縁の文",
-        "description": "無作為な牌1枚を破壊し、強化された字牌を無作為に3枚加える"
+        "description": "無作為な牌1枚を破壊し、印付きの風牌か三元牌を無作為に3枚加える"
       },
       "script_of_the_grave": {
         "name": "墓の文",
-        "description": "無作為な牌1枚を破壊し、強化された么九牌を無作為に2枚加える"
+        "description": "無作為な牌1枚を破壊し、印付きの1か9の牌を無作為に2枚加える"
       },
       "script_of_incantation": {
         "name": "呪文の文",
-        "description": "無作為な牌1枚を破壊し、強化された数牌を無作為に4枚加える"
+        "description": "無作為な牌1枚を破壊し、印付きの2〜8の牌を無作為に4枚加える"
       },
       "script_of_immolation": {
         "name": "焼身の文",
-        "description": "手牌から無作為に5枚を破壊する。20ゴールドを得る。"
+        "description": "手牌の牌を無作為に5枚破壊する。金貨20枚を得る。"
       },
       "script_of_the_cryptid": {
         "name": "幻獣の文",
@@ -2625,23 +2625,23 @@
       },
       "script_of_the_gold_seal": {
         "name": "金印の文",
-        "description": "選んだ牌1枚に金の封を付ける"
+        "description": "選んだ牌1枚に金の封を付ける（得点時に金貨+3）"
       },
       "script_of_deja_vu": {
         "name": "既視の文",
-        "description": "選んだ牌1枚に赤の封を付ける（再計上）"
+        "description": "選んだ牌1枚に赤の封を付ける（2回得点する）"
       },
       "script_of_the_trance": {
         "name": "恍惚の文",
-        "description": "牌1枚に青の封を付ける（最後の手で天球を生む）"
+        "description": "牌1枚に青の封を付ける（ラウンドを突破する打牌にその牌が含まれていれば天球を生む）"
       },
       "script_of_the_medium": {
         "name": "霊媒の文",
-        "description": "牌1枚に紫の封印を付与（引き直すと運命の印を作る）"
+        "description": "牌1枚に紫の封を付ける（引き直すと運命の印を作る）"
       },
       "script_of_aura": {
         "name": "霊気の文",
-        "description": "選んだ牌1枚に箔・幻影・虹彩を付ける"
+        "description": "選んだ牌1枚に無作為なエディション（箔・幻影・多彩）を付ける"
       },
       "script_of_ectoplasm": {
         "name": "霊質の文",
@@ -2657,35 +2657,35 @@
       },
       "script_of_the_hex": {
         "name": "呪詛の文",
-        "description": "無作為な法令に虹彩を付け、他をすべて破壊する"
+        "description": "無作為な法令1つに多彩のエディションを付け、他の法令をすべて破壊する"
       },
       "script_of_the_sigil": {
         "name": "印形の文",
-        "description": "手牌のすべてを無作為な一種類に変える"
+        "description": "手牌のすべての牌を無作為な1種類に変える"
       },
       "script_of_the_ouija": {
         "name": "交霊の文",
-        "description": "手牌のすべてを無作為な一つの数に変える"
+        "description": "手牌のすべての牌を無作為な1つの数字に変える"
       },
       "script_of_the_soul": {
         "name": "魂の文",
-        "description": "伝説級（天勅）の法令を作る"
+        "description": "最上位のレアリティである天命の法令を作る"
       },
       "script_of_the_singularity": {
         "name": "特異点の文",
-        "description": "すべての役を1段階上げる"
+        "description": "すべての役の系統を1レベル上げる"
       },
       "script_of_eclipse": {
         "name": "蝕の文",
-        "description": "この局は1向聴でも計上できる"
+        "description": "このラウンドは、あと1枚で完成する手を和了形として得点できる"
       },
       "script_of_mirrors": {
         "name": "鏡の文",
-        "description": "手牌の1枚を複製する"
+        "description": "手牌から選んだ1枚を複製する"
       },
       "script_of_silence": {
         "name": "静寂の文",
-        "description": "この手では不正な面子を1つ無視する"
+        "description": "次の和了形に、形の合わない面子を1つ含めてよい"
       }
     }
   },
@@ -2696,7 +2696,7 @@
     "unlockProgress": "{{name}}の解放進行度",
     "title": "卓を選ぶ",
     "titleJp": "卓風",
-    "subtitle": "この挑戦で使う卓を選びましょう",
+    "subtitle": "開始する卓とそのルールを選びましょう",
     "table": "挑戦の準備",
     "selected": "選択中:",
     "chooseTable": "卓とステークを選ぶ"
@@ -2709,11 +2709,11 @@
       },
       "walls": {
         "name": "山",
-        "description": "独自の牌構成を持つ山の種類"
+        "description": "牌の構成が異なる牌山の種類"
       },
       "charters": {
         "name": "勅許状",
-        "description": "親局の勅命を破ったのちに購入できる恒久的な強化"
+        "description": "茶寮で購入する、そのランの間ずっと続く強化"
       },
       "consumables": {
         "name": "消耗品",
@@ -2781,7 +2781,7 @@
       },
       "ivory_wall": {
         "name": "象牙の山",
-        "description": "么九牌を中心とした構成の山"
+        "description": "老頭牌を中心とした構成の山"
       },
       "bamboo_wall": {
         "name": "竹の山",
@@ -2821,15 +2821,15 @@
       },
       "wild": {
         "name": "万能の印",
-        "description": "どの種類としても扱える。役の判定でどの種類にもなる"
+        "description": "役の判定も含め、どの種類としても数える"
       },
       "glass": {
         "name": "硝子の印",
-        "description": "脆いが強力。計上時×2倍率、25%の確率で砕ける"
+        "description": "脆いが強力。計上時に倍率×2。1/4の確率で砕ける"
       },
       "steel": {
         "name": "鋼の印",
-        "description": "持っている間の恩恵。手に持つ間×1.5倍率"
+        "description": "打たずに手牌に残している間、倍率×1.5"
       },
       "stone": {
         "name": "石の印",
@@ -2837,11 +2837,11 @@
       },
       "gold": {
         "name": "黄金の印",
-        "description": "ゴールドを生む。局終了時に持っていれば+3ゴールド"
+        "description": "ラウンド終了時にまだ手牌にあれば金貨+3"
       },
       "lucky": {
         "name": "幸運の印",
-        "description": "偶然の恩恵。計上時に1/5の確率で+20倍率、1/15の確率で+20ゴールド"
+        "description": "計上時：1/5の確率で倍率+20、1/15の確率で金貨+20"
       }
     }
   },
@@ -2849,11 +2849,11 @@
     "items": {
       "gold": {
         "name": "金の封",
-        "description": "打つとゴールドを得る。手で計上時に+3ゴールド"
+        "description": "この牌が得点するたびに金貨+3"
       },
       "red": {
         "name": "赤の封",
-        "description": "牌が二度発動する。計上時に一度再計上される"
+        "description": "この牌は2回得点する"
       },
       "blue": {
         "name": "青の封",
@@ -2881,7 +2881,7 @@
       },
       "polychrome": {
         "name": "多彩",
-        "description": "移ろう虹の色彩。計上時×1.5倍率"
+        "description": "移ろう虹の色彩。計上時に倍率×1.5"
       },
       "negative": {
         "name": "負影",
@@ -3084,7 +3084,7 @@
     },
     "two_pairs": {
       "name": "二対子",
-      "explain": "1回で対子を2組。"
+      "explain": "1回で異なる対子を2組。"
     },
     "three_pairs": {
       "name": "三対子",
@@ -3120,7 +3120,7 @@
     },
     "mahjong": {
       "name": "和了",
-      "explain": "完成形：4面子と1雀頭（通常14枚）。役が得点を倍にします。"
+      "explain": "完成形：4面子（順子・刻子・槓子）と1雀頭（通常14枚）。七対子と国士無双は特別な例外。役が得点を倍にします。"
     },
     "three_dragons": {
       "name": "三元揃い",
@@ -3141,7 +3141,7 @@
     "turnsTitle": "あなたの手番",
     "playHelp": "選んだ牌で得点します。",
     "redrawHelp": "選んだ牌を何枚でも河に捨て、新しい牌を引きます。",
-    "turnsHelp": "各ラウンドの手番は{{turns}}回。打つ・引き直しはそれぞれ1回使います。小局・大局を手番{{spare}}回以上残してクリアすると兆しを得ます。",
+    "turnsHelp": "各ラウンドの手番は{{turns}}回。打つ・引き直しはそれぞれ1回使います。無料の引き直しは手番を使わず、最後の手番は必ず打つことになります。小局・大局を手番{{spare}}回以上残してクリアすると兆しを得ます。",
     "scoreTitle": "得点",
     "points": "点数",
     "mult": "倍率",
@@ -3151,7 +3151,7 @@
     "secretTitle": "秘密の役",
     "secretFound": "秘密の役を発見",
     "secretInGuide": "「?」ガイドに載りました。",
-    "patternRule": "2つ目以降の面子ごとに倍率+1。刻子と四連順はさらに+1、槓子と五連順は+2。各牌は1回だけ数えます。和了の形以外は1回6枚まで。",
+    "patternRule": "2つ目以降の面子ごとに倍率+1。刻子と四連順はさらに+1、槓子と五連順は+2。通常、各牌は1回だけ数え、和了形でなければ1回に打てるのは6枚まで。",
     "tilesTitle": "牌の種類",
     "tilesHelp": "萬子は漢数字の一〜九、筒子と索子は数で表します（索子の1は鳥）。牌の数字表示は設定でオンにできます。",
     "honorsHelp": "風牌は1枚{{wind}}点、面子の中なら{{windGroup}}点。三元牌1枚ごとに倍率+{{dragon}}、面子の中なら+{{dragonGroup}}。",

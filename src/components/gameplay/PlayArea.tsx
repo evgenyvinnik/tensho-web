@@ -24,6 +24,7 @@ import { playAreaHasContent } from '../../gameplay/playAreaContent'
 import type { CompleteHandInterpretation } from '../../game/GameOrchestrator'
 import type { Tile } from '../../core/Tile'
 import { YakuArtwork } from '../ui/YakuArtwork'
+import { MAX_TACTICAL_PLAY_TILES } from '../../game/playRules'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -509,10 +510,11 @@ export function PlayArea({
                 'gameplay.forecast.selectOneMore',
                 'Select one more tile to play this group'
               )
-            : activeTileCount > 5
+            : activeTileCount > MAX_TACTICAL_PLAY_TILES
               ? t(
                   'gameplay.forecast.returnTiles',
-                  'Return tiles until 5 remain, or finish a complete hand'
+                  'Return tiles until {{max}} remain, or finish a complete hand',
+                  { max: MAX_TACTICAL_PLAY_TILES }
                 )
               : previewLabel}
         </p>

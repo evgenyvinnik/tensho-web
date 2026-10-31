@@ -142,7 +142,7 @@ export const SHARP_EDGE: CharterDefinition = {
   id: 'sharp_edge',
   name: 'Sharp Edge',
   japaneseName: '鋭刃',
-  description: 'Editions appear 2x more often',
+  description: 'Editions appear twice as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -182,7 +182,8 @@ export const CRYSTAL_LENS: CharterDefinition = {
   id: 'crystal_lens',
   name: 'Crystal Lens',
   japaneseName: '水晶',
-  description: 'Arcana Packs offer +1 choice',
+  description:
+    'Arcana Packs show one extra reward to choose from; the number you may take is unchanged',
   cost: CHARTER_COST,
   effects: [
     {
@@ -202,7 +203,8 @@ export const STAR_CHART: CharterDefinition = {
   id: 'star_chart',
   name: 'Star Chart',
   japaneseName: '星図',
-  description: 'Celestial Packs contain orb for most-used yaku',
+  description:
+    'Celestial Packs always include the Orb for your most-played hand family',
   cost: CHARTER_COST,
   effects: [
     {
@@ -242,7 +244,7 @@ export const FRUGAL_DISCARD: CharterDefinition = {
   id: 'frugal_discard',
   name: 'Frugal Redraw',
   japaneseName: '倹捨',
-  description: '+1 free Redraw per round',
+  description: '+1 free redraw per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -262,7 +264,7 @@ export const SEAL_MERCHANT: CharterDefinition = {
   id: 'seal_merchant',
   name: 'Seal Merchant',
   japaneseName: '符商',
-  description: 'Fate Seals appear 2x more often',
+  description: 'Fate Seals appear twice as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -282,7 +284,7 @@ export const ORB_MERCHANT: CharterDefinition = {
   id: 'orb_merchant',
   name: 'Orb Merchant',
   japaneseName: '球商',
-  description: 'Celestial Orbs appear 2x more often',
+  description: 'Celestial Orbs appear twice as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -342,7 +344,7 @@ export const TILE_TRADING: CharterDefinition = {
   id: 'tile_trading',
   name: 'Tile Trading',
   japaneseName: '牌商',
-  description: 'Tiles can be purchased from shop',
+  description: 'Tiles can be bought in the Tea House',
   cost: CHARTER_COST,
   effects: [
     {
@@ -362,7 +364,8 @@ export const ANCIENT_SCRIPT: CharterDefinition = {
   id: 'ancient_script',
   name: 'Ancient Script',
   japaneseName: '古文',
-  description: '-1 Act, -1 Turn per round',
+  description:
+    'Sends you back one Act (lower targets, one more Act to play); −1 Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -387,7 +390,7 @@ export const DIRECTORS_TAKE: CharterDefinition = {
   id: 'directors_take',
   name: "Director's Take",
   japaneseName: '監督権',
-  description: 'Reroll Boss Mandate 1x per Act (10 Gold)',
+  description: 'Reroll the upcoming Boss Mandate once per Act (10 Gold)',
   cost: CHARTER_COST,
   effects: [
     {
@@ -407,7 +410,7 @@ export const BRUSH_STROKE: CharterDefinition = {
   id: 'brush_stroke',
   name: 'Brush Stroke',
   japaneseName: '筆運',
-  description: '+1 hand size',
+  description: '+1 rack space',
   cost: CHARTER_COST,
   effects: [
     {
@@ -481,7 +484,7 @@ export const RADIANT_EDGE: CharterDefinition = {
   id: 'radiant_edge',
   name: 'Radiant Edge',
   japaneseName: '輝刃',
-  description: 'Editions appear 4x more often',
+  description: 'Editions appear four times as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -556,7 +559,7 @@ export const OBSERVATORY: CharterDefinition = {
   id: 'observatory',
   name: 'Observatory',
   japaneseName: '天文台',
-  description: 'Each held Orb gives x1.5 Mult when its Yaku family scores, once per Orb per play. Black Hole matches any scored Yaku.',
+  description: 'Held Celestial Orbs give ×1.5 Mult',
   cost: CHARTER_COST,
   effects: [
     {
@@ -606,7 +609,7 @@ export const WASTEFUL_PLENTY: CharterDefinition = {
   id: 'wasteful_plenty',
   name: 'Wasteful Plenty',
   japaneseName: '惜捨',
-  description: '+1 more free Redraw per round',
+  description: '+1 more free redraw per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -631,7 +634,7 @@ export const SEAL_TYCOON: CharterDefinition = {
   id: 'seal_tycoon',
   name: 'Seal Tycoon',
   japaneseName: '符王',
-  description: 'Fate Seals appear 4x more often',
+  description: 'Fate Seals appear four times as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -656,7 +659,7 @@ export const ORB_TYCOON: CharterDefinition = {
   id: 'orb_tycoon',
   name: 'Orb Tycoon',
   japaneseName: '球王',
-  description: 'Celestial Orbs appear 4x more often',
+  description: 'Celestial Orbs appear four times as often',
   cost: CHARTER_COST,
   effects: [
     {
@@ -731,7 +734,7 @@ export const ILLUSION_TILES: CharterDefinition = {
   id: 'illusion_tiles',
   name: 'Illusion Tiles',
   japaneseName: '幻牌',
-  description: 'Shop tiles may have editions',
+  description: 'Tiles in the Tea House may come with editions',
   cost: CHARTER_COST,
   effects: [
     {
@@ -756,7 +759,7 @@ export const STONE_SCRIPT: CharterDefinition = {
   id: 'stone_script',
   name: 'Stone Script',
   japaneseName: '石文',
-  description: '-1 Act again, -1 Turn per round',
+  description: 'Sends you back one more Act; −1 more Turn per round',
   cost: CHARTER_COST,
   effects: [
     {
@@ -786,7 +789,8 @@ export const FINAL_CUT: CharterDefinition = {
   id: 'final_cut',
   name: 'Final Cut',
   japaneseName: '最終権',
-  description: 'Reroll Boss Mandate unlimited times (10 Gold each)',
+  description:
+    'Reroll the upcoming Boss Mandate any number of times (10 Gold each)',
   cost: CHARTER_COST,
   effects: [
     {
@@ -811,7 +815,7 @@ export const FULL_PALETTE: CharterDefinition = {
   id: 'full_palette',
   name: 'Full Palette',
   japaneseName: '全彩',
-  description: '+1 hand size again',
+  description: '+1 more rack space',
   cost: CHARTER_COST,
   effects: [
     {
