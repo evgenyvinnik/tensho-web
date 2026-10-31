@@ -3,13 +3,14 @@
  *
  * Top header for the Tea House shop screen displaying:
  * - Current gold amount
- * - Reroll button with cost
  * - Settings button
+ *
+ * The reroll lives in the bottom action bar, above Next Round.
  *
  * Uses the game's color palette and maintains minimum touch targets.
  */
 
-import { useCallback, useRef, useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { GoldIcon } from '../ui/GoldIcon'
@@ -26,16 +27,8 @@ const AnimatedSpan = animated('span')
 export interface ShopHeaderProps {
   /** Current gold amount */
   gold: number
-  /** Current reroll cost */
-  rerollCost: number
-  /** Whether player can afford reroll */
-  canAffordReroll: boolean
-  /** Callback when reroll button is clicked */
-  onReroll: () => void
   /** Callback when settings button is clicked */
   onSettings: () => void
-  /** Number of rerolls this visit */
-  rerollCount: number
   /** Compact run status (for example the save indicator). */
   status?: ReactNode
   /** Most interest Gold one round can pay, for the title's help. */
@@ -80,69 +73,6 @@ function GoldDisplay({ gold, bump = 0 }: GoldDisplayProps) {
         {spring.number.to((n) => number(Math.floor(n)))}
       </AnimatedSpan>
     </div>
-  )
-}
-
-// =============================================================================
-// REROLL BUTTON COMPONENT
-// =============================================================================
-
-interface RerollButtonProps {
-  cost: number
-  canAfford: boolean
-  onClick: () => void
-  rerollCount: number
-}
-
-function RerollButton({
-  cost,
-  canAfford,
-  onClick,
-  rerollCount,
-}: RerollButtonProps) {
-  const { t, i18n } = useTranslation()
-  const reduceMotion = useReducedMotion()
-
-  const handleClick = useCallback(() => {
-    if (canAfford) {
-      onClick()
-    }
-  }, [canAfford, onClick])
-
-  return (
-    <button
-      onClick={handleClick}
-      disabled={!canAfford}
-      className={`
-        flex shrink-0 items-center gap-1 px-2 py-2 rounded-lg sm:gap-2 sm:px-4
-        font-bold text-sm transition-all duration-200
-        min-w-[76px] min-h-[44px] justify-center sm:min-w-[100px]
-        border-2
-        ${
-          canAfford
-            ? `bg-[var(--color-vibrant-orange)] text-[var(--color-beige-white)] border-[var(--color-golden-yellow)] hover:bg-[var(--color-deep-orange)] ${reduceMotion ? '' : 'hover:scale-105 active:scale-95'}`
-            : 'bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed opacity-60'
-        }
-      `}
-      aria-label={t('shop.reroll')}
-      aria-description={t('shop.rerollCost', {
-        cost: cost.toLocaleString(i18n.resolvedLanguage),
-      })}
-    >
-      <ControlIcon name="redraw" size={20} />
-      <span className="inline-flex items-center gap-1">
-        <GoldIcon className="h-4 w-4" />
-        {cost.toLocaleString(i18n.resolvedLanguage)}
-      </span>
-      {rerollCount > 0 && (
-        <span
-          className="text-xs opacity-70"
-          aria-label={t('shop.ui.rerollsUsed', { count: rerollCount })}
-        >
-          (+{rerollCount.toLocaleString(i18n.resolvedLanguage)})
-        </span>
-      )}
-    </button>
   )
 }
 
@@ -279,11 +209,7 @@ function TeaHouseTitle({ interestCap }: { interestCap: number }) {
  */
 export function ShopHeader({
   gold,
-  rerollCost,
-  canAffordReroll,
-  onReroll,
   onSettings,
-  rerollCount,
   status,
   interestCap,
   purseBump,
@@ -306,12 +232,6 @@ export function ShopHeader({
         {/* Actions */}
         <div className="flex items-center justify-end gap-1.5 sm:gap-3">
           {status}
-          <RerollButton
-            cost={rerollCost}
-            canAfford={canAffordReroll}
-            onClick={onReroll}
-            rerollCount={rerollCount}
-          />
           <SettingsButton onClick={onSettings} />
         </div>
       </div>

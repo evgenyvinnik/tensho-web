@@ -789,6 +789,54 @@ a {
   }
 }
 
+/* A reroll swaps the item cards: the old ones shrink away, then the new ones
+   rise in one after another. Leaving holds its last frame until the card is
+   gone; arriving lets go when done so hover can lift the card again. */
+.shop-offer-leave {
+  pointer-events: none;
+  animation: shop-offer-leave 180ms ease-in forwards;
+}
+
+@keyframes shop-offer-leave {
+  to {
+    opacity: 0;
+    transform: translateY(6px) scale(0.88);
+  }
+}
+
+.shop-offer-enter {
+  animation: shop-offer-enter 280ms cubic-bezier(0.2, 1.2, 0.4, 1) backwards;
+}
+
+@keyframes shop-offer-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A full-screen tint that fades up and back down by itself, ending clear
+   even if its overlay is never removed. */
+.screen-flash {
+  animation: screen-flash var(--flash-ms, 300ms) ease-out forwards;
+}
+
+@keyframes screen-flash {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: var(--flash-opacity, 0.3);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* A Decree's bag shakes, bursts, and its scroll rises. */
 .decree-bag-shake {
   animation: decree-bag 750ms ease-in both;
