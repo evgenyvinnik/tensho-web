@@ -43,7 +43,7 @@ export type MandateEffectType =
   | 'tiles_face_down_ratio' // The Wheel: 1 in N tiles drawn face-down
   | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
   | 'fixed_draw_count' // The Serpent: Always draw N tiles after play/discard
-  | 'honor_tiles_face_down' // The Mark: All honor tiles drawn face-down
+  | 'honor_tiles_face_down' // The Veil: All honor tiles drawn face-down
   // Showdown Mandates (campaign finale and periodic Endless bosses)
   | 'shuffle_decrees' // Amber Acorn: Decrees shuffled and face-down
   | 'debuff_until_sell' // Verdant Leaf: All tiles debuffed until decree sold
@@ -378,12 +378,12 @@ export const THE_TOOTH: MandateDefinition = {
 }
 
 /**
- * The Mark - All Honor tiles drawn face-down
+ * The Veil - All Honor tiles drawn face-down
  */
 export const THE_MARK: MandateDefinition = {
   id: 'the_mark',
-  name: 'The Mark',
-  japaneseName: '印',
+  name: 'The Veil',
+  japaneseName: '帳',
   description: 'All Honor tiles drawn face-down',
   category: 'Standard',
   difficulty: 'Medium',

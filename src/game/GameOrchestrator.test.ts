@@ -971,7 +971,7 @@ describe('GameOrchestrator', () => {
       )
     })
 
-    it('hides exactly the Honor tiles drawn under The Mark', () => {
+    it('hides exactly the Honor tiles drawn under The Veil', () => {
       enterBossWithMandate(game, THE_MARK)
 
       const honorIds = game

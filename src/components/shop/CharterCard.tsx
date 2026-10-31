@@ -71,7 +71,9 @@ export function CharterCard({
             {itemText.name('charters', charter)}
           </h3>
           <span className="mt-2 inline-block max-w-full break-words rounded-full border border-[var(--color-metallic-gold)]/40 bg-black/20 px-2 py-1 text-xs text-[var(--color-metallic-gold)]">
-            {charter.isUpgraded ? t('shop.upgraded') : t('shop.ui.baseEdition')}
+            {charter.isUpgraded
+              ? t('shop.upgraded')
+              : t('shop.ui.standardCharter')}
           </span>
         </div>
         <p

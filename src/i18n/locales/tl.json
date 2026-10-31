@@ -128,7 +128,7 @@
     "payout": "Ang batayang gantimpala sa pag-clear ay 3 Ginto sa Maliit, 5 sa Malaki, at 10 sa Boss; hindi ito tumataas dahil sa sobrang puntos. Maaaring alisin ng Taya ang gantimpala sa Maliit; maaaring baguhin ng Dekreto at Hudyat ang huling bayad.",
     "interest": "Kinukuwenta ang interes mula sa Gintong hawak bago ang bayad sa pag-clear: 1 sa bawat 5, na may panimulang hangganang 5. Maaaring taasan ito ng Karta at Hudyat; may mga Hudyat na humaharang sa interes. Walang interes kapag natalo.",
     "sale": "Tingnan ang pindutang Ibenta ng Dekreto para sa tunay na halaga. Ang mga Dekretong binayaran ng Bulaklak o nakuha nang libre ay maaaring maibenta sa 0 Ginto; hindi maibebenta ang Walang Hanggan. Inaalis ng pagbebenta ang mga epekto at pinalalaya ang puwestong ginamit.",
-    "prices": "Sundin ang presyong nakalagay sa bawat alok at ang kasalukuyang halaga ng pag-refresh. Maaaring baguhin ng diskuwento, edisyon, Karta, at iba pang epekto ang presyo. Hindi ibinabalik ng pag-refresh ang nabili nang Karta o libreng alok ng Manghuhula sa Baraha."
+    "prices": "Sundin ang presyong nakalagay sa bawat alok at ang kasalukuyang halaga ng pag-refresh. Maaaring baguhin ng diskuwento, Edisyon, Karta, at iba pang epekto ang presyo. Hindi ibinabalik ng pag-refresh ang nabili nang Karta o libreng alok ng Manghuhula sa Baraha."
   },
   "achievements": {
     "firstSteps": {
@@ -169,7 +169,7 @@
     },
     "wildFlush": {
       "name": "Wild na Flush",
-      "description": "Umiskor gamit ang Kalahating Flush na puro Wild na tile."
+      "description": "Umiskor gamit ang Kalahating Flush na puro tile na Wild."
     },
     "speedRun": {
       "name": "Mabilis na Takbo",
@@ -335,7 +335,7 @@
     "waiting": "Naghihintay ng ibang Dekreto.",
     "missing": "Inalis ang target; pipili muli sa susunod na round.",
     "inactive": "Hindi aktibo ang kumokopya o ang target nito.",
-    "rules": "Hindi nagbabago ang target sa round. Kinokopya ang epekto at gastos, hindi ang edisyon o sunod-sunod na kopya. Hindi nagpapalit ng target ang pag-alis o pag-disable nito."
+    "rules": "Hindi nagbabago ang target sa round. Kinokopya ang epekto at gastos, hindi ang Edisyon o sunod-sunod na kopya. Hindi nagpapalit ng target ang pag-alis o pag-disable nito."
   },
   "screenDownload": {
     "title": "Hindi ma-download ang screen na ito",
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "Ang mga pagbabago sa tile ay mananatili sa buong run, pati sa mga susunod na round. Nagsisimula sa simula ang bagong run.",
-    "negativeTile": "+1 puwang ng Dekreto habang nasa iyong pader pa ang Negatibong tile na ito. Nananatili ang puwang kapag binunot o itinapon ito; nawawala kapag sinira o pinalitan ang edisyon nito.",
+    "negativeTile": "+1 puwang ng Dekreto habang nasa iyong pader pa ang pisikal na tile na Negative na ito. Nananatili ang puwang kapag binunot o itinapon ito; nawawala kapag sinira ito o pinalitan ang Edisyon nito.",
     "overCapacity": "Nabawasan ang kapasidad: mapapanatili mo ang mga hawak na Dekreto. Magbakante bago kumuha ng dagdag."
   },
   "yakuUpgrades": {
@@ -463,7 +463,7 @@
       },
       "seal_omen": {
         "name": "Pangitain ng Selyo",
-        "description": "Tiyak na may Selyo ng Tadhana sa mga puwesto ng gamit sa susunod na tindahan."
+        "description": "Tiyak na may Selyo ng Kapalaran sa mga puwesto ng gamit sa susunod na tindahan."
       },
       "decree_omen": {
         "name": "Pangitain ng Dekreto",
@@ -487,11 +487,11 @@
       },
       "polychrome_omen": {
         "name": "Pangitain ng Makukulay na Anyo",
-        "description": "Naglalagay ng edisyong Polychrome sa isang sapalarang hawak na Dekreto."
+        "description": "Nagdaragdag ng Edisyong Polychrome sa isang sapalarang hawak na Dekreto."
       },
       "foil_omen": {
         "name": "Pangitain ng Metalikong Balot",
-        "description": "Magkakaroon ng edisyong Foil ang susunod na bibilhing Dekreto."
+        "description": "Magkakaroon ng Edisyong Foil ang susunod na bibilhing Dekreto."
       },
       "interest_omen": {
         "name": "Pangitain ng Interes",
@@ -511,7 +511,7 @@
       },
       "negative_omen": {
         "name": "Pangitain ng Negatibong Anyo",
-        "description": "Magkakaroon ng Negatibong edisyon (+1 puwesto) ang susunod na bibilhing Dekreto."
+        "description": "Magkakaroon ng Edisyong Negative (+1 puwesto) ang susunod na bibilhing Dekreto."
       },
       "austerity_omen": {
         "name": "Pangitain ng Pagtitipid",
@@ -519,7 +519,7 @@
       },
       "holographic_omen": {
         "name": "Pangitain ng Aninong-Liwanag",
-        "description": "Magkakaroon ng edisyong Holographic ang susunod na bibilhing Dekreto."
+        "description": "Magkakaroon ng Edisyong Holographic ang susunod na bibilhing Dekreto."
       }
     }
   },
@@ -535,31 +535,31 @@
       },
       "seal_of_the_empress": {
         "name": "Selyo ng Emperatris",
-        "description": "Nilalagyan ng Markang Bonus sa Puntos ang 2 napiling tile."
+        "description": "Nilalagyan ng Markang Bonus ang 2 napiling tile."
       },
       "seal_of_the_sage": {
         "name": "Selyo ng Pantas",
-        "description": "Nilalagyan ng Markang Bonus sa Batayang Puntos ang 2 napiling tile."
+        "description": "Nilalagyan ng Markang Bonus ang 2 napiling tile."
       },
       "seal_of_harmony": {
         "name": "Selyo ng Pagkakasundo",
-        "description": "Ginagawang Wild ang 1 tile (maaaring ituring na anumang suit)."
+        "description": "Nilalagyan ng Markang Wild ang 1 napiling tile (itinuturing na lahat ng suit)."
       },
       "seal_of_fortitude": {
         "name": "Selyo ng Katatagan",
-        "description": "Nilalagyan ng Markang Bakal ang 1 tile (x1.5 sa multiplikador habang hawak)."
+        "description": "Nilalagyan ng Markang Bakal ang 1 napiling tile (×1.5 sa multiplikador habang hawak)."
       },
       "seal_of_glass": {
         "name": "Selyo ng Salamin",
-        "description": "Nilalagyan ng Markang Salamin ang 1 tile (x2 sa multiplikador, maaaring mabasag)."
+        "description": "Nilalagyan ng Markang Salamin ang 1 napiling tile (×2 sa multiplikador, maaaring mabasag)."
       },
       "seal_of_wealth": {
         "name": "Selyo ng Kayamanan",
-        "description": "Nilalagyan ng Markang Ginto ang 1 tile (+3 Ginto kung hawak sa katapusan ng round)."
+        "description": "Nilalagyan ng Markang Ginto ang 1 napiling tile (+3 Ginto kung hawak sa katapusan ng round)."
       },
       "seal_of_stone": {
         "name": "Selyo ng Bato",
-        "description": "Nilalagyan ng Markang Bato ang 1 tile (+100 Puntos; walang numero o suit, hindi napapasama sa grupo, laging buo ang puntos)."
+        "description": "Nilalagyan ng Markang Bato ang 1 napiling tile (+100 Puntos; walang numero o suit, hindi napapasama sa grupo, laging buo ang puntos)."
       },
       "seal_of_manzu": {
         "name": "Selyo ng Karakter",
@@ -579,11 +579,11 @@
       },
       "seal_of_the_emperor": {
         "name": "Selyo ng Emperador",
-        "description": "Lumilikha ng 2 sapalarang Selyo ng Tadhana."
+        "description": "Lumilikha ng 2 sapalarang Selyo ng Kapalaran."
       },
       "seal_of_the_fool": {
         "name": "Selyo ng Hangal",
-        "description": "Lumilikha ng kopya ng huling Selyo ng Tadhana o Makalangit na Globo na ginamit sa run na ito."
+        "description": "Lumilikha ng kopya ng huling Selyo ng Kapalaran o Makalangit na Globo na ginamit sa run na ito."
       },
       "seal_of_judgment": {
         "name": "Selyo ng Paghuhukom",
@@ -611,7 +611,7 @@
       },
       "seal_of_fortune": {
         "name": "Selyo ng Suwerte",
-        "description": "May 1 sa 4 na tsansang lagyan ng Foil, Holographic, o Polychrome ang isang sapalarang Dekreto."
+        "description": "May 1 sa 4 na tsansang lagyan ng Edisyong Foil, Holographic o Polychrome ang isang sapalarang Dekreto."
       },
       "seal_of_the_immortal": {
         "name": "Selyo ng Walang Kamatayan",
@@ -679,26 +679,26 @@
       },
       "negative": {
         "name": "Negative",
-        "description": "+1 puwang ng Dekreto bawat hawak na Negatibong Dekreto o pisikal na Negatibong tile sa pader ng run na ito."
+        "description": "+1 puwang ng Dekreto bawat hawak na Negative na Dekreto o pisikal na tile na Negative sa pader ng run na ito."
       }
     }
   },
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Gintong Selyo",
+        "name": "Gintong Tatak",
         "description": "+3 Ginto kapag nagbigay ng puntos ang tile."
       },
       "red": {
-        "name": "Pulang Selyo",
+        "name": "Pulang Tatak",
         "description": "Ina-activate muli ang tile nang isang beses kapag nagbigay ng puntos."
       },
       "blue": {
-        "name": "Asul na Selyo",
+        "name": "Asul na Tatak",
         "description": "Lumilikha ng random na Celestial Orb kapag kasama ang tile na ito sa larong tumapos sa round."
       },
       "purple": {
-        "name": "Lilang Selyo",
+        "name": "Lilang Tatak",
         "description": "Gumagawa ng random na Selyo ng Kapalaran kapag na-redraw ang tile na ito."
       }
     }
@@ -728,7 +728,7 @@
     "targets": "Mga target na tile",
     "count": "Mga target: {{selected}} / {{required}}",
     "copyOrder": "Magiging kopya ng tile 2 ang tile 1. Piliin muna ang tile na babaguhin.",
-    "replacesModifier": "Papalitan ang {{names}}: isang marka, selyo o edisyon lang ang puwede sa isang tile.",
+    "replacesModifier": "Papalitan ang {{names}}: isang Marka, Tatak o Edisyon lang ang puwede sa isang espesyal na tile.",
     "cost": "Kapalit ng Kawalan",
     "failed": "Hindi magamit ang item na ito.",
     "unavailable": "Hindi magagamit ang item na ito sa ngayon.",
@@ -1064,7 +1064,7 @@
       "nextRound": "Magpatuloy sa Susunod na Round",
       "confirmPurchase": "Kumpirmahin ang Pagbili",
       "purchasePrompt": "Bilhin ang {{name}} sa halagang {{cost}}G?",
-      "baseEdition": "Batayang Edisyon",
+      "standardCharter": "Karaniwan",
       "goldBalance": "{{amount}} ginto",
       "rerollsUsed": "Mga ginamit na pag-refresh: {{count}}",
       "forSale": "Ibinebenta"
@@ -1072,7 +1072,7 @@
     "payout": {
       "interest": "Interes",
       "decrees": "Mga Dekreto",
-      "goldTiles": "Gintong tile",
+      "goldTiles": "Mga tile na Ginto",
       "bonus": "Pagsasaayos ng gantimpala",
       "rentals": "Upa",
       "omenEarned": "Pangitain: {{name}}",
@@ -1124,9 +1124,9 @@
     "buyFor": "Bilhin · {{price}} ginto",
     "help": {
       "what": "Ang Bahay ng Tsaa ay tindahan sa pagitan ng mga round.",
-      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, agad gumagana ang Orb at Selyo (itatanong ng Selyo kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Balumbon, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Karta ang buong laro.",
+      "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, agad gumagana ang Orb at Selyo ng Kapalaran (itatanong ng Selyo ng Kapalaran kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Balumbon, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Karta ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
-      "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga gintong tile, at anumang sinisingil na upa.",
+      "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, mga tile na Ginto, at anumang sinisingil na upa.",
       "build": "Nakalista sa build mo ang mga Dekreto mo katabi ng mga pag-upgrade ng yaku: buksan ang balumbon para basahin ang mga tuntunin o ibenta ito, o ang upgrade para makita ang antas nito. Bawat bili ay may sariling Bilhin."
     },
     "sealUsed": "Nagamit ang {{name}}",
@@ -1173,7 +1173,7 @@
       },
       "the_idol": {
         "name": "Ang Idolo",
-        "description": "×3 sa multiplikador kung naglaro ng hindi bababa sa dalawang tile at pare-pareho ang nakaimprentang suit at ranggo ng lahat ng ito. Sinisira ng mga tile na Bato ang kondisyon; sinusunod pa rin ng mga Wild tile ang kanilang nakaimprentang pagkakakilanlan."
+        "description": "×3 sa multiplikador kung naglaro ng hindi bababa sa dalawang tile at pare-pareho ang nakaimprentang suit at ranggo ng lahat ng ito. Sinisira ng mga tile na Bato ang kondisyon; sinusunod pa rin ng mga tile na Wild ang kanilang nakaimprentang pagkakakilanlan."
       },
       "stuntman": {
         "name": "Dobleng Pang-Aksyon",
@@ -1232,7 +1232,7 @@
         "description": "Pinapayagan ang terminal na mga tile (1 at 9) sa mga kamay na Lahat Simple; bawal pa rin ang Honors."
       },
       "moonlit_seal": {
-        "name": "Selyo ng Buwan",
+        "name": "Emblema ng Buwan",
         "description": "Bawat honor tile sa nilarong kamay ay nagdaragdag ng +0.1x sa multiplier."
       },
       "pure_suit_asceticism": {
@@ -1296,7 +1296,7 @@
         "description": "+5 sa multiplikador."
       },
       "decree-golden-seal": {
-        "name": "Gintong Selyo",
+        "name": "Gintong Regalia",
         "description": "+6 sa multiplikador."
       },
       "decree-manzu-master": {
@@ -1961,6 +1961,7 @@
     "windName": "Hangin: {{name}}",
     "flowerName": "Bulaklak: {{name}}",
     "seasonName": "Panahon: {{name}}",
+    "stoneName": "Tile na Bato",
     "numberedRule": "Pagtambalin ang magkaparehong tile para bumuo ng pares o tatluhan. Tatlong magkakasunod na numero sa parehong suit ang bumubuo ng sunod-sunod.",
     "honorRule": "Ang mga Honor ay bumubuo ng magkaparehong pares o tatluhan, hindi sunod-sunod na numero.",
     "basePoints": "{{points}} batayang puntos bago ang bonus ng grupo, pagbabawas at iba pang epekto.",
@@ -1984,9 +1985,10 @@
     "white": "Puting Dragon",
     "green": "Berdeng Dragon",
     "red": "Pulang Dragon",
-    "modifiers": "Mga modifier:",
-    "tileModifiers": "Mga Modifier ng Tile",
-    "enhancement": "Pagpapahusay",
+    "modifiers": "Espesyal na tile:",
+    "tileModifiers": "Espesyal na tile",
+    "enhancement": "Marka",
+    "stamp": "Tatak",
     "edition": "Edisyon",
     "debuffed": "Pinahinang tile",
     "lockedMustPlay": "Naka-lock na tile: kailangang laruin",
@@ -2008,7 +2010,7 @@
     "shortfall": "Kulang na puntos",
     "remainingGold": "Natitirang ginto",
     "rentalPaid": "Sinisingil na upa",
-    "defeatIncome": "Kapag natalo, sinisingil pa rin ang upa, pero walang gantimpala sa round, interes, kita mula sa mga Dekreto o mga hawak na gintong tile.",
+    "defeatIncome": "Kapag natalo, sinisingil pa rin ang upa, pero walang gantimpala sa round, interes, kita mula sa mga Dekreto o mga hawak na tile na Ginto.",
     "endlessComplete": "Natapos ang Walang-hanggang Pag-akyat",
     "victorySubtitle": "Nanalo ka sa huling laban ng Akto {{act}}. Naitala na ang iyong panalo.",
     "endlessSubtitle": "Mananatili ang iyong panalo kahit tapos na ang pag-akyat na ito.",
@@ -2134,7 +2136,7 @@
         "description": "Nawawalan ng 1 Ginto bawat tile na nilaro."
       },
       "the_mark": {
-        "name": "Ang Marka",
+        "name": "Ang Belo",
         "description": "Nakataob ang lahat ng Honor na tile kapag binunot."
       },
       "the_manacle": {
@@ -2237,7 +2239,7 @@
       "p5": "Ang mga Dragon ay <1>tile ng Karangalan</1> na nagkakahalaga ng <4>15 puntos</4>, at bawat Dragon na nakapuntos ay nagdaragdag ng +2 Mult, +4 sa loob ng grupo. Hindi sila makabubuo ng sunuran."
     },
     "bonus_tiles": {
-      "p1": "Ang <0>mga bonus tile</0> ay espesyal na tile na hindi bahagi ng kamay mo:"
+      "p1": "Ang <0>mga bonus tile</0> ay dagdag na tile na hindi bahagi ng kamay mo:"
     },
     "sequences": {
       "note1": "Kapag nakakuha ka ng bonus tile, agad itong nabubunyag at kukuha ka ng kapalit. Nagbibigay ang mga Bulaklak at Panahon ng lumalaking bonus at epekto!",
@@ -2483,19 +2485,19 @@
       },
       "consumables": {
         "name": "Mga Nauubos na Gamit",
-        "description": "Mga minsanang Tatak ng Kapalaran, Makalangit na Globo at Kasulatan ng Kawalan."
+        "description": "Mga minsanang Selyo ng Kapalaran, Makalangit na Globo at Kasulatan ng Kawalan."
       },
       "tileMarks": {
         "name": "Mga Marka ng Tile",
-        "description": "Mga pagpapahusay na nagbabago sa katangian ng mga tile."
+        "description": "Mga Marka na nagbabago kung paano pumupuntos o kumikilos ang tile."
       },
       "seals": {
         "name": "Mga Tatak",
-        "description": "Mga espesyal na tatak na nagdaragdag ng epekto sa mga tile."
+        "description": "Mga tatak na lacre na nagbibigay sa tile ng dagdag na epekto."
       },
       "editions": {
         "name": "Mga Edisyon",
-        "description": "Mga bersiyon ng gamit na may natatanging anyo at epekto."
+        "description": "Mga kumikinang na balot na nagdaragdag ng epekto sa tile o Dekreto."
       },
       "packs": {
         "name": "Mga Pakete ng Basbas",
@@ -2551,7 +2553,7 @@
       },
       "seal_merchant": {
         "name": "Mangangalakal ng Selyo",
-        "description": "2x na mas madalas lumitaw ang mga Selyo ng Tadhana."
+        "description": "2x na mas madalas lumitaw ang mga Selyo ng Kapalaran."
       },
       "orb_merchant": {
         "name": "Mangangalakal ng Globo",
@@ -2611,7 +2613,7 @@
       },
       "seal_tycoon": {
         "name": "Mayamang Mangangalakal ng Selyo",
-        "description": "4x na mas madalas lumitaw ang mga Selyo ng Tadhana."
+        "description": "4x na mas madalas lumitaw ang mga Selyo ng Kapalaran."
       },
       "orb_tycoon": {
         "name": "Mayamang Mangangalakal ng Globo",
@@ -2647,19 +2649,19 @@
     "items": {
       "script_of_ectoplasm": {
         "name": "Kasulatan ng Ektoplasma",
-        "description": "Nagdaragdag ng Negatibong edisyon sa isang sapalarang Dekreto (+1 puwesto ng Dekreto)."
+        "description": "Nagdaragdag ng Edisyong Negative sa isang sapalarang Dekreto (+1 puwesto ng Dekreto)."
       },
       "script_of_kinship": {
         "name": "Kasulatan ng Pagkakamag-anak",
-        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 3 sapalarang pinahusay na tile na Hangin o Dragon."
+        "description": "Sinisira ang 1 sapalarang tile, saka nagdaragdag ng 3 sapalarang Honor na tile (Hangin/Dragon), bawat isa may sapalarang Markang Bonus, Markang Multiplier o Markang Suwerte."
       },
       "script_of_the_grave": {
         "name": "Kasulatan ng Libingan",
-        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 2 sapalarang pinahusay na terminal na tile."
+        "description": "Sinisira ang 1 sapalarang tile, saka nagdaragdag ng 2 sapalarang terminal na tile (1 at 9), bawat isa may sapalarang Markang Bonus, Markang Multiplier o Markang Suwerte."
       },
       "script_of_incantation": {
         "name": "Kasulatan ng Orasyon",
-        "description": "Sinisira ang 1 sapalarang tile at nagdaragdag ng 4 sapalarang pinahusay na numeradong tile."
+        "description": "Sinisira ang 1 sapalarang tile, saka nagdaragdag ng 4 sapalarang numeradong tile (2–8), bawat isa may sapalarang Markang Bonus, Markang Multiplier o Markang Suwerte."
       },
       "script_of_immolation": {
         "name": "Kasulatan ng Pagsasakripisyo sa Apoy",
@@ -2670,24 +2672,24 @@
         "description": "Lumilikha ng 2 kopya ng 1 napiling tile sa kamay."
       },
       "script_of_the_gold_seal": {
-        "name": "Kasulatan ng Gintong Selyo",
-        "description": "Nilalagyan ng Gintong Selyo ang 1 napiling tile."
+        "name": "Kasulatan ng Gintong Tatak",
+        "description": "Nilalagyan ng Gintong Tatak ang 1 napiling tile."
       },
       "script_of_deja_vu": {
         "name": "Kasulatan ng Parang Naulit",
-        "description": "Nilalagyan ng Pulang Selyo ang 1 napiling tile (muling pagpapagana)."
+        "description": "Nilalagyan ng Pulang Tatak ang 1 napiling tile (muling pagpapagana)."
       },
       "script_of_the_trance": {
         "name": "Kasulatan ng Pagkawala sa Ulirat",
-        "description": "Nilalagyan ng Asul na Selyo ang 1 tile (lumilikha ng globo para sa huling kamay)."
+        "description": "Nilalagyan ng Asul na Tatak ang 1 napiling tile (lumilikha ng Celestial Orb kung kasama ito sa larong tumapos sa round)."
       },
       "script_of_the_medium": {
         "name": "Kasulatan ng Tagapamagitan",
-        "description": "Magdagdag ng Lilang Selyo sa 1 tile (gumagawa ng Selyo ng Kapalaran kapag na-redraw)"
+        "description": "Nilalagyan ng Lilang Tatak ang 1 napiling tile (lumilikha ng Selyo ng Kapalaran kapag na-redraw)."
       },
       "script_of_aura": {
         "name": "Kasulatan ng Aura",
-        "description": "Nilalagyan ng Foil, Holographic, o Polychrome ang 1 napiling tile."
+        "description": "Nilalagyan ng Edisyong Foil, Holographic o Polychrome ang 1 napiling tile."
       },
       "script_of_the_wraith": {
         "name": "Kasulatan ng Multo",
@@ -2699,7 +2701,7 @@
       },
       "script_of_the_hex": {
         "name": "Kasulatan ng Sumpa",
-        "description": "Nilalagyan ng Polychrome ang isang sapalarang Dekreto at sinisira ang lahat ng iba pang Dekreto."
+        "description": "Nilalagyan ng Edisyong Polychrome ang isang sapalarang Dekreto at sinisira ang lahat ng iba pang Dekreto."
       },
       "script_of_the_sigil": {
         "name": "Kasulatan ng Sagisag",
@@ -2989,15 +2991,15 @@
     "items": {
       "arcana_normal": {
         "name": "Pakete ng Hiwaga",
-        "description": "Pumili ng 1 sa 3 Selyo ng Tadhana."
+        "description": "Pumili ng 1 sa 3 Selyo ng Kapalaran."
       },
       "arcana_jumbo": {
         "name": "Malaking Pakete ng Hiwaga",
-        "description": "Pumili ng 2 sa 5 Selyo ng Tadhana."
+        "description": "Pumili ng 2 sa 5 Selyo ng Kapalaran."
       },
       "arcana_mega": {
         "name": "Napakalaking Pakete ng Hiwaga",
-        "description": "Pumili ng 3 sa 6 Selyo ng Tadhana."
+        "description": "Pumili ng 3 sa 6 Selyo ng Kapalaran."
       },
       "celestial_normal": {
         "name": "Makalangit na Pakete",
@@ -3013,15 +3015,15 @@
       },
       "tile_normal": {
         "name": "Pakete ng mga Tile",
-        "description": "Pumili ng 1 sa 3 binagong tile."
+        "description": "Pumili ng 1 sa 3 espesyal na tile."
       },
       "tile_jumbo": {
         "name": "Malaking Pakete ng mga Tile",
-        "description": "Pumili ng 2 sa 5 binagong tile."
+        "description": "Pumili ng 2 sa 5 espesyal na tile."
       },
       "tile_mega": {
         "name": "Napakalaking Pakete ng mga Tile",
-        "description": "Pumili ng 3 sa 6 binagong tile."
+        "description": "Pumili ng 3 sa 6 espesyal na tile."
       },
       "decree_normal": {
         "name": "Pakete ng mga Dekreto",
@@ -3153,7 +3155,7 @@
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
     "honorsHelp": "Bawat Hangin ay {{wind}} puntos, {{windGroup}} sa loob ng grupo. Bawat Dragon ay +{{dragon}} Mult, +{{dragonGroup}} sa loob ng grupo.",
     "specialTitle": "Espesyal na tile",
-    "specialHelp": "Ang may-kulay na frame na may hiyas ay marka, ang selyong lacre ay selyo, at ang kinang ay edisyon. Isa lang sa mga ito ang puwede sa isang tile. I-hover o i-focus ang tile para mabasa ang epekto.",
+    "specialHelp": "May isang dagdag na epekto ang espesyal na tile: isang Marka (may-kulay na frame na may hiyas), isang Tatak (nakadiing lacre) o isang Edisyon (kinang). I-hover o i-focus ang tile para mabasa kung ano mismo ang ginagawa nito.",
     "close": "Tara, laro na"
   },
   "mandateConsequence": {

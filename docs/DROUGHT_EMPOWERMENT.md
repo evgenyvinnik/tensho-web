@@ -7,7 +7,7 @@ October 7, 2026. Published in **v1.0.261007-5**.
 The inspector and direct Flower scoring honored Drought, but Decree scoring
 always multiplied its eligible bonuses by `1 + flowerCount * 0.1`. A suppressed
 Orchid still raised Half Suited's 20 Chips to 22, Gentle Breeze's multiplier
-from 3 to 3.2, and Moonlit Seal's scaling contribution. Both tactical and complete
+from 3 to 3.2, and Moonlit Emblem's scaling contribution. Both tactical and complete
 hands were affected. The old helper being unused did not mean empowerment was
 unimplemented: `DecreeSystem.applyDecreeEffect` already applied it separately.
 

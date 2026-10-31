@@ -32,7 +32,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `river_tax` | River Tax | Gain 2 Gold each time you REDRAW. | delivered |
 | `extended_hand_grant` | Extended Hand Grant | +3 Turns per round. | delivered |
 | `tanyao_dispensation` | Tanyao Dispensation | Terminal tiles (1s and 9s) are allowed in Tanyao hands. | delivered |
-| `moonlit_seal` | Moonlit Seal | Each Honor tile in your winning hand adds +0.1x to multiplier. | delivered |
+| `moonlit_seal` | Moonlit Emblem | Each Honor tile in your winning hand adds +0.1x to multiplier. | delivered |
 | `pure_suit_asceticism` | Pure Suit Asceticism | Tiles of your dominant suit gain +10% score each. Stacks multiplicatively. | delivered |
 | `broken_stair_edict` | Broken Stair Edict | Sequences may skip one rank (e.g., 1-3-4 is valid). | delivered |
 | `false_eye_mandate` | False Eye Mandate | One meld may serve as the pair for hand validation. | delivered |
@@ -53,7 +53,7 @@ Prompt: *a partially unrolled ivory parchment Decree scroll with lacquer rollers
 | `decree-rising-sun` | Rising Sun | +3 Mult | delivered |
 | `decree-lunar-glow` | Lunar Glow | +4 Mult | delivered |
 | `decree-crimson-banner` | Crimson Banner | +5 Mult | delivered |
-| `decree-golden-seal` | Golden Seal | +6 Mult | delivered |
+| `decree-golden-seal` | Golden Regalia | +6 Mult | delivered |
 | `decree-manzu-master` | Manzu Master | +3 Mult if hand contains Manzu | delivered |
 | `decree-pinzu-perfectionist` | Pinzu Perfectionist | +3 Mult if hand contains Pinzu | delivered |
 | `decree-souzu-scholar` | Souzu Scholar | +3 Mult if hand contains Souzu | delivered |
@@ -350,7 +350,7 @@ Prompt: *a menacing Boss Mandate token: a black-lacquer and crimson plaque depic
 | `the_fish` | The Fish | Tiles drawn face-down after each hand | delivered |
 | `the_serpent` | The Serpent | After a Play or REDRAW, always draw exactly 3 tiles | delivered |
 | `the_tooth` | The Tooth | Lose 1 gold per tile played | delivered |
-| `the_mark` | The Mark | All Honor tiles drawn face-down | delivered |
+| `the_mark` | The Veil | All Honor tiles drawn face-down | delivered |
 | `the_manacle` | The Manacle | Your rack holds 1 fewer tile | delivered |
 | `amber_acorn` | Amber Acorn | All Decrees are shuffled and face-down | delivered |
 | `verdant_leaf` | Verdant Leaf | All tiles debuffed until 1 Decree is sold | delivered |
