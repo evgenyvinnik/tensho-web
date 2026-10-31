@@ -2655,10 +2655,10 @@
     }
   },
   "omens": {
-    "pending": "Efek Pertanda",
     "effects": {
       "shopFee": "Biaya: {{amount}} emas saat penawaran ini tersedia di toko. Tidak ditagih selama ditunda.",
       "seasonLock": "Musim berikutnya yang ditarik: {{season}}. Kuncian berakhir setelah penarikan itu.",
+      "seasonLockLabel": "Musim berikutnya: {{season}}",
       "noInterest": "Bunga diblokir · sisa ronde: {{rounds}}",
       "interestBoost": "Batas bunga +{{amount}} emas · sisa ronde: {{rounds}}"
     },

@@ -2391,10 +2391,10 @@
     }
   },
   "omens": {
-    "pending": "兆の効果",
     "effects": {
       "shopFee": "この店の商品が用意された時に金{{amount}}を支払う。延期中は支払いなし。",
       "seasonLock": "次に引く季節：{{season}}。その季節を引くと固定は解除される。",
+      "seasonLockLabel": "次の季節：{{season}}",
       "noInterest": "利息なし・残りラウンド数：{{rounds}}",
       "interestBoost": "利息上限＋金{{amount}}・残りラウンド数：{{rounds}}"
     },

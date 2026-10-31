@@ -2347,10 +2347,10 @@
     }
   },
   "omens": {
-    "pending": "徵兆效果",
     "effects": {
       "shopFee": "此商店商品提供時支付 {{amount}} 金幣。延期提供期間不收費。",
       "seasonLock": "下一張抽到的季節：{{season}}。抽到後解除鎖定。",
+      "seasonLockLabel": "下一個季節：{{season}}",
       "noInterest": "利息暫停 · 剩餘回合：{{rounds}}",
       "interestBoost": "利息上限 +{{amount}} 金幣 · 剩餘回合：{{rounds}}"
     },

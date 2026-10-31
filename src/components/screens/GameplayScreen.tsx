@@ -31,7 +31,6 @@ import { TablePattern } from '../ui/TablePattern'
 import { ConfirmPopup } from '../ui/Popup'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
-import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
@@ -506,7 +505,7 @@ export function GameplayScreen() {
               />
             </div>
 
-            {/* Flowers, Seasons and held consumables; upgrades are in the Tea House. */}
+            {/* Flowers, Seasons, Omens and held consumables; upgrades are in the Tea House. */}
             <div className="gameplay-collection-items -mx-1 min-w-0 lg:mx-0">
               <CollectibleRail
                 flora={game.flora}
@@ -522,6 +521,7 @@ export function GameplayScreen() {
                 observatoryActive={game.state.charterSystem.hasCharter(
                   'observatory'
                 )}
+                omenSystem={game.state.omenSystem}
               />
             </div>
           </div>
@@ -535,7 +535,6 @@ export function GameplayScreen() {
               {t('mandateConsequence.debuff_until_sell')}
             </p>
           )}
-          <PendingOmens system={game.state.omenSystem} />
 
           {/* Fills the free table so the felt can sit in its middle. */}
           <div

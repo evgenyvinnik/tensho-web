@@ -13,11 +13,21 @@ import { runRandom } from '../../game/RunRandom'
 import { FlowerType, Tile } from '../../core/Tile'
 import { illustrationAssets } from '../../utils/assets'
 import type { SeasonTile } from '../../systems/types'
+import { useOmenStore } from '../../stores/omenStore'
+import { OmenTagSystem } from '../../systems/OmenTagSystem'
+import { ALL_OMENS } from '../../config/omenDefinitions'
+import i18n, {
+  loadLanguage,
+  SUPPORTED_LANGUAGES,
+  type SupportedLanguage,
+} from '../../i18n'
 
-afterEach(() => {
+afterEach(async () => {
   eventBus.clear()
   runRandom.reset()
   act(() => useFloraRevealQueue.setState({ queue: [] }))
+  act(() => useOmenStore.getState().clearForNewRun())
+  await i18n.changeLanguage('en')
 })
 
 function renderRail(overrides: Partial<CollectibleRailProps> = {}) {
@@ -239,3 +249,153 @@ it('tells a Flower when a Decree shields it from Drought', () => {
     'A Decree protects your Flower bonuses from Drought.'
   )
 })
+
+/** A rail with no Flowers or consumables, so only Omens can fill it. */
+function omenRail(language: SupportedLanguage) {
+  const game = new GameOrchestrator()
+  game.startNewRun(7)
+  const flora = game.getFloraState()
+  return async (system: OmenTagSystem) => {
+    await loadLanguage(language)
+    await i18n.changeLanguage(language)
+    render(
+      <CollectibleRail
+        flora={{
+          ...flora,
+          flowers: { ...flora.flowers, flowers: [] },
+          seasons: [],
+        }}
+        celestialOrbs={[]}
+        voidScripts={[]}
+        levelOf={() => 1}
+        validateUse={() => ({ isValid: true, errors: [] })}
+        onUse={vi.fn()}
+        onChooseTargets={vi.fn()}
+        omenSystem={system}
+      />
+    )
+  }
+}
+
+const omenTokens = (selector: string) =>
+  document.querySelectorAll<HTMLElement>(`[data-collectible-rail] ${selector}`)
+
+it.each(SUPPORTED_LANGUAGES)(
+  'pictures each earned Omen on the rail in %s until it triggers',
+  async (language) => {
+    const renderOmens = omenRail(language)
+    const system = new OmenTagSystem()
+    useOmenStore.getState().copyNextTag()
+    await renderOmens(system)
+    const [double] = omenTokens('[data-omen-id="double_omen"]')
+    expect(double).toHaveAccessibleName(i18n.t('omens.items.double_omen.name'))
+    expect(double.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringContaining('/assets/illustrations/omens/double-omen.webp')
+    )
+    fireEvent.click(double, { detail: 1 })
+    expect(
+      screen.getByRole('dialog', {
+        name: i18n.t('omens.items.double_omen.name'),
+      })
+    ).toHaveTextContent(i18n.t('omens.items.double_omen.description'))
+    // The armed Double Omen becomes a second copy of the next Omen earned.
+    act(() => useOmenStore.getState().addTag('omen_of_rivers'))
+    expect(omenTokens('[data-omen-id="double_omen"]')).toHaveLength(0)
+    const rivers = omenTokens('[data-omen-id="omen_of_rivers"]')
+    expect(rivers).toHaveLength(2)
+    for (const token of rivers) {
+      expect(token).toHaveAccessibleName(
+        i18n.t('omens.items.omen_of_rivers.name')
+      )
+      expect(token.querySelector('img')).toHaveAttribute(
+        'src',
+        expect.stringContaining('/generated/omens/omen_of_rivers.webp')
+      )
+    }
+    act(() => useOmenStore.getState().consumeBossTags())
+    expect(document.querySelector('[data-collectible-rail]')).toBeNull()
+  }
+)
+
+it.each(SUPPORTED_LANGUAGES)(
+  'shows Omen costs and the effects spent Omens leave running in %s',
+  async (language) => {
+    const renderOmens = omenRail(language)
+    const system = new OmenTagSystem()
+    const award = (id: string) =>
+      system.handleRoundSkip(
+        'Large',
+        ALL_OMENS.filter((o) => o.id !== id).map((o) => o.id)
+      )
+    award('double_omen')
+    award('decree_omen')
+    award('expansion_omen')
+    award('austerity_omen')
+    award('interest_omen')
+    await renderOmens(system)
+    const number = (value: number) => value.toLocaleString(language)
+    const panel = (token: HTMLElement) => {
+      fireEvent.click(token, { detail: 1 })
+      return screen.getByRole('dialog', {
+        name: token.getAttribute('aria-label')!,
+      })
+    }
+    // Each copied Rare+ guarantee carries its own fee.
+    const decrees = omenTokens('[data-omen-id="decree_omen"]')
+    expect(decrees).toHaveLength(2)
+    expect(panel(decrees[0])).toHaveTextContent(
+      i18n.t('omens.effects.shopFee', { amount: number(5) })
+    )
+    const season = i18n.t('flora.summer')
+    const [lock] = omenTokens('[data-omen-effect="season-lock"]')
+    expect(lock).toHaveAccessibleName(
+      i18n.t('omens.effects.seasonLockLabel', { season })
+    )
+    expect(lock.querySelector('img')).toHaveAttribute(
+      'src',
+      illustrationAssets.summerFan
+    )
+    expect(panel(lock)).toHaveTextContent(
+      i18n.t('omens.effects.seasonLock', { season })
+    )
+    const [blocked] = omenTokens('[data-omen-effect="no-interest"]')
+    expect(blocked).toHaveAccessibleName(
+      i18n.t('omens.items.austerity_omen.name')
+    )
+    expect(blocked).toHaveTextContent(number(1))
+    expect(panel(blocked)).toHaveTextContent(
+      i18n.t('omens.effects.noInterest', { rounds: number(1) })
+    )
+    const boost = () => omenTokens('[data-omen-effect="interest-boost"]')[0]
+    expect(boost()).toHaveAccessibleName(
+      i18n.t('omens.items.interest_omen.name')
+    )
+    expect(boost()).toHaveTextContent(number(3))
+    expect(panel(boost())).toHaveTextContent(
+      i18n.t('omens.effects.interestBoost', {
+        amount: number(2),
+        rounds: number(3),
+      })
+    )
+    for (const token of omenTokens('[data-collectible-token]'))
+      expect(token.getAttribute('aria-label')).not.toMatch(/omens\.|\{\{/)
+    // Spent effects leave the rail; expired history never shows.
+    act(() => system.applyLockedSeason())
+    expect(omenTokens('[data-omen-effect="season-lock"]')).toHaveLength(0)
+    act(() => system.onRoundEnd())
+    expect(omenTokens('[data-omen-effect="no-interest"]')).toHaveLength(0)
+    expect(boost()).toHaveTextContent(number(2))
+    act(() => system.triggerShopOmens(() => false))
+    expect(omenTokens('[data-omen-id="decree_omen"]')).toHaveLength(2)
+    act(() => system.triggerShopOmens())
+    expect(omenTokens('[data-omen-id="decree_omen"]')).toHaveLength(0)
+    // The Interest Omen itself is spent, but its boost keeps an icon.
+    expect(boost()).toBeInTheDocument()
+    act(() => {
+      system.onRoundEnd()
+      system.onRoundEnd()
+    })
+    expect(document.querySelector('[data-collectible-rail]')).toBeNull()
+  }
+)
