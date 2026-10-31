@@ -97,6 +97,10 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
       name: 'Pluto Orb used: Yaku upgraded',
     })
     expect(dialog).toHaveAttribute('data-orb-reveal', 'pluto_orb')
+    // The planet names the Orb; the family it raises is the subtitle.
+    expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
+      'Pairs'
+    )
     expect(dialog).toHaveTextContent('Celestial Orb used')
     const row = dialog.querySelector('[data-orb-reveal-level="SevenPairs"]')!
     // The engine's level 3 is the family's second upgrade: players count
@@ -155,7 +159,9 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
   })
   render(<CelestialOrbReveal />)
   const dialog = screen.getByRole('dialog')
-  expect(dialog).toHaveTextContent('Every family +1 level')
+  expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
+    'Every family +1 level'
+  )
   expect(dialog.querySelectorAll('[data-orb-reveal-level]')).toHaveLength(3)
   fireEvent.click(screen.getByRole('button', { name: 'Next (1 more)' }))
   expect(screen.getByRole('dialog')).toHaveAttribute(

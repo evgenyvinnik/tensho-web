@@ -83,8 +83,13 @@ export function useOfferText(
       const orb = offering.item as CelestialOrb
       return {
         name: itemText.name('orbs', orb),
-        kind: t('shop.kinds.orb'),
+        // The name is the planet; the kind line names the family it raises,
+        // with the same label as that family's upgrade.
+        kind: t('shop.kinds.orbFamily', {
+          family: t(`upgradeFamilies.${orb.effect.targetYaku}.name`),
+        }),
         description: itemText.description('orbs', orb),
+        // What the family works with, then how the Orb is used: one per line.
         extra: [
           orb.effect.targetYaku === 'All'
             ? null
@@ -92,7 +97,7 @@ export function useOfferText(
           t('shop.kinds.orbHelp'),
         ]
           .filter(Boolean)
-          .join(' · '),
+          .join('\n'),
         rarity: orb.rarity.toLowerCase(),
       }
     }
