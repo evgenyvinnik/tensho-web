@@ -937,7 +937,7 @@
         "description": "+5倍率"
       },
       "decree-golden-seal": {
-        "name": "金印",
+        "name": "金玺",
         "description": "+6倍率"
       },
       "decree-manzu-master": {
@@ -1517,7 +1517,7 @@
         "description": "断幺九手牌中允许出现幺九牌（1与9）。"
       },
       "moonlit_seal": {
-        "name": "月光之封",
+        "name": "月光徽章",
         "description": "和牌中每张字牌使倍率+0.1x。"
       },
       "pure_suit_asceticism": {
@@ -1839,7 +1839,7 @@
         "description": "每打出1张牌损失1金币"
       },
       "the_mark": {
-        "name": "印记",
+        "name": "幕",
         "description": "所有字牌背面发出"
       },
       "the_manacle": {
@@ -2671,7 +2671,7 @@
         "description": "为随机法令附加多彩版本，并销毁其余全部法令。"
       },
       "script_of_the_sigil": {
-        "name": "符印之文",
+        "name": "秘纹之文",
         "description": "将手中所有牌转为随机的单一花色"
       },
       "script_of_the_ouija": {
@@ -2735,7 +2735,7 @@
         "description": "内含各类强化的补充包"
       },
       "omens": {
-        "name": "预兆标记",
+        "name": "预兆",
         "description": "留有行动通关时获得的一次性奖励"
       },
       "mandates": {

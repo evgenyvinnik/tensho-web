@@ -1216,7 +1216,7 @@
         "description": "+5 Molt."
       },
       "decree-golden-seal": {
-        "name": "Sigillo dorato",
+        "name": "Insegne d'oro",
         "description": "+6 Molt."
       },
       "decree-manzu-master": {
@@ -1812,7 +1812,7 @@
         "description": "Le tessere terminali (1 e 9) sono ammesse nelle mani Tutti semplici; gli Onori restano esclusi."
       },
       "moonlit_seal": {
-        "name": "Sigillo lunare",
+        "name": "Emblema lunare",
         "description": "Ogni tessera onore nella mano giocata aggiunge +0,1x al moltiplicatore."
       },
       "pure_suit_asceticism": {
@@ -2116,7 +2116,7 @@
         "description": "Perdi 1 Oro per ogni tessera giocata."
       },
       "the_mark": {
-        "name": "Il Marchio",
+        "name": "Il Velo",
         "description": "Tutte le tessere onore vengono pescate a faccia in giù."
       },
       "the_manacle": {

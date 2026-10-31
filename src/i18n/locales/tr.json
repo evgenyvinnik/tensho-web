@@ -558,8 +558,8 @@
         "description": "Seçilen 1 taşa Altın İşareti ekler (tur sonunda elde tutuluyorsa +3 Altın)."
       },
       "seal_of_stone": {
-        "name": "Taş Mührü",
-        "description": "Seçilen 1 taşa Taş İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
+        "name": "Kaya Mührü",
+        "description": "Seçilen 1 taşa Kaya İşareti ekler (+100 Puan; sayısı ve türü yoktur, hiçbir gruba girmez, her zaman tam puan kazandırır)."
       },
       "seal_of_manzu": {
         "name": "Karakterlerin Mührü",
@@ -646,7 +646,7 @@
         "description": "Oynanmadan elde tutulurken ×1,5 Çarpan."
       },
       "stone": {
-        "name": "Taş İşareti",
+        "name": "Kaya İşareti",
         "description": "+100 Puan. Taşın sayısı ve türü yoktur; hiçbir gruba girmez ama her zaman tam puan kazandırır."
       },
       "gold": {
@@ -1169,11 +1169,11 @@
       },
       "lucky_sixes": {
         "name": "Şanslı Altılılar",
-        "description": "Oynanan her 6 numaralı sayı taşı için +6 Çarpan. Taş İşaretli taşlar sayılmaz."
+        "description": "Oynanan her 6 numaralı sayı taşı için +6 Çarpan. Kaya taşları sayılmaz."
       },
       "the_idol": {
         "name": "Put",
-        "description": "En az iki taş oynandığında ve oynanan tüm taşların basılı türü ve değeri aynı olduğunda Çarpan ×3. Taş İşaretli taşlar koşulu bozar; Joker taşlar basılı kimliklerini korur."
+        "description": "En az iki taş oynandığında ve oynanan tüm taşların basılı türü ve değeri aynı olduğunda Çarpan ×3. Kaya taşları koşulu bozar; Joker taşlar basılı kimliklerini korur."
       },
       "stuntman": {
         "name": "Dublör",
@@ -1232,7 +1232,7 @@
         "description": "Uç taşlar (1 ve 9) Hep basit ellerinde kullanılabilir; onur taşları yine kullanılamaz."
       },
       "moonlit_seal": {
-        "name": "Ay Işığı Mührü",
+        "name": "Ay Işığı Amblemi",
         "description": "Oynanan eldeki her onur taşı çarpana +0,1x ekler."
       },
       "pure_suit_asceticism": {
@@ -1296,7 +1296,7 @@
         "description": "+5 Çarpan."
       },
       "decree-golden-seal": {
-        "name": "Altın Mühür",
+        "name": "Altın Nişan",
         "description": "+6 Çarpan."
       },
       "decree-manzu-master": {
@@ -1961,7 +1961,7 @@
     "windName": "{{name}} Rüzgârı",
     "flowerName": "{{name}} Çiçeği",
     "seasonName": "{{name}} Mevsimi",
-    "stoneName": "Taş İşaretli taş",
+    "stoneName": "Kaya taşı",
     "numberedRule": "Aynı taşlarla çift veya üçlü oluştur. Aynı türden ardışık üç sayı bir seri oluşturur.",
     "honorRule": "Onur taşları aynı taşlardan çift veya üçlü oluşturur, sayısal seri oluşturmaz.",
     "basePoints": "Grup bonusları, azaltmalar ve diğer etkilerden önce {{points}} temel puan.",
@@ -2136,7 +2136,7 @@
         "description": "Oynanan her taş için 1 Altın kaybedilir."
       },
       "the_mark": {
-        "name": "İşaret",
+        "name": "Örtü",
         "description": "Tüm Onur taşları yüzleri kapalı çekilir."
       },
       "the_manacle": {
@@ -3209,7 +3209,7 @@
     },
     "Tanyao": {
       "name": "Hep basit",
-      "covers": "Yalnızca 2–8 arası taşlarla grup oluşturan her oyun (1, 9, Rüzgâr veya Ejderha yok; Taş İşaretli taşlar dikkate alınmaz) ve Hep Basit: yalnızca 2–8 arası taşlardan oluşan tam el."
+      "covers": "Yalnızca 2–8 arası taşlarla grup oluşturan her oyun (1, 9, Rüzgâr veya Ejderha yok; Kaya taşları dikkate alınmaz) ve Hep Basit: yalnızca 2–8 arası taşlardan oluşan tam el."
     },
     "Honitsu": {
       "name": "Yarı renk",

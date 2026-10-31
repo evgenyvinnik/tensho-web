@@ -937,7 +937,7 @@
         "description": "+5倍率"
       },
       "decree-golden-seal": {
-        "name": "金印",
+        "name": "金璽",
         "description": "+6倍率"
       },
       "decree-manzu-master": {
@@ -1517,7 +1517,7 @@
         "description": "断么九の手に么九牌（1と9）を認める。"
       },
       "moonlit_seal": {
-        "name": "月光の封",
+        "name": "月光の徽章",
         "description": "和了手の字牌1枚につき倍率+0.1x。"
       },
       "pure_suit_asceticism": {
@@ -1839,7 +1839,7 @@
         "description": "打った牌1枚につき1ゴールドを失う"
       },
       "the_mark": {
-        "name": "印",
+        "name": "帳",
         "description": "字牌はすべて伏せて配られる"
       },
       "the_manacle": {

@@ -1232,7 +1232,7 @@
         "description": "Pinapayagan ang terminal na mga tile (1 at 9) sa mga kamay na Lahat Simple; bawal pa rin ang Honors."
       },
       "moonlit_seal": {
-        "name": "Selyo ng Buwan",
+        "name": "Emblema ng Buwan",
         "description": "Bawat honor tile sa nilarong kamay ay nagdaragdag ng +0.1x sa multiplier."
       },
       "pure_suit_asceticism": {
@@ -1296,7 +1296,7 @@
         "description": "+5 sa multiplikador."
       },
       "decree-golden-seal": {
-        "name": "Gintong Selyo",
+        "name": "Gintong Regalia",
         "description": "+6 sa multiplikador."
       },
       "decree-manzu-master": {
@@ -2136,7 +2136,7 @@
         "description": "Nawawalan ng 1 Ginto bawat tile na nilaro."
       },
       "the_mark": {
-        "name": "Ang Marka",
+        "name": "Ang Belo",
         "description": "Nakataob ang lahat ng Honor na tile kapag binunot."
       },
       "the_manacle": {

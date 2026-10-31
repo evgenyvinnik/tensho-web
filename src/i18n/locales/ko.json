@@ -937,7 +937,7 @@
         "description": "+5 배율"
       },
       "decree-golden-seal": {
-        "name": "금인",
+        "name": "황금 옥새",
         "description": "+6 배율"
       },
       "decree-manzu-master": {
@@ -1517,7 +1517,7 @@
         "description": "탄야오 손에 노두패(1과 9)를 허용합니다."
       },
       "moonlit_seal": {
-        "name": "달빛의 봉인",
+        "name": "달빛 휘장",
         "description": "화료한 손의 자패 1장마다 배수 +0.1x."
       },
       "pure_suit_asceticism": {
@@ -1839,7 +1839,7 @@
         "description": "낸 패 1장마다 1골드를 잃음"
       },
       "the_mark": {
-        "name": "표식",
+        "name": "장막",
         "description": "모든 자패가 뒷면으로 뽑힘"
       },
       "the_manacle": {
@@ -2252,7 +2252,7 @@
         "description": "라운드당 무료 다시 뽑기 +1"
       },
       "seal_merchant": {
-        "name": "부적 상인",
+        "name": "인장 상인",
         "description": "운명의 인장 등장 확률 2배"
       },
       "orb_merchant": {
@@ -2316,7 +2316,7 @@
         "description": "라운드당 무료 다시 뽑기 +1 추가"
       },
       "seal_tycoon": {
-        "name": "부적 거상",
+        "name": "인장 거상",
         "description": "운명의 인장 등장 확률 4배"
       },
       "orb_tycoon": {
@@ -2451,7 +2451,7 @@
         "description": "다음 상점의 모든 물품이 25% 할인됩니다."
       },
       "seal_omen": {
-        "name": "부적의 징조",
+        "name": "인장의 징조",
         "description": "다음 상점의 물품 칸에 운명의 인장이 반드시 등장합니다."
       },
       "decree_omen": {
@@ -2515,99 +2515,99 @@
   "seals": {
     "items": {
       "seal_of_the_alchemist": {
-        "name": "연금술사의 부적",
+        "name": "연금술사의 인장",
         "description": "선택한 패 2장에 행운 표식을 부여"
       },
       "seal_of_the_empress": {
-        "name": "여제의 부적",
+        "name": "여제의 인장",
         "description": "선택한 패 2장에 보너스 표식을 부여"
       },
       "seal_of_the_sage": {
-        "name": "현자의 부적",
+        "name": "현자의 인장",
         "description": "선택한 패 2장에 보너스 표식을 부여"
       },
       "seal_of_harmony": {
-        "name": "조화의 부적",
+        "name": "조화의 인장",
         "description": "선택한 패 1장에 만능 표식을 부여 (모든 종류로 계산)"
       },
       "seal_of_fortitude": {
-        "name": "불굴의 부적",
+        "name": "불굴의 인장",
         "description": "선택한 패 1장에 강철 표식을 부여 (들고 있는 동안 ×1.5 배수)"
       },
       "seal_of_glass": {
-        "name": "유리의 부적",
+        "name": "유리의 인장",
         "description": "선택한 패 1장에 유리 표식을 부여 (×2 배수, 깨질 수 있음)"
       },
       "seal_of_wealth": {
-        "name": "부의 부적",
+        "name": "부의 인장",
         "description": "선택한 패 1장에 황금 표식을 부여 (라운드 종료 시 들고 있으면 +3골드)"
       },
       "seal_of_stone": {
-        "name": "돌의 부적",
+        "name": "돌의 인장",
         "description": "선택한 패 1장에 돌 표식을 부여 (+100점, 색도 숫자도 없어 어떤 묶음에도 들지 않음, 항상 온전히 계산)"
       },
       "seal_of_manzu": {
-        "name": "만수의 부적",
+        "name": "만수의 인장",
         "description": "최대 3장을 만수로 전환"
       },
       "seal_of_pinzu": {
-        "name": "통수의 부적",
+        "name": "통수의 인장",
         "description": "최대 3장을 통수로 전환"
       },
       "seal_of_souzu": {
-        "name": "삭수의 부적",
+        "name": "삭수의 인장",
         "description": "최대 3장을 삭수로 전환"
       },
       "seal_of_unity": {
-        "name": "통합의 부적",
+        "name": "통합의 인장",
         "description": "수패를 최대 3장까지 풍패로 바꿉니다. 숫자는 동·남·서·북 순서로 순환합니다."
       },
       "seal_of_the_oracle": {
-        "name": "예언자의 부적",
+        "name": "예언자의 인장",
         "description": "무작위 천구를 2개 생성"
       },
       "seal_of_the_emperor": {
-        "name": "황제의 부적",
+        "name": "황제의 인장",
         "description": "무작위 운명의 인장을 2개 생성"
       },
       "seal_of_the_fool": {
-        "name": "바보의 부적",
+        "name": "바보의 인장",
         "description": "이번 판에서 마지막으로 쓴 운명의 인장이나 천구를 생성"
       },
       "seal_of_judgment": {
-        "name": "심판의 부적",
+        "name": "심판의 인장",
         "description": "무작위 법령을 1개 생성 (자리가 있으면)"
       },
       "seal_of_the_hermit": {
-        "name": "은둔자의 부적",
+        "name": "은둔자의 인장",
         "description": "골드를 두 배로 (최대 +20골드)"
       },
       "seal_of_balance": {
-        "name": "균형의 부적",
+        "name": "균형의 인장",
         "description": "보유한 모든 법령의 판매가 총합을 획득 (최대 50골드)"
       },
       "seal_of_strength": {
-        "name": "힘의 부적",
+        "name": "힘의 인장",
         "description": "최대 2장의 숫자를 1 올림 (최대 9)"
       },
       "seal_of_release": {
-        "name": "해방의 부적",
+        "name": "해방의 인장",
         "description": "선택한 최대 2장을 영구히 파괴"
       },
       "seal_of_transmutation": {
-        "name": "변성의 부적",
+        "name": "변성의 인장",
         "description": "2장을 선택해 왼쪽을 오른쪽의 복제로 만듦"
       },
       "seal_of_fortune": {
-        "name": "요행의 부적",
+        "name": "요행의 인장",
         "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 에디션 중 하나를 부여"
       },
       "seal_of_the_immortal": {
-        "name": "불멸의 부적",
+        "name": "불멸의 인장",
         "description": "신화 등급 법령을 생성 (자리가 있으면)"
       },
       "seal_of_the_void": {
-        "name": "공허의 부적",
+        "name": "공허의 인장",
         "description": "모든 역을 1레벨 상승"
       }
     }
@@ -2671,7 +2671,7 @@
         "description": "무작위 법령에 다색 에디션을 부여하고 나머지 법령을 모두 파괴"
       },
       "script_of_the_sigil": {
-        "name": "인장의 문서",
+        "name": "문양의 문서",
         "description": "손패의 모든 패를 무작위 단일 종류로 전환"
       },
       "script_of_the_ouija": {
@@ -2735,7 +2735,7 @@
         "description": "여러 강화가 담긴 보충 팩"
       },
       "omens": {
-        "name": "징조 표식",
+        "name": "징조 태그",
         "description": "턴을 남기고 라운드를 깬 보상"
       },
       "mandates": {

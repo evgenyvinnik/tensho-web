@@ -937,7 +937,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Sello Dorado",
+        "name": "Regalía Dorada",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1513,7 +1513,7 @@
         "description": "Las fichas terminales (1 y 9) se permiten en manos Todo simples; los Honores siguen sin permitirse."
       },
       "moonlit_seal": {
-        "name": "Sello de Luz de Luna",
+        "name": "Emblema Lunar",
         "description": "Cada ficha de Honor en tu mano ganadora suma +0,1x al multiplicador."
       },
       "pure_suit_asceticism": {
@@ -1839,7 +1839,7 @@
         "description": "Pierdes 1 de oro por cada ficha jugada"
       },
       "the_mark": {
-        "name": "La Marca",
+        "name": "El Velo",
         "description": "Todas las fichas de Honor se roban boca abajo"
       },
       "the_manacle": {

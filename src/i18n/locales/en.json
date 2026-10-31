@@ -933,7 +933,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Golden Seal",
+        "name": "Golden Regalia",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1509,7 +1509,7 @@
         "description": "Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not."
       },
       "moonlit_seal": {
-        "name": "Moonlit Seal",
+        "name": "Moonlit Emblem",
         "description": "Each Honor tile in your winning hand adds +0.1x to multiplier."
       },
       "pure_suit_asceticism": {
@@ -1835,7 +1835,7 @@
         "description": "Lose 1 gold per tile played"
       },
       "the_mark": {
-        "name": "The Mark",
+        "name": "The Veil",
         "description": "All Honor tiles drawn face-down"
       },
       "the_manacle": {

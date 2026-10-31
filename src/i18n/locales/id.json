@@ -1145,7 +1145,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Segel Emas",
+        "name": "Regalia Emas",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1725,7 +1725,7 @@
         "description": "Ubin terminal (1 dan 9) diperbolehkan dalam tangan Semua sederhana; ubin kehormatan tetap tidak."
       },
       "moonlit_seal": {
-        "name": "Segel Cahaya Bulan",
+        "name": "Lambang Rembulan",
         "description": "Tiap ubin Kehormatan dalam tangan pemenang menambah +0,1x pengali."
       },
       "pure_suit_asceticism": {
@@ -2047,7 +2047,7 @@
         "description": "Kehilangan 1 emas per ubin yang dimainkan"
       },
       "the_mark": {
-        "name": "Sang Tanda",
+        "name": "Sang Tabir",
         "description": "Semua ubin Kehormatan diambil tertutup"
       },
       "the_manacle": {

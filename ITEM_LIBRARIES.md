@@ -268,7 +268,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Head** | 頭 | All Dragon tiles debuffed | 1 |
 | **The Tooth** | 歯 | Lose ¥1 per tile played | 3 |
 | **The Flint** | 火打石 | Every play scores half | 2 |
-| **The Mark** | 印 | All Honor tiles drawn face-down | 2 |
+| **The Veil** | 帳 | All Honor tiles drawn face-down | 2 |
 
 ### Showdown Mandates (Ante 8, 16, 24...)
 
@@ -348,7 +348,7 @@ Basic, reliable effects with no conditions.
 | Rising Sun | 朝日 | +3 Mult |
 | Lunar Glow | 月光 | +4 Mult |
 | Crimson Banner | 紅旗 | +5 Mult |
-| Golden Seal | 金印 | +6 Mult |
+| Golden Regalia | 金璽 | +6 Mult |
 | Master of Characters | 萬子師 | +3 Mult if hand contains Characters |
 | Perfectionist of Circles | 筒子匠 | +3 Mult if hand contains Circles |
 | Scholar of Bamboo | 索子学 | +3 Mult if hand contains Bamboo |

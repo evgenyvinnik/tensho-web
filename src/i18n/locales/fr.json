@@ -937,7 +937,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Sceau Doré",
+        "name": "Insignes d'Or",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1513,7 +1513,7 @@
         "description": "Les tuiles terminales (1 et 9) sont autorisées dans les mains Tout simples ; les Honneurs restent exclus."
       },
       "moonlit_seal": {
-        "name": "Sceau de Clair de Lune",
+        "name": "Emblème de Lune",
         "description": "Chaque tuile d'Honneur de votre main gagnante ajoute +0,1x au multiplicateur."
       },
       "pure_suit_asceticism": {
@@ -1839,7 +1839,7 @@
         "description": "Vous perdez 1 pièce d'or par tuile jouée"
       },
       "the_mark": {
-        "name": "La Marque",
+        "name": "Le Voile",
         "description": "Toutes les tuiles d'Honneur sont piochées face cachée"
       },
       "the_manacle": {
