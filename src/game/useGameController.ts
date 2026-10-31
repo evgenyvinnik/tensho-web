@@ -138,6 +138,10 @@ export interface GameController {
   addTileToWall: (tile: Tile) => boolean
   canRerollBossMandate: () => boolean
   rerollBossMandate: () => ActionResult
+  /** The extra Turn on sale (last Turn, Act 2 on), or null. */
+  emergencyTurnOffer: { cost: number; affordable: boolean } | null
+  /** Buy one more Turn with Gold. */
+  buyTurn: () => ActionResult
   canUseDeadWallWrit: (tileId?: string) => boolean
   useDeadWallWrit: (tileId: string) => ActionResult
 
@@ -430,6 +434,11 @@ export function useGameController(
     if (result.success) setTick((tick) => tick + 1)
     return result
   }, [orchestrator])
+  const buyTurn = useCallback(() => {
+    const result = orchestrator.processAction({ type: 'buyTurn' })
+    if (result.success) setTick((tick) => tick + 1)
+    return result
+  }, [orchestrator])
   const canUseDeadWallWrit = useCallback(
     (tileId?: string) => orchestrator.canUseDeadWallWrit(tileId),
     [orchestrator]
@@ -559,6 +568,8 @@ export function useGameController(
     addTileToWall,
     canRerollBossMandate,
     rerollBossMandate,
+    emergencyTurnOffer: orchestrator.getEmergencyTurnOffer(),
+    buyTurn,
     canUseDeadWallWrit,
     useDeadWallWrit,
 

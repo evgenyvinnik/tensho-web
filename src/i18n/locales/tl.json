@@ -995,7 +995,12 @@
     "feltTiles": "Mga tile na ilalaro",
     "collection": "Mga gamit mo",
     "deadWallHint": "Pumili ng isang tile at ipalit sa tile ng Dead Wall. Isang beses bawat round, libre.",
-    "turnsLabel": "Natitirang turno"
+    "turnsLabel": "Natitirang turno",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Bumili ng isa pang turno sa halagang {{cost}} ginto",
+      "short": "Kulang ang ginto: {{cost}} ang isa pang turno"
+    }
   },
   "rounds": {
     "small": "Maliit na Round",
@@ -2366,7 +2371,8 @@
       "play": "ipuntos ang mga piniling tile: hanggang {{max}}, o isang buong kamay ng Mahjong.",
       "redraw": "ipadala sa ilog ang kahit ilang piniling tile at bumunot ng bago.",
       "p2": "Abutin ang target ng round bago maubos ang iyong mga turno. Laging laro ang huling turno, at may mga item na nagbibigay ng libreng redraw na hindi gumagamit ng turno.",
-      "warning": "Kapag naubos ang turno na kulang pa sa target, tapos na ang laro."
+      "warning": "Kapag naubos ang turno na kulang pa sa target, tapos na ang laro.",
+      "emergency": "Mula Akto {{act}}, mapapahaba mo ang huling turno: bumili ng isa pang turno gamit ang ginto. Tumataas ang presyo bawat Akto at dumodoble sa bawat dagdag na turnong binili sa parehong round."
     },
     "select": {
       "title": "Pagpili ng mga tile",

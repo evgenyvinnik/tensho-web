@@ -708,7 +708,12 @@
     "feltTiles": "Tuiles à jouer",
     "collection": "Vos objets",
     "deadWallHint": "Choisissez une seule tuile et échangez-la contre une du mur mort. Une fois par manche, gratuit.",
-    "turnsLabel": "Tours restants"
+    "turnsLabel": "Tours restants",
+    "emergencyTurn": {
+      "buy": "+1 tour",
+      "label": "Acheter un tour de plus pour {{cost}} or",
+      "short": "Pas assez d’or : un tour de plus coûte {{cost}}"
+    }
   },
   "rounds": {
     "small": "Petite Manche",
@@ -2079,7 +2084,8 @@
       "play": "marquer les tuiles choisies : jusqu'à {{max}}, ou une main de Mahjong complète.",
       "redraw": "envoyer à la rivière autant de tuiles choisies que vous voulez et en piocher de nouvelles.",
       "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
-      "warning": "À court de tours sous l'objectif, la partie est terminée."
+      "warning": "À court de tours sous l'objectif, la partie est terminée.",
+      "emergency": "À partir de l’Acte {{act}}, votre dernier tour peut être prolongé : achetez un tour de plus avec de l’or. Le prix augmente à chaque Acte et double pour chaque tour supplémentaire acheté dans la même manche."
     },
     "select": {
       "title": "Sélectionner des tuiles",

@@ -184,4 +184,83 @@ describe('ActionBar', () => {
     expect(redraw.textContent).toBe('RECAMBIAR')
     expect(i18n.language).toBe('es')
   })
+
+  describe('emergency Turn', () => {
+    it('is absent unless one is on offer', () => {
+      const { container } = renderActionBar()
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+    })
+
+    it('sits in the bar, above the controls, with its price and buys on tap', () => {
+      const onBuyTurn = vi.fn()
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 15, affordable: true },
+        onBuyTurn,
+      })
+      const buy = screen.getByRole('button', {
+        name: 'Buy one more Turn for 15 Gold',
+      })
+      expect(buy).toHaveTextContent('+1 Turn')
+      expect(buy).toHaveTextContent('15')
+      expect(buy).toBeEnabled()
+      // Its own row in the bar, before the controls: it never floats over
+      // the rack.
+      const row = container.querySelector('[data-emergency-turn-row]')!
+      expect(row.parentElement).toBe(
+        container.querySelector('[data-action-bar]')
+      )
+      expect(
+        row.compareDocumentPosition(
+          container.querySelector('.gameplay-action-controls')!
+        ) & Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy()
+      fireEvent.click(buy)
+      expect(onBuyTurn).toHaveBeenCalledOnce()
+    })
+
+    it('stays visible but disabled, with the reason, when Gold is short', () => {
+      const onBuyTurn = vi.fn()
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 30, affordable: false },
+        onBuyTurn,
+      })
+      const buy = screen.getByRole('button', {
+        name: 'Buy one more Turn for 30 Gold',
+      })
+      expect(buy).toBeDisabled()
+      expect(buy).toHaveAccessibleDescription(
+        'Not enough Gold: one more Turn costs 30'
+      )
+      fireEvent.click(buy)
+      expect(onBuyTurn).not.toHaveBeenCalled()
+    })
+
+    it('keeps the play reason floating alongside it', () => {
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        selectedCount: 1,
+        playReason: 'Select at least 2 tiles',
+        emergencyTurn: { cost: 10, affordable: true },
+      })
+      expect(container.querySelector('[data-emergency-turn]')).not.toBeNull()
+      expect(container.querySelector('[data-action-reason]')).toHaveTextContent(
+        'Select at least 2 tiles'
+      )
+    })
+
+    it('localizes the offer in Japanese', async () => {
+      await act(() => changeLanguage('ja'))
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 10, affordable: true },
+      })
+      expect(
+        screen.getByRole('button', {
+          name: i18n.t('gameplay.emergencyTurn.label', { cost: '10' }),
+        })
+      ).toHaveTextContent(i18n.t('gameplay.emergencyTurn.buy'))
+    })
+  })
 })

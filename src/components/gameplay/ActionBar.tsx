@@ -11,6 +11,12 @@
  * disabled and one short reason floats just above the bar and is announced;
  * it never takes layout space, so showing it does not move the table.
  *
+ * From Act 2, the last Turn of a round can be extended with Gold. The offer
+ * is a slim row at the top of the bar, shown only on the last Turn (disabled
+ * when the player cannot afford it, so the option is learned before it is
+ * needed). It sits in the bar rather than floating so it never covers the
+ * rack on the Turn where every tile matters.
+ *
  * @module components/gameplay/ActionBar
  */
 
@@ -18,6 +24,7 @@ import type { ReactNode, Ref } from 'react'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../ui/Button'
+import { GoldIcon } from '../ui/GoldIcon'
 
 export interface ActionBarProps {
   playButtonRef?: Ref<HTMLButtonElement>
@@ -41,6 +48,9 @@ export interface ActionBarProps {
   onPlayHand: () => void
   /** The play would clear the round. */
   willClear?: boolean
+  /** An extra Turn for sale on the last Turn (Act 2 on), or null. */
+  emergencyTurn?: { cost: number; affordable: boolean } | null
+  onBuyTurn?: () => void
 }
 
 export function ActionBar({
@@ -56,9 +66,12 @@ export function ActionBar({
   onRedraw,
   onPlayHand,
   willClear = false,
+  emergencyTurn = null,
+  onBuyTurn,
 }: ActionBarProps) {
   const { t, i18n } = useTranslation()
   const reasonId = useId()
+  const emergencyHintId = useId()
   const number = (value: number) =>
     value.toLocaleString(i18n.resolvedLanguage ?? i18n.language)
   // Only explain a disabled action once the player has chosen tiles.
@@ -81,6 +94,47 @@ export function ActionBar({
         >
           {reason}
         </p>
+      )}
+      {emergencyTurn && (
+        <div data-emergency-turn-row className="flex justify-center">
+          <button
+            type="button"
+            data-emergency-turn={emergencyTurn.cost}
+            onClick={onBuyTurn}
+            disabled={!emergencyTurn.affordable}
+            aria-label={t('gameplay.emergencyTurn.label', {
+              cost: number(emergencyTurn.cost),
+            })}
+            aria-describedby={
+              emergencyTurn.affordable ? undefined : emergencyHintId
+            }
+            title={
+              emergencyTurn.affordable
+                ? t('gameplay.emergencyTurn.label', {
+                    cost: number(emergencyTurn.cost),
+                  })
+                : t('gameplay.emergencyTurn.short', {
+                    cost: number(emergencyTurn.cost),
+                  })
+            }
+            className="flex min-h-11 max-w-full items-center gap-2 rounded-full border-2 border-[var(--color-golden-yellow)] bg-black/25 px-4 py-1 text-sm font-black text-[var(--color-beige-white)] shadow-[0_0_14px_rgba(255,213,79,0.3)] hover:bg-[var(--color-forest-green)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] disabled:cursor-not-allowed disabled:border-white/25 disabled:text-white/55 disabled:shadow-none"
+          >
+            <span className="[overflow-wrap:anywhere]">
+              {t('gameplay.emergencyTurn.buy')}
+            </span>
+            <span className="inline-flex shrink-0 items-center gap-1 tabular-nums text-[var(--color-golden-yellow)]">
+              <GoldIcon className="h-4 w-4" />
+              {number(emergencyTurn.cost)}
+            </span>
+          </button>
+          {!emergencyTurn.affordable && (
+            <span id={emergencyHintId} className="sr-only">
+              {t('gameplay.emergencyTurn.short', {
+                cost: number(emergencyTurn.cost),
+              })}
+            </span>
+          )}
+        </div>
       )}
       <div className="gameplay-action-controls items-center gap-1.5 sm:gap-3">
         <p

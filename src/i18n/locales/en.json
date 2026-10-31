@@ -704,7 +704,12 @@
     "feltTiles": "Tiles to play",
     "collection": "Your items",
     "deadWallHint": "Select exactly one tile, then swap it for a Dead Wall tile. Once per round, free.",
-    "turnsLabel": "Turns left"
+    "turnsLabel": "Turns left",
+    "emergencyTurn": {
+      "buy": "+1 Turn",
+      "label": "Buy one more Turn for {{cost}} Gold",
+      "short": "Not enough Gold: one more Turn costs {{cost}}"
+    }
   },
   "rounds": {
     "small": "Small Round",
@@ -2075,7 +2080,8 @@
       "play": "score the selected tiles: up to {{max}}, or a whole Mahjong hand.",
       "redraw": "send any number of selected tiles to the river and draw new ones.",
       "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
-      "warning": "Run out of Turns below the target and the run is over."
+      "warning": "Run out of Turns below the target and the run is over.",
+      "emergency": "From Act {{act}}, your last Turn can be extended: buy one more Turn with Gold. The price rises each Act and doubles for each extra Turn bought in the same round."
     },
     "select": {
       "title": "Selecting Tiles",

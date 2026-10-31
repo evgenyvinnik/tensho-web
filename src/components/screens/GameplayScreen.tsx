@@ -310,6 +310,11 @@ export function GameplayScreen() {
     } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
   }, [game, selectedIds, redrawReason])
 
+  const handleBuyTurn = useCallback(() => {
+    const result = game.buyTurn()
+    setActionError(result.success ? null : (result.errors?.[0] ?? null))
+  }, [game])
+
   // REDRAW takes any number of tiles, so one tap picks every tile it can take
   // (a locked tile must be played); a second tap puts them all back.
   const redrawableIds = game.handTiles
@@ -633,6 +638,8 @@ export function GameplayScreen() {
           redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
+          onBuyTurn={handleBuyTurn}
           willClear={
             preview !== null &&
             preview.total >= Math.max(0, game.targetScore - game.score)

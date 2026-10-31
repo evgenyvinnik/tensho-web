@@ -239,6 +239,7 @@ const stateFields = {
   handsAllowance: count,
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
+  emergencyTurnsBoughtThisRound: optional(count),
   honorDiscardsThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),

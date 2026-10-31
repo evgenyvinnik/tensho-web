@@ -916,7 +916,12 @@
     "feltTiles": "Ubin untuk dimainkan",
     "collection": "Barangmu",
     "deadWallHint": "Pilih satu ubin, lalu tukar dengan ubin dinding mati. Sekali per ronde, gratis.",
-    "turnsLabel": "Sisa giliran"
+    "turnsLabel": "Sisa giliran",
+    "emergencyTurn": {
+      "buy": "+1 giliran",
+      "label": "Beli satu giliran lagi seharga {{cost}} emas",
+      "short": "Emas tidak cukup: satu giliran lagi seharga {{cost}}"
+    }
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -2287,7 +2292,8 @@
       "play": "cetak poin dari ubin terpilih: hingga {{max}}, atau satu tangan Mahjong lengkap.",
       "redraw": "kirim ubin terpilih sebanyak apa pun ke sungai dan ambil yang baru.",
       "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
-      "warning": "Jika Giliran habis di bawah target, permainan berakhir."
+      "warning": "Jika Giliran habis di bawah target, permainan berakhir.",
+      "emergency": "Mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
     },
     "select": {
       "title": "Memilih ubin",

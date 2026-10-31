@@ -708,7 +708,12 @@
     "feltTiles": "Fichas para jugar",
     "collection": "Tus objetos",
     "deadWallHint": "Elige una sola ficha y cámbiala por una del muro muerto. Una vez por ronda, gratis.",
-    "turnsLabel": "Turnos"
+    "turnsLabel": "Turnos",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Compra un turno más por {{cost}} de oro",
+      "short": "No tienes oro suficiente: un turno más cuesta {{cost}}"
+    }
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -2079,7 +2084,8 @@
       "play": "puntúa las fichas elegidas: hasta {{max}}, o una mano de Mahjong completa.",
       "redraw": "envía al río las fichas elegidas que quieras y roba otras nuevas.",
       "p2": "Alcanza el objetivo de la ronda antes de quedarte sin turnos. Tu último turno siempre es una jugada, y algunos objetos dan recambios gratis que no gastan turno.",
-      "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina."
+      "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina.",
+      "emergency": "Desde el Acto {{act}}, puedes alargar tu último turno: compra un turno más con oro. El precio sube cada Acto y se duplica por cada turno extra comprado en la misma ronda."
     },
     "select": {
       "title": "Seleccionar fichas",

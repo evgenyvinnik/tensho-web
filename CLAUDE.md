@@ -243,7 +243,9 @@ Each round grants a shared budget of Turns (`TURNS_PER_ROUND` in
 spend one; free redraws (`redrawsRemaining`) are spent first, and the last Turn
 is always a play. REDRAW sends any number of selected tiles to the river. There
 is no Skip and no single-tile Discard: a Small or Large round cleared with two
-Turns to spare earns its Omen. See `docs/RULE_RESOLUTION.md`.
+Turns to spare earns its Omen. From Act 2 the last Turn can be extended with
+Gold (`buyTurn`; price `emergencyTurnCost` in `playRules.ts`: 5 × Act, doubling
+per purchase in the round). See `docs/RULE_RESOLUTION.md`.
 
 ### Five-Layer Authority Hierarchy
 

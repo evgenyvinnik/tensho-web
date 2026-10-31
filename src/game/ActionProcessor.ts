@@ -40,6 +40,14 @@ export interface RedrawAction {
 }
 
 /**
+ * Buy one more Turn with Gold on the last Turn of a round (Act 2 on).
+ * The orchestrator prices and validates it; see `emergencyTurnCost`.
+ */
+export interface BuyTurnAction {
+  type: 'buyTurn'
+}
+
+/**
  * Use Fate Seal action
  */
 export interface UseSealAction {
@@ -70,6 +78,7 @@ export type PlayerAction =
   | DrawAction
   | PlayAction
   | RedrawAction
+  | BuyTurnAction
   | UseSealAction
   | UseOrbAction
   | UseScriptAction

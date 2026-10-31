@@ -6,6 +6,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { resetMetaProgressionRunContext } from './MetaProgressionBridge'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceRound, advanceToRound } from '../test/roundHelpers'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
@@ -102,6 +103,25 @@ it('keeps the Red Stake withheld reward through save and load, and rejects a neg
   expect(saved.state.lastRoundSummary?.stakeWithheldReward).toBe(3)
   saved.state.lastRoundSummary!.stakeWithheldReward = -3
   expect(() => parseClassicRunSnapshot(saved)).toThrow()
+})
+
+it('saves emergency Turns bought this round, and loads saves from before them', () => {
+  const game = start(7)
+  advanceToRound(game, 'Boss')
+  advanceRound(game)
+  const state = game.getState() as OrchestratorState
+  expect(state.currentAct).toBe(2)
+  state.handsRemaining = 1
+  state.gold = 50
+  expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+  const saved = check(game)
+  expect(saved.state.emergencyTurnsBoughtThisRound).toBe(1)
+  expect(saved.state.handsRemaining).toBe(2)
+  const legacy = json(saved)
+  delete legacy.state.emergencyTurnsBoughtThisRound
+  expect(() => parseClassicRunSnapshot(legacy)).not.toThrow()
+  legacy.state.emergencyTurnsBoughtThisRound = -1
+  expect(() => parseClassicRunSnapshot(legacy)).toThrow()
 })
 
 it.each([7, 19, 413, 991, 2026])(
@@ -471,6 +491,7 @@ describe('untrusted save boundary', () => {
         [
           'playsThisRound',
           'tilesRedrawnThisRound',
+          'emergencyTurnsBoughtThisRound',
           'honorDiscardsThisRound',
           'patternPlayCounts',
         ].includes(key)

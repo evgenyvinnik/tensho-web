@@ -995,7 +995,12 @@
     "feltTiles": "Tessere da giocare",
     "collection": "I tuoi oggetti",
     "deadWallHint": "Scegli una sola tessera e scambiala con una del muro morto. Una volta per round, gratis.",
-    "turnsLabel": "Turni rimasti"
+    "turnsLabel": "Turni rimasti",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Compra un turno in più per {{cost}} oro",
+      "short": "Oro insufficiente: un turno in più costa {{cost}}"
+    }
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -2366,7 +2371,8 @@
       "play": "fai punti con le tessere scelte: fino a {{max}}, o una mano di Mahjong completa.",
       "redraw": "manda nel fiume quante tessere scelte vuoi e pescane di nuove.",
       "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
-      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita."
+      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita.",
+      "emergency": "Dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
     },
     "select": {
       "title": "Selezionare le tessere",

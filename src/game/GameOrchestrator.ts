@@ -131,9 +131,11 @@ import {
 } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
+  EMERGENCY_TURN_FIRST_ACT,
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
+  emergencyTurnCost,
 } from './playRules'
 import { createSeededRandom, runRandom, RunRandom } from './RunRandom'
 import { captureClassicState, restoreClassicState } from './ClassicRunState'
@@ -241,6 +243,11 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /**
+   * Emergency Turns bought with Gold this round; each doubles the next one's
+   * price. Missing in older saves: none bought.
+   */
+  emergencyTurnsBoughtThisRound?: number
   /** Missing in legacy saves: unknown eligibility until the next round. */
   honorDiscardsThisRound?: number
   /**
@@ -755,6 +762,7 @@ export class GameOrchestrator {
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
 
     this.state.handsRemaining = Math.max(
@@ -1389,7 +1397,9 @@ export class GameOrchestrator {
     const validation =
       action.type === 'play'
         ? this.validatePlaySelection(action.tileIds)
-        : action.type === 'useSeal' ||
+        : action.type === 'buyTurn'
+          ? this.validateEmergencyTurn()
+          : action.type === 'useSeal' ||
             action.type === 'useScript' ||
             action.type === 'useOrb'
           ? this.validateConsumableAction(action)
@@ -1476,6 +1486,9 @@ export class GameOrchestrator {
       case 'redraw':
         return this.executeRedraw(action.tileIds, effects)
 
+      case 'buyTurn':
+        return this.executeBuyTurn(effects)
+
       case 'useSeal':
         return this.executeUseSeal(action.sealId, action.targets, effects)
 
@@ -1488,6 +1501,64 @@ export class GameOrchestrator {
       default:
         return { success: false, effects, errors: ['Unknown action type'] }
     }
+  }
+
+  /**
+   * The emergency Turn on offer right now, or null when there is none: it is
+   * sold only on the last Turn of a round, from Act 2 on. `affordable` is
+   * false when the player is short of Gold, so the offer can still be shown.
+   */
+  getEmergencyTurnOffer(): { cost: number; affordable: boolean } | null {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') return null
+    if (this.state.currentAct < EMERGENCY_TURN_FIRST_ACT) return null
+    if (this.state.handsRemaining !== 1) return null
+    if (this.state.score >= this.state.targetScore) return null
+    const cost = emergencyTurnCost(
+      this.state.currentAct,
+      this.state.emergencyTurnsBoughtThisRound ?? 0
+    )
+    return { cost, affordable: this.state.gold >= cost }
+  }
+
+  private validateEmergencyTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn can be bought only on the last Turn of a round, from Act ${EMERGENCY_TURN_FIRST_ACT}`,
+        ],
+      }
+    if (!offer.affordable)
+      return {
+        isValid: false,
+        errors: [`An extra Turn costs ${offer.cost} Gold`],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** Spend Gold for one more Turn this round. */
+  private executeBuyTurn(effects: Effect[]): ActionResult {
+    const { cost } = this.getEmergencyTurnOffer()!
+    const previousGold = this.state.gold
+    this.state.gold -= cost
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.emergencyTurnsBoughtThisRound =
+      (this.state.emergencyTurnsBoughtThisRound ?? 0) + 1
+    effects.push({
+      type: 'gold_changed',
+      description: `Emergency Turn bought for ${cost} Gold`,
+      delta: -cost,
+      newTotal: this.state.gold,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold,
+      newGold: this.state.gold,
+      delta: -cost,
+      reason: 'Emergency Turn',
+    })
+    return { success: true, effects }
   }
 
   /**
@@ -5109,7 +5180,11 @@ export class GameOrchestrator {
    */
   getAvailableActions(): PlayerAction['type'][] {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
-    return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
+    const available = this.actionProcessor.getAvailableActions(
+      this.createStateSnapshot()
+    )
+    if (this.getEmergencyTurnOffer()?.affordable) available.push('buyTurn')
+    return available
   }
 
   /**

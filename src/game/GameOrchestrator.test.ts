@@ -29,6 +29,7 @@ import {
   THE_HOUSE,
   THE_MANACLE,
   THE_MARK,
+  THE_NEEDLE,
   THE_WHEEL,
   VERDANT_LEAF,
   type MandateDefinition,
@@ -419,6 +420,111 @@ describe('GameOrchestrator', () => {
     it('rejects an empty selection or a tile not in hand', () => {
       expect(redraw([]).success).toBe(false)
       expect(redraw(['fake-tile-id']).success).toBe(false)
+    })
+  })
+
+  describe('emergency Turn', () => {
+    /** Start Act 2's Small round with no Decrees and one Turn left. */
+    function lastTurnInAct(act: number, gold: number) {
+      game.startNewRun(12345)
+      clearDecrees(game)
+      const state = game.getState() as OrchestratorState
+      for (let i = 1; i < act; i++) {
+        advanceToRound(game, 'Boss')
+        advanceRound(game)
+      }
+      expect(state.currentAct).toBe(act)
+      clearDecrees(game)
+      state.handsRemaining = 1
+      state.gold = gold
+      return state
+    }
+
+    it('is never sold in Act 1', () => {
+      const state = lastTurnInAct(1, 999)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(false)
+      expect(state.handsRemaining).toBe(1)
+      expect(state.gold).toBe(999)
+    })
+
+    it('is sold only on the last Turn', () => {
+      const state = lastTurnInAct(2, 100)
+      state.handsRemaining = 2
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 10,
+        affordable: true,
+      })
+      expect(game.getAvailableActions()).toContain('buyTurn')
+    })
+
+    it('trades Gold for a Turn, then doubles the price within the round', () => {
+      const state = lastTurnInAct(2, 100)
+      const allowance = state.handsAllowance
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(true)
+      expect(result.effects).toContainEqual(
+        expect.objectContaining({ type: 'gold_changed', delta: -10 })
+      )
+      expect(state.gold).toBe(90)
+      expect(state.handsRemaining).toBe(2)
+      expect(state.handsAllowance).toBe(allowance + 1)
+      // Not the last Turn any more: REDRAW is legal again.
+      expect(
+        game.canPerformAction({
+          type: 'redraw',
+          tileIds: [state.handTiles[0].id],
+        })
+      ).toBe(true)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(20)
+    })
+
+    it('is priced by Act and resets each round', () => {
+      const state = lastTurnInAct(3, 500)
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(15)
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+      clearRound(game)
+      game.exitShop()
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(15)
+    })
+
+    it('is shown but refused when Gold is short', () => {
+      const state = lastTurnInAct(2, 9)
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 10,
+        affordable: false,
+      })
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(false)
+      expect(result.errors?.[0]).toContain('10 Gold')
+      expect(state.gold).toBe(9)
+      expect(state.handsRemaining).toBe(1)
+    })
+
+    it('cannot buy a second Play past The Needle', () => {
+      game.startNewRun(12345)
+      advanceToRound(game, 'Boss')
+      advanceRound(game)
+      enterBossWithMandate(game, THE_NEEDLE)
+      clearDecrees(game)
+      const state = game.getState() as OrchestratorState
+      state.handsRemaining = 1
+      state.gold = 100
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+      expect(state.handsRemaining).toBe(2)
+      state.targetScore = 1e12
+      state.roundManager.getCurrentRound()!.scoreTarget = 1e12
+      const ids = state.handTiles.slice(0, 2).map((tile) => tile.id)
+      game.processAction({ type: 'play', tileIds: ids })
+      // The Needle's single Play ends the round however many Turns remain.
+      expect(game.getState().phase).toBe('gameOver')
     })
   })
 
