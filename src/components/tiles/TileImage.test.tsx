@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import i18n, { loadLanguage } from '../../i18n'
 import {
   Tile,
@@ -190,4 +190,87 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
     i18n.t('tileMarks.items.stone.description')
   )
   expect(screen.getByRole('tooltip')).not.toHaveTextContent('Red Dragon')
+})
+
+describe('touch long press', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  /** A tile inside a selecting button, as the rack and felt render it. */
+  const renderInButton = (tile: Tile, props = {}) => {
+    const onSelect = vi.fn()
+    render(
+      <button type="button" onClick={onSelect}>
+        <TileImage tile={tile} {...props} />
+      </button>
+    )
+    return { onSelect, face: screen.getByRole('img') }
+  }
+
+  const press = (
+    target: Element,
+    ms: number,
+    pointerType = 'touch',
+    drift = 0
+  ) => {
+    fireEvent.pointerDown(target, { pointerType, clientX: 10, clientY: 10 })
+    if (drift)
+      fireEvent.pointerMove(target, {
+        pointerType,
+        clientX: 10 + drift,
+        clientY: 10,
+      })
+    act(() => vi.advanceTimersByTime(ms))
+    fireEvent.pointerUp(target, { pointerType })
+    fireEvent.click(target, { detail: 1 })
+  }
+
+  it('shows the name and modifiers without selecting, until the next touch', () => {
+    const tile = new Tile(TileSuit.Pinzu, 3, 'held').withSeal(SealType.Purple)
+    const { onSelect, face } = renderInButton(tile)
+    press(face, 450)
+    const tooltip = screen.getByRole('tooltip')
+    expect(tooltip).toHaveTextContent(face.getAttribute('alt')!)
+    expect(tooltip).toHaveTextContent(i18n.t('archiveSeals.items.purple.name'))
+    expect(tooltip).toHaveTextContent(
+      i18n.t('archiveSeals.items.purple.description')
+    )
+    // The touch that showed the details does not also select.
+    expect(onSelect).not.toHaveBeenCalled()
+    // A new touch anywhere puts the details away and does what it touched.
+    fireEvent.pointerDown(document.body, { pointerType: 'touch' })
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    press(face, 50)
+    expect(onSelect).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+  })
+
+  it('keeps the browser menu off a held tile', () => {
+    const { face } = renderInButton(new Tile(TileSuit.Wind, 2, 'south'))
+    fireEvent.pointerDown(face, { pointerType: 'touch' })
+    expect(fireEvent.contextMenu(face)).toBe(false)
+    fireEvent.pointerUp(face, { pointerType: 'touch' })
+    fireEvent.pointerDown(face, { pointerType: 'mouse' })
+    expect(fireEvent.contextMenu(face)).toBe(true)
+  })
+
+  it.each([
+    ['a short tap', {}, 449, 'touch', 0],
+    ['a scroll that drifts', {}, 450, 'touch', 11],
+    ['a mouse held still', {}, 450, 'mouse', 0],
+    ['a tile without details', { showTooltip: false }, 450, 'touch', 0],
+    ['a face-down tile', { faceDown: true }, 450, 'touch', 0],
+  ] as const)(
+    'leaves %s as a plain tap',
+    (_, props, ms, pointerType, drift) => {
+      const { onSelect } = renderInButton(
+        new Tile(TileSuit.Souzu, 5, 'tap'),
+        props
+      )
+      const target = document.querySelector('button > div')!
+      press(target, ms, pointerType, drift)
+      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+      expect(onSelect).toHaveBeenCalledOnce()
+    }
+  )
 })

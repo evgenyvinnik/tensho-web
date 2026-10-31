@@ -24,6 +24,11 @@ import { TileBack } from './TileBack'
 
 export type TileSize = keyof typeof tileSizes
 
+/** How long a touch rests on a tile before it shows the details. */
+const HOLD_MS = 450
+/** How far a resting touch may drift before it counts as a scroll or drag. */
+const HOLD_SLOP = 10
+
 export interface TileImageProps {
   /** The tile to display, or null/undefined for face-down */
   tile?: Tile | null
@@ -39,7 +44,7 @@ export interface TileImageProps {
   faceDown?: boolean
   /** Click handler */
   onClick?: (tile: Tile) => void
-  /** Whether to show tooltip on hover */
+  /** Whether to show details on hover, keyboard focus or a long press */
   showTooltip?: boolean
   /** A surrounding native tile button can expose details on keyboard focus. */
   detailsVisible?: boolean
@@ -82,16 +87,25 @@ export const TileImage: React.FC<TileImageProps> = ({
   const [isHovering, setIsHovering] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  // A touch has no hover: resting on a tile shows its details instead.
+  const [heldOpen, setHeldOpen] = useState(false)
+  const hold = useRef<{
+    x: number
+    y: number
+    timer: ReturnType<typeof setTimeout>
+  } | null>(null)
+  /** The last touch rested long enough to show details, not to tap. */
+  const held = useRef(false)
+  const lastPointer = useRef('mouse')
   const anchorRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const generatedTooltipId = useId()
   const tooltipId = suppliedTooltipId ?? generatedTooltipId
+  const canShowDetails = showTooltip && !!tile && !faceDown
   const tooltipOpen =
-    showTooltip &&
-    !!tile &&
-    !faceDown &&
+    canShowDetails &&
     !dismissed &&
-    ((isHovering && allowHover) || isFocused || detailsVisible)
+    ((isHovering && allowHover) || isFocused || detailsVisible || heldOpen)
   const dimensions = tileSizes[size]
   // Rank numbers are an opt-in reading aid (Settings), taught in the guide.
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
@@ -118,7 +132,47 @@ export const TileImage: React.FC<TileImageProps> = ({
     }
   }
 
+  const endHold = () => {
+    if (hold.current) clearTimeout(hold.current.timer)
+    hold.current = null
+  }
+  useEffect(() => endHold, [])
+
+  const handlePointerDown = (event: React.PointerEvent) => {
+    lastPointer.current = event.pointerType
+    held.current = false
+    endHold()
+    if (event.pointerType === 'mouse' || !canShowDetails) return
+    hold.current = {
+      x: event.clientX,
+      y: event.clientY,
+      timer: setTimeout(() => {
+        hold.current = null
+        held.current = true
+        setDismissed(false)
+        setHeldOpen(true)
+      }, HOLD_MS),
+    }
+  }
+
+  // The touch that showed the details does not also select the tile: stop
+  // its click before it reaches this tile's or a surrounding button's handler.
+  const handleClickCapture = (event: React.MouseEvent) => {
+    if (!held.current) return
+    held.current = false
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
   const handlePointerMove = (event: React.PointerEvent) => {
+    if (
+      hold.current &&
+      Math.hypot(
+        event.clientX - hold.current.x,
+        event.clientY - hold.current.y
+      ) > HOLD_SLOP
+    )
+      endHold()
     if (
       event.pointerType === 'mouse' &&
       window.matchMedia('(any-hover: hover)').matches &&
@@ -166,7 +220,9 @@ export const TileImage: React.FC<TileImageProps> = ({
   useEffect(() => {
     if (!tooltipOpen) return
     const escape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setDismissed(true)
+      if (event.key !== 'Escape') return
+      setDismissed(true)
+      setHeldOpen(false)
     }
     window.addEventListener('resize', positionTooltip)
     window.addEventListener('scroll', positionTooltip, true)
@@ -184,15 +240,26 @@ export const TileImage: React.FC<TileImageProps> = ({
   useEffect(() => {
     if (!detailsVisible && !isFocused && !isHovering) setDismissed(false)
   }, [detailsVisible, isFocused, isHovering])
+  // Held details stay up once the finger lifts, so they can be read; the
+  // next touch anywhere puts them away (and still does what it touched).
+  useEffect(() => {
+    if (!heldOpen) return
+    const putAway = () => setHeldOpen(false)
+    document.addEventListener('pointerdown', putAway, true)
+    return () => document.removeEventListener('pointerdown', putAway, true)
+  }, [heldOpen])
 
   // Build dynamic classes
   const containerClasses = [
     'relative inline-block',
     'transition-all duration-150 ease-out',
-    // Base tile styling - subtle border and shadow for visibility
-    'rounded-md',
-    'border border-amber-800/30',
+    // Base tile styling - subtle border and shadow for visibility. The tile
+    // art draws its own edge, so a touch screen, which has no hover state for
+    // the frame to answer, shows the tile without it.
+    'rounded-md select-none [-webkit-touch-callout:none]',
+    'border border-amber-800/30 pointer-coarse:border-transparent',
     'shadow-sm shadow-black/20',
+    !selected && 'pointer-coarse:shadow-none',
     // Selection state
     selected &&
       'ring-2 ring-golden-yellow ring-offset-2 ring-offset-dark-forest -translate-y-2 shadow-lg shadow-golden-yellow/30',
@@ -224,9 +291,18 @@ export const TileImage: React.FC<TileImageProps> = ({
         height: dimensions.height,
       }}
       onClick={handleClick}
+      onClickCapture={handleClickCapture}
       onKeyDown={handleKeyDown}
+      onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
+      onPointerUp={endHold}
+      onPointerCancel={endHold}
       onPointerLeave={handleMouseLeave}
+      onContextMenu={(event) => {
+        // A long press is the details, not the browser's menu.
+        if (lastPointer.current !== 'mouse' && canShowDetails)
+          event.preventDefault()
+      }}
       onFocus={() => {
         setIsFocused(true)
         setDismissed(false)
