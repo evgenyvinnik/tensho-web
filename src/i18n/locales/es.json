@@ -544,6 +544,8 @@
     "visual": "Visual",
     "rankNumbers": "Números en las fichas",
     "rankNumbersDesc": "Muestra un pequeño 1–9 en las fichas numeradas y una letra en los Dragones mientras aprendes las caras.",
+    "keyboardShortcuts": "Atajos de teclado",
+    "keyboardShortcutsDesc": "En la mesa, P juega tu mano, R recambia, A elige todas las fichas y Esc las devuelve. Las flechas te mueven entre fichas.",
     "unreadableSave": "No se pudo leer tu partida guardada. Puedes descargarla como archivo antes de empezar una Nueva partida, que la reemplazará."
   },
   "gameplay": {

@@ -752,6 +752,8 @@
     "visual": "Visual",
     "rankNumbers": "Angka di ubin",
     "rankNumbersDesc": "Tampilkan 1–9 kecil di ubin angka dan huruf di Naga selagi kamu mempelajari gambarnya.",
+    "keyboardShortcuts": "Pintasan keyboard",
+    "keyboardShortcutsDesc": "Di meja, P memainkan tangan, R menarik ulang, A memilih semua ubin, dan Esc mengembalikannya. Tombol panah berpindah antar ubin.",
     "unreadableSave": "Permainan tersimpan tidak dapat dibaca. Kamu bisa mengunduhnya sebagai file sebelum memulai Permainan Baru yang akan menggantikannya."
   },
   "gameplay": {

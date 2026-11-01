@@ -15,9 +15,11 @@
  */
 
 import {
+  useLayoutEffect,
   useMemo,
   useRef,
   type CSSProperties,
+  type MouseEvent,
   type ReactNode,
   type RefObject,
 } from 'react'
@@ -37,6 +39,13 @@ import {
   useTileFlights,
 } from '../../animations/useTileFlights'
 import { PlayFelt } from './PlayFelt'
+import {
+  focusAfterMove,
+  focusTile,
+  keyboardActivation,
+  moveTileFocus,
+  type TileFocusTarget,
+} from '../../gameplay/tileKeyboard'
 
 export interface HandRackProps {
   tiles: Tile[]
@@ -56,6 +65,9 @@ export interface HandRackProps {
    */
   hintsHeld?: boolean
 }
+
+/** A focus move waits at most this long for its tile to change zone. */
+const FOCUS_MOVE_TTL_MS = 1000
 
 /** After the deal lands, the group brackets wait this long, then fade in. */
 export const HINT_FADE_DELAY_MS = 250
@@ -162,6 +174,41 @@ export function HandRack({
   const dimensions = tileSizes[fitted]
   const slotWidth = Math.max(44, dimensions.width)
 
+  // A tile that changes zone is a new button there; the focused one is gone.
+  // Keyboard and screen-reader players keep their place: focus goes to the
+  // next tile in the same zone, or follows the tile once its zone is empty.
+  const focusMove = useRef<{
+    target: TileFocusTarget
+    tileId: string
+    selected: boolean
+    at: number
+  } | null>(null)
+  const toggle = (tile: Tile, event: MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget
+    const target = keyboardActivation(event, button)
+      ? focusAfterMove(button)
+      : null
+    focusMove.current = target
+      ? {
+          target,
+          tileId: tile.id,
+          selected: !selectedIds.has(tile.id),
+          at: Date.now(),
+        }
+      : null
+    recordTilePositions()
+    onToggle(tile)
+  }
+  useLayoutEffect(() => {
+    const move = focusMove.current
+    if (!move) return
+    if (selectedIds.has(move.tileId) === move.selected) {
+      focusMove.current = null
+      focusTile(move.target)
+    } else if (Date.now() - move.at > FOCUS_MOVE_TTL_MS)
+      focusMove.current = null
+  })
+
   const renderTile = (tile: Tile) => {
     // Headroom above the tile for its hover lift; phones trim it (index.css).
     const slotStyle = {
@@ -193,10 +240,8 @@ export function HandRack({
         aria-pressed={false}
         disabled={disabled}
         aria-label={tileName(tile, t, faceDownIds.has(tile.id))}
-        onClick={() => {
-          recordTilePositions()
-          onToggle(tile)
-        }}
+        onClick={(event) => toggle(tile, event)}
+        onKeyDown={moveTileFocus}
         className="relative flex shrink-0 items-end justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
         style={slotStyle}
       >
@@ -226,7 +271,7 @@ export function HandRack({
           faceDownIds={faceDownIds}
           lockedIds={lockedIds}
           debuffedIds={debuffedIds}
-          onToggle={onToggle}
+          onToggle={toggle}
           size={fitted}
           disabled={disabled}
         />

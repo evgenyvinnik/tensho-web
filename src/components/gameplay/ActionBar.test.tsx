@@ -324,4 +324,29 @@ describe('ActionBar', () => {
       expect(watch).toHaveTextContent('Ad playing…')
     })
   })
+
+  it('announces and marks the one-key shortcuts only while they are on', () => {
+    const props = {
+      turnsLeft: 4,
+      freeRedraws: 0,
+      selectedCount: 2,
+      playAllowed: true,
+      redrawAllowed: true,
+      onRedraw: vi.fn(),
+      onPlayHand: vi.fn(),
+    }
+    const { container, rerender } = render(<ActionBar {...props} />)
+    const play = () => screen.getByRole('button', { name: 'Play hand' })
+    const redraw = () => screen.getByRole('button', { name: 'REDRAW' })
+    expect(play()).not.toHaveAttribute('aria-keyshortcuts')
+    expect(container.querySelector('[data-shortcut]')).toBeNull()
+
+    rerender(<ActionBar {...props} shortcuts />)
+    expect(play()).toHaveAttribute('aria-keyshortcuts', 'P')
+    expect(redraw()).toHaveAttribute('aria-keyshortcuts', 'R')
+    // The key cap is drawn by CSS from data-shortcut: the label is unchanged.
+    expect(play()).toHaveAttribute('data-shortcut', 'P')
+    expect(redraw()).toHaveAttribute('data-shortcut', 'R')
+    expect(play()).toHaveTextContent(/^Play hand$/)
+  })
 })

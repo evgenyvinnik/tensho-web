@@ -544,6 +544,8 @@
     "visual": "表示",
     "rankNumbers": "牌に数字を表示",
     "rankNumbersDesc": "牌の絵柄を覚えるまで、数牌に1〜9、三元牌に文字を小さく表示します。",
+    "keyboardShortcuts": "キーボードショートカット",
+    "keyboardShortcutsDesc": "卓上では P で打つ、R で引き直し、A ですべて選択、Esc で牌を戻します。矢印キーで牌の間を移動できます。",
     "unreadableSave": "保存されたランを読み込めませんでした。置き換えられる前に、ニューランを始める前にファイルとして保存できます。"
   },
   "gameplay": {

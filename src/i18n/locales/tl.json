@@ -831,6 +831,8 @@
     "visual": "Visual",
     "rankNumbers": "Numero sa tile",
     "rankNumbersDesc": "Magpakita ng maliit na 1–9 sa may-numerong tile at titik sa mga Dragon habang inaaral mo ang mga mukha.",
+    "keyboardShortcuts": "Mga keyboard shortcut",
+    "keyboardShortcutsDesc": "Sa mesa, P para laruin ang kamay, R para mag-redraw, A para piliin ang lahat ng tile at Esc para ibalik ang mga ito. Ang mga arrow key ay lumilipat sa pagitan ng mga tile.",
     "unreadableSave": "Hindi mabasa ang naka-save na laro. Puwede mo itong i-download bago magsimula ng Bagong Laro na papalit dito."
   },
   "gameplay": {

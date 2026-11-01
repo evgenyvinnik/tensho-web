@@ -544,6 +544,8 @@
     "visual": "Visuel",
     "rankNumbers": "Nombres sur les tuiles",
     "rankNumbersDesc": "Affiche un petit 1–9 sur les tuiles numérotées et une lettre sur les Dragons, le temps d’apprendre les faces.",
+    "keyboardShortcuts": "Raccourcis clavier",
+    "keyboardShortcutsDesc": "À la table, P joue votre main, R repioche, A sélectionne toutes les tuiles et Échap les remet en place. Les flèches passent d’une tuile à l’autre.",
     "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera."
   },
   "gameplay": {
