@@ -286,10 +286,15 @@
 .pavilion-settings [aria-haspopup='listbox'] {
   width: 100%;
 }
+/* The list is at least as wide as the full-width trigger and centred under
+   it, so on a narrow phone it can spill into the panel padding instead of
+   wrapping or cutting off "Traditional Chinese". */
 .pavilion-settings [role='listbox'] {
-  left: 0;
+  left: 50%;
   right: auto;
-  max-width: calc(100vw - 88px);
+  transform: translateX(-50%);
+  min-width: 100%;
+  max-width: calc(100vw - 32px);
 }
 @media (min-width: 640px) {
   .pavilion-layout {
