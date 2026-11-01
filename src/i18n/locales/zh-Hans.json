@@ -546,7 +546,15 @@
     "rankNumbersDesc": "在熟悉牌面之前，在数牌上显示1–9，在三元牌上显示字母。",
     "keyboardShortcuts": "键盘快捷键",
     "keyboardShortcutsDesc": "牌桌上按 P 出牌，R 重抽，A 选中全部牌，Esc 把牌放回。方向键可在牌之间移动。",
-    "unreadableSave": "无法读取已保存的进度。开始新的一局会替换它，你可以先下载为文件。"
+    "unreadableSave": "无法读取已保存的进度。开始新的一局会替换它，你可以先下载为文件。",
+    "credits": {
+      "title": "致谢",
+      "soundEffects": "音效",
+      "interface": "按钮与菜单音效",
+      "casino": "牌的声音、筹码、金币与卡包",
+      "modified": "已为 Tensho 切分成单个音效，并做了降噪和音量匹配。",
+      "original": "其余所有音效（包括筝、铃和太鼓）都是专为 Tensho 合成的原创声音。"
+    }
   },
   "gameplay": {
     "actProgress": "第{{current}}幕，共{{total}}幕",

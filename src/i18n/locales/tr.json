@@ -833,7 +833,15 @@
     "rankNumbersDesc": "Taş yüzlerini öğrenirken sayılı taşlarda küçük 1–9 ve Ejderhalarda bir harf göster.",
     "keyboardShortcuts": "Klavye kısayolları",
     "keyboardShortcutsDesc": "Masada P elini oynar, R yeniden çeker, A tüm taşları seçer, Esc onları geri koyar. Ok tuşları taşlar arasında gezdirir.",
-    "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin."
+    "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin.",
+    "credits": {
+      "title": "Emeği Geçenler",
+      "soundEffects": "Ses efektleri",
+      "interface": "Düğme ve menü sesleri",
+      "casino": "Taş sesleri, fişler, altın ve kart paketleri",
+      "modified": "Tensho için tek tek seslere bölündü, temizlendi ve ses seviyesi eşitlendi.",
+      "original": "Koto, çanlar ve taiko dahil diğer tüm ses efektleri, Tensho için sentezlenmiş özgün seslerdir."
+    }
   },
   "gameplay": {
     "actProgress": "Perde {{current}} / {{total}}",

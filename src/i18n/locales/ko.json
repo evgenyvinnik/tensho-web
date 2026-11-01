@@ -546,7 +546,15 @@
     "rankNumbersDesc": "패 그림을 익히는 동안 수패에 1~9, 삼원패에 글자를 작게 표시해요.",
     "keyboardShortcuts": "키보드 단축키",
     "keyboardShortcutsDesc": "테이블에서 P는 패 내기, R은 다시 뽑기, A는 모든 패 선택, Esc는 패를 되돌립니다. 화살표 키로 패 사이를 이동합니다.",
-    "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요."
+    "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요.",
+    "credits": {
+      "title": "크레딧",
+      "soundEffects": "효과음",
+      "interface": "버튼 및 메뉴 소리",
+      "casino": "패 소리, 칩, 골드, 카드 팩",
+      "modified": "Tensho에 맞게 한 소리씩 잘라 내고 잡음을 정리한 뒤 음량을 맞췄습니다.",
+      "original": "고토, 방울, 다이코를 포함한 그 밖의 효과음은 모두 Tensho를 위해 합성한 오리지널 사운드입니다."
+    }
   },
   "gameplay": {
     "actProgress": "전체 {{total}}막 중 {{current}}막",
