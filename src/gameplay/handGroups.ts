@@ -82,7 +82,8 @@ export function groupHand(
         overlapping.reduce((sum, cluster) => sum + cluster.structurePoints, 0),
       groupCount:
         1 + overlapping.reduce((sum, cluster) => sum + cluster.groupCount, 0),
-      suit: group.tiles[0].suit,
+      // A Wild tile reads in its group's suit.
+      suit: group.suit,
     })
   }
 

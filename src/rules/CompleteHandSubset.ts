@@ -25,12 +25,17 @@ export function findCompleteHandSubset(
     return null
   const required = new Set(requiredIds)
   if (requiredIds.some((id) => !tiles.some((t) => t.id === id))) return null
+  // A Wild copy can stand in for other suits, so it never shares a bucket
+  // with natural copies of its printed face.
+  const bucketKey = (tile: Tile) =>
+    tile.isWild && tile.isSuited ? `${tile.typeKey}*` : tile.typeKey
   const buckets = new Map<string, Tile[]>()
   for (const tile of tiles) {
-    const bucket = buckets.get(tile.typeKey) ?? []
+    const bucket = buckets.get(bucketKey(tile)) ?? []
     bucket.push(tile)
-    buckets.set(tile.typeKey, bucket)
+    buckets.set(bucketKey(tile), bucket)
   }
+  const keys = [...buckets.keys()]
   const groups = [...buckets.values()].map((bucket) =>
     [...bucket].sort(
       (a, b) => Number(required.has(b.id)) - Number(required.has(a.id))
@@ -62,26 +67,64 @@ export function findCompleteHandSubset(
     return [...needed].every(([i, n]) => used[i] + n <= counts[i])
   }
 
-  // Every possible triplet/sequence of types in this rack. Physical duplicates
-  // are interchangeable for structure; required copies are always chosen first.
+  // Every possible pair/triplet/sequence of types in this rack. Physical
+  // duplicates are interchangeable for structure; required copies are always
+  // chosen first. A Wild bucket may join buckets of any suit at its rank;
+  // without one, every group is a single face or a same-suit run.
+  const hasWild = groups.some((g) => g[0].isWild && g[0].isSuited)
+  const pairOptions: number[][] = []
   const melds: number[][] = []
   groups.forEach((g, i) => {
-    if (g.length >= 3) melds.push([i, i, i])
     const first = g[0]
+    const later = hasWild
+      ? groups.flatMap((other, j) =>
+          j > i && first.matches(other[0]) ? [j] : []
+        )
+      : []
+    if (g.length >= 2) pairOptions.push([i, i])
+    for (const j of later) pairOptions.push([i, j])
+    if (g.length >= 3) melds.push([i, i, i])
+    for (const triplet of later.flatMap((j) => [
+      [i, i, j],
+      [i, j, j],
+      ...later.filter((k) => k > j).map((k) => [i, j, k]),
+    ]))
+      if (fits(triplet) && Tile.shareFace(triplet.map((t) => groups[t][0])))
+        melds.push(triplet)
     if (!first.isSuited) return
+    const anySuit = !!options.suitsMatchForSequences
     for (const [a, b] of sequenceOffsets(first.rank, options)) {
       const matches = (offset: number) =>
         groups.flatMap((other, j) =>
           other[0].isSuited &&
           other[0].rank === first.rank + offset &&
-          (options.suitsMatchForSequences || other[0].suit === first.suit)
+          (anySuit ||
+            other[0].suit === first.suit ||
+            first.isWild ||
+            other[0].isWild)
             ? [j]
             : []
         )
       for (const second of matches(a))
-        for (const third of matches(b)) melds.push([i, second, third])
+        for (const third of matches(b))
+          if (
+            anySuit ||
+            !hasWild ||
+            Tile.shareSuit([first, groups[second][0], groups[third][0]])
+          )
+            melds.push([i, second, third])
     }
   })
+  const withPair = (search: () => string[] | null): string[] | null => {
+    for (const pair of pairOptions) {
+      if (!fits(pair)) continue
+      adjustCounts(pair, 1)
+      const found = search()
+      adjustCounts(pair, -1)
+      if (found) return found
+    }
+    return null
+  }
   const failed = new Set<string>()
   const searchMelds = (left: number, start: number): string[] | null => {
     if (left === 0) return offer()
@@ -97,13 +140,8 @@ export function findCompleteHandSubset(
     failed.add(key)
     return null
   }
-  for (let i = 0; i < counts.length; i++) {
-    if (counts[i] < 2) continue
-    used[i] = 2
-    const found = searchMelds(4, 0)
-    used[i] = 0
-    if (found) return found
-  }
+  const standard = withPair(() => searchMelds(4, 0))
+  if (standard) return standard
   if (options.meldMayServeAsPair) {
     const found = searchMelds(4, 0)
     if (found) return found
@@ -118,19 +156,14 @@ export function findCompleteHandSubset(
         )
       )
       const indices = [...union.values()].map((tile) =>
-        groups.findIndex((group) => group[0].typeKey === tile.typeKey)
+        keys.indexOf(bucketKey(tile))
       )
       const key = [...indices].sort((a, b) => a - b).join(',')
       if (overlapsSeen.has(key)) continue
       overlapsSeen.add(key)
       adjustCounts(indices, 1)
-      for (let i = 0; i < counts.length; i++) {
-        if (used[i] + 2 > counts[i]) continue
-        used[i] += 2
-        const found = searchMelds(2, 0)
-        used[i] -= 2
-        if (found) return found
-      }
+      const found = withPair(() => searchMelds(2, 0))
+      if (found) return found
       if (options.meldMayServeAsPair) {
         const found = searchMelds(2, 0)
         if (found) return found
@@ -139,26 +172,38 @@ export function findCompleteHandSubset(
     }
   }
 
-  const pairs = counts.flatMap((n, i) => (n >= 2 ? [i] : []))
+  // Seven Pairs and Thirteen Orphans are judged on printed faces: seven
+  // different faces, two copies each, whether or not a copy is Wild.
+  const facePairs = pairOptions.filter(
+    ([i, j]) => groups[i][0].typeKey === groups[j][0].typeKey
+  )
+  const pairedFaces = new Set<string>()
   const searchPairs = (left: number, start: number): string[] | null => {
     if (left === 0) return offer()
-    for (let j = start; j <= pairs.length - left; j++) {
-      used[pairs[j]] = 2
-      const found = searchPairs(left - 1, j + 1)
-      used[pairs[j]] = 0
+    for (let p = start; p <= facePairs.length - left; p++) {
+      const pair = facePairs[p]
+      const face = groups[pair[0]][0].typeKey
+      if (pairedFaces.has(face) || !fits(pair)) continue
+      pairedFaces.add(face)
+      adjustCounts(pair, 1)
+      const found = searchPairs(left - 1, p + 1)
+      adjustCounts(pair, -1)
+      pairedFaces.delete(face)
       if (found) return found
     }
     return null
   }
   const seven = searchPairs(7, 0)
   if (seven) return seven
-  const orphans = KOKUSHI_TILES.map(({ suit, rank }) =>
-    groups.findIndex((g) => g[0].suit === suit && g[0].rank === rank)
+  const orphanFaces = KOKUSHI_TILES.map(({ suit, rank }) =>
+    groups.flatMap((g, i) =>
+      g[0].suit === suit && g[0].rank === rank ? [i] : []
+    )
   )
-  if (orphans.every((i) => i >= 0)) {
-    for (const i of orphans) used[i] = 1
-    for (const i of orphans) {
-      if (counts[i] < 2) continue
+  if (orphanFaces.every((faces) => faces.length > 0)) {
+    for (const faces of orphanFaces) used[faces[0]] = 1
+    for (const i of orphanFaces.flat()) {
+      if (used[i] + 1 > counts[i]) continue
       used[i]++
       const found = offer()
       used[i]--

@@ -10,11 +10,12 @@
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { Hand, ParsedHand, WaitType } from '../core/Hand'
+import { overlappingSequencePairs, type SequenceRules } from './sequenceShapes'
 import {
-  sequenceOffsets,
-  overlappingSequencePairs,
-  type SequenceRules,
-} from './sequenceShapes'
+  distinctPairs,
+  sameFaceGroups,
+  sequencesThrough,
+} from './groupCandidates'
 
 /**
  * Result of hand validation
@@ -245,29 +246,16 @@ function findDecompositions(
     }
   }
 
-  // Get tile counts
-  const counts = new Map<string, Tile[]>()
-  for (const tile of tiles) {
-    const key = tile.typeKey
-    const group = counts.get(key) ?? []
-    group.push(tile)
-    counts.set(key, group)
-  }
+  // Try each possible pair (a Wild tile may pair with any suit of its rank)
+  for (const pairTiles of distinctPairs(tiles)) {
+    const pair = new Meld(MeldType.Pair, pairTiles, true)
 
-  // Try each possible pair
-  for (const [, tileGroup] of counts) {
-    if (tileGroup.length >= 2) {
-      // Create a pair with first two tiles
-      const pairTiles = tileGroup.slice(0, 2)
-      const pair = new Meld(MeldType.Pair, pairTiles, true)
+    // Remove pair tiles and try to form melds with the rest
+    const remaining = removeTiles(tiles, pairTiles)
+    const meldResults = findMelds(remaining, neededMelds, options)
 
-      // Remove pair tiles and try to form melds with the rest
-      const remaining = removeTiles(tiles, pairTiles)
-      const meldResults = findMelds(remaining, neededMelds, options)
-
-      for (const melds of meldResults) {
-        results.push({ melds, pair })
-      }
+    for (const melds of meldResults) {
+      results.push({ melds, pair })
     }
   }
 
@@ -311,10 +299,9 @@ function findMelds(
   const firstTile = sortedTiles[0]
   const remaining = sortedTiles.slice(1)
 
-  // Try triplet first
-  const matchingTiles = remaining.filter((t) => t.matches(firstTile))
-  if (matchingTiles.length >= 2) {
-    const tripletTiles = [firstTile, matchingTiles[0], matchingTiles[1]]
+  // Try triplet first. A Wild tile counts as every suit, so it may complete a
+  // triplet or a sequence of any suit at its rank.
+  for (const tripletTiles of sameFaceGroups(firstTile, remaining, 3)) {
     const triplet = new Meld(MeldType.Triplet, tripletTiles, true)
     const afterTriplet = removeTiles(sortedTiles, tripletTiles)
     const subResults = findMelds(afterTriplet, count - 1, options)
@@ -324,35 +311,13 @@ function findMelds(
   }
 
   // Try normal sequences and, when authorized, either one-rank broken stair.
-  if (firstTile.isSuited) {
-    const rankPatterns = sequenceOffsets(firstTile.rank, options)
-
-    // Harmonizer lets a sequence span suits, so only the ranks must line up.
-    const sameSuit = (tile: Tile): boolean =>
-      options.suitsMatchForSequences
-        ? tile.isSuited
-        : tile.suit === firstTile.suit
-
-    for (const [secondOffset, thirdOffset] of rankPatterns) {
-      if (firstTile.rank + thirdOffset > 9) continue
-      const second = remaining.find(
-        (tile) => sameSuit(tile) && tile.rank === firstTile.rank + secondOffset
-      )
-      const third = remaining.find(
-        (tile) =>
-          sameSuit(tile) &&
-          tile.rank === firstTile.rank + thirdOffset &&
-          (!second || tile.id !== second.id)
-      )
-      if (!second || !third) continue
-
-      const sequenceTiles = [firstTile, second, third]
-      const sequence = new Meld(MeldType.Sequence, sequenceTiles, true)
-      const afterSequence = removeTiles(sortedTiles, sequenceTiles)
-      const subResults = findMelds(afterSequence, count - 1, options)
-      for (const sub of subResults) {
-        results.push([sequence, ...sub])
-      }
+  // Harmonizer lets a sequence span suits, so only the ranks must line up.
+  for (const sequenceTiles of sequencesThrough(firstTile, remaining, options)) {
+    const sequence = new Meld(MeldType.Sequence, sequenceTiles, true)
+    const afterSequence = removeTiles(sortedTiles, sequenceTiles)
+    const subResults = findMelds(afterSequence, count - 1, options)
+    for (const sub of subResults) {
+      results.push([sequence, ...sub])
     }
   }
 

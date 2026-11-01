@@ -581,9 +581,8 @@ export function checkHonitsu(context: YakuContext): boolean {
   // Must have both suited and honor tiles
   if (suitedTiles.length === 0 || honorTiles.length === 0) return false
 
-  // All suited tiles must be same suit
-  const suit = suitedTiles[0].suit
-  return suitedTiles.every((t) => t.suit === suit)
+  // All suited tiles must be same suit (a Wild tile counts as every suit)
+  return Tile.shareSuit(suitedTiles)
 }
 
 /**
@@ -598,9 +597,8 @@ export function checkChinitsu(context: YakuContext): boolean {
   // All tiles must be suited
   if (suitedTiles.length !== tiles.length) return false
 
-  // All same suit
-  const suit = tiles[0].suit
-  return tiles.every((t) => t.suit === suit)
+  // All same suit (a Wild tile counts as every suit)
+  return Tile.shareSuit(tiles)
 }
 
 /**
@@ -662,10 +660,8 @@ export function checkChuurenPoutou(context: YakuContext): boolean {
 
   const tiles = context.tiles
 
-  // Must be all one suit
-  if (!tiles.every((t) => t.isSuited)) return false
-  const suit = tiles[0].suit
-  if (!tiles.every((t) => t.suit === suit)) return false
+  // Must be all one suit (a Wild tile counts as every suit)
+  if (!Tile.shareSuit(tiles)) return false
 
   // Count each rank
   const counts = new Array(10).fill(0)
