@@ -329,6 +329,12 @@ export const audioAssets = {
   japaneseWinter: `${ASSET_BASE}/JapaneseWinter.mp3`,
   lotusPond: `${ASSET_BASE}/Lotus Pond.mp3`,
   theDojo: `${ASSET_BASE}/TheDojo.mp3`,
+  shizima2: `${ASSET_BASE}/music/Shizima2.mp3`,
+  otogi3: `${ASSET_BASE}/music/Otogi3.mp3`,
+  minamo: `${ASSET_BASE}/music/Minamo.mp3`,
+  amenoshita3: `${ASSET_BASE}/music/Amenoshita3.mp3`,
+  otogi4: `${ASSET_BASE}/music/Otogi4.mp3`,
+  shizima4: `${ASSET_BASE}/music/Shizima4.mp3`,
 } as const
 
 /** Display names for audio tracks */
@@ -338,6 +344,12 @@ export const audioTrackDisplayNames: Record<keyof typeof audioAssets, string> =
     japaneseWinter: 'Japanese Winter',
     lotusPond: 'Lotus Pond',
     theDojo: 'The Dojo',
+    shizima2: 'Shizima 2',
+    otogi3: 'Otogi 3',
+    minamo: 'Minamo',
+    amenoshita3: 'Amenoshita 3',
+    otogi4: 'Otogi 4',
+    shizima4: 'Shizima 4',
   } as const
 
 /** Array of all music track URLs for random playback */

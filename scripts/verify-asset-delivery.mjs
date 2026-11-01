@@ -95,9 +95,20 @@ const tileFinishBytes = [...cached]
     /^assets\/tiles\/(?:[a-z]+\/[a-z]+_\d{2}|stone)\.webp$/.test(path)
   )
   .reduce((sum, path) => sum + statSync(resolve(root, path)).size, 0)
+// Licensed songs (PeriTune "Konohana"), full-length at 128 kbps, budgeted
+// apart from the core payload for the same reason.
+const musicBytes = [...cached]
+  .filter((path) => /^assets\/music\/[^/]+\.mp3$/.test(path))
+  .reduce((sum, path) => sum + statSync(resolve(root, path)).size, 0)
+const coreBytes =
+  precacheBytes - decreeEditionBytes - tileFinishBytes - musicBytes
 assert.ok(
-  precacheBytes - decreeEditionBytes - tileFinishBytes < 40 * 1024 * 1024,
-  `Core offline payload exceeds 40 MiB: ${precacheBytes - decreeEditionBytes - tileFinishBytes}`
+  coreBytes < 40 * 1024 * 1024,
+  `Core offline payload exceeds 40 MiB: ${coreBytes}`
+)
+assert.ok(
+  musicBytes < 24 * 1024 * 1024,
+  `Music library exceeds 24 MiB: ${musicBytes}`
 )
 assert.ok(
   tileFinishBytes < 16 * 1024 * 1024,
@@ -115,6 +126,7 @@ console.log(
       precacheBytes,
       decreeEditionBytes,
       tileFinishBytes,
+      musicBytes,
       sourceBytes,
       deliveryBytes,
       savedBytes: sourceBytes - deliveryBytes,
