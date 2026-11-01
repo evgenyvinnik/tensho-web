@@ -136,9 +136,18 @@ describe('Stake stickers and the seeded shop', () => {
         expect(game.shop.reroll().success).toBe(true)
       return structuredClone(game.shop.state.itemOfferings)
     }
+    // Restoring never rewinds the consumable id counter, so compare offers
+    // without their instance ids.
+    const withoutInstanceIds = (offers: TeaHouseOffering[]) =>
+      offers.map((offer) => ({
+        ...offer,
+        item: { ...offer.item, instanceId: undefined },
+      }))
     const uninterrupted = continueShop()
     game.restoreRun(snapshot)
-    expect(continueShop()).toEqual(uninterrupted)
+    expect(withoutInstanceIds(continueShop())).toEqual(
+      withoutInstanceIds(uninterrupted)
+    )
 
     // A save from before the sticker stream keeps its shop cursor; stickers
     // then start from the stream's seed-derived origin.

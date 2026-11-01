@@ -351,7 +351,7 @@ export class ShopGenerator {
     const sticker = this.generateSticker(config.stakeLevel)
 
     // Calculate pricing
-    const pricing = this.pricingCalculator.generateDecreePricing(decree.rarity, edition)
+    const pricing = this.pricingCalculator.calculateDecreeCost(decree.cost, edition)
 
     // Rental items cost only 1 Gold
     const adjustedPricing = sticker?.type === 'Rental'

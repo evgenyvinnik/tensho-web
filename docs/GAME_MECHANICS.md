@@ -593,10 +593,14 @@ The Tea House appears after every Round (except final rounds in an Act).
 
 | Rarity | Probability | Base Cost |
 |--------|-------------|-----------|
-| Common | 70% | 1-6 Gold |
-| Uncommon | 25% | 4-8 Gold |
-| Rare | 5% | 7-10 Gold |
-| Legendary | — | 20 Gold (special sources only) |
+| Common | 70% | 4 Gold |
+| Uncommon | 25% | 6 Gold |
+| Rare | 5% | 8 Gold |
+| Legendary / Mythic | — | 10 / 15 Gold (special sources only) |
+
+A Decree always costs its listed price (`decree.cost`); only an edition (its
+own fixed cost), a Rental sticker (1 Gold) or a discount from Charters, Omens or
+Decrees changes it, down to free. One shelf never offers the same Decree twice.
 
 ### Other Item Costs
 

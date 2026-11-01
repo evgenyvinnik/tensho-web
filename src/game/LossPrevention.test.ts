@@ -10,12 +10,18 @@ import type { Decree } from '../systems/types'
 
 const phoenix = ALL_DECREES.find((d) => d.id === 'decree-phoenix')!
 const immortal = ALL_DECREES.find((d) => d.id === 'decree-immortal-decree')!
+// Ordinary slots never stock special-sources-only Decrees; stock the power
+// under a shop tier to test its stickers.
+const asShopTier = (decree: Decree): Decree => ({
+  ...decree,
+  rarity: 'LocalEdict',
+})
 
 it.each(['decree-immortal-decree', 'decree-glass-cannon'])(
   'retains Eternal for non-consuming and destruction-risk powers: %s',
   (id) => {
     vi.spyOn(DecreeSystem, 'getShopCandidates').mockReturnValue([
-      ALL_DECREES.find((d) => d.id === id)!,
+      asShopTier(ALL_DECREES.find((d) => d.id === id)!),
     ])
     const zero = () => 0
     const shop = new TeaHouseSystem(8, zero, zero)
@@ -63,9 +69,11 @@ it.each([
 ])(
   'does not offer Eternal Phoenix while retaining eligible rolls: $types',
   ({ rolls, types }) => {
-    vi.spyOn(DecreeSystem, 'getShopCandidates').mockReturnValue([phoenix])
+    vi.spyOn(DecreeSystem, 'getShopCandidates').mockReturnValue([
+      asShopTier(phoenix),
+    ])
     const random = vi.fn(() => 0.9)
-    for (const value of [0, 0, 0, 0.9, 0.5]) random.mockReturnValueOnce(value)
+    for (const value of [0, 0, 0, 0.9]) random.mockReturnValueOnce(value)
     const stickerRandom = vi.fn(() => 0.9)
     for (const value of rolls) stickerRandom.mockReturnValueOnce(value)
     const offer = new TeaHouseSystem(8, random, stickerRandom).generateShop()
@@ -73,8 +81,8 @@ it.each([
     expect((offer.item as Decree).id).toBe(phoenix.id)
     expect((offer.item as Decree).stickers?.map((s) => s.type)).toEqual(types)
     if (types.includes('Rental')) expect(offer.baseCost).toBe(1)
-    // Eligibility must not shift the cost draw or later seeded offers.
-    expect(random).toHaveBeenCalledTimes(10)
+    // Eligibility must not shift later seeded offers.
+    expect(random).toHaveBeenCalledTimes(9)
     expect(stickerRandom).toHaveBeenCalledTimes(3)
   }
 )
