@@ -88,7 +88,8 @@ export function useAppNavigation() {
       // Router locations are already stripped of the deployment basename.
       const currentPath = location.pathname
       const pathWithoutLang = currentPath.replace(/^\/[^/]+/, '')
-      navigate(`/${newLang}${pathWithoutLang || ''}`)
+      // Replace, not push: Back leaves Settings rather than undoing the switch.
+      navigate(`/${newLang}${pathWithoutLang || ''}`, { replace: true })
     },
 
     /**
@@ -104,32 +105,28 @@ export function useAppNavigation() {
 }
 
 /**
- * Component that syncs URL language with i18n
+ * Keeps the address in the player's language.
+ *
+ * A link's language was chosen when the game loaded (`i18nReady`); from then on
+ * the player's choice leads. Back can return to a page saved before they
+ * switched language, or a typo can name an unknown one: either address is
+ * rewritten in the current language instead of switching it back.
  */
 export function LanguageSync({ children }: { children: React.ReactNode }) {
   const { lang } = useParams<{ lang: string }>()
   const { i18n } = useTranslation()
   const navigate = useNavigate()
-  const location = useLocation()
+  const { pathname, search, hash } = useLocation()
   useDocumentLanguage(i18n.language)
+  const currentLang = getCurrentLanguage()
 
   useEffect(() => {
-    if (!lang) return
-
-    // If the URL language is different from i18n language, sync them
-    if (isSupportedLanguage(lang) && i18n.language !== lang) {
-      changeLanguage(lang)
-    }
-  }, [lang, i18n.language])
-
-  // If language in URL is invalid, redirect to current language
-  useEffect(() => {
-    if (lang && !isSupportedLanguage(lang)) {
-      const currentLang = getCurrentLanguage()
-      const pathWithoutLang = location.pathname.replace(/^\/[^/]+/, '')
-      navigate(`/${currentLang}${pathWithoutLang || ''}`, { replace: true })
-    }
-  }, [lang, navigate, location.pathname])
+    if (!lang || lang === currentLang) return
+    const pathWithoutLang = pathname.replace(/^\/[^/]+/, '')
+    navigate(`/${currentLang}${pathWithoutLang}${search}${hash}`, {
+      replace: true,
+    })
+  }, [lang, currentLang, navigate, pathname, search, hash])
 
   return <>{children}</>
 }
