@@ -209,6 +209,66 @@ describe('TeaHouseSystem Decree tiers', () => {
     const offers = decreeOffers(teaHouse, 30, owned)
 
     expect(offers.length).toBeGreaterThan(0)
+    // At most once per shelf: the other Decree rolls stay empty.
+    expect(offers.length).toBeLessThanOrEqual(30)
     expect(new Set(offers.map((decree) => decree.id))).toEqual(new Set([keep]))
+  })
+})
+
+describe('TeaHouseSystem Decree shelf', () => {
+  const shelfDecrees = (teaHouse: TeaHouseSystem) =>
+    teaHouse
+      .getState()
+      .itemOfferings.filter((offering) => offering.itemType === 'Decree')
+      .map((offering) => (offering.item as Decree).id)
+
+  it('never offers the same Decree twice on one shelf', () => {
+    // A constant roll lands on the same Decree in every slot.
+    const teaHouse = new TeaHouseSystem(1, () => 0)
+    teaHouse.setCharterUnlockResolver((id) => id === 'plentiful_stock')
+    teaHouse.applyCharter(charter('abundant_stock'))
+    const shop = teaHouse.generateShop([], true, {
+      guaranteedItems: Array.from({ length: 4 }, () => ({
+        itemType: 'Decree' as const,
+      })),
+    })
+
+    expect(shelfDecrees(teaHouse)).toHaveLength(4)
+    expect(new Set(shelfDecrees(teaHouse)).size).toBe(4)
+
+    teaHouse.purchaseOffering(shop.charterOffering!.id)
+    expect(new Set(shelfDecrees(teaHouse)).size).toBe(
+      shelfDecrees(teaHouse).length
+    )
+
+    teaHouse.rerollItems()
+    expect(shelfDecrees(teaHouse)).toHaveLength(4)
+    expect(new Set(shelfDecrees(teaHouse)).size).toBe(4)
+  })
+
+  it('prices every Decree at its listed cost', () => {
+    const teaHouse = new TeaHouseSystem(1, seeded(11))
+    teaHouse.setDecreeUnlockResolver(() => true)
+    const prices = new Map<string, Set<number>>()
+    for (let visit = 0; visit < 200; visit++) {
+      const shelf = teaHouse
+        .generateShop([], false, { flowerCount: 5 })
+        .itemOfferings.filter((offering) => offering.itemType === 'Decree')
+      expect(
+        new Set(shelf.map((offering) => (offering.item as Decree).id)).size
+      ).toBe(shelf.length)
+      for (const offering of shelf) {
+        const decree = offering.item as Decree
+        expect(offering.baseCost).toBe(decree.cost)
+        // An edition adds its own listed cost on top.
+        if (offering.edition) continue
+        prices.set(
+          decree.id,
+          (prices.get(decree.id) ?? new Set()).add(offering.finalCost)
+        )
+      }
+    }
+
+    expect(prices.get('decree-humble-power')).toEqual(new Set([4]))
   })
 })

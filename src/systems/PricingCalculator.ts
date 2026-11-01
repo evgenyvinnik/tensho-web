@@ -5,11 +5,9 @@
  *
  * Pricing Rules (from ARCHITECTURE.MD Section 26):
  *
- * Base Costs by Rarity:
- * - Common (LocalEdict): 1-6 Gold
- * - Uncommon (RegionalMandate): 4-8 Gold
- * - Rare (ImperialDecree): 7-10 Gold
- * - Legendary (HeavenlyOrdinance): 20 Gold (special sources only)
+ * Decree base cost: each Decree's listed `cost` (DECREE_BASE_COSTS by rarity:
+ * Common 4, Uncommon 6, Rare 8, Legendary 10, Mythic 15). Never rolled, so a
+ * Decree has one price everywhere.
  *
  * Edition Additional Costs:
  * - Foil: +2 Gold
@@ -32,8 +30,7 @@
  * sell_value = floor(buy_cost / 2)
  */
 
-import { DecreeRarity, PackSize, type DecreeEdition } from './types'
-import { runRandom } from '../game/RunRandom'
+import { PackSize, type DecreeEdition } from './types'
 
 // =============================================================================
 // EDITION TYPES
@@ -47,16 +44,6 @@ export type EditionType = DecreeEdition
 // =============================================================================
 // COST CONSTANTS
 // =============================================================================
-
-/**
- * Base cost ranges by decree rarity
- */
-export const DECREE_BASE_COST_RANGES: Record<DecreeRarity, { min: number; max: number }> = {
-  LocalEdict: { min: 1, max: 6 },
-  RegionalMandate: { min: 4, max: 8 },
-  ImperialDecree: { min: 7, max: 10 },
-  HeavenlyOrdinance: { min: 20, max: 20 },
-}
 
 /**
  * Additional costs for editions
@@ -140,14 +127,6 @@ export class PricingCalculator {
   // ===========================================================================
 
   /**
-   * Get a random base cost for a decree of given rarity
-   */
-  getRandomDecreeBaseCost(rarity: DecreeRarity): number {
-    const range = DECREE_BASE_COST_RANGES[rarity]
-    return Math.floor(runRandom.next('shop') * (range.max - range.min + 1)) + range.min
-  }
-
-  /**
    * Calculate the edition cost for a decree
    */
   getEditionCost(edition?: EditionType): number {
@@ -180,23 +159,6 @@ export class PricingCalculator {
       finalCost,
       sellValue,
     }
-  }
-
-  /**
-   * Generate full pricing for a decree given its rarity
-   */
-  generateDecreePricing(
-    rarity: DecreeRarity,
-    edition?: EditionType
-  ): {
-    baseCost: number
-    editionCost: number
-    totalBeforeDiscount: number
-    finalCost: number
-    sellValue: number
-  } {
-    const baseCost = this.getRandomDecreeBaseCost(rarity)
-    return this.calculateDecreeCost(baseCost, edition)
   }
 
   // ===========================================================================
@@ -377,17 +339,6 @@ export class PricingCalculator {
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
-
-/**
- * Get the rarity cost range as a display string
- */
-export function getRarityCostRangeDisplay(rarity: DecreeRarity): string {
-  const range = DECREE_BASE_COST_RANGES[rarity]
-  if (range.min === range.max) {
-    return `${range.min}G`
-  }
-  return `${range.min}-${range.max}G`
-}
 
 /**
  * Get edition cost display
