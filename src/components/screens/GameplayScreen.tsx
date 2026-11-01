@@ -73,6 +73,10 @@ import {
 } from '../../game/playRules'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { useRewardedAd } from '../../hooks/useRewardedAd'
+import {
+  TABLE_SHORTCUTS,
+  useTableShortcuts,
+} from '../../hooks/useTableShortcuts'
 import { SimulatedAdOverlay } from '../gameplay/SimulatedAdOverlay'
 import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
@@ -85,6 +89,17 @@ function readGuideSeen(): boolean {
     return window.localStorage.getItem(HAND_GUIDE_SEEN_KEY) === 'true'
   } catch {
     return true
+  }
+}
+
+/** Focus sits on a control, with its keyboard focus ring showing. */
+function keyboardFocused(): boolean {
+  const active = document.activeElement
+  if (!(active instanceof HTMLElement) || active === document.body) return false
+  try {
+    return active.matches(':focus-visible')
+  } catch {
+    return false
   }
 }
 
@@ -103,6 +118,7 @@ export function GameplayScreen() {
   const { service: persistence } = useClassicPersistence()
   const showTileHints = useSettingsStore((state) => state.showTileHints)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const keyboardShortcuts = useSettingsStore((state) => state.keyboardShortcuts)
   // Omens change outside game events (a reward, a cancelled Script), so the
   // Script cost shown before use follows the Omen store itself.
   const scriptDownsideProtected = useOmenStore(() =>
@@ -298,20 +314,50 @@ export function GameplayScreen() {
         ? t('gameplay.reasonLastTurn', 'Your last Turn must be a Play')
         : t('gameplay.reasonNoReplacements', 'Not enough tiles left to draw')
 
+  // Playing or redrawing from the keyboard disables the button that had
+  // focus and removes the tiles on the felt, so focus would fall back to the
+  // page. It moves to the first rack tile instead (the felt's, when Select
+  // all has emptied the rack).
+  const rescueFocus = useRef(false)
+  useEffect(() => {
+    if (!rescueFocus.current) return
+    rescueFocus.current = false
+    const active = document.activeElement
+    if (
+      active instanceof HTMLElement &&
+      active !== document.body &&
+      !(active instanceof HTMLButtonElement && active.disabled)
+    )
+      return
+    const tile = (zone: string) =>
+      document.querySelector<HTMLButtonElement>(
+        `[data-play-zone="${zone}"] button[data-play-tile]:not(:disabled)`
+      )
+    ;(tile('hand') ?? tile('felt'))?.focus()
+  }, [game.handTiles, selectedIds])
+
   const handlePlayHand = useCallback(() => {
     if (selectedIds.length === 0) return
+    rescueFocus.current ||= keyboardFocused()
     const result = game.playHand([...selectedIds])
     if (result.success) setActionError(null)
-    else setActionError(result.errors?.[0] ?? playReason ?? null)
+    else {
+      rescueFocus.current = false
+      setActionError(result.errors?.[0] ?? playReason ?? null)
+    }
   }, [game, selectedIds, playReason])
 
   const handleRedraw = useCallback(() => {
     if (selectedIds.length === 0) return
+    rescueFocus.current ||= keyboardFocused()
     const result = game.redraw([...selectedIds])
     if (result.success) {
       setActionError(null)
       game.clearSelection()
-    } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
+    } else {
+      rescueFocus.current = false
+      setActionError(result.errors?.[0] ?? redrawReason ?? null)
+    }
   }, [game, selectedIds, redrawReason])
 
   const handleBuyTurn = useCallback(() => {
@@ -359,6 +405,28 @@ export function GameplayScreen() {
       for (const id of redrawableIds)
         if (!selectedSet.has(id)) game.selectTile(id)
   }
+
+  // P, R, A and Esc (see useTableShortcuts); each only while its control
+  // would work. Focus that a shortcut removes moves to the rack.
+  const fromShortcut = (action: () => void) => () => {
+    const active = document.activeElement
+    rescueFocus.current =
+      active instanceof HTMLElement && active !== document.body
+    action()
+  }
+  useTableShortcuts(keyboardShortcuts && !tableClosed, {
+    onPlay: playAllowed ? fromShortcut(handlePlayHand) : null,
+    onRedraw: redrawAllowed ? fromShortcut(handleRedraw) : null,
+    onToggleAll:
+      redrawableIds.length > 1 ? fromShortcut(toggleSelectAll) : null,
+    onClear:
+      selectedIds.length > 0
+        ? fromShortcut(() => {
+            setActionError(null)
+            game.clearSelection()
+          })
+        : null,
+  })
 
   const handleExitGame = useCallback(async () => {
     if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
@@ -616,6 +684,17 @@ export function GameplayScreen() {
                           type="button"
                           data-select-all
                           onClick={toggleSelectAll}
+                          aria-keyshortcuts={
+                            keyboardShortcuts
+                              ? TABLE_SHORTCUTS.selectAll
+                              : undefined
+                          }
+                          data-shortcut={
+                            keyboardShortcuts
+                              ? TABLE_SHORTCUTS.selectAll
+                              : undefined
+                          }
+                          data-shortcut-inline
                           className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
                         >
                           {allPicked
@@ -658,6 +737,7 @@ export function GameplayScreen() {
           redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          shortcuts={keyboardShortcuts}
           emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
           onBuyTurn={handleBuyTurn}
           adTurn={tableClosed ? null : rewardedAd}

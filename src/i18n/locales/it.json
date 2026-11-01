@@ -831,6 +831,8 @@
     "visual": "Visivo",
     "rankNumbers": "Numeri sulle tessere",
     "rankNumbersDesc": "Mostra un piccolo 1–9 sulle tessere numerate e una lettera sui Draghi mentre impari le facce.",
+    "keyboardShortcuts": "Scorciatoie da tastiera",
+    "keyboardShortcutsDesc": "Al tavolo, P gioca la mano, R ripesca, A seleziona tutte le tessere ed Esc le rimette a posto. Le frecce spostano tra le tessere.",
     "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà."
   },
   "gameplay": {

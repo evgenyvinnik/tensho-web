@@ -831,6 +831,8 @@
     "visual": "Görsel",
     "rankNumbers": "Taşlarda sayılar",
     "rankNumbersDesc": "Taş yüzlerini öğrenirken sayılı taşlarda küçük 1–9 ve Ejderhalarda bir harf göster.",
+    "keyboardShortcuts": "Klavye kısayolları",
+    "keyboardShortcutsDesc": "Masada P elini oynar, R yeniden çeker, A tüm taşları seçer, Esc onları geri koyar. Ok tuşları taşlar arasında gezdirir.",
     "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin."
   },
   "gameplay": {
