@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
-import { buyOffer, offerCard, collectCashOut } from './helpers/shop'
-import { clearReveals, openTable, settleReveals } from './helpers/table'
+import { buyOffer, offerCard, offerName, collectCashOut } from './helpers/shop'
+import {
+  clearReveals,
+  closeOmenReveal,
+  openTable,
+  settleReveals,
+} from './helpers/table'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 
@@ -69,8 +74,8 @@ for (const [language, copy] of [
         return img.naturalWidth
       })
     ).toBeGreaterThan(0)
-    await expect(card).toContainText(
-      copy.decrees.items['decree-wealth-engine'].name
+    await expect(card).toHaveAccessibleName(
+      offerName(copy.decrees.items['decree-wealth-engine'].name)
     )
     await card.screenshot({ path: testInfo.outputPath('wealth-shop.png') })
     await buyOffer(page, offerInfo.id)
@@ -164,6 +169,8 @@ for (const [language, copy] of [
     expect(receipt.goldAfter).toBe(
       before + receipt.baseReward + receipt.interest + 2
     )
+    // The swift clear's Omen is revealed first; the pay waits for it.
+    await closeOmenReveal(page)
     // The Decree income arrives as its own toast in the Tea House.
     const seen = await collectCashOut(page, {
       screenshot: testInfo.outputPath('wealth-paid.png'),

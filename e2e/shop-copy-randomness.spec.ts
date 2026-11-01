@@ -2,7 +2,7 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { RunRandom } from '../src/game/RunRandom'
 import { offerName } from './helpers/shop'
-import { settleReveals } from './helpers/table'
+import { closeOmenReveal, settleReveals } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es'])
@@ -104,6 +104,8 @@ for (const language of ['en', 'es'])
       await page.reload()
     }
     await expect(page).toHaveURL(/\/shop\/?$/)
+    // The fixture's play cleared the round with Turns to spare: an Omen.
+    await closeOmenReveal(page)
     const before = await saved(),
       owned = before.state.decreeSystem.ownedDecrees
     const offer = before.shop.teaHouse.itemOfferings[0]

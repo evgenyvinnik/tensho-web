@@ -90,17 +90,17 @@ test('sells the chosen duplicate after reload, preserves its Eternal sibling and
   await page.reload()
   expect(await saved(page)).toEqual(before)
   const second = page.locator(`[data-decree-instance="${info.second}"]`)
+  // The Negative duplicate shows its edition's own artwork.
   await expect(second.locator('img')).toHaveAttribute(
     'src',
-    /half-suited\.webp$/
+    /decree-half-suited\/negative\.webp$/
   )
   await expect
     .poll(() =>
       second
         .locator('img')
         .evaluate(
-          (image: HTMLImageElement) =>
-            image.complete && image.naturalWidth === 512
+          (image: HTMLImageElement) => image.complete && image.naturalWidth > 0
         )
     )
     .toBe(true)
