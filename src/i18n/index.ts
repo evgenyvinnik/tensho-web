@@ -11,6 +11,7 @@ import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from '../router/routeManifest'
+import { APP_ROUTER_BASENAME } from '../utils/basePath'
 
 // English ships in the main bundle because it is the fallback: every missing
 // key resolves through it, so it has to be present before anything renders.
@@ -145,14 +146,35 @@ i18n
   })
 
 /**
- * Resolves once the language i18next detected is actually in memory.
+ * The language of the address the game was opened at (`/ja/play`), if any.
+ */
+function languageInAddress(): SupportedLanguage | null {
+  if (typeof window === 'undefined') return null
+  const base = APP_ROUTER_BASENAME.replace(/\/$/, '')
+  const { pathname } = window.location
+  if (!pathname.startsWith(base)) return null
+  const lang = pathname.slice(base.length).split('/')[1] ?? ''
+  return isSupportedLanguage(lang) ? lang : null
+}
+
+/**
+ * Resolves once the language the game opens in is actually in memory.
  *
  * Detection runs against `localStorage` and the browser, so on a second visit
  * the chosen language is known before the first render but its strings are
  * not. Awaiting this in the entry point keeps a Japanese player from seeing a
  * frame of English.
+ *
+ * A link's language (`/ja/play`) is chosen here, once. After that the address
+ * follows the player's language (`LanguageSync`), so Back to a page from before
+ * a switch keeps the new language.
  */
-export const i18nReady: Promise<void> = loadLanguage(getCurrentLanguage())
+export const i18nReady: Promise<void> = (() => {
+  const linked = languageInAddress()
+  return linked && linked !== getCurrentLanguage()
+    ? changeLanguage(linked)
+    : loadLanguage(getCurrentLanguage())
+})()
 
 export default i18n
 

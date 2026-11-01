@@ -64,6 +64,9 @@ interface GroupPlan {
 
 const MAX_RANK = 9
 
+/** A Straight runs four, five or six numbers: six is the most a play holds. */
+const STRAIGHT_LENGTHS = [4, 5, 6] as const
+
 /** Only a tile with a face can join a group. */
 function hasStructureFace(tile: Tile): boolean {
   return !tile.isBonus && !tile.isStone
@@ -73,9 +76,10 @@ function hasStructureFace(tile: Tile): boolean {
  * Find the decomposition of `tiles` that maximises structure points.
  *
  * Equal totals go to the groups that add more Mult by themselves: 2·3·4·5 + 5
- * reads as a Straight and a loose 5, not a Sequence and a Pair, and 1–6 as a
- * five-tile Straight, not two Sequences. A Pair adds nothing alone, so it is
- * never chosen over a stronger group that pays the same structure.
+ * reads as a Straight and a loose 5, not a Sequence and a Pair, and 1–7 as a
+ * six-tile Straight and a loose 7, not a four-tile Straight and a Sequence. A
+ * Pair adds nothing alone, so it is never chosen over a stronger group that
+ * pays the same structure.
  *
  * Melds never span suits, so each suit is solved independently and the results
  * are concatenated. A face-count memo is shared across overlap candidates so
@@ -405,7 +409,7 @@ function solveSuit(
       if (counts[rank + a] > 0 && counts[rank + b] > 0)
         consider(MeldType.Sequence, [rank, rank + a, rank + b])
     // Straights are always consecutive; no Season or Flower widens them.
-    for (const length of [4, 5]) {
+    for (const length of STRAIGHT_LENGTHS) {
       const ranks = Array.from({ length }, (_, i) => rank + i)
       if (ranks.every((r) => r <= MAX_RANK && counts[r] > 0))
         consider(MeldType.Straight, ranks)
@@ -534,7 +538,7 @@ function enumerateSplits(
       rules,
       visit
     )
-  for (const length of [4, 5])
+  for (const length of STRAIGHT_LENGTHS)
     for (const members of straightsThrough(first, rest, length))
       enumerateSplits(
         without(rest, members),

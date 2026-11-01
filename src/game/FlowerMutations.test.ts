@@ -83,6 +83,22 @@ it('a five-tile run plays as a Straight of Five, with or without Plum, and pays 
   expect(state.discards.map((t) => t.id)).toEqual(ids)
 })
 
+it('a six-tile run plays as a Straight of Six, with or without Plum', () => {
+  const { game, state, awaken, ids } = setup(
+    ranks(TileSuit.Manzu, [2, 3, 4, 5, 6, 7]),
+    FlowerType.Plum,
+    'plum_overlap'
+  )
+  expect(game.previewScore(ids)!.pattern.id).toBe('straight6')
+  awaken()
+  const parsed = parsePartialHand(state.handTiles, game.getPartialHandRules())
+  expect(parsed.groups).toHaveLength(1)
+  expect(parsed.structurePoints).toBe(75)
+  const paid = pay(game, ids)
+  expect(paid.pattern.id).toBe('straight6')
+  expect(paid.structurePoints).toBe(75)
+})
+
 it('Plum declares a thirteen-tile complete hand and finds it in an enlarged rack', () => {
   const tiles = [...ranks(TileSuit.Manzu, [1, 2, 3, 4, 5]), ...rest()]
   const { game, state, awaken, ids } = setup(

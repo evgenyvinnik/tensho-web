@@ -229,13 +229,13 @@ Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per Dragon (4 grouped)
 Tile points: suited 5, terminals (1, 9) 10, Winds 50 (100 inside a group),
 Dragons 15.
 Group bonuses: Pair +15, Sequence +30, Triplet +40, Straight +45 (four) / +60
-(five), Quad +65.
+(five) / +75 (six), Quad +65.
 
 A play holds up to six tiles (`MAX_TACTICAL_PLAY_TILES`) unless it is a complete
 Mahjong hand. `parsePlay` splits it into the disjoint groups that pay the most,
 and `classifyPlay` (`src/rules/PlayPattern.ts`) names the pattern: Pattern Mult
-= (groups − 1) + Triplet/Straight-of-four 1, Quad/Straight-of-five 2; a complete
-Mahjong hand adds a flat +4. A numbered tile that belongs to no group scores
+= (groups − 1) + Triplet/Straight-of-four 1, Quad/Straight-of-five 2,
+Straight-of-six 3; a complete Mahjong hand adds a flat +4. A numbered tile that belongs to no group scores
 half its tile points; Honors pay in full loose and double inside a group
 (`playedTilePoints` / `dragonMultFor`). `STRUCTURE_POINTS_BY_TYPE` in
 `ScoringEngine` is the single source for group values — `PartialHandParser`

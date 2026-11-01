@@ -16,6 +16,8 @@ Every recording is credited in-game under **Settings → Credits** (title, autho
 
 The four music tracks are unchanged; this work does not establish new licensing provenance for them, so they are not yet listed in Credits.
 
+Six more songs come from PeriTune's [Konohana](https://peritune.itch.io/konohana) collection (Shizima 2, Otogi 3, Minamo, Amenoshita 3, Otogi 4, Shizima 4; commercial use and editing allowed, no credit required, so not yet in Credits either). They live in `public/assets/music/`, re-encoded from 192 to 128 kbps MP3 and scaled to the original tracks' RMS level (about −20 dBFS, roughly 7–9 dB down), so every song plays at element volume 0.7 and the balance holds on iOS. They are precached for offline play under their own 24 MiB budget in `scripts/verify-asset-delivery.mjs`, apart from the 40 MiB core payload.
+
 History: the first palette built every cue from pitched sine partials, so all seven tile sounds were near-identical ~800 Hz beeps and every button played a 620 Hz blip. A second, fully synthesized pass modelled tile clacks physically; the current pass uses recorded chip clacks instead.
 
 The `sample` voice skips silence before each hit (some sources open with up to 120 ms of it, which would read as input lag), can resample a slice slower or faster, high-passes away DC offset and rumble, can gate room hiss between transients, and fades the slice out.
@@ -54,18 +56,19 @@ Table Loop feedback is emitted after a live action resolves. Forecasts, journal 
 
 - No automatic playback before a pointer/key gesture. Startup rewards are not queued to play later in a burst.
 - Music and effects use their persisted mute/volume preferences. Starting a run does not override mute.
-- Music continues across screen navigation. Menu, game, shop, and result contexts select from the existing track library. Every track is eligible on the menu, and each launch opens on a different melody than the previous launch (`tensho-launch-track` in localStorage; without storage the opening track is simply random).
+- Music continues across screen navigation. Menu, game, shop, and result contexts select from the existing track library. Every track is eligible on the menu, and each launch opens on a different melody than the previous launch (`tensho-launch-track` in localStorage; without storage the opening track is simply random). A song that is also in the next screen's playlist keeps playing; otherwise the new context crossfades to one of its own.
 - Music mute/pause/stop cancels pending fades and pauses both media elements. A late rejected/resolved play promise cannot mark muted audio as playing.
 - Volume changes affect both sides of a crossfade and effects already playing.
 - Effects are limited by per-cue capacity, a 45 ms repeated-event throttle, and a ten-voice priority budget. A fourteen-tile deal does not play fourteen simultaneous draw sounds.
 - Failed effects release their pooled voice so later attempts remain usable.
 - Synchronous media-property failures during SFX setup/release are caught as well as rejected `play()` promises; optional audio cannot throw through tile selection.
 - Hidden tabs pause music and stop effects, on `visibilitychange` and also on `pagehide`, which covers iOS exits that skip the visibility event (back-forward cache, home-screen app switches). A `play()` that settles after the page was hidden or muted is paused on arrival. Returning (`visibilitychange` or `pageshow`) resumes permitted music but never replays old effects; iOS may need one tap before audio restarts.
+- On the website, a window `blur` (another window or app in front of a still-visible page) silences the game the same way; `focus` or the next tap/key resumes it. The iOS app skips window focus events and relies on `appinactive`/`appactive` for lock and background.
 - The music toast animates inward without expanding the page, ignores pointer input, and respects reduced motion.
 
 ## Verification
 
-- Seventeen audio-system tests cover assets, native-format headers/peak bounds/tap-length bounds, per-play pitch variation, a different opening melody per launch, pagehide/pageshow, a late `play()` after hiding, initialization/cleanup, gesture gating, pooling, rejected playback, synchronous setter failures, mute/volume changes, crossfade races, visibility, and settings synchronization. The interaction browser suite additionally injects a failing native tile-SFX setter and verifies selection still succeeds.
+- Twenty-one audio-system tests cover assets, native-format headers/peak bounds/tap-length bounds, per-play pitch variation, a different opening melody per launch, songs carried across screens, pagehide/pageshow, window blur/focus, a late `play()` after hiding, initialization/cleanup, gesture gating, pooling, rejected playback, synchronous setter failures, mute/volume changes, crossfade races, visibility, and settings synchronization. The interaction browser suite additionally injects a failing native tile-SFX setter and verifies selection still succeeds.
 - Four Table Loop audio tests cover escalating intensity and the live-action versus forecast/reload boundary.
 - Six browser checks across desktop Chromium and mobile Chrome observe real `HTMLMediaElement.play()` promises, not a fake audio implementation. They verify decoded scoring sound, music continuity, persisted mute, independent SFX enabling, and silent saved-run restoration.
 - The original audio pass ran 442 unit/component tests in 41 files, plus TypeScript and production builds. See [the wrap-up ledger](IMPLEMENTATION_WRAP_UP.md) for the latest full-suite evidence.

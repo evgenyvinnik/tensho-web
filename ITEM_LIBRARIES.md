@@ -63,7 +63,7 @@ above 1 adds the bonus below to every play that scores the family.
 | **Mercury Orb** (水星) | All Simples | +15 base points, +1 Mult | Any play forming a group from 2–8 tiles only; All Simples hand |
 | **Uranus Orb** (天王星) | Honors | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
 | **Venus Orb** (金星) | Sequences | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
-| **Saturn Orb** (土星) | Straights | +30 base points, +3 Mult | Straights of Four and Five, Straight + Pair; 1–9 Straight hand |
+| **Saturn Orb** (土星) | Straights | +30 base points, +3 Mult | Straights of Four, Five and Six, Straight + Pair; 1–9 Straight hand |
 | **Jupiter Orb** (木星) | Half Flush | +15 base points, +2 Mult | Half Flush hand |
 | **Earth Orb** (地球) | Sets | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
 | **Mars Orb** (火星) | Full Flush | +30 base points, +3 Mult | Full Flush hand |

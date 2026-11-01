@@ -135,7 +135,7 @@ export function SettingsScreen() {
           <h2 className="pavilion-section-heading">
             <ControlIcon name="language" size={36} /> {t('settings.language')}
           </h2>
-          <LanguageSelector className="w-full" />
+          <LanguageSelector fullWidth />
         </section>
 
         {/* Audio Section */}

@@ -55,6 +55,9 @@ describe('Wild tiles in a play', () => {
     expect(shapes(parsePlay(tiles('3p 4p 5s* 6p 7p')).groups)).toEqual([
       'straight:[3p4p5s6p7p]',
     ])
+    expect(shapes(parsePlay(tiles('2p 3p 4p 5s* 6p 7m*')).groups)).toEqual([
+      'straight:[2p3p4p5s6p7m]',
+    ])
   })
 
   it('completes a Pair or Triplet of another suit', () => {

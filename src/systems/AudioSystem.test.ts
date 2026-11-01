@@ -15,6 +15,9 @@ import {
 import { eventBus } from '../game/EventBus'
 import { useAudioLifecycle } from '../hooks/useAudioLifecycle'
 import { useSettingsStore } from '../stores/settingsStore'
+import { audioAssets } from '../utils/assets'
+
+const track = (name: string) => MUSIC_CONFIG.find((t) => t.name === name)!
 
 class MockAudio extends EventTarget {
   static all: MockAudio[] = []
@@ -108,10 +111,13 @@ describe('sound assets', () => {
       // Tile and interface cues are taps: short enough to never smear together.
       if (/^(tile|ui)_/.test(id)) expect(seconds, id).toBeLessThan(0.25)
     }
-    for (const track of MUSIC_CONFIG)
+    for (const track of MUSIC_CONFIG) {
       expect(
         readFileSync(resolve('public', track.path.replace(/^\//, ''))).length
       ).toBeGreaterThan(1000)
+      // The Now Playing toast names a song through its asset entry.
+      expect(Object.values(audioAssets), track.name).toContain(track.path)
+    }
   })
 })
 
@@ -263,10 +269,33 @@ describe('music and settings', () => {
     expect(MockAudio.all.slice(0, 2).every((a) => a.paused)).toBe(true)
   })
 
+  it('keeps a song the next screen shares and switches when it does not', async () => {
+    audio.initialize()
+    audio.unlock()
+    audio.playTrack(track('Minamo').path)
+    await flush()
+    const element = MockAudio.all.find(
+      (a) => !a.paused && a.src.endsWith('.mp3')
+    )!
+    const plays = element.play.mock.calls.length
+    audio.playMusic('gameplay')
+    audio.playMusic('shop')
+    await flush()
+    expect(audio.getState()).toMatchObject({
+      currentTrack: track('Minamo').path,
+      isCrossfading: false,
+    })
+    expect(element.play).toHaveBeenCalledTimes(plays)
+    audio.playMusic('boss')
+    await flush()
+    expect(audio.getState().currentTrack).toBe(track('Dragon Dance').path)
+  })
+
   it('changes both fade volumes live and keeps both silent after mute', async () => {
     audio.initialize()
-    audio.playMusic('menu')
     audio.unlock()
+    // Not a Boss song, so the Boss playlist crossfades to a new one.
+    audio.playTrack(track('Japanese Winter').path)
     await flush()
     audio.playMusic('boss')
     await flush()
@@ -355,6 +384,27 @@ describe('music and settings', () => {
     expect(audio.getState().isPlaying).toBe(true)
   })
 
+  it('goes quiet while another window or app is in front of the page', async () => {
+    audio.initialize()
+    audio.playMusic('menu')
+    audio.unlock()
+    await flush()
+    window.dispatchEvent(new Event('blur'))
+    expect(MockAudio.all.every((a) => a.paused && a.muted)).toBe(true)
+    audio.play(TILE_SOUNDS.select)
+    expect(playedEffects()).toHaveLength(0)
+    window.dispatchEvent(new Event('focus'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+    expect(MockAudio.all.some((a) => a.muted)).toBe(false)
+    // A tap also proves the page is in use when no focus event arrives.
+    window.dispatchEvent(new Event('blur'))
+    expect(audio.getState().isPlaying).toBe(false)
+    audio.unlock()
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+  })
+
   it('pauses a play() that resolves after the page was hidden', async () => {
     audio.initialize()
     const [music] = MockAudio.all
@@ -410,6 +460,7 @@ describe('music and settings', () => {
   it('cleans up a pending crossfade and can initialize again', async () => {
     audio.initialize()
     audio.unlock()
+    audio.playTrack(track('Japanese Winter').path)
     await flush()
     audio.playMusic('boss')
     await flush()

@@ -2,13 +2,14 @@
  * Play patterns: Tensho's poker-style names for what a play scored.
  *
  * Tensho is not standard Mahjong. A play is read as the groups it contains —
- * a Pair, Two Pairs, a Sequence and a Pair, Two Sequences, a four- or
- * five-tile Straight, a Triplet, a Quad — and the pattern decides its bonus
+ * a Pair, Two Pairs, a Sequence and a Pair, Two Sequences, a four-, five- or
+ * six-tile Straight, a Triplet, a Quad — and the pattern decides its bonus
  * Mult. One formula covers every pattern, so the guide can teach it in a line:
  *
  *   Pattern Mult = (groups − 1) + Σ group bonus
  *   group bonus:  Pair 0 · Sequence 0 · Triplet 1 · 4-Straight 1
  *                 Quad 2 · 5-Straight 2 · Three Dragons 2 · Four Winds 2
+ *                 6-Straight 3
  *
  * Two groups are secret hands: Three Dragons (one White, one Green, one Red)
  * and Four Winds (one of each Wind). The guide leaves them out until the
@@ -38,6 +39,7 @@ export type PlayPatternId =
   | 'quad'
   | 'straight4'
   | 'straight5'
+  | 'straight6'
   | 'two_pairs'
   | 'three_pairs'
   | 'two_sequences'
@@ -63,6 +65,7 @@ const PATTERN_ID_SET: Record<PlayPatternId, true> = {
   quad: true,
   straight4: true,
   straight5: true,
+  straight6: true,
   two_pairs: true,
   three_pairs: true,
   two_sequences: true,
@@ -96,6 +99,7 @@ export type GroupKind =
   | 'quad'
   | 'straight4'
   | 'straight5'
+  | 'straight6'
   | 'three_dragons'
   | 'four_winds'
 
@@ -107,6 +111,7 @@ export const GROUP_MULT: Record<GroupKind, number> = {
   straight4: 1,
   quad: 2,
   straight5: 2,
+  straight6: 3,
   three_dragons: 2,
   four_winds: 2,
 }
@@ -129,7 +134,8 @@ export function groupKind(meld: Meld): GroupKind {
 
 /** The kind of a group of this type and size. */
 export function groupKindFor(type: MeldType, size: number): GroupKind {
-  if (type === MeldType.Straight) return size >= 5 ? 'straight5' : 'straight4'
+  if (type === MeldType.Straight)
+    return size >= 6 ? 'straight6' : size >= 5 ? 'straight5' : 'straight4'
   if (type === MeldType.Honors) return size >= 4 ? 'four_winds' : 'three_dragons'
   return type
 }
@@ -146,6 +152,7 @@ export function isSecretPattern(id: PlayPatternId): id is SecretPatternId {
 const KIND_ORDER: GroupKind[] = [
   'four_winds',
   'three_dragons',
+  'straight6',
   'quad',
   'straight5',
   'straight4',
@@ -162,6 +169,7 @@ const NAMED: Record<string, PlayPatternId> = {
   quad: 'quad',
   straight4: 'straight4',
   straight5: 'straight5',
+  straight6: 'straight6',
   'pair+pair': 'two_pairs',
   'pair+pair+pair': 'three_pairs',
   'sequence+sequence': 'two_sequences',
@@ -209,5 +217,6 @@ export const TAUGHT_PATTERNS: readonly PlayPatternId[] = [
   'triplet_pair',
   'straight5',
   'quad',
+  'straight6',
   'mahjong',
 ]

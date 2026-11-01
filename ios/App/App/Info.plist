@@ -55,9 +55,20 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance~ipad</key>
+	<false/>
+	<key>UIStatusBarHidden~ipad</key>
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>

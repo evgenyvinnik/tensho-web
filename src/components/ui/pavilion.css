@@ -50,9 +50,6 @@
 .pavilion-progress > span:last-child {
   white-space: nowrap;
 }
-.pavilion-settings [aria-haspopup='listbox'] .hidden {
-  display: inline;
-}
 @media (max-width: 479px) {
   .pavilion-progress > span:first-child {
     display: none;
@@ -282,14 +279,6 @@
 }
 .pavilion-settings .pavilion-section-heading {
   flex-wrap: wrap;
-}
-.pavilion-settings [aria-haspopup='listbox'] {
-  width: 100%;
-}
-.pavilion-settings [role='listbox'] {
-  left: 0;
-  right: auto;
-  max-width: calc(100vw - 88px);
 }
 @media (min-width: 640px) {
   .pavilion-layout {
