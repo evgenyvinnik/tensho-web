@@ -1,7 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { CURRENT_SNAPSHOT_VERSION } from '../src/game/migrateClassicSnapshot'
-import { settleReveals, turnBudget } from './helpers/table'
+import { closeOmenReveal, settleReveals, turnBudget } from './helpers/table'
 
 /**
  * What each shape's sheltering play pays under Summer. The complete hand's
@@ -79,90 +79,98 @@ for (const language of ['en', 'es'])
       await page.goto(`${baseURL!.replace(/\/$/, '')}/${language}/play`)
       await saved()
       if (!fixture) {
-        await page.evaluate(async ({ shape, target }) => {
-          const loadedModule = (path: string) => {
-            const url = performance
-              .getEntriesByType('resource')
-              .map((e) => e.name)
-              .reverse()
-              .find((url) => new URL(url).pathname === path)
-            if (!url) throw Error(`App did not load ${path}`)
-            return url
-          }
-          const { gameOrchestrator: game } = await import(
-            loadedModule('/src/game/GameOrchestrator.ts')
-          )
-          const { Tile, TileSuit, SeasonType, FlowerType } = await import(
-            loadedModule('/src/core/Tile.ts')
-          )
-          const { initializeClassicPersistence } = await import(
-            loadedModule('/src/game/classicPersistenceApp.ts')
-          )
-          const service = initializeClassicPersistence(),
-            raw = service.getSnapshot().disk.raw
-          game.startNewRun(7)
-          const state = game.getState()
-          for (const decree of state.decreeSystem.getOwnedDecrees())
-            state.decreeSystem.removeDecree(decree.id)
-          state.flowerSystem.clear()
-          state.seasonSystem.clear()
-          state.seasonSystem.setAct(1)
-          state.bambooSummerProtection = false
-          state.summerReserve = []
-          state.handTiles =
-            shape === 'quad'
-              ? [
-                  ...Array.from(
-                    { length: 4 },
-                    (_, i) => new Tile(TileSuit.Manzu, 1, `terminal-${i}`)
-                  ),
-                  ...Array.from(
-                    { length: 10 },
-                    (_, i) => new Tile(TileSuit.Pinzu, (i % 7) + 2, `hand-${i}`)
-                  ),
-                ]
-              : [
-                  ...[1, 1, 1, 9, 9, 9].map(
-                    (rank, i) => new Tile(TileSuit.Manzu, rank, `terminal-${i}`)
-                  ),
-                  ...[2, 3, 4, 6, 7, 8].map(
-                    (rank, i) => new Tile(TileSuit.Pinzu, rank, `sequence-${i}`)
-                  ),
-                  new Tile(TileSuit.Wind, 1, 'eye-0'),
-                  new Tile(TileSuit.Wind, 1, 'hand-9'),
-                ]
-          state.wall = [
-            Tile.createSeason(SeasonType.Summer, 'summer'),
-            ...Array.from(
-              { length: 40 },
-              (_, i) => new Tile(TileSuit.Souzu, (i % 9) + 1, `wall-${i}`)
-            ),
-          ]
-          state.wall.splice(
-            1 + (shape === 'quad' ? 4 : 14),
-            0,
-            Tile.createSeason(SeasonType.Summer, 'later-summer')
-          )
-          state.deadWall = [
-            Tile.createFlower(FlowerType.Bamboo, 'bamboo'),
-            new Tile(TileSuit.Wind, 1, 'dead'),
-          ]
-          state.drawIndex = 0
-          state.wallTemplate = state.wallTemplate.filter(
-            (t: { isBonus: boolean }) => !t.isBonus
-          )
-          state.targetScore = target
-          state.roundManager.getCurrentRound().scoreTarget = target
-          state.selectedTileIds.clear()
-          state.faceDownTileIds.clear()
-          if (!(await service.saveNewRun(raw)))
-            throw Error('Fixture save failed')
-          // A real legacy checkpoint, not a fabricated current save missing progress.
-          const old = JSON.parse(localStorage.getItem('tensho-classic-run-v1')!)
-          old.snapshot.version = 1
-          delete old.snapshot.state.bambooSummerProtection
-          localStorage.setItem('tensho-classic-run-v1', JSON.stringify(old))
-        }, { shape, target: TARGET[shape as keyof typeof TARGET] })
+        await page.evaluate(
+          async ({ shape, target }) => {
+            const loadedModule = (path: string) => {
+              const url = performance
+                .getEntriesByType('resource')
+                .map((e) => e.name)
+                .reverse()
+                .find((url) => new URL(url).pathname === path)
+              if (!url) throw Error(`App did not load ${path}`)
+              return url
+            }
+            const { gameOrchestrator: game } = await import(
+              loadedModule('/src/game/GameOrchestrator.ts')
+            )
+            const { Tile, TileSuit, SeasonType, FlowerType } = await import(
+              loadedModule('/src/core/Tile.ts')
+            )
+            const { initializeClassicPersistence } = await import(
+              loadedModule('/src/game/classicPersistenceApp.ts')
+            )
+            const service = initializeClassicPersistence(),
+              raw = service.getSnapshot().disk.raw
+            game.startNewRun(7)
+            const state = game.getState()
+            for (const decree of state.decreeSystem.getOwnedDecrees())
+              state.decreeSystem.removeDecree(decree.id)
+            state.flowerSystem.clear()
+            state.seasonSystem.clear()
+            state.seasonSystem.setAct(1)
+            state.bambooSummerProtection = false
+            state.summerReserve = []
+            state.handTiles =
+              shape === 'quad'
+                ? [
+                    ...Array.from(
+                      { length: 4 },
+                      (_, i) => new Tile(TileSuit.Manzu, 1, `terminal-${i}`)
+                    ),
+                    ...Array.from(
+                      { length: 10 },
+                      (_, i) =>
+                        new Tile(TileSuit.Pinzu, (i % 7) + 2, `hand-${i}`)
+                    ),
+                  ]
+                : [
+                    ...[1, 1, 1, 9, 9, 9].map(
+                      (rank, i) =>
+                        new Tile(TileSuit.Manzu, rank, `terminal-${i}`)
+                    ),
+                    ...[2, 3, 4, 6, 7, 8].map(
+                      (rank, i) =>
+                        new Tile(TileSuit.Pinzu, rank, `sequence-${i}`)
+                    ),
+                    new Tile(TileSuit.Wind, 1, 'eye-0'),
+                    new Tile(TileSuit.Wind, 1, 'hand-9'),
+                  ]
+            state.wall = [
+              Tile.createSeason(SeasonType.Summer, 'summer'),
+              ...Array.from(
+                { length: 40 },
+                (_, i) => new Tile(TileSuit.Souzu, (i % 9) + 1, `wall-${i}`)
+              ),
+            ]
+            state.wall.splice(
+              1 + (shape === 'quad' ? 4 : 14),
+              0,
+              Tile.createSeason(SeasonType.Summer, 'later-summer')
+            )
+            state.deadWall = [
+              Tile.createFlower(FlowerType.Bamboo, 'bamboo'),
+              new Tile(TileSuit.Wind, 1, 'dead'),
+            ]
+            state.drawIndex = 0
+            state.wallTemplate = state.wallTemplate.filter(
+              (t: { isBonus: boolean }) => !t.isBonus
+            )
+            state.targetScore = target
+            state.roundManager.getCurrentRound().scoreTarget = target
+            state.selectedTileIds.clear()
+            state.faceDownTileIds.clear()
+            if (!(await service.saveNewRun(raw)))
+              throw Error('Fixture save failed')
+            // A real legacy checkpoint, not a fabricated current save missing progress.
+            const old = JSON.parse(
+              localStorage.getItem('tensho-classic-run-v1')!
+            )
+            old.snapshot.version = 1
+            delete old.snapshot.state.bambooSummerProtection
+            localStorage.setItem('tensho-classic-run-v1', JSON.stringify(old))
+          },
+          { shape, target: TARGET[shape as keyof typeof TARGET] }
+        )
         await testInfo.attach(`legacy-${shape}`, {
           body: await page.evaluate(
             () => localStorage.getItem('tensho-classic-run-v1')!
@@ -300,6 +308,8 @@ for (const language of ['en', 'es'])
       )
       await activate(play)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+      // Clearing with Turns to spare earns an Omen, revealed before the shop.
+      await closeOmenReveal(page)
       await activate(
         page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
       )
