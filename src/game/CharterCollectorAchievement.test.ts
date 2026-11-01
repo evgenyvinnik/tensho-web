@@ -20,7 +20,8 @@ const record = () =>
   useAchievementStore.getState().stats.maxChartersPurchasedByAct5
 function start() {
   const game = new GameOrchestrator()
-  game.startNewRun(7)
+  // Seed 8's Boss shops offer no Ancient Script, so Acts advance in order.
+  game.startNewRun(8)
   return game
 }
 function purchaseEvent(actNumber: number) {

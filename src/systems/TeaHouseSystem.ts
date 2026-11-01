@@ -41,7 +41,6 @@ import { DecreeSystem } from './DecreeSystem'
 import {
   PricingCalculator,
   EditionType,
-  DECREE_BASE_COST_RANGES,
   repriceDiscountedOffer,
 } from './PricingCalculator'
 import { FateSeal, FateSealSystem } from './FateSealSystem'
@@ -541,8 +540,12 @@ export class TeaHouseSystem {
     excludeIds: string[],
     minimum?: DecreeRarity
   ): TeaHouseOffering | null {
+    // One shelf never offers the same Decree twice.
+    const shelved = this.itemOfferings.flatMap((offering) =>
+      offering.itemType === 'Decree' ? [(offering.item as Decree).id] : []
+    )
     const pool = DecreeSystem.getShopCandidates(
-      excludeIds,
+      [...excludeIds, ...shelved],
       minimum,
       this.flowerCountForVisit,
       this.decreeUnlockResolver
@@ -565,7 +568,9 @@ export class TeaHouseSystem {
     if (candidates.length === 0) {
       candidates = pool.filter((d) => (weights[d.rarity] ?? 0) > 0)
     }
-    if (candidates.length === 0) {
+    // Only a promised minimum tier may reach past them; an ordinary slot stays
+    // empty rather than repeat a shelved Decree or leak a special one.
+    if (candidates.length === 0 && minimum) {
       candidates = pool
     }
 
@@ -590,16 +595,11 @@ export class TeaHouseSystem {
         !eligible.some((other) => other.type === 'Eternal')
     )
 
-    // Calculate costs
-    const costRange = DECREE_BASE_COST_RANGES[decree.rarity]
-    // Always draw the cost, so a Rental sticker does not shift subsequent
-    // seeded shop rolls.
-    const rolledCost =
-      Math.floor(this.random() * (costRange.max - costRange.min + 1)) +
-      costRange.min
+    // A Decree always costs its listed price, so it reads the same on every
+    // shelf and in the Collection.
     const baseCost = stickers.some((entry) => entry.type === 'Rental')
       ? 1 // Rental items cost only 1 Gold
-      : rolledCost
+      : decree.cost
 
     const { finalCost, editionCost, sellValue } =
       this.pricingCalculator.calculateDecreeCost(baseCost, edition)
@@ -1048,16 +1048,16 @@ export class TeaHouseSystem {
     // Refresh every ordinary item slot, including sold-out slots. Purchased
     // rewards already belong to the run; retaining their offer here would make
     // a paid reroll leave the shop empty. Packs and the Charter stay untouched.
-    const newItems: TeaHouseOffering[] = []
+    // Build into the emptied shelf so new Decrees exclude each other, not the
+    // stock they replace.
+    this.itemOfferings = []
 
     for (let i = 0; i < this.itemSlotCount; i++) {
       const offering = this.generateItemOffering(i, ownedDecreeIds)
       if (offering) {
-        newItems.push(this.applyVisitDiscount(offering))
+        this.itemOfferings.push(this.applyVisitDiscount(offering))
       }
     }
-
-    this.itemOfferings = newItems
 
     // Note: Blessing packs and charter do NOT reroll
     return {
