@@ -53,16 +53,22 @@ export class Meld implements MeldData {
     isCalledKan: boolean = false
   ) {
     this.type = type
-    this.tiles = [...tiles].sort(Tile.compare)
+    // Runs read low to high even when a Wild tile of another printed suit
+    // fills one rank; every other group keeps the usual suit-then-rank order.
+    const isRun = type === MeldType.Sequence || type === MeldType.Straight
+    this.tiles = [...tiles].sort((a, b) =>
+      isRun ? a.rank - b.rank || Tile.compare(a, b) : Tile.compare(a, b)
+    )
     this.isConcealed = isConcealed
     this.isCalledKan = isCalledKan
   }
 
   /**
-   * Get the suit of this meld (all tiles in a meld share the same suit)
+   * Get the suit of this meld (all tiles in a meld share the same suit; a
+   * Wild tile takes the suit of the others)
    */
   get suit(): TileSuit {
-    return this.tiles[0].suit
+    return Tile.groupSuit(this.tiles)
   }
 
   /**
@@ -129,7 +135,7 @@ export class Meld implements MeldData {
       const prefix = this.type === MeldType.Sequence ? 'seq' : 'straight'
       return `${prefix}-${this.suit}-${this.tiles.map((tile) => tile.rank).join('-')}`
     }
-    return `${this.type}-${this.tiles[0].typeKey}`
+    return `${this.type}-${this.suit}-${this.tiles[0].rank}`
   }
 
   /**
@@ -147,10 +153,8 @@ export class Meld implements MeldData {
   static canFormSequence(tiles: Tile[]): boolean {
     if (tiles.length !== 3) return false
 
-    // Must all be the same suited suit
-    const suit = tiles[0].suit
-    if (!tiles[0].isSuited) return false
-    if (!tiles.every((t) => t.suit === suit)) return false
+    // Must all be the same suited suit; Wild tiles count as every suit
+    if (!Tile.shareSuit(tiles)) return false
 
     // Must be consecutive ranks
     const ranks = tiles.map((t) => t.rank).sort((a, b) => a - b)
@@ -162,8 +166,7 @@ export class Meld implements MeldData {
    */
   static canFormStraight(tiles: Tile[]): boolean {
     if (tiles.length < 4 || tiles.length > 5) return false
-    const suit = tiles[0].suit
-    if (!tiles[0].isSuited || !tiles.every((t) => t.suit === suit)) return false
+    if (!Tile.shareSuit(tiles)) return false
     const ranks = tiles.map((t) => t.rank).sort((a, b) => a - b)
     return ranks.every((rank, i) => i === 0 || rank === ranks[i - 1] + 1)
   }
@@ -173,7 +176,7 @@ export class Meld implements MeldData {
    */
   static canFormTriplet(tiles: Tile[]): boolean {
     if (tiles.length !== 3) return false
-    return tiles.every((t) => t.matches(tiles[0]))
+    return Tile.shareFace(tiles)
   }
 
   /**
@@ -181,7 +184,7 @@ export class Meld implements MeldData {
    */
   static canFormQuad(tiles: Tile[]): boolean {
     if (tiles.length !== 4) return false
-    return tiles.every((t) => t.matches(tiles[0]))
+    return Tile.shareFace(tiles)
   }
 
   /**
@@ -189,7 +192,7 @@ export class Meld implements MeldData {
    */
   static canFormPair(tiles: Tile[]): boolean {
     if (tiles.length !== 2) return false
-    return tiles[0].matches(tiles[1])
+    return Tile.shareFace(tiles)
   }
 
   /**
