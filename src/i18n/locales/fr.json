@@ -3112,6 +3112,10 @@
       "name": "Suite de cinq",
       "explain": "Cinq nombres qui se suivent, même famille."
     },
+    "straight6": {
+      "name": "Suite de six",
+      "explain": "Six nombres qui se suivent, même famille."
+    },
     "two_pairs": {
       "name": "Double paire",
       "explain": "Deux paires différentes en un coup."
@@ -3181,7 +3185,7 @@
     "secretTitle": "Mains secrètes",
     "secretFound": "Main secrète découverte",
     "secretInGuide": "Désormais dans le guide ?.",
-    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
+    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2, les suites de six +3. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",

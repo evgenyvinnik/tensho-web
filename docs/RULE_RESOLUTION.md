@@ -96,9 +96,10 @@ swift clears. A Boss round never earns one.
 **Patterns.** A play of up to six tiles (more only for a complete Mahjong hand)
 is split into the disjoint groups that pay the most. Its pattern adds Mult:
 `(groups − 1) + Σ group bonus` with Pair 0, Sequence 0, Triplet 1, Straight of
-Four 1, Quad 2, Straight of Five 2. A complete Mahjong hand adds a flat +4 on
-top of its Yaku. Straights (four or five in a row, one suit) score 45 / 60
-group points. Loose numbered tiles still score half; Honors do not. An
+Four 1, Quad 2, Straight of Five 2, Straight of Six 3. A complete Mahjong hand
+adds a flat +4 on top of its Yaku. Straights (four, five or six in a row, one
+suit) score 45 / 60 / 75 group points; six in a row is one Straight of Six, not
+a Straight of Five and a loose tile. Loose numbered tiles still score half; Honors do not. An
 awakened Plum's overlapping sequences never beat the Straight of Five they
 form, so Plum now matters for complete hands.
 

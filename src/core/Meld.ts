@@ -6,7 +6,7 @@
  * - Triplet (Koutsu): 3 identical tiles
  * - Quad (Kantsu): 4 identical tiles
  * - Pair (Toitsu): 2 identical tiles (only one per hand, or 7 for Seven Pairs)
- * - Straight: 4 or 5 consecutive tiles of one suit. Tensho's own shape for
+ * - Straight: 4 to 6 consecutive tiles of one suit. Tensho's own shape for
  *   tactical plays; a complete Mahjong hand never contains one.
  * - Honors: one of every Dragon, or one of every Wind. Tensho's secret shape
  *   for tactical plays; a complete Mahjong hand never contains one either.
@@ -19,7 +19,7 @@ export enum MeldType {
   Triplet = 'triplet', // Koutsu (刻子)
   Quad = 'quad', // Kantsu (槓子)
   Pair = 'pair', // Toitsu (対子)
-  Straight = 'straight', // 4–5 consecutive tiles of one suit (連)
+  Straight = 'straight', // 4–6 consecutive tiles of one suit (連)
   Honors = 'honors', // Every Dragon (三元) or every Wind (四喜), one of each
 }
 
@@ -161,7 +161,7 @@ export class Meld implements MeldData {
    * Check if tiles can form a straight: 4 or 5 consecutive ranks of one suit
    */
   static canFormStraight(tiles: Tile[]): boolean {
-    if (tiles.length < 4 || tiles.length > 5) return false
+    if (tiles.length < 4 || tiles.length > 6) return false
     const suit = tiles[0].suit
     if (!tiles[0].isSuited || !tiles.every((t) => t.suit === suit)) return false
     const ranks = tiles.map((t) => t.rank).sort((a, b) => a - b)

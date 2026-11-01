@@ -3112,6 +3112,10 @@
       "name": "Escalera de cinco",
       "explain": "Cinco números seguidos del mismo palo."
     },
+    "straight6": {
+      "name": "Escalera de seis",
+      "explain": "Seis números seguidos del mismo palo."
+    },
     "two_pairs": {
       "name": "Doble par",
       "explain": "Dos pares distintos en una jugada."
@@ -3181,7 +3185,7 @@
     "secretTitle": "Manos secretas",
     "secretFound": "Mano secreta descubierta",
     "secretInGuide": "Ya aparece en la guía ?.",
-    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
+    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2; escaleras de seis, +3. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",

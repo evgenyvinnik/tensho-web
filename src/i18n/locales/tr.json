@@ -3112,6 +3112,10 @@
       "name": "Beşli sıra",
       "explain": "Aynı türden art arda beş sayı."
     },
+    "straight6": {
+      "name": "Altılı sıra",
+      "explain": "Aynı türden art arda altı sayı."
+    },
     "two_pairs": {
       "name": "İki çift",
       "explain": "Tek oyunda iki farklı çift."
@@ -3181,7 +3185,7 @@
     "secretTitle": "Gizli eller",
     "secretFound": "Gizli el bulundu",
     "secretInGuide": "Artık ? rehberinde.",
-    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
+    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, altılı sıralar +3 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",

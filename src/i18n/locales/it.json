@@ -3112,6 +3112,10 @@
       "name": "Scala di cinque",
       "explain": "Cinque numeri consecutivi dello stesso seme."
     },
+    "straight6": {
+      "name": "Scala di sei",
+      "explain": "Sei numeri consecutivi dello stesso seme."
+    },
     "two_pairs": {
       "name": "Doppia coppia",
       "explain": "Due coppie diverse in una giocata."
@@ -3181,7 +3185,7 @@
     "secretTitle": "Mani segrete",
     "secretFound": "Mano segreta scoperta",
     "secretInGuide": "Ora è nella guida ?.",
-    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
+    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2, scale di sei +3. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",

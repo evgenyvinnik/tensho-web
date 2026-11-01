@@ -11,8 +11,8 @@ import { TileSuit } from '../../../core/Tile'
 import { MeldType } from '../../../core/Meld'
 import {
   DRAGON_TILE_POINTS,
-  STRAIGHT_5_POINTS,
   STRUCTURE_POINTS_BY_TYPE,
+  structurePointsFor,
   WIND_GROUP_POINTS,
   WIND_TILE_POINTS,
 } from '../../../rules/ScoringEngine'
@@ -64,21 +64,20 @@ export function useTutorialSteps(): TutorialStep[] {
 
   return useMemo(() => {
     const bonus = (points: number) => `+${points}`
-    const groupRows = [
-      [MeldType.Pair, 'pair'],
-      [MeldType.Sequence, 'sequence'],
-      [MeldType.Triplet, 'triplet'],
-      [MeldType.Straight, 'straight4'],
-      [MeldType.Straight, 'straight5'],
-      [MeldType.Quad, 'quad'],
-    ].map(([type, pattern]) => [
+    const groupRows = (
+      [
+        [MeldType.Pair, 'pair', 2],
+        [MeldType.Sequence, 'sequence', 3],
+        [MeldType.Triplet, 'triplet', 3],
+        [MeldType.Straight, 'straight4', 4],
+        [MeldType.Straight, 'straight5', 5],
+        [MeldType.Straight, 'straight6', 6],
+        [MeldType.Quad, 'quad', 4],
+      ] as const
+    ).map(([type, pattern, size]) => [
       <Highlight color="orange">{t(`patterns.${pattern}.name`)}</Highlight>,
       t(`patterns.${pattern}.explain`),
-      bonus(
-        pattern === 'straight5'
-          ? STRAIGHT_5_POINTS
-          : STRUCTURE_POINTS_BY_TYPE[type as MeldType]
-      ),
+      bonus(structurePointsFor(type, size)),
     ])
     return [
       {
