@@ -5,7 +5,9 @@
  * mouse hover previews the panel, a tap or click pins it (a second one
  * closes it), and the keyboard opens it and moves focus inside. Leaving a
  * hover preview closes it after a short grace period, so the pointer can
- * travel from the picture into the panel.
+ * travel from the picture into the panel. Only movement over the picture
+ * previews it: a layout shift beneath a resting cursor (tiles flying, the
+ * board scrolling) fires pointerenter without pointermove.
  *
  * Spread `triggerProps` on the trigger button (with `anchorRef` as its ref)
  * and `popoverProps` on the AnchoredPopover.
@@ -22,6 +24,11 @@ import {
   type MouseEvent,
   type PointerEvent,
 } from 'react'
+
+/** A mouse on a device that can hover; touch and pen never preview. */
+const hoverPreview = (event: PointerEvent) =>
+  event.pointerType === 'mouse' &&
+  !!window.matchMedia?.('(any-hover: hover)').matches
 
 export function usePreviewPopover({
   open: controlledOpen,
@@ -42,6 +49,8 @@ export function usePreviewPopover({
   )
   const [keyboardOpened, setKeyboardOpened] = useState(false)
   const pinned = useRef(false)
+  /** Set on pointerenter, spent by the first real movement over the picture. */
+  const hoverArmed = useRef(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const anchorRef = useRef<HTMLButtonElement>(null)
   const panelId = useId()
@@ -71,15 +80,21 @@ export function usePreviewPopover({
       'aria-expanded': open,
       'aria-controls': open ? panelId : undefined,
       onPointerEnter: (event: PointerEvent) => {
-        if (
-          event.pointerType !== 'mouse' ||
-          !window.matchMedia?.('(any-hover: hover)').matches
-        )
-          return
+        if (!hoverPreview(event)) return
+        // An open panel stays while the pointer comes back from it.
+        cancelClose()
+        hoverArmed.current = true
+      },
+      onPointerMove: (event: PointerEvent) => {
+        if (!hoverArmed.current || !hoverPreview(event)) return
+        hoverArmed.current = false
         cancelClose()
         setOpen(true)
       },
-      onPointerLeave: scheduleClose,
+      onPointerLeave: () => {
+        hoverArmed.current = false
+        scheduleClose()
+      },
       onClick: (event: MouseEvent) => {
         cancelClose()
         // Keyboard or assistive activation: open and move into the panel.

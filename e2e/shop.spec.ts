@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import es from '../src/i18n/locales/es.json' with { type: 'json' }
 import { buyOffer, collectCashOut } from './helpers/shop'
 import { clearReveals, openTable } from './helpers/table'
 
@@ -338,10 +339,10 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
     '5 de Bambúes · Marca de Oro'
   )
   await expect(choices.nth(0)).toHaveAccessibleDescription(
-    'La ficha puntúa de más. +30 Puntos al puntuar'
+    es.tileMarks.items.bonus.description
   )
   await expect(choices.nth(1)).toHaveAccessibleDescription(
-    'Genera oro. +3 de oro si la conservas al final de la ronda'
+    es.tileMarks.items.gold.description
   )
   await expect(dialog).not.toContainText('Obsolete')
   for (const choice of await choices.all()) {
@@ -823,7 +824,7 @@ test('localized pack choices fit a short phone and skipping is an explicit actio
   await choices.nth(1).click()
   const capacity = dialog
     .getByRole('status')
-    .filter({ hasText: 'No hay espacios de Decreto suficientes' })
+    .filter({ hasText: es.shop.packInventoryFull })
   await expect(capacity).toBeVisible()
   await expect(capacity).toBeInViewport()
   const skip = dialog.getByRole('button', { name: /Saltar|Omitir/ })
