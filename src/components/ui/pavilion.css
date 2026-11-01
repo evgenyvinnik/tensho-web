@@ -50,9 +50,6 @@
 .pavilion-progress > span:last-child {
   white-space: nowrap;
 }
-.pavilion-settings [aria-haspopup='listbox'] .hidden {
-  display: inline;
-}
 @media (max-width: 479px) {
   .pavilion-progress > span:first-child {
     display: none;
@@ -282,19 +279,6 @@
 }
 .pavilion-settings .pavilion-section-heading {
   flex-wrap: wrap;
-}
-.pavilion-settings [aria-haspopup='listbox'] {
-  width: 100%;
-}
-/* The list is at least as wide as the full-width trigger and centred under
-   it, so on a narrow phone it can spill into the panel padding instead of
-   wrapping or cutting off "Traditional Chinese". */
-.pavilion-settings [role='listbox'] {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-  min-width: 100%;
-  max-width: calc(100vw - 32px);
 }
 @media (min-width: 640px) {
   .pavilion-layout {
