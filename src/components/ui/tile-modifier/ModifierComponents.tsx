@@ -202,54 +202,33 @@ export function ModifierBadge({
 }
 
 /**
- * The look of a special tile, drawn with its generated artwork. The layers
- * combine truthfully:
- *  - a mark (enhancement) frames the tile in its material — gilded gold,
- *    sapphire, ruby, jade, glass, brushed steel, granite;
- *  - an edition washes the frame — foil, holographic, polychrome, negative;
+ * The layers drawn over a special tile. A mark (enhancement) is not one of
+ * them: TileImage draws a marked tile from its finished artwork, the whole
+ * tile painted in the mark's material. Over the tile:
+ *  - an edition washes it — foil, holographic, polychrome, negative;
  *  - a seal is a wax stamp in its colour on the upper corner.
- * Rank and suit stay readable inside the frame (a Stone tile has none); the
- * tile's details list the exact combination.
+ * The tile's details list the exact combination.
  */
 export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
-  const enhancement = getGeneratedArt('enhancements', tile.enhancement)
   const edition = getGeneratedArt('editions', tile.edition)
   const seal = getGeneratedArt('seals', tile.seal)
   return (
     <>
-      {enhancement && (
-        <span
-          aria-hidden="true"
-          data-tile-art-layer="enhancement"
-          className={`absolute inset-0 overflow-hidden rounded pointer-events-none ${className}`}
-        >
-          <img
-            src={enhancement}
-            alt=""
-            draggable={false}
-            className="absolute max-w-none"
-            style={FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]}
-          />
-        </span>
-      )}
       {edition && (
         <span
           aria-hidden="true"
           data-tile-art-layer="edition"
-          className="absolute -inset-0.5 overflow-hidden rounded pointer-events-none"
+          className={`absolute -inset-0.5 overflow-hidden rounded pointer-events-none ${className}`}
         >
           <img
             src={edition}
             alt=""
             draggable={false}
             className="absolute max-w-none"
-            style={{
-              ...FRAME_REGISTRATION[`edition:${tile.edition}`],
-              opacity: enhancement ? 0.6 : 1,
-            }}
+            style={FRAME_REGISTRATION[`edition:${tile.edition}`]}
           />
         </span>
       )}
