@@ -17,8 +17,11 @@ import {
   getDecreeIllustration,
   getFateSealIllustration,
   getMandateIllustration,
+  getTileFinishPath,
   illustrationAssets,
 } from './assets'
+import { TileSuit } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 
 const manifest = JSON.parse(
   readFileSync('docs/generated-art-manifest.json', 'utf8')
@@ -33,10 +36,10 @@ const manifest = JSON.parse(
 }
 
 it('keeps every generated runtime image decodable, bounded and linked to its original hash', () => {
-  expect(manifest.assets).toHaveLength(373)
+  expect(manifest.assets).toHaveLength(365)
   expect(
     new Set(manifest.assets.map(({ category, id }) => `${category}:${id}`)).size
-  ).toBe(373)
+  ).toBe(365)
   for (const item of manifest.assets) {
     const bytes = readFileSync(`public/${item.path}`)
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(
@@ -125,6 +128,18 @@ it('covers active catalog identities while retaining existing artwork', () => {
     expect(getGeneratedArt('achievements', item.icon), item.id).toBeDefined()
   expect(generatedArtPaths.decrees).not.toHaveProperty('decree-riichi-devotee')
   expect(generatedArtPaths.orbs).toHaveProperty('pluto_orb')
+})
+
+it('pictures every Mark as its finished tile, not a frame', () => {
+  for (const mark of Object.values(EnhancementType).filter(
+    (mark) => mark !== EnhancementType.None
+  ))
+    expect(getGeneratedArt('enhancements', mark), mark).toBe(
+      getTileFinishPath(TileSuit.Pinzu, 5, mark)
+    )
+  expect(manifest.assets.some((item) => item.category === 'enhancements')).toBe(
+    false
+  )
 })
 
 describe('zero-emoji application source', () => {

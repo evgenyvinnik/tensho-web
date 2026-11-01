@@ -15,13 +15,12 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
-import { getTileImagePath } from '../../utils/assets'
+import { getTileImagePath, getTileFinishPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { EnhancementType } from '../../core/TileModifier'
 import { TileBack } from './TileBack'
-import { enhancedFaceLayout, TILE_FACE_BACKGROUND } from './enhancedFaceLayout'
 
 export type TileSize = keyof typeof tileSizes
 
@@ -112,10 +111,10 @@ export const TileImage: React.FC<TileImageProps> = ({
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
   // A Stone tile has no rank or suit: its face is the stone itself.
   const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
-  // A Mark frames the tile: its face is fitted to the frame's opening.
-  const faceLayout =
-    !faceDown && tile && tile.enhancement !== EnhancementType.None
-      ? enhancedFaceLayout(tile.enhancement)
+  // A Mark is drawn as the whole tile in its material, symbols included.
+  const finishArt =
+    !faceDown && tile
+      ? getTileFinishPath(tile.suit, tile.rank, tile.enhancement)
       : null
   const indexHint =
     (showIndex ?? showRankNumbers) && !stoneFace
@@ -318,35 +317,18 @@ export const TileImage: React.FC<TileImageProps> = ({
       aria-disabled={disabled}
       aria-describedby={tooltipOpen && isInteractive ? tooltipId : undefined}
     >
-      {stoneFace ? (
-        <span
-          role="img"
-          aria-label={t('tileDetails.stoneName', 'Stone tile')}
-          data-tile-face="stone"
-          className={`absolute bg-stone-600 ${faceLayout ? 'rounded-sm' : 'inset-0 rounded-md'}`}
-          style={faceLayout?.panel}
-        />
-      ) : faceDown || !tile ? (
+      {faceDown || !tile ? (
         <TileBack label={tileInfo.name} />
-      ) : faceLayout ? (
-        <span
-          data-tile-face="framed"
-          className="absolute overflow-hidden rounded-sm pointer-events-none"
-          style={{ ...faceLayout.panel, background: TILE_FACE_BACKGROUND }}
-        >
-          <img
-            src={getTileImagePath(tile.suit, tile.rank)}
-            alt={tileInfo.name}
-            className="absolute max-w-none select-none pointer-events-none"
-            draggable={false}
-            loading={loading}
-            style={faceLayout.art}
-          />
-        </span>
       ) : (
         <img
-          src={getTileImagePath(tile.suit, tile.rank)}
-          alt={tileInfo.name}
+          // Stone's sprite is blank, hiding its original rank and suit.
+          src={finishArt ?? getTileImagePath(tile.suit, tile.rank)}
+          alt={
+            stoneFace ? t('tileDetails.stoneName', 'Stone tile') : tileInfo.name
+          }
+          data-tile-face={
+            stoneFace ? 'stone' : finishArt ? 'finished' : undefined
+          }
           className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
           draggable={false}
           loading={loading}

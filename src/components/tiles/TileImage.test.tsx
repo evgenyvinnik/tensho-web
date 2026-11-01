@@ -157,43 +157,45 @@ it('keeps keyboard details and selection independent, including after a locale c
   expect(onClick).toHaveBeenCalledExactlyOnceWith(tile)
 })
 
-it('draws its one modifier layer without replacing a normal face', () => {
+it('draws a marked tile whole from its finished artwork', () => {
   const tile = new Tile(TileSuit.Pinzu, 9, 'gold-mark').withEnhancement(
     EnhancementType.Gold
   )
   showRankNumbers()
   const { container, rerender } = render(<TileImage tile={tile} />)
-  expect(screen.getByRole('img')).toHaveAccessibleName(/9/)
-  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
-  expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
-  expect(
-    container.querySelector('[data-tile-art-layer="enhancement"] img')
-  ).toHaveAttribute('src', expect.stringMatching(/enhancements\/gold\.webp$/))
-  rerender(<TileImage tile={tile} faceDown />)
+  const face = screen.getByRole('img')
+  expect(face).toHaveAccessibleName(/9/)
+  expect(face).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/gold\/pinzu_09\.webp$/)
+  )
+  expect(face).toHaveAttribute('data-tile-face', 'finished')
+  // No frame is laid over the finished tile.
   expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(0)
+  expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
+  rerender(<TileImage tile={tile} faceDown />)
+  expect(container.querySelector('img[src*="/tiles/gold/"]')).toBeNull()
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
 })
 
-it('fits a framed face to its frame and leaves a plain face whole', () => {
+it('leaves a plain face whole and sizes a marked tile the same way', () => {
   const plain = new Tile(TileSuit.Pinzu, 2, 'two-dots')
   const { container, rerender } = render(<TileImage tile={plain} />)
   expect(container.querySelector('[data-tile-face]')).toBeNull()
+  expect(screen.getByRole('img')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/Dots \(2\)/)
+  )
   expect(screen.getByRole('img')).toHaveClass('w-full', 'h-full')
 
   rerender(<TileImage tile={plain.withEnhancement(EnhancementType.Bonus)} />)
-  const panel = container.querySelector<HTMLElement>(
-    '[data-tile-face="framed"]'
-  )
-  expect(panel).not.toBeNull()
-  // The face shows in the frame's opening, cropped to the face itself: the
-  // raised side of the tile art never shows inside the frame.
-  expect(panel!.style.left).toMatch(/%$/)
-  expect(panel!.style.top).toMatch(/%$/)
   const face = screen.getByRole('img')
-  expect(panel).toContainElement(face)
-  expect(face).toHaveAttribute('src', expect.stringMatching(/Dots \(2\)/))
-  expect(face.style.clipPath).toMatch(/^inset\(/)
-  expect(face.style.padding).toBe('')
+  expect(face).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/bonus\/pinzu_02\.webp$/)
+  )
+  expect(face).toHaveClass('w-full', 'h-full', 'object-contain')
+  expect(face).not.toHaveAttribute('style')
 })
 
 it('shows Stone as rankless artwork and never leaks its original face or rank hint', () => {
@@ -206,13 +208,13 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   expect(screen.getByRole('img')).toHaveAccessibleName(
     i18n.t('tileDetails.stoneName')
   )
+  expect(container.querySelector('[data-tile-face="stone"]')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/stone\.webp$/)
+  )
   expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
+  expect(container.querySelector('img[src*="dragon_03"]')).toBeNull()
   expect(container.querySelector('[data-tile-index]')).toBeNull()
-  // The stone fills the frame's opening, not the frame's transparent corners.
-  expect(
-    container.querySelector<HTMLElement>('[data-tile-face="stone"]')!.style
-      .width
-  ).toMatch(/%$/)
   expect(screen.getByRole('tooltip')).toHaveTextContent(
     i18n.t('tileMarks.items.stone.description')
   )

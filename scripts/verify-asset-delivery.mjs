@@ -88,9 +88,20 @@ const decreeEditionBytes = [...cached]
     )
   )
   .reduce((sum, path) => sum + statSync(resolve(root, path)).size, 0)
+// Finished Mark artwork: 42 faces in seven materials plus one blank Stone,
+// budgeted apart from the core payload for the same reason.
+const tileFinishBytes = [...cached]
+  .filter((path) =>
+    /^assets\/tiles\/(?:[a-z]+\/[a-z]+_\d{2}|stone)\.webp$/.test(path)
+  )
+  .reduce((sum, path) => sum + statSync(resolve(root, path)).size, 0)
 assert.ok(
-  precacheBytes - decreeEditionBytes < 40 * 1024 * 1024,
-  `Core offline payload exceeds 40 MiB: ${precacheBytes - decreeEditionBytes}`
+  precacheBytes - decreeEditionBytes - tileFinishBytes < 40 * 1024 * 1024,
+  `Core offline payload exceeds 40 MiB: ${precacheBytes - decreeEditionBytes - tileFinishBytes}`
+)
+assert.ok(
+  tileFinishBytes < 16 * 1024 * 1024,
+  `Tile finishes exceed 16 MiB: ${tileFinishBytes}`
 )
 assert.ok(
   decreeEditionBytes < 20 * 1024 * 1024,
@@ -103,6 +114,7 @@ console.log(
       entries: cached.size,
       precacheBytes,
       decreeEditionBytes,
+      tileFinishBytes,
       sourceBytes,
       deliveryBytes,
       savedBytes: sourceBytes - deliveryBytes,
