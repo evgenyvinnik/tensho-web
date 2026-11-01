@@ -570,6 +570,9 @@
     "redrawSelected": "重抽選取的牌",
     "redrawHint": "最多退回3張選取的牌並補抽",
     "decreeDisabledByMandate": "本手因緋紅之心而失效",
+    "hiddenDecreeTitle": "隱藏法令",
+    "faceDownDecree": "背面法令",
+    "hiddenDecreeDescription": "琥珀橡實隱藏了這張法令，並封住其效果，直到本輪獲勝。",
     "season": "季節：",
     "endless": "無盡",
     "wall": "牌山：",
@@ -1848,7 +1851,7 @@
       },
       "amber_acorn": {
         "name": "琥珀橡實",
-        "description": "所有法令被洗亂並翻至背面"
+        "description": "隨機一半的法令被翻至背面並失效"
       },
       "verdant_leaf": {
         "name": "翠葉",
@@ -3181,7 +3184,7 @@
     "tiles_face_down_after_play": "新牌背面朝上",
     "fixed_draw_count": "每次固定摸{{count}}張",
     "honor_tiles_face_down": "字牌背面朝上",
-    "shuffle_decrees": "法令被隱藏",
+    "hide_half_decrees": "一半法令失效",
     "debuff_until_sell": "賣出一張法令前所有牌得0分",
     "disable_random_decree": "每次出牌一張法令失效",
     "lock_random_tile": "每次摸牌鎖定一張"

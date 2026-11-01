@@ -778,6 +778,9 @@
     "redrawSelected": "Tarik ulang ubin terpilih",
     "redrawHint": "Kembalikan hingga 3 ubin terpilih dan ambil gantinya",
     "decreeDisabledByMandate": "Dinonaktifkan oleh Crimson Heart tangan ini",
+    "hiddenDecreeTitle": "Dekrit tersembunyi",
+    "faceDownDecree": "Dekrit tertutup",
+    "hiddenDecreeDescription": "Biji Ambar menyembunyikan Dekrit ini dan mematikan kekuatannya sampai ronde dimenangkan.",
     "season": "Musim:",
     "endless": "Tanpa Batas",
     "wall": "Tembok:",
@@ -2056,7 +2059,7 @@
       },
       "amber_acorn": {
         "name": "Biji Ambar",
-        "description": "Semua Dekrit diacak dan ditutup"
+        "description": "Separuh Dekritmu, dipilih acak, disembunyikan dan dinonaktifkan"
       },
       "verdant_leaf": {
         "name": "Daun Hijau",
@@ -3181,7 +3184,7 @@
     "tiles_face_down_after_play": "Ubin baru tertutup",
     "fixed_draw_count": "Selalu tarik {{count}}",
     "honor_tiles_face_down": "Ubin kehormatan tertutup",
-    "shuffle_decrees": "Dekrit tersembunyi",
+    "hide_half_decrees": "Separuh Dekrit mati",
     "debuff_until_sell": "Semua ubin bernilai 0 sampai kamu menjual Dekrit",
     "disable_random_decree": "1 Dekrit mati tiap mainan",
     "lock_random_tile": "Satu ubin terkunci tiap tarik"

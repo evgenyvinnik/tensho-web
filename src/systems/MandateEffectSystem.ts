@@ -50,12 +50,14 @@ export interface MandateState {
   handsPlayed: number
   /** Tile IDs that are force-locked (for Cerulean Bell) */
   lockedTileIds: Set<string>
-  /** Decree IDs that are disabled (for Crimson Heart) */
+  /** Decree IDs that are disabled this hand (for Crimson Heart) */
   disabledDecreeIds: Set<string>
-  /** Whether decrees are shuffled/hidden (for Amber Acorn) */
-  decreesShuffled: boolean
-  /** Stable shuffled presentation order for hidden Decrees (for Amber Acorn) */
-  shuffledDecreeIds: string[]
+  /**
+   * Decree IDs turned face-down and disabled for the whole round (for Amber
+   * Acorn). Kept apart from Crimson Heart's per-hand set because round
+   * resources (Turns, redraws, rack size) read only this one.
+   */
+  hiddenDecreeIds: Set<string>
   /** Whether all tiles are debuffed until decree sold (for Verdant Leaf) */
   allTilesDebuffed: boolean
   /** Modified redraws for this round (for The Water) */
@@ -80,6 +82,18 @@ export interface MandateApplicationResult {
   debuffedTileIds?: string[]
   disabledDecreeIds?: string[]
   lockedTileIds?: string[]
+}
+
+// =============================================================================
+// AMBER ACORN
+// =============================================================================
+
+/**
+ * How many of the owned Decrees Amber Acorn hides: half, rounded up, so the
+ * Boss bites even with a single Decree.
+ */
+export function amberAcornHiddenCount(ownedDecrees: number): number {
+  return Math.ceil(Math.max(0, ownedDecrees) / 2)
 }
 
 // =============================================================================
@@ -171,8 +185,7 @@ export class MandateEffectSystem {
       handsPlayed: 0,
       lockedTileIds: new Set(),
       disabledDecreeIds: new Set(),
-      decreesShuffled: false,
-      shuffledDecreeIds: [],
+      hiddenDecreeIds: new Set(),
       allTilesDebuffed: false,
       modifiedRedraws: null,
       modifiedMaxHands: null,
@@ -322,15 +335,9 @@ export class MandateEffectSystem {
         result.message += ' - Previously used tiles debuffed'
         break
 
-      case 'shuffle_decrees':
-        this.state.decreesShuffled = true
-        this.state.shuffledDecreeIds = decrees.map(decreeKey)
-        for (let i = this.state.shuffledDecreeIds.length - 1; i > 0; i--) {
-          const j = Math.floor(this.getRandom() * (i + 1))
-          ;[this.state.shuffledDecreeIds[i], this.state.shuffledDecreeIds[j]] =
-            [this.state.shuffledDecreeIds[j], this.state.shuffledDecreeIds[i]]
-        }
-        result.message += ' - All decrees shuffled and face-down'
+      case 'hide_half_decrees':
+        result.disabledDecreeIds = this.applyHideHalfDecrees(decrees)
+        result.message += ' - Half of the decrees are hidden and disabled'
         break
 
       case 'debuff_until_sell':
@@ -409,8 +416,7 @@ export class MandateEffectSystem {
     this.state.lockedPatternId = null
     this.state.lockedTileIds.clear()
     this.state.disabledDecreeIds.clear()
-    this.state.decreesShuffled = false
-    this.state.shuffledDecreeIds = []
+    this.state.hiddenDecreeIds.clear()
     this.state.allTilesDebuffed = false
     this.state.modifiedRedraws = null
     this.state.modifiedMaxHands = null
@@ -422,6 +428,15 @@ export class MandateEffectSystem {
    */
   defeatMandate(): void {
     this.state.isDefeated = true
+  }
+
+  /**
+   * The round is won: every Decree the Boss hid or disabled is restored, so
+   * nothing stays suppressed in the Tea House that follows.
+   */
+  releaseDecreeSuppression(): void {
+    this.state.disabledDecreeIds.clear()
+    this.state.hiddenDecreeIds.clear()
   }
 
   /**
@@ -510,6 +525,22 @@ export class MandateEffectSystem {
     }
 
     return debuffedIds
+  }
+
+  /**
+   * Hide and disable a random half of the owned Decrees, rounded up (Amber
+   * Acorn). The rest stay face-up and in place, so the bar still shows the
+   * order Decrees score in.
+   */
+  private applyHideHalfDecrees(decrees: OwnedDecree[]): string[] {
+    const keys = decrees.map(decreeKey)
+    for (let i = keys.length - 1; i > 0; i--) {
+      const j = Math.floor(this.getRandom() * (i + 1))
+      ;[keys[i], keys[j]] = [keys[j], keys[i]]
+    }
+    const hidden = keys.slice(0, amberAcornHiddenCount(keys.length))
+    this.state.hiddenDecreeIds = new Set(hidden)
+    return hidden
   }
 
   /**
@@ -799,22 +830,21 @@ export class MandateEffectSystem {
   }
 
   /**
-   * Get disabled decree IDs
+   * Every Decree the Boss currently disables: Crimson Heart's pick for this
+   * hand and Amber Acorn's hidden half.
    */
   getDisabledDecreeIds(): string[] {
-    return Array.from(this.state.disabledDecreeIds)
-  }
-
-  /** Get the stable hidden presentation order generated for Amber Acorn. */
-  getShuffledDecreeIds(): string[] {
-    return [...this.state.shuffledDecreeIds]
+    return Array.from(
+      new Set([...this.state.disabledDecreeIds, ...this.state.hiddenDecreeIds])
+    )
   }
 
   /**
-   * Check if decrees are shuffled/hidden
+   * Decrees Amber Acorn turned face-down. They are disabled for the whole
+   * round, so round resources (Turns, redraws, rack size) skip them too.
    */
-  areDecreesShuffled(): boolean {
-    return this.state.decreesShuffled
+  getHiddenDecreeIds(): string[] {
+    return Array.from(this.state.hiddenDecreeIds)
   }
 
   /**
@@ -935,8 +965,10 @@ export class MandateEffectSystem {
    */
   isDecreeDisabled(decree: string | OwnedDecree): boolean {
     return typeof decree === 'string'
-      ? this.state.disabledDecreeIds.has(decree)
-      : isDecreeExcluded(decree, this.state.disabledDecreeIds)
+      ? this.state.disabledDecreeIds.has(decree) ||
+          this.state.hiddenDecreeIds.has(decree)
+      : isDecreeExcluded(decree, this.state.disabledDecreeIds) ||
+          isDecreeExcluded(decree, this.state.hiddenDecreeIds)
   }
 
   // ===========================================================================
@@ -955,8 +987,7 @@ export class MandateEffectSystem {
     handsPlayed: number
     lockedTileIds: string[]
     disabledDecreeIds: string[]
-    decreesShuffled: boolean
-    shuffledDecreeIds: string[]
+    hiddenDecreeIds: string[]
     allTilesDebuffed: boolean
     modifiedRedraws: number | null
     modifiedMaxHands: number | null
@@ -972,8 +1003,7 @@ export class MandateEffectSystem {
       handsPlayed: this.state.handsPlayed,
       lockedTileIds: Array.from(this.state.lockedTileIds),
       disabledDecreeIds: Array.from(this.state.disabledDecreeIds),
-      decreesShuffled: this.state.decreesShuffled,
-      shuffledDecreeIds: [...this.state.shuffledDecreeIds],
+      hiddenDecreeIds: Array.from(this.state.hiddenDecreeIds),
       allTilesDebuffed: this.state.allTilesDebuffed,
       modifiedRedraws: this.state.modifiedRedraws,
       modifiedMaxHands: this.state.modifiedMaxHands,
@@ -994,8 +1024,7 @@ export class MandateEffectSystem {
     handsPlayed: number
     lockedTileIds: string[]
     disabledDecreeIds: string[]
-    decreesShuffled: boolean
-    shuffledDecreeIds?: string[]
+    hiddenDecreeIds: string[]
     allTilesDebuffed: boolean
     modifiedRedraws: number | null
     modifiedMaxHands: number | null
@@ -1019,8 +1048,7 @@ export class MandateEffectSystem {
           : data.lockedTileIds
       ),
       disabledDecreeIds: new Set(data.disabledDecreeIds),
-      decreesShuffled: data.decreesShuffled,
-      shuffledDecreeIds: [...(data.shuffledDecreeIds ?? [])],
+      hiddenDecreeIds: new Set(data.hiddenDecreeIds),
       allTilesDebuffed: data.allTilesDebuffed,
       modifiedRedraws: data.modifiedRedraws,
       modifiedMaxHands: data.modifiedMaxHands,

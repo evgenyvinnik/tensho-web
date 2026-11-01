@@ -566,6 +566,9 @@
     "redrawSelected": "Redraw selected tiles",
     "redrawHint": "Return up to 3 selected tiles and draw replacements",
     "decreeDisabledByMandate": "Disabled by Crimson Heart this hand",
+    "hiddenDecreeTitle": "Hidden Decree",
+    "faceDownDecree": "Face-down Decree",
+    "hiddenDecreeDescription": "Amber Acorn hides this Decree and silences its power until the round is won.",
     "season": "Season:",
     "endless": "Endless",
     "wall": "Wall:",
@@ -1844,7 +1847,7 @@
       },
       "amber_acorn": {
         "name": "Amber Acorn",
-        "description": "All Decrees are shuffled and face-down"
+        "description": "Half your Decrees, chosen at random, are hidden and disabled"
       },
       "verdant_leaf": {
         "name": "Verdant Leaf",
@@ -3177,7 +3180,7 @@
     "tiles_face_down_after_play": "New tiles face-down",
     "fixed_draw_count": "Always draw {{count}}",
     "honor_tiles_face_down": "Honors face-down",
-    "shuffle_decrees": "Decrees hidden",
+    "hide_half_decrees": "Half your Decrees off",
     "debuff_until_sell": "All tiles score 0 until you sell a Decree",
     "disable_random_decree": "1 Decree off each play",
     "lock_random_tile": "A tile locks each draw"

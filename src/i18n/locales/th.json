@@ -1041,6 +1041,9 @@
     "redrawSelected": "จั่วไพ่ที่เลือกใหม่",
     "redrawHint": "คืนไพ่ที่เลือกได้สูงสุด 3 ใบแล้วจั่วใหม่",
     "decreeDisabledByMandate": "ถูกปิดใช้งานโดย Crimson Heart ในมือนี้",
+    "hiddenDecreeTitle": "ประกาศิตที่ซ่อนอยู่",
+    "faceDownDecree": "ประกาศิตคว่ำหน้า",
+    "hiddenDecreeDescription": "ลูกโอ๊กอำพันซ่อนประกาศิตนี้และผนึกพลังของมันไว้จนกว่าจะชนะรอบนี้",
     "season": "ฤดูกาล:",
     "endless": "ไม่รู้จบ",
     "wall": "กำแพง:",
@@ -2217,7 +2220,7 @@
     "items": {
       "amber_acorn": {
         "name": "ลูกโอ๊กอำพัน",
-        "description": "ประกาศิตทั้งหมดถูกสับและคว่ำหน้า"
+        "description": "ประกาศิตครึ่งหนึ่งที่สุ่มเลือกจะถูกซ่อนและปิดใช้งาน"
       },
       "verdant_leaf": {
         "name": "ใบไม้เขียวชอุ่ม",
@@ -3181,7 +3184,7 @@
     "tiles_face_down_after_play": "ไพ่ใหม่คว่ำหน้า",
     "fixed_draw_count": "จั่ว {{count}} ใบเสมอ",
     "honor_tiles_face_down": "ไพ่เกียรติคว่ำหน้า",
-    "shuffle_decrees": "ประกาศิตถูกซ่อน",
+    "hide_half_decrees": "ประกาศิตครึ่งหนึ่งปิด",
     "debuff_until_sell": "ไพ่ทั้งหมดได้ 0 จนกว่าจะขายประกาศิต",
     "disable_random_decree": "ประกาศิต 1 ใบปิดทุกครั้งที่ลง",
     "lock_random_tile": "ล็อกไพ่ 1 ใบทุกการจั่ว"

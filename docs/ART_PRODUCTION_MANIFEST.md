@@ -352,7 +352,7 @@ Prompt: *a menacing Boss Mandate token: a black-lacquer and crimson plaque depic
 | `the_tooth` | The Tooth | Lose 1 gold per tile played | delivered |
 | `the_mark` | The Veil | All Honor tiles drawn face-down | delivered |
 | `the_manacle` | The Manacle | Your rack holds 1 fewer tile | delivered |
-| `amber_acorn` | Amber Acorn | All Decrees are shuffled and face-down | delivered |
+| `amber_acorn` | Amber Acorn | Half your Decrees are hidden and disabled | delivered |
 | `verdant_leaf` | Verdant Leaf | All tiles debuffed until 1 Decree is sold | delivered |
 | `violet_vessel` | Violet Vessel | Extra-extra large target (6x instead of 2x) | delivered |
 | `crimson_heart` | Crimson Heart | One random Decree disabled every hand cycle | delivered |

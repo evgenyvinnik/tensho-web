@@ -274,7 +274,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 
 | Mandate | Japanese | Effect |
 |---------|----------|--------|
-| **Amber Acorn** | 琥珀の実 | Flips and shuffles all Decrees |
+| **Amber Acorn** | 琥珀の実 | Half your Decrees (random, rounded up) are face-down and disabled for the round |
 | **Verdant Leaf** | 翠緑の葉 | All tiles debuffed until 1 Decree sold |
 | **Violet Vessel** | 紫水瓶 | 6× base score requirement |
 | **Crimson Heart** | 深紅の心 | One random Decree disabled each hand |

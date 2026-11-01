@@ -857,6 +857,9 @@
     "redrawSelected": "Ripesca le tessere selezionate",
     "redrawHint": "Restituisce fino a 3 tessere selezionate e ne pesca altrettante",
     "decreeDisabledByMandate": "Disattivato da Cuore Cremisi in questa mano",
+    "hiddenDecreeTitle": "Decreto nascosto",
+    "faceDownDecree": "Decreto a faccia in giù",
+    "hiddenDecreeDescription": "La Ghianda d’ambra nasconde questo Decreto e ne spegne il potere finché non vinci il round.",
     "season": "Stagione:",
     "endless": "Infinito",
     "wall": "Muro:",
@@ -2125,7 +2128,7 @@
       },
       "amber_acorn": {
         "name": "Ghianda d’ambra",
-        "description": "Tutti i Decreti vengono mescolati e girati a faccia in giù"
+        "description": "Metà dei tuoi Decreti, scelti a caso, sono nascosti e disattivati"
       },
       "verdant_leaf": {
         "name": "Foglia verdeggiante",
@@ -3181,7 +3184,7 @@
     "tiles_face_down_after_play": "Nuove tessere coperte",
     "fixed_draw_count": "Peschi sempre {{count}}",
     "honor_tiles_face_down": "Onori coperti",
-    "shuffle_decrees": "Decreti nascosti",
+    "hide_half_decrees": "Metà dei Decreti spenti",
     "debuff_until_sell": "Tutte le tessere valgono 0 finché non vendi un Decreto",
     "disable_random_decree": "1 Decreto spento per giocata",
     "lock_random_tile": "Una tessera si blocca a ogni pescata"
