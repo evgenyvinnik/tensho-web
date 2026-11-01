@@ -104,7 +104,7 @@ export function LanguageSelector({
 
         {/* Current Language */}
         {!compact && (
-          <span className="hidden sm:inline">
+          <span className="hidden whitespace-nowrap sm:inline">
             {LANGUAGE_NAMES[currentLang]}
           </span>
         )}
@@ -126,7 +126,7 @@ export function LanguageSelector({
             border-2 border-[var(--color-golden-yellow)] border-opacity-50
             shadow-xl shadow-black/30
             max-h-[60vh] overflow-y-auto
-            min-w-[200px]
+            w-max min-w-[200px] max-w-[calc(100vw-2rem)]
           `}
           role="listbox"
           aria-label={t('accessibility.selectLanguage')}
@@ -153,10 +153,13 @@ export function LanguageSelector({
               aria-selected={lang === currentLang}
             >
               {/* Native Name */}
-              <span className="font-ui text-base">{LANGUAGE_NAMES[lang]}</span>
+              <span className="font-ui text-base shrink-0 whitespace-nowrap">
+                {LANGUAGE_NAMES[lang]}
+              </span>
 
-              {/* English Name (for accessibility) */}
-              <span className="text-sm opacity-60">
+              {/* English Name (for accessibility); on a very narrow screen it
+                  shortens with an ellipsis rather than wrapping. */}
+              <span className="min-w-0 truncate text-sm opacity-60">
                 {LANGUAGE_NAMES_EN[lang]}
               </span>
 
@@ -165,7 +168,7 @@ export function LanguageSelector({
                 <ControlIcon
                   name="check"
                   size={20}
-                  className="text-[var(--color-golden-yellow)]"
+                  className="shrink-0 text-[var(--color-golden-yellow)]"
                 />
               )}
             </button>
