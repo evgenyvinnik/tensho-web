@@ -289,13 +289,12 @@ test('open details reflow across translation, viewport and motion-preference cha
   await activate(scroll, isMobile)
   const dialog = page.getByRole('dialog')
   await expect(dialog).toHaveCSS('opacity', '1')
-  await page.evaluate(() => {
-    // LanguageSync treats the route as authoritative. A native history change
-    // exercises that subscription without leaving/reopening this detail view.
-    history.pushState(history.state, '', '/ru/play')
-    window.dispatchEvent(
-      new PopStateEvent('popstate', { state: history.state })
-    )
+  await page.evaluate(async () => {
+    // Switch language under the open detail view, as Settings does; the
+    // address follows without leaving or reopening the view.
+    const path = '/src/i18n/index.ts'
+    const { changeLanguage } = await import(path)
+    await changeLanguage('ru')
   })
   await expect(page).toHaveURL(/\/ru\/play$/)
   await page.setViewportSize({ width: 320, height: 400 })

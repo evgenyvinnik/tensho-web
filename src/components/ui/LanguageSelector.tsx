@@ -74,9 +74,8 @@ export function LanguageSelector({
     }
   }, [])
 
-  // The URL carries the language, and LanguageSync mirrors it back into
-  // i18next on every render. Switching i18next alone would be undone on the
-  // next pass, so the navigation helper moves the URL as well.
+  // The URL carries the language too. The navigation helper rewrites the
+  // current entry in place, so Back leaves this screen and keeps the choice.
   const handleLanguageChange = async (lang: SupportedLanguage) => {
     await switchLanguage(lang)
     setIsOpen(false)
