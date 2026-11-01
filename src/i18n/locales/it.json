@@ -1936,6 +1936,21 @@
     "catalystsIntro": "Alcune offerte dirette di Decreti nella Casa del Tè permettono di usare un Fiore al posto dell’Oro. Scegli esattamente il Fiore posseduto e conferma: è facoltativo, mai un sacrificio automatico.",
     "catalystsCost": "Perdere il Fiore riduce anche i bonus di collezione. L’acquisto è bloccato se gli spazi rimanenti non possono contenere la collezione. Raccoglierlo di nuovo ripristina il risveglio ottenuto per questa partita. Successione Yakuman richiede comunque due Fiori: pagarne uno significa possederne almeno tre prima."
   },
+  "codexUpgrades": {
+    "playsTitle": "Famiglie per le giocate normali",
+    "handsTitle": "Famiglie per le mani complete",
+    "intro": "Una Sfera Celeste alza di un livello una famiglia di mani per il resto della partita, da 0 fino a {{max}}. Si usa nell’istante in cui la prendi.",
+    "stacking": "Ogni giocata che segna una famiglia aggiunge i punti base e il Mult di quella famiglia una volta per livello. Una giocata può segnare più famiglie insieme, e ognuna paga. Ecco una Sequenza prima e dopo un livello di Sequenze:",
+    "exampleBefore": "{{pattern}}, livello 0: {{points}} × {{mult}} = {{score}}",
+    "exampleAfter": "{{family}} livello 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
+    "completeHands": "Le giocate normali segnano le famiglie in base ai loro gruppi e alle loro tessere. Una mano di Mahjong completa, invece, le segna tramite i suoi Yaku: una mano completa di sole tessere 2–8 segna Tutti semplici, una che contiene una Scala 1–9 segna Scale, e così via.",
+    "secretTip": "Sette coppie, Mano esterna e Tredici orfani si segnano solo con mani complete. Le loro Sfere sono segrete: segna la mano una volta e la sua Sfera potrà comparire nel negozio.",
+    "playsIntro": "Ogni esempio indica la combinazione della giocata e tutte le famiglie che segna.",
+    "handsIntro": "Queste famiglie richiedono una mano completa di 14 tessere, quindi rendono solo se punti a costruirne una.",
+    "perLevel": "Ogni livello: +{{chips}} punti base · +{{mult}} Mult",
+    "scores": "Segna: {{families}}",
+    "completeHand": "Mano completa"
+  },
   "flora": {
     "mutations": {
       "locked": "Raccogli tutti e quattro i tipi di Fiori in una partita per sbloccare la rifioritura. Poi pesca di nuovo un Fiore posseduto per risvegliarlo.",
@@ -2810,55 +2825,55 @@
     "items": {
       "pluto_orb": {
         "name": "Sfera di Plutone",
-        "description": "Alza la famiglia «Coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Coppie» riceve altri +10 punti base e +1 Mult."
+        "description": "Alza la famiglia «Coppie» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +10 punti base e +1 Mult a ogni giocata che segna «Coppie»."
       },
       "mercury_orb": {
         "name": "Sfera di Mercurio",
-        "description": "Alza la famiglia «Tutti semplici» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tutti semplici» riceve altri +15 punti base e +1 Mult."
+        "description": "Alza la famiglia «Tutti semplici» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +15 punti base e +1 Mult a ogni giocata che segna «Tutti semplici»."
       },
       "uranus_orb": {
         "name": "Sfera di Urano",
-        "description": "Alza la famiglia «Onori» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Onori» riceve altri +20 punti base e +1 Mult."
+        "description": "Alza la famiglia «Onori» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +20 punti base e +1 Mult a ogni giocata che segna «Onori»."
       },
       "venus_orb": {
         "name": "Sfera di Venere",
-        "description": "Alza la famiglia «Sequenze» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sequenze» riceve altri +20 punti base e +2 Mult."
+        "description": "Alza la famiglia «Sequenze» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +20 punti base e +2 Mult a ogni giocata che segna «Sequenze»."
       },
       "saturn_orb": {
         "name": "Sfera di Saturno",
-        "description": "Alza la famiglia «Scale» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Scale» riceve altri +30 punti base e +3 Mult."
+        "description": "Alza la famiglia «Scale» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +30 punti base e +3 Mult a ogni giocata che segna «Scale»."
       },
       "jupiter_orb": {
         "name": "Sfera di Giove",
-        "description": "Alza la famiglia «Mezzo colore» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mezzo colore» riceve altri +15 punti base e +2 Mult."
+        "description": "Alza la famiglia «Mezzo colore» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +15 punti base e +3 Mult a ogni giocata che segna «Mezzo colore»."
       },
       "earth_orb": {
         "name": "Sfera della Terra",
-        "description": "Alza la famiglia «Tris e poker» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tris e poker» riceve altri +25 punti base e +2 Mult."
+        "description": "Alza la famiglia «Tris e poker» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +25 punti base e +2 Mult a ogni giocata che segna «Tris e poker»."
       },
       "mars_orb": {
         "name": "Sfera di Marte",
-        "description": "Alza la famiglia «Colore puro» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Colore puro» riceve altri +30 punti base e +3 Mult."
+        "description": "Alza la famiglia «Colore puro» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +20 punti base e +2 Mult a ogni giocata che segna «Colore puro»."
       },
       "neptune_orb": {
         "name": "Sfera di Nettuno",
-        "description": "Alza la famiglia «Triplo misto» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Triplo misto» riceve altri +40 punti base e +4 Mult."
+        "description": "Alza la famiglia «Triplo misto» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +40 punti base e +6 Mult a ogni giocata che segna «Triplo misto»."
       },
       "planet_x_orb": {
         "name": "Sfera del Pianeta X",
-        "description": "Alza la famiglia «Sette coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sette coppie» riceve altri +35 punti base e +3 Mult."
+        "description": "Alza la famiglia «Sette coppie» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +35 punti base e +3 Mult a ogni mano completa che segna «Sette coppie»."
       },
       "ceres_orb": {
         "name": "Sfera di Cerere",
-        "description": "Alza la famiglia «Mano esterna» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mano esterna» riceve altri +40 punti base e +4 Mult."
+        "description": "Alza la famiglia «Mano esterna» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +40 punti base e +4 Mult a ogni mano completa che segna «Mano esterna»."
       },
       "eris_orb": {
         "name": "Sfera di Eris",
-        "description": "Alza la famiglia «Tredici orfani» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tredici orfani» riceve altri +50 punti base e +3 Mult."
+        "description": "Alza la famiglia «Tredici orfani» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +50 punti base e +3 Mult a ogni mano completa che segna «Tredici orfani»."
       },
       "black_hole_orb": {
         "name": "Sfera del Buco Nero",
-        "description": "Alza di 1 livello tutte le 12 famiglie di mani per questa partita (massimo 10 ciascuna). Ogni famiglia riceve i suoi soliti punti base e Mult; una famiglia già al livello 10 resta lì."
+        "description": "Alza di 1 livello tutte le 12 famiglie di mani per questa partita (fino al livello 9 ciascuna). Ogni famiglia riceve i suoi soliti punti base e Mult; una famiglia già al livello 9 resta lì."
       }
     }
   },
@@ -3301,15 +3316,15 @@
     },
     "Honitsu": {
       "name": "Mezzo colore",
-      "covers": "Mezzo colore: una mano completa di un seme più Venti o Draghi. Una giocata più corta di un solo seme non conta."
+      "covers": "Mezzo colore: una giocata con un gruppo di un seme e un gruppo di Venti o Draghi, senza altri semi, come 3-4-5 di Caratteri con una coppia di Draghi Rossi. Vale anche una mano completa di un seme più Venti o Draghi."
     },
     "Chinitsu": {
       "name": "Colore puro",
-      "covers": "Colore puro: una mano completa di un solo seme, senza Venti né Draghi. Una giocata più corta di un solo seme non conta."
+      "covers": "Colore puro: una giocata di due o più gruppi tutti dello stesso seme, senza Venti né Draghi, come 1-2-3 e 7-8-9 di Caratteri. Vale anche una mano completa di un solo seme."
     },
     "Sanshoku": {
       "name": "Triplo misto",
-      "covers": "Tripla sequenza mista: una mano completa con la stessa sequenza in tutti e tre i semi, come 2-3-4 in Caratteri, Cerchi e Bambù."
+      "covers": "Triplo misto: due gruppi di semi diversi formati dagli stessi numeri, come 2-3-4 di Caratteri e 2-3-4 di Cerchi, o una coppia di 5 accanto a un tris di 5. Vale anche una mano completa con la stessa sequenza in tutti e tre i semi."
     },
     "SevenPairs": {
       "name": "Sette coppie",

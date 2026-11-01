@@ -1936,6 +1936,21 @@
     "catalystsIntro": "Çayhanedeki bazı doğrudan Ferman teklifleri Altın yerine Çiçek kabul eder. Sahip olduğunuz belirli bir Çiçeği seçip onaylayın; bu isteğe bağlıdır ve asla otomatik bir fedakârlık değildir.",
     "catalystsCost": "Çiçeği kaybetmek set bonuslarını da azaltır. Kalan yuvalar düzeninizi taşıyamıyorsa satın alma engellenir. Çiçeği tekrar toplamak, bu koşuda kazandığı uyanışı geri getirir. Yakuman Veraseti hâlâ iki Çiçek gerektirir; biriyle ödemek için önceden en az üç Çiçek gerekir."
   },
+  "codexUpgrades": {
+    "playsTitle": "Sıradan oyunlar için aileler",
+    "handsTitle": "Tam eller için aileler",
+    "intro": "Bir Göksel Küre, bir oyun ailesini koşunun geri kalanı boyunca bir seviye yükseltir: 0’dan en fazla {{max}}. seviyeye kadar. Aldığın anda kullanılır.",
+    "stacking": "Bir aileyle puan alan her oyun, o ailenin temel puanını ve Çarpanını seviye başına bir kez ekler. Tek bir oyun aynı anda birkaç aileyle puan alabilir ve her biri ayrı ayrı kazandırır. İşte Seriler ailesi bir seviye yükselmeden önce ve sonra bir Seri:",
+    "exampleBefore": "{{pattern}}, seviye 0: {{points}} × {{mult}} = {{score}}",
+    "exampleAfter": "{{family}}, seviye 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
+    "completeHands": "Sıradan oyunlar ailelerden gruplarına ve taşlarına göre puan alır. Tam bir Mahjong eli ise bunu Yaku’ları üzerinden yapar: yalnızca 2–8 arası taşlardan oluşan tam el Hep basit ile, 1–9 Sırası içeren tam el Sıralar ile puan alır ve bu böyle devam eder.",
+    "secretTip": "Yedi çift, Dış el ve On üç yetim yalnızca tam ellerle puan alır. Küreleri gizlidir: o eli bir kez puanladığında Küresi dükkânda çıkabilir.",
+    "playsIntro": "Her örnek, oyunun şeklini ve puan aldığı tüm aileleri gösterir.",
+    "handsIntro": "Bu aileler 14 taşlık tam el gerektirir; bu yüzden ancak böyle bir ele doğru ilerlediğinde kazandırırlar.",
+    "perLevel": "Her seviye: +{{chips}} temel puan · +{{mult}} Çarpan",
+    "scores": "Sayılan aileler: {{families}}",
+    "completeHand": "Tam el"
+  },
   "flora": {
     "mutations": {
       "locked": "Yeniden çiçeklenmeyi açmak için bir koşuda dört Çiçek türünü topla. Ardından sahip olduğun bir Çiçeği tekrar çekerek uyandır.",
@@ -2944,55 +2959,55 @@
     "items": {
       "pluto_orb": {
         "name": "Plüton Küresi",
-        "description": "Çiftler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Çiftler ile puan alan her oyun ek +10 temel puan ve +1 Çarpan kazanır."
+        "description": "Çiftler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Çiftler ile puan alan her oyuna +10 temel puan ve +1 Çarpan ekler."
       },
       "mercury_orb": {
         "name": "Merkür Küresi",
-        "description": "Hep basit ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Hep basit ile puan alan her oyun ek +15 temel puan ve +1 Çarpan kazanır."
+        "description": "Hep basit ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Hep basit ile puan alan her oyuna +15 temel puan ve +1 Çarpan ekler."
       },
       "uranus_orb": {
         "name": "Uranüs Küresi",
-        "description": "Onur taşları ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Onur taşları ile puan alan her oyun ek +20 temel puan ve +1 Çarpan kazanır."
+        "description": "Onur taşları ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Onur taşları ile puan alan her oyuna +20 temel puan ve +1 Çarpan ekler."
       },
       "venus_orb": {
         "name": "Venüs Küresi",
-        "description": "Seriler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Seriler ile puan alan her oyun ek +20 temel puan ve +2 Çarpan kazanır."
+        "description": "Seriler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Seriler ile puan alan her oyuna +20 temel puan ve +2 Çarpan ekler."
       },
       "saturn_orb": {
         "name": "Satürn Küresi",
-        "description": "Sıralar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Sıralar ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
+        "description": "Sıralar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Sıralar ile puan alan her oyuna +30 temel puan ve +3 Çarpan ekler."
       },
       "jupiter_orb": {
         "name": "Jüpiter Küresi",
-        "description": "Yarı renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yarı renk ile puan alan her oyun ek +15 temel puan ve +2 Çarpan kazanır."
+        "description": "Yarı renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Yarı renk ile puan alan her oyuna +15 temel puan ve +3 Çarpan ekler."
       },
       "earth_orb": {
         "name": "Dünya Küresi",
-        "description": "Üçlü ve dörtlüler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Üçlü ve dörtlüler ile puan alan her oyun ek +25 temel puan ve +2 Çarpan kazanır."
+        "description": "Üçlü ve dörtlüler ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Üçlü ve dörtlüler ile puan alan her oyuna +25 temel puan ve +2 Çarpan ekler."
       },
       "mars_orb": {
         "name": "Mars Küresi",
-        "description": "Tam renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Tam renk ile puan alan her oyun ek +30 temel puan ve +3 Çarpan kazanır."
+        "description": "Tam renk ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Tam renk ile puan alan her oyuna +20 temel puan ve +2 Çarpan ekler."
       },
       "neptune_orb": {
         "name": "Neptün Küresi",
-        "description": "Karışık üçlü ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Karışık üçlü ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
+        "description": "Karışık üçlü ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Karışık üçlü ile puan alan her oyuna +40 temel puan ve +6 Çarpan ekler."
       },
       "planet_x_orb": {
         "name": "X Gezegeni Küresi",
-        "description": "Yedi çift ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Yedi çift ile puan alan her oyun ek +35 temel puan ve +3 Çarpan kazanır."
+        "description": "Yedi çift ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Yedi çift ile puan alan her tam ele +35 temel puan ve +3 Çarpan ekler."
       },
       "ceres_orb": {
         "name": "Ceres Küresi",
-        "description": "Dış el ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). Dış el ile puan alan her oyun ek +40 temel puan ve +4 Çarpan kazanır."
+        "description": "Dış el ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, Dış el ile puan alan her tam ele +40 temel puan ve +4 Çarpan ekler."
       },
       "eris_orb": {
         "name": "Eris Küresi",
-        "description": "On üç yetim ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 10). On üç yetim ile puan alan her oyun ek +50 temel puan ve +3 Çarpan kazanır."
+        "description": "On üç yetim ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, On üç yetim ile puan alan her tam ele +50 temel puan ve +3 Çarpan ekler."
       },
       "black_hole_orb": {
         "name": "Kara Delik Küresi",
-        "description": "12 el ailesinin hepsini bu koşu boyunca 1 seviye yükseltir (her biri en fazla 10). Her aile kendi olağan temel puan ve Çarpan bonusunu alır; zaten 10. seviyede olan aile orada kalır."
+        "description": "12 el ailesinin hepsini bu koşu boyunca 1 seviye yükseltir (her biri en fazla 9. seviye). Her aile kendi olağan temel puan ve Çarpan bonusunu alır; zaten 9. seviyede olan aile orada kalır."
       }
     }
   },
@@ -3301,15 +3316,15 @@
     },
     "Honitsu": {
       "name": "Yarı renk",
-      "covers": "Yarı Renk: tek tür artı Rüzgârlar veya Ejderhalardan oluşan tam el. Tek türden daha kısa bir oyun sayılmaz."
+      "covers": "Yarı Renk: tek türden bir grup ile Rüzgârlardan veya Ejderhalardan bir grup içeren ve başka tür bulunmayan oyun; örneğin Karakterlerde 3-4-5 ile bir çift Kırmızı Ejderha. Tek tür artı Rüzgârlar veya Ejderhalardan oluşan tam el de sayılır."
     },
     "Chinitsu": {
       "name": "Tam renk",
-      "covers": "Tam Renk: Rüzgâr veya Ejderha içermeyen, yalnızca tek türden oluşan tam el. Tek türden daha kısa bir oyun sayılmaz."
+      "covers": "Tam Renk: hepsi tek türden olan iki veya daha fazla gruptan oluşan, Rüzgâr veya Ejderha içermeyen oyun; örneğin Karakterlerde 1-2-3 ve 7-8-9. Yalnızca tek türden oluşan tam el de sayılır."
     },
     "Sanshoku": {
       "name": "Karışık üçlü",
-      "covers": "Karışık Üçlü Seri: üç türün hepsinde aynı seriyi içeren tam el; örneğin Karakterler, Daireler ve Bambularda 2-3-4."
+      "covers": "Karışık Üçlü: farklı türlerde, aynı sayılardan oluşan iki grup; örneğin Karakterlerde 2-3-4 ve Dairelerde 2-3-4 ya da bir 5 üçlüsünün yanında bir 5 çifti. Üç türün hepsinde aynı seriyi içeren tam el de sayılır."
     },
     "SevenPairs": {
       "name": "Yedi çift",

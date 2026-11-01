@@ -1617,6 +1617,21 @@
     "catalystsIntro": "Ciertas ofertas directas de Decretos en la Casa de Té permiten pagar una Flor en lugar de Oro. Elige la Flor que posees y confirma; es opcional y nunca se sacrifica automáticamente.",
     "catalystsCost": "Perder la Flor también reduce los bonos de conjunto. La compra se bloquea si los espacios restantes no pueden contener tu colección. Al recogerla de nuevo recuperas su despertar durante esta partida. Sucesión Yakuman sigue necesitando dos Flores, así que pagar con una exige tener al menos tres antes."
   },
+  "codexUpgrades": {
+    "playsTitle": "Familias para jugadas normales",
+    "handsTitle": "Familias para manos completas",
+    "intro": "Un Orbe Celeste sube una familia de manos un nivel durante el resto de la partida, de 0 hasta {{max}}. Se usa en cuanto lo tomas.",
+    "stacking": "Cada jugada que puntúa una familia suma los puntos base y el Mult de esa familia una vez por nivel. Una jugada puede puntuar varias familias a la vez, y cada una paga. Esta es una Secuencia antes y después de un nivel de Secuencias:",
+    "exampleBefore": "{{pattern}}, nivel 0: {{points}} × {{mult}} = {{score}}",
+    "exampleAfter": "{{family}} nivel 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
+    "completeHands": "Las jugadas normales puntúan familias por sus grupos y fichas. Una mano de Mahjong completa, en cambio, las puntúa mediante sus Yaku: una mano completa solo con fichas 2–8 puntúa Todo simples, una que contenga una Escalera 1–9 puntúa Escaleras, y así sucesivamente.",
+    "secretTip": "Siete pares, Mano exterior y Trece huérfanos solo se puntúan con manos completas. Sus Orbes son secretos: puntúa la mano una vez y su Orbe podrá aparecer en la tienda.",
+    "playsIntro": "Cada ejemplo indica el patrón de la jugada y todas las familias que puntúa.",
+    "handsIntro": "Estas familias necesitan una mano completa de 14 fichas, así que solo valen la pena si apuntas a formar una.",
+    "perLevel": "Cada nivel: +{{chips}} puntos base · +{{mult}} Mult",
+    "scores": "Puntúa: {{families}}",
+    "completeHand": "Mano completa"
+  },
   "flora": {
     "mutations": {
       "locked": "Reúne los cuatro tipos de flores en una partida para desbloquear la refloración. Después, roba otra vez una flor que ya tengas para despertarla.",
@@ -2394,55 +2409,55 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Plutón",
-        "description": "Sube la familia Pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Pares gana otros +10 puntos base y +1 Mult."
+        "description": "Sube la familia Pares 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +10 puntos base y +1 Mult a cada jugada que puntúe Pares."
       },
       "mercury_orb": {
         "name": "Orbe de Mercurio",
-        "description": "Sube la familia Todo simples 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Todo simples gana otros +15 puntos base y +1 Mult."
+        "description": "Sube la familia Todo simples 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +15 puntos base y +1 Mult a cada jugada que puntúe Todo simples."
       },
       "uranus_orb": {
         "name": "Orbe de Urano",
-        "description": "Sube la familia Honores 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Honores gana otros +20 puntos base y +1 Mult."
+        "description": "Sube la familia Honores 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +20 puntos base y +1 Mult a cada jugada que puntúe Honores."
       },
       "venus_orb": {
         "name": "Orbe de Venus",
-        "description": "Sube la familia Secuencias 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Secuencias gana otros +20 puntos base y +2 Mult."
+        "description": "Sube la familia Secuencias 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +20 puntos base y +2 Mult a cada jugada que puntúe Secuencias."
       },
       "saturn_orb": {
         "name": "Orbe de Saturno",
-        "description": "Sube la familia Escaleras 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Escaleras gana otros +30 puntos base y +3 Mult."
+        "description": "Sube la familia Escaleras 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +30 puntos base y +3 Mult a cada jugada que puntúe Escaleras."
       },
       "jupiter_orb": {
         "name": "Orbe de Júpiter",
-        "description": "Sube la familia Medio color 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Medio color gana otros +15 puntos base y +2 Mult."
+        "description": "Sube la familia Medio color 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +15 puntos base y +3 Mult a cada jugada que puntúe Medio color."
       },
       "earth_orb": {
         "name": "Orbe de la Tierra",
-        "description": "Sube la familia Grupos iguales 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Grupos iguales gana otros +25 puntos base y +2 Mult."
+        "description": "Sube la familia Grupos iguales 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +25 puntos base y +2 Mult a cada jugada que puntúe Grupos iguales."
       },
       "mars_orb": {
         "name": "Orbe de Marte",
-        "description": "Sube la familia Color puro 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Color puro gana otros +30 puntos base y +3 Mult."
+        "description": "Sube la familia Color puro 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +20 puntos base y +2 Mult a cada jugada que puntúe Color puro."
       },
       "neptune_orb": {
         "name": "Orbe de Neptuno",
-        "description": "Sube la familia Triple mixto 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Triple mixto gana otros +40 puntos base y +4 Mult."
+        "description": "Sube la familia Triple mixto 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +40 puntos base y +6 Mult a cada jugada que puntúe Triple mixto."
       },
       "planet_x_orb": {
         "name": "Orbe del Planeta X",
-        "description": "Sube la familia Siete pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Siete pares gana otros +35 puntos base y +3 Mult."
+        "description": "Sube la familia Siete pares 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +35 puntos base y +3 Mult a cada mano completa que puntúe Siete pares."
       },
       "ceres_orb": {
         "name": "Orbe de Ceres",
-        "description": "Sube la familia Mano exterior 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Mano exterior gana otros +40 puntos base y +4 Mult."
+        "description": "Sube la familia Mano exterior 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +40 puntos base y +4 Mult a cada mano completa que puntúe Mano exterior."
       },
       "eris_orb": {
         "name": "Orbe de Eris",
-        "description": "Sube la familia Trece huérfanos 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Trece huérfanos gana otros +50 puntos base y +3 Mult."
+        "description": "Sube la familia Trece huérfanos 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +50 puntos base y +3 Mult a cada mano completa que puntúe Trece huérfanos."
       },
       "black_hole_orb": {
         "name": "Orbe de Agujero Negro",
-        "description": "Sube 1 nivel las 12 familias de manos durante esta partida (máximo 10 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 10 se queda igual."
+        "description": "Sube 1 nivel las 12 familias de manos durante esta partida (hasta el nivel 9 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 9 se queda igual."
       }
     }
   },
@@ -3301,15 +3316,15 @@
     },
     "Honitsu": {
       "name": "Medio color",
-      "covers": "Medio color: una mano completa de un palo más Vientos o Dragones. Una jugada más corta de un solo palo no cuenta."
+      "covers": "Medio color: una jugada con un grupo de un palo y un grupo de Vientos o Dragones, sin ningún otro palo, como 3-4-5 de Caracteres con un par de Dragones Rojos. También cuenta una mano completa de un palo más Vientos o Dragones."
     },
     "Chinitsu": {
       "name": "Color puro",
-      "covers": "Color puro: una mano completa de un solo palo, sin Vientos ni Dragones. Una jugada más corta de un solo palo no cuenta."
+      "covers": "Color puro: una jugada de dos o más grupos, todos del mismo palo, sin Vientos ni Dragones, como 1-2-3 y 7-8-9 de Caracteres. También cuenta una mano completa de un solo palo."
     },
     "Sanshoku": {
       "name": "Triple mixto",
-      "covers": "Triple secuencia mixta: una mano completa con la misma secuencia en los tres palos, como 2-3-4 en Caracteres, Círculos y Bambúes."
+      "covers": "Triple mixto: dos grupos de palos distintos formados por los mismos números, como 2-3-4 de Caracteres y 2-3-4 de Círculos, o un par de 5 junto a un triplete de 5. También cuenta una mano completa con la misma secuencia en los tres palos."
     },
     "SevenPairs": {
       "name": "Siete pares",

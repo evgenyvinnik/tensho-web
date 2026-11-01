@@ -48,6 +48,10 @@ import {
 import { PavilionIcon } from '../../ui/PavilionIcon'
 import { FloraCodex, FLORA_CODEX_SECTIONS } from './FloraCodex'
 import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
+import {
+  YakuUpgradeCodex,
+  YAKU_UPGRADE_CODEX_SECTIONS,
+} from './YakuUpgradeCodex'
 import { HAND_BUILDING_EXAMPLE } from './handBuildingExample'
 import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
 import { DecreeBuildGuide } from '../../shop/DecreeBuildGuide'
@@ -1076,6 +1080,12 @@ export function useTutorialSteps(): TutorialStep[] {
           </div>
         ),
       },
+      ...YAKU_UPGRADE_CODEX_SECTIONS.map(([id, titleKey, section]) => ({
+        id,
+        category: 'Scoring',
+        title: t(titleKey),
+        content: <YakuUpgradeCodex section={section} />,
+      })),
       {
         id: 'acts-rounds',
         category: 'Progression',

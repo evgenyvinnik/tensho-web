@@ -67,9 +67,12 @@ Each Orb is named after its celestial body; the upgrade family it raises is
 its subtitle, with the same label as that family's upgrade. Each is painted as
 that body in its own colours, carved with the family's tile motif in ivory
 relief, on a small jade-and-gold mount.
-Using one raises the family by 1 level for the run (maximum 10); each level
-above 1 adds the bonus below to every play that scores the family.
-"Works with" lists what scores each family (`upgradeFamilies.*.covers`).
+Using one raises the family by 1 level for the run. Players read levels from
+0 to 9 (the engine stores 1–10, with 1 as the unupgraded baseline); each level
+adds the bonus below to every play that scores the family. One play can score
+several families, and each pays. "Works with" lists what scores each family
+(`upgradeFamilies.*.covers`; `playOrbCategories` for ordinary plays). The Codex
+shows two tile examples per family (`yakuUpgradeExamples.ts`).
 
 | Orb | Family | Bonus per Level | Works with |
 |-----|--------|-----------------|------------|
@@ -78,10 +81,10 @@ above 1 adds the bonus below to every play that scores the family.
 | **Uranus Orb** (天王星) | Honors | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
 | **Venus Orb** (金星) | Sequences | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
 | **Saturn Orb** (土星) | Straights | +30 base points, +3 Mult | Straights of Four, Five and Six, Straight + Pair; 1–9 Straight hand |
-| **Jupiter Orb** (木星) | Half Flush | +15 base points, +2 Mult | Half Flush hand |
+| **Jupiter Orb** (木星) | Half Flush | +15 base points, +3 Mult | A group of one suit plus a Wind or Dragon group, no other suit; Half Flush hand |
 | **Earth Orb** (地球) | Sets | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
-| **Mars Orb** (火星) | Full Flush | +30 base points, +3 Mult | Full Flush hand |
-| **Neptune Orb** (海王星) | Mixed Triple | +40 base points, +4 Mult | Mixed Triple Sequence hand |
+| **Mars Orb** (火星) | Full Flush | +20 base points, +2 Mult | Two or more groups all in one suit, no Honors; Full Flush hand |
+| **Neptune Orb** (海王星) | Mixed Triple | +40 base points, +6 Mult | Two groups in different suits with the same numbers (234m 234p, 55s 555p); Mixed Triple Sequence hand |
 
 ### Secret Celestial Orbs
 
@@ -95,7 +98,7 @@ above 1 adds the bonus below to every play that scores the family.
 
 | Orb | Family | Effect | Unlock |
 |-----|--------|--------|--------|
-| **Black Hole Orb** (ブラックホール) | Every family | Raises all 12 families by 1 level (each capped at 10) | Discover all 12 orbs |
+| **Black Hole Orb** (ブラックホール) | Every family | Raises all 12 families by 1 level (each capped at level 9) | Discover all 12 orbs |
 
 ---
 

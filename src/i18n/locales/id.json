@@ -1825,6 +1825,21 @@
     "catalystsIntro": "Penawaran Dekret langsung tertentu di Rumah Teh memungkinkan pembayaran dengan Bunga sebagai ganti Emas. Pilih tepat satu Bunga yang dimiliki lalu konfirmasi; ini opsional dan tidak pernah menjadi pengorbanan otomatis.",
     "catalystsCost": "Kehilangan Bunga juga mengurangi bonus set. Pembelian diblokir jika slot tersisa tidak cukup untuk koleksi. Mengumpulkannya kembali memulihkan kebangkitannya dalam permainan ini. Suksesi Yakuman tetap membutuhkan dua Bunga, jadi membayar satu membutuhkan setidaknya tiga Bunga sebelumnya."
   },
+  "codexUpgrades": {
+    "playsTitle": "Keluarga untuk kali main biasa",
+    "handsTitle": "Keluarga untuk tangan lengkap",
+    "intro": "Orb Langit menaikkan satu keluarga kali main sebanyak satu level selama sisa permainan, dari 0 hingga {{max}}. Orb langsung dipakai saat kamu mengambilnya.",
+    "stacking": "Setiap kali main yang mencetak skor dengan suatu keluarga menambahkan poin dasar dan Mult keluarga itu sekali per level. Satu kali main bisa mencetak skor dengan beberapa keluarga sekaligus, dan masing-masing memberi tambahannya. Berikut satu Urutan sebelum dan sesudah keluarga Urutan naik satu level:",
+    "exampleBefore": "{{pattern}}, level 0: {{points}} × {{mult}} = {{score}}",
+    "exampleAfter": "{{family}}, level 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
+    "completeHands": "Kali main biasa mencetak skor keluarga lewat kelompok dan ubinnya. Tangan Mahjong lengkap mencetaknya lewat Yaku-nya: tangan lengkap yang hanya berisi ubin 2–8 mencetak Semua sederhana, tangan lengkap yang memuat Lurus 1–9 mencetak Lurus, dan seterusnya.",
+    "secretTip": "Tujuh pasangan, Tangan luar, dan Tiga belas yatim hanya dihitung pada tangan lengkap. Orb-nya rahasia: cetak skor dengan tangan itu sekali, maka Orb-nya bisa muncul di toko.",
+    "playsIntro": "Setiap contoh menyebut pola kali main itu dan semua keluarga yang dicetaknya.",
+    "handsIntro": "Keluarga ini butuh tangan lengkap 14 ubin, jadi hanya menguntungkan bila kamu memang menyusun tangan ke arah sana.",
+    "perLevel": "Tiap level: +{{chips}} poin dasar · +{{mult}} Mult",
+    "scores": "Mencetak skor: {{families}}",
+    "completeHand": "Tangan lengkap"
+  },
   "flora": {
     "mutations": {
       "locked": "Kumpulkan keempat jenis Bunga dalam satu petualangan untuk membuka mekar kembali. Lalu tarik lagi Bunga yang sudah dimiliki untuk membangkitkannya.",
@@ -2646,55 +2661,55 @@
     "items": {
       "pluto_orb": {
         "name": "Orb Pluto",
-        "description": "Menaikkan keluarga Pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Pasangan mencetak skor, dapat tambahan +10 poin dasar dan +1 Mult."
+        "description": "Menaikkan keluarga Pasangan 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +10 poin dasar dan +1 Mult ke setiap kali main yang mencetak skor dengan Pasangan."
       },
       "mercury_orb": {
         "name": "Orb Merkurius",
-        "description": "Menaikkan keluarga Semua sederhana 1 level selama permainan ini (maksimal 10). Setiap kali Semua sederhana mencetak skor, dapat tambahan +15 poin dasar dan +1 Mult."
+        "description": "Menaikkan keluarga Semua sederhana 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +15 poin dasar dan +1 Mult ke setiap kali main yang mencetak skor dengan Semua sederhana."
       },
       "uranus_orb": {
         "name": "Orb Uranus",
-        "description": "Menaikkan keluarga Kehormatan 1 level selama permainan ini (maksimal 10). Setiap kali Kehormatan mencetak skor, dapat tambahan +20 poin dasar dan +1 Mult."
+        "description": "Menaikkan keluarga Kehormatan 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +20 poin dasar dan +1 Mult ke setiap kali main yang mencetak skor dengan Kehormatan."
       },
       "venus_orb": {
         "name": "Orb Venus",
-        "description": "Menaikkan keluarga Urutan 1 level selama permainan ini (maksimal 10). Setiap kali Urutan mencetak skor, dapat tambahan +20 poin dasar dan +2 Mult."
+        "description": "Menaikkan keluarga Urutan 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +20 poin dasar dan +2 Mult ke setiap kali main yang mencetak skor dengan Urutan."
       },
       "saturn_orb": {
         "name": "Orb Saturnus",
-        "description": "Menaikkan keluarga Lurus 1 level selama permainan ini (maksimal 10). Setiap kali Lurus mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
+        "description": "Menaikkan keluarga Lurus 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +30 poin dasar dan +3 Mult ke setiap kali main yang mencetak skor dengan Lurus."
       },
       "jupiter_orb": {
         "name": "Orb Jupiter",
-        "description": "Menaikkan keluarga Setengah warna 1 level selama permainan ini (maksimal 10). Setiap kali Setengah warna mencetak skor, dapat tambahan +15 poin dasar dan +2 Mult."
+        "description": "Menaikkan keluarga Setengah warna 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +15 poin dasar dan +3 Mult ke setiap kali main yang mencetak skor dengan Setengah warna."
       },
       "earth_orb": {
         "name": "Orb Bumi",
-        "description": "Menaikkan keluarga Set 1 level selama permainan ini (maksimal 10). Setiap kali Set mencetak skor, dapat tambahan +25 poin dasar dan +2 Mult."
+        "description": "Menaikkan keluarga Set 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +25 poin dasar dan +2 Mult ke setiap kali main yang mencetak skor dengan Set."
       },
       "mars_orb": {
         "name": "Orb Mars",
-        "description": "Menaikkan keluarga Warna penuh 1 level selama permainan ini (maksimal 10). Setiap kali Warna penuh mencetak skor, dapat tambahan +30 poin dasar dan +3 Mult."
+        "description": "Menaikkan keluarga Warna penuh 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +20 poin dasar dan +2 Mult ke setiap kali main yang mencetak skor dengan Warna penuh."
       },
       "neptune_orb": {
         "name": "Orb Neptunus",
-        "description": "Menaikkan keluarga Tiga warna 1 level selama permainan ini (maksimal 10). Setiap kali Tiga warna mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
+        "description": "Menaikkan keluarga Tiga warna 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +40 poin dasar dan +6 Mult ke setiap kali main yang mencetak skor dengan Tiga warna."
       },
       "planet_x_orb": {
         "name": "Orb Planet X",
-        "description": "Menaikkan keluarga Tujuh pasangan 1 level selama permainan ini (maksimal 10). Setiap kali Tujuh pasangan mencetak skor, dapat tambahan +35 poin dasar dan +3 Mult."
+        "description": "Menaikkan keluarga Tujuh pasangan 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +35 poin dasar dan +3 Mult ke setiap tangan lengkap yang mencetak skor dengan Tujuh pasangan."
       },
       "ceres_orb": {
         "name": "Orb Ceres",
-        "description": "Menaikkan keluarga Tangan luar 1 level selama permainan ini (maksimal 10). Setiap kali Tangan luar mencetak skor, dapat tambahan +40 poin dasar dan +4 Mult."
+        "description": "Menaikkan keluarga Tangan luar 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +40 poin dasar dan +4 Mult ke setiap tangan lengkap yang mencetak skor dengan Tangan luar."
       },
       "eris_orb": {
         "name": "Orb Eris",
-        "description": "Menaikkan keluarga Tiga belas yatim 1 level selama permainan ini (maksimal 10). Setiap kali Tiga belas yatim mencetak skor, dapat tambahan +50 poin dasar dan +3 Mult."
+        "description": "Menaikkan keluarga Tiga belas yatim 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +50 poin dasar dan +3 Mult ke setiap tangan lengkap yang mencetak skor dengan Tiga belas yatim."
       },
       "black_hole_orb": {
         "name": "Orb Lubang Hitam",
-        "description": "Menaikkan ke-12 keluarga tangan masing-masing 1 level selama permainan ini (maksimal 10). Setiap keluarga mendapat poin dasar dan Mult seperti biasa; keluarga yang sudah level 10 tetap di sana."
+        "description": "Menaikkan ke-12 keluarga tangan masing-masing 1 level selama permainan ini (masing-masing hingga level 9). Setiap keluarga mendapat poin dasar dan Mult seperti biasa; keluarga yang sudah level 9 tetap di sana."
       }
     }
   },
@@ -3301,15 +3316,15 @@
     },
     "Honitsu": {
       "name": "Setengah warna",
-      "covers": "Setengah Warna: tangan lengkap dari satu jenis ditambah Angin atau Naga. Ubin satu jenis yang dimainkan tanpa membentuk tangan lengkap tidak dihitung."
+      "covers": "Setengah Warna: kali main dengan satu kelompok dari satu jenis dan satu kelompok Angin atau Naga, tanpa jenis lain, misalnya 3-4-5 Karakter dengan pasangan Naga Merah. Tangan lengkap dari satu jenis ditambah Angin atau Naga juga dihitung."
     },
     "Chinitsu": {
       "name": "Warna penuh",
-      "covers": "Warna Penuh: tangan lengkap dari satu jenis saja, tanpa Angin atau Naga. Ubin satu jenis yang dimainkan tanpa membentuk tangan lengkap tidak dihitung."
+      "covers": "Warna Penuh: kali main berisi dua kelompok atau lebih yang semuanya dari satu jenis, tanpa Angin atau Naga, misalnya 1-2-3 dan 7-8-9 Karakter. Tangan lengkap dari satu jenis saja juga dihitung."
     },
     "Sanshoku": {
       "name": "Tiga warna",
-      "covers": "Urutan Tiga Campuran: tangan lengkap dengan urutan yang sama di ketiga jenis, misalnya 2-3-4 di Karakter, Lingkaran, dan Bambu."
+      "covers": "Tiga Warna: dua kelompok dari jenis berbeda dengan angka yang sama, misalnya 2-3-4 Karakter dan 2-3-4 Lingkaran, atau pasangan 5 di samping triplet 5. Tangan lengkap dengan urutan yang sama di ketiga jenis juga dihitung."
     },
     "SevenPairs": {
       "name": "Tujuh pasangan",

@@ -32,7 +32,7 @@ import {
 import { runRandom } from '../game/RunRandom'
 import type { PlayPatternId } from '../rules/PlayPattern'
 import type { Meld } from '../core/Meld'
-import type { Tile } from '../core/Tile'
+import { Tile } from '../core/Tile'
 
 // =============================================================================
 // CELESTIAL ORB TYPES
@@ -115,7 +115,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '冥王星',
     planetName: 'Pluto',
     description:
-      'Raises Pairs by 1 level for this run (maximum 10). Every play that scores Pairs gains another +10 base points and +1 Mult.',
+      'Raises Pairs by 1 level for this run (up to level 9). Each level adds +10 base points and +1 Mult to every play that scores Pairs.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -136,7 +136,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '水星',
     planetName: 'Mercury',
     description:
-      'Raises All Simples by 1 level for this run (maximum 10). Every play that scores All Simples gains another +15 base points and +1 Mult.',
+      'Raises All Simples by 1 level for this run (up to level 9). Each level adds +15 base points and +1 Mult to every play that scores All Simples.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -158,7 +158,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '天王星',
     planetName: 'Uranus',
     description:
-      'Raises Honors by 1 level for this run (maximum 10). Every play that scores Honors gains another +20 base points and +1 Mult.',
+      'Raises Honors by 1 level for this run (up to level 9). Each level adds +20 base points and +1 Mult to every play that scores Honors.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -179,7 +179,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '金星',
     planetName: 'Venus',
     description:
-      'Raises Sequences by 1 level for this run (maximum 10). Every play that scores Sequences gains another +20 base points and +2 Mult.',
+      'Raises Sequences by 1 level for this run (up to level 9). Each level adds +20 base points and +2 Mult to every play that scores Sequences.',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
@@ -201,7 +201,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '土星',
     planetName: 'Saturn',
     description:
-      'Raises Straights by 1 level for this run (maximum 10). Every play that scores Straights gains another +30 base points and +3 Mult.',
+      'Raises Straights by 1 level for this run (up to level 9). Each level adds +30 base points and +3 Mult to every play that scores Straights.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -223,7 +223,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '木星',
     planetName: 'Jupiter',
     description:
-      'Raises Half Flush by 1 level for this run (maximum 10). Every play that scores Half Flush gains another +15 base points and +2 Mult.',
+      'Raises Half Flush by 1 level for this run (up to level 9). Each level adds +15 base points and +3 Mult to every play that scores Half Flush.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -231,10 +231,10 @@ export const CELESTIAL_ORBS: Record<
     maxLevel: DEFAULT_ORB_MAX_LEVEL,
     effect: {
       targetYaku: 'Honitsu',
-      multPerLevel: 2,
+      multPerLevel: 3,
       chipsPerLevel: 15,
       description:
-        '+15 base points and +2 Mult per level when Half Flush scores',
+        '+15 base points and +3 Mult per level when Half Flush scores',
     },
   },
 
@@ -245,7 +245,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '地球',
     planetName: 'Earth',
     description:
-      'Raises Sets by 1 level for this run (maximum 10). Every play that scores Sets gains another +25 base points and +2 Mult.',
+      'Raises Sets by 1 level for this run (up to level 9). Each level adds +25 base points and +2 Mult to every play that scores Sets.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -266,7 +266,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '火星',
     planetName: 'Mars',
     description:
-      'Raises Full Flush by 1 level for this run (maximum 10). Every play that scores Full Flush gains another +30 base points and +3 Mult.',
+      'Raises Full Flush by 1 level for this run (up to level 9). Each level adds +20 base points and +2 Mult to every play that scores Full Flush.',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -274,10 +274,10 @@ export const CELESTIAL_ORBS: Record<
     maxLevel: DEFAULT_ORB_MAX_LEVEL,
     effect: {
       targetYaku: 'Chinitsu',
-      multPerLevel: 3,
-      chipsPerLevel: 30,
+      multPerLevel: 2,
+      chipsPerLevel: 20,
       description:
-        '+30 base points and +3 Mult per level when Full Flush scores',
+        '+20 base points and +2 Mult per level when Full Flush scores',
     },
   },
 
@@ -288,7 +288,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '海王星',
     planetName: 'Neptune',
     description:
-      'Raises Mixed Triple by 1 level for this run (maximum 10). Every play that scores Mixed Triple gains another +40 base points and +4 Mult.',
+      'Raises Mixed Triple by 1 level for this run (up to level 9). Each level adds +40 base points and +6 Mult to every play that scores Mixed Triple.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -296,10 +296,10 @@ export const CELESTIAL_ORBS: Record<
     maxLevel: DEFAULT_ORB_MAX_LEVEL,
     effect: {
       targetYaku: 'Sanshoku',
-      multPerLevel: 4,
+      multPerLevel: 6,
       chipsPerLevel: 40,
       description:
-        '+40 base points and +4 Mult per level when Mixed Triple scores',
+        '+40 base points and +6 Mult per level when Mixed Triple scores',
     },
   },
 
@@ -313,7 +313,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: '惑星X',
     planetName: 'Planet X',
     description:
-      'Raises Seven Pairs by 1 level for this run (maximum 10). Every play that scores Seven Pairs gains another +35 base points and +3 Mult.',
+      'Raises Seven Pairs by 1 level for this run (up to level 9). Each level adds +35 base points and +3 Mult to every complete hand that scores Seven Pairs.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -335,7 +335,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: 'ケレス',
     planetName: 'Ceres',
     description:
-      'Raises Outside Hand by 1 level for this run (maximum 10). Every play that scores Outside Hand gains another +40 base points and +4 Mult.',
+      'Raises Outside Hand by 1 level for this run (up to level 9). Each level adds +40 base points and +4 Mult to every complete hand that scores Outside Hand.',
     rarity: 'Rare',
     edition: 'Base',
     cost: 5,
@@ -357,7 +357,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: 'エリス',
     planetName: 'Eris',
     description:
-      'Raises Thirteen Orphans by 1 level for this run (maximum 10). Every play that scores Thirteen Orphans gains another +50 base points and +3 Mult.',
+      'Raises Thirteen Orphans by 1 level for this run (up to level 9). Each level adds +50 base points and +3 Mult to every complete hand that scores Thirteen Orphans.',
     rarity: 'Legendary',
     edition: 'Base',
     cost: 8,
@@ -382,7 +382,7 @@ export const CELESTIAL_ORBS: Record<
     japaneseName: 'ブラックホール',
     planetName: 'Black Hole',
     description:
-      'Raises all 12 hand families by 1 level for this run (maximum 10 each). Each family gains its usual base points and Mult; one already at level 10 stays there.',
+      'Raises all 12 hand families by 1 level for this run (up to level 9 each). Each family gains its usual base points and Mult; one already at level 9 stays there.',
     rarity: 'Legendary',
     edition: 'Base',
     cost: 10,
@@ -880,9 +880,18 @@ export function getYakuCategoryDisplayName(category: YakuCategory): string {
 
 /**
  * Upgrade families a tactical play belongs to: its pattern's own family, plus
- * Value Tiles when a group is made of Winds or Dragons, plus All Simples when
- * every tile is a 2–8. A Stone has no rank, so it neither makes nor breaks All
- * Simples. Complete hands use their Yaku instead.
+ * any of these that the play's groups and tiles also show:
+ *
+ * - Honors: a group made only of Winds or Dragons.
+ * - All Simples: a group, and every tile a 2–8.
+ * - Full Flush: two or more groups, every tile one suit, no Honors.
+ * - Half Flush: a numbered group and a group of Winds or Dragons, with every
+ *   numbered tile in one suit.
+ * - Mixed Triple: two groups in different suits made of the same numbers
+ *   (2-3-4 in Characters and in Circles, or 5-5 beside 5-5-5).
+ *
+ * A Stone has no rank or suit, so it neither makes nor breaks any of them; a
+ * Wild tile counts as every suit. Complete hands use their Yaku instead.
  */
 export function playOrbCategories(
   patternId: PlayPatternId,
@@ -892,11 +901,58 @@ export function playOrbCategories(
   const categories: YakuCategory[] = []
   const family = PATTERN_FAMILIES[patternId]
   if (family) categories.push(family)
-  if (groups.some((group) => group.tiles.every((tile) => tile.isHonor)))
-    categories.push('Yakuhai')
+  const isHonorGroup = (group: Meld) =>
+    group.tiles.every((tile) => tile.isHonor)
+  if (groups.some(isHonorGroup)) categories.push('Yakuhai')
   if (groups.length > 0 && tiles.every((tile) => tile.isStone || tile.isSimple))
     categories.push('Tanyao')
+  const flush = flushFamily(groups, tiles, isHonorGroup)
+  if (flush) categories.push(flush)
+  if (hasMixedGroups(groups)) categories.push('Sanshoku')
   return categories
+}
+
+/** Full or Half Flush for a play of two or more groups, else null. */
+function flushFamily(
+  groups: readonly Meld[],
+  tiles: readonly Tile[],
+  isHonorGroup: (group: Meld) => boolean
+): YakuCategory | null {
+  if (groups.length < 2) return null
+  const shown = tiles.filter((tile) => !tile.isStone)
+  const numbered = shown.filter((tile) => tile.isSuited)
+  if (numbered.length === 0 || !shown.every((t) => t.isSuited || t.isHonor))
+    return null
+  if (!Tile.shareSuit(numbered)) return null
+  if (numbered.length === shown.length) return 'Chinitsu'
+  return groups.some(isHonorGroup) &&
+    groups.some((group) => !isHonorGroup(group))
+    ? 'Honitsu'
+    : null
+}
+
+/**
+ * Two numbered groups in different suits made of the same numbers: 2-3-4 and
+ * 2-3-4, or a pair of 5s beside a triplet of 5s.
+ */
+function hasMixedGroups(groups: readonly Meld[]): boolean {
+  const faces = groups
+    .filter((group) =>
+      group.tiles.every((tile) => tile.isSuited && !tile.isStone)
+    )
+    .map((group) => ({
+      suit: group.suit,
+      numbers: [...new Set(group.tiles.map((tile) => tile.rank))]
+        .sort((a, b) => a - b)
+        .join('-'),
+    }))
+  return faces.some((face, index) =>
+    faces
+      .slice(index + 1)
+      .some(
+        (other) => other.numbers === face.numbers && other.suit !== face.suit
+      )
+  )
 }
 
 const PATTERN_FAMILIES: Partial<Record<PlayPatternId, YakuCategory>> = {
