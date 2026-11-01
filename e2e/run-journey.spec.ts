@@ -47,7 +47,9 @@ test('Tea House journey and optional synergy advice fit phones and desktops', as
   await expect(journey).toContainText('Next: Act 6 · Round 1')
   await expect(journey.getByRole('progressbar')).toHaveAttribute('value', '15')
   await expect(journey.getByRole('progressbar')).toHaveAttribute('max', '18')
+  // The synergy guide is a wide-screen aside; phones read it in the Codex.
   const guide = page.locator('[data-decree-build-guide]')
+  await page.setViewportSize({ width: 1280, height: 720 })
   await expect(guide).not.toHaveAttribute('open')
   await guide.locator('summary').click()
   await expect(guide).toHaveAttribute('open')
@@ -63,7 +65,10 @@ test('Tea House journey and optional synergy advice fit phones and desktops', as
         () => document.documentElement.scrollWidth <= innerWidth
       )
     ).toBe(true)
-    for (const element of [journey, guide]) {
+    const phone = width < 640
+    if (phone) await expect(guide).toBeHidden()
+    else await expect(guide).toBeVisible()
+    for (const element of phone ? [journey] : [journey, guide]) {
       expect(
         await element.evaluate(
           (node) => node.scrollWidth <= node.clientWidth + 1
