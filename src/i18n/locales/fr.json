@@ -1612,7 +1612,7 @@
       "locked": "Réunissez les quatre types de Fleurs en une partie pour débloquer la refloraison. Puis piochez à nouveau une Fleur possédée pour l’éveiller.",
       "ready": "Refloraison débloquée. Piocher une Fleur possédée l’éveille pour cette partie.",
       "awakened": "Éveillée",
-      "plum": "Une fois par coup, deux suites peuvent partager une tuile. Une main complète peut utiliser 13 tuiles.",
+      "plum": "Une fois par coup, deux séquences peuvent partager une tuile. Une main complète peut utiliser 13 tuiles.",
       "orchid": "Les Dragons comptent comme deux Honneurs pour les Fleurs et les Décrets. Ni les tuiles ni les groupes de Yaku ne sont dupliqués.",
       "chrysanthemum": "Les coups fermés gagnent ×{{factor}} par groupe à la place du bonus ordinaire du Chrysanthème. Les paires ne comptent pas.",
       "bamboo": "Un 1 ou un 9 peut ancrer deux rangs consécutifs dans une suite. Les faces et les points des tuiles restent inchangés."
@@ -3126,7 +3126,7 @@
     },
     "two_sequences": {
       "name": "Deux séquences",
-      "explain": "Deux séquences en un coup (six tuiles)."
+      "explain": "Deux séquences en un coup. Une suite exige une seule famille et chaque nombre une fois : une série qui change de famille ou répète un nombre (2-3-3-4-4-5) compte comme deux séquences."
     },
     "two_triplets": {
       "name": "Deux brelans",
@@ -3185,7 +3185,7 @@
     "secretTitle": "Mains secrètes",
     "secretFound": "Main secrète découverte",
     "secretInGuide": "Désormais dans le guide ?.",
-    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2, les suites de six +3. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
+    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2, les suites de six +3. Si des tuiles peuvent se grouper de plusieurs façons, le coup retient celle qui rapporte le plus. Chaque tuile compte une fois ; seul un Prunier éveillé permet à deux séquences d’en partager une, affichées Séquence ×2. Un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",

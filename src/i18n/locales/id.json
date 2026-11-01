@@ -3126,7 +3126,7 @@
     },
     "two_sequences": {
       "name": "Dua urutan",
-      "explain": "Dua urutan dalam sekali main (enam ubin)."
+      "explain": "Dua urutan dalam sekali main. Lurus butuh satu jenis dan tiap angka sekali, jadi deret yang berganti jenis atau mengulang angka (2-3-3-4-4-5) dihitung sebagai dua urutan."
     },
     "two_triplets": {
       "name": "Dua triplet",
@@ -3185,7 +3185,7 @@
     "secretTitle": "Tangan rahasia",
     "secretFound": "Tangan rahasia ditemukan",
     "secretInGuide": "Kini ada di panduan ?.",
-    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2, lurus enam +3. Biasanya tiap ubin dihitung sekali, dan sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
+    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2, lurus enam +3. Jika ubin bisa dikelompokkan lebih dari satu cara, dipakai cara yang paling menguntungkan. Tiap ubin dihitung sekali; hanya Plum yang bangkit membuat dua urutan berbagi satu ubin, ditampilkan sebagai Urutan ×2. Sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",

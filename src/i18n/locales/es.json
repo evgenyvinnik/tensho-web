@@ -3126,7 +3126,7 @@
     },
     "two_sequences": {
       "name": "Dos secuencias",
-      "explain": "Dos secuencias en una jugada (seis fichas)."
+      "explain": "Dos secuencias en una jugada. Una escalera necesita un solo palo y cada número una vez, así que una serie que cambia de palo o repite un número (2-3-3-4-4-5) cuenta como dos secuencias."
     },
     "two_triplets": {
       "name": "Dos tripletes",
@@ -3185,7 +3185,7 @@
     "secretTitle": "Manos secretas",
     "secretFound": "Mano secreta descubierta",
     "secretInGuide": "Ya aparece en la guía ?.",
-    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2; escaleras de seis, +3. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
+    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2; escaleras de seis, +3. Si las fichas pueden agruparse de varias formas, puntúa la que más paga. Cada ficha cuenta una vez; solo un Ciruelo despertado permite que dos secuencias compartan una, y se muestra como Secuencia ×2. Una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",

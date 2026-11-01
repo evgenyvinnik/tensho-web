@@ -3126,7 +3126,7 @@
     },
     "two_sequences": {
       "name": "İki seri",
-      "explain": "Tek oyunda iki seri (altı taş)."
+      "explain": "Tek oyunda iki seri. Sıra için tek tür ve her sayıdan bir taş gerekir; türü değişen ya da bir sayıyı tekrarlayan dizi (2-3-3-4-4-5) iki seri sayılır."
     },
     "two_triplets": {
       "name": "İki üçlü",
@@ -3185,7 +3185,7 @@
     "secretTitle": "Gizli eller",
     "secretFound": "Gizli el bulundu",
     "secretInGuide": "Artık ? rehberinde.",
-    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, altılı sıralar +3 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
+    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, altılı sıralar +3 ekler. Taşlar birden çok şekilde gruplanabiliyorsa en çok kazandıran gruplama sayılır. Her taş bir kez sayılır; yalnızca uyanmış Erik Çiçeği iki serinin bir taşı paylaşmasına izin verir ve bu Seri ×2 olarak gösterilir. Tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",
