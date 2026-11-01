@@ -43,6 +43,7 @@ import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
 import { OmenDetails } from './OmenDetails'
 import { consumableMessage } from './consumableMessages'
+import { shownUpgradeLevel } from './yakuUpgradeLevel'
 
 const OMEN_TONE = '#c4b5fd'
 const omenById = (id: string) => ALL_OMENS.find((omen) => omen.id === id)
@@ -236,9 +237,11 @@ export function CollectibleRail({
                   ? t('upgradeFamilies.All.upgrade', 'Every family +1 level')
                   : t('upgradeFamilies.levelChange', {
                       family: familyName(family),
-                      from: number(level ?? 1),
+                      from: number(shownUpgradeLevel(level ?? 1)),
                       to: number(
-                        Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        shownUpgradeLevel(
+                          Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        )
                       ),
                     })}
               </p>

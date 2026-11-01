@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Fiore normale",
+    "optionalEndless": "Infinito (facoltativo)"
+  },
   "codexReference": {
     "titleConcept": "Il concetto di base",
     "titleTilesOverview": "Conoscere le tessere",
@@ -124,7 +128,7 @@
     "payout": "La ricompensa base per un round superato è di 3 monete d’oro per Piccolo, 5 per Grande e 10 per Boss, indipendentemente dai punti oltre l’obiettivo. Le poste possono eliminare la ricompensa Piccolo; Decreti e Presagi possono modificare il pagamento finale.",
     "interest": "Gli interessi si calcolano sull’oro posseduto prima del pagamento del round: 1 ogni 5, con un limite iniziale di 5. Carte e Presagi possono alzarlo; alcuni Presagi bloccano gli interessi. Una sconfitta non paga interessi.",
     "sale": "Controlla il pulsante Vendi di un Decreto per conoscerne il valore effettivo. I Decreti pagati con Fiori o ricevuti gratis possono valere 0 oro; quelli Eterni non sono vendibili. Vendere rimuove gli effetti e libera lo spazio occupato.",
-    "prices": "Controlla il prezzo di ogni offerta e il costo attuale del rinnovo. Sconti, edizioni, Carte e altri effetti possono cambiare i prezzi. Rinnovare non ripristina le Carte acquistate né l’offerta gratuita del Cartomante."
+    "prices": "Controlla il prezzo di ogni offerta e il costo attuale del rinnovo. Sconti, Edizioni, Carte e altri effetti possono cambiare i prezzi. Rinnovare non ripristina le Carte acquistate né l’offerta gratuita del Cartomante."
   },
   "achievements": {
     "firstSteps": {
@@ -177,7 +181,7 @@
     },
     "shattered": {
       "name": "In frantumi",
-      "description": "Rompi 2 tessere di Vetro in una sola giocata."
+      "description": "Rompi 2 tessere Vetro in una sola giocata."
     },
     "royalHand": {
       "name": "Mano regale",
@@ -185,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrogrado",
-      "description": "Porta una famiglia di mani al livello 10."
+      "description": "Porta una famiglia di mani al livello 9."
     },
     "keeperOfWinds": {
       "name": "Custode dei venti",
@@ -331,7 +335,7 @@
     "waiting": "In attesa di un altro Decreto.",
     "missing": "Bersaglio rimosso; nuova scelta al prossimo round.",
     "inactive": "Il copiatore o il bersaglio è inattivo.",
-    "rules": "Il bersaglio resta fisso nel round. Copia effetti e costi, non edizioni né catene di copie. Rimuoverlo o disattivarlo non seleziona un altro bersaglio."
+    "rules": "Il bersaglio resta fisso nel round. Copia effetti e costi, non Edizioni né catene di copie. Rimuoverlo o disattivarlo non seleziona un altro bersaglio."
   },
   "screenDownload": {
     "title": "Impossibile scaricare questa schermata",
@@ -345,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "Le modifiche alle tessere durano per tutta la partita, inclusi i round successivi. Una nuova partita riparte da zero.",
-    "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o mandarla nel fiume conserva lo spazio; distruggerla o cambiarne l’edizione lo rimuove.",
+    "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o mandarla nel fiume conserva lo spazio; distruggerla o cambiarne l’Edizione lo rimuove.",
     "overCapacity": "Capacità ridotta: conservi i Decreti posseduti. Libera spazio prima di acquisirne altri."
   },
   "yakuUpgrades": {
@@ -479,11 +483,11 @@
       },
       "polychrome_omen": {
         "name": "Presagio policromo",
-        "description": "Applica l’edizione Policroma a un Decreto casuale che possiedi."
+        "description": "Aggiunge un’Edizione Policroma a un Decreto casuale che possiedi."
       },
       "foil_omen": {
         "name": "Presagio laminato",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Laminata."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Laminata."
       },
       "interest_omen": {
         "name": "Presagio degli interessi",
@@ -503,7 +507,7 @@
       },
       "negative_omen": {
         "name": "Presagio negativo",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Negativa (+1 spazio)."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Negativa (+1 spazio)."
       },
       "austerity_omen": {
         "name": "Presagio dell’austerità",
@@ -511,7 +515,7 @@
       },
       "holographic_omen": {
         "name": "Presagio olografico",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Olografica."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Olografica."
       },
       "double_omen": {
         "name": "Presagio doppio",
@@ -535,23 +539,23 @@
       },
       "seal_of_harmony": {
         "name": "Sigillo dell’armonia",
-        "description": "Rende Jolly 1 tessera (conta come qualsiasi seme)"
+        "description": "Aggiunge un Marchio Jolly a 1 tessera a tua scelta (conta come ogni seme)"
       },
       "seal_of_fortitude": {
         "name": "Sigillo della fortezza",
-        "description": "Aggiunge un Marchio Acciaio a 1 tessera (×1,5 Mult finché resta sul leggio)"
+        "description": "Aggiunge un Marchio Acciaio a 1 tessera a tua scelta (×1,5 Mult finché resta sul leggio)"
       },
       "seal_of_glass": {
         "name": "Sigillo del vetro",
-        "description": "Aggiunge un Marchio Vetro a 1 tessera (×2 Mult quando segna punti, ma può rompersi)"
+        "description": "Aggiunge un Marchio Vetro a 1 tessera a tua scelta (×2 Mult quando segna punti, ma può rompersi)"
       },
       "seal_of_wealth": {
         "name": "Sigillo della ricchezza",
-        "description": "Aggiunge un Marchio Oro a 1 tessera (+3 Oro se è sul leggio quando il round finisce)"
+        "description": "Aggiunge un Marchio Oro a 1 tessera a tua scelta (+3 Oro se è sul leggio quando il round finisce)"
       },
       "seal_of_stone": {
         "name": "Sigillo della pietra",
-        "description": "Aggiunge un Marchio Pietra a 1 tessera (+100 Punti; senza numero né seme, non entra mai in un gruppo, segna sempre per intero)"
+        "description": "Aggiunge un Marchio Pietra a 1 tessera a tua scelta (+100 Punti; senza numero né seme, non entra mai in un gruppo, segna sempre per intero)"
       },
       "seal_of_manzu": {
         "name": "Sigillo dei Caratteri",
@@ -603,7 +607,7 @@
       },
       "seal_of_fortune": {
         "name": "Sigillo della fortuna",
-        "description": "Probabilità di 1 su 4 di dare a un Decreto casuale l’edizione Laminata, Olografica o Policroma"
+        "description": "Probabilità di 1 su 4 di dare a un Decreto casuale un’Edizione Laminata, Olografica o Policroma"
       },
       "seal_of_the_immortal": {
         "name": "Sigillo dell’immortale",
@@ -682,19 +686,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Sigillo d’Oro",
+        "name": "Timbro d’Oro",
         "description": "+3 Oro ogni volta che questa tessera segna punti."
       },
       "red": {
-        "name": "Sigillo Rosso",
+        "name": "Timbro Rosso",
         "description": "Questa tessera segna punti due volte."
       },
       "blue": {
-        "name": "Sigillo Blu",
+        "name": "Timbro Blu",
         "description": "Crea una Sfera Celeste casuale se questa tessera è nella giocata che supera il round."
       },
       "purple": {
-        "name": "Sigillo Viola",
+        "name": "Timbro Viola",
         "description": "Crea un Sigillo del Destino casuale quando questa tessera viene ripescata."
       }
     }
@@ -724,7 +728,7 @@
     "targets": "Tessere bersaglio",
     "count": "Bersagli: {{selected}} / {{required}}",
     "copyOrder": "La tessera 1 diventa una copia della tessera 2. Scegli prima quella da modificare.",
-    "replacesModifier": "Sostituisce {{names}}: una tessera ha un solo marchio, sigillo o edizione.",
+    "replacesModifier": "Sostituisce {{names}}: una tessera speciale ha un solo Marchio, Timbro o Edizione.",
     "cost": "Costo del Vuoto",
     "failed": "Impossibile usare questo oggetto.",
     "unavailable": "Questo oggetto non può essere usato ora.",
@@ -861,6 +865,9 @@
     "redrawSelected": "Ripesca le tessere selezionate",
     "redrawHint": "Restituisce fino a 3 tessere selezionate e ne pesca altrettante",
     "decreeDisabledByMandate": "Disattivato da Cuore Cremisi in questa mano",
+    "hiddenDecreeTitle": "Decreto nascosto",
+    "faceDownDecree": "Decreto a faccia in giù",
+    "hiddenDecreeDescription": "La Ghianda d’ambra nasconde questo Decreto e ne spegne il potere finché non vinci il round.",
     "season": "Stagione:",
     "endless": "Infinito",
     "wall": "Muro:",
@@ -999,7 +1006,21 @@
     "feltTiles": "Tessere da giocare",
     "collection": "I tuoi oggetti",
     "deadWallHint": "Scegli una sola tessera e scambiala con una del muro morto. Una volta per round, gratis.",
-    "turnsLabel": "Turni rimasti"
+    "turnsLabel": "Turni rimasti",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Compra un turno in più per {{cost}} oro",
+      "short": "Oro insufficiente: un turno in più costa {{cost}}",
+      "watchAd": "Guarda pubblicità",
+      "watchAdLabel": "Guarda una pubblicità per un turno in più",
+      "adPlaying": "Pubblicità in corso…",
+      "adIncomplete": "La pubblicità è stata chiusa prima: nessun turno extra.",
+      "adUnavailable": "Nessuna pubblicità disponibile al momento.",
+      "simulatedAd": "Pubblicità (simulata)",
+      "adCountdown": "La ricompensa sarà pronta tra {{seconds}} s",
+      "adReady": "Ricompensa pronta",
+      "adClaim": "Ottieni +1 turno"
+    }
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -1068,7 +1089,7 @@
       "nextRound": "Continua al prossimo round",
       "confirmPurchase": "Conferma acquisto",
       "purchasePrompt": "Acquistare {{name}} per {{cost}}G?",
-      "baseEdition": "Edizione base",
+      "standardCharter": "Standard",
       "goldBalance": "{{amount}} oro",
       "rerollsUsed": "Rimescolamenti usati: {{count}}",
       "forSale": "In vendita"
@@ -1076,11 +1097,12 @@
     "payout": {
       "interest": "Interessi",
       "decrees": "Decreti",
-      "goldTiles": "Tessere d’oro",
+      "goldTiles": "Tessere Oro",
       "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio"
+      "omen": "Presagio",
+      "stakeWithheld": "{{stake}}: questo round non paga la ricompensa di {{amount}}G"
     },
     "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
     "packInventoryFull": "Spazi Decreto insufficienti per questa selezione. Vendi un Decreto, scegline meno oppure salta il pacchetto.",
@@ -1128,7 +1150,7 @@
     "buyFor": "Compra · {{price}} oro",
     "help": {
       "what": "La Casa del Tè è il negozio tra un round e l’altro.",
-      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli agiscono subito (un Sigillo chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
+      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli del Destino agiscono subito (un Sigillo del Destino chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
       "interest": "L’oro che tieni frutta interessi: +1 ogni 5 posseduti a fine round, fino a +{{cap}}.",
       "cashOut": "La paga del round arriva nella borsa al tuo ingresso, un avviso per ogni fonte: il round superato, gli interessi, i Decreti, le tessere d’oro e gli affitti addebitati.",
       "build": "La tua configurazione mostra i tuoi Decreti accanto ai potenziamenti yaku: apri una pergamena per leggerne le regole o venderla, o un potenziamento per vederne il livello. Ogni acquisto avviene con il proprio pulsante Compra."
@@ -1165,7 +1187,7 @@
       },
       "satellite": {
         "name": "Satellite",
-        "description": "Alla fine di ogni round vinto, +1 Oro per ogni famiglia di mani che hai portato sopra il livello 1 con le Sfere."
+        "description": "Alla fine di ogni round vinto, +1 Oro per ogni famiglia di mani che hai portato sopra il livello 0 con le Sfere."
       },
       "swift_andy": {
         "name": "Andy Scattante",
@@ -1220,7 +1242,7 @@
         "description": "+5 Mult."
       },
       "decree-golden-seal": {
-        "name": "Sigillo dorato",
+        "name": "Insegne d'oro",
         "description": "+6 Mult."
       },
       "decree-manzu-master": {
@@ -1816,7 +1838,7 @@
         "description": "Tutti semplici (di norma solo tessere da 2 a 8) accetta anche 1 e 9. Venti e Draghi continuano a invalidarlo."
       },
       "moonlit_seal": {
-        "name": "Sigillo lunare",
+        "name": "Emblema lunare",
         "description": "Ogni Vento o Drago giocato aggiunge 0,1 al ×Mult di questo Decreto (tre danno ×1,3)."
       },
       "pure_suit_asceticism": {
@@ -1965,6 +1987,7 @@
     "windName": "Vento {{name}}",
     "flowerName": "Fiore {{name}}",
     "seasonName": "Stagione {{name}}",
+    "stoneName": "Tessera Pietra",
     "numberedRule": "Abbina tessere identiche per formare una coppia o un tris. Tre numeri consecutivi dello stesso seme formano una sequenza.",
     "honorRule": "Gli onori formano coppie o tris identici, non sequenze numeriche.",
     "basePoints": "{{points}} punti base prima di bonus dei gruppi, riduzioni e altri effetti.",
@@ -1988,9 +2011,10 @@
     "white": "Drago Bianco",
     "green": "Drago Verde",
     "red": "Drago Rosso",
-    "modifiers": "Modificatori:",
-    "tileModifiers": "Modificatori tessera",
-    "enhancement": "Potenziamento",
+    "modifiers": "Tessera speciale:",
+    "tileModifiers": "Tessera speciale",
+    "enhancement": "Marchio",
+    "stamp": "Timbro",
     "edition": "Edizione",
     "debuffed": "Tessera indebolita",
     "lockedMustPlay": "Tessera bloccata: va giocata",
@@ -2118,7 +2142,7 @@
         "description": "Perdi 1 Oro per ogni tessera giocata."
       },
       "the_mark": {
-        "name": "Il Marchio",
+        "name": "Il Velo",
         "description": "Venti e Draghi vengono pescati a faccia in giù"
       },
       "the_manacle": {
@@ -2127,7 +2151,7 @@
       },
       "amber_acorn": {
         "name": "Ghianda d’ambra",
-        "description": "Tutti i Decreti vengono mescolati e girati a faccia in giù"
+        "description": "Metà dei tuoi Decreti, scelti a caso, sono nascosti e disattivati"
       },
       "verdant_leaf": {
         "name": "Foglia verdeggiante",
@@ -2166,6 +2190,8 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
+      "bossTargets": "Obiettivi del boss: più alti del {{percent}} dall’Atto {{act}}.",
+      "emergencyTurn": "Turni di emergenza dall’Atto {{act}}: all’ultimo turno, compra un turno in più con l’oro ({{cost}} oro nell’Atto {{act}}, {{nextCost}} nell’Atto {{nextAct}} e così via; raddoppia per ogni turno comprato nello stesso round).",
       "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Turni per round: −{{amount}}.",
       "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
@@ -2241,7 +2267,7 @@
       "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna aggiunge +2 al Mult, +4 dentro un gruppo. Non possono formare scale."
     },
     "bonus_tiles": {
-      "p1": "Le <0>tessere bonus</0> sono tessere speciali che non fanno parte della mano:"
+      "p1": "Le <0>tessere bonus</0> sono tessere extra che non fanno parte della mano:"
     },
     "sequences": {
       "note1": "Quando peschi una tessera bonus viene scoperta subito e ne peschi una sostitutiva. Fiori e Stagioni danno bonus ed effetti crescenti!",
@@ -2369,7 +2395,8 @@
       "play": "fai punti con le tessere scelte: fino a {{max}}, o una mano di Mahjong completa.",
       "redraw": "manda nel fiume quante tessere scelte vuoi e pescane di nuove.",
       "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
-      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita."
+      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita.",
+      "emergency": "Dal {{stake}} in su, dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
     },
     "select": {
       "title": "Selezionare le tessere",
@@ -2491,15 +2518,15 @@
       },
       "tileMarks": {
         "name": "Marchi delle tessere",
-        "description": "Potenziamenti che modificano le proprietà delle tessere."
+        "description": "Marchi che cambiano come una tessera segna punti o si comporta."
       },
       "seals": {
-        "name": "Sigilli",
-        "description": "Sigilli speciali che aggiungono effetti alle tessere."
+        "name": "Timbri",
+        "description": "Timbri di ceralacca che danno a una tessera un effetto extra."
       },
       "editions": {
         "name": "Edizioni",
-        "description": "Varianti degli oggetti con aspetto ed effetti speciali."
+        "description": "Finiture scintillanti che aggiungono un effetto a una tessera o a un Decreto."
       },
       "packs": {
         "name": "Pacchetti benedizione",
@@ -2527,7 +2554,7 @@
       },
       "sharp_edge": {
         "name": "Bordo affilato",
-        "description": "Le edizioni compaiono il doppio delle volte"
+        "description": "Le Edizioni compaiono il doppio delle volte"
       },
       "reroll_surplus": {
         "name": "Rinnovi in riserva",
@@ -2587,7 +2614,7 @@
       },
       "radiant_edge": {
         "name": "Bordo radioso",
-        "description": "Le edizioni compaiono quattro volte più spesso"
+        "description": "Le Edizioni compaiono quattro volte più spesso"
       },
       "reroll_abundance": {
         "name": "Rinnovi in abbondanza",
@@ -2627,7 +2654,7 @@
       },
       "illusion_tiles": {
         "name": "Tessere illusorie",
-        "description": "Le tessere nella Casa del Tè possono avere edizioni"
+        "description": "Le tessere nella Casa del Tè possono avere Edizioni"
       },
       "stone_script": {
         "name": "Scritto di pietra",
@@ -2651,15 +2678,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Scritto della parentela",
-        "description": "Distrugge 1 tessera casuale e aggiunge 3 Venti o Draghi casuali, ognuno con un Marchio"
+        "description": "Distrugge 1 tessera casuale e aggiunge 3 Venti o Draghi casuali, ognuno con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_the_grave": {
         "name": "Scritto della tomba",
-        "description": "Distrugge 1 tessera casuale e aggiunge 2 tessere 1 o 9 casuali, ognuna con un Marchio"
+        "description": "Distrugge 1 tessera casuale e aggiunge 2 tessere 1 o 9 casuali, ognuna con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_incantation": {
         "name": "Scritto dell’incantesimo",
-        "description": "Distrugge 1 tessera casuale e aggiunge 4 tessere casuali da 2 a 8, ognuna con un Marchio"
+        "description": "Distrugge 1 tessera casuale e aggiunge 4 tessere casuali da 2 a 8, ognuna con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_immolation": {
         "name": "Scritto dell’immolazione",
@@ -2670,24 +2697,24 @@
         "description": "Crea 2 copie di 1 tessera del leggio a tua scelta"
       },
       "script_of_the_gold_seal": {
-        "name": "Scritto del Sigillo d’Oro",
-        "description": "Aggiunge un Sigillo d’Oro a 1 tessera a tua scelta (+3 Oro quando segna punti)"
+        "name": "Scritto del Timbro d’Oro",
+        "description": "Aggiunge un Timbro d’Oro a 1 tessera a tua scelta (+3 Oro quando segna punti)"
       },
       "script_of_deja_vu": {
         "name": "Scritto del déjà-vu",
-        "description": "Aggiunge un Sigillo Rosso a 1 tessera a tua scelta (segna punti due volte)"
+        "description": "Aggiunge un Timbro Rosso a 1 tessera a tua scelta (segna punti due volte)"
       },
       "script_of_the_trance": {
         "name": "Scritto della trance",
-        "description": "Aggiunge un Sigillo Blu a 1 tessera (crea una Sfera Celeste se la tessera è nella giocata che supera il round)"
+        "description": "Aggiunge un Timbro Blu a 1 tessera a tua scelta (crea una Sfera Celeste se la tessera è nella giocata che supera il round)"
       },
       "script_of_the_medium": {
         "name": "Scritto del medium",
-        "description": "Aggiunge un Sigillo Viola a 1 tessera (crea un Sigillo del Destino quando ripescata)"
+        "description": "Aggiunge un Timbro Viola a 1 tessera selezionata (crea un Sigillo del Destino quando viene ripescata)."
       },
       "script_of_aura": {
         "name": "Scritto dell’aura",
-        "description": "Dà a 1 tessera a tua scelta un’edizione casuale: Laminata, Olografica o Policroma"
+        "description": "Dà a 1 tessera a tua scelta un’Edizione casuale: Laminata, Olografica o Policroma"
       },
       "script_of_the_wraith": {
         "name": "Scritto dello spettro",
@@ -2699,7 +2726,7 @@
       },
       "script_of_the_hex": {
         "name": "Scritto della maledizione",
-        "description": "Dà a un Decreto casuale l’edizione Policroma e distrugge tutti gli altri Decreti"
+        "description": "Dà a un Decreto casuale l’Edizione Policroma e distrugge tutti gli altri Decreti"
       },
       "script_of_the_sigil": {
         "name": "Scritto del simbolo",
@@ -2731,7 +2758,7 @@
       },
       "script_of_ectoplasm": {
         "name": "Scritto dell’ectoplasma",
-        "description": "Aggiunge l’edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
+        "description": "Aggiunge un’Edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
       }
     }
   },
@@ -2883,15 +2910,15 @@
       },
       "tile_normal": {
         "name": "Pacchetto di Tessere",
-        "description": "Scegli 1 fra 3 tessere modificate."
+        "description": "Scegli 1 fra 3 tessere speciali."
       },
       "tile_jumbo": {
         "name": "Pacchetto Gigante di Tessere",
-        "description": "Scegli 2 fra 5 tessere modificate."
+        "description": "Scegli 2 fra 5 tessere speciali."
       },
       "tile_mega": {
         "name": "Megapacchetto di Tessere",
-        "description": "Scegli 3 fra 6 tessere modificate."
+        "description": "Scegli 3 fra 6 tessere speciali."
       },
       "decree_normal": {
         "name": "Pacchetto di Decreti",
@@ -3157,9 +3184,9 @@
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",
     "specialTitle": "Tessere speciali",
-    "specialHelp": "Una cornice colorata con gemma è un marchio, un timbro di ceralacca è un sigillo e uno scintillio è un’edizione. Una tessera ne può avere solo uno.",
+    "specialHelp": "Una tessera speciale ha un effetto extra: un Marchio (cornice colorata con gemma), un Timbro (impronta di ceralacca) o un’Edizione (scintillio).",
     "marks": "Marchi",
-    "seals": "Sigilli",
+    "seals": "Timbri",
     "editions": "Edizioni",
     "close": "Giochiamo"
   },
@@ -3186,7 +3213,7 @@
     "tiles_face_down_after_play": "Nuove tessere coperte",
     "fixed_draw_count": "Peschi sempre {{count}}",
     "honor_tiles_face_down": "Onori coperti",
-    "shuffle_decrees": "Decreti nascosti",
+    "hide_half_decrees": "Metà dei Decreti spenti",
     "debuff_until_sell": "Tutte le tessere valgono 0 finché non vendi un Decreto",
     "disable_random_decree": "1 Decreto spento per giocata",
     "lock_random_tile": "Una tessera si blocca a ogni pescata"
@@ -3263,5 +3290,31 @@
   "orbReveal": {
     "used": "Sfera Celeste usata",
     "title": "{{name}} usata: yaku potenziato"
+  },
+  "omenReveal": {
+    "title": "Presagio ottenuto: {{name}}",
+    "swiftClear": "Vittoria lampo",
+    "cleared": "{{round}} superato",
+    "spareTurns_one": "{{formattedCount}} turno di avanzo",
+    "spareTurns_other": "{{formattedCount}} turni di avanzo",
+    "earned": "Presagio ottenuto",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copiato dal Presagio doppio: ×{{amount}}",
+    "when": "Quando agisce",
+    "timing": {
+      "shop": "Adesso, in questa Casa del Tè. Il suo effetto è già sulle offerte.",
+      "round": "All’inizio del prossimo round.",
+      "hand": "Sulla tua prossima mano che segna punti.",
+      "voidScript": "La prossima volta che usi uno Scritto del Vuoto.",
+      "now": "Subito. È già stato applicato.",
+      "run": "Su ogni mano che segna punti per il resto della partita.",
+      "nextOmen": "Quando otterrai il tuo prossimo Presagio."
+    },
+    "rail": {
+      "waits": "Fino ad allora aspetta sul tavolo con i tuoi oggetti.",
+      "stays": "Resta sul tavolo con i tuoi oggetti."
+    },
+    "tradeoff": "Contropartita",
+    "rule": "Supera un Round Piccolo o Grande con {{spare}} o più turni di avanzo per ottenere un Presagio. I Round Boss non ne danno."
   }
 }

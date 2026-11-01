@@ -153,7 +153,7 @@ export const FATE_SEALS: Record<
     sellValue: 1,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Chip Bonus Mark to 2 tiles',
+      description: 'Apply Bonus Mark to 2 tiles',
       tileCount: 2,
       enhancement: EnhancementType.Bonus,
       requiresSelection: true,
@@ -167,14 +167,15 @@ export const FATE_SEALS: Record<
     type: 'FateSeal',
     name: 'Seal of Harmony',
     japaneseName: '和の印',
-    description: 'Makes 1 tile Wild (it counts as any suit)',
+    description:
+      'Adds a Wild Mark to 1 tile you choose (it counts as every suit)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'convert_to_wild',
-      description: 'Make 1 tile wild',
+      description: 'Apply Wild Mark to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Wild,
       requiresSelection: true,
@@ -189,7 +190,7 @@ export const FATE_SEALS: Record<
     name: 'Seal of Fortitude',
     japaneseName: '剛の印',
     description:
-      'Adds a Steel Mark to 1 tile (×1.5 Mult while it stays on your rack)',
+      'Adds a Steel Mark to 1 tile you choose (×1.5 Mult while it stays on your rack)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -211,7 +212,7 @@ export const FATE_SEALS: Record<
     name: 'Seal of Glass',
     japaneseName: '硝子の印',
     description:
-      'Adds a Glass Mark to 1 tile (×2 Mult when scored, but it may shatter)',
+      'Adds a Glass Mark to 1 tile you choose (×2 Mult when scored, but it may shatter)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -233,7 +234,7 @@ export const FATE_SEALS: Record<
     name: 'Seal of Wealth',
     japaneseName: '富の印',
     description:
-      'Adds a Gold Mark to 1 tile (+3 Gold if it is on your rack when the round ends)',
+      'Adds a Gold Mark to 1 tile you choose (+3 Gold if it is on your rack when the round ends)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -255,7 +256,7 @@ export const FATE_SEALS: Record<
     name: 'Seal of Stone',
     japaneseName: '石の印',
     description:
-      'Adds a Stone Mark to 1 tile (+100 Points; no number or suit, never joins a group, always scores in full)',
+      'Adds a Stone Mark to 1 tile you choose (+100 Points; no number or suit, never joins a group, always scores in full)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -556,14 +557,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Fortune',
     japaneseName: '運命の印',
     description:
-      '1 in 4 chance to give a random Decree the Foil, Holographic or Polychrome edition',
+      '1 in 4 chance to give a random Decree a Foil, Holographic or Polychrome Edition',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_edition',
-      description: '25% chance to add edition to Decree',
+      description: '25% chance to add an Edition to a Decree',
     },
     mahjongTwist: 'Wheel of fate spins',
   },

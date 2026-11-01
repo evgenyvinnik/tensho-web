@@ -21,6 +21,8 @@ interface Props {
   empty?: ReactNode
   /** The tutorial's name for the cards. */
   tutorialTarget?: string
+  /** Lay the cards out three to a row on phones (the Tea House build). */
+  grid?: boolean
 }
 
 /**
@@ -35,6 +37,7 @@ export function SellableDecrees({
   completeConcealedHandsPlayed,
   empty,
   tutorialTarget,
+  grid = false,
 }: Props) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
@@ -50,7 +53,11 @@ export function SellableDecrees({
       {decrees.length ? (
         <div
           data-tutorial={tutorialTarget}
-          className="mt-1 flex flex-wrap gap-1.5 p-0.5 sm:gap-2"
+          className={
+            grid
+              ? 'shop-build-grid mt-1 sm:flex sm:flex-wrap sm:gap-2 sm:p-0.5'
+              : 'mt-1 flex flex-wrap gap-1.5 p-0.5 sm:gap-2'
+          }
         >
           {decrees.map((decree) => (
             <DecreeCardCompact

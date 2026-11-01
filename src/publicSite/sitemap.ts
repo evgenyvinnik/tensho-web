@@ -1,4 +1,4 @@
-export const PUBLIC_SITE_URL = 'https://evgenyvinnik.github.io/tensho-web/'
+export const PUBLIC_SITE_URL = 'https://tensho.app/'
 const escape = (text: string) =>
   text.replace(
     /[&<>"']/g,

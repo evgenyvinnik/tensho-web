@@ -35,7 +35,7 @@ const DEFAULT_SEO: Required<PageSEO> = {
 }
 
 /** Base URL for the site */
-const BASE_URL = 'https://evgenyvinnik.github.io/tensho-web'
+const BASE_URL = 'https://tensho.app'
 
 /**
  * Updates a meta tag's content, creating it if it doesn't exist

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import i18n, { loadLanguage } from '../../i18n'
 import {
   Tile,
@@ -163,11 +163,13 @@ it('draws a marked tile whole from its finished artwork', () => {
   )
   showRankNumbers()
   const { container, rerender } = render(<TileImage tile={tile} />)
-  expect(screen.getByRole('img')).toHaveAccessibleName(/9/)
-  expect(container.querySelector('[data-tile-base-art]')).toHaveAttribute(
+  const face = screen.getByRole('img')
+  expect(face).toHaveAccessibleName(/9/)
+  expect(face).toHaveAttribute(
     'src',
     expect.stringMatching(/\/assets\/tiles\/gold\/pinzu_09\.webp$/)
   )
+  expect(face).toHaveAttribute('data-tile-face', 'finished')
   // No frame is laid over the finished tile.
   expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
   expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(0)
@@ -175,6 +177,26 @@ it('draws a marked tile whole from its finished artwork', () => {
   rerender(<TileImage tile={tile} faceDown />)
   expect(container.querySelector('img[src*="/tiles/gold/"]')).toBeNull()
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
+})
+
+it('leaves a plain face whole and sizes a marked tile the same way', () => {
+  const plain = new Tile(TileSuit.Pinzu, 2, 'two-dots')
+  const { container, rerender } = render(<TileImage tile={plain} />)
+  expect(container.querySelector('[data-tile-face]')).toBeNull()
+  expect(screen.getByRole('img')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/Dots \(2\)/)
+  )
+  expect(screen.getByRole('img')).toHaveClass('w-full', 'h-full')
+
+  rerender(<TileImage tile={plain.withEnhancement(EnhancementType.Bonus)} />)
+  const face = screen.getByRole('img')
+  expect(face).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/bonus\/pinzu_02\.webp$/)
+  )
+  expect(face).toHaveClass('w-full', 'h-full', 'object-contain')
+  expect(face).not.toHaveAttribute('style')
 })
 
 it('shows Stone as rankless artwork and never leaks its original face or rank hint', () => {
@@ -185,7 +207,11 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   })
   const { container } = render(<TileImage tile={tile} detailsVisible />)
   expect(screen.getByRole('img')).toHaveAccessibleName(
-    i18n.t('tileMarks.items.stone.name')
+    i18n.t('tileDetails.stoneName')
+  )
+  expect(container.querySelector('[data-tile-face="stone"]')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/stone\.webp$/)
   )
   expect(container.querySelector('[data-tile-base-art]')).toHaveAttribute(
     'src',
@@ -253,4 +279,87 @@ it('does not clip the seal to the front face', () => {
   )
   expect(container.querySelector('[data-tile-art-layer="seal"]')).not.toBeNull()
   expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
+})
+
+describe('touch long press', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  /** A tile inside a selecting button, as the rack and felt render it. */
+  const renderInButton = (tile: Tile, props = {}) => {
+    const onSelect = vi.fn()
+    render(
+      <button type="button" onClick={onSelect}>
+        <TileImage tile={tile} {...props} />
+      </button>
+    )
+    return { onSelect, face: screen.getByRole('img') }
+  }
+
+  const press = (
+    target: Element,
+    ms: number,
+    pointerType = 'touch',
+    drift = 0
+  ) => {
+    fireEvent.pointerDown(target, { pointerType, clientX: 10, clientY: 10 })
+    if (drift)
+      fireEvent.pointerMove(target, {
+        pointerType,
+        clientX: 10 + drift,
+        clientY: 10,
+      })
+    act(() => vi.advanceTimersByTime(ms))
+    fireEvent.pointerUp(target, { pointerType })
+    fireEvent.click(target, { detail: 1 })
+  }
+
+  it('shows the name and modifiers without selecting, until the next touch', () => {
+    const tile = new Tile(TileSuit.Pinzu, 3, 'held').withSeal(SealType.Purple)
+    const { onSelect, face } = renderInButton(tile)
+    press(face, 450)
+    const tooltip = screen.getByRole('tooltip')
+    expect(tooltip).toHaveTextContent(face.getAttribute('alt')!)
+    expect(tooltip).toHaveTextContent(i18n.t('archiveSeals.items.purple.name'))
+    expect(tooltip).toHaveTextContent(
+      i18n.t('archiveSeals.items.purple.description')
+    )
+    // The touch that showed the details does not also select.
+    expect(onSelect).not.toHaveBeenCalled()
+    // A new touch anywhere puts the details away and does what it touched.
+    fireEvent.pointerDown(document.body, { pointerType: 'touch' })
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    press(face, 50)
+    expect(onSelect).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+  })
+
+  it('keeps the browser menu off a held tile', () => {
+    const { face } = renderInButton(new Tile(TileSuit.Wind, 2, 'south'))
+    fireEvent.pointerDown(face, { pointerType: 'touch' })
+    expect(fireEvent.contextMenu(face)).toBe(false)
+    fireEvent.pointerUp(face, { pointerType: 'touch' })
+    fireEvent.pointerDown(face, { pointerType: 'mouse' })
+    expect(fireEvent.contextMenu(face)).toBe(true)
+  })
+
+  it.each([
+    ['a short tap', {}, 449, 'touch', 0],
+    ['a scroll that drifts', {}, 450, 'touch', 11],
+    ['a mouse held still', {}, 450, 'mouse', 0],
+    ['a tile without details', { showTooltip: false }, 450, 'touch', 0],
+    ['a face-down tile', { faceDown: true }, 450, 'touch', 0],
+  ] as const)(
+    'leaves %s as a plain tap',
+    (_, props, ms, pointerType, drift) => {
+      const { onSelect } = renderInButton(
+        new Tile(TileSuit.Souzu, 5, 'tap'),
+        props
+      )
+      const target = document.querySelector('button > div')!
+      press(target, ms, pointerType, drift)
+      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+      expect(onSelect).toHaveBeenCalledOnce()
+    }
+  )
 })

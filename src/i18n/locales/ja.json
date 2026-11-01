@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "通常の花",
+    "optionalEndless": "エンドレス（任意）"
+  },
   "codexReference": {
     "titleConcept": "ゲームの基本",
     "titleTilesOverview": "牌を知ろう",
@@ -185,7 +189,7 @@
     },
     "retrograde": {
       "name": "逆行",
-      "description": "役の系統のどれかをレベル10に上げる。"
+      "description": "役の系統のどれかをレベル9に上げる。"
     },
     "keeperOfWinds": {
       "name": "風の守り手",
@@ -331,7 +335,7 @@
     "waiting": "別の法令を待っています。",
     "missing": "対象が削除されました。次のラウンドで再選択します。",
     "inactive": "コピー元またはコピー先が無効です。",
-    "rules": "対象はラウンド中固定。効果とコストをコピーしますが、版やコピーの連鎖は対象外です。対象の削除や無効化で再抽選は行いません。"
+    "rules": "対象はラウンド中固定。効果とコストをコピーしますが、エディションやコピーの連鎖は対象外です。対象の削除や無効化で再抽選は行いません。"
   },
   "screenDownload": {
     "title": "この画面をダウンロードできませんでした",
@@ -437,7 +441,7 @@
     "targets": "対象の牌",
     "count": "対象：{{selected}} / {{required}}",
     "copyOrder": "牌1が牌2のコピーになります。変更する牌を先に選んでください。",
-    "replacesModifier": "{{names}}は置き換えられます。牌に付けられる印・封印・エディションは1つだけです。",
+    "replacesModifier": "{{names}}は置き換えられます。特殊な牌に付けられる紋・封蝋・エディションは1つだけです。",
     "cost": "虚無の代償",
     "failed": "このアイテムは使用できませんでした。",
     "unavailable": "このアイテムは今は使用できません。",
@@ -574,6 +578,9 @@
     "redrawSelected": "選択した牌を引き直す",
     "redrawHint": "選んだ牌を最大3枚戻して引き直します",
     "decreeDisabledByMandate": "この手は緋の心により無効",
+    "hiddenDecreeTitle": "伏せた法令",
+    "faceDownDecree": "伏せられた法令",
+    "hiddenDecreeDescription": "琥珀の実がこの法令を伏せ、ラウンドに勝つまでその力を封じている。",
     "season": "季節:",
     "endless": "エンドレス",
     "wall": "山:",
@@ -712,7 +719,21 @@
     "feltTiles": "出す牌",
     "collection": "所持品",
     "deadWallHint": "牌を1枚だけ選び、王牌の1枚と交換します。ラウンドに1回、手番を使いません。",
-    "turnsLabel": "残り手番"
+    "turnsLabel": "残り手番",
+    "emergencyTurn": {
+      "buy": "手番+1",
+      "label": "金{{cost}}で手番を1つ追加",
+      "short": "金が足りません：手番の追加には金{{cost}}が必要です",
+      "watchAd": "広告を見る",
+      "watchAdLabel": "広告を見て手番を1つ追加",
+      "adPlaying": "広告を再生中…",
+      "adIncomplete": "広告が途中で閉じられたため、手番は追加されません。",
+      "adUnavailable": "現在、表示できる広告がありません。",
+      "simulatedAd": "広告（シミュレーション）",
+      "adCountdown": "あと{{seconds}}秒で報酬を受け取れます",
+      "adReady": "報酬を受け取れます",
+      "adClaim": "手番+1を受け取る"
+    }
   },
   "rounds": {
     "small": "小局",
@@ -781,7 +802,7 @@
       "nextRound": "次の局へ進む",
       "confirmPurchase": "購入の確認",
       "purchasePrompt": "{{name}}を{{cost}}Gで購入しますか？",
-      "baseEdition": "基本版",
+      "standardCharter": "標準",
       "goldBalance": "所持金：{{amount}}",
       "rerollsUsed": "更新回数：{{count}}",
       "forSale": "販売中"
@@ -789,11 +810,12 @@
     "payout": {
       "interest": "利息",
       "decrees": "法令",
-      "goldTiles": "金の牌",
+      "goldTiles": "黄金の牌",
       "bonus": "報酬調整",
       "rentals": "レンタル料",
       "omenEarned": "兆し：{{name}}",
-      "omen": "兆し"
+      "omen": "兆し",
+      "stakeWithheld": "{{stake}}：このラウンドの報酬{{amount}}Gは支払われません"
     },
     "packChoices": "{{count}} 個の報酬から最大 {{max}} 個を選択",
     "packInventoryFull": "この選択に必要な法令枠が足りません。法令を売却するか、選ぶ数を減らすか、パックをスキップしてください。",
@@ -841,9 +863,9 @@
     "buyFor": "購入・{{price}}金",
     "help": {
       "what": "茶寮はラウンドの合間の店です。",
-      "buy": "品物をタップすると効果が表示され、購入で買えます。法令はルールを変え、天球と印はすぐに効果を発揮し（印は山のどの牌を変えるか選びます）、虚無の書はラウンド中に使い、パックは報酬を選べ、勅許状はラン全体を強化します。",
+      "buy": "品物をタップすると効果が表示され、購入で買えます。法令はルールを変え、天球と運命の印はすぐに効果を発揮し（運命の印は山のどの牌を変えるか選びます）、虚無の書はラウンド中に使い、パックは報酬を選べ、勅許状はラン全体を強化します。",
       "interest": "手元の金貨には利息が付きます：ラウンド終了時に5金ごとに+1（最大+{{cap}}）。",
-      "cashOut": "入店すると前のラウンドの報酬が財布に入ります。局クリア・利息・法令・金の牌・レンタル料など、内訳ごとに通知が出ます。",
+      "cashOut": "入店すると前のラウンドの報酬が財布に入ります。局クリア・利息・法令・黄金の牌・レンタル料など、内訳ごとに通知が出ます。",
       "build": "「あなたの構成」には所持法令と役の強化が並びます。巻物を開くと効果の確認や売却が、強化を開くとレベルの確認ができます。購入はそれぞれの購入ボタンで行います。"
     },
     "sealUsed": "{{name}}を使用",
@@ -878,7 +900,7 @@
       },
       "satellite": {
         "name": "衛星",
-        "description": "勝利した各ラウンドの終了時、天球でレベル1を超えて強化した役の系統ごとに金貨+1。"
+        "description": "勝利した各ラウンドの終了時、天球でレベル0を超えて強化した役の系統ごとに金貨+1。"
       },
       "swift_andy": {
         "name": "俊足のアンディ",
@@ -941,7 +963,7 @@
         "description": "+5倍率"
       },
       "decree-golden-seal": {
-        "name": "金印",
+        "name": "金璽",
         "description": "+6倍率"
       },
       "decree-manzu-master": {
@@ -1521,7 +1543,7 @@
         "description": "断幺九（通常は2〜8の牌のみ）に1と9も使える。風牌と三元牌は引き続き成立を妨げる。"
       },
       "moonlit_seal": {
-        "name": "月光の封",
+        "name": "月光の徽章",
         "description": "打った風牌・三元牌1枚につき、この法令の×倍率が0.1増える（3枚で×1.3）。"
       },
       "pure_suit_asceticism": {
@@ -1678,6 +1700,7 @@
     "windName": "{{name}}風",
     "flowerName": "{{name}}の花牌",
     "seasonName": "{{name}}の季節牌",
+    "stoneName": "石の牌",
     "numberedRule": "同じ牌で対子や刻子を作れます。同じ種類の連続する3つの数字で順子を作れます。",
     "honorRule": "字牌は同じ牌で対子や刻子を作れますが、数字の順子にはなりません。",
     "basePoints": "グループボーナス、減点、その他の効果を適用する前の基本点：{{points}}。",
@@ -1701,9 +1724,10 @@
     "white": "白",
     "green": "發",
     "red": "中",
-    "modifiers": "修飾:",
-    "tileModifiers": "牌の修飾",
-    "enhancement": "強化",
+    "modifiers": "特殊な牌:",
+    "tileModifiers": "特殊な牌",
+    "enhancement": "紋",
+    "stamp": "封蝋",
     "edition": "エディション",
     "debuffed": "弱体化した牌",
     "lockedMustPlay": "ロック牌: 必ず打つ必要があります",
@@ -1725,7 +1749,7 @@
     "shortfall": "不足点",
     "remainingGold": "残りの金",
     "rentalPaid": "レンタル料",
-    "defeatIncome": "敗北時もレンタル料は発生しますが、ラウンド報酬、利息、法令や手元の金の牌による収入は得られません。",
+    "defeatIncome": "敗北時もレンタル料は発生しますが、ラウンド報酬、利息、法令や手元の黄金の牌による収入は得られません。",
     "endlessComplete": "無限の登頂終了",
     "victorySubtitle": "第{{act}}幕の決戦に勝利しました。この勝利は記録されています。",
     "endlessSubtitle": "今回の登頂は終わりましたが、勝利の記録は残ります。",
@@ -1841,7 +1865,7 @@
         "description": "打った牌1枚につき金貨1枚を失う"
       },
       "the_mark": {
-        "name": "印",
+        "name": "帳",
         "description": "風牌と三元牌は伏せて引かれる"
       },
       "the_manacle": {
@@ -1850,7 +1874,7 @@
       },
       "amber_acorn": {
         "name": "琥珀の実",
-        "description": "すべての法令が伏せられ、順序が入れ替わる"
+        "description": "無作為に選ばれた法令の半分が伏せられ、無効になる"
       },
       "verdant_leaf": {
         "name": "翠の葉",
@@ -1879,6 +1903,8 @@
     "rules": {
       "base": "基本難度：追加のペナルティはありません。",
       "noSmallRoundReward": "小ラウンドでは報酬の金を獲得できません。",
+      "bossTargets": "第{{act}}幕から、ボスの目標点が{{percent}}上がります。",
+      "emergencyTurn": "第{{act}}幕から緊急手番：最後の手番で金を払って手番を1つ追加できます（第{{act}}幕は金{{cost}}、第{{nextAct}}幕は金{{nextCost}}と上がり、同じラウンドで追加するたびに2倍）。",
       "scoreScaling": "目標点は第1幕では白場と同じで、幕ごとに上がり、第{{act}}幕以降は白場の{{multiplier}}倍。卓の補正も適用されます。",
       "redrawPenalty": "ラウンドごとの手番：−{{amount}}。",
       "eternalChance": "店の法令は{{chance}}の確率で永劫付きになります（売却・破壊不可）。",
@@ -1954,7 +1980,7 @@
       "p5": "三元牌は<1>字牌</1>で<4>15点</4>。得点した三元牌1枚ごとに倍率+2、組の中なら+4。順子は作れません。"
     },
     "bonus_tiles": {
-      "p1": "<0>ボーナス牌</0>は手牌の一部にはならない特別な牌です。"
+      "p1": "<0>ボーナス牌</0>は手牌の一部にはならない追加の牌です。"
     },
     "sequences": {
       "note1": "ボーナス牌を引くと即座に公開され、代わりの牌を引きます。花牌と季節牌は伸びる加点や効果をもたらします。",
@@ -2082,7 +2108,8 @@
       "play": "選んだ牌で得点します。最大{{max}}枚、または和了形一式。",
       "redraw": "選んだ牌を何枚でも河へ送り、新しい牌を引きます。",
       "p2": "手番が尽きる前に目標点へ届かせましょう。最後の手番は必ず役の提出です。アイテムで手番を使わない無料の引き直しを得られます。",
-      "warning": "目標点に届かないまま手番が尽きると、ランは終了です。"
+      "warning": "目標点に届かないまま手番が尽きると、ランは終了です。",
+      "emergency": "{{stake}}以上では、第{{act}}幕から最後の手番で金を払って手番を1つ追加できます。価格は幕ごとに上がり、同じラウンドで追加するたびに2倍になります。"
     },
     "select": {
       "title": "牌の選び方",
@@ -2506,35 +2533,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "錬金術師の符",
-        "description": "選んだ牌2枚に幸運の印（得点時に一定確率で倍率+20か金貨+20）を付ける"
+        "description": "選んだ牌2枚に幸運の紋（計上時に一定確率で倍率+20か金貨+20）を付ける"
       },
       "seal_of_the_empress": {
         "name": "女帝の符",
-        "description": "選んだ牌2枚に倍率の印（得点時に倍率+4）を付ける"
+        "description": "選んだ牌2枚に倍率の紋（計上時に倍率+4）を付ける"
       },
       "seal_of_the_sage": {
         "name": "賢者の符",
-        "description": "選んだ牌2枚に加点の印（得点時に点数+30）を付ける"
+        "description": "選んだ牌2枚に加点の紋（計上時に点数+30）を付ける"
       },
       "seal_of_harmony": {
         "name": "調和の符",
-        "description": "牌1枚を万能牌にする（どの種類としても数える）"
+        "description": "選んだ牌1枚に万能の紋を付ける（すべての種類として数える）"
       },
       "seal_of_fortitude": {
         "name": "剛毅の符",
-        "description": "牌1枚に鋼の印を付ける（手牌に残している間、倍率×1.5）"
+        "description": "選んだ牌1枚に鋼の紋を付ける（手牌に残している間、倍率×1.5）"
       },
       "seal_of_glass": {
         "name": "硝子の符",
-        "description": "牌1枚に硝子の印を付ける（得点時に倍率×2、ただし砕けることがある）"
+        "description": "選んだ牌1枚に硝子の紋を付ける（計上時に倍率×2、ただし砕けることがある）"
       },
       "seal_of_wealth": {
         "name": "富貴の符",
-        "description": "牌1枚に黄金の印を付ける（ラウンド終了時に手牌にあれば金貨+3）"
+        "description": "選んだ牌1枚に黄金の紋を付ける（ラウンド終了時に手牌にあれば金貨+3）"
       },
       "seal_of_stone": {
         "name": "石の符",
-        "description": "牌1枚に石の印を付ける（点数+100。数字も種類もなく、どの面子にも入らず、常に満額で得点）"
+        "description": "選んだ牌1枚に石の紋を付ける（+100点、色も数字もなくどの組にも入らない、常に満額で計上）"
       },
       "seal_of_manzu": {
         "name": "萬子の符",
@@ -2590,7 +2617,7 @@
       },
       "seal_of_fortune": {
         "name": "僥倖の符",
-        "description": "1/4の確率で、無作為な法令1つに箔・幻影・多彩のいずれかのエディションを付ける"
+        "description": "1/4の確率で無作為な法令に箔・幻影・多彩のいずれかのエディションを付ける"
       },
       "seal_of_the_immortal": {
         "name": "不死の符",
@@ -2606,15 +2633,15 @@
     "items": {
       "script_of_kinship": {
         "name": "縁の文",
-        "description": "無作為な牌1枚を破壊し、印付きの風牌か三元牌を無作為に3枚加える"
+        "description": "無作為な牌1枚を破壊し、風牌か三元牌を無作為に3枚加える（それぞれに加点・倍率・幸運のいずれかの紋が無作為に付く）"
       },
       "script_of_the_grave": {
         "name": "墓の文",
-        "description": "無作為な牌1枚を破壊し、印付きの1か9の牌を無作為に2枚加える"
+        "description": "無作為な牌1枚を破壊し、1か9の牌を無作為に2枚加える（それぞれに加点・倍率・幸運のいずれかの紋が無作為に付く）"
       },
       "script_of_incantation": {
         "name": "呪文の文",
-        "description": "無作為な牌1枚を破壊し、印付きの2〜8の牌を無作為に4枚加える"
+        "description": "無作為な牌1枚を破壊し、2〜8の牌を無作為に4枚加える（それぞれに加点・倍率・幸運のいずれかの紋が無作為に付く）"
       },
       "script_of_immolation": {
         "name": "焼身の文",
@@ -2625,20 +2652,20 @@
         "description": "手牌から選んだ1枚の複製を2枚作る"
       },
       "script_of_the_gold_seal": {
-        "name": "金印の文",
-        "description": "選んだ牌1枚に金の封を付ける（得点時に金貨+3）"
+        "name": "金封蝋の文",
+        "description": "選んだ牌1枚に金の封蝋を付ける（得点するたびに金貨+3）"
       },
       "script_of_deja_vu": {
         "name": "既視の文",
-        "description": "選んだ牌1枚に赤の封を付ける（2回得点する）"
+        "description": "選んだ牌1枚に赤の封蝋を付ける（2回得点する）"
       },
       "script_of_the_trance": {
         "name": "恍惚の文",
-        "description": "牌1枚に青の封を付ける（ラウンドを突破する打牌にその牌が含まれていれば天球を生む）"
+        "description": "選んだ牌1枚に青の封蝋を付ける（この牌を含む手で局を突破すると天球を生む）"
       },
       "script_of_the_medium": {
         "name": "霊媒の文",
-        "description": "牌1枚に紫の封を付ける（引き直すと運命の印を作る）"
+        "description": "選んだ牌1枚に紫の封蝋を付ける（引き直すと運命の印を作る）"
       },
       "script_of_aura": {
         "name": "霊気の文",
@@ -2646,7 +2673,7 @@
       },
       "script_of_ectoplasm": {
         "name": "霊質の文",
-        "description": "無作為な法令に負影を付ける（法令枠+1）"
+        "description": "無作為な法令に負影エディションを付ける（法令枠+1）"
       },
       "script_of_the_wraith": {
         "name": "亡霊の文",
@@ -2658,7 +2685,7 @@
       },
       "script_of_the_hex": {
         "name": "呪詛の文",
-        "description": "無作為な法令1つに多彩のエディションを付け、他の法令をすべて破壊する"
+        "description": "無作為な法令に多彩エディションを付け、他の法令をすべて破壊する"
       },
       "script_of_the_sigil": {
         "name": "印形の文",
@@ -2718,19 +2745,19 @@
       },
       "consumables": {
         "name": "消耗品",
-        "description": "使い切りの品：運命符・天球・虚空文"
+        "description": "使い切りの品：運命の印・天球・虚空文"
       },
       "tileMarks": {
-        "name": "牌印",
-        "description": "牌の挙動を変える強化の種類"
+        "name": "牌紋",
+        "description": "牌の得点や挙動を変える紋"
       },
       "seals": {
-        "name": "封印",
-        "description": "牌に効果を加える特別な封"
+        "name": "封蝋",
+        "description": "牌に押され、追加の効果を与える封蝋"
       },
       "editions": {
-        "name": "版",
-        "description": "品物の見た目と効果の変種"
+        "name": "エディション",
+        "description": "牌や法令に効果を加える、きらめく仕上げ"
       },
       "packs": {
         "name": "祝福袋",
@@ -2813,35 +2840,35 @@
   "tileMarks": {
     "items": {
       "bonus": {
-        "name": "加点の印",
+        "name": "加点の紋",
         "description": "牌が追加得点を得る。計上時に+30点"
       },
       "mult": {
-        "name": "倍率の印",
+        "name": "倍率の紋",
         "description": "牌が倍率を加える。計上時に+4倍率"
       },
       "wild": {
-        "name": "万能の印",
+        "name": "万能の紋",
         "description": "役の判定も含め、どの種類としても数える"
       },
       "glass": {
-        "name": "硝子の印",
+        "name": "硝子の紋",
         "description": "脆いが強力。計上時に倍率×2。1/4の確率で砕ける"
       },
       "steel": {
-        "name": "鋼の印",
+        "name": "鋼の紋",
         "description": "打たずに手牌に残している間、倍率×1.5"
       },
       "stone": {
-        "name": "石の印",
+        "name": "石の紋",
         "description": "+100点。色も数字もない牌で、どの組にも入らないが、常に満額で計上される"
       },
       "gold": {
-        "name": "黄金の印",
+        "name": "黄金の紋",
         "description": "ラウンド終了時にまだ手牌にあれば金貨+3"
       },
       "lucky": {
-        "name": "幸運の印",
+        "name": "幸運の紋",
         "description": "計上時：1/5の確率で倍率+20、1/15の確率で金貨+20"
       }
     }
@@ -2849,19 +2876,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "金の封",
+        "name": "金の封蝋",
         "description": "この牌が得点するたびに金貨+3"
       },
       "red": {
-        "name": "赤の封",
+        "name": "赤の封蝋",
         "description": "この牌は2回得点する"
       },
       "blue": {
-        "name": "青の封",
+        "name": "青の封蝋",
         "description": "この牌を含む手で局を突破すると、ランダムな天球を生成する。"
       },
       "purple": {
-        "name": "紫の封",
+        "name": "紫の封蝋",
         "description": "この牌を引き直すと、ランダムな運命の印を作る。"
       }
     }
@@ -2894,15 +2921,15 @@
     "items": {
       "arcana_normal": {
         "name": "秘儀の袋",
-        "description": "運命符3つから1つを選ぶ"
+        "description": "運命の印3つから1つを選ぶ"
       },
       "arcana_jumbo": {
         "name": "大秘儀の袋",
-        "description": "運命符5つから2つを選ぶ"
+        "description": "運命の印5つから2つを選ぶ"
       },
       "arcana_mega": {
         "name": "特大秘儀の袋",
-        "description": "運命符6つから3つを選ぶ"
+        "description": "運命の印6つから3つを選ぶ"
       },
       "celestial_normal": {
         "name": "天球の袋",
@@ -2918,15 +2945,15 @@
       },
       "tile_normal": {
         "name": "牌の袋",
-        "description": "加工された牌3枚から1枚を選ぶ"
+        "description": "特殊な牌3枚から1枚を選ぶ"
       },
       "tile_jumbo": {
         "name": "大牌の袋",
-        "description": "加工された牌5枚から2枚を選ぶ"
+        "description": "特殊な牌5枚から2枚を選ぶ"
       },
       "tile_mega": {
         "name": "特大牌の袋",
-        "description": "加工された牌6枚から3枚を選ぶ"
+        "description": "特殊な牌6枚から3枚を選ぶ"
       },
       "decree_normal": {
         "name": "法令の袋",
@@ -2962,7 +2989,7 @@
         "description": "深紅の漆と金の竜が三元牌を軸にした戦略を後押しするが、法令を置く余地は少ない。",
         "unlock": "赤場以上で勝利する",
         "modifiers": {
-          "0": "初期の三元牌に倍率の印が付く（計上時に+4倍率）",
+          "0": "初期の三元牌に倍率の紋が付く（計上時に+4倍率）",
           "1": "初期法令スロット−1"
         }
       },
@@ -2972,7 +2999,7 @@
         "description": "暗い石と銀の風の彫刻が風牌を軸にした戦略に報いるが、法令を置く余地は少ない。",
         "unlock": "黒場以上で勝利する",
         "modifiers": {
-          "0": "初期の風牌に加点の印が付く（計上時に+30点）",
+          "0": "初期の風牌に加点の紋が付く（計上時に+30点）",
           "1": "初期法令スロット−1"
         }
       },
@@ -3157,9 +3184,9 @@
     "tilesHelp": "萬子は漢数字の一〜九、筒子と索子は数で表します（索子の1は鳥）。牌の数字表示は設定でオンにできます。",
     "honorsHelp": "風牌は1枚{{wind}}点、面子の中なら{{windGroup}}点。三元牌1枚ごとに倍率+{{dragon}}、面子の中なら+{{dragonGroup}}。",
     "specialTitle": "特殊な牌",
-    "specialHelp": "宝石付きの色枠は印、封蝋は封印、きらめきはエディションです。1枚の牌に付けられるのはどれか1つだけです。",
-    "marks": "印",
-    "seals": "封印",
+    "specialHelp": "特殊な牌は追加の効果を1つだけ持ちます。紋（宝石付きの色枠）、封蝋（蝋のスタンプ）、エディション（きらめき）のいずれかです。",
+    "marks": "紋",
+    "seals": "封蝋",
     "editions": "エディション",
     "close": "遊ぶ"
   },
@@ -3186,7 +3213,7 @@
     "tiles_face_down_after_play": "新しい牌は伏せ牌",
     "fixed_draw_count": "常に{{count}}枚引く",
     "honor_tiles_face_down": "字牌は伏せ牌",
-    "shuffle_decrees": "法令が隠される",
+    "hide_half_decrees": "法令の半分が無効",
     "debuff_until_sell": "法令を売るまで全牌0点",
     "disable_random_decree": "打つたび法令1つ無効",
     "lock_random_tile": "引くたび1枚固定"
@@ -3214,7 +3241,7 @@
     },
     "Tanyao": {
       "name": "断幺九",
-      "covers": "2〜8の牌だけで組を作る打牌（1・9・風牌・三元牌を含まない。石の印の牌は判定に影響しない）と、断幺九（2〜8の牌だけでできた和了形）。"
+      "covers": "2〜8の牌だけで組を作る打牌（1・9・風牌・三元牌を含まない。石の牌は判定に影響しない）と、断幺九（2〜8の牌だけでできた和了形）。"
     },
     "Honitsu": {
       "name": "混一色",
@@ -3263,5 +3290,31 @@
   "orbReveal": {
     "used": "天球を使用",
     "title": "{{name}}を使用：役を強化"
+  },
+  "omenReveal": {
+    "title": "兆しを獲得：{{name}}",
+    "swiftClear": "速攻クリア",
+    "cleared": "{{round}}をクリア",
+    "spareTurns_one": "手番{{formattedCount}}回を残す",
+    "spareTurns_other": "手番{{formattedCount}}回を残す",
+    "earned": "兆しを獲得",
+    "copies": "×{{amount}}",
+    "copiesNote": "双子の兆で複製：×{{amount}}",
+    "when": "効果のタイミング",
+    "timing": {
+      "shop": "今すぐ、この茶寮で。効果はすでに商品に反映されている。",
+      "round": "次のラウンドの開始時。",
+      "hand": "次に計上する手で。",
+      "voidScript": "次に虚無の書を使う時。",
+      "now": "即座に。すでに適用済み。",
+      "run": "ラン終了まで、計上するすべての手で。",
+      "nextOmen": "次の兆しを獲得した時。"
+    },
+    "rail": {
+      "waits": "それまでは卓の所持品に置かれる。",
+      "stays": "卓の所持品に置かれ続ける。"
+    },
+    "tradeoff": "代償",
+    "rule": "小局か大局を手番{{spare}}回以上残してクリアすると兆しを得る。親局では得られない。"
   }
 }

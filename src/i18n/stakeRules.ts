@@ -1,9 +1,15 @@
 import type { TFunction } from 'i18next'
 import {
   calculateCombinedModifiers,
+  STAKE_BOSS_TARGET_FIRST_ACT,
   STAKE_SCALING_FULL_ACT,
   STICKER_DEFINITIONS,
 } from '../config/stakeDefinitions'
+import {
+  EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
+  emergencyTurnCost,
+} from '../game/playRules'
 
 export const STAKE_NAME_KEYS = [
   'white',
@@ -31,6 +37,24 @@ export function getStakeRules(
   const rules: string[] = []
   if (modifiers.noSmallRoundReward)
     rules.push(t('stakes.rules.noSmallRoundReward'))
+  if (modifiers.bossTargetMultiplier !== 1)
+    rules.push(
+      t('stakes.rules.bossTargets', {
+        percent: percent.format(modifiers.bossTargetMultiplier - 1),
+        act: number.format(STAKE_BOSS_TARGET_FIRST_ACT),
+      })
+    )
+  if (tier >= EMERGENCY_TURN_FIRST_STAKE)
+    rules.push(
+      t('stakes.rules.emergencyTurn', {
+        act: number.format(EMERGENCY_TURN_FIRST_ACT),
+        cost: number.format(emergencyTurnCost(EMERGENCY_TURN_FIRST_ACT, 0)),
+        nextAct: number.format(EMERGENCY_TURN_FIRST_ACT + 1),
+        nextCost: number.format(
+          emergencyTurnCost(EMERGENCY_TURN_FIRST_ACT + 1, 0)
+        ),
+      })
+    )
   if (modifiers.scoreScaling !== 1)
     rules.push(
       t('stakes.rules.scoreScaling', {

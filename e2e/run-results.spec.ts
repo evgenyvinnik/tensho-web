@@ -81,6 +81,84 @@ async function prepareFinalPlay(
   )
 }
 
+test('victory artwork celebrates briefly without blocking the results', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await prepareFinalPlay(page, true)
+  const effects = page.locator('[data-result-celebration]')
+  await expect(effects).toBeAttached()
+  await expect(effects).toHaveCSS('pointer-events', 'none')
+  const timings = await effects.evaluate((node) => {
+    const animations = node.getAnimations({ subtree: true })
+    return animations.map((animation) => {
+      const timing = animation.effect!.getComputedTiming()
+      animation.pause()
+      animation.currentTime = 1400
+      return { endTime: timing.endTime, iterations: timing.iterations }
+    })
+  })
+  expect(timings).toHaveLength(8)
+  for (const timing of timings) {
+    expect(timing.endTime).toBeLessThan(5000)
+    expect(timing.iterations).toBe(1)
+  }
+  const dismissAchievement = page.getByRole('button', {
+    name: 'Close',
+    exact: true,
+  })
+  if (await dismissAchievement.isVisible()) await dismissAchievement.click()
+  await page.screenshot({
+    path: test.info().outputPath('victory-celebration.png'),
+  })
+  await effects.evaluate((node) => {
+    node
+      .getAnimations({ subtree: true })
+      .forEach((animation) => animation.finish())
+  })
+  await expect(effects.locator('span').first()).toHaveCSS('opacity', '0')
+  await expect(effects.locator('span').last()).toHaveCSS('opacity', '0')
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true)
+  await page
+    .getByRole('button', { name: 'Return to Menu', exact: true })
+    .click()
+  await expect(page).not.toHaveURL(/\/game-over$/)
+})
+
+for (const preference of ['system', 'game'] as const) {
+  test(`victory artwork stays still with ${preference} reduced motion`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({
+      reducedMotion: preference === 'system' ? 'reduce' : 'no-preference',
+    })
+    if (preference === 'game') {
+      await page.addInitScript(() => {
+        localStorage.setItem(
+          'tensho-settings',
+          JSON.stringify({
+            state: { reducedMotion: true },
+            version: 1,
+          })
+        )
+      })
+    }
+    await prepareFinalPlay(page, true)
+    const art = page.locator('[data-result-art]')
+    await expect
+      .poll(() => art.evaluate((img: HTMLImageElement) => img.naturalWidth))
+      .toBe(960)
+    await expect(page.locator('[data-result-celebration]')).toHaveCount(0)
+    await expect(
+      page.getByRole('button', { name: 'Return to Menu', exact: true })
+    ).toBeEnabled()
+  })
+}
+
 async function snapshot(page: Page) {
   return page.evaluate(async () => {
     const path = '/src/game/GameOrchestrator.ts'
@@ -144,6 +222,20 @@ test('Act 6 win settles once, unlocks the next Stake, and survives an Endless de
   const art = page.locator('[data-result-art]')
   await expect(art).toHaveAttribute('src', /results\/victory\.webp$/)
   await expect(art).toBeVisible()
+  const comparison = page.locator('[data-journey-comparison]')
+  await expect(comparison).not.toHaveAttribute('open')
+  await comparison.locator('summary').click()
+  const journeyArt = comparison.locator('[data-teaching-art="journey"] img')
+  await expect(journeyArt).toBeVisible()
+  await journeyArt.scrollIntoViewIfNeeded()
+  await expect
+    .poll(
+      () => journeyArt.evaluate((img: HTMLImageElement) => img.naturalWidth),
+      { timeout: 30000 }
+    )
+    .toBe(960)
+  await comparison.locator('summary').click()
+  await expect(comparison).not.toHaveAttribute('open')
   await expect
     .poll(
       () => art.evaluate((node) => (node as HTMLImageElement).naturalWidth),

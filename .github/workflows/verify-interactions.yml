@@ -17,7 +17,8 @@ concurrency:
 jobs:
   release-surfaces:
     name: Public site, accessibility and save-aware update
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
@@ -49,26 +50,24 @@ jobs:
       - name: Build deployed baseline
         working-directory: .verification-baseline
         env:
-          VITE_BASE_PATH: /tensho-web/
+          VITE_BASE_PATH: /
           VITE_APP_VERSION: pwa-before
         run: |
           bun install --frozen-lockfile
           bunx vite build --outDir "$RUNNER_TEMP/tensho-pwa-before"
       - name: Build candidate
         env:
-          VITE_BASE_PATH: /tensho-web/
+          VITE_BASE_PATH: /
           VITE_APP_VERSION: pwa-after
         run: bun run build
       - name: Verify static routes, localized Codex and artwork
         env:
           SKIP_WEB_SERVER: '1'
           VERIFY_STATIC_ROUTES: '1'
-          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4187/tensho-web/
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4187/
           PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ runner.temp }}/tensho-surfaces/static-report
         run: |
-          mkdir -p "$RUNNER_TEMP/tensho-static"
-          ln -s "$GITHUB_WORKSPACE/dist" "$RUNNER_TEMP/tensho-static/tensho-web"
-          python3 -m http.server 4187 --bind 127.0.0.1 --directory "$RUNNER_TEMP/tensho-static" > "$RUNNER_TEMP/tensho-surfaces/static-server.log" 2>&1 &
+          python3 -m http.server 4187 --bind 127.0.0.1 --directory "$GITHUB_WORKSPACE/dist" > "$RUNNER_TEMP/tensho-surfaces/static-server.log" 2>&1 &
           static_pid=$!
           trap 'kill "$static_pid" 2>/dev/null || true' EXIT
           for attempt in {1..30}; do
@@ -91,7 +90,8 @@ jobs:
 
   core-acceptance:
     name: Complete runs and save recovery
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
@@ -109,7 +109,7 @@ jobs:
       - name: Install pinned Chromium and system dependencies
         run: bunx playwright install --with-deps chromium
       # These tests include explicit late-run fixtures that require native Vite.
-      # The separate verify job checks the compiled Pages-path application.
+      # The separate verify job checks the compiled production application.
       - name: Verify complete gameplay and persistence journeys
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ runner.temp }}/tensho-core/report
@@ -124,7 +124,8 @@ jobs:
           retention-days: 7
 
   verify:
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
@@ -145,7 +146,7 @@ jobs:
         run: bun run test:run --maxWorkers=2
       - name: Build project site
         env:
-          VITE_BASE_PATH: /tensho-web/
+          VITE_BASE_PATH: /
         run: bun run build
       - name: Verify built gameplay interactions
         uses: ./.github/actions/verify-browser

@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Bunga biasa",
+    "optionalEndless": "Tanpa akhir (opsional)"
+  },
   "codexReference": {
     "titleConcept": "Konsep Dasar",
     "titleTilesOverview": "Mengenal Ubin",
@@ -124,7 +128,7 @@
     "payout": "Hadiah dasar menuntaskan ronde adalah 3 Emas untuk Kecil, 5 untuk Besar, dan 10 untuk Bos, bukan berdasarkan skor di atas target. Taruhan dapat meniadakan hadiah Kecil; Dekret dan Pertanda dapat mengubah pembayaran akhir.",
     "interest": "Bunga dihitung dari Emas sebelum pembayaran ronde: 1 per 5, dengan batas awal 5. Piagam dan Pertanda dapat menaikkan batas; beberapa Pertanda memblokir bunga. Kekalahan tidak membayar bunga.",
     "sale": "Lihat tombol Jual pada Dekret untuk nilai sebenarnya. Dekret yang dibayar dengan Bunga atau diperoleh gratis dapat bernilai jual 0 Emas; Dekret Abadi tidak bisa dijual. Menjual menghapus efeknya dan mengosongkan slot yang dipakai.",
-    "prices": "Gunakan harga yang ditampilkan pada tiap penawaran dan biaya pengacakan saat ini. Diskon, edisi, Piagam, dan efek lain dapat mengubah harga. Pengacakan tidak mengisi ulang Piagam yang sudah dibeli atau penawaran gratis Peramal Kartu."
+    "prices": "Gunakan harga yang ditampilkan pada tiap penawaran dan biaya pengacakan saat ini. Diskon, Edisi, Piagam, dan efek lain dapat mengubah harga. Pengacakan tidak mengisi ulang Piagam yang sudah dibeli atau penawaran gratis Peramal Kartu."
   },
   "achievements": {
     "firstSteps": {
@@ -185,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrograd",
-      "description": "Naikkan satu keluarga tangan ke level 10."
+      "description": "Naikkan satu keluarga tangan ke level 9."
     },
     "keeperOfWinds": {
       "name": "Penjaga Angin",
@@ -366,15 +370,15 @@
       },
       "tile_normal": {
         "name": "Paket Ubin",
-        "description": "Pilih 1 dari 3 ubin yang dimodifikasi"
+        "description": "Pilih 1 dari 3 ubin khusus"
       },
       "tile_jumbo": {
         "name": "Paket Ubin Jumbo",
-        "description": "Pilih 2 dari 5 ubin yang dimodifikasi"
+        "description": "Pilih 2 dari 5 ubin khusus"
       },
       "tile_mega": {
         "name": "Paket Ubin Mega",
-        "description": "Pilih 3 dari 6 ubin yang dimodifikasi"
+        "description": "Pilih 3 dari 6 ubin khusus"
       },
       "decree_normal": {
         "name": "Paket Dekrit",
@@ -459,7 +463,7 @@
     "waiting": "Menunggu Dekrit lain.",
     "missing": "Target dihapus; pilih lagi ronde berikutnya.",
     "inactive": "Penyalin atau targetnya tidak aktif.",
-    "rules": "Target tetap selama ronde ini. Menyalin efek dan biaya, bukan edisi atau rantai salinan. Menghapus atau menonaktifkan target tidak mengundi ulang."
+    "rules": "Target tetap selama ronde ini. Menyalin efek dan biaya, bukan Edisi atau rantai salinan. Menghapus atau menonaktifkan target tidak mengundi ulang."
   },
   "screenDownload": {
     "title": "Layar ini tidak dapat diunduh",
@@ -473,7 +477,7 @@
   },
   "runOwnership": {
     "fateSeal": "Perubahan ubin bertahan sepanjang permainan ini, termasuk ronde berikutnya. Permainan baru dimulai dari awal.",
-    "negativeTile": "+1 slot Dekrit selama ubin Negatif fisik ini tetap ada di dindingmu. Menariknya atau mengirimnya ke sungai tidak menghapus slot; menghancurkannya atau mengganti edisinya menghapus slot.",
+    "negativeTile": "+1 slot Dekrit selama ubin Negatif fisik ini tetap ada di dindingmu. Menariknya atau mengirimnya ke sungai tidak menghapus slot; menghancurkannya atau mengganti Edisinya menghapus slot.",
     "overCapacity": "Kapasitas berkurang: Dekrit yang dimiliki tetap disimpan. Kosongkan tempat sebelum mendapat yang baru."
   },
   "yakuUpgrades": {
@@ -603,19 +607,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Segel Emas",
+        "name": "Cap Emas",
         "description": "+3 Emas setiap kali ubin ini mencetak skor"
       },
       "red": {
-        "name": "Segel Merah",
+        "name": "Cap Merah",
         "description": "Ubin ini dihitung dua kali"
       },
       "blue": {
-        "name": "Segel Biru",
+        "name": "Cap Biru",
         "description": "Membuat Orb Langit acak jika ubin ini ikut dalam kali main yang menuntaskan ronde."
       },
       "purple": {
-        "name": "Segel Ungu",
+        "name": "Cap Ungu",
         "description": "Membuat Segel Takdir acak saat ubin ini ditarik ulang."
       }
     }
@@ -645,7 +649,7 @@
     "targets": "Ubin target",
     "count": "Target: {{selected}} / {{required}}",
     "copyOrder": "Ubin 1 menjadi salinan ubin 2. Pilih ubin yang ingin diubah terlebih dahulu.",
-    "replacesModifier": "Menggantikan {{names}}: satu ubin hanya memiliki satu tanda, segel, atau edisi.",
+    "replacesModifier": "Menggantikan {{names}}: satu ubin khusus hanya memiliki satu Tanda, Cap, atau Edisi.",
     "cost": "Harga Kehampaan",
     "failed": "Item ini tidak dapat digunakan.",
     "unavailable": "Item ini tidak dapat digunakan sekarang.",
@@ -782,6 +786,9 @@
     "redrawSelected": "Tarik ulang ubin terpilih",
     "redrawHint": "Kembalikan hingga 3 ubin terpilih dan ambil gantinya",
     "decreeDisabledByMandate": "Dinonaktifkan oleh Crimson Heart tangan ini",
+    "hiddenDecreeTitle": "Dekrit tersembunyi",
+    "faceDownDecree": "Dekrit tertutup",
+    "hiddenDecreeDescription": "Biji Ambar menyembunyikan Dekrit ini dan mematikan kekuatannya sampai ronde dimenangkan.",
     "season": "Musim:",
     "endless": "Tanpa Batas",
     "wall": "Tembok:",
@@ -920,7 +927,21 @@
     "feltTiles": "Ubin untuk dimainkan",
     "collection": "Barangmu",
     "deadWallHint": "Pilih satu ubin, lalu tukar dengan ubin dinding mati. Sekali per ronde, gratis.",
-    "turnsLabel": "Sisa giliran"
+    "turnsLabel": "Sisa giliran",
+    "emergencyTurn": {
+      "buy": "+1 giliran",
+      "label": "Beli satu giliran lagi seharga {{cost}} emas",
+      "short": "Emas tidak cukup: satu giliran lagi seharga {{cost}}",
+      "watchAd": "Tonton iklan",
+      "watchAdLabel": "Tonton iklan untuk satu giliran lagi",
+      "adPlaying": "Iklan diputar…",
+      "adIncomplete": "Iklan ditutup terlalu cepat, jadi tidak ada giliran tambahan.",
+      "adUnavailable": "Tidak ada iklan yang tersedia saat ini.",
+      "simulatedAd": "Iklan (simulasi)",
+      "adCountdown": "Hadiahmu siap dalam {{seconds}} dtk",
+      "adReady": "Hadiah siap",
+      "adClaim": "Ambil +1 giliran"
+    }
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -989,7 +1010,7 @@
       "nextRound": "Lanjut ke Babak Berikutnya",
       "confirmPurchase": "Konfirmasi Pembelian",
       "purchasePrompt": "Beli {{name}} seharga {{cost}}G?",
-      "baseEdition": "Edisi Dasar",
+      "standardCharter": "Standar",
       "goldBalance": "{{amount}} emas",
       "rerollsUsed": "Pengacakan ulang digunakan: {{count}}",
       "forSale": "Dijual"
@@ -997,11 +1018,12 @@
     "payout": {
       "interest": "Bunga",
       "decrees": "Dekrit",
-      "goldTiles": "Ubin emas",
+      "goldTiles": "Ubin Emas",
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
       "omenEarned": "Pertanda: {{name}}",
-      "omen": "Pertanda"
+      "omen": "Pertanda",
+      "stakeWithheld": "{{stake}}: hadiah {{amount}}G ronde ini ditahan"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
     "packInventoryFull": "Slot Dekrit tidak cukup untuk pilihan ini. Jual Dekrit, pilih lebih sedikit, atau lewati paket.",
@@ -1049,9 +1071,9 @@
     "buyFor": "Beli · {{price}} emas",
     "help": {
       "what": "Rumah Teh adalah toko di antara ronde.",
-      "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, Orb dan Segel langsung bekerja (Segel menanyakan ubin dinding mana yang diubah), Naskah dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
+      "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, Orb dan Segel Takdir langsung bekerja (Segel Takdir menanyakan ubin dinding mana yang diubah), Naskah dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
       "interest": "Emas yang kamu simpan berbunga: +1 untuk setiap 5 emas saat ronde berakhir, maksimal +{{cap}}.",
-      "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekrit, ubin emas, dan sewa yang ditagih.",
+      "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekrit, ubin Emas, dan sewa yang ditagih.",
       "build": "Susunanmu menampilkan Dekrit milikmu di samping peningkatan yaku: buka gulungan untuk membaca aturan atau menjualnya, atau peningkatan untuk melihat levelnya. Setiap pembelian lewat tombol Beli masing-masing."
     },
     "sealUsed": "{{name}} dipakai",
@@ -1086,7 +1108,7 @@
       },
       "satellite": {
         "name": "Satelit",
-        "description": "Di akhir setiap ronde yang dimenangkan, +1 Emas untuk setiap keluarga tangan yang sudah kamu naikkan di atas level 1 dengan Orb."
+        "description": "Di akhir setiap ronde yang dimenangkan, +1 Emas untuk setiap keluarga tangan yang sudah kamu naikkan di atas level 0 dengan Orb."
       },
       "swift_andy": {
         "name": "Andy Gesit",
@@ -1149,7 +1171,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Segel Emas",
+        "name": "Regalia Emas",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1729,7 +1751,7 @@
         "description": "Semua Sederhana (biasanya hanya ubin 2–8) juga menerima 1 dan 9. Angin dan Naga tetap membatalkannya."
       },
       "moonlit_seal": {
-        "name": "Segel Cahaya Bulan",
+        "name": "Lambang Rembulan",
         "description": "Setiap Angin atau Naga yang dimainkan menambah 0,1 ke ×Mult Dekrit ini (tiga memberi ×1,3)."
       },
       "pure_suit_asceticism": {
@@ -1886,6 +1908,7 @@
     "windName": "Angin {{name}}",
     "flowerName": "Bunga {{name}}",
     "seasonName": "Musim {{name}}",
+    "stoneName": "Ubin Batu",
     "numberedRule": "Cocokkan ubin identik untuk membuat pasangan atau triplet. Tiga angka berurutan dari jenis yang sama membentuk urutan.",
     "honorRule": "Ubin kehormatan membentuk pasangan atau triplet identik, bukan urutan angka.",
     "basePoints": "{{points}} poin dasar sebelum bonus kelompok, pengurangan, dan efek lain.",
@@ -1909,9 +1932,10 @@
     "white": "Naga Putih",
     "green": "Naga Hijau",
     "red": "Naga Merah",
-    "modifiers": "Pengubah:",
-    "tileModifiers": "Pengubah Ubin",
-    "enhancement": "Peningkatan",
+    "modifiers": "Ubin khusus:",
+    "tileModifiers": "Ubin khusus",
+    "enhancement": "Tanda",
+    "stamp": "Cap",
     "edition": "Edisi",
     "debuffed": "Ubin dilemahkan",
     "lockedMustPlay": "Ubin terkunci: harus dimainkan",
@@ -2049,7 +2073,7 @@
         "description": "Kehilangan 1 emas per ubin yang dimainkan"
       },
       "the_mark": {
-        "name": "Sang Tanda",
+        "name": "Sang Tabir",
         "description": "Angin dan Naga ditarik tertutup"
       },
       "the_manacle": {
@@ -2058,7 +2082,7 @@
       },
       "amber_acorn": {
         "name": "Biji Ambar",
-        "description": "Semua Dekrit diacak dan ditutup"
+        "description": "Separuh Dekritmu, dipilih acak, disembunyikan dan dinonaktifkan"
       },
       "verdant_leaf": {
         "name": "Daun Hijau",
@@ -2087,6 +2111,8 @@
     "rules": {
       "base": "Kesulitan dasar: tanpa penalti tambahan.",
       "noSmallRoundReward": "Ronde Kecil tidak memberi hadiah emas.",
+      "bossTargets": "Target bos: {{percent}} lebih tinggi mulai Babak {{act}}.",
+      "emergencyTurn": "Giliran darurat mulai Babak {{act}}: di giliran terakhir, beli satu giliran lagi dengan emas ({{cost}} emas di Babak {{act}}, {{nextCost}} di Babak {{nextAct}}, dan seterusnya; berlipat dua untuk tiap pembelian di ronde yang sama).",
       "scoreScaling": "Target skor tingkat ini: sama dengan Putih di Babak 1, lalu naik setiap babak hingga ×{{multiplier}} dibanding Putih mulai Babak {{act}}. Pengubah meja tetap berlaku.",
       "redrawPenalty": "Giliran per ronde: −{{amount}}.",
       "eternalChance": "Dekrit toko: peluang {{chance}} mendapat Abadi (tidak dapat dijual atau dihancurkan).",
@@ -2162,7 +2188,7 @@
       "p5": "Naga adalah <1>ubin Kehormatan</1> bernilai <4>15 poin</4>, dan setiap Naga yang dihitung menambah Mult +2, atau +4 di dalam grup. Naga tidak bisa membentuk urutan."
     },
     "bonus_tiles": {
-      "p1": "<0>Ubin bonus</0> adalah ubin khusus yang bukan bagian dari tanganmu:"
+      "p1": "<0>Ubin bonus</0> adalah ubin tambahan yang bukan bagian dari tanganmu:"
     },
     "sequences": {
       "note1": "Saat kamu mengambil ubin bonus, ubin itu langsung terbuka dan kamu mengambil penggantinya. Bunga dan Musim memberi bonus dan efek yang terus tumbuh!",
@@ -2290,7 +2316,8 @@
       "play": "cetak poin dari ubin terpilih: hingga {{max}}, atau satu tangan Mahjong lengkap.",
       "redraw": "kirim ubin terpilih sebanyak apa pun ke sungai dan ambil yang baru.",
       "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
-      "warning": "Jika Giliran habis di bawah target, permainan berakhir."
+      "warning": "Jika Giliran habis di bawah target, permainan berakhir.",
+      "emergency": "Di {{stake}} ke atas, mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
     },
     "select": {
       "title": "Memilih ubin",
@@ -2412,15 +2439,15 @@
       },
       "tileMarks": {
         "name": "Tanda Ubin",
-        "description": "Peningkatan yang mengubah sifat ubin."
+        "description": "Tanda yang mengubah cara ubin mencetak skor atau bekerja."
       },
       "seals": {
-        "name": "Segel",
-        "description": "Segel khusus yang menambahkan efek pada ubin."
+        "name": "Cap",
+        "description": "Cap lilin yang memberi ubin efek tambahan."
       },
       "editions": {
         "name": "Edisi",
-        "description": "Varian barang dengan tampilan dan efek khusus."
+        "description": "Lapisan berkilau yang menambahkan efek pada ubin atau Dekrit."
       },
       "packs": {
         "name": "Paket Berkah",
@@ -2587,7 +2614,7 @@
       },
       "illusion_tiles": {
         "name": "Ubin Ilusi",
-        "description": "Ubin di Rumah Teh bisa memiliki edisi"
+        "description": "Ubin di Rumah Teh bisa memiliki Edisi"
       },
       "stone_script": {
         "name": "Naskah Batu",
@@ -2730,11 +2757,11 @@
       },
       "polychrome_omen": {
         "name": "Pertanda Polikrom",
-        "description": "Menerapkan edisi Polikrom pada satu Dekrit acak yang dimiliki."
+        "description": "Menambahkan Edisi Polikrom pada satu Dekrit acak yang dimiliki."
       },
       "foil_omen": {
         "name": "Pertanda Foil",
-        "description": "Dekrit berikutnya yang dibeli mendapat edisi Foil."
+        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Foil."
       },
       "interest_omen": {
         "name": "Pertanda Bunga",
@@ -2754,7 +2781,7 @@
       },
       "negative_omen": {
         "name": "Pertanda Negatif",
-        "description": "Dekrit berikutnya yang dibeli mendapat edisi Negatif (+1 slot)."
+        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Negatif (+1 slot)."
       },
       "austerity_omen": {
         "name": "Pertanda Penghematan",
@@ -2762,7 +2789,7 @@
       },
       "holographic_omen": {
         "name": "Pertanda Holografik",
-        "description": "Dekrit berikutnya yang dibeli mendapat edisi Holografik."
+        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Holografik."
       }
     }
   },
@@ -2770,35 +2797,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Segel Sang Alkemis",
-        "description": "Memberi Tanda Keberuntungan (peluang +20 Mult atau +20 Emas saat mencetak skor) pada 2 ubin pilihanmu"
+        "description": "Menambahkan Tanda Keberuntungan (peluang +20 Mult atau +20 Emas saat mencetak skor) ke 2 ubin pilihanmu"
       },
       "seal_of_the_empress": {
         "name": "Segel Sang Permaisuri",
-        "description": "Memberi Tanda Mult (+4 Mult saat mencetak skor) pada 2 ubin pilihanmu"
+        "description": "Menambahkan Tanda Mult (+4 Mult saat mencetak skor) ke 2 ubin pilihanmu"
       },
       "seal_of_the_sage": {
         "name": "Segel Sang Bijak",
-        "description": "Memberi Tanda Bonus (+30 Poin saat mencetak skor) pada 2 ubin pilihanmu"
+        "description": "Menambahkan Tanda Bonus (+30 Poin saat mencetak skor) ke 2 ubin pilihanmu"
       },
       "seal_of_harmony": {
         "name": "Segel Keselarasan",
-        "description": "Menjadikan 1 ubin Liar (dihitung sebagai jenis apa pun)"
+        "description": "Menambahkan Tanda Liar ke 1 ubin pilihanmu (dihitung sebagai semua jenis)"
       },
       "seal_of_fortitude": {
         "name": "Segel Keteguhan",
-        "description": "Memberi Tanda Baja pada 1 ubin (×1,5 Mult selama tetap di rakmu)"
+        "description": "Menambahkan Tanda Baja ke 1 ubin pilihanmu (×1,5 Mult selama tetap di rakmu)"
       },
       "seal_of_glass": {
         "name": "Segel Kaca",
-        "description": "Memberi Tanda Kaca pada 1 ubin (×2 Mult saat mencetak skor, tetapi bisa pecah)"
+        "description": "Menambahkan Tanda Kaca ke 1 ubin pilihanmu (×2 Mult saat mencetak skor, tetapi bisa pecah)"
       },
       "seal_of_wealth": {
         "name": "Segel Kekayaan",
-        "description": "Memberi Tanda Emas pada 1 ubin (+3 Emas jika ada di rakmu saat ronde berakhir)"
+        "description": "Menambahkan Tanda Emas ke 1 ubin pilihanmu (+3 Emas jika ada di rakmu saat ronde berakhir)"
       },
       "seal_of_stone": {
         "name": "Segel Batu",
-        "description": "Memberi Tanda Batu pada 1 ubin (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
+        "description": "Menambahkan Tanda Batu ke 1 ubin pilihanmu (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
       },
       "seal_of_manzu": {
         "name": "Segel Karakter",
@@ -2854,7 +2881,7 @@
       },
       "seal_of_fortune": {
         "name": "Segel Peruntungan",
-        "description": "Peluang 1 dari 4 memberi edisi Foil, Holografik, atau Polikrom pada Dekrit acak"
+        "description": "Peluang 1 dari 4 memberi Edisi Foil, Holografik, atau Polikrom pada Dekrit acak"
       },
       "seal_of_the_immortal": {
         "name": "Segel Sang Abadi",
@@ -2870,15 +2897,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Naskah Pertalian",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 3 Angin atau Naga acak, masing-masing dengan Tanda"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 3 Angin atau Naga acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_the_grave": {
         "name": "Naskah Kubur",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 2 ubin 1 atau 9 acak, masing-masing dengan Tanda"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 2 ubin 1 atau 9 acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_incantation": {
         "name": "Naskah Mantra",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 4 ubin 2–8 acak, masing-masing dengan Tanda"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 4 ubin 2–8 acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_immolation": {
         "name": "Naskah Pembakaran",
@@ -2889,28 +2916,28 @@
         "description": "Membuat 2 salinan dari 1 ubin rak pilihanmu"
       },
       "script_of_the_gold_seal": {
-        "name": "Naskah Segel Emas",
-        "description": "Memberi Segel Emas pada 1 ubin pilihanmu (+3 Emas saat ubin itu mencetak skor)"
+        "name": "Naskah Cap Emas",
+        "description": "Menambahkan Cap Emas ke 1 ubin pilihanmu (+3 Emas saat ubin itu mencetak skor)"
       },
       "script_of_deja_vu": {
         "name": "Naskah Déjà Vu",
-        "description": "Memberi Segel Merah pada 1 ubin pilihanmu (ubin itu dihitung dua kali)"
+        "description": "Menambahkan Cap Merah ke 1 ubin pilihanmu (ubin itu dihitung dua kali)"
       },
       "script_of_the_trance": {
         "name": "Naskah Kesurupan",
-        "description": "Memberi Segel Biru pada 1 ubin (membuat Orb Langit jika ubin itu ikut dalam kali main yang menuntaskan ronde)"
+        "description": "Menambahkan Cap Biru ke 1 ubin pilihanmu (membuat Orb Langit jika ubin itu ikut dalam kali main yang menuntaskan ronde)"
       },
       "script_of_the_medium": {
         "name": "Naskah Perantara",
-        "description": "Tambahkan Segel Ungu ke 1 ubin (membuat Segel Takdir saat ditarik ulang)"
+        "description": "Menambahkan Cap Ungu ke 1 ubin terpilih (membuat Segel Takdir saat ditarik ulang)"
       },
       "script_of_aura": {
         "name": "Naskah Aura",
-        "description": "Memberi 1 ubin pilihanmu edisi acak: Foil, Holografik, atau Polikrom"
+        "description": "Memberi 1 ubin pilihanmu Edisi acak: Foil, Holografik, atau Polikrom"
       },
       "script_of_ectoplasm": {
         "name": "Naskah Ektoplasma",
-        "description": "Tambahkan Negatif ke Dekrit acak (+1 slot Dekrit)"
+        "description": "Menambahkan Edisi Negatif ke Dekrit acak (+1 slot Dekrit)"
       },
       "script_of_the_wraith": {
         "name": "Naskah Arwah",
@@ -2922,7 +2949,7 @@
       },
       "script_of_the_hex": {
         "name": "Naskah Kutukan",
-        "description": "Memberi edisi Polikrom pada Dekrit acak dan menghancurkan semua Dekrit lain"
+        "description": "Memberi Edisi Polikrom pada Dekrit acak dan menghancurkan semua Dekrit lain"
       },
       "script_of_the_sigil": {
         "name": "Naskah Sigil",
@@ -3157,9 +3184,9 @@
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",
     "specialTitle": "Ubin khusus",
-    "specialHelp": "Bingkai berwarna dengan permata adalah tanda, cap lilin adalah segel, dan kilau adalah edisi. Satu ubin hanya bisa memiliki salah satunya.",
+    "specialHelp": "Ubin khusus membawa satu efek tambahan: Tanda (bingkai berwarna dengan permata), Cap (cap lilin), atau Edisi (kilau).",
     "marks": "Tanda",
-    "seals": "Segel",
+    "seals": "Cap",
     "editions": "Edisi",
     "close": "Ayo main"
   },
@@ -3186,7 +3213,7 @@
     "tiles_face_down_after_play": "Ubin baru tertutup",
     "fixed_draw_count": "Selalu tarik {{count}}",
     "honor_tiles_face_down": "Ubin kehormatan tertutup",
-    "shuffle_decrees": "Dekrit tersembunyi",
+    "hide_half_decrees": "Separuh Dekrit mati",
     "debuff_until_sell": "Semua ubin bernilai 0 sampai kamu menjual Dekrit",
     "disable_random_decree": "1 Dekrit mati tiap kali main",
     "lock_random_tile": "Satu ubin terkunci tiap tarik"
@@ -3263,5 +3290,31 @@
   "orbReveal": {
     "used": "Orb Langit digunakan",
     "title": "{{name}} digunakan: yaku ditingkatkan"
+  },
+  "omenReveal": {
+    "title": "Pertanda didapat: {{name}}",
+    "swiftClear": "Kemenangan cepat",
+    "cleared": "{{round}} selesai",
+    "spareTurns_one": "Sisa {{formattedCount}} Giliran",
+    "spareTurns_other": "Sisa {{formattedCount}} Giliran",
+    "earned": "Pertanda didapat",
+    "copies": "×{{amount}}",
+    "copiesNote": "Disalin oleh Pertanda Ganda: ×{{amount}}",
+    "when": "Kapan berlaku",
+    "timing": {
+      "shop": "Sekarang, di Rumah Teh ini. Efeknya sudah ada pada penawaran.",
+      "round": "Saat ronde berikutnya dimulai.",
+      "hand": "Pada tangan berikutnya yang dinilai.",
+      "voidScript": "Saat kamu memakai Gulungan Kehampaan berikutnya.",
+      "now": "Langsung. Efeknya sudah diterapkan.",
+      "run": "Pada setiap tangan yang dinilai sampai permainan usai.",
+      "nextOmen": "Saat kamu mendapat Pertanda berikutnya."
+    },
+    "rail": {
+      "waits": "Sampai saat itu, ia menunggu di meja bersama barangmu.",
+      "stays": "Ia tetap di meja bersama barangmu."
+    },
+    "tradeoff": "Imbalannya",
+    "rule": "Selesaikan ronde Kecil atau Besar dengan sisa {{spare}} Giliran atau lebih untuk mendapat Pertanda. Ronde Bos tidak memberinya."
   }
 }

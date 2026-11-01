@@ -112,3 +112,54 @@ it('tracks real matching scores, preserves forecasts/saves, and resets with the 
   restored.startNewRun(8)
   expect(restored.getYakuUpgradeState()).toEqual([])
 })
+
+it('lists the nine families any run can upgrade, and a secret family once upgraded', () => {
+  const game = new GameOrchestrator()
+  game.setConsumableUnlockResolver(() => true)
+  game.startNewRun(7)
+  const standard = [
+    'Pairs',
+    'Tanyao',
+    'Yakuhai',
+    'Pinfu',
+    'Ittsu',
+    'Honitsu',
+    'Toitoi',
+    'Chinitsu',
+    'Sanshoku',
+  ]
+  const fresh = game.getYakuFamilyState()
+  expect(fresh.map((row) => row.yaku)).toEqual(standard)
+  expect(
+    fresh.every(
+      (row) =>
+        row.level === 1 &&
+        row.chips === 0 &&
+        row.mult === 0 &&
+        row.timesScored === 0
+    )
+  ).toBe(true)
+  for (const yaku of ['Pinfu', 'SevenPairs'] as const) {
+    const orb = CelestialOrbSystem.createCelestialOrbInstance(
+      getCelestialOrbByYaku(yaku)!
+    )
+    expect(game.addCelestialOrb(orb)).toBe(true)
+    expect(
+      game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success
+    ).toBe(true)
+  }
+  const upgraded = game.getYakuFamilyState()
+  expect(upgraded.map((row) => row.yaku)).toEqual([...standard, 'SevenPairs'])
+  expect(upgraded.find((row) => row.yaku === 'Pinfu')).toEqual(
+    game.getYakuUpgradeState().find((row) => row.yaku === 'Pinfu')
+  )
+  expect(upgraded.find((row) => row.yaku === 'SevenPairs')).toMatchObject({
+    level: 2,
+    chips: 35,
+    mult: 3,
+  })
+  // Detached: changing the list changes nothing in the run.
+  const snapshot = game.captureRun()
+  upgraded[0].level = 99
+  expect(game.captureRun()).toEqual(snapshot)
+})

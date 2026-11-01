@@ -7,6 +7,13 @@ owned inventory or its existing sale action.
 
 ## Implemented behavior
 
+Follow-up (October 31, 2026): on phones the build is two three-column grids,
+owned Decrees and Yaku upgrades, side by side where the panel fits both at a
+44px tap target and stacked on the narrowest phones. Every upgrade family any
+run can find shows from the start at level 0 (dimmed), and a secret family
+joins once upgraded; players read every family level counted from 0. The
+offers below run three to a row and scroll down with the page, not sideways.
+
 Follow-up: [purchase availability](SHOP_PURCHASE_AVAILABILITY.md) now prevents
 ordinary full-slot purchases before clicking, with inline localized reasons.
 Commit-time rejection and foreground error coverage remain for stale UI. The

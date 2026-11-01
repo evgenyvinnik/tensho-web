@@ -72,6 +72,8 @@ import {
   MIN_TACTICAL_PLAY_TILES,
 } from '../../game/playRules'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { useRewardedAd } from '../../hooks/useRewardedAd'
+import { SimulatedAdOverlay } from '../gameplay/SimulatedAdOverlay'
 import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
 
@@ -117,6 +119,10 @@ export function GameplayScreen() {
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
   const wallDrawPending = useFloraRevealQueue((state) => state.queue.length > 0)
+  // Hand hints wait for the round's deal to land before they fade in.
+  const dealPending = useFloraRevealQueue((state) =>
+    state.queue.some((entry) => entry.kind === 'deal')
+  )
   const [actionError, setActionError] = useState<string | null>(null)
   const [targeting, setTargeting] = useState<VoidScript | null>(null)
   // A Seal the run makes here (a redrawn Purple tile) is used at once.
@@ -135,9 +141,7 @@ export function GameplayScreen() {
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
-  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(
-    null
-  )
+  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(null)
   const clearSecretReveal = useCallback(() => setSecretReveal(null), [])
   const toastCounter = useRef(0)
   const playButtonRef = useRef<HTMLButtonElement>(null)
@@ -310,6 +314,37 @@ export function GameplayScreen() {
     } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
   }, [game, selectedIds, redrawReason])
 
+  const handleBuyTurn = useCallback(() => {
+    const result = game.buyTurn()
+    setActionError(result.success ? null : (result.errors?.[0] ?? null))
+  }, [game])
+
+  // Short of Gold for the emergency Turn: offer a rewarded ad, once per Act,
+  // if ads are configured and one is ready. Each new last Turn is a new
+  // opportunity.
+  const offer = game.emergencyTurnOffer
+  const rewardedAd = useRewardedAd(
+    'emergency-turn',
+    offer?.adAvailable
+      ? `${game.currentAct}-${game.currentRound}-${game.state.handsAllowance}`
+      : null
+  )
+  const { watch: watchAd } = rewardedAd
+  const handleWatchAd = useCallback(async () => {
+    const outcome = await watchAd()
+    if (outcome === 'rewarded') {
+      const result = game.takeAdTurn()
+      setActionError(result.success ? null : (result.errors?.[0] ?? null))
+    } else
+      setActionError(
+        t(
+          outcome === 'dismissed'
+            ? 'gameplay.emergencyTurn.adIncomplete'
+            : 'gameplay.emergencyTurn.adUnavailable'
+        )
+      )
+  }, [game, watchAd, t])
+
   // REDRAW takes any number of tiles, so one tap picks every tile it can take
   // (a locked tile must be played); a second tap puts them all back.
   const redrawableIds = game.handTiles
@@ -330,19 +365,8 @@ export function GameplayScreen() {
   }, [persistence, navigateTo])
 
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
-  const displayedDecrees = useMemo(() => {
-    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0)
-      return ownedDecrees
-    const remaining = [...ownedDecrees]
-    const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
-      const index = remaining.findIndex(
-        (decree) => decreeKey(decree) === decreeId || decree.id === decreeId
-      )
-      return index === -1 ? [] : remaining.splice(index, 1)
-    })
-    return [...ordered, ...remaining]
-  }, [ownedDecrees, game.decreesFaceDown, game.decreeDisplayOrderIds])
   const disabledDecreeIds = new Set(game.disabledDecreeIds)
+  const hiddenDecreeIds = new Set(game.hiddenDecreeIds)
   const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
 
   const roundType: RoundType =
@@ -454,7 +478,7 @@ export function GameplayScreen() {
               data-tutorial="decrees"
               className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
             >
-              {displayedDecrees.map((decree, index) => (
+              {ownedDecrees.map((decree, index) => (
                 <DecreeCardCompact
                   key={decree.instanceId ?? `${decree.id}-${index}`}
                   decree={decree}
@@ -464,7 +488,7 @@ export function GameplayScreen() {
                     game.state.completeConcealedHandsPlayed
                   }
                   disabledDecreeIds={disabledDecreeIds}
-                  faceDown={game.decreesFaceDown}
+                  faceDown={isDecreeExcluded(decree, hiddenDecreeIds)}
                   disabledByMandate={isDecreeExcluded(
                     decree,
                     disabledDecreeIds
@@ -582,6 +606,7 @@ export function GameplayScreen() {
                 debuffedIds={debuffedTileIds}
                 onToggle={handleToggle}
                 groupRules={showTileHints ? game.partialHandRules : null}
+                hintsHeld={dealPending}
                 disabled={tableClosed}
                 rackHeader={
                   <>
@@ -633,6 +658,10 @@ export function GameplayScreen() {
           redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
+          onBuyTurn={handleBuyTurn}
+          adTurn={tableClosed ? null : rewardedAd}
+          onWatchAd={handleWatchAd}
           willClear={
             preview !== null &&
             preview.total >= Math.max(0, game.targetScore - game.score)
@@ -642,6 +671,7 @@ export function GameplayScreen() {
 
       {/* One thing at a time: the deal, then the guide, then Decrees. */}
       <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
+      <SimulatedAdOverlay />
       <BeginnerGuide
         isOpen={showGuide && !wallDrawPending}
         onClose={() => {
@@ -649,9 +679,7 @@ export function GameplayScreen() {
           setShowGuide(false)
         }}
       />
-      <DecreeReveal
-        paused={toast !== null || showGuide || wallDrawPending}
-      />
+      <DecreeReveal paused={toast !== null || showGuide || wallDrawPending} />
 
       <ConfirmPopup
         isOpen={showExitConfirm}

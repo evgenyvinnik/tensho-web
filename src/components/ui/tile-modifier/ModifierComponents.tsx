@@ -319,7 +319,7 @@ export function ModifierTooltip({
       style={{ backgroundColor: 'rgba(28, 58, 46, 0.95)' }}
     >
       <div className="text-golden-yellow font-bold text-sm mb-2">
-        {t('tiles.tileModifiers', 'Tile Modifiers')}
+        {t('tiles.tileModifiers', 'Special tile')}
       </div>
 
       {/* Enhancement */}
@@ -358,7 +358,7 @@ export function ModifierTooltip({
       {/* Stats summary */}
       <div className="mt-2 pt-2 border-t border-gray-600 text-xs">
         {tile.modifierChips > 0 && (
-          <div className="text-blue-400">+{tile.modifierChips} Chips</div>
+          <div className="text-blue-400">+{tile.modifierChips} Points</div>
         )}
         {tile.modifierMult > 0 && (
           <div className="text-red-400">+{tile.modifierMult} Mult</div>
@@ -400,7 +400,7 @@ export function ModifierSelector({
       {onEnhancementChange && (
         <div>
           <div className="text-sm font-medium text-beige-white mb-2">
-            {t('tiles.enhancement', 'Enhancement')}
+            {t('tiles.enhancement', 'Mark')}
           </div>
           <div className="flex flex-wrap gap-2">
             {enhancements.map((enhancement) => {
@@ -436,7 +436,9 @@ export function ModifierSelector({
       {/* Seal selector */}
       {onSealChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">Seal</div>
+          <div className="text-sm font-medium text-beige-white mb-2">
+            {t('tiles.stamp', 'Stamp')}
+          </div>
           <div className="flex flex-wrap gap-2">
             {seals.map((seal) => {
               const def = SEAL_DEFINITIONS[seal]

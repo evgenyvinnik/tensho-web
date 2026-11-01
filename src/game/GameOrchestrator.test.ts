@@ -29,6 +29,7 @@ import {
   THE_HOUSE,
   THE_MANACLE,
   THE_MARK,
+  THE_NEEDLE,
   THE_WHEEL,
   VERDANT_LEAF,
   type MandateDefinition,
@@ -422,6 +423,178 @@ describe('GameOrchestrator', () => {
     })
   })
 
+  describe('emergency Turn', () => {
+    /** Start an Act's Small round on Red Stake, no Decrees, one Turn left. */
+    function lastTurnInAct(act: number, gold: number, stake = 2) {
+      game.startNewRun(12345, stake)
+      clearDecrees(game)
+      const state = game.getState() as OrchestratorState
+      for (let i = 1; i < act; i++) {
+        advanceToRound(game, 'Boss')
+        advanceRound(game)
+      }
+      expect(state.currentAct).toBe(act)
+      clearDecrees(game)
+      state.handsRemaining = 1
+      state.gold = gold
+      return state
+    }
+
+    it('is never sold on White Stake', () => {
+      const state = lastTurnInAct(3, 999, 1)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(false)
+      expect(result.errors?.[0]).toContain('Stake 2')
+      expect(state.handsRemaining).toBe(1)
+      expect(state.gold).toBe(999)
+    })
+
+    it('is sold on every Stake from Red up', () => {
+      for (const stake of [2, 5, 8]) {
+        lastTurnInAct(2, 999, stake)
+        expect(game.getEmergencyTurnOffer(), `Stake ${stake}`).toEqual({
+          cost: 20,
+          affordable: true,
+          adAvailable: false,
+        })
+      }
+    })
+
+    it('is never sold in Act 1', () => {
+      const state = lastTurnInAct(1, 999)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(false)
+      expect(state.handsRemaining).toBe(1)
+      expect(state.gold).toBe(999)
+    })
+
+    it('is sold only on the last Turn', () => {
+      const state = lastTurnInAct(2, 100)
+      state.handsRemaining = 2
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 20,
+        affordable: true,
+        adAvailable: false,
+      })
+      expect(game.getAvailableActions()).toContain('buyTurn')
+    })
+
+    it('trades 20 Gold for a Turn in Act 2, then doubles the price within the round', () => {
+      const state = lastTurnInAct(2, 100)
+      const allowance = state.handsAllowance
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(true)
+      expect(result.effects).toContainEqual(
+        expect.objectContaining({ type: 'gold_changed', delta: -20 })
+      )
+      expect(state.gold).toBe(80)
+      expect(state.handsRemaining).toBe(2)
+      expect(state.handsAllowance).toBe(allowance + 1)
+      // Not the last Turn any more: REDRAW is legal again.
+      expect(
+        game.canPerformAction({
+          type: 'redraw',
+          tileIds: [state.handTiles[0].id],
+        })
+      ).toBe(true)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(40)
+    })
+
+    it('is priced by Act and resets each round', () => {
+      const state = lastTurnInAct(3, 500)
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(30)
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+      clearRound(game)
+      game.exitShop()
+      state.handsRemaining = 1
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(30)
+    })
+
+    it('is shown but refused when Gold is short', () => {
+      const state = lastTurnInAct(2, 19)
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 20,
+        affordable: false,
+        adAvailable: true,
+      })
+      expect(game.getAvailableActions()).not.toContain('buyTurn')
+      const result = game.processAction({ type: 'buyTurn' })
+      expect(result.success).toBe(false)
+      expect(result.errors?.[0]).toContain('20 Gold')
+      expect(state.gold).toBe(19)
+      expect(state.handsRemaining).toBe(1)
+    })
+
+    it('cannot buy a second Play past The Needle', () => {
+      game.startNewRun(12345, 2)
+      advanceToRound(game, 'Boss')
+      advanceRound(game)
+      enterBossWithMandate(game, THE_NEEDLE)
+      clearDecrees(game)
+      const state = game.getState() as OrchestratorState
+      state.handsRemaining = 1
+      state.gold = 100
+      expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+      expect(state.handsRemaining).toBe(2)
+      state.targetScore = 1e12
+      state.roundManager.getCurrentRound()!.scoreTarget = 1e12
+      const ids = state.handTiles.slice(0, 2).map((tile) => tile.id)
+      game.processAction({ type: 'play', tileIds: ids })
+      // The Needle's single Play ends the round however many Turns remain.
+      expect(game.getState().phase).toBe('gameOver')
+    })
+  
+    it('grants the Turn for a watched ad when Gold is short, once per Act', () => {
+      const state = lastTurnInAct(2, 5)
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(true)
+      const result = game.processAction({ type: 'adTurn' })
+      expect(result.success).toBe(true)
+      expect(state.handsRemaining).toBe(2)
+      expect(state.gold).toBe(5)
+      // Gold purchases keep their own price ladder.
+      expect(state.emergencyTurnsBoughtThisRound).toBe(0)
+
+      // The next round of the same Act: no second ad Turn.
+      clearRound(game)
+      game.exitShop()
+      state.handsRemaining = 1
+      state.gold = 5
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 20,
+        affordable: false,
+        adAvailable: false,
+      })
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      expect(state.handsRemaining).toBe(1)
+
+      // A new Act brings a new one.
+      advanceToRound(game, 'Boss')
+      advanceRound(game)
+      expect(state.currentAct).toBe(3)
+      state.handsRemaining = 1
+      state.gold = 5
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(true)
+    })
+
+    it('offers no ad Turn while Gold can pay, on White, or in Act 1', () => {
+      lastTurnInAct(2, 100)
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(false)
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      lastTurnInAct(3, 0, 1)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      lastTurnInAct(1, 0)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+    })
+  })
+
   describe('swift clear', () => {
     beforeEach(() => {
       game.startNewRun(12345)
@@ -512,6 +685,45 @@ describe('GameOrchestrator', () => {
       expect(game.getState().currentRound).toBe(1)
       expect(game.getState().targetScore).toBe(800)
       expect(game.getState().phase).toBe('gameplay')
+    })
+
+    it('reports the Small reward Red Stake withholds, so the payout can say why it is 0', () => {
+      game.startNewRun(12345, 2)
+      clearDecrees(game)
+      const before = game.getState().gold
+      clearRound(game)
+      const summary = game.getState().lastRoundSummary!
+      expect(summary).toMatchObject({
+        roundType: 'Small',
+        baseReward: 0,
+        stakeWithheldReward: 3,
+      })
+      // Withheld Gold is reported, never paid.
+      expect(summary.netGoldChange).toBe(game.getState().gold - before)
+      expect(summary.netGoldChange).toBe(summary.interest)
+
+      // Only the Small reward is withheld.
+      game.exitShop()
+      clearRound(game)
+      expect(game.getState().lastRoundSummary).toMatchObject({
+        roundType: 'Large',
+        baseReward: 5,
+      })
+      expect(game.getState().lastRoundSummary).not.toHaveProperty(
+        'stakeWithheldReward'
+      )
+    })
+
+    it('withholds nothing on White Stake', () => {
+      game.startNewRun(12345, 1)
+      clearRound(game)
+      expect(game.getState().lastRoundSummary).toMatchObject({
+        roundType: 'Small',
+        baseReward: 3,
+      })
+      expect(game.getState().lastRoundSummary).not.toHaveProperty(
+        'stakeWithheldReward'
+      )
     })
   })
 
@@ -971,7 +1183,7 @@ describe('GameOrchestrator', () => {
       )
     })
 
-    it('hides exactly the Honor tiles drawn under The Mark', () => {
+    it('hides exactly the Honor tiles drawn under The Veil', () => {
       enterBossWithMandate(game, THE_MARK)
 
       const honorIds = game
@@ -1044,28 +1256,21 @@ describe('GameOrchestrator', () => {
       expect(game.getState().decreeSystem.getOwnedDecrees()).toContain(decree)
     })
 
-    it('creates a deterministic hidden Decree order for Amber Acorn', () => {
+    it('hides a deterministic half of the Decrees for Amber Acorn', () => {
       enterBossWithMandate(game, AMBER_ACORN)
 
       const secondGame = new GameOrchestrator()
       secondGame.startNewRun(12345)
       enterBossWithMandate(secondGame, AMBER_ACORN)
 
-      const order = game.getState().mandateEffectSystem.getShuffledDecreeIds()
-      expect(game.getState().mandateEffectSystem.areDecreesShuffled()).toBe(
-        true
+      const owned = game.getState().decreeSystem.getOwnedDecrees()
+      const hidden = game.getState().mandateEffectSystem.getHiddenDecreeIds()
+      expect(hidden).toHaveLength(Math.ceil(owned.length / 2))
+      expect(hidden).toEqual(
+        secondGame.getState().mandateEffectSystem.getHiddenDecreeIds()
       )
-      expect(order).toEqual(
-        secondGame.getState().mandateEffectSystem.getShuffledDecreeIds()
-      )
-      expect(new Set(order)).toEqual(
-        new Set(
-          game
-            .getState()
-            .decreeSystem.getOwnedDecrees()
-            .map((decree) => decree.instanceId)
-        )
-      )
+      for (const id of hidden)
+        expect(owned.map((decree) => decree.instanceId)).toContain(id)
     })
   })
 
@@ -1292,38 +1497,41 @@ describe('GameOrchestrator', () => {
   })
 
   describe('round completion', () => {
-    it.each([6, 7, 8])('records an Act %i victory and can continue through the Tea House into Endless', (act) => {
-      game.startNewRun(12345)
-      const state = game.getState() as OrchestratorState
-      state.roundManager.startAct(act)
-      state.roundManager.skipRound()
-      state.roundManager.skipRound()
+    it.each([6, 7, 8])(
+      'records an Act %i victory and can continue through the Tea House into Endless',
+      (act) => {
+        game.startNewRun(12345)
+        const state = game.getState() as OrchestratorState
+        state.roundManager.startAct(act)
+        state.roundManager.skipRound()
+        state.roundManager.skipRound()
 
-      const bossRound = state.roundManager.getCurrentRound()!
-      state.currentAct = act
-      state.currentRound = 3
-      state.targetScore = bossRound.scoreTarget
-      state.score = bossRound.scoreTarget
-      state.runScore = bossRound.scoreTarget * 3
+        const bossRound = state.roundManager.getCurrentRound()!
+        state.currentAct = act
+        state.currentRound = 3
+        state.targetScore = bossRound.scoreTarget
+        state.score = bossRound.scoreTarget
+        state.runScore = bossRound.scoreTarget * 3
 
-      const completionHarness = game as unknown as {
-        handleRoundWin: (effects: Effect[]) => void
+        const completionHarness = game as unknown as {
+          handleRoundWin: (effects: Effect[]) => void
+        }
+        completionHarness.handleRoundWin([])
+
+        expect(state.hasWonRun).toBe(true)
+        expect(state.isRunActive).toBe(false)
+        expect(state.phase).toBe('gameOver')
+
+        expect(game.continueEndless()).toBe(true)
+        expect(state.phase).toBe('shop')
+        expect(state.isRunActive).toBe(true)
+
+        game.exitShop()
+        expect(state.currentAct).toBe(act + 1)
+        expect(state.currentRound).toBe(1)
+        expect(state.phase).toBe('gameplay')
       }
-      completionHarness.handleRoundWin([])
-
-      expect(state.hasWonRun).toBe(true)
-      expect(state.isRunActive).toBe(false)
-      expect(state.phase).toBe('gameOver')
-
-      expect(game.continueEndless()).toBe(true)
-      expect(state.phase).toBe('shop')
-      expect(state.isRunActive).toBe(true)
-
-      game.exitShop()
-      expect(state.currentAct).toBe(act + 1)
-      expect(state.currentRound).toBe(1)
-      expect(state.phase).toBe('gameplay')
-    })
+    )
 
     it('should end game when hands exhausted without meeting target', () => {
       game.startNewRun(12345)

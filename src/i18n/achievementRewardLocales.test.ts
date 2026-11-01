@@ -37,7 +37,7 @@ const englishDecrees = {
   satellite: {
     name: 'Satellite',
     description:
-      'At the end of each won round, +1 Gold for each hand family you have raised above level 1 with Orbs.',
+      'At the end of each won round, +1 Gold for each hand family you have raised above level 0 with Orbs.',
   },
   swift_andy: {
     name: 'Swift Andy',
@@ -45,12 +45,12 @@ const englishDecrees = {
   },
   lucky_sixes: {
     name: 'Lucky Sixes',
-    description: '+6 Mult per numbered 6 played. Stones do not count.',
+    description: '+6 Mult per numbered 6 played. Stone tiles do not count.',
   },
   the_idol: {
     name: 'The Idol',
     description:
-      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stones break it; Wild tiles keep their printed face.',
+      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stone tiles break it; Wild tiles keep their printed face.',
   },
   stuntman: {
     name: 'Stuntman',
@@ -104,7 +104,7 @@ const numericSignature = (text: string) =>
 const expectedNumbers: Record<RewardId, string[]> = {
   stage_master: ['+1', '+25'],
   flower_pot: ['×3'],
-  satellite: ['+1', '1'],
+  satellite: ['+1', '0'],
   swift_andy: ['+2', '−2'],
   lucky_sixes: ['+6', '6'],
   the_idol: ['×3'],

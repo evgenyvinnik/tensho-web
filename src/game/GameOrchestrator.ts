@@ -12,6 +12,7 @@
  */
 
 import {
+  getConsumableUnlockCondition,
   isConsumableAvailable,
   type ConsumableUnlockResolver,
 } from '../config/consumableUnlocks'
@@ -134,9 +135,13 @@ import {
 } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
+  AD_TURNS_PER_ACT,
+  EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
+  emergencyTurnCost,
 } from './playRules'
 import { createSeededRandom, runRandom, RunRandom } from './RunRandom'
 import { captureClassicState, restoreClassicState } from './ClassicRunState'
@@ -181,6 +186,15 @@ export interface RoundCashOutSummary {
   omenId?: string | null
   /** Gold the swift-clear Omen paid at once, included in netGoldChange. */
   omenGold?: number
+  /**
+   * Clear reward the Stake withheld (Red Stake's Small round), not paid and
+   * not in netGoldChange. Absent when nothing was withheld.
+   */
+  stakeWithheldReward?: number
+  /** Copies of that Omen earned: more than one when Double Omen was held. */
+  omenCopies?: number
+  /** Turns left unspent when the round was cleared. */
+  spareTurns?: number
 }
 
 /**
@@ -239,6 +253,16 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /**
+   * Emergency Turns bought with Gold this round; each doubles the next one's
+   * price. Missing in older saves: none bought.
+   */
+  emergencyTurnsBoughtThisRound?: number
+  /**
+   * Turns taken for a watched rewarded ad in the current Act, with the Act
+   * they belong to. Missing in older saves: none taken.
+   */
+  adTurns?: { actNumber: number; count: number }
   /** Missing in legacy saves: unknown eligibility until the next round. */
   honorDiscardsThisRound?: number
   /**
@@ -703,11 +727,12 @@ export class GameOrchestrator {
     )
     this.state.decreeSystem.onRoundStart()
     this.state.consumableSystem.onRoundStart()
-    this.initializeRoundResources()
 
-    // Initialize the first round in a ready-to-play state.
+    // Initialize the first round in a ready-to-play state. The Mandate goes
+    // first so round resources can see the Decrees it disables.
     this.initializeWall(actualSeed)
     this.applyMandateDebuffs()
+    this.initializeRoundResources()
     this.drawStartingHand()
 
     this.publishWallComposition()
@@ -748,11 +773,15 @@ export class GameOrchestrator {
     const charterEffects = this.state.charterSystem.calculateEffects()
     const stakePenalty =
       this.state.roundManager.getStakeModifiers().redrawPenalty
-    const decreeRedrawDelta = this.state.decreeSystem.getAdditionalDiscards()
+    // Amber Acorn's hidden Decrees grant no Turns or redraws this round.
+    const hiddenDecrees = this.hiddenDecreeIds()
+    const decreeRedrawDelta =
+      this.state.decreeSystem.getAdditionalDiscards(hiddenDecrees)
     this.state.deadWallWritUsedThisRound = false
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
 
     this.state.handsRemaining = Math.max(
@@ -763,7 +792,7 @@ export class GameOrchestrator {
         charterEffects.redrawsPenalty -
         stakePenalty +
         Math.min(0, decreeRedrawDelta) +
-        this.state.decreeSystem.getAdditionalDraws()
+        this.state.decreeSystem.getAdditionalDraws(hiddenDecrees)
     )
     this.state.discardsRemaining = 0
     this.state.redrawsRemaining = Math.max(
@@ -850,9 +879,17 @@ export class GameOrchestrator {
         this.state.voidScriptSystem.getHandSizePenalty() +
         this.state.omenHandSizeBonus -
         this.state.mandateEffectSystem.getHandSizeReduction() +
-        this.state.decreeSystem.getHandSizeBonus() +
+        this.state.decreeSystem.getHandSizeBonus(this.hiddenDecreeIds()) +
         this.state.seasonSystem.getDrawBonus()
     )
+  }
+
+  /**
+   * Decrees Amber Acorn hid for the whole round. Round resources skip them;
+   * Crimson Heart's per-hand pick does not reach these.
+   */
+  private hiddenDecreeIds(): Set<string> {
+    return new Set(this.state.mandateEffectSystem.getHiddenDecreeIds())
   }
 
   private publishBuildProgress(): void {
@@ -1387,7 +1424,11 @@ export class GameOrchestrator {
     const validation =
       action.type === 'play'
         ? this.validatePlaySelection(action.tileIds)
-        : action.type === 'useSeal' ||
+        : action.type === 'buyTurn'
+          ? this.validateEmergencyTurn()
+          : action.type === 'adTurn'
+            ? this.validateAdTurn()
+          : action.type === 'useSeal' ||
             action.type === 'useScript' ||
             action.type === 'useOrb'
           ? this.validateConsumableAction(action)
@@ -1474,6 +1515,12 @@ export class GameOrchestrator {
       case 'redraw':
         return this.executeRedraw(action.tileIds, effects)
 
+      case 'buyTurn':
+        return this.executeBuyTurn(effects)
+
+      case 'adTurn':
+        return this.executeAdTurn(effects)
+
       case 'useSeal':
         return this.executeUseSeal(action.sealId, action.targets, effects)
 
@@ -1486,6 +1533,120 @@ export class GameOrchestrator {
       default:
         return { success: false, effects, errors: ['Unknown action type'] }
     }
+  }
+
+  /**
+   * The emergency Turn on offer right now, or null when there is none: it is
+   * sold only on Red Stake and above, on the last Turn of a round, from Act 2
+   * on. `affordable` is false when the player is short of Gold, so the offer
+   * can still be shown.
+   */
+  getEmergencyTurnOffer(): {
+    cost: number
+    affordable: boolean
+    /** Short of Gold, the Turn may be taken for a rewarded ad instead. */
+    adAvailable: boolean
+  } | null {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') return null
+    if (this.state.stake < EMERGENCY_TURN_FIRST_STAKE) return null
+    if (this.state.currentAct < EMERGENCY_TURN_FIRST_ACT) return null
+    if (this.state.handsRemaining !== 1) return null
+    if (this.state.score >= this.state.targetScore) return null
+    const cost = emergencyTurnCost(
+      this.state.currentAct,
+      this.state.emergencyTurnsBoughtThisRound ?? 0
+    )
+    const affordable = this.state.gold >= cost
+    const adTurnsThisAct =
+      this.state.adTurns?.actNumber === this.state.currentAct
+        ? this.state.adTurns.count
+        : 0
+    return {
+      cost,
+      affordable,
+      adAvailable: !affordable && adTurnsThisAct < AD_TURNS_PER_ACT,
+    }
+  }
+
+  private validateAdTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer?.adAvailable)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn for an ad is available only when Gold is short, ${AD_TURNS_PER_ACT} per Act`,
+        ],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** One more Turn this round, for a rewarded ad the player watched. */
+  private executeAdTurn(effects: Effect[]): ActionResult {
+    const act = this.state.currentAct
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.adTurns = {
+      actNumber: act,
+      count:
+        (this.state.adTurns?.actNumber === act
+          ? this.state.adTurns.count
+          : 0) + 1,
+    }
+    effects.push({
+      type: 'round_state_changed',
+      description: 'Emergency Turn granted for a rewarded ad',
+      handsRemaining: this.state.handsRemaining,
+      discardsRemaining: this.state.discardsRemaining,
+      redrawsRemaining: this.state.redrawsRemaining,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold: this.state.gold,
+      newGold: this.state.gold,
+      delta: 0,
+      reason: 'Emergency Turn (ad)',
+    })
+    return { success: true, effects }
+  }
+
+  private validateEmergencyTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn can be bought only on Stake ${EMERGENCY_TURN_FIRST_STAKE} or higher, on the last Turn of a round, from Act ${EMERGENCY_TURN_FIRST_ACT}`,
+        ],
+      }
+    if (!offer.affordable)
+      return {
+        isValid: false,
+        errors: [`An extra Turn costs ${offer.cost} Gold`],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** Spend Gold for one more Turn this round. */
+  private executeBuyTurn(effects: Effect[]): ActionResult {
+    const { cost } = this.getEmergencyTurnOffer()!
+    const previousGold = this.state.gold
+    this.state.gold -= cost
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.emergencyTurnsBoughtThisRound =
+      (this.state.emergencyTurnsBoughtThisRound ?? 0) + 1
+    effects.push({
+      type: 'gold_changed',
+      description: `Emergency Turn bought for ${cost} Gold`,
+      delta: -cost,
+      newTotal: this.state.gold,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold,
+      newGold: this.state.gold,
+      delta: -cost,
+      reason: 'Emergency Turn',
+    })
+    return { success: true, effects }
   }
 
   /**
@@ -4145,14 +4306,14 @@ export class GameOrchestrator {
 
     const roundState = completedRound
     let goldReward = 0
+    let stakeWithheldReward = 0
 
     if (roundState) {
       switch (roundState.roundType) {
         case 'Small':
-          goldReward = this.state.roundManager.getStakeModifiers()
-            .noSmallRoundReward
-            ? 0
-            : 3
+          if (this.state.roundManager.getStakeModifiers().noSmallRoundReward)
+            stakeWithheldReward = 3
+          else goldReward = 3
           break
         case 'Large':
           goldReward = 5
@@ -4200,6 +4361,8 @@ export class GameOrchestrator {
     this.state.gold += netGoldChange
     // The last remaining round still earns this Decree's score and payout.
     this.state.decreeSystem.onRoundEnd()
+    // Hidden or disabled Decrees sit out the round's payout, then return.
+    this.state.mandateEffectSystem.releaseDecreeSuppression()
     // Age existing Omens first, so a newly earned one keeps its full duration.
     this.state.omenSystem.onRoundEnd()
     const swiftOmen =
@@ -4233,6 +4396,9 @@ export class GameOrchestrator {
       nextTarget: hasUpcomingRound ? upcomingRound.scoreTarget : null,
       omenId: swiftOmen?.omen?.id ?? null,
       omenGold,
+      omenCopies: swiftOmen?.omen ? swiftOmen.copies : 0,
+      spareTurns: this.state.handsRemaining,
+      ...(stakeWithheldReward ? { stakeWithheldReward } : {}),
     }
 
     eventBus.emit('roundEnd', {
@@ -4314,7 +4480,9 @@ export class GameOrchestrator {
         victory: true,
         score: this.state.runScore,
         decreesOwned: this.state.decreeSystem.getOwnedDecrees().length,
-        decreeIds: this.state.decreeSystem.getOwnedDecrees().map(decree => decree.id),
+        decreeIds: this.state.decreeSystem
+          .getOwnedDecrees()
+          .map((decree) => decree.id),
         act: this.state.currentAct,
         round: this.state.currentRound,
       })
@@ -4482,16 +4650,17 @@ export class GameOrchestrator {
       this.state.currentAct,
       this.state.currentRound
     )
-    this.initializeRoundResources()
 
     // Set act number for season corruption
     this.state.seasonSystem.setAct(this.state.currentAct)
 
-    // Reinitialize wall for new round
+    // Reinitialize wall for new round. The Mandate goes first so round
+    // resources can see the Decrees it disables.
     this.initializeWall(
       this.state.seed + this.state.currentAct * 100 + this.state.currentRound
     )
     this.applyMandateDebuffs()
+    this.initializeRoundResources()
     this.drawStartingHand()
 
     eventBus.emit('roundStart', {
@@ -5095,6 +5264,33 @@ export class GameOrchestrator {
       }))
   }
 
+  /**
+   * Every family the Tea House lists, in catalog order: the nine whose Orbs
+   * any run can find, from level 1, and a secret family (its Orb earned on
+   * the profile) only once an upgrade has reached it. Detached like
+   * `getYakuUpgradeState`.
+   */
+  getYakuFamilyState() {
+    const orbs = this.state.celestialOrbSystem
+    return Object.values(CELESTIAL_ORBS)
+      .filter((orb) => orb.effect.targetYaku !== 'All')
+      .map((orb) => ({
+        orb,
+        upgrade: {
+          yaku: orb.effect.targetYaku,
+          level: orbs.getYakuLevel(orb.effect.targetYaku),
+          mult: orbs.calculateYakuMult(orb.effect.targetYaku),
+          chips: orbs.calculateYakuChips(orb.effect.targetYaku),
+          timesScored: orbs.getYakuTriggerCount(orb.effect.targetYaku),
+        },
+      }))
+      .filter(
+        ({ orb, upgrade }) =>
+          upgrade.level > 1 || !getConsumableUnlockCondition(orb.id)
+      )
+      .map(({ upgrade }) => upgrade)
+  }
+
   /** Get current state (for UI binding). */
   getState(): Readonly<OrchestratorState> {
     return this.state
@@ -5123,7 +5319,11 @@ export class GameOrchestrator {
    */
   getAvailableActions(): PlayerAction['type'][] {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
-    return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
+    const available = this.actionProcessor.getAvailableActions(
+      this.createStateSnapshot()
+    )
+    if (this.getEmergencyTurnOffer()?.affordable) available.push('buyTurn')
+    return available
   }
 
   /**

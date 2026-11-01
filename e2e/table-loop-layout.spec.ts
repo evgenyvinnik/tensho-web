@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 
-// Public UI only: this runs unchanged on development, Pages-path preview and
+// Public UI only: this runs unchanged on development, production preview and
 // the deployed build. No engine imports or inventory grants are required.
 for (const language of ['en', 'es']) {
   test(`Table Loop keeps the rack still and reveals the selected pair slot (${language})`, async ({

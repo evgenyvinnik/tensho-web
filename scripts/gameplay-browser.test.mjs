@@ -58,7 +58,7 @@ for (const [browserExit, color] of [0, 7].flatMap((code) => [
       // Vite inserts ANSI emphasis around the port on CI, even when piped.
       const bold = ${color} ? String.fromCharCode(27) + '[1m' : '';
       const reset = ${color} ? String.fromCharCode(27) + '[22m' : '';
-      server.listen(port, '127.0.0.1', () => console.log('Local: http://127.0.0.1:' + bold + port + reset + '/tensho-web/'));
+      server.listen(port, '127.0.0.1', () => console.log('Local: http://127.0.0.1:' + bold + port + reset + '/'));
     `
     )
     writeFileSync(
@@ -97,7 +97,7 @@ for (const [browserExit, color] of [0, 7].flatMap((code) => [
     const invocation = JSON.parse(
       readFileSync(join(root, 'browser-invocation.json'), 'utf8')
     )
-    assert.equal(invocation.base, `http://127.0.0.1:${port}/tensho-web/`)
+    assert.equal(invocation.base, `http://127.0.0.1:${port}/`)
     assert.equal(invocation.skip, '1')
     assert.equal(invocation.bamboo, join(root, 'e2e/fixtures/interactions'))
     assert.equal(
@@ -117,6 +117,7 @@ for (const [browserExit, color] of [0, 7].flatMap((code) => [
       'tile-return-guidance',
       'jade-controls',
       'pavilion',
+      'teaching-art',
       'audio',
     ])
       assert.ok(invocation.args.includes(`e2e/${name}.spec.ts`))

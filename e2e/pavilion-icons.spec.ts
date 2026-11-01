@@ -1,18 +1,40 @@
 import { expect, test } from '@playwright/test'
 
 for (const width of [320, 1280]) {
-  test(`title-screen Codex and table locks use matching art at ${width}px`, async ({
+  test(`title-screen pavilion buttons and table locks use matching art at ${width}px`, async ({
     page,
   }, info) => {
     await page.setViewportSize({ width, height: width === 320 ? 568 : 800 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('en/')
+    for (const [name, room] of [
+      ['Codex', 'codex'],
+      ['Settings', 'settings'],
+      ['Achievements', 'achievements'],
+      ['Collection', 'collection'],
+    ]) {
+      const button = page.getByRole('button', { name, exact: true })
+      const icon = button.locator('img')
+      await expect(icon).toHaveAttribute(
+        'src',
+        new RegExp(`pavilion/${room}\\.webp$`)
+      )
+      await expect(button).toBeEnabled()
+      // The emblem sits in front of the label, on the same line.
+      const [iconBox, labelBox] = await Promise.all([
+        icon.boundingBox(),
+        button.locator('.neon-text-subtle').boundingBox(),
+      ])
+      expect(iconBox!.x + iconBox!.width).toBeLessThanOrEqual(labelBox!.x)
+      expect(
+        Math.abs(
+          iconBox!.y +
+            iconBox!.height / 2 -
+            (labelBox!.y + labelBox!.height / 2)
+        )
+      ).toBeLessThan(4)
+    }
     const codex = page.getByRole('button', { name: 'Codex', exact: true })
-    await expect(codex.locator('img')).toHaveAttribute(
-      'src',
-      /pavilion\/codex\.webp$/
-    )
-    await expect(codex).toBeEnabled()
     await page
       .getByRole('button', { name: 'Choose table and stake', exact: true })
       .click()

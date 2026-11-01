@@ -263,6 +263,13 @@ export function getCodexCategoryIllustration(category?: string): string {
   )
 }
 
+export type PavilionPage = 'codex' | 'settings' | 'achievements' | 'collection'
+
+/** The painted emblem of each pavilion room (its screen header and menu icon). */
+export function getPavilionEmblem(page: PavilionPage): string {
+  return `${ASSET_BASE}/illustrations/pavilion/${page}.webp`
+}
+
 const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([
   'script_of_kinship',
   'script_of_the_grave',

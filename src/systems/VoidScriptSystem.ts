@@ -120,14 +120,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of Kinship',
     japaneseName: '眷属の書',
     description:
-      'Destroys 1 random tile and adds 3 random Winds or Dragons, each with a Mark',
+      'Destroys 1 random tile and adds 3 random Winds or Dragons, each with a random Bonus, Mult or Lucky Mark',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'destroy_and_create',
-      description: 'Create 3 enhanced honor tiles',
+      description: 'Create 3 Honor tiles with random Marks',
       destroyCount: 1,
       createCount: 3,
       createType: 'face',
@@ -145,14 +145,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Grave',
     japaneseName: '墓場の書',
     description:
-      'Destroys 1 random tile and adds 2 random 1s or 9s, each with a Mark',
+      'Destroys 1 random tile and adds 2 random 1s or 9s, each with a random Bonus, Mult or Lucky Mark',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'destroy_and_create',
-      description: 'Create 2 enhanced terminal tiles',
+      description: 'Create 2 Terminal tiles with random Marks',
       destroyCount: 1,
       createCount: 2,
       createType: 'terminal',
@@ -170,14 +170,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of Incantation',
     japaneseName: '呪文の書',
     description:
-      'Destroys 1 random tile and adds 4 random 2–8 tiles, each with a Mark',
+      'Destroys 1 random tile and adds 4 random 2–8 tiles, each with a random Bonus, Mult or Lucky Mark',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'destroy_and_create',
-      description: 'Create 4 enhanced simple tiles',
+      description: 'Create 4 numbered tiles with random Marks',
       destroyCount: 1,
       createCount: 4,
       createType: 'number',
@@ -242,17 +242,17 @@ export const VOID_SCRIPTS: Record<
   script_of_the_gold_seal: {
     id: 'script_of_the_gold_seal',
     type: 'VoidScript',
-    name: 'Script of the Gold Seal',
-    japaneseName: '金印の書',
+    name: 'Script of the Gold Stamp',
+    japaneseName: '金封蝋の書',
     description:
-      'Adds a Gold Seal to 1 tile you choose (+3 Gold when it scores)',
+      'Adds a Gold Stamp to 1 tile you choose (+3 Gold when it scores)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_seal_to_tile',
-      description: 'Apply Gold Seal',
+      description: 'Apply Gold Stamp',
       sealType: SealType.Gold,
       requiresSelection: true,
       selectionCount: 1,
@@ -269,14 +269,14 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of Deja Vu',
     japaneseName: '既視感の書',
-    description: 'Adds a Red Seal to 1 tile you choose (it scores twice)',
+    description: 'Adds a Red Stamp to 1 tile you choose (it scores twice)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_seal_to_tile',
-      description: 'Apply Red Seal (retrigger)',
+      description: 'Apply Red Stamp (retrigger)',
       sealType: SealType.Red,
       requiresSelection: true,
       selectionCount: 1,
@@ -294,14 +294,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Trance',
     japaneseName: '恍惚の書',
     description:
-      'Adds a Blue Seal to 1 tile (creates a Celestial Orb if the tile is in the play that clears the round)',
+      'Adds a Blue Stamp to 1 tile you choose (creates a Celestial Orb if the tile is in the play that clears the round)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_seal_to_tile',
-      description: 'Apply Blue Seal',
+      description: 'Apply Blue Stamp',
       sealType: SealType.Blue,
       requiresSelection: true,
       selectionCount: 1,
@@ -318,14 +318,15 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of the Medium',
     japaneseName: '霊媒の書',
-    description: 'Add Purple Seal to 1 tile (creates Seal on discard)',
+    description:
+      'Adds a Purple Stamp to 1 selected tile (creates a Fate Seal when redrawn)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_seal_to_tile',
-      description: 'Apply Purple Seal',
+      description: 'Apply Purple Stamp',
       sealType: SealType.Purple,
       requiresSelection: true,
       selectionCount: 1,
@@ -346,14 +347,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of Aura',
     japaneseName: '光輪の書',
     description:
-      'Gives 1 tile you choose a random edition: Foil, Holographic or Polychrome',
+      'Gives 1 tile you choose a random Edition: Foil, Holographic or Polychrome',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_edition',
-      description: 'Apply random premium edition',
+      description: 'Apply a random Foil, Holographic or Polychrome Edition',
       requiresSelection: true,
       selectionCount: 1,
     },
@@ -369,14 +370,14 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of Ectoplasm',
     japaneseName: '霊質の書',
-    description: 'Add Negative to a random Decree (+1 Decree slot)',
+    description: 'Adds a Negative Edition to a random Decree (+1 Decree slot)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'add_negative_edition',
-      description: 'Add Negative edition to Decree',
+      description: 'Add Negative Edition to Decree',
     },
     penalty: {
       type: 'lose_hand_size',
@@ -437,14 +438,14 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Hex',
     japaneseName: '呪詛の書',
     description:
-      'Gives a random Decree the Polychrome edition and destroys all other Decrees',
+      'Gives a random Decree the Polychrome Edition and destroys all other Decrees',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'apply_edition',
-      description: 'Add Prismatic edition to Decree',
+      description: 'Add Polychrome Edition to Decree',
       editionType: EditionType.Polychrome,
     },
     penalty: {
@@ -1118,18 +1119,18 @@ export class VoidScriptSystem {
     if (decreeCount === 0) {
       return {
         success: false,
-        message: 'No Decrees to apply Negative edition',
+        message: 'No Decrees to apply a Negative Edition to',
         effects: [],
       }
     }
 
     return {
       success: true,
-      message: `${script.name}: Added Negative edition to a Decree (+1 Decree slot)`,
+      message: `${script.name}: Added a Negative Edition to a Decree (+1 Decree slot)`,
       effects: [
         {
           type: 'negative_edition_applied',
-          description: 'Negative edition applied (+1 slot)',
+          description: 'Negative Edition applied (+1 slot)',
         },
       ],
     }

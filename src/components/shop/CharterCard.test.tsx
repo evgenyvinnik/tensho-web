@@ -34,7 +34,7 @@ it('renders localized Charter art, identity, rules and tier without escape text'
   expect(
     screen.getByRole('heading', { name: 'Escritura antigua' })
   ).not.toHaveClass('truncate')
-  expect(screen.getByText('Edición básica')).toBeVisible()
+  expect(screen.getByText('Estándar')).toBeVisible()
   expect(screen.getByRole('button')).toHaveAccessibleName(
     'Escritura antigua 10G'
   )
@@ -90,7 +90,7 @@ it('keeps a long upgraded title and rules intact and suppresses hover scaling wi
   expect(screen.getByRole('heading')).toHaveTextContent(long.name)
   expect(screen.getByText(long.description)).toBeVisible()
   expect(screen.getByText('Upgraded')).toBeVisible()
-  expect(screen.queryByText('Base edition')).not.toBeInTheDocument()
+  expect(screen.queryByText('Standard')).not.toBeInTheDocument()
   fireEvent.mouseEnter(screen.getByRole('article'))
   expect(screen.getByRole('article')).toHaveStyle({ transform: 'scale(1)' })
   expect(screen.getByRole('button')).toHaveAccessibleName(

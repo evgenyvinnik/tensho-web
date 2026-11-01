@@ -164,7 +164,13 @@ describe('RunHeader', () => {
     const buttons = screen
       .getAllByRole('button')
       .map((b) => b.getAttribute('aria-label'))
-    expect(buttons).toEqual(['How to play', 'Exit', 'Settings'])
+    // The Stake (rules on tap) sits before Gold; the controls follow.
+    expect(buttons).toEqual([
+      'White Stake · Active rules',
+      'How to play',
+      'Exit',
+      'Settings',
+    ])
     for (const [name, icon] of [
       ['How to play', 'help'],
       ['Exit', 'exit'],

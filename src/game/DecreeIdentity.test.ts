@@ -227,7 +227,7 @@ it.each([
   expect(() => parseClassicRunSnapshot(saved)).toThrow(/Invalid Classic save/)
 })
 
-it('Amber Acorn keeps two distinct physical entries through serialization', () => {
+it('Amber Acorn hides one physical copy and keeps it through serialization', () => {
   const { game, state, system } = fixture()
   system.acquireDecree(definition)
   system.acquireDecree(definition)
@@ -236,12 +236,18 @@ it('Amber Acorn keeps two distinct physical entries through serialization', () =
     state.handTiles,
     system.getOwnedDecrees()
   )
-  const order = state.mandateEffectSystem.getShuffledDecreeIds()
-  expect(new Set(order).size).toBe(2)
+  const hidden = state.mandateEffectSystem.getHiddenDecreeIds()
+  expect(hidden).toHaveLength(1)
+  const [first, second] = system.getOwnedDecrees()
+  expect(
+    [first, second].filter((copy) =>
+      state.mandateEffectSystem.isDecreeDisabled(copy)
+    )
+  ).toHaveLength(1)
   const saved = JSON.parse(JSON.stringify(game.captureRun()))
   game.restoreRun(parseClassicRunSnapshot(saved))
-  expect(game.getState().mandateEffectSystem.getShuffledDecreeIds()).toEqual(
-    order
+  expect(game.getState().mandateEffectSystem.getHiddenDecreeIds()).toEqual(
+    hidden
   )
 })
 

@@ -1,9 +1,9 @@
 /**
  * Resolve application URLs against Vite's deployment base.
  *
- * Local development uses `/`, while the GitHub Pages build uses
- * `/tensho-web/`. Keeping this in one place prevents assets and hard reloads
- * from escaping the project site and landing on the account-level domain.
+ * Local development and the tensho.app build use `/`; VITE_BASE_PATH serves a
+ * build from a sub-path instead. Keeping this in one place prevents assets and
+ * hard reloads from escaping that sub-path.
  */
 export const APP_BASE_URL = import.meta.env.BASE_URL
 

@@ -11,31 +11,30 @@
 | Seal | Japanese | Effect | Mahjong Twist |
 |------|----------|--------|---------------|
 | **Seal of the Fool** | 愚者の印 | Creates the last Fate Seal or Celestial Orb used this run (never a Fool); a copied Seal is used at once | Mirrors The Fool |
-| **Seal of the Alchemist** | 錬金術師の印 | Enhances 2 selected tiles with Lucky Mark | Tiles shimmer with fortune |
+| **Seal of the Alchemist** | 錬金術師の印 | Adds a Lucky Mark to 2 selected tiles | Tiles shimmer with fortune |
 | **Seal of the Oracle** | 巫女の印 | Creates up to 2 random Celestial Orbs (if room) | Commune with stars |
 | **Seal of the Empress** | 女帝の印 | Adds a Mult Mark (+4 Mult when scored) to 2 tiles you choose | Imperial blessing |
 | **Seal of the Emperor** | 皇帝の印 | Creates 2 random Fate Seals, each used at once (never an Emperor or a Fool) | Royal decree |
-| **Seal of the Sage** | 賢者の印 | Enhances 2 selected tiles with Bonus Chip Mark | Ancient wisdom |
-| **Seal of Harmony** | 和の印 | Converts 1 tile to Wild (counts as any suit) | Balance of elements |
-| **Seal of Fortitude** | 剛の印 | Enhances 1 tile to Steel Mark (+×1.5 Mult when held) | Unbreakable resolve |
-| **Seal of Glass** | 硝子の印 | Enhances 1 tile to Glass Mark (×2 Mult, may shatter) | Beautiful but fragile |
+| **Seal of the Sage** | 賢者の印 | Adds a Bonus Mark to 2 selected tiles | Ancient wisdom |
+| **Seal of Harmony** | 和の印 | Adds a Wild Mark to 1 selected tile (counts as every suit) | Balance of elements |
+| **Seal of Fortitude** | 剛の印 | Adds a Steel Mark to 1 selected tile (×1.5 Mult while held) | Unbreakable resolve |
+| **Seal of Glass** | 硝子の印 | Adds a Glass Mark to 1 selected tile (×2 Mult, may shatter) | Beautiful but fragile |
 | **Seal of the Hermit** | 隠者の印 | Doubles gold (max +¥20) | Wisdom through solitude |
-| **Seal of Fortune** | 運命の印 | 1 in 4 chance to add Foil/Holo/Prismatic to random Decree | Wheel of fate spins |
+| **Seal of Fortune** | 運命の印 | 1 in 4 chance to add a Foil, Holographic or Polychrome Edition to a random Decree | Wheel of fate spins |
 | **Seal of Strength** | 力の印 | Increases rank of up to 2 tiles by 1 (max 9) | Growth through struggle |
 | **Seal of Release** | 解放の印 | Destroys up to 2 selected tiles permanently | Let go of the past |
 | **Seal of Transmutation** | 変容の印 | Select 2 tiles, left becomes copy of right | Death and rebirth |
 | **Seal of Balance** | 均衡の印 | Gives total sell value of all Decrees (max ¥50) | Equilibrium restored |
-| **Seal of Wealth** | 富の印 | Enhances 1 tile to Gold Mark (¥3 if held at round end) | Prosperity granted |
-| **Seal of Stone** | 石の印 | Enhances 1 tile to Stone Mark (+100 Chips, always scores) | Immutable foundation |
+| **Seal of Wealth** | 富の印 | Adds a Gold Mark to 1 selected tile (¥3 if held at round end) | Prosperity granted |
+| **Seal of Stone** | 石の印 | Adds a Stone Mark to 1 selected tile (+100 Points, always scores) | Immutable foundation |
 | **Seal of Characters** | 萬子の印 | Converts up to 3 tiles to Characters | Way of Characters |
 | **Seal of Circles** | 筒子の印 | Converts up to 3 tiles to Circles | Way of Circles |
 | **Seal of Bamboo** | 索子の印 | Converts up to 3 tiles to Bamboo | Way of Bamboo |
 | **Seal of Judgment** | 審判の印 | Creates a random Decree (if room) | Court decides |
-| **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps tile modifiers, removes red-five status |
+| **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps the tile's Mark, Stamp or Edition, removes red-five status |
 
-Physical suit/rank transformations retain a tile's enhancement, Seal, and
-edition. Red-five (aka-dora) status is retained only while the tile remains a
-suited five; it is not the Red Seal retrigger modifier. Creating an ordinary
+Physical suit/rank transformations retain a tile's Mark, Stamp or Edition. Red-five (aka-dora) status is retained only while the tile remains a
+suited five; it is not the Red Stamp retrigger. Creating an ordinary
 five through a rank change does not make it red. This applies to Strength and
 Ouija rank changes as well as Unity's conversion to Winds.
 
@@ -90,21 +89,21 @@ above 1 adds the bonus below to every play that scores the family.
 
 | Script | Japanese | Effect | Penalty |
 |--------|----------|--------|---------|
-| **Script of Kinship** | 眷属の書 | Destroy 1 random tile, add 3 random Enhanced Face tiles (Winds/Dragons) | Lose a tile |
-| **Script of the Grave** | 墓場の書 | Destroy 1 random tile, add 2 random Enhanced Terminal tiles | Lose a tile |
-| **Script of Incantation** | 呪文の書 | Destroy 1 random tile, add 4 random Enhanced Number tiles | Lose a tile |
-| **Script of the Gold Seal** | 金印の書 | Add Gold Seal to 1 selected tile | None (rare find) |
-| **Script of Aura** | 光輪の書 | Add Foil/Holo/Prismatic to 1 selected tile | None (rare) |
+| **Script of Kinship** | 眷属の書 | Destroys 1 random tile, then adds 3 random Honor tiles (Winds/Dragons), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
+| **Script of the Grave** | 墓場の書 | Destroys 1 random tile, then adds 2 random Terminal tiles (1s and 9s), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
+| **Script of Incantation** | 呪文の書 | Destroys 1 random tile, then adds 4 random numbered tiles (2–8), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
+| **Script of the Gold Stamp** | 金封蝋の書 | Adds a Gold Stamp to 1 selected tile | None (rare find) |
+| **Script of Aura** | 光輪の書 | Adds a Foil, Holographic or Polychrome Edition to 1 selected tile | None (rare) |
 | **Script of the Wraith** | 亡霊の書 | Creates a random Rare Decree | Gold set to ¥0 |
 | **Script of the Sigil** | 印形の書 | Converts ALL tiles in hand to a single random suit | Massive commitment |
 | **Script of the Ouija** | 降霊の書 | Converts ALL tiles in hand to a single random rank | −1 Hand Size permanently |
-| **Script of Ectoplasm** | 霊質の書 | Add Negative to a random Decree (+1 Decree slot) | −1 Hand Size permanently |
+| **Script of Ectoplasm** | 霊質の書 | Adds a Negative Edition to a random Decree (+1 Decree slot) | −1 Hand Size permanently |
 | **Script of Immolation** | 焚焼の書 | Destroys 5 random tiles from hand | Gain ¥20 |
 | **Script of the Ankh** | 命の書 | Copy a random Decree, destroy all other Decrees | High risk |
-| **Script of Déjà Vu** | 既視感の書 | Add Red Seal to 1 selected tile (retrigger) | None |
-| **Script of the Hex** | 呪詛の書 | Add Prismatic to random Decree, destroy all others | Nuclear option |
-| **Script of the Trance** | 恍惚の書 | Add Blue Seal to 1 tile (creates Orb for final hand) | None |
-| **Script of the Medium** | 霊媒の書 | Add Purple Seal to 1 tile (creates Seal on discard) | None |
+| **Script of Déjà Vu** | 既視感の書 | Adds a Red Stamp to 1 selected tile (retrigger) | None |
+| **Script of the Hex** | 呪詛の書 | Adds a Polychrome Edition to a random Decree, destroys all others | Nuclear option |
+| **Script of the Trance** | 恍惚の書 | Adds a Blue Stamp to 1 selected tile (creates a Celestial Orb if it is in the play that clears the round) | None |
+| **Script of the Medium** | 霊媒の書 | Adds a Purple Stamp to 1 selected tile (creates a Fate Seal when redrawn) | None |
 | **Script of the Cryptid** | 異形の書 | Create 2 copies of 1 selected tile in hand | Duplicates in deck |
 | **Script of the Soul** | 魂の書 | Creates a Legendary (Heavenly Ordinance) Decree | Secret, 0.3% chance |
 | **Script of the Singularity** | 特異点の書 | Upgrade every Yaku by 1 level | Secret, 0.3% chance |
@@ -134,43 +133,49 @@ above 1 adds the bonus below to every play that scores the family.
 
 ---
 
-## 🎨 A5) Complete Tile Mark Library (牌印)
+## 🎨 A5) Complete Special Tile Library (Marks, Stamps, Editions)
 
-A tile holds **one** modifier: a Mark, a Seal or an Edition. Applying a new one
-replaces whatever the tile carried (a Lucky tile given a Stone Mark is just
-Stone). Saves from before this rule keep the rarest: Edition, then Mark, then
-Seal.
+A tile that carries an extra effect is a **special tile**. It holds **one**
+effect: a Mark, a Stamp or an Edition. Applying a new one replaces whatever the
+tile carried (a Lucky tile given a Stone Mark is just a Stone tile). Saves from
+before this rule keep the rarest: Edition, then Mark, then Stamp.
 
-### Enhancements (Marks)
+Player-facing text uses these words only: "special tile" for the umbrella
+(never "enhanced" or "modifier"), "Mark", "Stamp" and "Edition" for the three
+kinds, and "Glass tile" / "Stone tile" as the short form for a tile with that
+Mark. "Seal" means only the Fate Seal consumable. In code, Marks are
+`EnhancementType` and Stamps are `SealType`.
+
+### Marks
 
 | Mark | Japanese | Effect |
 |------|----------|--------|
-| **Bonus Mark** | 加点印 | +30 Chips when scored |
-| **Mult Mark** | 倍点印 | +4 Mult when scored |
-| **Wild Mark** | 万能印 | Counts as every suit simultaneously |
-| **Glass Mark** | 硝子印 | ×2 Mult when scored; 1/4 chance to shatter after |
-| **Steel Mark** | 鋼印 | ×1.5 Mult while held in hand (not played) |
-| **Stone Mark** | 石印 | +100 Chips, always scores, no rank/suit |
-| **Gold Mark** | 金印 | ¥3 if held at end of round |
-| **Lucky Mark** | 幸運印 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
+| **Bonus Mark** | 加点紋 | +30 Points when scored |
+| **Mult Mark** | 倍率紋 | +4 Mult when scored |
+| **Wild Mark** | 万能紋 | Counts as every suit simultaneously |
+| **Glass Mark** | 硝子紋 | ×2 Mult when scored; 1/4 chance to shatter after |
+| **Steel Mark** | 鋼紋 | ×1.5 Mult while held in hand (not played) |
+| **Stone Mark** | 石紋 | +100 Points, always scores, no rank/suit |
+| **Gold Mark** | 金紋 | ¥3 if held at end of round |
+| **Lucky Mark** | 幸運紋 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
 
-### Seals (replace a Mark or Edition)
+### Stamps (replace a Mark or Edition)
 
-| Seal | Japanese | Effect |
+| Stamp | Japanese | Effect |
 |------|----------|--------|
-| **Gold Seal** | 金封 | Earn ¥3 when played and scores |
-| **Red Seal** | 赤封 | Retrigger this tile 1 time |
-| **Blue Seal** | 青封 | Creates Celestial Orb for final Yaku if held |
-| **Purple Seal** | 紫封 | Creates a Fate Seal when discarded |
+| **Gold Stamp** | 金封 | Earn ¥3 when played and scores |
+| **Red Stamp** | 赤封 | Retrigger this tile 1 time |
+| **Blue Stamp** | 青封 | Creates a Celestial Orb if in the play that clears the round |
+| **Purple Stamp** | 紫封 | Creates a Fate Seal when redrawn |
 
 ### Editions (one per tile or Decree, rarest)
 
 | Edition | Japanese | Effect on Tile | Effect on Decree |
 |---------|----------|----------------|------------------|
 | **Base** | 通常 | No effect | No effect |
-| **Foil** | 箔押し | +50 Chips | +50 Chips |
+| **Foil** | 箔押し | +50 Points | +50 Points |
 | **Holographic** | 光沢 | +10 Mult | +10 Mult |
-| **Prismatic** | 虹彩 | ×1.5 Mult | ×1.5 Mult |
+| **Polychrome** | 虹彩 | ×1.5 Mult | ×1.5 Mult |
 | **Negative** | 負極 | +1 Decree slot while this physical tile remains in the run wall | +1 Decree slot while owned |
 
 Fate Seal tile changes persist for the current run, including future rounds and
@@ -181,7 +186,7 @@ Seals that take no tiles act immediately. A Seal the run makes (a redrawn Purple
 tile, the Emperor, the Fool) is used the same way as it is made, at the table or
 in the Tea House: one that takes tiles opens the wall picker at once, with no
 cancel, and only a Seal that can work then is made. Negative tile capacity follows ownership, not
-draws or scoring; destruction or edition replacement removes its slot without
+draws or scoring; destruction or Edition replacement removes its slot without
 deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
 
 ### Stickers (Decrees only, from higher Stakes)
@@ -263,13 +268,13 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | **The Head** | 頭 | All Dragon tiles debuffed | 1 |
 | **The Tooth** | 歯 | Lose ¥1 per tile played | 3 |
 | **The Flint** | 火打石 | Every play scores half | 2 |
-| **The Mark** | 印 | All Honor tiles drawn face-down | 2 |
+| **The Veil** | 帳 | All Honor tiles drawn face-down | 2 |
 
 ### Showdown Mandates (Ante 8, 16, 24...)
 
 | Mandate | Japanese | Effect |
 |---------|----------|--------|
-| **Amber Acorn** | 琥珀の実 | Flips and shuffles all Decrees |
+| **Amber Acorn** | 琥珀の実 | Half your Decrees (random, rounded up) are face-down and disabled for the round |
 | **Verdant Leaf** | 翠緑の葉 | All tiles debuffed until 1 Decree sold |
 | **Violet Vessel** | 紫水瓶 | 6× base score requirement |
 | **Crimson Heart** | 深紅の心 | One random Decree disabled each hand |
@@ -343,7 +348,7 @@ Basic, reliable effects with no conditions.
 | Rising Sun | 朝日 | +3 Mult |
 | Lunar Glow | 月光 | +4 Mult |
 | Crimson Banner | 紅旗 | +5 Mult |
-| Golden Seal | 金印 | +6 Mult |
+| Golden Regalia | 金璽 | +6 Mult |
 | Master of Characters | 萬子師 | +3 Mult if the play includes a Characters tile |
 | Perfectionist of Circles | 筒子匠 | +3 Mult if the play includes a Circles tile |
 | Scholar of Bamboo | 索子学 | +3 Mult if the play includes a Bamboo tile |

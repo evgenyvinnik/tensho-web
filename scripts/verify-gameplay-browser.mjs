@@ -9,9 +9,7 @@ const port = Number(process.env.GAMEPLAY_BROWSER_PORT ?? 4179)
 if (!Number.isInteger(port) || port < 1 || port > 65535)
   throw new Error('GAMEPLAY_BROWSER_PORT must be a TCP port')
 if (!existsSync('dist/index.html'))
-  throw new Error(
-    'Build the Pages-path production app before browser verification'
-  )
+  throw new Error('Build the production app before browser verification')
 
 const artifacts = resolve(
   process.env.GAMEPLAY_BROWSER_ARTIFACTS ??
@@ -22,7 +20,7 @@ const fixture = (name) => resolve(`e2e/fixtures/interactions/${name}.json`)
 for (const name of ['quad', 'complete', 'mutations', 'echo'])
   JSON.parse(readFileSync(fixture(name), 'utf8'))
 
-const base = `http://127.0.0.1:${port}/tensho-web/`
+const base = `http://127.0.0.1:${port}/`
 const html = readFileSync('dist/index.html', 'utf8')
 const serverLog = createWriteStream(resolve(artifacts, 'preview.log'))
 const server = spawn(
@@ -37,7 +35,7 @@ const server = spawn(
     '--strictPort',
   ],
   {
-    env: { ...process.env, VITE_BASE_PATH: '/tensho-web/' },
+    env: { ...process.env, VITE_BASE_PATH: '/' },
     stdio: ['ignore', 'pipe', 'pipe'],
   }
 )
@@ -97,6 +95,7 @@ try {
       'e2e/tile-return-guidance.spec.ts',
       'e2e/jade-controls.spec.ts',
       'e2e/pavilion.spec.ts',
+      'e2e/teaching-art.spec.ts',
       'e2e/audio.spec.ts',
       'e2e/flower-mutations.spec.ts',
       'e2e/bamboo-summer.spec.ts',

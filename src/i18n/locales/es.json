@@ -1,4 +1,8 @@
 {
+  "teachingArt": {
+    "ordinaryFlower": "Flor normal",
+    "optionalEndless": "Infinito (opcional)"
+  },
   "codexReference": {
     "titleConcept": "La idea principal",
     "titleTilesOverview": "Conoce las fichas",
@@ -124,7 +128,7 @@
     "payout": "La recompensa base por superar una ronda es de 3 de oro en Pequeña, 5 en Grande y 10 en Jefe; no depende de cuánto superes el objetivo. Las apuestas pueden eliminar la recompensa Pequeña; los Decretos y Presagios pueden modificar el pago final.",
     "interest": "El interés usa el oro que tenías antes del pago por superar la ronda: 1 por cada 5, con un límite inicial de 5. Las Cartas y los Presagios pueden aumentar ese límite; algunos Presagios bloquean el interés. Una derrota no paga intereses.",
     "sale": "Consulta el botón Vender de cada Decreto para ver su valor real. Los Decretos pagados con Flores y los obtenidos gratis pueden venderse por 0 de oro; los Eternos no se pueden vender. Vender elimina sus efectos y libera el espacio que ocupaba.",
-    "prices": "Consulta el precio de cada oferta y el coste actual de renovar. Los descuentos, ediciones, Cartas y otros efectos pueden cambiar los precios. Renovar no repone las Cartas compradas ni la oferta gratuita de Cartomante."
+    "prices": "Consulta el precio de cada oferta y el coste actual de renovar. Los descuentos, Ediciones, Cartas y otros efectos pueden cambiar los precios. Renovar no repone las Cartas compradas ni la oferta gratuita de Cartomante."
   },
   "achievements": {
     "firstSteps": {
@@ -185,7 +189,7 @@
     },
     "retrograde": {
       "name": "Retrógrado",
-      "description": "Sube una familia de manos al nivel 10."
+      "description": "Sube una familia de manos al nivel 9."
     },
     "keeperOfWinds": {
       "name": "Guardián de los vientos",
@@ -331,7 +335,7 @@
     "waiting": "Esperando otro Decreto.",
     "missing": "Objetivo eliminado; nueva elección en la próxima ronda.",
     "inactive": "La copia o su objetivo está inactivo.",
-    "rules": "El objetivo no cambia durante la ronda. Copia efectos y costes, no ediciones ni cadenas de copia. Eliminarlo o desactivarlo no elige otro."
+    "rules": "El objetivo no cambia durante la ronda. Copia efectos y costes, no Ediciones ni cadenas de copia. Eliminarlo o desactivarlo no elige otro."
   },
   "screenDownload": {
     "title": "No se pudo descargar esta pantalla",
@@ -345,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "Los cambios en las fichas duran toda esta partida, incluidas las rondas futuras. Una nueva partida empieza de cero.",
-    "negativeTile": "+1 ranura de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o enviarla al río conserva la ranura; destruirla o cambiar su edición la elimina.",
+    "negativeTile": "+1 ranura de Decreto mientras esta ficha Negativa permanezca en tu muro. Robarla o enviarla al río conserva la ranura; destruirla o cambiar su Edición la elimina.",
     "overCapacity": "Capacidad reducida: conservas tus Decretos. Libera espacio antes de conseguir más."
   },
   "yakuUpgrades": {
@@ -437,7 +441,7 @@
     "targets": "Fichas objetivo",
     "count": "Objetivos: {{selected}} / {{required}}",
     "copyOrder": "La ficha 1 se convierte en una copia de la ficha 2. Elige primero la que quieres cambiar.",
-    "replacesModifier": "Sustituye {{names}}: una ficha solo tiene una marca, un sello o una edición.",
+    "replacesModifier": "Sustituye {{names}}: una ficha especial solo tiene una Marca, un Lacre o una Edición.",
     "cost": "Coste del Vacío",
     "failed": "No se pudo usar este objeto.",
     "unavailable": "Este objeto no se puede usar ahora.",
@@ -574,6 +578,9 @@
     "redrawSelected": "Recambiar fichas seleccionadas",
     "redrawHint": "Devuelve hasta 3 fichas seleccionadas y roba reemplazos",
     "decreeDisabledByMandate": "Desactivado por Corazón Carmesí esta mano",
+    "hiddenDecreeTitle": "Decreto oculto",
+    "faceDownDecree": "Decreto boca abajo",
+    "hiddenDecreeDescription": "Bellota de Ámbar oculta este Decreto y anula su poder hasta que ganes la ronda.",
     "season": "Estación:",
     "endless": "Infinito",
     "wall": "Muro:",
@@ -712,7 +719,21 @@
     "feltTiles": "Fichas para jugar",
     "collection": "Tus objetos",
     "deadWallHint": "Elige una sola ficha y cámbiala por una del muro muerto. Una vez por ronda, gratis.",
-    "turnsLabel": "Turnos"
+    "turnsLabel": "Turnos",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Compra un turno más por {{cost}} de oro",
+      "short": "No tienes oro suficiente: un turno más cuesta {{cost}}",
+      "watchAd": "Ver anuncio",
+      "watchAdLabel": "Mira un anuncio para obtener un turno más",
+      "adPlaying": "Reproduciendo anuncio…",
+      "adIncomplete": "El anuncio se cerró antes de tiempo: no hay turno extra.",
+      "adUnavailable": "No hay ningún anuncio disponible ahora.",
+      "simulatedAd": "Anuncio (simulado)",
+      "adCountdown": "Tu recompensa estará lista en {{seconds}} s",
+      "adReady": "Recompensa lista",
+      "adClaim": "Recoger +1 turno"
+    }
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -781,7 +802,7 @@
       "nextRound": "Continuar a la siguiente ronda",
       "confirmPurchase": "Confirmar compra",
       "purchasePrompt": "¿Comprar {{name}} por {{cost}}G?",
-      "baseEdition": "Edición básica",
+      "standardCharter": "Estándar",
       "goldBalance": "{{amount}} de oro",
       "rerollsUsed": "Renovaciones usadas: {{count}}",
       "forSale": "A la venta"
@@ -789,11 +810,12 @@
     "payout": {
       "interest": "Intereses",
       "decrees": "Decretos",
-      "goldTiles": "Fichas de oro",
+      "goldTiles": "Fichas de Oro",
       "bonus": "Ajuste de recompensa",
       "rentals": "Alquileres",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio"
+      "omen": "Presagio",
+      "stakeWithheld": "{{stake}}: esta ronda no paga su recompensa de {{amount}}G"
     },
     "packChoices": "Elige hasta {{max}} de {{count}} recompensas",
     "packInventoryFull": "No hay ranuras de Decreto suficientes para esta selección. Vende un Decreto, elige menos o salta el paquete.",
@@ -841,7 +863,7 @@
     "buyFor": "Comprar · {{price}} de oro",
     "help": {
       "what": "La Casa de Té es la tienda entre rondas.",
-      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los Orbes y los Sellos actúan al instante (un Sello te pregunta qué fichas de tu muro cambiar), los Escritos se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
+      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los Orbes y los Sellos del Destino actúan al instante (un Sello del Destino te pregunta qué fichas de tu muro cambiar), los Escritos se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
       "interest": "El oro que guardas genera interés: +1 por cada 5 que tengas al acabar una ronda, hasta +{{cap}}.",
       "cashOut": "La paga de la ronda llega a tu bolsa al entrar, un aviso por cada fuente: la ronda superada, los intereses, los Decretos, las fichas de oro y los alquileres cobrados.",
       "build": "Tu configuración muestra tus Decretos junto a tus mejoras de yaku: abre un pergamino para leer sus reglas o venderlo, o una mejora para ver su nivel. Cada compra se hace con su propio botón Comprar."
@@ -878,7 +900,7 @@
       },
       "satellite": {
         "name": "Satélite",
-        "description": "Al final de cada ronda ganada, +1 de oro por cada familia de manos que hayas subido por encima del nivel 1 con Orbes."
+        "description": "Al final de cada ronda ganada, +1 de oro por cada familia de manos que hayas subido por encima del nivel 0 con Orbes."
       },
       "swift_andy": {
         "name": "Andy Veloz",
@@ -941,7 +963,7 @@
         "description": "+5 Mult"
       },
       "decree-golden-seal": {
-        "name": "Sello Dorado",
+        "name": "Regalía Dorada",
         "description": "+6 Mult"
       },
       "decree-manzu-master": {
@@ -1517,7 +1539,7 @@
         "description": "Todo simples (normalmente solo fichas del 2 al 8) también acepta 1 y 9. Los Vientos y Dragones siguen invalidándolo."
       },
       "moonlit_seal": {
-        "name": "Sello de Luz de Luna",
+        "name": "Emblema Lunar",
         "description": "Cada Viento o Dragón jugado suma 0,1 al ×Mult de este Decreto (tres dan ×1,3)."
       },
       "pure_suit_asceticism": {
@@ -1678,6 +1700,7 @@
     "windName": "Viento {{name}}",
     "flowerName": "Flor {{name}}",
     "seasonName": "Estación {{name}}",
+    "stoneName": "Ficha de Piedra",
     "numberedRule": "Combina fichas idénticas para formar una pareja o un trío. Tres números consecutivos del mismo palo forman una secuencia.",
     "honorRule": "Los honores forman parejas o tríos iguales, no secuencias numéricas.",
     "basePoints": "{{points}} puntos base antes de las bonificaciones de grupo, reducciones y otros efectos.",
@@ -1701,9 +1724,10 @@
     "white": "Dragón Blanco",
     "green": "Dragón Verde",
     "red": "Dragón Rojo",
-    "modifiers": "Modificadores:",
-    "tileModifiers": "Modificadores de ficha",
-    "enhancement": "Mejora",
+    "modifiers": "Ficha especial:",
+    "tileModifiers": "Ficha especial",
+    "enhancement": "Marca",
+    "stamp": "Lacre",
     "edition": "Edición",
     "debuffed": "Ficha debilitada",
     "lockedMustPlay": "Ficha bloqueada: debe jugarse",
@@ -1841,7 +1865,7 @@
         "description": "Pierdes 1 de oro por cada ficha jugada"
       },
       "the_mark": {
-        "name": "La Marca",
+        "name": "El Velo",
         "description": "Los Vientos y Dragones se roban boca abajo"
       },
       "the_manacle": {
@@ -1850,7 +1874,7 @@
       },
       "amber_acorn": {
         "name": "Bellota de Ámbar",
-        "description": "Todos los Decretos se barajan y quedan boca abajo"
+        "description": "La mitad de tus Decretos, elegidos al azar, quedan ocultos y desactivados"
       },
       "verdant_leaf": {
         "name": "Hoja Verdeante",
@@ -1879,6 +1903,8 @@
     "rules": {
       "base": "Dificultad básica: sin penalizaciones añadidas.",
       "noSmallRoundReward": "Las rondas pequeñas no dan oro de recompensa.",
+      "bossTargets": "Objetivos del jefe: un {{percent}} más altos desde el Acto {{act}}.",
+      "emergencyTurn": "Turnos de emergencia desde el Acto {{act}}: en tu último turno, compra un turno más con oro ({{cost}} de oro en el Acto {{act}}, {{nextCost}} en el Acto {{nextAct}}, y así sucesivamente; el doble por cada uno comprado en la misma ronda).",
       "scoreScaling": "Objetivos de puntuación del nivel: iguales al Blanco en el Acto 1; luego suben en cada acto hasta ×{{multiplier}} respecto al Blanco desde el Acto {{act}}. Los modificadores de la mesa también se aplican.",
       "redrawPenalty": "Turnos por ronda: −{{amount}}.",
       "eternalChance": "Decretos de la tienda: {{chance}} de probabilidad de Eterno (no se puede vender ni destruir).",
@@ -1954,7 +1980,7 @@
       "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa suma +2 al Mult, +4 dentro de un grupo. No pueden formar escaleras."
     },
     "bonus_tiles": {
-      "p1": "Las <0>fichas de bonificación</0> son fichas especiales que no forman parte de tu mano:"
+      "p1": "Las <0>fichas de bonificación</0> son fichas adicionales que no forman parte de tu mano:"
     },
     "sequences": {
       "note1": "Cuando robas una ficha de bonificación, se revela al instante y robas otra en su lugar. ¡Flores y Estaciones dan bonificaciones y efectos crecientes!",
@@ -2082,7 +2108,8 @@
       "play": "puntúa las fichas elegidas: hasta {{max}}, o una mano de Mahjong completa.",
       "redraw": "envía al río las fichas elegidas que quieras y roba otras nuevas.",
       "p2": "Alcanza el objetivo de la ronda antes de quedarte sin turnos. Tu último turno siempre es una jugada, y algunos objetos dan recambios gratis que no gastan turno.",
-      "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina."
+      "warning": "Si te quedas sin turnos por debajo del objetivo, la partida termina.",
+      "emergency": "En {{stake}} o superior, desde el Acto {{act}}, puedes alargar tu último turno: compra un turno más con oro. El precio sube cada Acto y se duplica por cada turno extra comprado en la misma ronda."
     },
     "select": {
       "title": "Seleccionar fichas",
@@ -2231,7 +2258,7 @@
       },
       "sharp_edge": {
         "name": "Filo afilado",
-        "description": "Las ediciones aparecen el doble de a menudo"
+        "description": "Las Ediciones aparecen el doble de a menudo"
       },
       "reroll_surplus": {
         "name": "Excedente de renovación",
@@ -2295,7 +2322,7 @@
       },
       "radiant_edge": {
         "name": "Filo radiante",
-        "description": "Las ediciones aparecen cuatro veces más a menudo"
+        "description": "Las Ediciones aparecen cuatro veces más a menudo"
       },
       "reroll_abundance": {
         "name": "Abundancia de renovación",
@@ -2335,7 +2362,7 @@
       },
       "illusion_tiles": {
         "name": "Fichas ilusorias",
-        "description": "Las fichas de la Casa de Té pueden venir con ediciones"
+        "description": "Las fichas de la Casa de Té pueden venir con Ediciones"
       },
       "stone_script": {
         "name": "Escritura en piedra",
@@ -2478,11 +2505,11 @@
       },
       "polychrome_omen": {
         "name": "Presagio Policromo",
-        "description": "Aplica la edición Policroma a un Decreto al azar que poseas."
+        "description": "Añade una Edición Policroma a un Decreto al azar que poseas."
       },
       "foil_omen": {
         "name": "Presagio de Lámina",
-        "description": "El próximo Decreto comprado gana la edición Lámina."
+        "description": "El próximo Decreto comprado gana una Edición Lámina."
       },
       "interest_omen": {
         "name": "Presagio de Intereses",
@@ -2502,7 +2529,7 @@
       },
       "negative_omen": {
         "name": "Presagio Negativo",
-        "description": "El próximo Decreto comprado gana la edición Negativa (+1 ranura)."
+        "description": "El próximo Decreto comprado gana una Edición Negativa (+1 ranura)."
       },
       "austerity_omen": {
         "name": "Presagio de Austeridad",
@@ -2510,7 +2537,7 @@
       },
       "holographic_omen": {
         "name": "Presagio Holográfico",
-        "description": "El próximo Decreto comprado gana la edición Holográfica."
+        "description": "El próximo Decreto comprado gana una Edición Holográfica."
       }
     }
   },
@@ -2530,23 +2557,23 @@
       },
       "seal_of_harmony": {
         "name": "Sello de la Armonía",
-        "description": "Convierte 1 ficha en Comodín (cuenta como cualquier palo)"
+        "description": "Añade una Marca Comodín a 1 ficha elegida (cuenta como todos los palos)"
       },
       "seal_of_fortitude": {
         "name": "Sello de la Fortaleza",
-        "description": "Añade una Marca de Acero a 1 ficha (×1,5 Mult mientras se quede en tu atril)"
+        "description": "Añade una Marca de Acero a 1 ficha que elijas (×1,5 Mult mientras se quede en tu atril)"
       },
       "seal_of_glass": {
         "name": "Sello de Cristal",
-        "description": "Añade una Marca de Cristal a 1 ficha (×2 Mult al puntuar, pero puede romperse)"
+        "description": "Añade una Marca de Cristal a 1 ficha que elijas (×2 Mult al puntuar, pero puede romperse)"
       },
       "seal_of_wealth": {
         "name": "Sello de la Riqueza",
-        "description": "Añade una Marca de Oro a 1 ficha (+3 de oro si está en tu atril al terminar la ronda)"
+        "description": "Añade una Marca de Oro a 1 ficha que elijas (+3 de oro si está en tu atril al terminar la ronda)"
       },
       "seal_of_stone": {
         "name": "Sello de Piedra",
-        "description": "Añade una Marca de Piedra a 1 ficha (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
+        "description": "Añade una Marca de Piedra a 1 ficha que elijas (+100 Puntos; sin número ni palo, nunca entra en un grupo, siempre puntúa completa)"
       },
       "seal_of_manzu": {
         "name": "Sello de Caracteres",
@@ -2602,7 +2629,7 @@
       },
       "seal_of_fortune": {
         "name": "Sello del Azar",
-        "description": "1 de cada 4 veces da a un Decreto al azar la edición Lámina, Holográfica o Policroma"
+        "description": "1 de cada 4 veces da a un Decreto al azar una Edición Lámina, Holográfica o Policroma"
       },
       "seal_of_the_immortal": {
         "name": "Sello del Inmortal",
@@ -2618,15 +2645,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Guion del Parentesco",
-        "description": "Destruye 1 ficha al azar y añade 3 Vientos o Dragones al azar, cada uno con una Marca"
+        "description": "Destruye 1 ficha al azar y añade 3 Vientos o Dragones al azar, cada uno con una Marca de Bonificación, de Mult o de Suerte al azar"
       },
       "script_of_the_grave": {
         "name": "Guion de la Tumba",
-        "description": "Destruye 1 ficha al azar y añade 2 fichas de 1 o 9 al azar, cada una con una Marca"
+        "description": "Destruye 1 ficha al azar y añade 2 fichas de 1 o 9 al azar, cada una con una Marca de Bonificación, de Mult o de Suerte al azar"
       },
       "script_of_incantation": {
         "name": "Guion del Conjuro",
-        "description": "Destruye 1 ficha al azar y añade 4 fichas del 2 al 8 al azar, cada una con una Marca"
+        "description": "Destruye 1 ficha al azar y añade 4 fichas del 2 al 8 al azar, cada una con una Marca de Bonificación, de Mult o de Suerte al azar"
       },
       "script_of_immolation": {
         "name": "Guion de la Inmolación",
@@ -2637,28 +2664,28 @@
         "description": "Crea 2 copias de 1 ficha del atril que elijas"
       },
       "script_of_the_gold_seal": {
-        "name": "Guion del Sello Dorado",
-        "description": "Añade un Sello Dorado a 1 ficha que elijas (+3 de oro cuando puntúa)"
+        "name": "Guion del Lacre de Oro",
+        "description": "Añade un Lacre de Oro a 1 ficha que elijas (+3 de oro cuando puntúa)"
       },
       "script_of_deja_vu": {
         "name": "Guion del Déjà Vu",
-        "description": "Añade un Sello Rojo a 1 ficha que elijas (puntúa dos veces)"
+        "description": "Añade un Lacre Rojo a 1 ficha que elijas (puntúa dos veces)"
       },
       "script_of_the_trance": {
         "name": "Guion del Trance",
-        "description": "Añade un Sello Azul a 1 ficha (crea un Orbe Celeste si la ficha está en la jugada que supera la ronda)"
+        "description": "Añade un Lacre Azul a 1 ficha que elijas (crea un Orbe Celeste si la ficha está en la jugada que supera la ronda)"
       },
       "script_of_the_medium": {
         "name": "Guion del Médium",
-        "description": "Añade un Sello Púrpura a 1 ficha (crea un Sello del Destino al recambiarla)"
+        "description": "Añade un Lacre Púrpura a 1 ficha elegida (crea un Sello del Destino al recambiarla)"
       },
       "script_of_aura": {
         "name": "Guion del Aura",
-        "description": "Da a 1 ficha que elijas una edición al azar: Lámina, Holográfica o Policroma"
+        "description": "Da a 1 ficha que elijas una Edición al azar: Lámina, Holográfica o Policroma"
       },
       "script_of_ectoplasm": {
         "name": "Guion del Ectoplasma",
-        "description": "Añade Negativa a un Decreto al azar (+1 ranura de Decreto)"
+        "description": "Añade una Edición Negativa a un Decreto al azar (+1 ranura de Decreto)"
       },
       "script_of_the_wraith": {
         "name": "Guion del Espectro",
@@ -2670,7 +2697,7 @@
       },
       "script_of_the_hex": {
         "name": "Guion del Maleficio",
-        "description": "Da a un Decreto al azar la edición Policroma y destruye todos los demás Decretos"
+        "description": "Da a un Decreto al azar la Edición Policroma y destruye todos los demás Decretos"
       },
       "script_of_the_sigil": {
         "name": "Guion del Sigilo",
@@ -2722,22 +2749,22 @@
       },
       "tileMarks": {
         "name": "Marcas de ficha",
-        "description": "Tipos de mejora que alteran el comportamiento de las fichas"
+        "description": "Marcas que cambian cómo puntúa o se comporta una ficha"
       },
       "seals": {
-        "name": "Sellos",
-        "description": "Sellos especiales que añaden efectos a las fichas"
+        "name": "Lacres",
+        "description": "Lacres estampados que dan a una ficha un efecto adicional"
       },
       "editions": {
         "name": "Ediciones",
-        "description": "Variantes visuales y de juego de los objetos"
+        "description": "Acabados brillantes que añaden un efecto a una ficha o a un Decreto"
       },
       "packs": {
         "name": "Paquetes de Bendición",
         "description": "Sobres con mejoras variadas"
       },
       "omens": {
-        "name": "Marcas de Presagio",
+        "name": "Presagios",
         "description": "Recompensas únicas por superar una ronda con turnos de sobra"
       },
       "mandates": {
@@ -2849,19 +2876,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Sello Dorado",
+        "name": "Lacre de Oro",
         "description": "+3 de oro cada vez que esta ficha puntúa"
       },
       "red": {
-        "name": "Sello Rojo",
+        "name": "Lacre Rojo",
         "description": "Esta ficha puntúa dos veces"
       },
       "blue": {
-        "name": "Sello Azul",
+        "name": "Lacre Azul",
         "description": "Crea un Orbe Celeste al azar si esta ficha está en la jugada que supera la ronda."
       },
       "purple": {
-        "name": "Sello Púrpura",
+        "name": "Lacre Púrpura",
         "description": "Crea un Sello del Destino al azar al recambiar esta ficha."
       }
     }
@@ -2918,15 +2945,15 @@
       },
       "tile_normal": {
         "name": "Paquete de Fichas",
-        "description": "Elige 1 de 3 fichas modificadas"
+        "description": "Elige 1 de 3 fichas especiales"
       },
       "tile_jumbo": {
         "name": "Paquete de Fichas Grande",
-        "description": "Elige 2 de 5 fichas modificadas"
+        "description": "Elige 2 de 5 fichas especiales"
       },
       "tile_mega": {
         "name": "Paquete de Fichas Mega",
-        "description": "Elige 3 de 6 fichas modificadas"
+        "description": "Elige 3 de 6 fichas especiales"
       },
       "decree_normal": {
         "name": "Paquete de Decretos",
@@ -3157,9 +3184,9 @@
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",
     "specialTitle": "Fichas especiales",
-    "specialHelp": "Un marco de color con gema es una marca, un sello de lacre es un sello y un brillo es una edición. Una ficha solo puede tener uno de ellos.",
+    "specialHelp": "Una ficha especial lleva un efecto adicional: una Marca (marco de color con una gema), un Lacre (cera estampada) o una Edición (brillo).",
     "marks": "Marcas",
-    "seals": "Sellos",
+    "seals": "Lacres",
     "editions": "Ediciones",
     "close": "¡A jugar!"
   },
@@ -3186,7 +3213,7 @@
     "tiles_face_down_after_play": "Fichas nuevas boca abajo",
     "fixed_draw_count": "Siempre robas {{count}}",
     "honor_tiles_face_down": "Honores boca abajo",
-    "shuffle_decrees": "Decretos ocultos",
+    "hide_half_decrees": "Mitad de Decretos apagados",
     "debuff_until_sell": "Todas las fichas dan 0 hasta vender un decreto",
     "disable_random_decree": "1 decreto apagado por jugada",
     "lock_random_tile": "Una ficha se bloquea por robo"
@@ -3263,5 +3290,31 @@
   "orbReveal": {
     "used": "Orbe Celeste usado",
     "title": "{{name}} usado: yaku mejorado"
+  },
+  "omenReveal": {
+    "title": "Presagio obtenido: {{name}}",
+    "swiftClear": "Ronda veloz",
+    "cleared": "{{round}} superada",
+    "spareTurns_one": "{{formattedCount}} turno de sobra",
+    "spareTurns_other": "{{formattedCount}} turnos de sobra",
+    "earned": "Presagio obtenido",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copiado por Presagio Doble: ×{{amount}}",
+    "when": "Cuándo actúa",
+    "timing": {
+      "shop": "Ahora, en esta Casa de Té. Su efecto ya está en las ofertas.",
+      "round": "Al empezar la próxima ronda.",
+      "hand": "En tu próxima mano puntuada.",
+      "voidScript": "La próxima vez que uses un Escrito del Vacío.",
+      "now": "De inmediato. Ya se ha aplicado.",
+      "run": "En cada mano puntuada durante el resto de la partida.",
+      "nextOmen": "Cuando ganes tu próximo Presagio."
+    },
+    "rail": {
+      "waits": "Hasta entonces espera en la mesa con tus objetos.",
+      "stays": "Se queda en la mesa con tus objetos."
+    },
+    "tradeoff": "Contrapartida",
+    "rule": "Supera una Ronda Pequeña o Grande con {{spare}} turnos o más de sobra para ganar un Presagio. Las rondas de Jefe no dan ninguno."
   }
 }

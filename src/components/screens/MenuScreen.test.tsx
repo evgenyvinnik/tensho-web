@@ -72,9 +72,20 @@ it('keeps navigation available while artwork is pending, with no update prompt',
   render(<MenuScreen />)
   expect(preloadTileImages).toHaveBeenCalled()
   expect(screen.getByRole('button', { name: 'New Run' })).toBeEnabled()
-  expect(
-    screen.getByRole('button', { name: 'Codex' }).querySelector('img')
-  ).toHaveAttribute('src', '/assets/illustrations/pavilion/codex.webp')
+  // Each pavilion entry leads with its room's painted emblem, decoratively.
+  for (const [name, page] of [
+    ['Codex', 'codex'],
+    ['Settings', 'settings'],
+    ['Achievements', 'achievements'],
+    ['Collection', 'collection'],
+  ]) {
+    const icon = screen.getByRole('button', { name }).querySelector('img')
+    expect(icon).toHaveAttribute(
+      'src',
+      `/assets/illustrations/pavilion/${page}.webp`
+    )
+    expect(icon).toHaveAttribute('aria-hidden', 'true')
+  }
   expect(screen.queryByRole('button', { name: /update/i })).toBeNull()
   expect(screen.queryByRole('button', { name: /Table Loop/i })).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }))

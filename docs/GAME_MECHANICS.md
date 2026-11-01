@@ -237,7 +237,7 @@ Some Mandates cause tiles to be drawn face-down:
 | **The House** | The opening hand is face-down |
 | **The Wheel** | 1 in 7 tiles drawn is face-down |
 | **The Fish** | Replacement tiles drawn after playing are face-down |
-| **The Mark** | Honor tiles are face-down |
+| **The Veil** | Honor tiles are face-down |
 
 ### 5d. Locked Tiles (拘束牌)
 
@@ -373,7 +373,7 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 | Mandate | Effect |
 |---------|--------|
-| **Amber Acorn** | All Decrees are shuffled and face-down |
+| **Amber Acorn** | Half your Decrees (random, rounded up) are face-down and disabled for the round, including their Turn, redraw and rack bonuses |
 | **Verdant Leaf** | All tiles debuffed until 1 Decree is sold |
 | **Violet Vessel** | Extra-extra large target (6× instead of 2×) |
 | **Crimson Heart** | One random Decree disabled every hand cycle |
@@ -827,7 +827,7 @@ Accolades are permanent badges earned by meeting specific conditions. Some unloc
 | **Charter Collector** | 皇勅収集 | Buy 5 Charters in one run by the end of Act 5 | — |
 | **Shattered** | 粉砕 | Break 2 Glass tiles in one hand | — |
 | **Royal Hand** | 帝王手 | Complete a Yakuman | — |
-| **Retrograde** | 逆行 | Get any yaku to level 10 | — |
+| **Retrograde** | 逆行 | Get any yaku to level 9 (its ninth upgrade) | — |
 
 ### Scoring Accolades
 

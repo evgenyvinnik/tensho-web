@@ -255,7 +255,12 @@ Each round grants a shared budget of Turns (`TURNS_PER_ROUND` in
 spend one; free redraws (`redrawsRemaining`) are spent first, and the last Turn
 is always a play. REDRAW sends any number of selected tiles to the river. There
 is no Skip and no single-tile Discard: a Small or Large round cleared with two
-Turns to spare earns its Omen. See `docs/RULE_RESOLUTION.md`.
+Turns to spare earns its Omen. On Stake 2+ from Act 2, the last Turn can be
+extended with Gold (`buyTurn`, offered in REDRAW's slot; price
+`emergencyTurnCost` in `playRules.ts`: 10 × Act, doubling per purchase in the
+round) or, when Gold is short, once per Act for a watched rewarded ad
+(`adTurn`; providers in `src/ads/rewardedAds.ts`, off by default; see
+`docs/REWARDED_ADS.md`). See `docs/RULE_RESOLUTION.md`.
 
 ### Five-Layer Authority Hierarchy
 
@@ -267,7 +272,7 @@ Higher layers override lower in conflict resolution.
 
 ### Round Structure
 
-Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). Acts 1-8 have defined targets (`BASE_SCORE_TARGETS`); Act 9+ uses endless mode scaling. Saved runs carry a snapshot version; `migrateClassicSnapshot.ts` upgrades older saves and re-reads every saved item from the catalog, so content edits need no per-item migration.
+Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds have mandates (special restrictions). From Red Stake up, Boss targets are 20% higher from Act 2 (`bossTargetMultiplier` in `stakeDefinitions.ts`). Acts 1-8 have defined targets (`BASE_SCORE_TARGETS`); Act 9+ uses endless mode scaling. Saved runs carry a snapshot version; `migrateClassicSnapshot.ts` upgrades older saves and re-reads every saved item from the catalog, so content edits need no per-item migration.
 
 ## Domain Terminology
 
@@ -282,6 +287,15 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 | Planet | Celestial Orb |
 | Spectral | Void Script |
 | Voucher | Imperial Charter |
+| Enhanced card | Special tile |
+| Enhancement | Mark |
+| Seal (on a card) | Stamp |
+| Edition | Edition |
+
+Player-facing text never says "enhanced", "enhancement" or "modifier" for tiles,
+and "Seal" alone means a Fate Seal. A special tile holds one Mark, Stamp or
+Edition; "Glass tile" / "Stone tile" is the short form for a tile with that Mark.
+In code, Marks are `EnhancementType` and Stamps are `SealType`.
 
 ## UI Design
 

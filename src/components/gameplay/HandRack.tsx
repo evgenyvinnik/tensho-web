@@ -7,7 +7,9 @@
  * scorer would pay for sits together above a bracket in its colour and
  * shape, among the loose tiles of its suit. The groups come from the same
  * search that prices plays, so the rack never promises a group the scorer
- * would not pay for. No status prose: the shape is the hint.
+ * would not pay for. No status prose: the shape is the hint. While a round's
+ * deal is still flying tiles in, the brackets wait (keeping their place) and
+ * fade in a beat after the last tile lands.
  *
  * @module components/gameplay/HandRack
  */
@@ -48,7 +50,16 @@ export interface HandRackProps {
   disabled?: boolean
   /** Shown between the felt and the rack, e.g. Select all. */
   rackHeader?: ReactNode
+  /**
+   * Hold the group brackets back while the deal flies the tiles in; they keep
+   * their space, then fade in once this turns false.
+   */
+  hintsHeld?: boolean
 }
+
+/** After the deal lands, the group brackets wait this long, then fade in. */
+export const HINT_FADE_DELAY_MS = 250
+export const HINT_FADE_MS = 350
 
 /** Bracket colour per group; the bracket's style also differs by kind. */
 export const GROUP_COLORS: Record<HandClusterKind, string> = {
@@ -98,6 +109,7 @@ export function HandRack({
   groupRules = null,
   disabled = false,
   rackHeader,
+  hintsHeld = false,
 }: HandRackProps) {
   const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -265,6 +277,7 @@ export function HandRack({
                         </div>
                         <span
                           data-hand-group-label
+                          data-hint-held={hintsHeld || undefined}
                           aria-hidden="true"
                           className="mt-0.5 w-full rounded-b-md border-x-2 border-b-[3px] pb-0.5 pt-0 text-center text-[9px] font-bold uppercase leading-3 tracking-normal"
                           style={
@@ -273,6 +286,12 @@ export function HandRack({
                               borderStyle: GROUP_BORDER[cluster.kind],
                               borderTop: 'none',
                               color: GROUP_COLORS[cluster.kind],
+                              // Hidden at once, revealed after a pause.
+                              opacity: hintsHeld ? 0 : 1,
+                              transition:
+                                hintsHeld || reducedMotion
+                                  ? 'none'
+                                  : `opacity ${HINT_FADE_MS}ms ease-out ${HINT_FADE_DELAY_MS}ms`,
                             } as CSSProperties
                           }
                         >

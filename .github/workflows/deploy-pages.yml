@@ -17,7 +17,8 @@ concurrency:
 jobs:
   build:
     if: github.actor != 'github-actions[bot]' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.version.outputs.version }}
       commit: ${{ steps.publish.outputs.commit }}
@@ -139,10 +140,12 @@ jobs:
       - name: Verify application tests
         run: bun run test:run --maxWorkers=2
 
+      # tensho.app is this site's Pages custom domain (Settings > Pages), so the
+      # app is served from the root and evgenyvinnik.github.io/tensho-web/ redirects.
       - name: Build project site
         env:
           VITE_APP_VERSION: ${{ steps.version.outputs.version }}
-          VITE_BASE_PATH: /tensho-web/
+          VITE_BASE_PATH: /
         run: bun run build
 
       - name: Record release provenance

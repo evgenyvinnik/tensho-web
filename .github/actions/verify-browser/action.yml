@@ -1,5 +1,5 @@
 name: Verify built gameplay interactions
-description: Check the production Pages-path app with real desktop and touch input before deployment.
+description: Check the production app with real desktop and touch input before deployment.
 runs:
   using: composite
   steps:

@@ -43,9 +43,9 @@ export type MandateEffectType =
   | 'tiles_face_down_ratio' // The Wheel: 1 in N tiles drawn face-down
   | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
   | 'fixed_draw_count' // The Serpent: Always draw N tiles after play/discard
-  | 'honor_tiles_face_down' // The Mark: All honor tiles drawn face-down
+  | 'honor_tiles_face_down' // The Veil: All honor tiles drawn face-down
   // Showdown Mandates (campaign finale and periodic Endless bosses)
-  | 'shuffle_decrees' // Amber Acorn: Decrees shuffled and face-down
+  | 'hide_half_decrees' // Amber Acorn: Half the Decrees face-down and disabled
   | 'debuff_until_sell' // Verdant Leaf: All tiles debuffed until decree sold
   | 'disable_random_decree' // Crimson Heart: Random decree disabled per hand
   | 'lock_random_tile' // Cerulean Bell: Force-lock tile every draw
@@ -378,12 +378,12 @@ export const THE_TOOTH: MandateDefinition = {
 }
 
 /**
- * The Mark - All Honor tiles drawn face-down
+ * The Veil - All Honor tiles drawn face-down
  */
 export const THE_MARK: MandateDefinition = {
   id: 'the_mark',
-  name: 'The Mark',
-  japaneseName: '印',
+  name: 'The Veil',
+  japaneseName: '帳',
   description: 'Winds and Dragons are drawn face-down',
   category: 'Standard',
   difficulty: 'Medium',
@@ -410,16 +410,17 @@ export const THE_MANACLE: MandateDefinition = {
 // =============================================================================
 
 /**
- * Amber Acorn - All Decrees shuffled and face-down
+ * Amber Acorn - A random half of the Decrees (rounded up) turn face-down and
+ * lose their powers until the Showdown is won
  */
 export const AMBER_ACORN: MandateDefinition = {
   id: 'amber_acorn',
   name: 'Amber Acorn',
   japaneseName: '琥珀の実',
-  description: 'All Decrees are shuffled and face-down',
+  description: 'Half your Decrees, chosen at random, are hidden and disabled',
   category: 'Showdown',
   difficulty: 'Hard',
-  effect: { type: 'shuffle_decrees' },
+  effect: { type: 'hide_half_decrees' },
   minAct: NORMAL_RUN_ACTS,
 }
 
@@ -695,7 +696,7 @@ export function isResourceMandate(mandate: MandateDefinition): boolean {
  * Check if a mandate affects decrees
  */
 export function isDecreeMandate(mandate: MandateDefinition): boolean {
-  return ['shuffle_decrees', 'disable_random_decree'].includes(
+  return ['hide_half_decrees', 'disable_random_decree'].includes(
     mandate.effect.type
   )
 }

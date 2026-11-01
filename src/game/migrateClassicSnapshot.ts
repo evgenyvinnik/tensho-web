@@ -24,12 +24,14 @@ import { VOID_SCRIPTS } from '../systems/VoidScriptSystem'
 import { ALL_CHARTERS } from '../config/charterDefinitions'
 import { ALL_MANDATES } from '../config/mandateDefinitions'
 import { ALL_OMENS } from '../config/omenDefinitions'
+import { amberAcornHiddenCount } from '../systems/MandateEffectSystem'
 import { BOSS_MANDATES, SHOWDOWN_MANDATES } from '../systems/RoundManager'
 import {
   TEA_HOUSE_BASE_CHARTERS,
   TEA_HOUSE_UPGRADED_CHARTERS,
 } from '../systems/TeaHouseSystem'
 import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
+import { calculateCombinedModifiers } from '../config/stakeDefinitions'
 import { TURNS_PER_ROUND } from './playRules'
 
 export const CURRENT_SNAPSHOT_VERSION = 3
@@ -255,6 +257,16 @@ function refreshContent(snapshot: Json): Json {
           rounds: mapArray(manager.currentAct.rounds, refreshRound),
         }
       manager.currentRound = refreshRound(manager.currentRound)
+      // Stake rules are catalog rules too: a run keeps its tier and reads the
+      // tier's current modifiers (targets already generated are unchanged).
+      if (
+        Number.isInteger(manager.stake) &&
+        (manager.stake as number) >= 1 &&
+        (manager.stake as number) <= 8
+      )
+        manager.stakeModifiers = calculateCombinedModifiers(
+          manager.stake as number
+        )
       state.roundManager = manager
     }
     if (isRecord(state.mandateEffectSystem)) {
@@ -274,6 +286,9 @@ function refreshContent(snapshot: Json): Json {
       }
       delete system.firstYakuType
       delete system.scoredYakuIds
+      system.hiddenDecreeIds ??= legacyHiddenDecrees(state.mandateEffectSystem)
+      delete system.decreesShuffled
+      delete system.shuffledDecreeIds
       state.mandateEffectSystem = system
     }
     // The Ox once counted Yaku; it now counts hand types, which older runs
@@ -317,6 +332,23 @@ function refreshContent(snapshot: Json): Json {
     ...(state ? { state } : {}),
     ...(shop ? { shop } : {}),
   }
+}
+
+/**
+ * Amber Acorn once shuffled every Decree face-down without disabling any. A
+ * run saved mid-Showdown keeps the first half of that random order (rounded
+ * up) as the hidden, disabled half; no randomness is drawn.
+ */
+function legacyHiddenDecrees(system: Json): string[] {
+  if (
+    system.decreesShuffled !== true ||
+    !Array.isArray(system.shuffledDecreeIds)
+  )
+    return []
+  const order = system.shuffledDecreeIds.filter(
+    (id): id is string => typeof id === 'string'
+  )
+  return order.slice(0, amberAcornHiddenCount(order.length))
 }
 
 /** Convert a pre-Turns run's round resources (versions 1 and 2). */

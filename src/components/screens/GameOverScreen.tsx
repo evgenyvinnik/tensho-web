@@ -15,10 +15,11 @@ import { useState } from 'react'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 import { startConfiguredClassicRun } from '../../game/classicPersistenceApp'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
-import { illustrationAssets } from '../../utils/assets'
+import { ResultArtwork } from './ResultArtwork'
 import { ResultRoundDetails } from './ResultRoundDetails'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { NORMAL_RUN_ACTS } from '../../config/runProgression'
+import { TeachingIllustration } from '../ui/TeachingIllustration'
 
 const AnimatedMain = animated('main')
 
@@ -109,19 +110,21 @@ export function GameOverScreen() {
           className="w-full max-w-xl rounded-3xl border border-[var(--color-metallic-gold)]/50 bg-[var(--color-dark-forest)]/90 p-4 text-center shadow-2xl backdrop-blur-md sm:p-9"
           style={resultSpring}
         >
-          <img
-            src={
+          <ResultArtwork
+            key={
               isFreshVictory
-                ? illustrationAssets.results.victory
+                ? 'victory'
                 : isEndlessResult
-                  ? illustrationAssets.results.endlessCompletion
-                  : illustrationAssets.results.defeat
+                  ? 'endless'
+                  : 'defeat'
             }
-            alt=""
-            width={960}
-            height={320}
-            className="mb-4 aspect-[3/1] w-full rounded-xl object-cover sm:mb-5"
-            data-result-art
+            kind={
+              isFreshVictory
+                ? 'victory'
+                : isEndlessResult
+                  ? 'endlessCompletion'
+                  : 'defeat'
+            }
           />
 
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.32em] text-[var(--color-metallic-gold)]">
@@ -218,9 +221,15 @@ export function GameOverScreen() {
             </Button>
           </div>
           {isFreshVictory && (
-            <p className="mt-4 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
-              {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
-            </p>
+            <div className="mt-4 space-y-3 text-xs leading-relaxed text-[var(--color-beige-white)]/70">
+              <p>{t('runJourney.optional', { total: NORMAL_RUN_ACTS })}</p>
+              <details data-journey-comparison className="text-left">
+                <summary className="min-h-11 cursor-pointer content-center py-2 font-semibold text-[var(--color-metallic-gold)] focus-visible:outline-2">
+                  {t('teachingArt.optionalEndless')}
+                </summary>
+                <TeachingIllustration kind="journey" />
+              </details>
+            </div>
           )}
         </AnimatedMain>
       </div>

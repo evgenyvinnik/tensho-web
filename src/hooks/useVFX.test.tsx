@@ -7,7 +7,12 @@ import {
   screen,
 } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
-import { useScorePopups, useScreenShake, VFXProvider } from './useVFX'
+import {
+  useScorePopups,
+  useScreenFlash,
+  useScreenShake,
+  VFXProvider,
+} from './useVFX'
 import { eventBus } from '../game/EventBus'
 import { vfxSystem } from '../systems/VFXSystem'
 import { useSettingsStore } from '../stores/settingsStore'
@@ -140,3 +145,41 @@ it('keeps game controls, focus, and local state mounted throughout screen shake'
   result.unmount()
   expect(unmounted).toHaveBeenCalledTimes(1)
 })
+
+it('clears the screen after rapid flashes instead of leaving it tinted', () => {
+  useSettingsStore.setState({ reducedMotion: false })
+  vi.useFakeTimers()
+  try {
+    const { result } = renderHook(() => useScreenFlash())
+    const { container, rerender } = render(<result.current.FlashOverlay />)
+    const overlay = () => container.querySelector('[data-screen-flash]')
+
+    // Click after click, each landing before the last flash has faded.
+    for (let i = 0; i < 6; i++) {
+      act(() => result.current.flash('purchase'))
+      rerender(<result.current.FlashOverlay />)
+      expect(overlay()).toHaveClass('screen-flash')
+      act(() => vi.advanceTimersByTime(100))
+    }
+    // The flash fades up and back down by itself; its keyframes end clear.
+    expect(overlay()).toHaveStyle({ '--flash-opacity': '0.2' })
+
+    act(() => vi.advanceTimersByTime(300))
+    rerender(<result.current.FlashOverlay />)
+    expect(overlay()).toBeNull()
+    expect(result.current.isActive).toBe(false)
+  } finally {
+    vi.useRealTimers()
+  }
+})
+
+it('shows no screen flash under reduced motion', () => {
+  useSettingsStore.setState({ reducedMotion: true })
+  const { result } = renderHook(() => useScreenFlash())
+  act(() => result.current.flash('purchase'))
+  const { container } = render(<result.current.FlashOverlay />)
+  expect(container.querySelector('[data-screen-flash]')).toBeNull()
+  expect(result.current.isActive).toBe(false)
+  act(() => useSettingsStore.setState({ reducedMotion: false }))
+})
+

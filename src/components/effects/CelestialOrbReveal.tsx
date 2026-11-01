@@ -23,6 +23,7 @@ import { getGeneratedArt } from '../../utils/generatedArt'
 import { getCelestialOrbByYaku } from '../../systems/CelestialOrbSystem'
 import { DEFAULT_FAMILY_TONE, FAMILY_TONES } from '../gameplay/yakuFamilyTones'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { shownUpgradeLevel } from '../gameplay/yakuUpgradeLevel'
 
 const ORB_TONE = '#7dd3fc'
 
@@ -60,8 +61,8 @@ function LevelRow({
         <p className="text-sm font-bold text-[var(--color-golden-yellow)]">
           {t('upgradeFamilies.levelChange', {
             family: t(`upgradeFamilies.${change.yaku}.name`),
-            from: number(change.from),
-            to: number(change.to),
+            from: number(shownUpgradeLevel(change.from)),
+            to: number(shownUpgradeLevel(change.to)),
           })}
         </p>
         <p className="text-xs text-emerald-200">
@@ -81,7 +82,7 @@ function LevelRow({
           ['--pop-delay' as string]: `${index * 90}ms`,
         }}
       >
-        {number(change.to)}
+        {number(shownUpgradeLevel(change.to))}
       </span>
     </li>
   )

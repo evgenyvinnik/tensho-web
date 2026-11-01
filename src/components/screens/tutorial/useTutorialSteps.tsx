@@ -29,7 +29,10 @@ import {
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
+  EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
 } from '../../../game/playRules'
+import { STAKE_NAME_KEYS } from '../../../i18n/stakeRules'
 import {
   TutorialStep,
   Highlight,
@@ -45,6 +48,7 @@ import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
 import { HAND_BUILDING_EXAMPLE } from './handBuildingExample'
 import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
 import { DecreeBuildGuide } from '../../shop/DecreeBuildGuide'
+import { TeachingIllustration } from '../../ui/TeachingIllustration'
 
 /**
  * useTutorialSteps - Hook that generates all tutorial step content
@@ -777,6 +781,14 @@ export function useTutorialSteps(): TutorialStep[] {
               </li>
             </ul>
             <p>{t('tutorial.turns.p2')}</p>
+            <p>
+              {t('tutorial.turns.emergency', {
+                act: EMERGENCY_TURN_FIRST_ACT,
+                stake: t(
+                  `stakes.${STAKE_NAME_KEYS[EMERGENCY_TURN_FIRST_STAKE - 1]}`
+                ),
+              })}
+            </p>
             <InfoBox type="warning">{t('tutorial.turns.warning')}</InfoBox>
           </div>
         ),
@@ -1055,6 +1067,7 @@ export function useTutorialSteps(): TutorialStep[] {
         title: t('codexReference.titleActsRounds'),
         content: (
           <div className="space-y-3">
+            <TeachingIllustration kind="journey" />
             <InfoBox type="tip">
               {t('runJourney.optional', { total: NORMAL_RUN_ACTS })}
             </InfoBox>

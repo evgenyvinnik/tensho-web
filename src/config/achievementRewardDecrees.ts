@@ -36,7 +36,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'Satellite',
     japaneseName: '衛星',
     description:
-      'At the end of each won round, +1 Gold for each hand family you have raised above level 1 with Orbs.',
+      'At the end of each won round, +1 Gold for each hand family you have raised above level 0 with Orbs.',
     rarity: 'rare',
     effects: [
       { type: 'gold_gain', value: 1, condition: 'per upgraded Orb family' },
@@ -61,7 +61,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     id: 'lucky_sixes',
     name: 'Lucky Sixes',
     japaneseName: '六福',
-    description: '+6 Mult per numbered 6 played. Stones do not count.',
+    description: '+6 Mult per numbered 6 played. Stone tiles do not count.',
     rarity: 'uncommon',
     effects: [
       {
@@ -78,7 +78,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'The Idol',
     japaneseName: '偶像',
     description:
-      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stones break it; Wild tiles keep their printed face.',
+      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stone tiles break it; Wild tiles keep their printed face.',
     rarity: 'rare',
     effects: [
       {

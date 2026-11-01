@@ -314,7 +314,7 @@ test('workflow gates the built artifact and preserves Pages base and SPA fallbac
     workflow.indexOf('      - name: Record release provenance') <
       workflow.indexOf('      - name: Upload Pages artifact')
   )
-  assert.match(workflow, /VITE_BASE_PATH: \/tensho-web\//)
+  assert.match(workflow, /VITE_BASE_PATH: \/$/m)
   assert.ok(
     workflow.includes('VITE_APP_VERSION: ${{ steps.version.outputs.version }}')
   )
