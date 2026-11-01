@@ -550,9 +550,8 @@
     "credits": {
       "title": "致谢",
       "soundEffects": "音效",
-      "tiles": "牌的声音",
       "interface": "按钮与菜单音效",
-      "casino": "筹码、金币与卡包",
+      "casino": "牌的声音、筹码、金币与卡包",
       "modified": "已为 Tensho 切分成单个音效，并做了降噪和音量匹配。",
       "original": "其余所有音效（包括筝、铃和太鼓）都是专为 Tensho 合成的原创声音。"
     }

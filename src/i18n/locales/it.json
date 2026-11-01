@@ -837,9 +837,8 @@
     "credits": {
       "title": "Crediti",
       "soundEffects": "Effetti sonori",
-      "tiles": "Suoni delle tessere",
       "interface": "Suoni di pulsanti e menu",
-      "casino": "Fiches, oro e pacchetti di carte",
+      "casino": "Suoni delle tessere, fiches, oro e pacchetti di carte",
       "modified": "Suddiviso in singoli suoni, ripulito e livellato per Tensho.",
       "original": "Tutti gli altri effetti sonori, inclusi koto, campane e taiko, sono suoni originali sintetizzati per Tensho."
     }

@@ -550,9 +550,8 @@
     "credits": {
       "title": "Crédits",
       "soundEffects": "Effets sonores",
-      "tiles": "Sons des tuiles",
       "interface": "Sons des boutons et des menus",
-      "casino": "Jetons, or et paquets de cartes",
+      "casino": "Sons des tuiles, jetons, or et paquets de cartes",
       "modified": "Découpé en sons individuels, nettoyé et égalisé en volume pour Tensho.",
       "original": "Tous les autres effets sonores, dont le koto, les cloches et le taiko, sont des sons originaux synthétisés pour Tensho."
     }

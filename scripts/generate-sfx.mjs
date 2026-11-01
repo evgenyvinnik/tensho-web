@@ -1,9 +1,9 @@
 /** Deterministic sound build: recorded foley plus original synthesis.
  *
- * Ordinary actions use real recordings from scripts/sfx-sources (SOURCES.md
- * lists each file's origin and licence): mahjong tiles for every tile action,
- * Kenney's CC0 interface clicks, casino chips and card packs. Payoffs and
- * refusals are synthesized from physically-inspired voices:
+ * Ordinary actions use CC0 recordings from scripts/sfx-sources (SOURCES.md
+ * lists each file's origin and licence): Kenney's clay-chip clacks, slowed,
+ * for every tile action, plus interface clicks, chips and card packs.
+ * Payoffs and refusals are synthesized from physically-inspired voices:
  *
  *   sample recorded slice: leading silence skipped, room hiss gated, faded
  *   thump  felt-muffled table body under a landing tile
@@ -39,7 +39,11 @@ const ids = [
     ].map((m) => m[1])
   ),
 ]
-export const RATE = 44100
+/**
+ * 32 kHz keeps everything up to 16 kHz (more than phone speakers reproduce)
+ * while keeping the precached sound set inside the offline payload budget.
+ */
+export const RATE = 32000
 const PEAK = 0.7
 const TAU = 2 * Math.PI
 const check = process.argv.includes('--check')
@@ -237,10 +241,12 @@ function sample(ctx, t, name, options = {}) {
   }
 }
 
-const MAHJONG = 'mahjong/mahjong-tiles'
-/** A slice of the mahjong recording; times are seconds into the source clip. */
-const tiles = (ctx, t, from, to, options = {}) =>
-  sample(ctx, t, MAHJONG, { from, to, gate: 34, highpass: 120, ...options })
+/**
+ * Tile hits are Kenney clay-chip clacks played 15–25% slow: lower and a touch
+ * longer, closer to a dense mahjong tile than a light chip.
+ */
+const tile = (ctx, t, name, rate, options = {}) =>
+  sample(ctx, t, `kenney-casino/${name}`, { rate, ...options })
 const ui = (ctx, t, name, options) =>
   sample(ctx, t, `kenney-interface/${name}`, options)
 const casino = (ctx, t, name, options) =>
@@ -529,55 +535,56 @@ const arpeggio = (ctx, t, notes, spacing, options = {}) =>
 // =============================================================================
 
 const RECIPES = {
-  // --- Tiles: real mahjong tiles ---------------------------------------------
-  tile_select: [0.12, -19, (c) => tiles(c, 0, 2.47, 2.565)],
+  // --- Tiles: slowed chip clacks, felt thump under set-downs -----------------
+  tile_select: [0.12, -19, (c) => tile(c, 0, 'chips-collide-1', 0.82)],
   tile_deselect: [
-    0.12,
+    0.14,
     -21,
     (c) => {
-      tiles(c, 0, 3.714, 3.8, { rate: 0.96 })
+      tile(c, 0, 'chip-lay-1', 0.78)
       thump(c, 0, { gain: 0.2 })
     },
   ],
-  // Two quick clacks: the tile leaves the wall and lands in the hand.
-  tile_draw: [0.16, -20, (c) => tiles(c, 0, 0.645, 0.775)],
+  tile_draw: [0.14, -20, (c) => tile(c, 0, 'chips-stack-2', 0.8)],
   tile_discard: [
-    0.12,
+    0.22,
     -17,
     (c) => {
       thump(c, 0, { frequency: 170, gain: 0.5 })
-      tiles(c, 0, 0.166, 0.206, { fadeOut: 0.008 })
+      tile(c, 0, 'chip-lay-2', 0.75)
     },
   ],
-  tile_place: [0.12, -18, (c) => tiles(c, 0, 0.166, 0.236)],
+  tile_place: [0.13, -18, (c) => tile(c, 0, 'chips-stack-1', 0.8)],
   tile_slide: [
     0.24,
     -21,
     (c) => {
       friction(c, 0, 0.14, { gain: 0.8, center: 2300 })
-      tiles(c, 0.13, 3.714, 3.8, { gain: 0.8 })
+      tile(c, 0.13, 'chips-collide-3', 0.8, { gain: 0.8 })
     },
   ],
-  tile_flip: [0.12, -19, (c) => tiles(c, 0, 4.448, 4.545)],
+  tile_flip: [0.13, -19, (c) => tile(c, 0, 'chips-stack-6', 0.85)],
 
   // --- Interface: Kenney clicks, quiet; heard on every button ----------------
   ui_button_click: [0.04, -25, (c) => ui(c, 0, 'click_001')],
   ui_button_hover: [0.03, -33, (c) => ui(c, 0, 'tick_001')],
   ui_menu_open: [0.3, -25, (c) => ui(c, 0, 'maximize_001')],
-  ui_menu_close: [0.3, -26, (c) => ui(c, 0, 'minimize_001')],
+  ui_menu_close: [0.3, -25, (c) => ui(c, 0, 'minimize_001')],
   ui_navigate: [0.03, -26, (c) => ui(c, 0, 'click_005')],
   ui_toggle: [0.15, -25, (c) => ui(c, 0, 'switch_002')],
   ui_slider: [0.03, -29, (c) => ui(c, 0, 'tick_002')],
   ui_tab_switch: [0.03, -25, (c) => ui(c, 0, 'click_002')],
 
   // --- Game ------------------------------------------------------------------
-  // Three real tiles slapped down in a row, over a felt thump.
+  // Three tiles slapped down in a row, over a felt thump.
   game_hand_played: [
     0.2,
     -15,
     (c) => {
       thump(c, 0, { frequency: 140, gain: 0.7 })
-      tiles(c, 0, 0.166, 0.3)
+      tile(c, 0, 'chips-collide-1', 0.8)
+      tile(c, 0.016, 'chips-stack-5', 0.85, { gain: 0.8 })
+      tile(c, 0.034, 'chip-lay-1', 0.75, { gain: 0.65 })
     },
   ],
   game_score_chip: [0.08, -22, (c) => casino(c, 0, 'chips-collide-4')],
@@ -841,11 +848,11 @@ const RECIPES = {
       koto(c, 0.06, yo(7), { sustain: 0.5, gain: 0.6 })
     },
   ],
-  // Real tiles being washed.
+  // A handful of tiles being washed.
   shop_reroll: [
-    0.45,
+    0.66,
     -19,
-    (c) => tiles(c, 0, 0.815, 1.245, { gate: 30, fadeOut: 0.05 }),
+    (c) => tile(c, 0, 'chips-handle-5', 0.85, { to: 0.55, fadeOut: 0.06 }),
   ],
   shop_sell: [0.42, -20, (c) => casino(c, 0, 'chips-handle-1')],
   shop_cant_afford: [
@@ -858,22 +865,23 @@ const RECIPES = {
   ],
 
   // --- Ambient (optional beds) -----------------------------------------------
-  ambient_wind_chimes: [2.4, -24, (c) => chimes(c, 0, 2.2, { count: 10 })],
+  // Optional beds, declared but not triggered by the game: kept short.
+  ambient_wind_chimes: [1.2, -24, (c) => chimes(c, 0, 1.0, { count: 6 })],
   ambient_rain: [
-    2.4,
+    1.2,
     -26,
     (c) => {
-      noise(c, 0, 2.4, 0.5, {
+      noise(c, 0, 1.2, 0.5, {
         filters: [
           ['lowpass', 2500, 0.6],
           ['highpass', 300, 0.6],
         ],
         shape: (p) => Math.min(1, p / 0.15, (1 - p) / 0.15),
       })
-      for (let k = 0; k < 70; k++)
+      for (let k = 0; k < 35; k++)
         mode(
           c,
-          c.range(0.05, 2.3),
+          c.range(0.05, 1.12),
           c.range(2200, 5200),
           c.range(0.05, 0.2),
           0.004
@@ -881,10 +889,10 @@ const RECIPES = {
     },
   ],
   ambient_birds: [
-    2.4,
+    1.2,
     -26,
     (c) => {
-      ;[0.1, 0.17, 0.24, 0.9, 0.98, 1.7, 1.76, 1.82, 1.88].forEach((t, k) =>
+      ;[0.1, 0.17, 0.24, 0.7, 0.78, 0.9, 0.96, 1.02].forEach((t, k) =>
         chirp(c, t, {
           from: 2800 + (k % 3) * 300,
           to: 4600 + (k % 2) * 500,
@@ -950,7 +958,8 @@ export function render(id) {
   }
   // Trim inaudible tails so files hold only sound, then fade the last 8 ms.
   let length = data.length
-  while (length > 1 && Math.abs(data[length - 1]) < 0.0006) length--
+  // −54 dBFS: far below anything audible over music in a game mix.
+  while (length > 1 && Math.abs(data[length - 1]) < 0.002) length--
   const fade = Math.round(0.008 * RATE)
   const wav = Buffer.alloc(44 + length * 2)
   wav.write('RIFF', 0)

@@ -550,9 +550,8 @@
     "credits": {
       "title": "크레딧",
       "soundEffects": "효과음",
-      "tiles": "패 소리",
       "interface": "버튼 및 메뉴 소리",
-      "casino": "칩, 골드, 카드 팩",
+      "casino": "패 소리, 칩, 골드, 카드 팩",
       "modified": "Tensho에 맞게 한 소리씩 잘라 내고 잡음을 정리한 뒤 음량을 맞췄습니다.",
       "original": "고토, 방울, 다이코를 포함한 그 밖의 효과음은 모두 Tensho를 위해 합성한 오리지널 사운드입니다."
     }

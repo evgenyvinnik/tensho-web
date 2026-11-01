@@ -7,22 +7,23 @@ Updated November 1, 2026. Audio is now connected to the live application, not ju
 `public/assets/sfx/` holds 55 cues covering every declared sound ID, built by `scripts/generate-sfx.mjs` from two kinds of material:
 
 - **Recordings** in `scripts/sfx-sources/`, outside `public/` so the raw packs are not served. [SOURCES.md](../scripts/sfx-sources/SOURCES.md) lists every file, its origin, licence and the cue it feeds.
-  - Real mahjong tiles ("Mahjong Tiles Sound Effect", Orange Free Sounds, **CC BY-NC 4.0**) for every tile action, the hand-played slap and the shop reroll. Non-commercial and credit required: it fits while the game is free with no ads or payments, and must be replaced first if that changes.
-  - Kenney "Interface Sounds" and "Casino Audio" (CC0) for button clicks and ticks, gold and chips, and card-pack paper.
+  - Kenney "Casino Audio" (CC0): clay-chip clacks played 15–25% slow for every tile action, the hand-played slap and the shop reroll, plus gold, chips and card-pack paper.
+  - Kenney "Interface Sounds" (CC0) for button clicks and ticks.
+  - The game shows rewarded ads, so non-commercial licences (CC BY-NC and similar) are off the table even with credit. A CC BY-NC mahjong recording was tried for tiles and removed for that reason.
 - **Synthesis** for payoffs and refusals: Karplus-Strong koto in the *yo* pentatonic (D E G A B, *in* scale for losses), rin bells and glass, taiko, hyoshigi clappers, a felt thump under landing tiles, and a two-knock woodblock for illegal actions, so refusals never buzz.
 
-Every recording is credited in-game under **Settings → Credits** (title, author, licence, and the changes made where CC BY asks for them), in all thirteen languages. The entries come from `src/config/creditsDefinitions.ts`.
+Every recording is credited in-game under **Settings → Credits** (title, author and licence; for a CC BY work, also the changes made), in all thirteen languages, although CC0 does not require it. The entries come from `src/config/creditsDefinitions.ts`.
 
 The four music tracks are unchanged; this work does not establish new licensing provenance for them, so they are not yet listed in Credits.
 
-History: the first palette built every cue from pitched sine partials, so all seven tile sounds were near-identical ~800 Hz beeps and every button played a 620 Hz blip. A second, fully synthesized pass modelled tile clacks physically; the current pass replaces those with recordings of real tiles.
+History: the first palette built every cue from pitched sine partials, so all seven tile sounds were near-identical ~800 Hz beeps and every button played a 620 Hz blip. A second, fully synthesized pass modelled tile clacks physically; the current pass uses recorded chip clacks instead.
 
-The `sample` voice skips silence before each hit (some sources open with up to 120 ms of it, which would read as input lag), high-passes away DC offset and rumble, gates room hiss between transients, and fades the slice out.
+The `sample` voice skips silence before each hit (some sources open with up to 120 ms of it, which would read as input lag), can resample a slice slower or faster, high-passes away DC offset and rumble, can gate room hiss between transients, and fades the slice out.
 
 Loudness is matched on a K-weighted 50 ms RMS (a short-term loudness proxy) with a soft-knee ceiling, so a 30 ms click and a one-second phrase land at intended levels rather than at equal peaks. **The category balance is baked into the files** (interface −8 dB, tiles −0.9 dB relative to game cues) and every cue plays at one element volume of 0.5, because iOS ignores `HTMLMediaElement.volume` and plays each file at its own level. 0.5 also matches music's 0.7 × 0.7, so music and effects keep the same balance on iPhone, where both play at file level. On iOS the in-game volume sliders still cannot change levels; only mute works there.
 
-- Mono, 44.1 kHz, 16-bit PCM WAV (crisper transients than the former 24 kHz).
-- Approximately 3,000 KiB across all 55 files; inaudible tails are trimmed. Sources add about 1 MiB under `scripts/`.
+- Mono, 32 kHz, 16-bit PCM WAV: content up to 16 kHz, more than phone speakers reproduce, and crisper than the former 24 kHz. A 44.1 kHz build pushed the precached payload past the 40 MiB core budget enforced by `scripts/verify-asset-delivery.mjs`.
+- Approximately 1,970 KiB across all 55 files; tails are trimmed below −54 dBFS, and the three optional ambient beds (not triggered by the game) are 1.2 s. Sources add about 0.5 MiB under `scripts/`.
 - Tile and interface cues are under 0.25 s (most 30–120 ms); payoffs run up to 2.4 s.
 - Percussive cues (tiles, interface, coins, score beads, hand played) vary pitch by a few percent per play with `preservesPitch` disabled, so repeats do not machine-gun and clicks are never time-stretched. Tonal phrases stay at concert pitch.
 - All tile cues and the most frequent payoffs preload, so their first play is not delayed by a fetch.

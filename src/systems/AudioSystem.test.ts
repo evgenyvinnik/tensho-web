@@ -96,7 +96,7 @@ describe('sound assets', () => {
       expect(bytes.readUInt16LE(20)).toBe(1)
       expect(bytes.readUInt16LE(22)).toBe(1)
       const rate = bytes.readUInt32LE(24)
-      expect(rate).toBe(44100)
+      expect(rate).toBe(32000)
       expect(bytes.readUInt32LE(40)).toBe(bytes.length - 44)
       let peak = 0
       for (let i = 44; i < bytes.length; i += 2)

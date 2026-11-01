@@ -26,6 +26,11 @@ describe('audio credits', () => {
     }
   })
 
+  it('ships no non-commercial licence, because the game shows ads', () => {
+    for (const credit of SOUND_EFFECT_CREDITS)
+      expect(credit.license.name, credit.id).not.toMatch(/\bNC\b/)
+  })
+
   it('marks changes wherever the licence asks for attribution', () => {
     for (const credit of SOUND_EFFECT_CREDITS)
       if (credit.license.name.includes('BY'))

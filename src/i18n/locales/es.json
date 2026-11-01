@@ -550,9 +550,8 @@
     "credits": {
       "title": "Créditos",
       "soundEffects": "Efectos de sonido",
-      "tiles": "Sonidos de las fichas",
       "interface": "Sonidos de botones y menús",
-      "casino": "Fichas de casino, oro y sobres de cartas",
+      "casino": "Sonidos de las fichas, fichas de casino, oro y sobres de cartas",
       "modified": "Recortado en sonidos individuales, limpiado y nivelado para Tensho.",
       "original": "El resto de efectos de sonido, incluidos el koto, las campanas y el taiko, son sonidos originales sintetizados para Tensho."
     }

@@ -15,7 +15,7 @@ export interface AudioCredit {
   url: string
   license: { name: string; url: string }
   /** What Tensho uses it for: `settings.credits.<role>`. */
-  role: 'tiles' | 'interface' | 'casino'
+  role: 'interface' | 'casino'
   /** Folder under scripts/sfx-sources holding the files used. */
   source: string
   /** CC BY asks for changes to be indicated. */
@@ -28,19 +28,6 @@ const CC0 = {
 }
 
 export const SOUND_EFFECT_CREDITS: readonly AudioCredit[] = [
-  {
-    id: 'orange-free-sounds-mahjong',
-    title: 'Mahjong Tiles Sound Effect',
-    author: 'Orange Free Sounds',
-    url: 'https://orangefreesounds.com/mahjong-tiles-sound-effect/',
-    license: {
-      name: 'CC BY-NC 4.0',
-      url: 'https://creativecommons.org/licenses/by-nc/4.0/',
-    },
-    role: 'tiles',
-    source: 'mahjong',
-    modified: true,
-  },
   {
     id: 'kenney-interface-sounds',
     title: 'Interface Sounds',

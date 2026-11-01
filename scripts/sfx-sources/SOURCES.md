@@ -5,31 +5,15 @@
 neither served nor precached. Each file was converted once with:
 
 ```sh
-ffmpeg -i <original> -map_metadata -1 -bitexact -ac 1 -ar 44100 \
+ffmpeg -i <original> -map_metadata -1 -bitexact -ac 1 -ar 32000 \
   -sample_fmt s16 -c:a pcm_s16le <name>.wav
 ```
 
-The generator reads them as mono 16-bit PCM at 44.1 kHz and fails on anything else.
+The generator reads them as mono 16-bit PCM at 32 kHz (its output rate) and fails on anything else.
 
 Players see these credits under **Settings → Credits**, rendered from
 `src/config/creditsDefinitions.ts`. A test fails if a folder here has no entry
 there, or if an entry's links are missing from this file.
-
-## mahjong/
-
-| File | Original | Author | Licence |
-| --- | --- | --- | --- |
-| `mahjong-tiles.wav` | "Mahjong Tiles Sound Effect" (`Mahjong-tiles-sound-effect.mp3`), https://orangefreesounds.com/mahjong-tiles-sound-effect/ | Orange Free Sounds | [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) |
-
-Used for every tile cue (select, deselect, draw, discard, place, slide, flip),
-the hand-played slap and the shop reroll. Changes: mixed to mono, sliced into
-single hits and runs, high-passed, hiss-gated, level-matched, and in some cues
-layered with a synthesized felt thump.
-
-**Attribution is required, and the licence is non-commercial.** It fits the
-game while the game is free with no ads or payments. If Tensho is ever
-monetized, replace this recording first. The tile recipes are the only users
-of `MAHJONG` in the generator.
 
 ## kenney-interface/
 
@@ -54,8 +38,20 @@ Credit is appreciated but not required.
 Kenney, "Casino Audio" 1.1, https://kenney.nl/assets/casino-audio,
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) (see `License.txt`).
 
+Tile cues play these chips 15–25% slow, which lowers them toward the
+heavier clack of a mahjong tile; set-downs add a synthesized felt thump.
+
 | File | Cue |
 | --- | --- |
+| `chips-collide-1.wav` | `tile_select`, `game_hand_played` |
+| `chip-lay-1.wav` | `tile_deselect`, `game_hand_played` |
+| `chips-stack-2.wav` | `tile_draw` |
+| `chip-lay-2.wav` | `tile_discard` |
+| `chips-stack-1.wav` | `tile_place` |
+| `chips-collide-3.wav` | `tile_slide` |
+| `chips-stack-6.wav` | `tile_flip` |
+| `chips-stack-5.wav` | `game_hand_played` |
+| `chips-handle-5.wav` | `shop_reroll` (tiles being washed) |
 | `chips-stack-3.wav` | `game_gold_earned` |
 | `chips-handle-3.wav` | `game_gold_spent` |
 | `chips-collide-4.wav` | `game_score_chip` |
@@ -64,6 +60,12 @@ Kenney, "Casino Audio" 1.1, https://kenney.nl/assets/casino-audio,
 | `chips-handle-1.wav` | `shop_sell` |
 | `chip-lay-3.wav` | `shop_cant_afford` (with a synthesized woodblock) |
 | `cards-pack-open-2.wav` | `special_pack_opening` |
+
+## Not used: non-commercial recordings
+
+Tensho shows rewarded ads, so it is a commercial game. Recordings licensed
+for non-commercial use only (for example CC BY-NC) cannot be used, even with
+credit. A CC BY-NC mahjong recording was tried and removed for that reason.
 
 ## Still synthesized
 
