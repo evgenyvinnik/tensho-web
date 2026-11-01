@@ -24,7 +24,9 @@ interface Props {
  * run's Yaku upgrades on the right. On a phone each side is a three-column
  * grid, side by side where the panel is wide enough and stacked where it is
  * not; wider screens let each side wrap within its own column. Either way
- * the whole build shows without opening anything.
+ * the whole build shows without opening anything. The synergy guide is
+ * hidden on phone-width screens, where it costs too much of the Tea House;
+ * the Codex keeps the same guide under Decrees.
  */
 export function ShopBuildPanel({
   decrees,
@@ -98,7 +100,9 @@ export function ShopBuildPanel({
           </div>
         )}
       </div>
-      <DecreeBuildGuide />
+      <div data-shop-build-guide className="hidden sm:block">
+        <DecreeBuildGuide />
+      </div>
     </section>
   )
 }
