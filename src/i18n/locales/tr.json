@@ -3235,7 +3235,7 @@
     },
     "Ittsu": {
       "name": "Sıralar",
-      "covers": "Dörtlü sıra, Beşli sıra veya Sıra + Çift (aynı türden ardışık sayılar) ve 1–9 Sırası: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
+      "covers": "Dörtlü sıra, Beşli sıra, Altılı sıra veya Sıra + Çift (aynı türden ardışık sayılar) ve 1–9 Sırası: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
     },
     "Toitoi": {
       "name": "Üçlü ve dörtlüler",
