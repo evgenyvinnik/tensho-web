@@ -97,11 +97,12 @@ export function ActionBar({
       ? adTurn
       : null
 
+  // The table frame already keeps the bar above the home indicator.
   return (
     <div
       data-frame-corner-row="bottom"
       data-action-bar
-      className="gameplay-action-bar gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 flex-col gap-1 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] safe-area-bottom sm:px-4"
+      className="gameplay-action-bar gameplay-frame-corner-row sticky bottom-0 z-20 flex flex-shrink-0 flex-col gap-1 rounded-sm border-t border-white/5 bg-[var(--color-dark-forest)] px-2 py-2 shadow-[0_-8px_24px_rgba(0,0,0,0.2)] sm:px-4"
     >
       {/* Floats just above the bar so showing it never reflows the table. */}
       {reason && (
@@ -222,9 +223,10 @@ export function ActionBar({
             title={
               !redrawAllowed && selectedCount > 0 ? redrawReason : undefined
             }
-            className="flex !min-h-11 min-w-0 flex-1 flex-col items-center justify-center !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:!px-2 sm:text-sm sm:tracking-wide"
+            className="flex !min-h-11 flex-1 flex-col items-center justify-center !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:!px-2 sm:text-sm sm:tracking-wide"
           >
-            <span className="max-w-full [overflow-wrap:anywhere]">
+            {/* Long single words (ПЕРЕСДАЧА) hyphenate onto a second line. */}
+            <span className="max-w-full hyphens-auto [overflow-wrap:anywhere]">
               {t('gameplay.redraw', 'REDRAW')}
             </span>
             {freeRedraws > 0 && (
@@ -249,13 +251,15 @@ export function ActionBar({
           onClick={onPlayHand}
           disabled={!playAllowed}
           aria-describedby={reason ? reasonId : undefined}
-          className={`!min-h-11 min-w-0 flex-1 !px-1 text-[13px] font-black uppercase leading-tight tracking-normal sm:flex-[1.4] sm:!px-6 sm:text-sm sm:tracking-wide ${
+          // The main action: wider, taller and larger than REDRAW, whose
+          // two-line labels stay within this height.
+          className={`!min-h-14 min-w-0 flex-[1.6] !px-1 text-[15px] font-black uppercase leading-tight tracking-normal sm:flex-[1.4] sm:!px-6 sm:text-base sm:tracking-wide ${
             willClear && playAllowed
               ? 'shadow-[0_0_22px_rgba(74,222,128,0.55)]'
               : ''
           }`}
         >
-          <span className="[overflow-wrap:anywhere]">
+          <span className="hyphens-auto [overflow-wrap:anywhere]">
             {t('gameplay.playHand', 'Play hand')}
           </span>
         </Button>

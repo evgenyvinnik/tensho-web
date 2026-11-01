@@ -207,6 +207,19 @@ a {
    Utility Classes
    ============================================================================ */
 
+/* The iOS app: no text selection, loupe or Copy/Look Up callout on a long
+ * press, as in a native game. Fields stay editable. */
+[data-native-app] body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+[data-native-app] :is(input, textarea, [contenteditable='true']) {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 .safe-area-top {
   padding-top: env(safe-area-inset-top);
 }
@@ -312,10 +325,28 @@ a {
 }
 
 /*
- * The narrowest phones (320px) fit six 44px tiles per rack row instead of
- * five, so a 16-tile hand needs three rows rather than four and stays on
- * screen. Touch targets keep their size; only margins and gaps shrink.
+ * Phones pack the rack as tightly as the 44px touch target allows. Inside a
+ * group a tile's slot is its only spacing (compact 42px tiles sit 2px apart),
+ * and only hairline gaps separate loose tiles, groups and suits. A 402px
+ * iPhone fits eight tiles a row instead of seven, a 320px phone six instead
+ * of five. Touch targets keep their size; only margins, gaps and the
+ * headroom above each tile shrink. The headroom still clears the hover lift.
  */
+@media (max-width: 639px) {
+  [data-hand-rack] {
+    column-gap: 2px;
+    --rack-group-gap: 0px;
+    --rack-suit-gap: 4px;
+    --rack-slot-top: 4px;
+  }
+
+  /* This marker survives staging, so choosing a tile cannot change the gap
+     or margins and shuffle the rest of the rack. */
+  [data-rack-group] {
+    margin-inline: 1px;
+  }
+}
+
 @media (max-width: 359px) {
   [data-gameplay-surface] {
     margin-inline: 0;
@@ -323,18 +354,6 @@ a {
 
   [data-play-zone='hand'] {
     padding-inline: 2px;
-  }
-
-  [data-hand-rack] {
-    column-gap: 2px;
-    --rack-group-gap: 2px;
-    --rack-suit-gap: 4px;
-  }
-
-  /* This marker survives staging, so choosing a tile cannot change the gap
-     or margins and shuffle the rest of the rack. */
-  [data-rack-group] {
-    margin-inline: 1px;
   }
 }
 
@@ -427,7 +446,10 @@ a {
   width: 100%;
 }
 
-@container game-actions (min-width: 320px) {
+/* One row from 280px, which a 375px phone reaches: each button keeps ~79px
+ * for text there, and no locale's longest word (ПЕРЕСДАЧА, 74px) is wider.
+ * Longer labels wrap at a space or hyphen within the 44px button. */
+@container game-actions (min-width: 280px) {
   .gameplay-action-controls {
     display: flex;
   }

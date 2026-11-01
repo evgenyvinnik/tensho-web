@@ -41,6 +41,9 @@ document.addEventListener('visibilitychange', () => {
     void useUpdateStore.getState().attempt()
 })
 
+// The iOS app behaves like a native game: no text selection or callouts.
+if (IS_NATIVE_APP) document.documentElement.dataset.nativeApp = ''
+
 // Register service worker for PWA. The iOS app updates through the App Store.
 if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
   void registerUpdates(
@@ -53,15 +56,17 @@ if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
 // Only English is bundled up front; the detected language is fetched first so
 // the interface does not render once in English and then again translated.
 // The iOS app first restores saves the OS may have cleared.
-void nativeStorageReady.then(() => i18nReady).finally(() => {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <AppErrorBoundary>
-        <App />
-      </AppErrorBoundary>
-    </StrictMode>
-  )
-})
+void nativeStorageReady
+  .then(() => i18nReady)
+  .finally(() => {
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <AppErrorBoundary>
+          <App />
+        </AppErrorBoundary>
+      </StrictMode>
+    )
+  })
 
 // The iOS app's ads, after every second Boss. The consent and tracking prompts
 // come after the first frame; the website never loads AdMob.

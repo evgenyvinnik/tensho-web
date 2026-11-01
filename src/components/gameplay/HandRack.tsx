@@ -163,10 +163,11 @@ export function HandRack({
   const slotWidth = Math.max(44, dimensions.width)
 
   const renderTile = (tile: Tile) => {
+    // Headroom above the tile for its hover lift; phones trim it (index.css).
     const slotStyle = {
       width: slotWidth,
-      minHeight: Math.max(44, dimensions.height) + 10,
-      paddingTop: 10,
+      minHeight: `calc(${Math.max(44, dimensions.height)}px + var(--rack-slot-top, 10px))`,
+      paddingTop: 'var(--rack-slot-top, 10px)',
     }
     // On the felt: its place in the rack waits, empty, for it to come back.
     if (selectedIds.has(tile.id))
