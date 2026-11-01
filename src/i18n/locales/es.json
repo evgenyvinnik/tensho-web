@@ -438,6 +438,7 @@
     "protected": "La protección del Augurio anula la penalización adicional.",
     "errorSuit": "Elige una ficha numerada de otro palo.",
     "errorRank": "Elige una ficha cuyo nuevo número esté entre 1 y 9.",
+    "errorHonor": "Elige una ficha que no sea ya ese honor ni una Ficha de Piedra.",
     "choose": "Elige un objeto y confirma su uso.",
     "targets": "Fichas objetivo",
     "count": "Objetivos: {{selected}} / {{required}}",
@@ -2594,6 +2595,34 @@
         "name": "Sello de la Unidad",
         "description": "Convierte hasta 3 fichas numeradas en Vientos. Los números siguen el ciclo Este, Sur, Oeste, Norte."
       },
+      "seal_of_red_dragon": {
+        "name": "Sello del Dragón Rojo",
+        "description": "Convierte 1 ficha que elijas en un Dragón Rojo durante el resto de esta partida"
+      },
+      "seal_of_green_dragon": {
+        "name": "Sello del Dragón Verde",
+        "description": "Convierte 1 ficha que elijas en un Dragón Verde durante el resto de esta partida"
+      },
+      "seal_of_white_dragon": {
+        "name": "Sello del Dragón Blanco",
+        "description": "Convierte 1 ficha que elijas en un Dragón Blanco durante el resto de esta partida"
+      },
+      "seal_of_east_wind": {
+        "name": "Sello del Viento Este",
+        "description": "Convierte 1 ficha que elijas en un Viento Este durante el resto de esta partida"
+      },
+      "seal_of_south_wind": {
+        "name": "Sello del Viento Sur",
+        "description": "Convierte 1 ficha que elijas en un Viento Sur durante el resto de esta partida"
+      },
+      "seal_of_west_wind": {
+        "name": "Sello del Viento Oeste",
+        "description": "Convierte 1 ficha que elijas en un Viento Oeste durante el resto de esta partida"
+      },
+      "seal_of_north_wind": {
+        "name": "Sello del Viento Norte",
+        "description": "Convierte 1 ficha que elijas en un Viento Norte durante el resto de esta partida"
+      },
       "seal_of_the_oracle": {
         "name": "Sello del Oráculo",
         "description": "Crea 2 Orbes Celestes al azar"
@@ -2621,6 +2650,10 @@
       "seal_of_strength": {
         "name": "Sello de la Fuerza",
         "description": "Sube en 1 el número de hasta 2 fichas (hasta 9)"
+      },
+      "seal_of_descent": {
+        "name": "Sello del Descenso",
+        "description": "Baja en 1 el número de 1 o 2 fichas que elijas durante el resto de esta partida. No puede bajar un 1."
       },
       "seal_of_release": {
         "name": "Sello de la Liberación",

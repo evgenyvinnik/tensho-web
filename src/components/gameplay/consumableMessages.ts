@@ -15,6 +15,10 @@ export function consumableMessage(message: string, t: TFunction): string {
     return t('consumableUse.errorSuit')
   if (message === 'Choose a suited tile whose new rank is between 1 and 9')
     return t('consumableUse.errorRank')
+  if (
+    message === 'Choose a tile that is not already this honor or a Stone tile'
+  )
+    return t('consumableUse.errorHonor')
   if (message.includes('max level')) return t('consumableUse.errorMaxLevel')
   if (message.startsWith('No room for')) return t('consumableUse.errorNoRoom')
   if (message.startsWith('No Decrees to'))

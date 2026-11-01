@@ -438,6 +438,7 @@
     "protected": "Omen protection cancels the additional penalty.",
     "errorSuit": "Choose a suited tile of a different suit.",
     "errorRank": "Choose a suited tile whose new rank is between 1 and 9.",
+    "errorHonor": "Choose a tile that is not already this honor and is not a Stone tile.",
     "choose": "Choose an item, then confirm its use.",
     "targets": "Tile targets",
     "count": "Targets: {{selected}} / {{required}}",
@@ -2486,6 +2487,34 @@
         "name": "Seal of Unity",
         "description": "Converts up to 3 suited tiles to Winds. Ranks cycle East, South, West, North."
       },
+      "seal_of_red_dragon": {
+        "name": "Seal of the Red Dragon",
+        "description": "Turns 1 tile you choose into a Red Dragon for the rest of this run"
+      },
+      "seal_of_green_dragon": {
+        "name": "Seal of the Green Dragon",
+        "description": "Turns 1 tile you choose into a Green Dragon for the rest of this run"
+      },
+      "seal_of_white_dragon": {
+        "name": "Seal of the White Dragon",
+        "description": "Turns 1 tile you choose into a White Dragon for the rest of this run"
+      },
+      "seal_of_east_wind": {
+        "name": "Seal of the East Wind",
+        "description": "Turns 1 tile you choose into an East Wind for the rest of this run"
+      },
+      "seal_of_south_wind": {
+        "name": "Seal of the South Wind",
+        "description": "Turns 1 tile you choose into a South Wind for the rest of this run"
+      },
+      "seal_of_west_wind": {
+        "name": "Seal of the West Wind",
+        "description": "Turns 1 tile you choose into a West Wind for the rest of this run"
+      },
+      "seal_of_north_wind": {
+        "name": "Seal of the North Wind",
+        "description": "Turns 1 tile you choose into a North Wind for the rest of this run"
+      },
       "seal_of_the_oracle": {
         "name": "Seal of the Oracle",
         "description": "Creates 2 random Celestial Orbs"
@@ -2513,6 +2542,10 @@
       "seal_of_strength": {
         "name": "Seal of Strength",
         "description": "Raises the number on up to 2 tiles by 1 (up to 9)"
+      },
+      "seal_of_descent": {
+        "name": "Seal of Descent",
+        "description": "Lowers the number on 1 or 2 tiles you choose by 1 for the rest of this run. Cannot lower a 1."
       },
       "seal_of_release": {
         "name": "Seal of Release",

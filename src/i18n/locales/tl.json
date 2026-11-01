@@ -530,6 +530,34 @@
         "name": "Selyo ng Pagkakaisa",
         "description": "Ginagawang mga Hangin ang hanggang 3 numeradong tile. Umiikot ang mga numero sa Silangan, Timog, Kanluran, Hilaga."
       },
+      "seal_of_red_dragon": {
+        "name": "Selyo ng Pulang Dragon",
+        "description": "Ginagawang Pulang Dragon ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_green_dragon": {
+        "name": "Selyo ng Berdeng Dragon",
+        "description": "Ginagawang Berdeng Dragon ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_white_dragon": {
+        "name": "Selyo ng Puting Dragon",
+        "description": "Ginagawang Puting Dragon ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_east_wind": {
+        "name": "Selyo ng Hanging Silangan",
+        "description": "Ginagawang Hanging Silangan ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_south_wind": {
+        "name": "Selyo ng Hanging Timog",
+        "description": "Ginagawang Hanging Timog ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_west_wind": {
+        "name": "Selyo ng Hanging Kanluran",
+        "description": "Ginagawang Hanging Kanluran ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
+      "seal_of_north_wind": {
+        "name": "Selyo ng Hanging Hilaga",
+        "description": "Ginagawang Hanging Hilaga ang 1 tile na pipiliin mo sa natitirang bahagi ng run na ito"
+      },
       "seal_of_the_alchemist": {
         "name": "Selyo ng Alkimista",
         "description": "Nilalagyan ng Markang Suwerte (may tsansang +20 Mult o +20 Ginto kapag nagbigay ng puntos) ang 2 tile na pipiliin mo"
@@ -601,6 +629,10 @@
       "seal_of_strength": {
         "name": "Selyo ng Lakas",
         "description": "Itinataas ng 1 ang numero ng hanggang 2 tile (hanggang 9)"
+      },
+      "seal_of_descent": {
+        "name": "Selyo ng Pagbaba",
+        "description": "Ibinababa ng 1 ang numero ng 1 o 2 tile na pipiliin mo sa natitirang bahagi ng run na ito. Hindi maibababa ang 1."
       },
       "seal_of_release": {
         "name": "Selyo ng Pagpapalaya",
@@ -725,6 +757,7 @@
     "protected": "Kakanselahin ng proteksiyon ng Pangitain ang dagdag na kaparusahan.",
     "errorSuit": "Pumili ng numerong tile na may ibang uri.",
     "errorRank": "Pumili ng tile na ang bagong numero ay mula 1 hanggang 9.",
+    "errorHonor": "Pumili ng tile na hindi pa ang honor na iyon at hindi Tile na Bato.",
     "choose": "Pumili ng item, pagkatapos ay kumpirmahin ang paggamit nito.",
     "targets": "Mga target na tile",
     "count": "Mga target: {{selected}} / {{required}}",

@@ -598,6 +598,10 @@
         "name": "Sigillo della forza",
         "description": "Aumenta di 1 il numero di un massimo di 2 tessere (fino a 9)"
       },
+      "seal_of_descent": {
+        "name": "Sigillo della discesa",
+        "description": "Abbassa di 1 il numero di 1 o 2 tessere a tua scelta per il resto di questa partita. Non può abbassare un 1."
+      },
       "seal_of_release": {
         "name": "Sigillo della liberazione",
         "description": "Distrugge fino a 2 tessere a tua scelta per il resto di questa partita"
@@ -621,6 +625,34 @@
       "seal_of_unity": {
         "name": "Sigillo dell’Unità",
         "description": "Converte fino a 3 tessere numerate in Venti. I valori seguono il ciclo Est, Sud, Ovest, Nord."
+      },
+      "seal_of_red_dragon": {
+        "name": "Sigillo del Drago Rosso",
+        "description": "Trasforma 1 tessera a tua scelta in un Drago Rosso per il resto di questa partita"
+      },
+      "seal_of_green_dragon": {
+        "name": "Sigillo del Drago Verde",
+        "description": "Trasforma 1 tessera a tua scelta in un Drago Verde per il resto di questa partita"
+      },
+      "seal_of_white_dragon": {
+        "name": "Sigillo del Drago Bianco",
+        "description": "Trasforma 1 tessera a tua scelta in un Drago Bianco per il resto di questa partita"
+      },
+      "seal_of_east_wind": {
+        "name": "Sigillo del Vento Est",
+        "description": "Trasforma 1 tessera a tua scelta in un Vento Est per il resto di questa partita"
+      },
+      "seal_of_south_wind": {
+        "name": "Sigillo del Vento Sud",
+        "description": "Trasforma 1 tessera a tua scelta in un Vento Sud per il resto di questa partita"
+      },
+      "seal_of_west_wind": {
+        "name": "Sigillo del Vento Ovest",
+        "description": "Trasforma 1 tessera a tua scelta in un Vento Ovest per il resto di questa partita"
+      },
+      "seal_of_north_wind": {
+        "name": "Sigillo del Vento Nord",
+        "description": "Trasforma 1 tessera a tua scelta in un Vento Nord per il resto di questa partita"
       }
     }
   },
@@ -725,6 +757,7 @@
     "protected": "La protezione del Presagio annulla la penalità aggiuntiva.",
     "errorSuit": "Scegli una tessera numerata di un altro seme.",
     "errorRank": "Scegli una tessera il cui nuovo numero sia tra 1 e 9.",
+    "errorHonor": "Scegli una tessera che non sia già quell’onore né una Tessera Pietra.",
     "choose": "Scegli un oggetto, poi confermane l’uso.",
     "targets": "Tessere bersaglio",
     "count": "Bersagli: {{selected}} / {{required}}",

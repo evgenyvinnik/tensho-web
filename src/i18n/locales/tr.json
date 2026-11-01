@@ -530,6 +530,34 @@
         "name": "Birlik Mührü",
         "description": "En fazla 3 sayı taşını Rüzgâr taşlarına dönüştürür. Sayılar Doğu, Güney, Batı, Kuzey sırasıyla döner."
       },
+      "seal_of_red_dragon": {
+        "name": "Kırmızı Ejderha Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Kırmızı Ejderha taşına dönüştürür."
+      },
+      "seal_of_green_dragon": {
+        "name": "Yeşil Ejderha Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Yeşil Ejderha taşına dönüştürür."
+      },
+      "seal_of_white_dragon": {
+        "name": "Beyaz Ejderha Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Beyaz Ejderha taşına dönüştürür."
+      },
+      "seal_of_east_wind": {
+        "name": "Doğu Rüzgârı Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Doğu Rüzgârı taşına dönüştürür."
+      },
+      "seal_of_south_wind": {
+        "name": "Güney Rüzgârı Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Güney Rüzgârı taşına dönüştürür."
+      },
+      "seal_of_west_wind": {
+        "name": "Batı Rüzgârı Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Batı Rüzgârı taşına dönüştürür."
+      },
+      "seal_of_north_wind": {
+        "name": "Kuzey Rüzgârı Mührü",
+        "description": "Seçtiğin 1 taşı bu koşunun geri kalanı için bir Kuzey Rüzgârı taşına dönüştürür."
+      },
       "seal_of_the_alchemist": {
         "name": "Simyacı Mührü",
         "description": "Seçtiğin 2 taşa Şans İşareti ekler (puan kazandırınca +20 Çarpan veya +20 Altın şansı)."
@@ -601,6 +629,10 @@
       "seal_of_strength": {
         "name": "Güç Mührü",
         "description": "En fazla 2 taşın sayısını 1 artırır (en fazla 9)."
+      },
+      "seal_of_descent": {
+        "name": "İniş Mührü",
+        "description": "Seçtiğin 1 veya 2 taşın sayısını bu koşunun geri kalanı için 1 azaltır. 1 azaltılamaz."
       },
       "seal_of_release": {
         "name": "Serbest Bırakma Mührü",
@@ -725,6 +757,7 @@
     "protected": "Alamet koruması ek cezayı iptal eder.",
     "errorSuit": "Farklı bir türden sayılı taş seç.",
     "errorRank": "Yeni sayısı 1 ile 9 arasında olacak bir taş seç.",
+    "errorHonor": "Henüz o onur taşı olmayan ve Kaya taşı da olmayan bir taş seç.",
     "choose": "Bir eşya seçin, ardından kullanımını onaylayın.",
     "targets": "Hedef taşlar",
     "count": "Hedefler: {{selected}} / {{required}}",

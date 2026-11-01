@@ -13,8 +13,10 @@
 import { Tile } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
 import {
+  canBecomeHonor,
   convertSuitedTile,
   convertSuitedTileRank,
+  convertTileToHonor,
 } from '../core/tileTransformations'
 import type { FateSeal } from '../systems/FateSealSystem'
 import { consumableTargetRange } from './consumableTargeting'
@@ -32,9 +34,16 @@ export function canSealTile(seal: FateSeal, tile: Tile): boolean {
     case 'convert_suit':
       return tile.isSuited && tile.suit !== effect.targetSuit
     case 'rank_modification': {
+      // A Stone tile has no number to raise or lower.
       const rank = tile.rank + (effect.rankChange ?? 1)
-      return tile.isSuited && rank >= 1 && rank <= 9
+      return tile.isSuited && !tile.isStone && rank >= 1 && rank <= 9
     }
+    case 'transform_tile':
+      return (
+        !!effect.targetSuit &&
+        !!effect.targetRank &&
+        canBecomeHonor(tile, effect.targetSuit, effect.targetRank)
+      )
     default:
       return true
   }
@@ -88,6 +97,16 @@ export function previewWallSeal(
           tile.rank + (effect.rankChange ?? 1)
         ),
       }))
+    case 'transform_tile': {
+      const { targetSuit, targetRank } = effect
+      return chosen.map((tile) => ({
+        before: tile,
+        after:
+          targetSuit && targetRank
+            ? convertTileToHonor(tile, targetSuit, targetRank)
+            : tile,
+      }))
+    }
     case 'destroy_tiles':
       return chosen.map((tile) => ({ before: tile, after: null }))
     case 'copy_tile': {
@@ -158,6 +177,20 @@ export function firstPackSealTargets(
   )
 }
 
+/** The engine's words for a tile this Seal cannot change. */
+function ineligibleTargetError(seal: FateSeal, fallback: string): string {
+  switch (seal.effect.type) {
+    case 'convert_suit':
+      return 'Choose a suited tile of a different suit'
+    case 'rank_modification':
+      return 'Choose a suited tile whose new rank is between 1 and 9'
+    case 'transform_tile':
+      return 'Choose a tile that is not already this honor or a Stone tile'
+    default:
+      return fallback
+  }
+}
+
 /**
  * Why these targets cannot take the Seal, or null when they can. Every chosen
  * tile must be a distinct wall tile the Seal would change; with no targets
@@ -176,18 +209,10 @@ export function wallSealTargetError(
   if (!targetIds)
     return eligible.length >= Math.max(min, 1)
       ? null
-      : seal.effect.type === 'convert_suit'
-        ? 'Choose a suited tile of a different suit'
-        : seal.effect.type === 'rank_modification'
-          ? 'Choose a suited tile whose new rank is between 1 and 9'
-          : 'No tiles selected'
+      : ineligibleTargetError(seal, 'No tiles selected')
   if (new Set(targetIds).size !== targetIds.length)
     return 'Choose each tile once'
   if (targetIds.some((id) => !eligible.some((tile) => tile.id === id)))
-    return seal.effect.type === 'convert_suit'
-      ? 'Choose a suited tile of a different suit'
-      : seal.effect.type === 'rank_modification'
-        ? 'Choose a suited tile whose new rank is between 1 and 9'
-        : 'Choose tiles from your wall'
+    return ineligibleTargetError(seal, 'Choose tiles from your wall')
   return null
 }

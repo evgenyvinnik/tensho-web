@@ -114,6 +114,7 @@ import {
 import {
   convertSuitedTile,
   convertSuitedTileRank,
+  convertTileToHonor,
 } from '../core/tileTransformations'
 import {
   VoidScriptSystem,
@@ -3147,6 +3148,14 @@ export class GameOrchestrator {
           )
         }
         break
+      case 'tile_transformed': {
+        const { targetSuit, targetRank } = seal.effect
+        if (targetSuit && targetRank)
+          this.transformTiles(tileIds, (tile) =>
+            convertTileToHonor(tile, targetSuit, targetRank)
+          )
+        break
+      }
       case 'tiles_destroyed':
         this.destroyTiles(tileIds, effects)
         break

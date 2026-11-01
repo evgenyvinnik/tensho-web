@@ -438,6 +438,7 @@
     "protected": "前兆の加護が追加の代償を無効にする。",
     "errorSuit": "異なる種類の数牌を選んでください。",
     "errorRank": "変更後の数字が1〜9になる数牌を選んでください。",
+    "errorHonor": "まだその字牌ではなく、石の牌でもない牌を選んでください。",
     "choose": "アイテムを選び、使用を確定してください。",
     "targets": "対象の牌",
     "count": "対象：{{selected}} / {{required}}",
@@ -2582,6 +2583,34 @@
         "name": "統一の符",
         "description": "数牌を最大3枚、風牌に変えます。数字は東・南・西・北の順に循環します。"
       },
+      "seal_of_red_dragon": {
+        "name": "中の符",
+        "description": "選んだ牌1枚を、このランの間ずっと中に変える"
+      },
+      "seal_of_green_dragon": {
+        "name": "發の符",
+        "description": "選んだ牌1枚を、このランの間ずっと發に変える"
+      },
+      "seal_of_white_dragon": {
+        "name": "白の符",
+        "description": "選んだ牌1枚を、このランの間ずっと白に変える"
+      },
+      "seal_of_east_wind": {
+        "name": "東の符",
+        "description": "選んだ牌1枚を、このランの間ずっと東風に変える"
+      },
+      "seal_of_south_wind": {
+        "name": "南の符",
+        "description": "選んだ牌1枚を、このランの間ずっと南風に変える"
+      },
+      "seal_of_west_wind": {
+        "name": "西の符",
+        "description": "選んだ牌1枚を、このランの間ずっと西風に変える"
+      },
+      "seal_of_north_wind": {
+        "name": "北の符",
+        "description": "選んだ牌1枚を、このランの間ずっと北風に変える"
+      },
       "seal_of_the_oracle": {
         "name": "神託の符",
         "description": "無作為な天球を2つ作る"
@@ -2609,6 +2638,10 @@
       "seal_of_strength": {
         "name": "剛力の符",
         "description": "最大2枚の牌の数字を1上げる（最大9）"
+      },
+      "seal_of_descent": {
+        "name": "降下の符",
+        "description": "選んだ牌1〜2枚の数字を、このランの間ずっと1下げる。1は下げられない。"
       },
       "seal_of_release": {
         "name": "解放の符",

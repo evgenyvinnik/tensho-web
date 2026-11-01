@@ -13,7 +13,7 @@
  * See ITEM_LIBRARIES.md for the complete Fate Seal library.
  */
 
-import { Tile, TileSuit } from '../core/Tile'
+import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
 import { EnhancementType, SealType, EditionType } from '../core/TileModifier'
 import {
   isConsumableAvailable,
@@ -30,6 +30,7 @@ import {
 } from './ConsumableSystem'
 import { runRandom } from '../game/RunRandom'
 import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
+import { canBecomeHonor } from '../core/tileTransformations'
 
 // =============================================================================
 // FATE SEAL TYPES
@@ -64,6 +65,7 @@ export interface FateSealEffect {
   sealType?: SealType
   editionType?: EditionType
   targetSuit?: TileSuit
+  targetRank?: number // With targetSuit: the exact tile a transform makes
   goldAmount?: number
   goldMax?: number
   rankChange?: number
@@ -365,6 +367,170 @@ export const FATE_SEALS: Record<
   },
 
   // ---------------------------------------------------------------------------
+  // Honor Seals: each makes one exact Wind or Dragon, never a cycled rank
+  // ---------------------------------------------------------------------------
+  seal_of_red_dragon: {
+    id: 'seal_of_red_dragon',
+    type: 'FateSeal',
+    name: 'Seal of the Red Dragon',
+    japaneseName: '中の印',
+    description:
+      'Turns 1 tile you choose into a Red Dragon for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a Red Dragon',
+      tileCount: 1,
+      targetSuit: TileSuit.Dragon,
+      targetRank: DragonType.Red,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'Chun takes the field',
+  },
+
+  seal_of_green_dragon: {
+    id: 'seal_of_green_dragon',
+    type: 'FateSeal',
+    name: 'Seal of the Green Dragon',
+    japaneseName: '發の印',
+    description:
+      'Turns 1 tile you choose into a Green Dragon for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a Green Dragon',
+      tileCount: 1,
+      targetSuit: TileSuit.Dragon,
+      targetRank: DragonType.Green,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'Hatsu takes the field',
+  },
+
+  seal_of_white_dragon: {
+    id: 'seal_of_white_dragon',
+    type: 'FateSeal',
+    name: 'Seal of the White Dragon',
+    japaneseName: '白の印',
+    description:
+      'Turns 1 tile you choose into a White Dragon for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a White Dragon',
+      tileCount: 1,
+      targetSuit: TileSuit.Dragon,
+      targetRank: DragonType.White,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'Haku takes the field',
+  },
+
+  seal_of_east_wind: {
+    id: 'seal_of_east_wind',
+    type: 'FateSeal',
+    name: 'Seal of the East Wind',
+    japaneseName: '東の印',
+    description:
+      'Turns 1 tile you choose into an East Wind for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into an East Wind',
+      tileCount: 1,
+      targetSuit: TileSuit.Wind,
+      targetRank: WindType.East,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'The east wind rises',
+  },
+
+  seal_of_south_wind: {
+    id: 'seal_of_south_wind',
+    type: 'FateSeal',
+    name: 'Seal of the South Wind',
+    japaneseName: '南の印',
+    description:
+      'Turns 1 tile you choose into a South Wind for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a South Wind',
+      tileCount: 1,
+      targetSuit: TileSuit.Wind,
+      targetRank: WindType.South,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'The south wind rises',
+  },
+
+  seal_of_west_wind: {
+    id: 'seal_of_west_wind',
+    type: 'FateSeal',
+    name: 'Seal of the West Wind',
+    japaneseName: '西の印',
+    description:
+      'Turns 1 tile you choose into a West Wind for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a West Wind',
+      tileCount: 1,
+      targetSuit: TileSuit.Wind,
+      targetRank: WindType.West,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'The west wind rises',
+  },
+
+  seal_of_north_wind: {
+    id: 'seal_of_north_wind',
+    type: 'FateSeal',
+    name: 'Seal of the North Wind',
+    japaneseName: '北の印',
+    description:
+      'Turns 1 tile you choose into a North Wind for the rest of this run',
+    rarity: 'Rare',
+    edition: 'Base',
+    cost: 5,
+    sellValue: 2,
+    effect: {
+      type: 'transform_tile',
+      description: 'Turn 1 tile into a North Wind',
+      tileCount: 1,
+      targetSuit: TileSuit.Wind,
+      targetRank: WindType.North,
+      requiresSelection: true,
+      selectionCount: 1,
+    },
+    mahjongTwist: 'The north wind rises',
+  },
+
+  // ---------------------------------------------------------------------------
   // Creation Seals
   // ---------------------------------------------------------------------------
   seal_of_the_oracle: {
@@ -505,6 +671,29 @@ export const FATE_SEALS: Record<
       minimumSelectionCount: 1,
     },
     mahjongTwist: 'Growth through struggle',
+  },
+
+  seal_of_descent: {
+    id: 'seal_of_descent',
+    type: 'FateSeal',
+    name: 'Seal of Descent',
+    japaneseName: '降下の印',
+    description:
+      'Lowers the number on 1 or 2 tiles you choose by 1 for the rest of this run. Cannot lower a 1.',
+    rarity: 'Common',
+    edition: 'Base',
+    cost: 3,
+    sellValue: 1,
+    effect: {
+      type: 'rank_modification',
+      description: 'Decrease rank of up to 2 tiles by 1',
+      tileCount: 2,
+      rankChange: -1,
+      requiresSelection: true,
+      selectionCount: 2,
+      minimumSelectionCount: 1,
+    },
+    mahjongTwist: 'Humility before the wall',
   },
 
   seal_of_release: {
@@ -721,6 +910,14 @@ export class FateSealSystem {
         break
       }
 
+      case 'transform_tile': {
+        const transformResult = this.transformToHonor(seal, context)
+        effects.push(...transformResult.effects)
+        message = transformResult.message
+        success = transformResult.success
+        break
+      }
+
       case 'rank_modification': {
         const rankResult = this.modifyRanks(seal, context)
         effects.push(...rankResult.effects)
@@ -789,10 +986,23 @@ export class FateSealSystem {
       const change = effect.rankChange ?? 1
       if (
         !selected.some(
-          (t) => t.isSuited && t.rank + change >= 1 && t.rank + change <= 9
+          (t) =>
+            t.isSuited &&
+            !t.isStone &&
+            t.rank + change >= 1 &&
+            t.rank + change <= 9
         )
       )
         return 'Choose a suited tile whose new rank is between 1 and 9'
+    }
+    if (effect.type === 'transform_tile') {
+      const { targetSuit, targetRank } = effect
+      if (!targetSuit || !targetRank) return 'No target tile specified'
+      if (
+        inspectTargets &&
+        !selected.every((t) => canBecomeHonor(t, targetSuit, targetRank))
+      )
+        return 'Choose a tile that is not already this honor or a Stone tile'
     }
     if (effect.type === 'create_consumable') {
       if (!effect.consumableType) return 'No consumable type specified'
@@ -1134,8 +1344,8 @@ export class FateSealSystem {
 
     for (let i = 0; i < Math.min(selectedTiles.length, maxTiles); i++) {
       const tile = selectedTiles[i]
-      // Only modify suited tiles with valid rank results
-      if (tile.isSuited) {
+      // Only modify suited tiles with valid rank results; a Stone has no number
+      if (tile.isSuited && !tile.isStone) {
         const newRank = tile.rank + rankChange
         if (newRank >= 1 && newRank <= 9) {
           affectedTileIds.push(tile.id)
@@ -1162,6 +1372,51 @@ export class FateSealSystem {
       success: true,
       message: `${seal.name}: Modified ${affectedTileIds.length} tile rank(s)`,
       effects,
+    }
+  }
+
+  /**
+   * Turn the chosen tile into the Seal's own Wind or Dragon
+   */
+  private transformToHonor(
+    seal: FateSeal,
+    context: FateSealContext
+  ): ConsumableUseResult {
+    const selectedTiles = context.selectedTiles || []
+    const { targetSuit, targetRank } = seal.effect
+
+    if (!targetSuit || !targetRank) {
+      return {
+        success: false,
+        message: 'No target tile specified',
+        effects: [],
+      }
+    }
+
+    const affectedTileIds = selectedTiles
+      .slice(0, seal.effect.tileCount || 1)
+      .filter((tile) => canBecomeHonor(tile, targetSuit, targetRank))
+      .map((tile) => tile.id)
+
+    if (affectedTileIds.length === 0) {
+      return {
+        success: false,
+        message: 'Choose a tile that is not already this honor or a Stone tile',
+        effects: [],
+      }
+    }
+
+    return {
+      success: true,
+      message: `${seal.name}: Turned ${affectedTileIds.length} tile(s) into ${targetSuit} ${targetRank}`,
+      effects: [
+        {
+          type: 'tile_transformed',
+          description: `Turned ${affectedTileIds.length} tile(s) into ${targetSuit} ${targetRank}`,
+          value: `${targetSuit}:${targetRank}`,
+          affectedTiles: affectedTileIds,
+        },
+      ],
     }
   }
 

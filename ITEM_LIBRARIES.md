@@ -22,6 +22,7 @@
 | **Seal of the Hermit** | 隠者の印 | Doubles gold (max +¥20) | Wisdom through solitude |
 | **Seal of Fortune** | 運命の印 | 1 in 4 chance to add a Foil, Holographic or Polychrome Edition to a random Decree | Wheel of fate spins |
 | **Seal of Strength** | 力の印 | Increases rank of up to 2 tiles by 1 (max 9) | Growth through struggle |
+| **Seal of Descent** | 降下の印 | Lowers the number on 1 or 2 tiles by 1 (never below 1, no wrap) | Humility before the wall |
 | **Seal of Release** | 解放の印 | Destroys up to 2 selected tiles permanently | Let go of the past |
 | **Seal of Transmutation** | 変容の印 | Select 2 tiles, left becomes copy of right | Death and rebirth |
 | **Seal of Balance** | 均衡の印 | Gives total sell value of all Decrees (max ¥50) | Equilibrium restored |
@@ -32,11 +33,24 @@
 | **Seal of Bamboo** | 索子の印 | Converts up to 3 tiles to Bamboo | Way of Bamboo |
 | **Seal of Judgment** | 審判の印 | Creates a random Decree (if room) | Court decides |
 | **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps the tile's Mark, Stamp or Edition, removes red-five status |
+| **Seal of the Red Dragon** | 中の印 | Turns 1 tile you choose into a Red Dragon (Rare, ¥5) | Chun takes the field |
+| **Seal of the Green Dragon** | 發の印 | Turns 1 tile you choose into a Green Dragon (Rare, ¥5) | Hatsu takes the field |
+| **Seal of the White Dragon** | 白の印 | Turns 1 tile you choose into a White Dragon (Rare, ¥5) | Haku takes the field |
+| **Seal of the East Wind** | 東の印 | Turns 1 tile you choose into an East Wind (Rare, ¥5) | The east wind rises |
+| **Seal of the South Wind** | 南の印 | Turns 1 tile you choose into a South Wind (Rare, ¥5) | The south wind rises |
+| **Seal of the West Wind** | 西の印 | Turns 1 tile you choose into a West Wind (Rare, ¥5) | The west wind rises |
+| **Seal of the North Wind** | 北の印 | Turns 1 tile you choose into a North Wind (Rare, ¥5) | The north wind rises |
 
 Physical suit/rank transformations retain a tile's Mark, Stamp or Edition. Red-five (aka-dora) status is retained only while the tile remains a
 suited five; it is not the Red Stamp retrigger. Creating an ordinary
-five through a rank change does not make it red. This applies to Strength and
-Ouija rank changes as well as Unity's conversion to Winds.
+five through a rank change does not make it red. This applies to Strength,
+Descent and Ouija rank changes as well as Unity's conversion to Winds.
+
+The seven honor Seals (Red, Green, White Dragon; East, South, West, North
+Wind) always make their named honor from any numbered tile or other honor;
+nothing cycles. Neither they nor Strength and Descent take a Stone tile, which
+has no face to change, and an honor Seal refuses a tile that already shows its
+honor.
 
 ### Secret Fate Seals (Rare)
 

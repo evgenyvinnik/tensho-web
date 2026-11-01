@@ -393,22 +393,34 @@ export const generatedArtPaths = {
   fateSeals: {
     seal_of_balance:
       'assets/illustrations/generated/fateSeals/seal_of_balance.webp',
+    seal_of_descent:
+      'assets/illustrations/generated/fateSeals/seal_of_descent.webp',
+    seal_of_east_wind:
+      'assets/illustrations/generated/fateSeals/seal_of_east_wind.webp',
     seal_of_fortitude:
       'assets/illustrations/generated/fateSeals/seal_of_fortitude.webp',
     seal_of_fortune:
       'assets/illustrations/generated/fateSeals/seal_of_fortune.webp',
     seal_of_glass:
       'assets/illustrations/generated/fateSeals/seal_of_glass.webp',
+    seal_of_green_dragon:
+      'assets/illustrations/generated/fateSeals/seal_of_green_dragon.webp',
     seal_of_harmony:
       'assets/illustrations/generated/fateSeals/seal_of_harmony.webp',
     seal_of_judgment:
       'assets/illustrations/generated/fateSeals/seal_of_judgment.webp',
     seal_of_manzu:
       'assets/illustrations/generated/fateSeals/seal_of_manzu.webp',
+    seal_of_north_wind:
+      'assets/illustrations/generated/fateSeals/seal_of_north_wind.webp',
     seal_of_pinzu:
       'assets/illustrations/generated/fateSeals/seal_of_pinzu.webp',
+    seal_of_red_dragon:
+      'assets/illustrations/generated/fateSeals/seal_of_red_dragon.webp',
     seal_of_release:
       'assets/illustrations/generated/fateSeals/seal_of_release.webp',
+    seal_of_south_wind:
+      'assets/illustrations/generated/fateSeals/seal_of_south_wind.webp',
     seal_of_souzu:
       'assets/illustrations/generated/fateSeals/seal_of_souzu.webp',
     seal_of_stone:
@@ -437,6 +449,10 @@ export const generatedArtPaths = {
       'assets/illustrations/generated/fateSeals/seal_of_unity.webp',
     seal_of_wealth:
       'assets/illustrations/generated/fateSeals/seal_of_wealth.webp',
+    seal_of_west_wind:
+      'assets/illustrations/generated/fateSeals/seal_of_west_wind.webp',
+    seal_of_white_dragon:
+      'assets/illustrations/generated/fateSeals/seal_of_white_dragon.webp',
   },
   orbs: {
     black_hole_orb: 'assets/illustrations/generated/orbs/black_hole_orb.webp',

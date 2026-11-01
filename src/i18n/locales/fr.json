@@ -438,6 +438,7 @@
     "protected": "La protection du Présage annule la pénalité supplémentaire.",
     "errorSuit": "Choisissez une tuile numérotée d’une autre famille.",
     "errorRank": "Choisissez une tuile dont le nouveau rang sera entre 1 et 9.",
+    "errorHonor": "Choisissez une tuile qui n’est pas déjà cet honneur ni une Tuile de Pierre.",
     "choose": "Choisissez un objet, puis confirmez son utilisation.",
     "targets": "Tuiles ciblées",
     "count": "Cibles : {{selected}} / {{required}}",
@@ -2594,6 +2595,34 @@
         "name": "Sceau de l'Unité",
         "description": "Convertit jusqu’à 3 tuiles numérotées en Vents. Les rangs suivent le cycle Est, Sud, Ouest, Nord."
       },
+      "seal_of_red_dragon": {
+        "name": "Sceau du Dragon Rouge",
+        "description": "Transforme 1 tuile de votre choix en Dragon Rouge pour le reste de la partie"
+      },
+      "seal_of_green_dragon": {
+        "name": "Sceau du Dragon Vert",
+        "description": "Transforme 1 tuile de votre choix en Dragon Vert pour le reste de la partie"
+      },
+      "seal_of_white_dragon": {
+        "name": "Sceau du Dragon Blanc",
+        "description": "Transforme 1 tuile de votre choix en Dragon Blanc pour le reste de la partie"
+      },
+      "seal_of_east_wind": {
+        "name": "Sceau du Vent Est",
+        "description": "Transforme 1 tuile de votre choix en Vent Est pour le reste de la partie"
+      },
+      "seal_of_south_wind": {
+        "name": "Sceau du Vent Sud",
+        "description": "Transforme 1 tuile de votre choix en Vent Sud pour le reste de la partie"
+      },
+      "seal_of_west_wind": {
+        "name": "Sceau du Vent Ouest",
+        "description": "Transforme 1 tuile de votre choix en Vent Ouest pour le reste de la partie"
+      },
+      "seal_of_north_wind": {
+        "name": "Sceau du Vent Nord",
+        "description": "Transforme 1 tuile de votre choix en Vent Nord pour le reste de la partie"
+      },
       "seal_of_the_oracle": {
         "name": "Sceau de l'Oracle",
         "description": "Crée 2 Orbes célestes au hasard"
@@ -2621,6 +2650,10 @@
       "seal_of_strength": {
         "name": "Sceau de la Force",
         "description": "Augmente de 1 le nombre de 2 tuiles au plus (jusqu’à 9)"
+      },
+      "seal_of_descent": {
+        "name": "Sceau de la Descente",
+        "description": "Baisse de 1 le nombre de 1 ou 2 tuiles de votre choix pour le reste de la partie. Impossible de baisser un 1."
       },
       "seal_of_release": {
         "name": "Sceau de la Délivrance",

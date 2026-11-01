@@ -438,6 +438,7 @@
     "protected": "징조의 보호가 추가 불이익을 막습니다.",
     "errorSuit": "다른 종류의 숫자패를 선택하세요.",
     "errorRank": "변경 후 숫자가 1~9인 숫자패를 선택하세요.",
+    "errorHonor": "아직 그 자패가 아니고 돌 패도 아닌 패를 선택하세요.",
     "choose": "아이템을 고른 뒤 사용을 확정하세요.",
     "targets": "대상 패",
     "count": "대상: {{selected}} / {{required}}",
@@ -2594,6 +2595,34 @@
         "name": "통합의 인장",
         "description": "수패를 최대 3장까지 풍패로 바꿉니다. 숫자는 동·남·서·북 순서로 순환합니다."
       },
+      "seal_of_red_dragon": {
+        "name": "중의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 중으로 바꿈"
+      },
+      "seal_of_green_dragon": {
+        "name": "발의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 발로 바꿈"
+      },
+      "seal_of_white_dragon": {
+        "name": "백의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 백으로 바꿈"
+      },
+      "seal_of_east_wind": {
+        "name": "동풍의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 동 바람패로 바꿈"
+      },
+      "seal_of_south_wind": {
+        "name": "남풍의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 남 바람패로 바꿈"
+      },
+      "seal_of_west_wind": {
+        "name": "서풍의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 서 바람패로 바꿈"
+      },
+      "seal_of_north_wind": {
+        "name": "북풍의 인장",
+        "description": "고른 패 1장을 이번 런이 끝날 때까지 북 바람패로 바꿈"
+      },
       "seal_of_the_oracle": {
         "name": "예언자의 인장",
         "description": "무작위 천구를 2개 생성"
@@ -2621,6 +2650,10 @@
       "seal_of_strength": {
         "name": "힘의 인장",
         "description": "최대 2장의 숫자를 1 올림 (최대 9)"
+      },
+      "seal_of_descent": {
+        "name": "하강의 인장",
+        "description": "고른 패 1~2장의 숫자를 이번 런이 끝날 때까지 1 내림. 1은 내릴 수 없음"
       },
       "seal_of_release": {
         "name": "해방의 인장",

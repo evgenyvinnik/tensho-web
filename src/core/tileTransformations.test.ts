@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { Tile, TileSuit } from './Tile'
+import { DragonType, Tile, TileSuit, WindType } from './Tile'
 import {
+  canBecomeHonor,
   convertSuitedTile,
   convertSuitedTileRank,
+  convertTileToHonor,
   suitConversionRank,
   UNITY_WIND_CONVERSIONS,
 } from './tileTransformations'
-import { EditionType, SealType } from './TileModifier'
+import { EditionType, EnhancementType, SealType } from './TileModifier'
 
 describe('physical suit transformations', () => {
   it('keeps rank conversions valid without creating red fives or losing modifiers', () => {
@@ -114,5 +116,51 @@ describe('physical suit transformations', () => {
       expect(() => suitConversionRank(rank, TileSuit.Wind)).toThrow()
     for (const suit of [TileSuit.Flower, TileSuit.Season])
       expect(() => suitConversionRank(5, suit)).toThrow()
+  })
+})
+
+describe('honor transformations', () => {
+  it('makes the named honor from every numbered rank, never a cycled one', () => {
+    for (const suit of [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu])
+      for (let rank = 1; rank <= 9; rank++) {
+        const tile = new Tile(suit, rank, 'to-honor', rank === 5).withEdition(
+          EditionType.Foil
+        )
+        expect(
+          convertTileToHonor(tile, TileSuit.Dragon, DragonType.Red)
+        ).toMatchObject({
+          suit: TileSuit.Dragon,
+          rank: 3,
+          id: tile.id,
+          isRed: false,
+          modifiers: tile.modifiers,
+        })
+        expect(
+          convertTileToHonor(tile, TileSuit.Wind, WindType.North)
+        ).toMatchObject({ suit: TileSuit.Wind, rank: 4, id: tile.id })
+      }
+  })
+
+  it('turns one honor into another but leaves its own honor, Stones and bonus tiles', () => {
+    const east = Tile.createWind(WindType.East, 'east')
+    expect(
+      convertTileToHonor(east, TileSuit.Dragon, DragonType.White)
+    ).toMatchObject({ suit: TileSuit.Dragon, rank: 1, id: 'east' })
+    expect(convertTileToHonor(east, TileSuit.Wind, WindType.East)).toBe(east)
+    const stone = new Tile(TileSuit.Manzu, 2, 'stone').withEnhancement(
+      EnhancementType.Stone
+    )
+    const flower = new Tile(TileSuit.Flower, 1, 'flower')
+    for (const tile of [stone, flower]) {
+      expect(canBecomeHonor(tile, TileSuit.Wind, WindType.East)).toBe(false)
+      expect(convertTileToHonor(tile, TileSuit.Wind, WindType.East)).toBe(tile)
+    }
+  })
+
+  it('rejects honors that do not exist', () => {
+    const tile = new Tile(TileSuit.Pinzu, 4, 'bad-honor')
+    expect(() => convertTileToHonor(tile, TileSuit.Dragon, 4)).toThrow()
+    expect(() => convertTileToHonor(tile, TileSuit.Wind, 0)).toThrow()
+    expect(() => convertTileToHonor(tile, TileSuit.Manzu, 1)).toThrow()
   })
 })

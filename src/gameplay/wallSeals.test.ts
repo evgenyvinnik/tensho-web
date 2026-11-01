@@ -41,6 +41,22 @@ describe('which wall tiles a Seal can take', () => {
     expect(canSealTile(strength, characters)).toBe(true)
     expect(canSealTile(seal('seal_of_glass'), east)).toBe(true)
   })
+
+  it('lets an honor Seal take any tile but its own honor, a Stone or a bonus tile', () => {
+    const toEast = seal('seal_of_east_wind')
+    const stone = characters.withEnhancement(EnhancementType.Stone)
+    expect(canSealTile(toEast, characters)).toBe(true)
+    expect(canSealTile(toEast, Tile.createWind(WindType.South, 's'))).toBe(true)
+    expect(canSealTile(toEast, east)).toBe(false)
+    expect(canSealTile(toEast, stone)).toBe(false)
+    expect(canSealTile(toEast, plum)).toBe(false)
+    const descent = seal('seal_of_descent')
+    expect(canSealTile(descent, characters)).toBe(true)
+    expect(canSealTile(descent, new Tile(TileSuit.Manzu, 1, 'm1'))).toBe(false)
+    expect(canSealTile(descent, east)).toBe(false)
+    expect(canSealTile(descent, stone)).toBe(false)
+    expect(canSealTile(seal('seal_of_strength'), stone)).toBe(false)
+  })
 })
 
 describe('what a Seal makes of the chosen tiles', () => {
@@ -75,6 +91,25 @@ describe('what a Seal makes of the chosen tiles', () => {
     expect(
       previewWallSeal(seal('seal_of_transmutation'), wall, ['m3'])
     ).toEqual([])
+  })
+
+  it('shows an honor Seal’s exact honor and Descent’s lower number', () => {
+    expect(
+      previewWallSeal(seal('seal_of_green_dragon'), wall, ['s5']).map(
+        ({ after }) => [after?.id, after?.suit, after?.rank, after?.isRed]
+      )
+    ).toEqual([['s5', TileSuit.Dragon, 2, false]])
+    expect(
+      previewWallSeal(seal('seal_of_descent'), wall, ['m3', 's5']).map(
+        ({ after }) => [after?.id, after?.rank, after?.isRed]
+      )
+    ).toEqual([
+      ['m3', 2, false],
+      ['s5', 4, false],
+    ])
+    expect(wallSealTargetError(seal('seal_of_east_wind'), wall, ['east'])).toBe(
+      'Choose a tile that is not already this honor or a Stone tile'
+    )
   })
 
   it('leaves the wall a following Seal finds', () => {

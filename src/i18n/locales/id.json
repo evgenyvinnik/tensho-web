@@ -646,6 +646,7 @@
     "protected": "Perlindungan Pertanda membatalkan penalti tambahan.",
     "errorSuit": "Pilih ubin angka dari jenis yang berbeda.",
     "errorRank": "Pilih ubin yang angka barunya berada di antara 1 dan 9.",
+    "errorHonor": "Pilih ubin yang belum menjadi ubin kehormatan itu dan bukan Ubin Batu.",
     "choose": "Pilih item, lalu konfirmasikan penggunaannya.",
     "targets": "Ubin target",
     "count": "Target: {{selected}} / {{required}}",
@@ -2846,6 +2847,34 @@
         "name": "Segel Persatuan",
         "description": "Mengubah hingga 3 ubin bernomor menjadi Angin. Angka mengikuti siklus Timur, Selatan, Barat, Utara."
       },
+      "seal_of_red_dragon": {
+        "name": "Segel Naga Merah",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Naga Merah sampai akhir permainan ini"
+      },
+      "seal_of_green_dragon": {
+        "name": "Segel Naga Hijau",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Naga Hijau sampai akhir permainan ini"
+      },
+      "seal_of_white_dragon": {
+        "name": "Segel Naga Putih",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Naga Putih sampai akhir permainan ini"
+      },
+      "seal_of_east_wind": {
+        "name": "Segel Angin Timur",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Angin Timur sampai akhir permainan ini"
+      },
+      "seal_of_south_wind": {
+        "name": "Segel Angin Selatan",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Angin Selatan sampai akhir permainan ini"
+      },
+      "seal_of_west_wind": {
+        "name": "Segel Angin Barat",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Angin Barat sampai akhir permainan ini"
+      },
+      "seal_of_north_wind": {
+        "name": "Segel Angin Utara",
+        "description": "Mengubah 1 ubin pilihanmu menjadi Angin Utara sampai akhir permainan ini"
+      },
       "seal_of_the_oracle": {
         "name": "Segel Sang Peramal",
         "description": "Membuat 2 Orb Langit acak"
@@ -2873,6 +2902,10 @@
       "seal_of_strength": {
         "name": "Segel Kekuatan",
         "description": "Menaikkan angka hingga 2 ubin sebesar 1 (maks 9)"
+      },
+      "seal_of_descent": {
+        "name": "Segel Penurunan",
+        "description": "Menurunkan angka 1 atau 2 ubin pilihanmu sebesar 1 sampai akhir permainan ini. Tidak bisa menurunkan angka 1."
       },
       "seal_of_release": {
         "name": "Segel Pelepasan",

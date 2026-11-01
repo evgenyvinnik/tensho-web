@@ -1,6 +1,10 @@
 /** Experimental policy, not a hint system or a hypothetical effect executor. */
 import { Tile } from '../../src/core/Tile'
-import { convertSuitedTile } from '../../src/core/tileTransformations'
+import {
+  canBecomeHonor,
+  convertSuitedTile,
+  convertTileToHonor,
+} from '../../src/core/tileTransformations'
 import {
   EnhancementType,
   EditionType,
@@ -96,6 +100,7 @@ function targetPlan(
     if (
       effect.type === 'rank_modification' ||
       effect.type === 'convert_suit' ||
+      effect.type === 'transform_tile' ||
       effect.type === 'copy_tile'
     ) {
       // Improve a spare's visible connections without breaking today's priced
@@ -108,7 +113,17 @@ function targetPlan(
           replacements.push(
             ...byConnection(tiles).filter((t) => t.id !== target.id)
           )
-        else if (target.isSuited) {
+        else if (effect.type === 'transform_tile') {
+          const { targetSuit, targetRank } = effect
+          if (
+            targetSuit &&
+            targetRank &&
+            canBecomeHonor(target, targetSuit, targetRank)
+          )
+            replacements.push(
+              convertTileToHonor(target, targetSuit, targetRank)
+            )
+        } else if (target.isSuited) {
           if (effect.type === 'convert_suit' && effect.targetSuit) {
             replacements.push(convertSuitedTile(target, effect.targetSuit))
           } else if (effect.type === 'rank_modification') {

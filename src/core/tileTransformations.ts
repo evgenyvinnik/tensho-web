@@ -39,6 +39,40 @@ export function convertSuitedTileRank(tile: Tile, rank: number): Tile {
   )
 }
 
+/**
+ * Whether a tile can become one named honor: not a Flower or Season, not a
+ * Stone (it has no face to change), and not that honor already.
+ */
+export function canBecomeHonor(
+  tile: Tile,
+  suit: TileSuit,
+  rank: number
+): boolean {
+  return (
+    !tile.isBonus &&
+    !tile.isStone &&
+    !(tile.suit === suit && tile.rank === rank)
+  )
+}
+
+/**
+ * Turn a tile into one named honor, whatever it was. Unlike a suit conversion
+ * nothing cycles: the result is always this Wind or Dragon. The tile keeps its
+ * id and its Mark, Stamp or Edition; an honor is never a red five.
+ */
+export function convertTileToHonor(
+  tile: Tile,
+  suit: TileSuit,
+  rank: number
+): Tile {
+  const count = suit === TileSuit.Wind ? 4 : suit === TileSuit.Dragon ? 3 : 0
+  if (!count) throw new Error('Honor conversion needs a Wind or Dragon')
+  if (!Number.isInteger(rank) || rank < 1 || rank > count)
+    throw new Error(`Honor conversion needs a rank from 1 to ${count}`)
+  if (!canBecomeHonor(tile, suit, rank)) return tile
+  return new Tile(suit, rank, tile.id, false, tile.modifiers)
+}
+
 /** The public legend is derived from the same rank rule as actual conversion. */
 export const UNITY_WIND_CONVERSIONS = [
   { wind: WindType.East, key: 'east' },

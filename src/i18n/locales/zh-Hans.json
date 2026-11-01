@@ -438,6 +438,7 @@
     "protected": "预兆保护会抵消额外代价。",
     "errorSuit": "请选择其他花色的数牌。",
     "errorRank": "请选择变更后点数在1至9之间的数牌。",
+    "errorHonor": "请选择一张既不是该字牌、也不是磐石牌的牌。",
     "choose": "选择道具，然后确认使用。",
     "targets": "目标牌",
     "count": "目标：{{selected}} / {{required}}",
@@ -2594,6 +2595,34 @@
         "name": "统合之符",
         "description": "最多将3张数牌转为风牌。点数按东、南、西、北的顺序循环对应。"
       },
+      "seal_of_red_dragon": {
+        "name": "中之符",
+        "description": "将你选择的1张牌变为中，直到本局结束"
+      },
+      "seal_of_green_dragon": {
+        "name": "发之符",
+        "description": "将你选择的1张牌变为发，直到本局结束"
+      },
+      "seal_of_white_dragon": {
+        "name": "白之符",
+        "description": "将你选择的1张牌变为白，直到本局结束"
+      },
+      "seal_of_east_wind": {
+        "name": "东风之符",
+        "description": "将你选择的1张牌变为东风，直到本局结束"
+      },
+      "seal_of_south_wind": {
+        "name": "南风之符",
+        "description": "将你选择的1张牌变为南风，直到本局结束"
+      },
+      "seal_of_west_wind": {
+        "name": "西风之符",
+        "description": "将你选择的1张牌变为西风，直到本局结束"
+      },
+      "seal_of_north_wind": {
+        "name": "北风之符",
+        "description": "将你选择的1张牌变为北风，直到本局结束"
+      },
       "seal_of_the_oracle": {
         "name": "先知之符",
         "description": "创造2个随机天体宝珠"
@@ -2621,6 +2650,10 @@
       "seal_of_strength": {
         "name": "力量之符",
         "description": "最多将2张牌的数字+1（最高为9）"
+      },
+      "seal_of_descent": {
+        "name": "降阶之符",
+        "description": "将你选择的1至2张牌的数字-1，直到本局结束。1不能再降低。"
       },
       "seal_of_release": {
         "name": "解脱之符",
