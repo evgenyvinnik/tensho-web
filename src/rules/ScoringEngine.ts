@@ -9,7 +9,7 @@
  * - Simples (2-8): 5 points each
  * - Winds: 50 points each, 100 inside a group; Dragons: 15 points each
  * - Pair: +15, Sequence: +30, Triplet: +40, Quad: +65,
- *   Straight of 4: +45, Straight of 5: +60,
+ *   Straight of 4: +45, Straight of 5: +60, Straight of 6: +75,
  *   Three Dragons: +60, Four Winds: +65 (the secret hands)
  * - A numbered tile in a tactical play that belongs to no group scores half
  * - A Stone tile has no face: it joins no group and scores only its Stone Mark
@@ -222,7 +222,8 @@ export const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
   [MeldType.Sequence]: 30,
   [MeldType.Triplet]: 40,
   [MeldType.Quad]: 65,
-  // A four-tile straight; a five-tile straight is worth STRAIGHT_5_POINTS.
+  // A four-tile straight; longer ones are worth STRAIGHT_5_POINTS and
+  // STRAIGHT_6_POINTS.
   [MeldType.Straight]: 45,
   // Three Dragons; Four Winds is worth FOUR_WINDS_POINTS.
   [MeldType.Honors]: 60,
@@ -231,11 +232,15 @@ export const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
 /** Structure points for a five-tile straight. */
 export const STRAIGHT_5_POINTS = 60
 
+/** Structure points for a six-tile straight, the longest a play can hold. */
+export const STRAIGHT_6_POINTS = 75
+
 /** Structure points for Four Winds, the four-tile secret hand. */
 export const FOUR_WINDS_POINTS = 65
 
 /** Structure points for a group of this type and size. */
 export function structurePointsFor(type: MeldType, size: number): number {
+  if (type === MeldType.Straight && size >= 6) return STRAIGHT_6_POINTS
   if (type === MeldType.Straight && size >= 5) return STRAIGHT_5_POINTS
   if (type === MeldType.Honors && size >= 4) return FOUR_WINDS_POINTS
   return STRUCTURE_POINTS_BY_TYPE[type]

@@ -47,12 +47,14 @@ for (const fixture of [
       )
       .toBe(true)
     // Each hand is named in the player's language with the group bonus the
-    // scorer pays: Pair +15, Sequence +30, Triplet +40, Quad +65.
+    // scorer pays: Pair +15, Sequence +30, Triplet +40, Quad +65, Straight of
+    // Six +75.
     for (const [id, points] of [
       ['pair', 15],
       ['sequence', 30],
       ['triplet', 40],
       ['quad', 65],
+      ['straight6', 75],
     ] as const) {
       const row = guide.locator(`[data-guide-pattern="${id}"]`)
       await expect(row).toContainText(copy.patterns[id].name)

@@ -3116,6 +3116,10 @@
       "name": "Straight of Five",
       "explain": "Five numbers in a row, same suit."
     },
+    "straight6": {
+      "name": "Straight of Six",
+      "explain": "Six numbers in a row, same suit."
+    },
     "two_pairs": {
       "name": "Two Pairs",
       "explain": "Two different pairs in one play."
@@ -3126,7 +3130,7 @@
     },
     "two_sequences": {
       "name": "Two Sequences",
-      "explain": "Two sequences in one play (six tiles)."
+      "explain": "Two sequences in one play. A Straight needs one suit and each number once, so a run that changes suit or repeats a number (2-3-3-4-4-5) scores as two sequences."
     },
     "two_triplets": {
       "name": "Two Triplets",
@@ -3185,7 +3189,7 @@
     "secretTitle": "Secret hands",
     "secretFound": "Secret hand found",
     "secretInGuide": "Now listed in the ? guide.",
-    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Normally each tile counts once, and a play holds up to 6 tiles unless it is a full Mahjong hand.",
+    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2, Straights of Six +3. Tiles that can be grouped more than one way score the grouping that pays most. Each tile counts once; only an awakened Plum lets two sequences share one, shown as Sequence ×2. A play holds up to 6 tiles unless it is a full Mahjong hand.",
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",
@@ -3235,7 +3239,7 @@
     },
     "Ittsu": {
       "name": "Straights",
-      "covers": "Straight of Four, Straight of Five or Straight + Pair (consecutive numbers of one suit), and a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit."
+      "covers": "Straight of Four, Straight of Five, Straight of Six or Straight + Pair (consecutive numbers of one suit), and a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit."
     },
     "Toitoi": {
       "name": "Sets",
