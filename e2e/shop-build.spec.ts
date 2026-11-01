@@ -125,7 +125,10 @@ for (const negative of [false, true]) {
     const card = page.locator(`[data-shop-offer="${info.offer}"]`)
     const details = page.locator(`[data-shop-offer-details="${info.offer}"]`)
     const purchase = page.locator(`[data-shop-buy="${info.offer}"]`)
-    const blocked = details.locator('[data-purchase-blocked]')
+    const blocked = page
+      .getByRole('dialog')
+      .filter({ has: details })
+      .locator('[data-purchase-blocked]')
     const openOffer = async () => {
       await card.scrollIntoViewIfNeeded()
       await activate(card, isMobile)

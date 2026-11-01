@@ -134,9 +134,12 @@ for (const language of ['en', 'es'])
       await offer.scrollIntoViewIfNeeded()
       await activate(offer)
       await activate(
-        page.locator(
-          `[data-shop-offer-details="${offerId}"] [data-offer-flower]`
-        )
+        page
+          .getByRole('dialog')
+          .filter({
+            has: page.locator(`[data-shop-offer-details="${offerId}"]`),
+          })
+          .locator('[data-offer-flower]')
       )
     }
     await offerFlower()

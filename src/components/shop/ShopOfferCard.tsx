@@ -57,7 +57,10 @@ export function ShopOfferCard({
   const buying = useRef(false)
   const leaving = transition?.phase === 'leave'
   const canBuy =
-    canAfford && !unavailableReason && !offering.isLocked && !offering.isPurchased
+    canAfford &&
+    !unavailableReason &&
+    !offering.isLocked &&
+    !offering.isPurchased
   const rarityColor = RARITY_COLORS[text.rarity] ?? '#A0A0A0'
   const price = offering.finalCost.toLocaleString(i18n.resolvedLanguage)
   const fullPrice = offering.baseCost + offering.editionCost
@@ -162,8 +165,58 @@ export function ShopOfferCard({
         focusOnOpen={keyboardOpened}
         onPointerEnter={cancelClose}
         onPointerLeave={scheduleClose}
+        // Buy stays on screen while a long description scrolls.
+        footer={
+          <div className="space-y-2 text-sm [overflow-wrap:anywhere]">
+            {unavailableReason && (
+              <p data-purchase-blocked className="text-xs text-amber-200">
+                {unavailableReason}
+              </p>
+            )}
+            <button
+              type="button"
+              data-shop-buy={offering.id}
+              disabled={!canBuy}
+              onClick={() => {
+                if (buying.current || !canBuy) return
+                buying.current = true
+                try {
+                  onBuy()
+                } finally {
+                  buying.current = false
+                  close()
+                }
+              }}
+              className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-4 font-bold text-white shadow disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-600 disabled:text-gray-300"
+            >
+              {t('shop.buyFor', { price })}
+              {fullPrice > offering.finalCost && (
+                <span className="text-xs line-through opacity-70">
+                  {fullPrice.toLocaleString(i18n.resolvedLanguage)}
+                </span>
+              )}
+            </button>
+            {onOfferFlower && (
+              <button
+                type="button"
+                data-offer-flower
+                onClick={() => {
+                  close()
+                  onOfferFlower()
+                }}
+                disabled={offering.isPurchased || offering.isLocked}
+                className="min-h-11 w-full rounded-lg border border-[var(--color-metallic-gold)] px-3 text-sm disabled:opacity-40"
+              >
+                {t('shop.catalyst.offer')}
+              </button>
+            )}
+          </div>
+        }
       >
-        <div data-shop-offer-details={offering.id} className="space-y-2 text-sm [overflow-wrap:anywhere]">
+        <div
+          data-shop-offer-details={offering.id}
+          className="space-y-2 text-sm [overflow-wrap:anywhere]"
+        >
           <div className="flex items-start gap-3">
             <span className="flex h-24 w-24 shrink-0 items-center justify-center">
               <OfferArt offering={offering} large />
@@ -195,48 +248,6 @@ export function ShopOfferCard({
                 edition: (offering.item as Decree).edition ?? offering.edition,
               }}
             />
-          )}
-          {unavailableReason && (
-            <p data-purchase-blocked className="text-xs text-amber-200">
-              {unavailableReason}
-            </p>
-          )}
-          <button
-            type="button"
-            data-shop-buy={offering.id}
-            disabled={!canBuy}
-            onClick={() => {
-              if (buying.current || !canBuy) return
-              buying.current = true
-              try {
-                onBuy()
-              } finally {
-                buying.current = false
-                close()
-              }
-            }}
-            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-4 font-bold text-white shadow disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-600 disabled:text-gray-300"
-          >
-            {t('shop.buyFor', { price })}
-            {fullPrice > offering.finalCost && (
-              <span className="text-xs line-through opacity-70">
-                {fullPrice.toLocaleString(i18n.resolvedLanguage)}
-              </span>
-            )}
-          </button>
-          {onOfferFlower && (
-            <button
-              type="button"
-              data-offer-flower
-              onClick={() => {
-                close()
-                onOfferFlower()
-              }}
-              disabled={offering.isPurchased || offering.isLocked}
-              className="min-h-11 w-full rounded-lg border border-[var(--color-metallic-gold)] px-3 text-sm disabled:opacity-40"
-            >
-              {t('shop.catalyst.offer')}
-            </button>
           )}
         </div>
       </AnchoredPopover>

@@ -664,69 +664,74 @@ export function PackOpeningModal({
             setInspected(null)
         }}
       >
-        {/* Header */}
-        <div className="flex-shrink-0 border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
-          <div className="relative flex items-center justify-center gap-3 text-center sm:gap-4">
-            <img
-              src={getPackIllustration(pack.type, 'open')}
-              alt=""
-              aria-hidden="true"
-              className={`game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20 ${
-                reducedMotion || isRevealed ? '' : 'pack-bag-open'
-              }`}
-              draggable={false}
-            />
-            <div className="min-w-0">
-              <h2
-                id={titleId}
-                className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative"
-              >
-                {packName}
-              </h2>
-              <p className="text-sm text-[var(--color-metallic-gold)]">
-                {t('shop.packChoices', {
-                  count: packOffering.contents.length,
-                  max: packOffering.maxSelections,
-                })}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Content grid */}
+        {/* Header, rewards and build scroll together, so on a short screen
+            (a phone held sideways) the actions below always stay in view. */}
         <div
-          className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-6"
+          data-pack-scroll
+          className="min-h-0 flex-1 overflow-y-auto"
           // A card would drift from its reward as the rewards scroll.
           onScroll={() => setInspected(null)}
         >
-          <div className="grid grid-cols-2 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
-            {packOffering.contents.map((content, index) => (
-              <PackContentCard
-                key={`${packOffering.pack.id}:choice:${index}`}
-                content={content}
-                isSelected={selectedIndices.includes(index)}
-                canSelect={
-                  maxSelections === 1 ||
-                  selectedIndices.length < maxSelections ||
-                  selectedIndices.includes(index)
-                }
-                showDetails={inspected === index}
-                onInspect={(show) =>
-                  setInspected((current) =>
-                    show ? index : current === index ? null : current
-                  )
-                }
-                onToggle={() => handleToggleSelection(index)}
-                animationDelay={isRevealed ? 100 + index * 100 : 0}
+          {/* Header */}
+          <div className="border-b border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
+            <div className="relative flex items-center justify-center gap-3 text-center sm:gap-4">
+              <img
+                src={getPackIllustration(pack.type, 'open')}
+                alt=""
+                aria-hidden="true"
+                className={`game-illustration h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20 ${
+                  reducedMotion || isRevealed ? '' : 'pack-bag-open'
+                }`}
+                draggable={false}
               />
-            ))}
+              <div className="min-w-0">
+                <h2
+                  id={titleId}
+                  className="text-xl font-bold text-[var(--color-golden-yellow)] font-decorative"
+                >
+                  {packName}
+                </h2>
+                <p className="text-sm text-[var(--color-metallic-gold)]">
+                  {t('shop.packChoices', {
+                    count: packOffering.contents.length,
+                    max: packOffering.maxSelections,
+                  })}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {build &&
-          packOffering.contents.some(
-            (content) => content.type === 'Decree'
-          ) && <PackBuildRow {...build} />}
+          {/* Content grid */}
+          <div className="p-3 sm:p-6">
+            <div className="grid grid-cols-2 justify-items-center gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
+              {packOffering.contents.map((content, index) => (
+                <PackContentCard
+                  key={`${packOffering.pack.id}:choice:${index}`}
+                  content={content}
+                  isSelected={selectedIndices.includes(index)}
+                  canSelect={
+                    maxSelections === 1 ||
+                    selectedIndices.length < maxSelections ||
+                    selectedIndices.includes(index)
+                  }
+                  showDetails={inspected === index}
+                  onInspect={(show) =>
+                    setInspected((current) =>
+                      show ? index : current === index ? null : current
+                    )
+                  }
+                  onToggle={() => handleToggleSelection(index)}
+                  animationDelay={isRevealed ? 100 + index * 100 : 0}
+                />
+              ))}
+            </div>
+          </div>
+
+          {build &&
+            packOffering.contents.some(
+              (content) => content.type === 'Decree'
+            ) && <PackBuildRow {...build} />}
+        </div>
 
         {/* Keep the reason for a disabled confirmation next to its action. */}
         <div className="flex-shrink-0 border-t border-[var(--color-metallic-gold)] border-opacity-30 p-3 sm:p-4">
