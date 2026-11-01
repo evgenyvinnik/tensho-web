@@ -1062,7 +1062,7 @@ Select a small compatible set. For each, decide whether it reads the new placeme
 | Score calculation                | [ScoringEngine.ts](../src/rules/ScoringEngine.ts)                  | New-group scores, milestone rewards, and explicit retriggers               |
 | Decree interpretation            | [DecreeSystem.ts](../src/systems/DecreeSystem.ts)                  | Clarify target scope and admit a curated compatible subset                 |
 | Shop                             | [TeaHouseSystem.ts](../src/systems/TeaHouseSystem.ts)              | Small coherent offer pool and understandable tile edits                    |
-| Board and rack interaction       | [PlaySurface.tsx](../src/components/gameplay/PlaySurface.tsx)      | Stable table slots and readable rack selection                             |
+| Board and rack interaction       | [HandRack.tsx](../src/components/gameplay/HandRack.tsx)            | Stable table slots and readable rack selection                             |
 | Gameplay screen                  | [GameplayScreen.tsx](../src/components/screens/GameplayScreen.tsx) | Resource labels, preview, table state, and conditional Finish action       |
 | Guidance                         | [beginnerCoach.ts](../src/gameplay/beginnerCoach.ts)               | Explain immediate value and future opportunities                           |
 

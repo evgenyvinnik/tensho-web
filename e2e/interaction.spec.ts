@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
-import { clearReveals, settleReveals } from './helpers/table'
+import { clearReveals, parkMouse, settleReveals } from './helpers/table'
 
 test('screen shake stays inside the viewport and stops for system reduced motion', async ({
   page,
@@ -148,7 +148,12 @@ for (const viewport of [
         `[data-play-zone="hand"] [data-play-tile="${id}"]`
       )
       if (isMobile) await tile.tap()
-      else await tile.click()
+      else {
+        await tile.click()
+        // Tiles fly and the board scrolls under a resting pointer; keep it
+        // off the hover details of whatever lands beneath it.
+        await parkMouse(page)
+      }
       await expect(page.getByRole('dialog')).toHaveCount(0)
       await expect(
         page.locator(`[data-play-zone="felt"] [data-play-tile="${id}"]`)
@@ -161,7 +166,10 @@ for (const viewport of [
         `[data-play-zone="felt"] [data-play-tile="${id}"]`
       )
       if (isMobile) await tile.tap()
-      else await tile.click()
+      else {
+        await tile.click()
+        await parkMouse(page)
+      }
       await expect(page.getByRole('dialog')).toHaveCount(0)
       await expect(
         page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)

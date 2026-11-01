@@ -1,24 +1,27 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { settleReveals } from './helpers/table'
 
-const bookWords = {
-  en: 'book',
-  es: 'libro',
-  fr: 'livre',
-  it: 'libro',
-  ru: 'книги',
-  ja: '本のアイコン',
-  ko: '책 아이콘',
-  'zh-Hans': '书本图标',
-  'zh-Hant': '書本圖示',
-  tr: 'kitap',
-  id: 'buku',
-  th: 'หนังสือ',
-  tl: 'aklat',
-}
+// A new run seeds itself from the clock. This one's opening deal draws no
+// Flower or Season, so the run starts owning nothing at all.
+const EMPTY_DEAL = new Date(1791731728055)
 
-for (const [language, book] of Object.entries(bookWords)) {
-  test(`empty inventory stays quiet and the book guide is discoverable (${language})`, async ({
+for (const language of [
+  'en',
+  'es',
+  'fr',
+  'it',
+  'ru',
+  'ja',
+  'ko',
+  'zh-Hans',
+  'zh-Hant',
+  'tr',
+  'id',
+  'th',
+  'tl',
+]) {
+  test(`an empty inventory stays quiet and the ? guide is one tap away (${language})`, async ({
     page,
     baseURL,
     isMobile,
@@ -26,35 +29,37 @@ for (const [language, book] of Object.entries(bookWords)) {
     const copy = JSON.parse(
       readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
     )
+    await page.clock.setFixedTime(EMPTY_DEAL)
     await page.setViewportSize(
       isMobile ? { width: 320, height: 568 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.addInitScript(() =>
-      localStorage.setItem('tensho_tutorial_completed', 'true')
-    )
     await page.goto(new URL(`${language}/play`, baseURL).href)
     await expect(
       page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
+    await settleReveals(page, 2_000)
     const save = () =>
-      page.evaluate(() => localStorage.getItem('tensho-classic-run-v1'))
+      page.evaluate(() => localStorage.getItem('tensho-classic-run-v1')!)
     const before = await save()
-    await expect(page.locator('[data-consumables-bar]')).toHaveCount(0)
-    await expect(page.locator('.game-consumable')).toHaveCount(0)
-    const hint = page.locator('[data-progressive-hint="guided-first-move-v2"]')
-    await expect(hint).toBeVisible()
-    await hint.scrollIntoViewIfNeeded()
-    await expect(hint.locator('p')).toContainText(book)
+    const { state, omens } = JSON.parse(before).snapshot
     expect(
-      await hint
-        .locator('p')
-        .evaluate((node) => node.scrollWidth <= node.clientWidth + 1)
-    ).toBe(true)
-    const guide = page.locator('[data-open-beginner-guide]')
-    await expect(guide).toHaveAccessibleName(copy.gameplay.learnPatterns)
-    await guide.scrollIntoViewIfNeeded()
-    await expect(guide.locator('img')).toBeVisible()
+      {
+        flowers: state.flowerSystem.flowers.length,
+        seasons: state.seasonSystem.seasonStack.length,
+        orbs: state.celestialOrbs.length,
+        scripts: state.voidScripts.length,
+        omens: omens.activeTags.length,
+      },
+      'EMPTY_DEAL must deal a run that owns nothing; pick another time'
+    ).toEqual({ flowers: 0, seasons: 0, orbs: 0, scripts: 0, omens: 0 })
+    // Nothing owned: no rail, no empty slots, no placeholder copy.
+    await expect(page.locator('[data-collectible-rail]')).toHaveCount(0)
+    await expect(page.locator('[data-collectible-token]')).toHaveCount(0)
+    // The guide is the ? beside Exit and Settings.
+    const guide = page.getByTestId('gameplay-help')
+    await expect(guide).toHaveAccessibleName(copy.gameplay.help)
+    await expect(guide).toBeInViewport()
     expect((await guide.boundingBox())!.width).toBeGreaterThanOrEqual(44)
     expect((await guide.boundingBox())!.height).toBeGreaterThanOrEqual(44)
     if (isMobile) await guide.tap()
@@ -62,11 +67,9 @@ for (const [language, book] of Object.entries(bookWords)) {
       await guide.focus()
       await page.keyboard.press('Enter')
     }
-    const dialog = page.getByRole('dialog', {
-      name: copy.gameplay.beginnerGuideTitle,
-    })
+    const dialog = page.getByRole('dialog', { name: copy.guide.title })
     await expect(dialog).toBeVisible()
-    await page.screenshot({ path: info.outputPath('book-guide.png') })
+    await page.screenshot({ path: info.outputPath('guide.png') })
     if (isMobile)
       await dialog
         .getByRole('button', { name: copy.common.close, exact: true })

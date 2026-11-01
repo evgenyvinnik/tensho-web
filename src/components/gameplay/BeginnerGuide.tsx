@@ -135,7 +135,9 @@ function PatternRow({ id }: { id: PlayPatternId }) {
         className="mt-1.5 flex flex-wrap items-end gap-2"
       >
         {groups.map((group, index) => (
-          <span key={index} className="flex gap-0.5">
+          // A five-tile run wraps rather than overflow a 320px phone with
+          // large text.
+          <span key={index} className="flex flex-wrap gap-0.5">
             {group.tiles.map((example) => (
               <TileImage
                 key={example.id}
