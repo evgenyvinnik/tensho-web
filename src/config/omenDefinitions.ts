@@ -89,7 +89,12 @@ export interface OmenEffect {
   value: number | string
   description: string
   /** For guaranteed_item: type of item guaranteed */
-  itemType?: 'Decree' | 'FateSeal' | 'CelestialOrb' | 'VoidScript' | 'BlessingPack'
+  itemType?:
+    | 'Decree'
+    | 'FateSeal'
+    | 'CelestialOrb'
+    | 'VoidScript'
+    | 'BlessingPack'
   /** Minimum rarity for a guaranteed shop Decree, including fallback selection. */
   minDecreeRarity?: DecreeRarity
   /** For edition_apply: the edition type */
@@ -108,7 +113,12 @@ export interface OmenEffect {
  * Trade-off for acquiring an omen
  */
 export interface OmenTradeoff {
-  type: 'lock_season' | 'lose_gold' | 'reduce_hand_size' | 'no_interest' | 'none'
+  type:
+    | 'lock_season'
+    | 'lose_gold'
+    | 'reduce_hand_size'
+    | 'no_interest'
+    | 'none'
   value?: SeasonVariant | number
   description: string
 }
@@ -189,7 +199,7 @@ export const OMEN_OF_RIVERS: OmenDefinition = {
   id: 'omen_of_rivers',
   name: 'Omen of Rivers',
   japaneseName: '河流の兆',
-  description: 'Next round starts with +1 free Redraw.',
+  description: 'Next round starts with +1 free redraw.',
   category: 'Hand',
   rarity: 'Common',
   trigger: 'OnNextRound',
@@ -212,7 +222,8 @@ export const SPEED_OMEN: OmenDefinition = {
   id: 'speed_omen',
   name: 'Speed Omen',
   japaneseName: '疾走の兆',
-  description: 'Grants 5 Gold per swift clear this run.',
+  description:
+    'Gain 5 Gold for each swift clear this run (a Small or Large round cleared with Turns to spare).',
   category: 'Economy',
   rarity: 'Uncommon',
   trigger: 'OnAcquire',
@@ -236,7 +247,8 @@ export const THROWBACK_OMEN: OmenDefinition = {
   id: 'throwback_omen',
   name: 'Throwback Omen',
   japaneseName: '回帰の兆',
-  description: 'Gains x0.25 Mult per swift clear for the rest of the run.',
+  description:
+    'For the rest of the run, each play’s score is multiplied by 1 + 0.25 per swift clear (one gives ×1.25, two give ×1.5).',
   category: 'Scaling',
   rarity: 'Rare',
   trigger: 'Passive',
@@ -404,7 +416,7 @@ export const EXPANSION_OMEN: OmenDefinition = {
   id: 'expansion_omen',
   name: 'Expansion Omen',
   japaneseName: '拡張の兆',
-  description: 'Gain +1 decree slot permanently.',
+  description: 'Gain +1 Decree slot for the rest of this run.',
   category: 'Hand',
   rarity: 'Legendary',
   trigger: 'OnAcquire',
@@ -428,7 +440,7 @@ export const PRECISION_OMEN: OmenDefinition = {
   id: 'precision_omen',
   name: 'Precision Omen',
   japaneseName: '精密の兆',
-  description: 'Next round: +2 hand size.',
+  description: 'Next round: +2 rack spaces.',
   category: 'Hand',
   rarity: 'Uncommon',
   trigger: 'OnNextRound',
@@ -451,7 +463,7 @@ export const ABUNDANCE_OMEN: OmenDefinition = {
   id: 'abundance_omen',
   name: 'Abundance Omen',
   japaneseName: '豊穣の兆',
-  description: 'Next round starts with +2 free Redraws.',
+  description: 'Next round starts with +2 free redraws.',
   category: 'Hand',
   rarity: 'Common',
   trigger: 'OnNextRound',
@@ -474,7 +486,7 @@ export const POLYCHROME_OMEN: OmenDefinition = {
   id: 'polychrome_omen',
   name: 'Polychrome Omen',
   japaneseName: '極彩の兆',
-  description: 'Apply Polychrome edition to a random owned Decree.',
+  description: 'Adds a Polychrome Edition to a random owned Decree.',
   category: 'Consumable',
   rarity: 'Legendary',
   trigger: 'OnAcquire',
@@ -499,14 +511,14 @@ export const FOIL_OMEN: OmenDefinition = {
   id: 'foil_omen',
   name: 'Foil Omen',
   japaneseName: '箔押の兆',
-  description: 'Next purchased Decree gains Foil edition.',
+  description: 'Next purchased Decree gains a Foil Edition.',
   category: 'Shop',
   rarity: 'Uncommon',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Foil edition on next Decree',
+    description: 'Foil Edition on next Decree',
     editionType: 'Foil',
   },
   tradeoff: {
@@ -546,7 +558,7 @@ export const SCORE_SURGE_OMEN: OmenDefinition = {
   id: 'score_surge_omen',
   name: 'Score Surge Omen',
   japaneseName: '得点の兆',
-  description: 'Next scored hand gains +100 base points.',
+  description: 'Next scored play gains +100 base Points.',
   category: 'Scoring',
   rarity: 'Common',
   trigger: 'OnNextHand',
@@ -569,14 +581,14 @@ export const MULTIPLICATION_OMEN: OmenDefinition = {
   id: 'multiplication_omen',
   name: 'Multiplication Omen',
   japaneseName: '倍増の兆',
-  description: 'Next scored hand gains x1.5 Mult.',
+  description: 'Next scored play gains ×1.5 Mult.',
   category: 'Scoring',
   rarity: 'Uncommon',
   trigger: 'OnNextHand',
   effect: {
     type: 'mult_bonus',
     value: 1.5,
-    description: 'x1.5 Mult',
+    description: '×1.5 Mult',
   },
   tradeoff: {
     type: 'none',
@@ -616,14 +628,14 @@ export const NEGATIVE_OMEN: OmenDefinition = {
   id: 'negative_omen',
   name: 'Negative Omen',
   japaneseName: '陰影の兆',
-  description: 'Next purchased Decree gains Negative edition (+1 slot).',
+  description: 'Next purchased Decree gains a Negative Edition (+1 slot).',
   category: 'Shop',
   rarity: 'Legendary',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Negative edition on next Decree',
+    description: 'Negative Edition on next Decree',
     editionType: 'Negative',
   },
   tradeoff: {
@@ -665,14 +677,14 @@ export const HOLOGRAPHIC_OMEN: OmenDefinition = {
   id: 'holographic_omen',
   name: 'Holographic Omen',
   japaneseName: '虹彩の兆',
-  description: 'Next purchased Decree gains Holographic edition.',
+  description: 'Next purchased Decree gains a Holographic Edition.',
   category: 'Shop',
   rarity: 'Rare',
   trigger: 'OnNextShop',
   effect: {
     type: 'edition_apply',
     value: 1,
-    description: 'Holographic edition on next Decree',
+    description: 'Holographic Edition on next Decree',
     editionType: 'Holographic',
   },
   tradeoff: {

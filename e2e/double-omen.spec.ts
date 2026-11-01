@@ -48,15 +48,13 @@ for (const [language, copy] of [
       await expect(page).toHaveURL(new RegExp(`/${language}/play$`))
       // The new round can open on Flower and Season reveals.
       await settleReveals(page, 2_000)
-      const pending = page.getByTestId('pending-omens')
-      await expect(pending).toBeVisible()
-      await expect(pending).not.toHaveAttribute('open')
-      await pending.locator('summary').click()
-      await expect(
-        pending.getByText(copy.omens.items.double_omen.description)
-      ).toBeVisible()
-      // The summary's Double Omen art and each pending Omen's art load.
-      for (const image of await pending.locator('img').all())
+      const omens = page.locator('[data-collectible-rail] [data-omen-id]')
+      const double = page.locator(
+        '[data-collectible-rail] [data-omen-id="double_omen"]'
+      )
+      await expect(double).toBeVisible()
+      // Every earned Omen's icon loads.
+      for (const image of await omens.locator('img').all())
         await expect
           .poll(() =>
             image.evaluate(
@@ -64,11 +62,18 @@ for (const [language, copy] of [
             )
           )
           .toBe(true)
+      await double.click()
+      const panel = page.getByRole('dialog', {
+        name: copy.omens.items.double_omen.name,
+      })
+      await expect(
+        panel.getByText(copy.omens.items.double_omen.description)
+      ).toBeVisible()
       expect(
-        await pending.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
+        await panel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
-      await pending.screenshot({ path: testInfo.outputPath('double-omen.png') })
-      await pending.locator('summary').click()
+      await page.screenshot({ path: testInfo.outputPath('double-omen.png') })
+      await page.keyboard.press('Escape')
       // The Large round's Omen arrives twice.
       await swiftClear(page)
       if (kind === 'gold') {

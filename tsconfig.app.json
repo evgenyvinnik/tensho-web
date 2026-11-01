@@ -31,8 +31,6 @@
     "src/stores/tableLoopConcurrency.test.ts",
     "src/components/ui/UpdateNotice.tsx",
     "src/components/ui/UpdateNotice.test.tsx",
-    "src/components/gameplay/PlaySurface.tsx",
-    "src/components/gameplay/PlaySurface.test.tsx",
     "src/components/gameplay/RiichiControl.tsx",
     "src/components/gameplay/RiichiControl.test.tsx",
     "src/components/gameplay/HandBuilder.tsx",

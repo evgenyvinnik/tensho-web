@@ -11,26 +11,13 @@ afterEach(async () => {
   })
 })
 
-it('localizes the current balance and reroll cost without count-up or hover scaling under reduced motion', async () => {
+it('localizes the current balance without count-up under reduced motion, leaving the reroll to the action bar', async () => {
   await changeLanguage('es')
   useSettingsStore.setState({ reducedMotion: true })
-  render(
-    <ShopHeader
-      gold={1234567}
-      rerollCost={5}
-      rerollCount={2}
-      canAffordReroll
-      onReroll={vi.fn()}
-      onSettings={vi.fn()}
-      interestCap={5}
-    />
-  )
+  render(<ShopHeader gold={1234567} onSettings={vi.fn()} interestCap={5} />)
   expect(screen.getByLabelText('1.234.567 de oro')).toHaveTextContent(
     '1.234.567'
   )
   expect(screen.getByRole('heading', { level: 1 })).not.toHaveClass('truncate')
-  const reroll = screen.getByRole('button', { name: 'Renovar' })
-  expect(reroll).toHaveAccessibleDescription('Renovar (5G)')
-  expect(reroll).not.toHaveClass('hover:scale-105')
-  expect(screen.getByLabelText('Renovaciones usadas: 2')).toBeVisible()
+  expect(screen.queryByRole('button', { name: 'Renovar' })).toBeNull()
 })

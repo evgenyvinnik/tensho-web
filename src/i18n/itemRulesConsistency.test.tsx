@@ -11,21 +11,22 @@ import { useItemText } from './useItemText'
 import en from './locales/en.json'
 
 // Reviewed translations: a recharge-at-Act-end description can pass both key
-// coverage and placeholder checks. Preserve the intended scoring-tile meaning.
+// coverage and placeholder checks. Preserve the intended scoring-tile meaning:
+// three retriggers, so every scoring tile scores four times.
 const scoringTileRetriggers: Record<string, string> = {
-  es: 'Reactiva todas las fichas que puntúan 3 veces.',
-  fr: 'Redéclenche 3 fois toutes les tuiles qui marquent des points.',
-  id: 'Picu ulang semua ubin yang mencetak skor 3 kali.',
-  it: 'Riattiva tutte le tessere che segnano punti 3 volte.',
-  ru: 'Повторно активирует все кости, приносящие очки, 3 раза.',
-  tr: 'Puan kazandıran tüm taşları 3 kez yeniden tetikler.',
-  tl: 'Muling pinapagana nang 3 beses ang lahat ng tile na nagbibigay ng puntos.',
-  th: 'กระตุ้นไพ่ที่ทำคะแนนทั้งหมดซ้ำ 3 ครั้ง',
-  en: 'Retrigger all scoring tiles 3 times',
-  ja: '全ての得点牌を3回再発動',
-  ko: '모든 득점패 3회 재발동',
-  'zh-Hans': '所有得分牌重新触发3次',
-  'zh-Hant': '所有得分牌重新觸發3次',
+  es: 'Cada ficha que puntúa lo hace cuatro veces',
+  fr: 'Chaque tuile qui marque compte quatre fois',
+  id: 'Setiap ubin yang mencetak skor dihitung empat kali',
+  it: 'Ogni tessera che segna punti lo fa quattro volte',
+  ru: 'Каждая кость, приносящая очки, засчитывается четыре раза',
+  tr: 'Puan kazandıran her taş dört kez sayılır.',
+  tl: 'Binibilang nang apat na beses ang bawat tile na nagbibigay ng puntos',
+  th: 'ไพ่ทุกใบที่ทำคะแนนจะทำคะแนนสี่ครั้ง',
+  en: 'Every scoring tile scores four times',
+  ja: '得点する牌がすべて4回得点する',
+  ko: '득점하는 모든 패가 네 번 득점',
+  'zh-Hans': '每张得分牌计分四次',
+  'zh-Hant': '每張得分牌計分四次',
 }
 
 afterEach(cleanup)

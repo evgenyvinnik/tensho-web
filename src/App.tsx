@@ -5,7 +5,6 @@
 
 import { useMemo } from 'react'
 import { lazyScreen as lazy } from './router/screenDownloadRecovery'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { VFXProvider } from './hooks/useVFX'
 import { useAudioLifecycle } from './hooks/useAudioLifecycle'
@@ -14,8 +13,6 @@ import { AchievementToast } from './components/ui/AchievementToast'
 
 // Router imports
 import { createAppRouter, AppRouterProvider } from './router'
-
-const queryClient = new QueryClient()
 
 // Module-scope lazy components keep their identity across renders. All screens
 // share one chunk (see routedScreens); the PWA still precaches it for offline
@@ -84,12 +81,10 @@ function App() {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <VFXProvider>
-        <AppRouterProvider router={router} />
-        <AchievementToast />
-      </VFXProvider>
-    </QueryClientProvider>
+    <VFXProvider>
+      <AppRouterProvider router={router} />
+      <AchievementToast />
+    </VFXProvider>
   )
 }
 

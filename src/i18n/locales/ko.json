@@ -169,7 +169,7 @@
     },
     "wildFlush": {
       "name": "만능 혼이쯔",
-      "description": "만능 패로만 구성된 혼이쯔로 득점하세요."
+      "description": "만능 패로만 구성된 혼이쯔(한 무늬와 풍패·삼원패)로 득점하세요."
     },
     "speedRun": {
       "name": "질주",
@@ -185,19 +185,19 @@
     },
     "royalHand": {
       "name": "왕의 손패",
-      "description": "역만으로 득점하세요."
+      "description": "역만(대삼원 같은 최상위 역)으로 득점하세요."
     },
     "retrograde": {
       "name": "역행",
-      "description": "역의 레벨을 10으로 올리세요."
+      "description": "역 계열 하나를 레벨 9로 올리세요."
     },
     "keeperOfWinds": {
       "name": "바람의 수호자",
-      "description": "한 번의 도전에서 풍패 역을 총 10개 완성하세요."
+      "description": "한 런에서 동의 커쯔나 깡쯔가 들어간 완성패로 5번 득점하세요."
     },
     "masterOfSilence": {
       "name": "침묵의 달인",
-      "description": "자패를 버리지 않고 3라운드에서 승리하세요."
+      "description": "풍패나 삼원패를 한 번도 다시 뽑지 않고 3라운드에서 승리하세요."
     },
     "sealBearer": {
       "name": "인장의 소유자",
@@ -221,11 +221,11 @@
     },
     "starGazer": {
       "name": "별을 보는 자",
-      "description": "모든 천상의 구슬을 발견하세요."
+      "description": "모든 천구를 발견하세요."
     },
     "voidWalker": {
       "name": "공허의 방랑자",
-      "description": "모든 공허의 두루마리를 발견하세요."
+      "description": "모든 공허 문서를 발견하세요."
     },
     "charterComplete": {
       "name": "칙허 완성",
@@ -279,28 +279,28 @@
     }
   },
   "observatory": {
-    "description": "보유한 각 오브는 해당 역 계열이 득점하면 배수 ×1.5를 부여합니다. 플레이당 오브마다 한 번만 적용됩니다. 블랙홀은 득점한 모든 역에 대응합니다.",
+    "description": "보유한 각 오브는 해당 역 계열이 득점하면 배수 ×1.5를 부여합니다. 플레이당 오브마다 한 번만 적용됩니다. 블랙홀 천구는 득점한 모든 역에 대응합니다.",
     "holdingNote": "천문대는 이 오브를 보유하면 보너스를 줍니다. 사용하면 영구 강화를 얻지만 보유 보너스는 사라집니다."
   },
   "closedHandAusterity": {
     "name": "문전의 수행",
-    "description": "완성된 문전 손패에 ×1.5. 이번 런에서 이전에 완성한 문전 손패마다 ×1.2씩 성장하며, 꽃 강화 전 최대 ×4입니다. 전술 플레이와 샨텐 관용은 제외됩니다.",
-    "progress": "완성한 문전 손패: {{count}}회. 다음 해당 손패: 꽃 강화 전 ×{{factor}}."
+    "description": "완성패마다 ×1.5를 얻고, 이번 런에서 앞서 완성한 완성패마다 ×1.2씩 커지며 꽃패 보너스 전 최대 ×4입니다. 작은 패 내기와 샹텐 관용으로 완성한 패는 해당하지 않습니다.",
+    "progress": "지금까지 완성패: {{count}}회. 다음: 꽃패 전 ×{{factor}}."
   },
   "yakuRepetition": {
     "name": "연속 역 칙령",
-    "description": "연속된 라운드에서 낸 역은 연속 횟수마다 ×1.2씩 누적돼요 (최대 ×4). 한 라운드를 놓치면 연속이 끊겨요. 상한은 꽃패 강화 전에 적용돼요.",
+    "description": "연속된 라운드에서 득점한 역은 연속 중 앞선 라운드마다 ×1.2를 얻어요 (꽃패 보너스 전 최대 ×4). 그 역이 없는 라운드가 있으면 연속이 끊겨요.",
     "title": "반복할 역",
     "streak": "{{name}} · 이전 {{rounds}}라운드 연속",
     "empty": "이전 연속 기록이 없습니다. 이번 라운드에서 역으로 득점해 시작하세요."
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "역만으로 점수를 획득하세요.",
+    "seal_of_the_immortal": "역만(대삼원 같은 최상위 역)으로 점수를 획득하세요.",
     "seal_of_the_void": "한 번의 도전에서 20종류의 모든 역으로 점수를 획득하세요.",
-    "planet_x_orb": "칠대자로 점수를 획득하세요.",
-    "ceres_orb": "찬타로 점수를 획득하세요.",
-    "eris_orb": "국사무쌍으로 점수를 획득하세요.",
-    "black_hole_orb": "나머지 12종류의 천체 구슬을 모두 발견하세요."
+    "planet_x_orb": "치또이쯔로 점수를 획득하세요.",
+    "ceres_orb": "찬타(모든 조합과 또이쯔에 1, 9, 풍패, 삼원패 중 하나가 들어간 완성패)로 점수를 획득하세요.",
+    "eris_orb": "국사무쌍(모든 1, 9, 풍패, 삼원패 한 장씩과 그중 하나를 한 장 더)으로 점수를 획득하세요.",
+    "black_hole_orb": "나머지 12종류의 천구를 모두 발견하세요."
   },
   "decreeUnlocks": {
     "stage_master": "4막에 도달하세요.",
@@ -311,17 +311,17 @@
     "the_idol": "한 번의 플레이로 1,000,000점을 획득하세요.",
     "stuntman": "한 번의 플레이로 100,000,000점을 획득하세요.",
     "cartomancer": "모든 운명의 인장을 발견하세요.",
-    "astronomer": "모든 천상의 구슬을 발견하세요.",
+    "astronomer": "모든 천구를 발견하세요.",
     "decree-blueprint": "런을 승리하세요.",
     "decree-brainstorm": "법령을 5개 이상 보유한 채 런을 승리하세요.",
-    "decree-heavenly-ordinance": "역만으로 점수를 얻으세요.",
-    "decree-clone-army": "골드 스테이크에서 런을 승리하세요.",
-    "decree-yakuman-blessing": "한 런에서 역만 패턴 3개로 점수를 얻으세요.",
+    "decree-heavenly-ordinance": "역만(대삼원 같은 최상위 역)으로 점수를 얻으세요.",
+    "decree-clone-army": "금색 단계에서 런을 승리하세요.",
+    "decree-yakuman-blessing": "한 런에서 역만으로 세 번 점수를 얻으세요.",
     "decree-omega": "선택 도전인 무한 모드에서 8막을 완료하세요."
   },
   "scoreThresholds": {
-    "supernova": "초신성과 완벽주의자 보너스를 제외하고, 이번 플레이로 라운드 점수가 목표의 2배 이상이 되면 배율 ×2.5.",
-    "perfectionist": "초신성과 완벽주의자 보너스를 제외하고, 첫 플레이로 라운드를 클리어하면 배율 ×3."
+    "supernova": "초신성과 완벽주의자 보너스를 제외하고, 이번 플레이로 라운드 점수가 목표의 2배 이상이 되면 배수 ×2.5.",
+    "perfectionist": "초신성과 완벽주의자 보너스를 제외하고, 첫 플레이로 라운드를 클리어하면 배수 ×3."
   },
   "copyCosts": {
     "title": "복사한 능력과 대가",
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "패의 변경은 다음 라운드를 포함해 이번 런 내내 유지됩니다. 새 런에서는 초기화됩니다.",
-    "negativeTile": "이 네거티브 패가 자신의 패산에 남아 있는 동안 법령 슬롯 +1. 뽑거나 버려도 유지되며, 파괴하거나 에디션을 바꾸면 사라집니다.",
+    "negativeTile": "이 음영 실물 패가 패산에 남아 있는 동안 법령 칸 +1. 뽑거나 버림패 더미로 보내도 칸은 유지되며, 파괴되거나 에디션이 바뀌면 사라집니다.",
     "overCapacity": "용량 감소: 보유 법령은 사라지지 않습니다. 더 획득하려면 공간을 확보하세요."
   },
   "yakuUpgrades": {
@@ -428,10 +428,10 @@
     "available": "{{name}} ({{count}}개 사용 가능)",
     "penalty_lose_tile": "무작위 패 1개를 잃습니다.",
     "penalty_lose_gold": "모든 금을 잃습니다.",
-    "penalty_lose_hand_size": "손패 한도가 영구적으로 {{count}}개 줄어듭니다.",
-    "penalty_lock_tile": "무작위 패 1개를 데드 풀에 잠급니다.",
+    "penalty_lose_hand_size": "이번 런이 끝날 때까지 손패 공간이 {{count}}칸 줄어듭니다.",
+    "penalty_lock_tile": "무작위 패 1장을 버림패 더미에 잠급니다. 그 패는 다시 뽑을 수 없습니다.",
     "penalty_lose_decree_slot": "다음 라운드에 법령 슬롯 {{count}}개를 잃습니다.",
-    "penalty_halve_base_score": "다음 패의 기본 점수가 절반이 됩니다.",
+    "penalty_halve_base_score": "다음에 낼 패의 기본 점수가 절반이 됩니다.",
     "penalty_destroy_decrees": "다른 모든 법령을 파괴합니다.",
     "penalty_none": "추가 불이익 없음.",
     "protected": "징조의 보호가 추가 불이익을 막습니다.",
@@ -441,7 +441,7 @@
     "targets": "대상 패",
     "count": "대상: {{selected}} / {{required}}",
     "copyOrder": "패 1이 패 2의 복사본이 됩니다. 바꿀 패를 먼저 고르세요.",
-    "replacesModifier": "{{names}}을(를) 대체해요. 패 하나에는 표식, 인장, 에디션 중 하나만 붙어요.",
+    "replacesModifier": "{{names}}을(를) 대체해요. 특수 패 하나에는 표식, 스탬프, 에디션 중 하나만 붙어요.",
     "cost": "공허의 대가",
     "failed": "이 아이템을 사용할 수 없습니다.",
     "unavailable": "이 아이템은 지금 사용할 수 없습니다.",
@@ -513,6 +513,14 @@
     "fast": "빠름",
     "resetSettings": "기본값으로 재설정",
     "dangerZone": "위험 구역",
+    "privacy": {
+      "title": "개인정보 보호",
+      "policy": "개인정보 처리방침",
+      "policyDesc": "텐쇼가 저장하는 정보와 광고가 수집할 수 있는 정보를 확인합니다",
+      "choices": "개인정보 설정",
+      "choicesDesc": "광고가 데이터를 사용하는 방식을 확인하거나 변경합니다",
+      "choicesError": "개인정보 설정을 열지 못했습니다. 연결을 확인하고 다시 시도하세요."
+    },
     "data": "데이터 및 진행",
     "gameplay": "게임플레이",
     "muteMusic": "음악 음소거",
@@ -532,10 +540,12 @@
       "normal": "보통",
       "slow": "느림"
     },
-    "tileHintsDesc": "손패를 패 받침 아래에 또이쯔·순자·커쯔로 묶어 보여주고, 화료 형태가 완성되면 알려줍니다",
+    "tileHintsDesc": "손패 아래에 또이쯔·순자·커쯔 후보를 보여 주고, 완성된 화료패를 알려 줍니다",
     "visual": "화면",
     "rankNumbers": "패에 숫자 표시",
     "rankNumbersDesc": "패 그림을 익히는 동안 수패에 1~9, 삼원패에 글자를 작게 표시해요.",
+    "keyboardShortcuts": "키보드 단축키",
+    "keyboardShortcutsDesc": "테이블에서 P는 패 내기, R은 다시 뽑기, A는 모든 패 선택, Esc는 패를 되돌립니다. 화살표 키로 패 사이를 이동합니다.",
     "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요.",
     "credits": {
       "title": "크레딧",
@@ -574,11 +584,14 @@
     "deadWallDraw": "왕패에서 뽑기",
     "winsRound": "라운드 승리",
     "tilesInWall": "벽에 남은 패",
-    "handsRemaining": "남은 손",
+    "handsRemaining": "남은 턴",
     "redrawsRemaining": "남은 다시 뽑기",
     "redrawSelected": "선택한 패 다시 뽑기",
     "redrawHint": "선택한 패를 최대 3장 되돌리고 새로 뽑습니다",
     "decreeDisabledByMandate": "이번 손은 진홍의 심장으로 비활성",
+    "hiddenDecreeTitle": "숨겨진 법령",
+    "faceDownDecree": "뒷면 법령",
+    "hiddenDecreeDescription": "호박 도토리가 이 법령을 숨기고, 라운드에서 이길 때까지 그 힘을 봉인합니다.",
     "season": "계절:",
     "endless": "엔들리스",
     "wall": "벽:",
@@ -602,7 +615,7 @@
       "label": "예상",
       "selectOneMore": "이 면자를 내려면 한 장 더 고르세요",
       "notCompleteHand": "이 선택은 완성된 손패가 아닙니다",
-      "returnTiles": "다섯 장까지 되돌리거나 손패를 완성하세요",
+      "returnTiles": "{{max}}장이 남을 때까지 패를 되돌리거나 완성패를 만드세요",
       "groupToScore": "면자로 묶으면 만점으로 들어옵니다. 완성된 손패는 역을 엽니다"
     },
     "previewConcealed": "점수 미리보기 가려짐",
@@ -717,7 +730,21 @@
     "feltTiles": "낼 패",
     "collection": "보유 아이템",
     "deadWallHint": "패를 한 장만 고른 뒤 왕패 한 장과 바꿔요. 라운드당 한 번, 턴을 쓰지 않아요.",
-    "turnsLabel": "남은 턴"
+    "turnsLabel": "남은 턴",
+    "emergencyTurn": {
+      "buy": "턴 +1",
+      "label": "{{cost}}골드로 턴 하나 더 구매",
+      "short": "골드가 부족해요: 턴 추가에는 {{cost}}골드가 필요해요",
+      "watchAd": "광고 보기",
+      "watchAdLabel": "광고를 보고 턴 하나 더 받기",
+      "adPlaying": "광고 재생 중…",
+      "adIncomplete": "광고를 일찍 닫아서 추가 턴이 없습니다.",
+      "adUnavailable": "지금은 볼 수 있는 광고가 없습니다.",
+      "simulatedAd": "광고 (시뮬레이션)",
+      "adCountdown": "{{seconds}}초 후 보상을 받을 수 있습니다",
+      "adReady": "보상 준비 완료",
+      "adClaim": "턴 +1 받기"
+    }
   },
   "rounds": {
     "small": "소국",
@@ -737,9 +764,9 @@
     "optional": "{{total}}막 보스국에서 이기면 승리합니다. 무한 모드와 더 높은 스테이크는 선택적인 추가 도전이며, 게임을 완료하기 위한 조건이 아닙니다.",
     "recommendation": "첫 승리를 노린다면 초록 융단과 흰색 스테이크를 선택하세요. 탁자는 외형뿐 아니라 규칙도 바꾸며, 스테이크는 난도를 높입니다. 빨간색 스테이크는 흰색의 목표 점수를 유지하지만 소국의 골드 보상을 없앱니다.",
     "guideTitle": "서로 시너지를 내는 법령을 조합하세요",
-    "guideEarly": "안정적인 점수 가산과 배율 가산부터 시작하세요. 얻기를 바라는 희귀한 손패보다 실제로 사용하는 패와 형태에서 발동하는 보너스를 선택하세요.",
-    "guideLate": "마지막 몇 막에 들어가기 전에 플레이나 국이 진행될수록 성장하는 배율을 찾고, 이를 증폭할 ×배율 법령을 구하세요. 고정 점수만 늘려서는 부족할 수 있습니다.",
-    "guideExample": "예시: 100점 × (4 배율 + 6 배율) × 2 = 2,000점. +배율은 배율에 더하고, ×배율은 배율을 곱합니다. 둘을 함께 활용하세요.",
+    "guideEarly": "안정적인 점수 가산과 배수 가산부터 시작하세요. 얻기를 바라는 희귀한 손패보다 실제로 사용하는 패와 형태에서 발동하는 보너스를 선택하세요.",
+    "guideLate": "마지막 몇 막에 들어가기 전에 플레이나 국이 진행될수록 성장하는 배수를 찾고, 이를 증폭할 ×배수 법령을 구하세요. 고정 점수만 늘려서는 부족할 수 있습니다.",
+    "guideExample": "예시: 100점 × (4 배수 + 6 배수) × 2 = 2,000점. +배수는 배수에 더하고, ×배수는 배수를 곱합니다. 둘을 함께 활용하세요.",
     "guideMatch": "조건을 맞추세요. 커쯔 보너스에는 커쯔가, 특정 수패 종류의 보너스에는 해당 종류의 패가 필요합니다. 각 두루마리의 규칙을 읽으세요. 강력해도 발동하지 않는 효과는 슬롯 낭비입니다. 상점 새로고침에 골드를 모두 쓰지 말고 유용한 구매를 위해 남겨 두세요."
   },
   "shop": {
@@ -786,7 +813,7 @@
       "nextRound": "다음 라운드로",
       "confirmPurchase": "구매 확인",
       "purchasePrompt": "{{name}}을(를) {{cost}}G에 구매하시겠습니까?",
-      "baseEdition": "기본판",
+      "standardCharter": "기본",
       "goldBalance": "보유 골드: {{amount}}",
       "rerollsUsed": "새로고침 횟수: {{count}}",
       "forSale": "판매 중"
@@ -798,7 +825,8 @@
       "bonus": "보상 조정",
       "rentals": "대여료",
       "omenEarned": "징조: {{name}}",
-      "omen": "징조"
+      "omen": "징조",
+      "stakeWithheld": "{{stake}}: 이번 라운드 보상 {{amount}}G가 지급되지 않습니다"
     },
     "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
     "packInventoryFull": "선택한 보상을 받을 법령 슬롯이 부족합니다. 법령을 판매하거나, 선택을 줄이거나, 팩을 건너뛰세요.",
@@ -827,11 +855,12 @@
     "packSkipped": "팩 건너뜀",
     "kinds": {
       "decree": "법령 · {{rarity}}",
-      "decreeHelp": "법령은 이번 런 동안 계속되는 규칙이에요. 법령 칸을 하나 쓰고 언제든 팔 수 있어요.",
+      "decreeHelp": "법령은 보유하는 동안 규칙을 바꿔요. 보통 법령 칸을 하나 써요. 영구 법령이 아니면 팔 수 있어요.",
       "seal": "운명의 인장 · 바로 적용",
       "sealHelp": "획득하는 즉시 사용돼요. 바꿀 패산의 패를 고르면 이번 런 내내 바뀐 채로 유지돼요.",
       "sealHelpInstant": "획득하는 즉시 사용돼요.",
       "orb": "천상의 구슬 · 족보 계열 강화",
+      "orbFamily": "천상의 구슬 · {{family}}",
       "script": "공허의 두루마리 · 강력하지만 대가가 있음",
       "consumableHelp": "쓸 때까지 아이템에 보관돼요. 테이블에서 탭해 사용하세요.",
       "tile": "패 · 패산에 추가",
@@ -845,7 +874,7 @@
     "buyFor": "구매 · {{price}} 골드",
     "help": {
       "what": "찻집은 라운드 사이의 상점이에요.",
-      "buy": "아이템을 탭하면 효과가 보이고, 구매를 누르면 사요. 법령은 규칙을 바꾸고, 구슬과 인장은 바로 적용되고(인장은 패산에서 바꿀 패를 물어봐요), 두루마리는 라운드 중에 쓰고, 팩은 보상을 고르게 하고, 칙허장은 런 전체를 강화해요.",
+      "buy": "아이템을 탭하면 효과가 보이고, 구매를 누르면 사요. 법령은 규칙을 바꾸고, 구슬과 운명의 인장은 바로 적용되고(운명의 인장은 패산에서 바꿀 패를 물어봐요), 두루마리는 라운드 중에 쓰고, 팩은 보상을 고르게 하고, 칙허장은 런 전체를 강화해요.",
       "interest": "보유한 골드에 이자가 붙어요: 라운드 종료 시 5골드마다 +1 (최대 +{{cap}}).",
       "cashOut": "입장하면 지난 라운드의 골드가 지갑에 들어와요. 라운드 완료, 이자, 법령, 황금 패, 대여료 등 항목마다 알림이 떠요.",
       "build": "‘내 구성’에는 보유 법령과 역 강화가 나란히 있어요. 두루마리를 열어 효과를 확인하거나 판매하고, 강화를 열어 레벨을 볼 수 있어요. 구매는 각 구매 버튼으로 해요."
@@ -874,31 +903,31 @@
     "items": {
       "stage_master": {
         "name": "무대의 달인",
-        "description": "완료한 막마다 +25점 및 +1 배율."
+        "description": "완료한 막마다 +25점 및 +1 배수."
       },
       "flower_pot": {
         "name": "꽃 화분",
-        "description": "서로 다른 꽃 네 종류를 모두 보유한 동안 배율 ×3."
+        "description": "서로 다른 꽃패 네 종류를 모두 보유한 동안 배수 ×3."
       },
       "satellite": {
         "name": "위성",
-        "description": "승리한 각 라운드가 끝날 때 레벨 1을 초과한 천상의 구슬 계열마다 +1골드."
+        "description": "승리한 각 라운드가 끝날 때, 천구로 레벨 0보다 높게 올린 역 계열마다 골드 +1."
       },
       "swift_andy": {
         "name": "날쌘 앤디",
-        "description": "매 라운드 무료 다시 뽑기 횟수 +2; 패 받침대 크기 −2."
+        "description": "매 라운드 무료 다시 뽑기 +2; 손패 공간 −2."
       },
       "lucky_sixes": {
         "name": "행운의 육",
-        "description": "낸 숫자 6 수패마다 +6 배율. 돌 패는 세지 않습니다."
+        "description": "낸 수패 6마다 배수 +6. 돌 패는 세지 않습니다."
       },
       "the_idol": {
         "name": "우상",
-        "description": "패를 두 장 이상 내고 모든 패에 인쇄된 문양과 숫자가 같으면 배율 ×3. 돌 패가 있으면 조건이 깨지며, 만능 패는 인쇄된 원래 정체성으로 판정합니다."
+        "description": "패를 두 장 이상 내고 모두 인쇄된 패가 같으면 배수 ×3. 돌 패가 있으면 성립하지 않으며, 만능 패는 인쇄된 패 그대로 판정합니다."
       },
       "stuntman": {
         "name": "스턴트맨",
-        "description": "+250점; 패 받침대 크기 −3."
+        "description": "점수 +250; 손패 공간 −3."
       },
       "cartomancer": {
         "name": "카드 점술가",
@@ -906,7 +935,7 @@
       },
       "astronomer": {
         "name": "천문학자",
-        "description": "찻집에 들어갈 때 무료 천상의 구슬 상품 하나가 추가됩니다. 상점을 새로고침해도 이 무료 상품은 보충되지 않습니다."
+        "description": "찻집에 들어갈 때 무료 천구 상품 하나가 추가됩니다. 상점을 새로고침해도 이 무료 상품은 보충되지 않습니다."
       },
       "decree-half-suited": {
         "name": "반색",
@@ -930,91 +959,91 @@
       },
       "decree-gentle-breeze": {
         "name": "미풍",
-        "description": "+2 배율"
+        "description": "+2 배수"
       },
       "decree-rising-sun": {
         "name": "일출",
-        "description": "+3 배율"
+        "description": "+3 배수"
       },
       "decree-lunar-glow": {
         "name": "월광",
-        "description": "+4 배율"
+        "description": "+4 배수"
       },
       "decree-crimson-banner": {
         "name": "홍기",
-        "description": "+5 배율"
+        "description": "+5 배수"
       },
       "decree-golden-seal": {
-        "name": "금인",
-        "description": "+6 배율"
+        "name": "황금 옥새",
+        "description": "+6 배수"
       },
       "decree-manzu-master": {
         "name": "만수 달인",
-        "description": "만수 포함 시 +3 배율"
+        "description": "낸 패에 만수가 있으면 배수 +3"
       },
       "decree-pinzu-perfectionist": {
         "name": "통수 장인",
-        "description": "통수 포함 시 +3 배율"
+        "description": "낸 패에 통수가 있으면 배수 +3"
       },
       "decree-souzu-scholar": {
         "name": "삭수 학자",
-        "description": "삭수 포함 시 +3 배율"
+        "description": "낸 패에 삭수가 있으면 배수 +3"
       },
       "decree-wind-walker": {
         "name": "바람 행자",
-        "description": "풍패 포함 시 +4 배율"
+        "description": "낸 패에 풍패가 있으면 배수 +4"
       },
       "decree-dragon-disciple": {
         "name": "용 제자",
-        "description": "삼원패 포함 시 +4 배율"
+        "description": "낸 패에 삼원패가 있으면 배수 +4"
       },
       "decree-edge-runner": {
         "name": "끝 달리기",
-        "description": "노두패당 +20점"
+        "description": "낸 노두패(1 또는 9)마다 점수 +20"
       },
       "decree-middle-way": {
         "name": "중도",
-        "description": "중장패당 +10점"
+        "description": "낸 중장패(2~8 패)마다 점수 +10"
       },
       "decree-green-fortune": {
         "name": "녹색 행운",
-        "description": "녹색패당 +15점 (삭수 2,3,4,6,8)"
+        "description": "낸 녹색 패마다 점수 +15: 삭수 2, 3, 4, 6, 8과 발"
       },
       "decree-coin-collector": {
         "name": "동전 수집가",
-        "description": "라운드 종료 시 +1골드"
+        "description": "각 라운드 종료 시 골드 +1"
       },
       "decree-merchants-favor": {
         "name": "상인의 은혜",
-        "description": "라운드 종료 시 +2골드"
+        "description": "각 라운드 종료 시 골드 +2"
       },
       "decree-lucky-coin": {
         "name": "행운의 동전",
-        "description": "라운드 종료 시 +3골드"
+        "description": "각 라운드 종료 시 골드 +3"
       },
       "decree-pair-lover": {
-        "name": "대자 애호가",
-        "description": "대자 포함 시 +30점"
+        "name": "또이쯔 애호가",
+        "description": "낸 패에 또이쯔가 있으면 점수 +30"
       },
       "decree-sequence-seeker": {
         "name": "순자 탐색자",
-        "description": "순자 포함 시 +30점"
+        "description": "낸 패에 순자가 있으면 점수 +30"
       },
       "decree-triplet-tracker": {
-        "name": "각자 추적자",
-        "description": "각자 포함 시 +40점"
+        "name": "커쯔 추적자",
+        "description": "낸 패에 커쯔가 있으면 점수 +40"
       },
       "decree-flower-friend": {
-        "name": "화패 친구",
-        "description": "수집한 화패당 +10점"
+        "name": "꽃패 친구",
+        "description": "수집한 꽃패당 +10점"
       },
       "decree-seasonal-blessing": {
         "name": "계절 축복",
-        "description": "활성 계절당 +2 배율"
+        "description": "활성 계절당 +2 배수"
       },
       "decree-wide-grip": {
         "name": "넓은 손",
-        "description": "+1 패 크기"
+        "description": "손패 공간 +1"
       },
       "decree-second-chance": {
         "name": "두 번째 기회",
@@ -1022,123 +1051,123 @@
       },
       "decree-balanced-path": {
         "name": "균형의 길",
-        "description": "+15점과 +2 배율"
+        "description": "+15점과 +2 배수"
       },
       "decree-modest-fortune": {
         "name": "겸손한 재물",
-        "description": "+20점과 라운드당 +1골드"
+        "description": "점수 +20, 그리고 각 라운드 종료 시 골드 +1"
       },
       "decree-humble-power": {
         "name": "겸허한 힘",
-        "description": "+2 배율과 라운드당 +1골드"
+        "description": "배수 +2, 그리고 각 라운드 종료 시 골드 +1"
       },
       "decree-one-mastery": {
         "name": "일 마스터리",
-        "description": "1패당 +25점"
+        "description": "낸 수패 1마다 점수 +25"
       },
       "decree-nine-mastery": {
         "name": "구 마스터리",
-        "description": "9패당 +25점"
+        "description": "낸 수패 9마다 점수 +25"
       },
       "decree-five-blessing": {
         "name": "오복",
-        "description": "5패당 +35점"
+        "description": "낸 수패 5마다 점수 +35"
       },
       "decree-spark": {
         "name": "불꽃",
-        "description": "x1.2 배율"
+        "description": "배수 ×1.2"
       },
       "decree-ember": {
         "name": "잔불",
-        "description": "x1.3 배율"
+        "description": "배수 ×1.3"
       },
       "decree-riichi-devotee": {
         "name": "또이쯔 신봉자",
-        "description": "또이쯔가 두 개 이상이면 배수 +4"
+        "description": "낸 패에 또이쯔가 두 개 이상 있으면 배수 +4"
       },
       "decree-tanyao-tactician": {
         "name": "탕야오 전술가",
-        "description": "탕야오 점수 시 +3 배율"
+        "description": "탕야오(1, 9, 풍패, 삼원패 없이 2~8 패로만 된 완성패)로 득점하면 배수 +3"
       },
       "decree-pinfu-purist": {
         "name": "핑후 순수주의자",
-        "description": "핑후 점수 시 +3 배율"
+        "description": "핑후(순자 4개와, 삼원패나 동이 아닌 또이쯔로 된 완성패)로 득점하면 배수 +3"
       },
       "decree-manzu-emperor": {
         "name": "만수 황제",
-        "description": "절반 이상 만수 시 +8 배율"
+        "description": "낸 패의 절반 이상이 만수면 배수 +8"
       },
       "decree-pinzu-princess": {
         "name": "통수 공주",
-        "description": "절반 이상 통수 시 +8 배율"
+        "description": "낸 패의 절반 이상이 통수면 배수 +8"
       },
       "decree-souzu-sage": {
         "name": "삭수 현자",
-        "description": "절반 이상 삭수 시 +8 배율"
+        "description": "낸 패의 절반 이상이 삭수면 배수 +8"
       },
       "decree-flush-fever": {
         "name": "일색 열풍",
-        "description": "단일 색 시 x1.5 배율"
+        "description": "낸 수패가 모두 한 무늬면 배수 ×1.5 (풍패와 삼원패는 허용)"
       },
       "decree-honor-guard": {
         "name": "자패 수호",
-        "description": "3장 이상 자패 시 x1.5 배율"
+        "description": "낸 패에 자패(풍패 또는 삼원패)가 3장 이상 있으면 배수 ×1.5"
       },
       "decree-terminal-tide": {
         "name": "노두 조류",
-        "description": "4장 이상 노두 시 x1.5 배율"
+        "description": "낸 패에 노두패(1 또는 9)가 4장 이상 있으면 배수 ×1.5"
       },
       "decree-straight-arrow": {
         "name": "직진 화살",
-        "description": "순자 3조 시 +80점"
+        "description": "낸 패에 순자가 3개 이상 있으면 점수 +80"
       },
       "decree-run-master": {
         "name": "연속 달인",
-        "description": "순자당 +6 배율"
+        "description": "낸 순자마다 배수 +6"
       },
       "decree-triple-threat": {
         "name": "삼중 위협",
-        "description": "각자 2조 이상 시 +80점"
+        "description": "낸 패에 커쯔가 2개 이상 있으면 점수 +80"
       },
       "decree-triplet-thunder": {
-        "name": "각자 번개",
-        "description": "각자당 +8 배율"
+        "name": "커쯔 번개",
+        "description": "낸 커쯔마다 배수 +8"
       },
       "decree-echo-stone": {
         "name": "반향석",
-        "description": "첫 득점패 재발동"
+        "description": "첫 번째로 득점하는 패가 두 번 득점"
       },
       "decree-mirror-shard": {
         "name": "거울 조각",
-        "description": "마지막 득점패 재발동"
+        "description": "마지막으로 득점하는 패가 두 번 득점"
       },
       "decree-dragon-echo": {
         "name": "용 반향",
-        "description": "모든 삼원패 재발동"
+        "description": "낸 삼원패가 모두 두 번 득점"
       },
       "decree-wind-echo": {
         "name": "풍 반향",
-        "description": "모든 풍패 재발동"
+        "description": "낸 풍패가 모두 두 번 득점"
       },
       "decree-golden-ratio": {
         "name": "황금비",
-        "description": "5골드당 +1 배율 (최대 +10)"
+        "description": "보유 골드 5마다 배수 +1 (최대 +10)"
       },
       "decree-treasure-hunter": {
         "name": "보물 사냥꾼",
-        "description": "라운드 승리 시 손에 남은 서로 다른 패 종류마다 +1골드. 바람패와 용패는 따로 셉니다."
+        "description": "라운드에서 승리하면 손패에 남은 서로 다른 무늬마다 골드 +1. 풍패와 삼원패는 각각 별도의 무늬로 셉니다."
       },
       "decree-tax-collector": {
         "name": "세금 징수원",
-        "description": "라운드 종료 시 +4골드"
+        "description": "각 라운드 종료 시 골드 +4"
       },
       "decree-garden-keeper": {
         "name": "정원사",
-        "description": "수집한 화패당 +4 배율"
+        "description": "수집한 꽃패당 +4 배수"
       },
       "decree-blossom-storm": {
         "name": "꽃 폭풍",
-        "description": "수집한 화패당 x1.2 배율"
+        "description": "모은 꽃패마다 배수 ×1.2"
       },
       "decree-seasonal-wind": {
         "name": "계절풍",
@@ -1146,15 +1175,15 @@
       },
       "decree-slow-burn": {
         "name": "서서히 타오름",
-        "description": "이번 런 라운드당 +2 배율"
+        "description": "이번 런에서 완료한 라운드마다 배수 +2"
       },
       "decree-momentum": {
         "name": "추진력",
-        "description": "이번 라운드 플레이한 패당 +15점"
+        "description": "이번 라운드에서 앞서 패를 낸 횟수마다 점수 +15"
       },
       "decree-crescendo": {
         "name": "크레센도",
-        "description": "이번 라운드 플레이한 패당 x1.1 배율"
+        "description": "이번 라운드에서 앞서 패를 낸 횟수마다 배수 ×1.1"
       },
       "decree-waste-not": {
         "name": "낭비 없음",
@@ -1165,28 +1194,28 @@
         "description": "이번 라운드에 다시 뽑은 패 한 장마다 점수 +10"
       },
       "decree-yakuhai-zealot": {
-        "name": "야쿠하이 광신자",
-        "description": "야쿠하이 점수 시 x1.5 배율"
+        "name": "역패 광신자",
+        "description": "역패(삼원패나 동의 커쯔·깡쯔가 있는 완성패)로 득점하면 배수 ×1.5"
       },
       "decree-toitoi-titan": {
         "name": "또이또이 타이탄",
-        "description": "또이또이 점수 시 x1.5 배율"
+        "description": "또이또이(커쯔나 깡쯔 4개와 또이쯔로 된 완성패)로 득점하면 배수 ×1.5"
       },
       "decree-ittsu-initiate": {
-        "name": "잇쓰 입문",
-        "description": "잇쓰 점수 시 x1.5 배율"
+        "name": "일기통관 입문",
+        "description": "일기통관(한 무늬의 1-2-3, 4-5-6, 7-8-9가 있는 완성패)으로 득점하면 배수 ×1.5"
       },
       "decree-chinitsu-champion": {
-        "name": "친이쓰 챔피언",
-        "description": "친이쓰 점수 시 x2.0 배율"
+        "name": "치니쯔 챔피언",
+        "description": "치니쯔(풍패와 삼원패 없이 한 무늬로만 된 완성패)로 득점하면 배수 ×2"
       },
       "decree-veteran": {
         "name": "베테랑",
-        "description": "완료한 막당 +30점"
+        "description": "완료한 막마다 점수 +30"
       },
       "decree-experience": {
         "name": "경험",
-        "description": "완료한 막당 x1.1 배율"
+        "description": "완료한 막마다 배수 ×1.1"
       },
       "decree-greater-jade": {
         "name": "대옥",
@@ -1194,27 +1223,27 @@
       },
       "decree-blazing-banner": {
         "name": "불타는 깃발",
-        "description": "+10 배율"
+        "description": "+10 배수"
       },
       "decree-flame": {
         "name": "화염",
-        "description": "x1.5 배율"
+        "description": "배수 ×1.5"
       },
       "decree-wind-dragon": {
         "name": "풍룡",
-        "description": "풍패와 삼원패 모두 있으면 +5 배율"
+        "description": "낸 패에 풍패와 삼원패가 모두 있으면 배수 +5"
       },
       "decree-all-suits": {
         "name": "삼색 완비",
-        "description": "3색 모두 있으면 +8 배율"
+        "description": "낸 패에 만수, 통수, 삭수가 모두 있으면 배수 +8"
       },
       "decree-bookends": {
         "name": "양단",
-        "description": "1과 9 모두 있으면 +60점"
+        "description": "낸 패에 1과 9가 모두 있으면 점수 +60"
       },
       "decree-expansive-grip": {
         "name": "확장 손",
-        "description": "+2 패 크기"
+        "description": "손패 공간 +2"
       },
       "decree-careful-player": {
         "name": "신중한 플레이어",
@@ -1222,131 +1251,131 @@
       },
       "decree-inferno": {
         "name": "지옥불",
-        "description": "x2.0 배율"
+        "description": "배수 ×2"
       },
       "decree-supernova": {
         "name": "초신성",
-        "description": "초신성과 완벽주의자 보너스를 제외하고, 이번 플레이로 라운드 점수가 목표의 2배 이상이 되면 배율 ×2.5."
+        "description": "초신성과 완벽주의자 보너스를 제외하고, 이번 플레이로 라운드 점수가 목표의 2배 이상이 되면 배수 ×2.5."
       },
       "decree-perfectionist": {
         "name": "완벽주의자",
-        "description": "초신성과 완벽주의자 보너스를 제외하고, 첫 플레이로 라운드를 클리어하면 배율 ×3."
+        "description": "초신성과 완벽주의자 보너스를 제외하고, 첫 플레이로 라운드를 클리어하면 배수 ×3."
       },
       "decree-compound-interest": {
         "name": "복리",
-        "description": "10골드당 +2 배율"
+        "description": "보유 골드 10마다 배수 +2"
       },
       "decree-wealth-engine": {
         "name": "부의 엔진",
-        "description": "라운드 종료 시 법령당 +1골드"
+        "description": "각 라운드 종료 시 보유한 법령마다 골드 +1"
       },
       "decree-perpetual-motion": {
         "name": "영구 운동",
-        "description": "이번 런 플레이한 패당 +2 배율"
+        "description": "이번 런에서 앞서 패를 낸 횟수마다 배수 +2"
       },
       "decree-triple-echo": {
         "name": "삼중 반향",
-        "description": "모든 득점패 1회 재발동"
+        "description": "득점하는 모든 패가 두 번 득점"
       },
       "decree-terminal-resonance": {
         "name": "노두 공명",
-        "description": "노두패 2회 재발동"
+        "description": "낸 노두패(1 또는 9)가 모두 세 번 득점"
       },
       "decree-honor-resonance": {
         "name": "자패 공명",
-        "description": "자패 2회 재발동"
+        "description": "낸 자패(풍패 또는 삼원패)가 모두 세 번 득점"
       },
       "decree-manzu-monarch": {
         "name": "만수 군주",
-        "description": "전부 만수 시 x2.0 배율"
+        "description": "낸 패가 모두 만수면 배수 ×2"
       },
       "decree-pinzu-potentate": {
         "name": "통수 군주",
-        "description": "전부 통수 시 x2.0 배율"
+        "description": "낸 패가 모두 통수면 배수 ×2"
       },
       "decree-souzu-sovereign": {
         "name": "삭수 군주",
-        "description": "전부 삭수 시 x2.0 배율"
+        "description": "낸 패가 모두 삭수면 배수 ×2"
       },
       "decree-flower-emperor": {
-        "name": "화패 황제",
-        "description": "수집한 화패당 x1.5 배율"
+        "name": "꽃패 황제",
+        "description": "모은 꽃패마다 배수 ×1.5"
       },
       "decree-season-lord": {
         "name": "계절 군주",
-        "description": "활성 계절당 +10 배율"
+        "description": "활성 계절당 +10 배수"
       },
       "decree-nature-bond": {
         "name": "자연 유대",
-        "description": "화패당 +3 배율, 계절당 +30점"
+        "description": "꽃패당 +3 배수, 계절당 +30점"
       },
       "decree-honitsu-herald": {
-        "name": "혼이쓰 선구자",
-        "description": "혼이쓰 점수 시 x2.0 배율"
+        "name": "혼이쯔 선구자",
+        "description": "혼이쯔(한 무늬와 풍패·삼원패로 된 완성패)로 득점하면 배수 ×2"
       },
       "decree-sanshoku-sage": {
         "name": "삼색 현자",
-        "description": "삼색 점수 시 x2.0 배율"
+        "description": "삼색동순(세 무늬 모두에 같은 순자가 있는 완성패)으로 득점하면 배수 ×2"
       },
       "decree-chanta-champion": {
         "name": "찬타 챔피언",
-        "description": "찬타 점수 시 x2.0 배율"
+        "description": "찬타(순자가 하나 이상 있고, 모든 조합과 또이쯔에 1, 9, 풍패, 삼원패 중 하나가 들어간 완성패)로 득점하면 배수 ×2. 준찬(같은 형태지만 풍패·삼원패 없이 모든 조합과 또이쯔에 1이나 9가 들어간 것)도 해당합니다."
       },
       "decree-mandate-breaker": {
         "name": "명령 파괴자",
-        "description": "보스 라운드 중 +15 배율, x1.5 배율"
+        "description": "보스 라운드 중: 배수 +15, 배수 ×1.5"
       },
       "decree-boss-slayer": {
         "name": "보스 슬레이어",
-        "description": "보스 라운드 중 x2.0 배율"
+        "description": "보스 라운드 중 배수 ×2"
       },
       "decree-fortune-and-glory": {
         "name": "재물과 영광",
-        "description": "+60점, +8 배율, 라운드당 +3골드"
+        "description": "점수 +60, 배수 +8, 그리고 각 라운드 종료 시 골드 +3"
       },
       "decree-emperors-blessing": {
         "name": "황제의 축복",
-        "description": "+100점과 +10 배율"
+        "description": "+100점과 +10 배수"
       },
       "decree-golden-age": {
         "name": "황금시대",
-        "description": "라운드 종료 시 +8골드"
+        "description": "각 라운드 종료 시 골드 +8"
       },
       "decree-blueprint": {
         "name": "청사진",
-        "description": "오른쪽 법령 효과 복사"
+        "description": "오른쪽 법령의 효과를 복사"
       },
       "decree-photograph": {
         "name": "사진",
-        "description": "첫 득점패가 x2 배율 부여"
+        "description": "낸 패에 자패(풍패 또는 삼원패)가 있으면 배수 ×2"
       },
       "decree-ancient-scroll": {
         "name": "고대 두루마리",
-        "description": "+150점, -2 패 크기"
+        "description": "점수 +150; 손패 공간 −2"
       },
       "decree-sacrifice": {
         "name": "희생",
-        "description": "배수 ×3.0, 라운드당 턴 −1"
+        "description": "배수 ×3; 라운드당 턴 −1"
       },
       "decree-transmuter": {
         "name": "변환자",
-        "description": "점수 계산 시 중장패가 노두패로"
+        "description": "낸 2~8 패는 노두패(1과 9)로 득점"
       },
       "decree-harmonizer": {
         "name": "조화자",
-        "description": "모든 색이 순자로 매칭"
+        "description": "순자에 무늬를 섞을 수 있음 (예: 만수 1, 통수 2, 삭수 3)"
       },
       "decree-final-act": {
         "name": "최종막",
-        "description": "4막 이후 막당 x1.5 배율"
+        "description": "4막 이후의 막마다 배수 ×1.5"
       },
       "decree-endless-journey": {
         "name": "끝없는 여정",
-        "description": "완료한 막당 x1.2 배율"
+        "description": "완료한 막마다 배수 ×1.2"
       },
       "decree-master-grip": {
         "name": "달인 손",
-        "description": "+3 패 크기"
+        "description": "손패 공간 +3"
       },
       "decree-infinite-patience": {
         "name": "무한 인내",
@@ -1354,51 +1383,51 @@
       },
       "decree-divine-flame": {
         "name": "신성한 불꽃",
-        "description": "x3.0 배율"
+        "description": "배수 ×3"
       },
       "decree-heavens-wrath": {
         "name": "천벌",
-        "description": "중장패 없으면 x4.0 배율"
+        "description": "낸 패에 2~8 패가 없으면 배수 ×4 (1, 9, 풍패, 삼원패만)"
       },
       "decree-void-blessing": {
         "name": "공허 축복",
-        "description": "전부 자패 시 x5.0 배율"
+        "description": "낸 패가 모두 풍패나 삼원패면 배수 ×5"
       },
       "decree-eternal-echo": {
         "name": "영원한 반향",
-        "description": "모든 득점패 2회 재발동"
+        "description": "득점하는 모든 패가 세 번 득점"
       },
       "decree-dragon-king": {
         "name": "용왕",
-        "description": "삼원패 3회 재발동"
+        "description": "낸 삼원패가 모두 네 번 득점"
       },
       "decree-yaku-amplifier": {
         "name": "야쿠 증폭기",
-        "description": "모든 야쿠 배율 x1.5 증가"
+        "description": "완성패가 역으로 득점할 때 역 배수 합계에 1.5를 곱함"
       },
       "decree-yakuman-seeker": {
-        "name": "야쿠만 구도자",
-        "description": "야쿠만 점수 시 x5.0 배율"
+        "name": "역만 구도자",
+        "description": "역만(대삼원이나 국사무쌍 같은 최상위 역)으로 득점하면 배수 ×5"
       },
       "decree-four-seasons-master": {
         "name": "사계 달인",
-        "description": "활성 계절당 x2.0 배율"
+        "description": "활성 계절마다 배수 ×2"
       },
       "decree-eternal-garden": {
         "name": "영원한 정원",
-        "description": "화패당 +10 배율, 화패 손실 없음"
+        "description": "꽃패마다 배수 +10. 가뭄도 꽃패를 억제할 수 없습니다."
       },
       "decree-midas-touch": {
         "name": "황금 손",
-        "description": "라운드 종료 시 +10골드"
+        "description": "각 라운드 종료 시 골드 +10"
       },
       "decree-infinite-wealth": {
         "name": "무한 재물",
-        "description": "10골드당 x1.1 배율"
+        "description": "보유 골드 10마다 배수 ×1.1"
       },
       "decree-brainstorm": {
         "name": "브레인스톰",
-        "description": "가장 왼쪽 법령 효과 복사"
+        "description": "가장 왼쪽 법령의 효과를 복사"
       },
       "decree-doppelganger": {
         "name": "도플갱어",
@@ -1406,23 +1435,23 @@
       },
       "decree-manzu-god": {
         "name": "만수 신",
-        "description": "전부 만수 시 x3.0 배율"
+        "description": "낸 패가 모두 만수면 배수 ×3"
       },
       "decree-pinzu-god": {
         "name": "통수 신",
-        "description": "전부 통수 시 x3.0 배율"
+        "description": "낸 패가 모두 통수면 배수 ×3"
       },
       "decree-souzu-god": {
         "name": "삭수 신",
-        "description": "전부 삭수 시 x3.0 배율"
+        "description": "낸 패가 모두 삭수면 배수 ×3"
       },
       "decree-glass-cannon": {
         "name": "유리 대포",
-        "description": "x6.0 배율, 보스전 패배 시 파괴"
+        "description": "배수 ×6. 보스 라운드에서 패배하면 파괴됩니다."
       },
       "decree-phoenix": {
         "name": "불사조",
-        "description": "1회 패배 방지 후 자동 판매"
+        "description": "라운드에서 패배하게 되면 대신 클리어합니다. 그 후 이 법령은 파괴됩니다."
       },
       "decree-time-lord": {
         "name": "시간의 군주",
@@ -1430,71 +1459,71 @@
       },
       "decree-exponential": {
         "name": "지수적",
-        "description": "기본 점수 100당 x1.3 배율"
+        "description": "낸 패의 기본 점수 100마다 배수 ×1.3"
       },
       "decree-chain-reaction": {
         "name": "연쇄 반응",
-        "description": "이번 패 야쿠당 x1.5 배율"
+        "description": "득점한 패의 역마다 배수 ×1.5"
       },
       "decree-cosmic-jade": {
         "name": "우주 옥",
-        "description": "+200점, x1.5 배율"
+        "description": "점수 +200, 배수 ×1.5"
       },
       "decree-solar-banner": {
         "name": "태양 깃발",
-        "description": "+25 배율, x2.0 배율"
+        "description": "배수 +25, 배수 ×2"
       },
       "decree-universal-grip": {
         "name": "만능 손",
-        "description": "+4 패 크기"
+        "description": "손패 공간 +4"
       },
       "decree-heavenly-ordinance": {
         "name": "천명",
-        "description": "x5.0 배율"
+        "description": "배수 ×5"
       },
       "decree-celestial-throne": {
         "name": "천좌",
-        "description": "배수 ×10.0, 패 −2, 라운드당 턴 −1"
+        "description": "배수 ×10; 손패 공간 −2, 라운드당 턴 −1"
       },
       "decree-void-emperor": {
         "name": "공허 황제",
-        "description": "이전 패 0점 시 x8.0 배율"
+        "description": "직전에 낸 패가 0점이면 배수 ×8"
       },
       "decree-infinite-loop": {
         "name": "무한 루프",
-        "description": "모든 득점패 3회 재발동"
+        "description": "득점하는 모든 패가 네 번 득점"
       },
       "decree-echo-dimension": {
         "name": "반향 차원",
-        "description": "모든 재발동 효과 2회 발동"
+        "description": "다른 법령이 주는 추가 득점 횟수를 두 배로 (두 번 득점하는 패는 세 번 득점)"
       },
       "decree-clone-army": {
         "name": "클론 군대",
-        "description": "다른 모든 법령 효과 복사"
+        "description": "다른 모든 법령의 효과를 복사"
       },
       "decree-world-tree": {
         "name": "세계수",
-        "description": "화패당 x2.0 배율, 계절당 x1.5 배율"
+        "description": "꽃패마다 배수 ×2, 활성 계절마다 배수 ×1.5"
       },
       "decree-philosophers-stone": {
         "name": "현자의 돌",
-        "description": "획득 골드 2배"
+        "description": "패 내기, 다시 뽑기, 아이템, 라운드 보상으로 얻는 골드를 두 배로 (법령 판매나 징조로 얻는 골드는 제외)"
       },
       "decree-dragon-hoard": {
         "name": "용의 보물",
-        "description": "10골드당 x1.2 배율"
+        "description": "보유 골드 10마다 배수 ×1.2"
       },
       "decree-yaku-nexus": {
         "name": "야쿠 넥서스",
-        "description": "모든 야쿠 +1 등급"
+        "description": "모든 역이 한 등급 위인 것처럼 득점 (1등급 ×1.3이 ×1.6이 됨)"
       },
       "decree-yakuman-blessing": {
-        "name": "야쿠만 축복",
-        "description": "야쿠만 점수 시 x10.0 배율"
+        "name": "역만 축복",
+        "description": "역만(대삼원이나 국사무쌍 같은 최상위 역)으로 득점하면 배수 ×10"
       },
       "decree-reality-warp": {
         "name": "현실 왜곡",
-        "description": "모든 패가 모든 색과 숫자로 취급"
+        "description": "고른 패 14장이면 어떤 조합이든 완성패가 될 수 있음"
       },
       "decree-time-master": {
         "name": "시간 지배자",
@@ -1502,15 +1531,15 @@
       },
       "decree-immortal-decree": {
         "name": "불멸 법령",
-        "description": "모든 패배 방지 (점수 절반)"
+        "description": "라운드에서 패배하게 될 때마다 대신 클리어합니다. 처음 구제된 뒤에는 이 법령을 팔더라도 런이 끝날 때까지 점수가 절반이 됩니다."
       },
       "decree-omega": {
         "name": "오메가",
-        "description": "+500점, +50 배율, x2.0 배율"
+        "description": "점수 +500, 배수 +50, 배수 ×2"
       },
       "yakuman_succession": {
         "name": "역만 계승",
-        "description": "꽃패를 2종류 이상 보유하면 혼일색, 청일색, 이배구, 준찬타, 칠대자가 역만으로 승격됩니다(각 ×4). 칙령으로 강등된 역은 승격되지 않습니다. 복사본은 중첩되지 않습니다."
+        "description": "꽃패를 2장 이상 보유하는 동안 다음 역이 최상위인 역만이 됩니다(각 ×4): 혼이쯔, 치니쯔, 량페코(같은 순자 쌍이 두 벌), 준찬(모든 조합과 또이쯔에 1이나 9), 치또이쯔. 칙령으로 약해진 역은 올라가지 않습니다. 복사본은 중첩되지 않습니다."
       },
       "river_tax": {
         "name": "강의 세금",
@@ -1521,52 +1550,52 @@
         "description": "라운드당 턴 +3."
       },
       "tanyao_dispensation": {
-        "name": "탄야오 면제",
-        "description": "탄야오 손에 노두패(1과 9)를 허용합니다."
+        "name": "탕야오 면제",
+        "description": "탕야오(보통 2~8 패만)에 1과 9도 쓸 수 있습니다. 풍패와 삼원패가 있으면 여전히 성립하지 않습니다."
       },
       "moonlit_seal": {
-        "name": "달빛의 봉인",
-        "description": "화료한 손의 자패 1장마다 배수 +0.1x."
+        "name": "달빛 휘장",
+        "description": "낸 풍패나 삼원패 1장마다 이 법령의 ×배수가 0.1 늘어납니다 (3장이면 ×1.3)."
       },
       "pure_suit_asceticism": {
         "name": "순색의 고행",
-        "description": "주 종류의 패 1장마다 점수 +10%. 곱셈으로 누적됩니다."
+        "description": "낸 패 중 가장 많은 무늬의 패 1장마다 배수 ×1.1, 곱으로 누적됩니다 (5장이면 약 ×1.6)."
       },
       "broken_stair_edict": {
         "name": "부서진 계단의 칙령",
-        "description": "순자는 숫자 하나를 건너뛸 수 있습니다 (1-3-4도 유효)."
+        "description": "순자는 숫자 하나를 건너뛸 수 있습니다 (1-3-4나 1-2-4도 인정)."
       },
       "false_eye_mandate": {
         "name": "거짓 눈의 칙명",
-        "description": "멘츠 하나가 대자 역할을 겸할 수 있습니다."
+        "description": "완성패에서 조합 하나를 또이쯔 대신 쓸 수 있습니다."
       },
       "honor_transmutation": {
         "name": "자패 변성",
-        "description": "자패를 가장 많은 종류의 수패로 셀 수 있습니다."
+        "description": "풍패와 삼원패를 가장 많은 무늬의 수패로 셀 수 있습니다."
       },
       "celestial_wildcard": {
         "name": "천상의 만능패",
-        "description": "매 손마다 패 1장이 다른 어떤 패로도 행세할 수 있습니다."
+        "description": "한 번 낼 때마다 패 1장이 필요한 어떤 패든 대신할 수 있습니다."
       },
       "dead_wall_writ": {
         "name": "왕패 영장",
-        "description": "라운드당 한 번, 고른 패 한 장을 왕패와 바꿔요 (턴을 쓰지 않음)."
+        "description": "라운드당 한 번, 턴을 쓰지 않고 고른 패 한 장을 왕패(패산 뒤쪽에 따로 남겨 둔 패) 한 장과 바꿔요."
       },
       "shanten_clemency": {
         "name": "샹텐 관용",
-        "description": "1샹텐에서도 50% 감점으로 계산할 수 있습니다."
+        "description": "완성까지 한 장 모자란 패를 완성패로 낼 수 있으며, 점수는 절반입니다."
       },
       "closed_hand_austerity": {
         "name": "멘젠 금욕",
-        "description": "완전히 닫힌 손은 ×1.5 배수를 얻습니다."
+        "description": "완성패마다 ×1.5를 얻고, 이번 런에서 앞서 완성한 완성패마다 ×1.2씩 커지며 꽃패 보너스 전 최대 ×4입니다. 작은 패 내기와 샹텐 관용으로 완성한 패는 해당하지 않습니다."
       },
       "terminal_devotion": {
         "name": "노두패 헌신",
-        "description": "손패의 노두패 1장마다 최종 점수 +5%."
+        "description": "낸 노두패(1 또는 9) 1장마다 이 법령의 ×배수가 0.05 늘어납니다 (4장이면 ×1.2)."
       },
       "yaku_repetition_charter": {
         "name": "역 반복 칙허",
-        "description": "이전 라운드의 역을 다시 계산하면 배수가 늘어납니다."
+        "description": "연속된 라운드에서 득점한 역은 연속 중 앞선 라운드마다 ×1.2를 얻으며, 꽃패 보너스 전 최대 ×4입니다. 그 역이 없는 라운드가 있으면 연속이 끊깁니다."
       }
     }
   },
@@ -1615,7 +1644,7 @@
       "autumn": "역 배수 +20%. 일반 가을을 뽑을 때마다 이번 라운드 무료 다시 뽑기 +1.",
       "winter": "같은 종류의 수패 순서에서 숫자 하나를 건너뛸 수 있습니다(1–2–4 또는 1–3–4). 점수 ×0.75.",
       "drought": "보호받지 않는 꽃패의 점수 보너스를 억제합니다.",
-      "frostbite": "동상이 쌓일 때마다 법령의 점수, 배율, 골드, 재발동 보상이 다시 절반으로 줄어듭니다. 패 자체 효과, 규칙 허용, 용량, 행동 횟수, 비용은 변하지 않습니다.",
+      "frostbite": "동상이 쌓일 때마다 법령의 점수, 배수, 골드, 추가 득점 보상이 다시 절반으로 줄어듭니다. 패 자체 효과, 규칙 허용, 용량, 행동 횟수, 비용은 변하지 않습니다.",
       "decay": "이번 라운드에 다시 뽑을 때마다 점수 −10 (0 아래로는 안 내려가요).",
       "droughtName": "가뭄",
       "monsoonName": "몬순",
@@ -1682,6 +1711,7 @@
     "windName": "{{name}} 바람패",
     "flowerName": "{{name}} 꽃패",
     "seasonName": "{{name}} 계절패",
+    "stoneName": "돌 패",
     "numberedRule": "같은 패로 쌍이나 트리플을 만드세요. 같은 종류의 연속된 숫자 세 개로 시퀀스를 만들 수 있습니다.",
     "honorRule": "자패는 같은 패로 쌍이나 트리플을 만들지만 숫자 시퀀스는 만들 수 없습니다.",
     "basePoints": "그룹 보너스, 감점 및 기타 효과 적용 전 기본 점수: {{points}}.",
@@ -1705,9 +1735,10 @@
     "white": "백",
     "green": "발",
     "red": "중",
-    "modifiers": "수식:",
-    "tileModifiers": "패 수식",
-    "enhancement": "강화",
+    "modifiers": "특수 패:",
+    "tileModifiers": "특수 패",
+    "enhancement": "표식",
+    "stamp": "스탬프",
     "edition": "에디션",
     "debuffed": "약화된 패",
     "lockedMustPlay": "잠긴 패: 반드시 내야 합니다",
@@ -1729,7 +1760,7 @@
     "shortfall": "부족한 점수",
     "remainingGold": "남은 골드",
     "rentalPaid": "부과된 임대료",
-    "defeatIncome": "패배해도 임대료는 부과되지만, 라운드 보상, 이자, 법령 수입 및 보유한 골드 패의 수입은 지급되지 않습니다.",
+    "defeatIncome": "패배해도 임대료는 부과되지만, 라운드 보상, 이자, 법령 수입 및 보유한 황금 패의 수입은 지급되지 않습니다.",
     "endlessComplete": "무한 등반 종료",
     "victorySubtitle": "제{{act}}막 결전에서 승리했습니다. 승리는 기록되었습니다.",
     "endlessSubtitle": "이번 등반은 끝났지만 승리 기록은 유지됩니다.",
@@ -1766,7 +1797,7 @@
       },
       "the_wall": {
         "name": "벽",
-        "description": "점수 요구치가 매우 큼 (2배가 아닌 4배)"
+        "description": "목표 점수가 일반 보스의 ×2 대신 ×4"
       },
       "the_eye": {
         "name": "눈",
@@ -1786,7 +1817,7 @@
       },
       "the_pillar": {
         "name": "기둥",
-        "description": "이번 막의 이전 라운드에서 쓴 패가 약화됨"
+        "description": "이번 막의 이전 라운드에서 낸 패는 점수를 얻지 못함"
       },
       "the_water": {
         "name": "물",
@@ -1802,23 +1833,23 @@
       },
       "the_club": {
         "name": "곤봉",
-        "description": "모든 삭수가 약화됨"
+        "description": "삭수는 점수를 얻지 못함"
       },
       "the_goad": {
         "name": "가시막대",
-        "description": "모든 통수가 약화됨"
+        "description": "통수는 점수를 얻지 못함"
       },
       "the_window": {
         "name": "창",
-        "description": "모든 만수가 약화됨"
+        "description": "만수는 점수를 얻지 못함"
       },
       "the_head": {
         "name": "머리",
-        "description": "모든 삼원패가 약화됨"
+        "description": "삼원패는 점수를 얻지 못함"
       },
       "the_plant": {
         "name": "초목",
-        "description": "모든 자패가 약화됨"
+        "description": "풍패와 삼원패는 점수를 얻지 못함"
       },
       "the_ox": {
         "name": "황소",
@@ -1826,7 +1857,7 @@
       },
       "the_house": {
         "name": "집",
-        "description": "첫 손이 뒷면으로 배분됨"
+        "description": "처음 손패가 뒷면으로 배분됨"
       },
       "the_wheel": {
         "name": "바퀴",
@@ -1834,7 +1865,7 @@
       },
       "the_fish": {
         "name": "물고기",
-        "description": "매 손 이후 패가 뒷면으로 뽑힘"
+        "description": "패를 낸 뒤 뽑은 패가 뒷면으로 들어옴"
       },
       "the_serpent": {
         "name": "뱀",
@@ -1845,8 +1876,8 @@
         "description": "낸 패 1장마다 1골드를 잃음"
       },
       "the_mark": {
-        "name": "표식",
-        "description": "모든 자패가 뒷면으로 뽑힘"
+        "name": "장막",
+        "description": "풍패와 삼원패가 뒷면으로 뽑힘"
       },
       "the_manacle": {
         "name": "족쇄",
@@ -1854,23 +1885,23 @@
       },
       "amber_acorn": {
         "name": "호박 도토리",
-        "description": "모든 법령이 섞이고 뒷면이 됨"
+        "description": "무작위로 고른 법령 절반이 뒷면이 되고 비활성화됨"
       },
       "verdant_leaf": {
         "name": "푸른 잎",
-        "description": "법령 1개를 팔 때까지 모든 패가 약화됨"
+        "description": "법령을 팔 때까지 모든 패가 점수를 얻지 못함"
       },
       "violet_vessel": {
         "name": "보랏빛 그릇",
-        "description": "목표가 극도로 큼 (2배가 아닌 6배)"
+        "description": "목표 점수가 일반 보스의 ×2 대신 ×6"
       },
       "crimson_heart": {
         "name": "진홍의 심장",
-        "description": "손 주기마다 무작위 법령 1개가 비활성화됨"
+        "description": "패를 낼 때마다 무작위 법령 1개가 꺼짐"
       },
       "cerulean_bell": {
         "name": "하늘빛 종",
-        "description": "뽑기 처리마다 무작위 패 1장을 반드시 내야 합니다. 이전 패의 잠금은 해제됩니다."
+        "description": "뽑을 때마다 손패의 무작위 패 1장이 잠기며, 다음에 낼 패에 반드시 포함해야 합니다. 이전 잠금은 해제됩니다."
       }
     }
   },
@@ -1883,10 +1914,12 @@
     "rules": {
       "base": "기본 난도: 추가 불이익이 없습니다.",
       "noSmallRoundReward": "소형 라운드에서 보상 골드를 받지 못합니다.",
+      "bossTargets": "{{act}}막부터 보스 목표 점수가 {{percent}} 높아집니다.",
+      "emergencyTurn": "{{act}}막부터 비상 턴: 마지막 턴에 골드로 턴을 하나 더 살 수 있습니다({{act}}막 {{cost}}골드, {{nextAct}}막 {{nextCost}}골드 순으로 오르며, 같은 라운드에서 살 때마다 두 배).",
       "scoreScaling": "목표 점수는 1막에서는 백색 단계와 같고, 막마다 올라 {{act}}막부터 백색 단계의 {{multiplier}}배가 됩니다. 테이블 보정도 적용됩니다.",
       "redrawPenalty": "라운드당 턴: −{{amount}}.",
       "eternalChance": "상점 법령에 {{chance}} 확률로 영구 스티커가 붙습니다(판매 및 파괴 불가).",
-      "perishableChance": "영구 스티커가 없는 상점 법령에 {{chance}} 확률로 부패 스티커가 붙습니다({{rounds}}라운드 후 약화).",
+      "perishableChance": "영구 스티커가 없는 상점 법령에 {{chance}} 확률로 부패 스티커가 붙습니다({{rounds}}라운드 후 효과 상실).",
       "rentalChance": "상점 법령에 {{chance}} 확률로 임대 스티커가 붙습니다(구매 시 {{price}}골드, 이후 매 라운드 {{fee}}골드)."
     },
     "title": "테이블 스테이크",
@@ -1924,7 +1957,7 @@
       "note1": "상점 목록은 5골드로 <1>다시 뽑을</1> 수 있습니다. 다시 뽑을 때마다 비용이 1씩 늘어납니다.",
       "note2": "<1>25골드 이상</1>을 유지하면 이자가 최대가 됩니다! 다만 좋은 법령에 쓰는 편이 대개 더 이득입니다.",
       "p1": "모든 것을 외울 필요는 없습니다. 플레이하면서 익히게 됩니다!",
-      "note3": "복습이 필요하면 설정 메뉴에서 언제든 이 코덱스로 돌아올 수 있습니다."
+      "note3": "복습이 필요하면 메인 메뉴에서 언제든 코덱스를 열 수 있습니다."
     },
     "game_concept": {
       "p1": "상대와 겨루는 일반 마작과 달리, 텐쇼은 <1>1인용 퍼즐 게임</1>입니다. 겨루는 대상은 다른 플레이어가 아니라 목표 점수입니다.",
@@ -1935,7 +1968,7 @@
       "p1": "이 게임은 모두 <1>144장의 패</1>를 사용합니다:"
     },
     "numbered_suits": {
-      "note1": "같은 패는 각각 <1>4장씩</1> 있습니다. 패를 구상할 때 매우 중요합니다!",
+      "note1": "표준 패산에는 같은 패가 각각 <1>4장씩</1> 있습니다. 패를 구상할 때 매우 중요합니다!",
       "p1": "<1>세 가지 수패</1>가 있으며, 각각 1부터 9까지 있습니다:",
       "p2": "<0>만자(萬子)</0> — 한자 숫자와 「萬」 자가 그려집니다(萬은 \"만\"을 뜻함)",
       "p3": "<0>통자(筒子)</0> — 동전이나 점을 나타내는 원형 무늬가 그려집니다",
@@ -1958,7 +1991,7 @@
       "p5": "삼원패는 <1>자패</1>이며 <4>15점</4>이고, 득점한 삼원패마다 배수 +2, 묶음 안에서는 +4. 순자는 만들 수 없습니다."
     },
     "bonus_tiles": {
-      "p1": "<0>보너스 패</0>는 손패에 포함되지 않는 특별한 패입니다:"
+      "p1": "<0>보너스 패</0>는 손패에 포함되지 않는 추가 패입니다:"
     },
     "sequences": {
       "note1": "보너스 패를 뽑으면 즉시 공개되고 대체 패를 한 장 뽑습니다. 꽃과 계절은 점점 커지는 보너스와 효과를 줍니다!",
@@ -1981,7 +2014,7 @@
       "li2": "<2>한 바퀴 돌아 이어질 수</2> 없습니다(9-1-2 불가)",
       "li3": "자패로는 <2>순자를 만들 수 없습니다</2>",
       "p1": "<1>깡자</1>(\"깡\"이라고도 함)는 <4>같은 패 4장</4>입니다.",
-      "p2": "한 종류의 패 4장을 모두 모아야 하므로 깡자는 가장 드문 멘츠입니다!"
+      "p2": "깡자는 가장 드문 멘츠입니다. 표준 패산에서는 한 종류의 패 4장을 모두 써야 하니까요!"
     },
     "pairs": {
       "li1": "삭자 5 세 장",
@@ -1991,7 +2024,7 @@
       "p2": "모든 표준 화료 형태에는 <2>정확히 하나의 대자</2>가 필요합니다. 이를 패의 \"머리\"(작두)라고 부르기도 합니다."
     },
     "winning_hand": {
-      "note1": "각자는 <1>+40점</1>으로 순자(+30)보다 높습니다! 다만 같은 패 3장이 필요하고 각 패는 4장뿐이라 완성하기 더 어렵습니다.",
+      "note1": "각자는 <1>+40점</1>으로 순자(+30)보다 높습니다! 다만 같은 패 3장이 필요하고 표준 패산에는 각 패가 4장뿐이라 완성하기 더 어렵습니다.",
       "li1": "<1>+65점</1> — 모든 멘츠 중 최고",
       "li2": "4장이지만 하나의 멘츠로 셉니다",
       "li3": "선언하면 대체 패를 한 장 뽑습니다",
@@ -2086,7 +2119,8 @@
       "play": "선택한 패로 득점합니다. 최대 {{max}}장, 또는 완성된 화료패 한 벌.",
       "redraw": "선택한 패를 원하는 만큼 버림패 더미로 보내고 새 패를 뽑습니다.",
       "p2": "턴이 떨어지기 전에 라운드 목표 점수에 도달하세요. 마지막 턴은 항상 패 내기이며, 아이템으로 턴을 쓰지 않는 무료 다시 뽑기를 얻을 수 있습니다.",
-      "warning": "목표에 못 미친 채 턴이 떨어지면 런이 끝납니다."
+      "warning": "목표에 못 미친 채 턴이 떨어지면 런이 끝납니다.",
+      "emergency": "{{stake}} 이상에서는 {{act}}막부터 마지막 턴에 골드로 턴을 하나 더 살 수 있습니다. 가격은 막마다 오르고, 같은 라운드에서 추가로 살 때마다 두 배가 됩니다."
     },
     "select": {
       "title": "패 고르기",
@@ -2096,7 +2130,7 @@
     },
     "refill": {
       "title": "패 뽑기",
-      "p1": "패를 내거나 다시 뽑을 때마다 패산에서 손패가 채워지므로, 언제나 가득 찬 손패에서 고를 수 있습니다."
+      "p1": "패를 내거나 다시 뽑은 뒤에는 패산에서 대신할 패를 뽑습니다. 보통은 손패가 다시 가득 차지만, 패산이 거의 비었거나 적용 중인 효과가 있으면 뽑는 패가 달라질 수 있습니다."
     },
     "redraw": {
       "title": "다시 뽑기",
@@ -2109,7 +2143,7 @@
     "score": {
       "title": "점수 계산",
       "p1": "패를 낼 때마다 얻는 점수:",
-      "note": "큰 족보, 삼원패, 천구, 법령이 배수을 올리고, 배수이 모든 것을 곱합니다."
+      "note": "큰 족보, 삼원패, 천구, 법령이 배수를 올리고, 배수가 모든 것을 곱합니다."
     },
     "points": {
       "title": "패 점수",
@@ -2120,7 +2154,7 @@
       "terminals": "노두패(1과 9)",
       "dragonValue": "{{points}}, 배수 +{{mult}} (묶음 안에서는 +{{groupMult}})",
       "windValue": "{{points}} (묶음 안에서는 {{groupPoints}})",
-      "note": "풍패는 중장패의 10배, 삼원패는 대신 배수를 올립니다. 대자 이상의 묶음에 들면 둘 다 두 배가 됩니다. 어떤 묶음에도 들지 않은 수패는 절반 점수입니다."
+      "note": "풍패는 중장패의 10배, 삼원패는 대신 배수를 올립니다. 또이쯔 이상의 묶음에 들면 둘 다 두 배가 됩니다. 어떤 묶음에도 들지 않은 수패는 절반 점수입니다."
     },
     "groups": {
       "title": "묶음 보너스",
@@ -2128,11 +2162,11 @@
       "headerGroup": "묶음",
       "headerMeaning": "패",
       "headerBonus": "보너스",
-      "example": "예: 투 페어 = {{pair}} + {{pair}} = 보너스 +{{total}}점, 두 번째 묶음이 배수 +1."
+      "example": "예: 투페어 = {{pair}} + {{pair}} = 보너스 +{{total}}점, 두 번째 묶음이 배수 +1."
     },
     "swift": {
       "title": "빠른 클리어",
-      "p1": "라운드는 건너뛸 수 없습니다. 소국이나 대국를 턴 {{spare}}개 이상 남기고 클리어하면 징조를 얻습니다.",
+      "p1": "라운드는 건너뛸 수 없습니다. 소국이나 대국을 턴 {{spare}}개 이상 남기고 클리어하면 징조를 얻습니다.",
       "li1": "라운드 골드도 받고 찻집에도 들릅니다.",
       "li2": "보스국에서는 징조를 얻을 수 없습니다.",
       "note": "초반의 강한 족보가 턴을 아끼고, 아낀 턴이 징조가 됩니다."
@@ -2218,7 +2252,7 @@
     "unlockProgress": "{{name}} 해제 진행도",
     "title": "탁자 선택",
     "titleJp": "卓風",
-    "subtitle": "이번 판에 쓸 탁자를 고르세요",
+    "subtitle": "시작할 탁자와 규칙을 고르세요",
     "table": "판 설정",
     "selected": "선택됨:",
     "chooseTable": "탁자와 스테이크 선택"
@@ -2243,11 +2277,11 @@
       },
       "crystal_lens": {
         "name": "수정 렌즈",
-        "description": "비의 팩 선택지 +1"
+        "description": "비의 팩의 선택지가 하나 늘어남; 가져갈 수 있는 개수는 그대로"
       },
       "star_chart": {
         "name": "성도",
-        "description": "천구 팩에 가장 많이 쓴 역의 천구가 들어감"
+        "description": "천구 팩에 가장 많이 낸 역 계열의 천구가 항상 들어감"
       },
       "steady_hand": {
         "name": "안정된 손",
@@ -2258,8 +2292,8 @@
         "description": "라운드당 무료 다시 뽑기 +1"
       },
       "seal_merchant": {
-        "name": "부적 상인",
-        "description": "운명 부적 등장 확률 2배"
+        "name": "인장 상인",
+        "description": "운명의 인장 등장 확률 2배"
       },
       "orb_merchant": {
         "name": "천구 상인",
@@ -2275,19 +2309,19 @@
       },
       "tile_trading": {
         "name": "패 거래",
-        "description": "상점에서 패를 구매할 수 있음"
+        "description": "찻집에서 패를 구매할 수 있음"
       },
       "ancient_script": {
         "name": "고문서",
-        "description": "막 −1, 라운드당 턴 −1"
+        "description": "막을 하나 되돌림 (목표 점수가 낮아지고 진행할 막이 하나 늘어남); 라운드당 턴 −1"
       },
       "directors_take": {
         "name": "흥행주의 몫",
-        "description": "막마다 보스 칙령을 1회 재뽑기 (10골드)"
+        "description": "다가오는 보스 칙령을 막마다 1회 재뽑기 (10골드)"
       },
       "brush_stroke": {
         "name": "붓질",
-        "description": "손패 크기 +1"
+        "description": "손패 공간 +1"
       },
       "plentiful_stock": {
         "name": "풍족한 재고",
@@ -2311,7 +2345,7 @@
       },
       "observatory": {
         "name": "관측소",
-        "description": "보유한 천구 하나당 ×1.5 배수"
+        "description": "보유한 천구 하나당 배수 ×1.5"
       },
       "swift_hand": {
         "name": "빠른 손",
@@ -2322,8 +2356,8 @@
         "description": "라운드당 무료 다시 뽑기 +1 추가"
       },
       "seal_tycoon": {
-        "name": "부적 거상",
-        "description": "운명 부적 등장 확률 4배"
+        "name": "인장 거상",
+        "description": "운명의 인장 등장 확률 4배"
       },
       "orb_tycoon": {
         "name": "천구 거상",
@@ -2339,19 +2373,19 @@
       },
       "illusion_tiles": {
         "name": "환영의 패",
-        "description": "상점 패에 에디션이 붙을 수 있음"
+        "description": "찻집의 패에 에디션이 붙을 수 있음"
       },
       "stone_script": {
         "name": "석문",
-        "description": "막 한 번 더 −1, 라운드당 턴 −1"
+        "description": "막을 하나 더 되돌림; 라운드당 턴 −1 추가"
       },
       "final_cut": {
         "name": "최종 편집",
-        "description": "보스 칙령을 무제한 재뽑기 (매회 10골드)"
+        "description": "다가오는 보스 칙령을 몇 번이든 재뽑기 (매회 10골드)"
       },
       "full_palette": {
         "name": "완전한 팔레트",
-        "description": "손패 크기 다시 +1"
+        "description": "손패 공간 +1 추가"
       }
     }
   },
@@ -2359,70 +2393,70 @@
     "items": {
       "pluto_orb": {
         "name": "명왕성 천구",
-        "description": "페어 계열 강화 (페어, 투페어, 쓰리페어). 레벨당 배수 +1, 점수 +10."
+        "description": "또이쯔 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 또이쯔 계열로 득점할 때마다 기본 점수 +10, 배수 +1 보너스가 더해집니다."
       },
       "mercury_orb": {
         "name": "수성 천구",
-        "description": "탕야오 계열 강화 (2~8 패로만 낸 패와 탕야오). 레벨당 배수 +1, 점수 +15."
+        "description": "탕야오 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 탕야오 계열로 득점할 때마다 기본 점수 +15, 배수 +1 보너스가 더해집니다."
       },
       "uranus_orb": {
         "name": "천왕성 천구",
-        "description": "자패 계열 강화 (풍패·삼원패 조합과 역패). 레벨당 배수 +1, 점수 +20."
+        "description": "자패 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 자패 계열로 득점할 때마다 기본 점수 +20, 배수 +1 보너스가 더해집니다."
       },
       "venus_orb": {
         "name": "금성 천구",
-        "description": "순자 계열 강화 (순자, 순자+또이쯔, 두 순자와 핑후). 레벨당 배수 +2, 점수 +20."
+        "description": "순자 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 순자 계열로 득점할 때마다 기본 점수 +20, 배수 +2 보너스가 더해집니다."
       },
       "saturn_orb": {
         "name": "토성 천구",
-        "description": "연속 계열 강화 (4연속, 5연속과 일기통관). 레벨당 배수 +3, 점수 +30."
+        "description": "연속 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 연속 계열로 득점할 때마다 기본 점수 +30, 배수 +3 보너스가 더해집니다."
       },
       "jupiter_orb": {
         "name": "목성 천구",
-        "description": "혼일색 역에 공명. 레벨당 +2 배수, +15점."
+        "description": "혼이쯔 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 혼이쯔 계열로 득점할 때마다 기본 점수 +15, 배수 +2 보너스가 더해집니다."
       },
       "earth_orb": {
         "name": "지구 천구",
-        "description": "커쯔 계열 강화 (커쯔·깡쯔를 낸 패와 또이또이). 레벨당 배수 +2, 점수 +25."
+        "description": "커쯔 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 커쯔 계열로 득점할 때마다 기본 점수 +25, 배수 +2 보너스가 더해집니다."
       },
       "mars_orb": {
         "name": "화성 천구",
-        "description": "청일색 역에 공명. 레벨당 +3 배수, +30점."
+        "description": "치니쯔 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 치니쯔 계열로 득점할 때마다 기본 점수 +30, 배수 +3 보너스가 더해집니다."
       },
       "neptune_orb": {
         "name": "해왕성 천구",
-        "description": "산쇼쿠(삼색동순) 역에 공명. 레벨당 +4 배수, +40점."
+        "description": "삼색동순 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 삼색동순 계열로 득점할 때마다 기본 점수 +40, 배수 +4 보너스가 더해집니다."
       },
       "planet_x_orb": {
         "name": "행성 X 천구",
-        "description": "칠대자 역에 공명. 레벨당 +3 배수, +35점."
+        "description": "치또이쯔 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 치또이쯔 계열로 득점할 때마다 기본 점수 +35, 배수 +3 보너스가 더해집니다."
       },
       "ceres_orb": {
         "name": "세레스 천구",
-        "description": "찬타(혼전대요구) 역에 공명. 레벨당 +4 배수, +40점."
+        "description": "찬타 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 찬타 계열로 득점할 때마다 기본 점수 +40, 배수 +4 보너스가 더해집니다."
       },
       "eris_orb": {
         "name": "에리스 천구",
-        "description": "국사무쌍 역에 공명. 레벨당 +3 배수, +50점."
+        "description": "국사무쌍 계열의 레벨을 1 올립니다(이번 런 동안, 최대 10). 국사무쌍 계열로 득점할 때마다 기본 점수 +50, 배수 +3 보너스가 더해집니다."
       },
       "black_hole_orb": {
         "name": "블랙홀 천구",
-        "description": "사용 시 모든 역이 1레벨 상승."
+        "description": "이번 런 동안 12개 족보 계열의 레벨을 모두 1 올립니다(각각 최대 10). 각 계열은 평소의 기본 점수와 배수를 받고, 이미 레벨 10인 계열은 그대로입니다."
       }
     }
   },
   "omens": {
-    "pending": "징조 효과",
     "effects": {
       "shopFee": "이 상점 상품이 제공될 때 금 {{amount}} 지불. 제공이 미뤄지는 동안에는 지불하지 않습니다.",
       "seasonLock": "다음에 뽑을 계절: {{season}}. 해당 계절을 뽑으면 고정이 해제됩니다.",
+      "seasonLockLabel": "다음 계절: {{season}}",
       "noInterest": "이자 차단 · 남은 라운드: {{rounds}}",
       "interestBoost": "이자 한도 +{{amount}} 금 · 남은 라운드: {{rounds}}"
     },
     "items": {
       "double_omen": {
         "name": "쌍둥이 징조",
-        "description": "다음에 얻는 (더블이 아닌) 징조를 복제해요. 연속된 더블 징조는 각각 1개씩 더해요."
+        "description": "다음에 얻는 (쌍둥이 징조가 아닌) 징조를 복제해요. 연속된 쌍둥이 징조는 각각 1개씩 더해요."
       },
       "omen_of_crescents": {
         "name": "초승달의 징조",
@@ -2438,11 +2472,11 @@
       },
       "speed_omen": {
         "name": "질풍의 징조",
-        "description": "이번 런의 속공 클리어마다 골드 5."
+        "description": "이번 런의 빠른 클리어(턴을 남기고 소국이나 대국을 클리어)마다 골드 5를 얻어요."
       },
       "throwback_omen": {
         "name": "회귀의 징조",
-        "description": "속공 클리어마다 배수 ×0.25 (런이 끝날 때까지)."
+        "description": "런이 끝날 때까지 각 패 내기의 점수에 1 + 빠른 클리어마다 0.25를 곱해요 (1회면 ×1.25, 2회면 ×1.5)."
       },
       "fortune_omen": {
         "name": "행운의 징조",
@@ -2457,8 +2491,8 @@
         "description": "다음 상점의 모든 물품이 25% 할인됩니다."
       },
       "seal_omen": {
-        "name": "부적의 징조",
-        "description": "다음 상점의 물품 칸에 운명 부적이 반드시 등장합니다."
+        "name": "인장의 징조",
+        "description": "다음 상점의 물품 칸에 운명의 인장이 반드시 등장합니다."
       },
       "decree_omen": {
         "name": "법령의 징조",
@@ -2470,11 +2504,11 @@
       },
       "expansion_omen": {
         "name": "확장의 징조",
-        "description": "법령 칸을 영구히 +1 얻습니다."
+        "description": "이번 런이 끝날 때까지 법령 칸 +1을 얻습니다."
       },
       "precision_omen": {
         "name": "정밀의 징조",
-        "description": "다음 라운드: 손패 크기 +2."
+        "description": "다음 라운드: 손패 공간 +2."
       },
       "abundance_omen": {
         "name": "풍요의 징조",
@@ -2494,11 +2528,11 @@
       },
       "score_surge_omen": {
         "name": "점수 급등의 징조",
-        "description": "다음에 계산되는 손이 기본 점수 +100을 얻습니다."
+        "description": "다음에 득점하는 패가 기본 점수 +100을 얻습니다."
       },
       "multiplication_omen": {
         "name": "증배의 징조",
-        "description": "다음에 계산되는 손이 ×1.5 배수를 얻습니다."
+        "description": "다음에 득점하는 패가 배수 ×1.5를 얻습니다."
       },
       "blessing_pack_omen": {
         "name": "축복 팩의 징조",
@@ -2521,100 +2555,100 @@
   "seals": {
     "items": {
       "seal_of_the_alchemist": {
-        "name": "연금술사의 부적",
-        "description": "선택한 2장에 행운 표식을 부여"
+        "name": "연금술사의 인장",
+        "description": "고른 패 2장에 행운 표식(계산 시 확률적으로 배수 +20 또는 골드 +20)을 부여"
       },
       "seal_of_the_empress": {
-        "name": "여제의 부적",
-        "description": "선택한 2장에 점수 보너스 표식을 부여"
+        "name": "여제의 인장",
+        "description": "고른 패 2장에 배수 표식(계산 시 배수 +4)을 부여"
       },
       "seal_of_the_sage": {
-        "name": "현자의 부적",
-        "description": "선택한 2장에 보너스 표식을 부여"
+        "name": "현자의 인장",
+        "description": "고른 패 2장에 보너스 표식(계산 시 점수 +30)을 부여"
       },
       "seal_of_harmony": {
-        "name": "조화의 부적",
-        "description": "패 1장을 만능패로 전환 (어떤 종류로도 계산)"
+        "name": "조화의 인장",
+        "description": "고른 패 1장에 만능 표식을 부여 (모든 무늬로 취급)"
       },
       "seal_of_fortitude": {
-        "name": "불굴의 부적",
-        "description": "패 1장을 강철 표식으로 강화 (들고 있으면 ×1.5 배수)"
+        "name": "불굴의 인장",
+        "description": "고른 패 1장에 강철 표식을 부여 (손패에 남아 있는 동안 배수 ×1.5)"
       },
       "seal_of_glass": {
-        "name": "유리의 부적",
-        "description": "패 1장을 유리 표식으로 강화 (×2 배수, 깨질 수 있음)"
+        "name": "유리의 인장",
+        "description": "고른 패 1장에 유리 표식을 부여 (계산 시 배수 ×2, 단 깨질 수 있음)"
       },
       "seal_of_wealth": {
-        "name": "부의 부적",
-        "description": "패 1장을 황금 표식으로 강화 (라운드 종료 시 들고 있으면 +3골드)"
+        "name": "부의 인장",
+        "description": "고른 패 1장에 황금 표식을 부여 (라운드 종료 시 손패에 있으면 골드 +3)"
       },
       "seal_of_stone": {
-        "name": "돌의 부적",
-        "description": "패 1장을 돌 표식으로 강화 (+100점, 색도 숫자도 없어 어떤 묶음에도 들지 않음, 항상 온전히 계산)"
+        "name": "돌의 인장",
+        "description": "고른 패 1장에 돌 표식을 부여 (+100점, 숫자도 무늬도 없어 어떤 묶음에도 들지 않음, 항상 온전히 계산)"
       },
       "seal_of_manzu": {
-        "name": "만수의 부적",
+        "name": "만수의 인장",
         "description": "최대 3장을 만수로 전환"
       },
       "seal_of_pinzu": {
-        "name": "통수의 부적",
+        "name": "통수의 인장",
         "description": "최대 3장을 통수로 전환"
       },
       "seal_of_souzu": {
-        "name": "삭수의 부적",
+        "name": "삭수의 인장",
         "description": "최대 3장을 삭수로 전환"
       },
       "seal_of_unity": {
-        "name": "통합의 부적",
+        "name": "통합의 인장",
         "description": "수패를 최대 3장까지 풍패로 바꿉니다. 숫자는 동·남·서·북 순서로 순환합니다."
       },
       "seal_of_the_oracle": {
-        "name": "예언자의 부적",
+        "name": "예언자의 인장",
         "description": "무작위 천구를 2개 생성"
       },
       "seal_of_the_emperor": {
-        "name": "황제의 부적",
-        "description": "무작위 운명 부적을 2개 생성"
+        "name": "황제의 인장",
+        "description": "무작위 운명의 인장을 2개 생성"
       },
       "seal_of_the_fool": {
-        "name": "바보의 부적",
-        "description": "이번 판에서 마지막으로 쓴 운명 부적이나 천구를 생성"
+        "name": "바보의 인장",
+        "description": "이번 판에서 마지막으로 쓴 운명의 인장이나 천구를 생성"
       },
       "seal_of_judgment": {
-        "name": "심판의 부적",
+        "name": "심판의 인장",
         "description": "무작위 법령을 1개 생성 (자리가 있으면)"
       },
       "seal_of_the_hermit": {
-        "name": "은둔자의 부적",
-        "description": "골드를 두 배로 (최대 +20골드)"
+        "name": "은둔자의 인장",
+        "description": "골드를 두 배로 (최대 골드 +20)"
       },
       "seal_of_balance": {
-        "name": "균형의 부적",
-        "description": "보유한 모든 법령의 판매가 총합을 획득 (최대 50골드)"
+        "name": "균형의 인장",
+        "description": "보유한 법령의 판매가 총합만큼 골드를 획득 (최대 50골드)"
       },
       "seal_of_strength": {
-        "name": "힘의 부적",
+        "name": "힘의 인장",
         "description": "최대 2장의 숫자를 1 올림 (최대 9)"
       },
       "seal_of_release": {
-        "name": "해방의 부적",
-        "description": "선택한 최대 2장을 영구히 파괴"
+        "name": "해방의 인장",
+        "description": "고른 패를 최대 2장 파괴 (이번 런 동안 돌아오지 않음)"
       },
       "seal_of_transmutation": {
-        "name": "변성의 부적",
-        "description": "2장을 선택해 왼쪽을 오른쪽의 복제로 만듦"
+        "name": "변성의 인장",
+        "description": "패 2장을 고름: 첫 번째가 두 번째의 복제가 됨"
       },
       "seal_of_fortune": {
-        "name": "요행의 부적",
-        "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 중 하나를 부여"
+        "name": "요행의 인장",
+        "description": "1/4 확률로 무작위 법령에 박막/홀로그램/다색 에디션 중 하나를 부여"
       },
       "seal_of_the_immortal": {
-        "name": "불멸의 부적",
-        "description": "신화 등급 법령을 생성 (자리가 있으면)"
+        "name": "불멸의 인장",
+        "description": "가장 희귀한 등급인 천명 법령을 생성 (자리가 있으면)"
       },
       "seal_of_the_void": {
-        "name": "공허의 부적",
-        "description": "모든 역을 1레벨 상승"
+        "name": "공허의 인장",
+        "description": "모든 역 계열을 1레벨 올림"
       }
     }
   },
@@ -2622,47 +2656,47 @@
     "items": {
       "script_of_kinship": {
         "name": "혈연의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 자패 3장을 무작위로 추가 (바람/삼원)"
+        "description": "무작위 패 1장을 파괴하고 무작위 풍패나 삼원패 3장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_the_grave": {
         "name": "무덤의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 노두패 2장을 무작위로 추가"
+        "description": "무작위 패 1장을 파괴하고 무작위 1이나 9 패 2장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_incantation": {
         "name": "주문의 문서",
-        "description": "무작위 패 1장을 파괴하고, 강화된 수패 4장을 무작위로 추가"
+        "description": "무작위 패 1장을 파괴하고 무작위 2~8 패 4장을 추가. 추가된 패마다 보너스, 배수, 행운 표식 중 하나가 무작위로 붙음"
       },
       "script_of_immolation": {
         "name": "분신의 문서",
-        "description": "손패에서 무작위 5장을 파괴합니다. 20골드를 얻습니다."
+        "description": "손패에서 무작위로 5장을 파괴합니다. 20골드를 얻습니다."
       },
       "script_of_the_cryptid": {
         "name": "환수의 문서",
-        "description": "손패에서 선택한 1장의 복제 2장을 생성"
+        "description": "손패에서 고른 1장의 복제 2장을 생성"
       },
       "script_of_the_gold_seal": {
-        "name": "금인의 문서",
-        "description": "선택한 패 1장에 금색 봉인을 부여"
+        "name": "금색 스탬프의 문서",
+        "description": "고른 패 1장에 금색 스탬프를 부여 (득점할 때마다 골드 +3)"
       },
       "script_of_deja_vu": {
         "name": "기시감의 문서",
-        "description": "선택한 패 1장에 붉은 봉인을 부여 (재계산)"
+        "description": "고른 패 1장에 붉은 스탬프를 부여 (두 번 득점)"
       },
       "script_of_the_trance": {
         "name": "황홀의 문서",
-        "description": "패 1장에 푸른 봉인을 부여 (마지막 손에서 천구 생성)"
+        "description": "고른 패 1장에 푸른 스탬프를 부여 (라운드를 클리어하는 플레이에 그 패가 포함되면 천구 생성)"
       },
       "script_of_the_medium": {
         "name": "영매의 문서",
-        "description": "패 한 장에 보라 인장 추가 (다시 뽑으면 운명의 인장 생성)"
+        "description": "선택한 패 1장에 보라 스탬프를 부여 (다시 뽑으면 운명의 인장 생성)"
       },
       "script_of_aura": {
         "name": "영기의 문서",
-        "description": "선택한 패 1장에 박막/홀로그램/다색 중 하나를 부여"
+        "description": "고른 패 1장에 무작위 에디션(박막, 홀로그램, 다색)을 부여"
       },
       "script_of_ectoplasm": {
         "name": "영질의 문서",
-        "description": "무작위 법령에 음영을 부여 (법령 칸 +1)"
+        "description": "무작위 법령에 음영 에디션을 부여 (법령 칸 +1)"
       },
       "script_of_the_wraith": {
         "name": "망령의 문서",
@@ -2674,35 +2708,35 @@
       },
       "script_of_the_hex": {
         "name": "저주의 문서",
-        "description": "무작위 법령에 다색을 부여하고 나머지 법령을 모두 파괴"
+        "description": "무작위 법령에 다색 에디션을 부여하고 나머지 법령을 모두 파괴"
       },
       "script_of_the_sigil": {
-        "name": "인장의 문서",
-        "description": "손패의 모든 패를 무작위 단일 종류로 전환"
+        "name": "문양의 문서",
+        "description": "손패의 모든 패를 무작위 한 무늬로 바꿈"
       },
       "script_of_the_ouija": {
         "name": "위저의 문서",
-        "description": "손패의 모든 패를 무작위 단일 숫자로 전환"
+        "description": "손패의 모든 패를 무작위 한 숫자로 바꿈"
       },
       "script_of_the_soul": {
         "name": "영혼의 문서",
-        "description": "전설(천칙) 등급 법령을 생성"
+        "description": "가장 희귀한 등급인 천명 법령을 생성"
       },
       "script_of_the_singularity": {
         "name": "특이점의 문서",
-        "description": "모든 역을 1레벨 상승"
+        "description": "모든 역 계열을 1레벨 올림"
       },
       "script_of_eclipse": {
-        "name": "식蝕의 문서",
-        "description": "이번 라운드에는 1샹텐에서도 계산 가능"
+        "name": "일식의 문서",
+        "description": "이번 라운드에는 완성까지 한 장 모자란 패도 완성패로 득점할 수 있음"
       },
       "script_of_mirrors": {
         "name": "거울의 문서",
-        "description": "손패의 패 1장을 복제"
+        "description": "손패에서 고른 패 1장을 복제"
       },
       "script_of_silence": {
         "name": "침묵의 문서",
-        "description": "이번 손에서 잘못된 멘츠 하나를 무시"
+        "description": "다음 완성패에 맞지 않는 조합 하나를 포함할 수 있음"
       }
     }
   },
@@ -2714,34 +2748,34 @@
       },
       "walls": {
         "name": "패산",
-        "description": "고유한 패 구성을 지닌 패산 변형"
+        "description": "패 구성이 다른 패산 변형"
       },
       "charters": {
         "name": "황실 칙허장",
-        "description": "보스 칙령을 물리친 뒤 구매하는 영구 강화"
+        "description": "찻집에서 구매하며 런 동안 계속되는 강화"
       },
       "consumables": {
         "name": "소모품",
-        "description": "일회용 물품: 운명 부적, 천구, 공허 문서"
+        "description": "일회용 물품: 운명의 인장, 천구, 공허 문서"
       },
       "tileMarks": {
         "name": "패 표식",
-        "description": "패의 작동을 바꾸는 강화 종류"
+        "description": "패의 득점이나 작동 방식을 바꾸는 표식"
       },
       "seals": {
-        "name": "봉인",
-        "description": "패에 효과를 더하는 특별한 봉인"
+        "name": "스탬프",
+        "description": "패에 추가 효과를 주는 밀랍 스탬프"
       },
       "editions": {
         "name": "에디션",
-        "description": "물품의 외형과 효과 변형"
+        "description": "패나 법령에 효과를 더하는 반짝이는 마감"
       },
       "packs": {
         "name": "축복 팩",
         "description": "여러 강화가 담긴 보충 팩"
       },
       "omens": {
-        "name": "징조 표식",
+        "name": "징조 태그",
         "description": "턴을 남기고 라운드를 깬 보상"
       },
       "mandates": {
@@ -2826,15 +2860,15 @@
       },
       "wild": {
         "name": "만능 표식",
-        "description": "어떤 종류로도 쓸 수 있습니다. 역 판정에서 아무 종류로나 계산"
+        "description": "역 판정을 포함해 어떤 무늬로도 취급됩니다"
       },
       "glass": {
         "name": "유리 표식",
-        "description": "약하지만 강력합니다. 계산 시 ×2 배수, 25% 확률로 깨짐"
+        "description": "약하지만 강력합니다. 계산 시 배수 ×2; 1/4 확률로 깨짐"
       },
       "steel": {
         "name": "강철 표식",
-        "description": "들고 있을 때의 보너스. 손에 있는 동안 ×1.5 배수"
+        "description": "내지 않고 손패에 남아 있는 동안 배수 ×1.5"
       },
       "stone": {
         "name": "돌 표식",
@@ -2842,30 +2876,30 @@
       },
       "gold": {
         "name": "황금 표식",
-        "description": "골드를 만듭니다. 라운드 종료 시 들고 있으면 +3골드"
+        "description": "라운드 종료 시 아직 손패에 있으면 골드 +3"
       },
       "lucky": {
         "name": "행운 표식",
-        "description": "무작위 보너스. 계산 시 1/5 확률로 +20 배수, 1/15 확률로 +20골드"
+        "description": "계산 시: 1/5 확률로 배수 +20, 1/15 확률로 골드 +20"
       }
     }
   },
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "금색 봉인",
-        "description": "낼 때 골드를 얻습니다. 손에서 계산되면 +3골드"
+        "name": "금색 스탬프",
+        "description": "이 패가 득점할 때마다 골드 +3"
       },
       "red": {
-        "name": "붉은 봉인",
-        "description": "패가 두 번 발동합니다. 계산 시 한 번 더 계산"
+        "name": "붉은 스탬프",
+        "description": "이 패는 두 번 득점합니다"
       },
       "blue": {
-        "name": "푸른 봉인",
+        "name": "푸른 스탬프",
         "description": "이 패가 라운드를 클리어한 플레이에 포함되면 무작위 천구를 만듭니다."
       },
       "purple": {
-        "name": "보라 봉인",
+        "name": "보라 스탬프",
         "description": "이 패를 다시 뽑으면 무작위 운명의 인장을 만들어요."
       }
     }
@@ -2886,7 +2920,7 @@
       },
       "polychrome": {
         "name": "다색",
-        "description": "프리즘처럼 변하는 색채. 계산 시 ×1.5 배수"
+        "description": "프리즘처럼 변하는 색채. 계산 시 배수 ×1.5"
       },
       "negative": {
         "name": "음영",
@@ -2898,15 +2932,15 @@
     "items": {
       "arcana_normal": {
         "name": "비의 팩",
-        "description": "운명 부적 3개 중 1개 선택"
+        "description": "운명의 인장 3개 중 1개 선택"
       },
       "arcana_jumbo": {
         "name": "대형 비의 팩",
-        "description": "운명 부적 5개 중 2개 선택"
+        "description": "운명의 인장 5개 중 2개 선택"
       },
       "arcana_mega": {
         "name": "초대형 비의 팩",
-        "description": "운명 부적 6개 중 3개 선택"
+        "description": "운명의 인장 6개 중 3개 선택"
       },
       "celestial_normal": {
         "name": "천구 팩",
@@ -2922,15 +2956,15 @@
       },
       "tile_normal": {
         "name": "패 팩",
-        "description": "가공된 패 3장 중 1장 선택"
+        "description": "특수 패 3장 중 1장 선택"
       },
       "tile_jumbo": {
         "name": "대형 패 팩",
-        "description": "가공된 패 5장 중 2장 선택"
+        "description": "특수 패 5장 중 2장 선택"
       },
       "tile_mega": {
         "name": "초대형 패 팩",
-        "description": "가공된 패 6장 중 3장 선택"
+        "description": "특수 패 6장 중 3장 선택"
       },
       "decree_normal": {
         "name": "법령 팩",
@@ -2966,7 +3000,7 @@
         "description": "진홍빛 옻칠과 금빛 용이 삼원패 중심 전략을 돕지만, 법령을 놓을 공간은 줄어듭니다.",
         "unlock": "빨간색 스테이크 이상에서 승리",
         "modifiers": {
-          "0": "시작 삼원패에 배수 표식 부여 (계산 시 +4 배율)",
+          "0": "시작 삼원패에 배수 표식 부여 (계산 시 +4 배수)",
           "1": "시작 법령 슬롯 −1"
         }
       },
@@ -3125,7 +3159,7 @@
     },
     "mahjong": {
       "name": "화료",
-      "explain": "완성된 패: 네 조합과 한 쌍 (보통 14장). 역이 점수를 곱해요."
+      "explain": "완성된 패: 네 조합(순자, 커쯔, 깡쯔)과 한 쌍 (보통 14장). 치또이쯔와 국사무쌍은 특별한 예외예요. 역이 점수를 곱해요."
     },
     "three_dragons": {
       "name": "삼원 세트",
@@ -3142,26 +3176,29 @@
   },
   "guide": {
     "title": "게임 방법",
-    "intro": "천상은 마작패로 하는 포커식 게임이에요. 패를 골라 족보를 만들고, 내서 점수를 얻어 라운드 목표에 도달하세요.",
+    "intro": "텐쇼는 마작패로 하는 포커식 게임이에요. 패를 골라 족보를 만들고, 내서 점수를 얻어 라운드 목표에 도달하세요.",
     "turnsTitle": "당신의 턴",
     "playHelp": "고른 패로 점수를 얻어요.",
     "redrawHelp": "고른 패를 몇 장이든 버림패로 보내고 새로 뽑아요.",
-    "turnsHelp": "라운드마다 턴이 {{turns}}번 주어져요. 패 내기와 다시 뽑기는 각각 1턴을 써요. 소국이나 대국을 턴 {{spare}}번 이상 남기고 깨면 징조를 얻어요.",
+    "turnsHelp": "라운드마다 턴이 {{turns}}번 주어져요. 패 내기와 다시 뽑기는 각각 1턴을 써요. 무료 다시 뽑기는 턴을 쓰지 않고, 마지막 턴은 반드시 패 내기여야 해요. 소국이나 대국을 턴 {{spare}}번 이상 남기고 깨면 징조를 얻어요.",
     "scoreTitle": "점수",
     "points": "점수",
     "mult": "배수",
-    "score": "점수",
-    "scoreHelp": "점수는 패의 점수와 각 조합의 보너스를 더한 값이에요. 배수는 1에서 시작해 큰 족보, 삼원패, 구슬, 법령으로 올라가요. 조합 밖의 수패는 절반만 얻어요.",
+    "score": "최종 점수",
+    "scoreHelp": "점수는 패의 점수와 각 조합의 보너스를 더한 값이에요. 배수는 1에서 시작해 큰 족보, 삼원패, 천구, 법령으로 올라가요. 조합 밖의 수패는 절반만 얻어요.",
     "handsTitle": "족보",
     "secretTitle": "비밀 족보",
     "secretFound": "비밀 족보 발견",
     "secretInGuide": "이제 ? 가이드에 나와요.",
-    "patternRule": "두 번째 조합부터 조합마다 배수 +1. 커쯔와 4연속은 +1, 깡쯔와 5연속은 +2를 더해요. 각 패는 한 번만 세요. 완성된 마작 패가 아니면 한 번에 6장까지.",
+    "patternRule": "두 번째 조합부터 조합마다 배수 +1. 커쯔와 4연속은 +1, 깡쯔와 5연속은 +2를 더해요. 보통 각 패는 한 번만 세며, 완성된 마작 패가 아니면 한 번에 6장까지 낼 수 있어요.",
     "tilesTitle": "패의 종류",
     "tilesHelp": "만수는 한자 숫자 一~九, 통수와 삭수는 개수로 표시해요 (삭수 1은 새). 패 숫자 표시는 설정에서 켤 수 있어요.",
     "honorsHelp": "풍패는 장당 {{wind}}점, 조합 안에서는 {{windGroup}}점. 삼원패 한 장마다 배수 +{{dragon}}, 조합 안에서는 +{{dragonGroup}}.",
     "specialTitle": "특수 패",
-    "specialHelp": "보석이 달린 색 테두리는 표식, 밀랍 도장은 인장, 반짝임은 에디션이에요. 패 하나에는 그중 하나만 붙어요. 패에 마우스를 올리거나 포커스하면 효과를 볼 수 있어요.",
+    "specialHelp": "특수 패에는 추가 효과가 하나 붙어요. 표식(보석이 달린 색 테두리), 스탬프(밀랍으로 찍은 자국), 에디션(반짝임) 중 하나예요.",
+    "marks": "표식",
+    "seals": "스탬프",
+    "editions": "에디션",
     "close": "시작하기"
   },
   "mandateConsequence": {
@@ -3187,63 +3224,63 @@
     "tiles_face_down_after_play": "새 패는 뒷면",
     "fixed_draw_count": "항상 {{count}}장 뽑기",
     "honor_tiles_face_down": "자패는 뒷면",
-    "shuffle_decrees": "법령 숨김",
+    "hide_half_decrees": "법령 절반 꺼짐",
     "debuff_until_sell": "법령을 팔기 전까지 모든 패 0점",
     "disable_random_decree": "패 낼 때마다 법령 1개 꺼짐",
     "lock_random_tile": "뽑을 때마다 1장 고정"
   },
   "upgradeFamilies": {
     "Pairs": {
-      "name": "페어",
-      "covers": "페어, 투페어, 쓰리페어"
+      "name": "또이쯔",
+      "covers": "또이쯔, 투페어, 쓰리페어(또이쯔는 같은 패 2장). 치또이쯔 완성패는 별도 계열입니다."
     },
     "Pinfu": {
       "name": "순자",
-      "covers": "순자, 순자+또이쯔, 두 순자, 그리고 핑후"
+      "covers": "순자, 순자 + 또이쯔, 두 순자(순자는 한 무늬의 연속된 세 숫자)와 핑후(순자 4개와, 삼원패나 동이 아닌 또이쯔로 된 완성패)."
     },
     "Ittsu": {
       "name": "연속",
-      "covers": "4연속과 5연속, 그리고 일기통관"
+      "covers": "4연속, 5연속, 4연속 + 또이쯔(한 무늬의 연속된 숫자)와 일기통관(한 무늬의 1-2-3, 4-5-6, 7-8-9가 있는 완성패)."
     },
     "Toitoi": {
       "name": "커쯔",
-      "covers": "커쯔나 깡쯔를 낸 패, 그리고 또이또이"
+      "covers": "커쯔, 풀하우스, 두 커쯔, 커쯔 + 순자, 깡쯔, 깡쯔 + 또이쯔(커쯔는 같은 패 3장, 깡쯔는 4장)와 또이또이(커쯔나 깡쯔 4개와 또이쯔로 된 완성패)."
     },
     "Yakuhai": {
       "name": "자패",
-      "covers": "풍패나 삼원패 조합, 그리고 역패"
+      "covers": "풍패나 삼원패로만 된 조합이 있는 패와 역패(삼원패나 동의 커쯔·깡쯔가 있는 완성패)."
     },
     "Tanyao": {
       "name": "탕야오",
-      "covers": "2~8 패로만 낸 패, 그리고 탕야오"
+      "covers": "2~8 패로만 조합을 만든 패(1, 9, 풍패, 삼원패 없음. 돌 패는 판정에 영향 없음)와 탕야오(2~8 패로만 된 완성패)."
     },
     "Honitsu": {
-      "name": "혼일색",
-      "covers": "한 무늬와 자패로 된 완성패"
+      "name": "혼이쯔",
+      "covers": "혼이쯔: 한 무늬와 풍패·삼원패로 된 완성패. 한 무늬로만 낸 짧은 패는 해당하지 않습니다."
     },
     "Chinitsu": {
-      "name": "청일색",
-      "covers": "한 무늬로만 된 완성패"
+      "name": "치니쯔",
+      "covers": "치니쯔: 풍패와 삼원패 없이 한 무늬로만 된 완성패. 한 무늬로만 낸 짧은 패는 해당하지 않습니다."
     },
     "Sanshoku": {
       "name": "삼색동순",
-      "covers": "세 무늬에 같은 순자가 있는 완성패"
+      "covers": "삼색동순: 세 무늬 모두에 같은 순자가 있는 완성패(예: 만수, 통수, 삭수의 2-3-4)."
     },
     "SevenPairs": {
-      "name": "치또이",
-      "covers": "치또이"
+      "name": "치또이쯔",
+      "covers": "치또이쯔: 서로 다른 또이쯔 정확히 7개(14장)로 된 완성패. 또이쯔만 낸 짧은 패는 또이쯔 계열입니다."
     },
     "Chanta": {
       "name": "찬타",
-      "covers": "모든 조합에 노두패나 자패가 있는 완성패"
+      "covers": "찬타: 순자가 하나 이상 있고, 모든 조합과 또이쯔에 1, 9, 풍패, 삼원패 중 하나가 들어간 완성패. 준찬(같은 형태지만 풍패·삼원패가 없는 것)도 해당합니다."
     },
     "Kokushi": {
       "name": "국사무쌍",
-      "covers": "국사무쌍"
+      "covers": "국사무쌍: 모든 1, 9, 풍패, 삼원패 한 장씩과 그중 하나를 한 장 더 가진 완성패."
     },
     "All": {
       "name": "모든 계열",
-      "covers": "모든 강화 계열",
+      "covers": "12개 강화 계열 전부(또이쯔와 치또이쯔 포함).",
       "upgrade": "모든 계열 레벨 +1"
     },
     "levelChange": "{{family}}: 레벨 {{from}} → {{to}}",
@@ -3264,5 +3301,31 @@
   "orbReveal": {
     "used": "천상의 구슬 사용",
     "title": "{{name}} 사용: 역 강화"
+  },
+  "omenReveal": {
+    "title": "징조 획득: {{name}}",
+    "swiftClear": "빠른 클리어",
+    "cleared": "{{round}} 클리어",
+    "spareTurns_one": "턴 {{formattedCount}}개 남김",
+    "spareTurns_other": "턴 {{formattedCount}}개 남김",
+    "earned": "징조 획득",
+    "copies": "×{{amount}}",
+    "copiesNote": "쌍둥이 징조로 복제됨: ×{{amount}}",
+    "when": "효과 시점",
+    "timing": {
+      "shop": "지금 이 찻집에서. 효과가 이미 상품에 적용되어 있습니다.",
+      "round": "다음 라운드가 시작될 때.",
+      "hand": "다음에 계산되는 손에서.",
+      "voidScript": "다음에 공허의 두루마리를 사용할 때.",
+      "now": "즉시. 이미 적용되었습니다.",
+      "run": "런이 끝날 때까지 계산되는 모든 손에서.",
+      "nextOmen": "다음 징조를 얻을 때."
+    },
+    "rail": {
+      "waits": "그때까지 테이블의 보유 아이템에서 기다립니다.",
+      "stays": "테이블의 보유 아이템에 계속 남아 있습니다."
+    },
+    "tradeoff": "대가",
+    "rule": "소국이나 대국을 턴 {{spare}}개 이상 남기고 클리어하면 징조를 얻습니다. 보스국에서는 얻을 수 없습니다."
   }
 }

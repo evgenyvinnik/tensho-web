@@ -61,7 +61,9 @@ it.each(SUPPORTED_LANGUAGES)(
     expect(screen.getByRole('dialog')).toHaveTextContent(
       i18n.getResource(language, 'translation', 'runOwnership.fateSeal')
     )
-    expect(screen.getByRole('dialog').querySelector('img')).toHaveAttribute(
+    expect(
+      screen.getByRole('dialog').querySelector('header ~ div img')
+    ).toHaveAttribute(
       'src',
       '/assets/illustrations/seal-transmutation.webp'
     )

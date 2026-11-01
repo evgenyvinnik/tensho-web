@@ -155,6 +155,37 @@ describe('upgradeClassicRunSnapshot', () => {
     expect(() => parseClassicRunSnapshot(saved)).not.toThrow()
   })
 
+  it('turns an old Amber Acorn shuffle into a hidden, disabled first half', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const saved = current() as unknown as Record<string, any>
+    const system = saved.state.mandateEffectSystem
+    delete system.hiddenDecreeIds
+    Object.assign(system, {
+      activeMandate: { id: 'amber_acorn' },
+      decreesShuffled: true,
+      shuffledDecreeIds: ['c', 'a', 'b'],
+    })
+    const upgraded = upgradeClassicRunSnapshot(saved) as Snapshot
+    expect(upgraded.state.mandateEffectSystem.hiddenDecreeIds).toEqual([
+      'c',
+      'a',
+    ])
+    expect(upgraded.state.mandateEffectSystem.activeMandate?.effect.type).toBe(
+      'hide_half_decrees'
+    )
+    expect(upgraded.state.mandateEffectSystem).not.toHaveProperty(
+      'decreesShuffled'
+    )
+    expect(upgraded.state.mandateEffectSystem).not.toHaveProperty(
+      'shuffledDecreeIds'
+    )
+
+    Object.assign(system, { decreesShuffled: false, activeMandate: null })
+    const idle = upgradeClassicRunSnapshot(saved) as Snapshot
+    expect(idle.state.mandateEffectSystem.hiddenDecreeIds).toEqual([])
+    expect(() => parseClassicRunSnapshot(idle)).not.toThrow()
+  })
+
   it('returns unknown versions and non-objects unchanged for validation to reject', () => {
     const future = { ...current(), version: 99 }
     expect(upgradeClassicRunSnapshot(future)).toBe(future)

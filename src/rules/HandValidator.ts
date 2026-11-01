@@ -48,6 +48,12 @@ export interface OneAwayCompletion {
   effectiveTiles?: Tile[]
 }
 
+export interface LooseGroupCompletion {
+  /** The three tiles standing in for a group they do not form. */
+  looseTiles: Tile[]
+  parsedHand: ParsedHand
+}
+
 /**
  * The 13 terminal and honor tile types for Kokushi
  */
@@ -612,6 +618,59 @@ export function findOneAwayCompletion(
       }
     }
   }
+
+  return null
+}
+
+/**
+ * Find a reading in which three tiles take one group's place without forming
+ * a group (Script of Silence): the rest must be complete with one group fewer.
+ * The loose trio leaves the parsed melds, so it earns no group bonus and no
+ * Yaku reads it. Deterministic (trios in play order) for seeded runs.
+ * It does not stack with a Celestial Wildcard: trying every face for every
+ * tile of every trio takes too long to run on each selection.
+ */
+export function findLooseGroupCompletion(
+  tiles: Tile[],
+  declaredMelds: Meld[] = [],
+  options: HandValidationOptions = {}
+): LooseGroupCompletion | null {
+  const restOptions = { ...options, wildcardCount: 0 }
+  const candidates = tiles.filter((tile) => !tile.isStone && !tile.isBonus)
+  // Only faces decide whether the rest is complete, so equal trios are
+  // tried once.
+  const tried = new Set<string>()
+  for (let i = 0; i < candidates.length; i++)
+    for (let j = i + 1; j < candidates.length; j++)
+      for (let k = j + 1; k < candidates.length; k++) {
+        const looseTiles = [candidates[i], candidates[j], candidates[k]]
+        const key = looseTiles
+          .map((tile) => tile.typeKey)
+          .sort()
+          .join('|')
+        if (tried.has(key)) continue
+        tried.add(key)
+        // The trio holds a group slot as a stand-in declared meld while the
+        // rest is judged, then leaves the reading.
+        const standIn = new Meld(MeldType.Triplet, looseTiles, true)
+        const validation = validateHand(
+          new Hand(
+            tiles.filter((tile) => !looseTiles.includes(tile)),
+            [...declaredMelds, standIn]
+          ),
+          undefined,
+          restOptions
+        )
+        const parsedHand = validation.parsedHands[0]
+        if (!validation.isComplete || !parsedHand) continue
+        return {
+          looseTiles,
+          parsedHand: {
+            ...parsedHand,
+            melds: parsedHand.melds.filter((meld) => meld !== standIn),
+          },
+        }
+      }
 
   return null
 }

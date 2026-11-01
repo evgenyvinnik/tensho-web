@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { popupAssets } from '../../utils/assets'
 import { Button } from './Button'
-import { IconButton, Icons } from './IconButton'
+import { ControlIcon } from './ControlIcon'
 
 const AnimatedDiv = animated('div')
 
@@ -123,7 +123,9 @@ export function Popup({
       }}
     >
       {/* Nine-slice the existing scroll: fixed end caps cannot grow underneath
-          long content or crop the side ornaments on a tall, narrow phone. */}
+          long content or crop the side ornaments on a tall, narrow phone.
+          300px side slices hold each whole meander band (the right one ends
+          296px from the edge), so neither spills into the text column. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -132,21 +134,21 @@ export function Popup({
           borderColor: 'transparent',
           borderWidth: '64px 40px',
           borderImageSource: `url(${popupAssets.background})`,
-          borderImageSlice: '200 280 240 280 fill',
+          borderImageSlice: '200 300 240 300 fill',
           borderImageRepeat: 'stretch',
         }}
       />
-      {/* Close button - positioned at top right edge */}
+      {/* Close button: the painted jade X alone on the roller, no plate,
+          centred on the roller's height just inside its gold end cap. */}
       {showCloseButton && (
-        <div className="absolute top-5 right-3 z-10">
-          <IconButton
-            icon={<Icons.Close />}
-            ariaLabel={t('common.close')}
-            variant="secondary"
-            size="md"
-            onClick={onClose}
-          />
-        </div>
+        <button
+          type="button"
+          aria-label={t('common.close')}
+          onClick={onClose}
+          className="absolute top-2 right-8 z-10 flex h-11 w-11 items-center justify-center rounded-full transition-transform hover:brightness-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] motion-reduce:transition-none"
+        >
+          <ControlIcon name="close" size={36} />
+        </button>
       )}
 
       {/* Inner container with padding for scroll background */}

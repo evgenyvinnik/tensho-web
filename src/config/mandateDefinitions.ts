@@ -43,9 +43,9 @@ export type MandateEffectType =
   | 'tiles_face_down_ratio' // The Wheel: 1 in N tiles drawn face-down
   | 'tiles_face_down_after_play' // The Fish: Tiles face-down after each hand
   | 'fixed_draw_count' // The Serpent: Always draw N tiles after play/discard
-  | 'honor_tiles_face_down' // The Mark: All honor tiles drawn face-down
+  | 'honor_tiles_face_down' // The Veil: All honor tiles drawn face-down
   // Showdown Mandates (campaign finale and periodic Endless bosses)
-  | 'shuffle_decrees' // Amber Acorn: Decrees shuffled and face-down
+  | 'hide_half_decrees' // Amber Acorn: Half the Decrees face-down and disabled
   | 'debuff_until_sell' // Verdant Leaf: All tiles debuffed until decree sold
   | 'disable_random_decree' // Crimson Heart: Random decree disabled per hand
   | 'lock_random_tile' // Cerulean Bell: Force-lock tile every draw
@@ -103,7 +103,7 @@ export const THE_WALL: MandateDefinition = {
   id: 'the_wall',
   name: 'The Wall',
   japaneseName: '壁',
-  description: 'Extra large score requirement (4x instead of 2x)',
+  description: 'Score target ×4 instead of the usual Boss ×2',
   category: 'Standard',
   difficulty: 'Hard',
   effect: { type: 'score_multiplier', value: 4 },
@@ -174,7 +174,7 @@ export const THE_PILLAR: MandateDefinition = {
   id: 'the_pillar',
   name: 'The Pillar',
   japaneseName: '柱',
-  description: 'Tiles used in previous rounds this Act are debuffed',
+  description: 'Tiles played in earlier rounds of this Act score nothing',
   category: 'Standard',
   difficulty: 'Medium',
   effect: { type: 'debuff_used_tiles' },
@@ -230,7 +230,7 @@ export const THE_CLUB: MandateDefinition = {
   id: 'the_club',
   name: 'The Club',
   japaneseName: '棍',
-  description: 'All Bamboo tiles are debuffed',
+  description: 'Bamboo tiles score nothing',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'souzu' },
@@ -244,7 +244,7 @@ export const THE_GOAD: MandateDefinition = {
   id: 'the_goad',
   name: 'The Goad',
   japaneseName: '突棒',
-  description: 'All Circles are debuffed',
+  description: 'Circles tiles score nothing',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'pinzu' },
@@ -258,7 +258,7 @@ export const THE_WINDOW: MandateDefinition = {
   id: 'the_window',
   name: 'The Window',
   japaneseName: '窓',
-  description: 'All Characters are debuffed',
+  description: 'Characters tiles score nothing',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_suit', target: 'manzu' },
@@ -272,7 +272,7 @@ export const THE_HEAD: MandateDefinition = {
   id: 'the_head',
   name: 'The Head',
   japaneseName: '頭',
-  description: 'All Dragon tiles are debuffed',
+  description: 'Dragons score nothing',
   category: 'Standard',
   difficulty: 'Easy',
   effect: { type: 'debuff_tile_type', target: 'dragon' },
@@ -286,7 +286,7 @@ export const THE_PLANT: MandateDefinition = {
   id: 'the_plant',
   name: 'The Plant',
   japaneseName: '草',
-  description: 'All Honor tiles are debuffed',
+  description: 'Winds and Dragons score nothing',
   category: 'Standard',
   difficulty: 'Hard',
   effect: { type: 'debuff_tile_type', target: 'honor' },
@@ -314,7 +314,7 @@ export const THE_HOUSE: MandateDefinition = {
   id: 'the_house',
   name: 'The House',
   japaneseName: '家',
-  description: 'First hand drawn face-down',
+  description: 'Your starting rack is dealt face-down',
   category: 'Standard',
   difficulty: 'Medium',
   effect: { type: 'first_hand_face_down' },
@@ -342,7 +342,7 @@ export const THE_FISH: MandateDefinition = {
   id: 'the_fish',
   name: 'The Fish',
   japaneseName: '魚',
-  description: 'Tiles drawn face-down after each hand',
+  description: 'Tiles drawn after each play arrive face-down',
   category: 'Standard',
   difficulty: 'Medium',
   effect: { type: 'tiles_face_down_after_play' },
@@ -378,13 +378,13 @@ export const THE_TOOTH: MandateDefinition = {
 }
 
 /**
- * The Mark - All Honor tiles drawn face-down
+ * The Veil - All Honor tiles drawn face-down
  */
 export const THE_MARK: MandateDefinition = {
   id: 'the_mark',
-  name: 'The Mark',
-  japaneseName: '印',
-  description: 'All Honor tiles drawn face-down',
+  name: 'The Veil',
+  japaneseName: '帳',
+  description: 'Winds and Dragons are drawn face-down',
   category: 'Standard',
   difficulty: 'Medium',
   effect: { type: 'honor_tiles_face_down' },
@@ -410,16 +410,17 @@ export const THE_MANACLE: MandateDefinition = {
 // =============================================================================
 
 /**
- * Amber Acorn - All Decrees shuffled and face-down
+ * Amber Acorn - A random half of the Decrees (rounded up) turn face-down and
+ * lose their powers until the Showdown is won
  */
 export const AMBER_ACORN: MandateDefinition = {
   id: 'amber_acorn',
   name: 'Amber Acorn',
   japaneseName: '琥珀の実',
-  description: 'All Decrees are shuffled and face-down',
+  description: 'Half your Decrees, chosen at random, are hidden and disabled',
   category: 'Showdown',
   difficulty: 'Hard',
-  effect: { type: 'shuffle_decrees' },
+  effect: { type: 'hide_half_decrees' },
   minAct: NORMAL_RUN_ACTS,
 }
 
@@ -430,7 +431,7 @@ export const VERDANT_LEAF: MandateDefinition = {
   id: 'verdant_leaf',
   name: 'Verdant Leaf',
   japaneseName: '翠緑の葉',
-  description: 'All tiles debuffed until 1 Decree is sold',
+  description: 'Every tile scores nothing until you sell a Decree',
   category: 'Showdown',
   difficulty: 'Extreme',
   effect: { type: 'debuff_until_sell' },
@@ -444,7 +445,7 @@ export const VIOLET_VESSEL: MandateDefinition = {
   id: 'violet_vessel',
   name: 'Violet Vessel',
   japaneseName: '紫水瓶',
-  description: 'Extra-extra large target (6x instead of 2x)',
+  description: 'Score target ×6 instead of the usual Boss ×2',
   category: 'Showdown',
   difficulty: 'Extreme',
   effect: { type: 'score_multiplier', value: 6 },
@@ -458,7 +459,7 @@ export const CRIMSON_HEART: MandateDefinition = {
   id: 'crimson_heart',
   name: 'Crimson Heart',
   japaneseName: '深紅の心',
-  description: 'One random Decree disabled every hand cycle',
+  description: 'A random Decree is switched off for each play',
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'disable_random_decree' },
@@ -473,7 +474,7 @@ export const CERULEAN_BELL: MandateDefinition = {
   name: 'Cerulean Bell',
   japaneseName: '青藍の鈴',
   description:
-    'After each draw cycle, one random tile must be played; the previous lock is released',
+    'After each draw, one random rack tile is locked and must be in your next play. The previous lock is released.',
   category: 'Showdown',
   difficulty: 'Hard',
   effect: { type: 'lock_random_tile' },
@@ -695,7 +696,7 @@ export function isResourceMandate(mandate: MandateDefinition): boolean {
  * Check if a mandate affects decrees
  */
 export function isDecreeMandate(mandate: MandateDefinition): boolean {
-  return ['shuffle_decrees', 'disable_random_decree'].includes(
+  return ['hide_half_decrees', 'disable_random_decree'].includes(
     mandate.effect.type
   )
 }

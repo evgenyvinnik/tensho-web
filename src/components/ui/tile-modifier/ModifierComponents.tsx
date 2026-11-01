@@ -23,6 +23,7 @@ import {
 } from './constants'
 import { getGeneratedArt } from '../../../utils/generatedArt'
 import { FRAME_REGISTRATION } from './frameRegistration'
+import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { scoreMultiplier } from '../../../utils/scoreNumber'
 
@@ -202,56 +203,60 @@ export function ModifierBadge({
 }
 
 /**
- * The look of a special tile, drawn with its generated artwork. The layers
- * combine truthfully:
- *  - a mark (enhancement) frames the tile in its material — gilded gold,
- *    sapphire, ruby, jade, glass, brushed steel, granite;
- *  - an edition washes the frame — foil, holographic, polychrome, negative;
+ * The layers drawn over a special tile's face. A mark (enhancement) is not
+ * one of them: TileImage draws a marked tile from its finished artwork, the
+ * whole tile painted in the mark's material. Over the face:
+ *  - an edition washes the front face — foil, holographic, polychrome,
+ *    negative;
  *  - a seal is a wax stamp in its colour on the upper corner.
- * Rank and suit stay readable inside the frame (a Stone tile has none); the
- * tile's details list the exact combination.
+ * The tile's details list the exact combination.
  */
 export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
-  const enhancement = getGeneratedArt('enhancements', tile.enhancement)
+  const faceClipId = useId()
+  const editionRegistration = FRAME_REGISTRATION[`edition:${tile.edition}`]
   const edition = getGeneratedArt('editions', tile.edition)
   const seal = getGeneratedArt('seals', tile.seal)
   return (
     <>
-      {enhancement && (
-        <span
-          aria-hidden="true"
-          data-tile-art-layer="enhancement"
-          className={`absolute inset-0 overflow-hidden rounded pointer-events-none ${className}`}
-        >
-          <img
-            src={enhancement}
-            alt=""
-            draggable={false}
-            className="absolute max-w-none"
-            style={FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]}
-          />
-        </span>
-      )}
       {edition && (
-        <span
+        <svg
           aria-hidden="true"
-          data-tile-art-layer="edition"
-          className="absolute -inset-0.5 overflow-hidden rounded pointer-events-none"
+          data-tile-frame-plane
+          viewBox="0 0 569 711"
+          preserveAspectRatio="xMidYMid meet"
+          className={`absolute inset-0 h-full w-full pointer-events-none ${className}`}
         >
-          <img
-            src={edition}
-            alt=""
-            draggable={false}
-            className="absolute max-w-none"
-            style={{
-              ...FRAME_REGISTRATION[`edition:${tile.edition}`],
-              opacity: enhancement ? 0.6 : 1,
-            }}
-          />
-        </span>
+          {/* Match the source tile's front face, not its full silhouette.
+              SVG meet uses the same contain/centering as the base image, so
+              letterboxing and responsive tile sizes cannot move the frame.
+              The right/bottom sidewall and red backing stay outside this box. */}
+          <defs>
+            <clipPath id={faceClipId}>
+              <rect width="526" height="661" rx="60" />
+            </clipPath>
+          </defs>
+          <svg
+            data-tile-front-face
+            width="526"
+            height="661"
+            viewBox="0 0 526 661"
+          >
+            <g clipPath={`url(#${faceClipId})`}>
+              <image
+                data-tile-art-layer="edition"
+                href={edition}
+                x={editionRegistration.left}
+                y={editionRegistration.top}
+                width={editionRegistration.width}
+                height={editionRegistration.height}
+                preserveAspectRatio="none"
+              />
+            </g>
+          </svg>
+        </svg>
       )}
       {seal && (
         <img
@@ -314,7 +319,7 @@ export function ModifierTooltip({
       style={{ backgroundColor: 'rgba(28, 58, 46, 0.95)' }}
     >
       <div className="text-golden-yellow font-bold text-sm mb-2">
-        {t('tiles.tileModifiers', 'Tile Modifiers')}
+        {t('tiles.tileModifiers', 'Special tile')}
       </div>
 
       {/* Enhancement */}
@@ -353,7 +358,7 @@ export function ModifierTooltip({
       {/* Stats summary */}
       <div className="mt-2 pt-2 border-t border-gray-600 text-xs">
         {tile.modifierChips > 0 && (
-          <div className="text-blue-400">+{tile.modifierChips} Chips</div>
+          <div className="text-blue-400">+{tile.modifierChips} Points</div>
         )}
         {tile.modifierMult > 0 && (
           <div className="text-red-400">+{tile.modifierMult} Mult</div>
@@ -395,7 +400,7 @@ export function ModifierSelector({
       {onEnhancementChange && (
         <div>
           <div className="text-sm font-medium text-beige-white mb-2">
-            {t('tiles.enhancement', 'Enhancement')}
+            {t('tiles.enhancement', 'Mark')}
           </div>
           <div className="flex flex-wrap gap-2">
             {enhancements.map((enhancement) => {
@@ -431,7 +436,9 @@ export function ModifierSelector({
       {/* Seal selector */}
       {onSealChange && (
         <div>
-          <div className="text-sm font-medium text-beige-white mb-2">Seal</div>
+          <div className="text-sm font-medium text-beige-white mb-2">
+            {t('tiles.stamp', 'Stamp')}
+          </div>
           <div className="flex flex-wrap gap-2">
             {seals.map((seal) => {
               const def = SEAL_DEFINITIONS[seal]

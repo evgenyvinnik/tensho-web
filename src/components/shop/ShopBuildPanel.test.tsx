@@ -12,6 +12,11 @@ it('offers an optional synergy guide without a modal or purchase side effects', 
     <ShopBuildPanel decrees={[]} maxSlots={5} onSell={sell} />
   )
   const guide = container.querySelector('[data-decree-build-guide]')!
+  // Phones skip it (the Codex keeps it); wider screens show it.
+  expect(container.querySelector('[data-shop-build-guide]')).toHaveClass(
+    'hidden',
+    'sm:block'
+  )
   expect(guide).not.toHaveAttribute('open')
   fireEvent.click(screen.getByText('Build Decrees that work together'))
   expect(guide).toHaveAttribute('open')

@@ -1,13 +1,16 @@
 /**
  * What one round's settlement pays, source by source: the toasts the Tea
  * House shows arriving. Derived from the engine's summary; nothing here
- * awards money.
+ * awards money. A swift clear's Omen itself is revealed centre stage before
+ * these (see OmenReveal); only Gold it paid at once arrives as a toast.
  *
  * @module components/shop/cashOutEntries
  */
 
 import type { TFunction } from 'i18next'
+import { STAKE_DEFINITIONS } from '../../config/stakeDefinitions'
 import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
+import { STAKE_NAME_KEYS } from '../../i18n/stakeRules'
 
 export interface CashOutEntry {
   id:
@@ -18,12 +21,19 @@ export interface CashOutEntry {
     | 'bonus'
     | 'rentals'
     | 'omenGold'
-    | 'omen'
   label: string
-  /** Gold this toast carries; 0 for the Omen itself. */
+  /** Gold this toast carries. */
   amount: number
+  /** Why the amount is not what the player expects, e.g. a Stake rule. */
+  note?: string
+  /** The Omen that paid this Gold, for its artwork. */
   omenId?: string
 }
+
+/** The Stake whose rule withholds the clear reward: the tier introducing it. */
+const WITHHOLDING_STAKE_TIER =
+  STAKE_DEFINITIONS.find((stake) => stake.modifier.noSmallRoundReward)?.tier ??
+  2
 
 /** The toasts one settlement produces, in the order they are paid. */
 export function cashOutEntries(
@@ -41,7 +51,19 @@ export function cashOutEntries(
     summary.heldGoldMarkReward -
     (summary.omenGold ?? 0)
   const sources: CashOutEntry[] = [
-    { id: 'clear', label: t('shop.roundCleared'), amount: summary.baseReward },
+    {
+      id: 'clear',
+      label: t('shop.roundCleared'),
+      amount: summary.baseReward,
+      ...(summary.stakeWithheldReward
+        ? {
+            note: t('shop.payout.stakeWithheld', {
+              stake: t(`stakes.${STAKE_NAME_KEYS[WITHHOLDING_STAKE_TIER - 1]}`),
+              amount: summary.stakeWithheldReward,
+            }),
+          }
+        : {}),
+    },
     {
       id: 'interest',
       label: t('shop.payout.interest'),
@@ -65,21 +87,14 @@ export function cashOutEntries(
     },
     {
       id: 'omenGold',
-      label: t('shop.payout.omen'),
+      label: summary.omenId
+        ? t('shop.payout.omenEarned', {
+            name: t(`omens.items.${summary.omenId}.name`),
+          })
+        : t('shop.payout.omen'),
       amount: summary.omenGold ?? 0,
+      omenId: summary.omenId ?? undefined,
     },
   ]
-  const entries = sources.filter(
-    (entry) => entry.id === 'clear' || entry.amount !== 0
-  )
-  if (summary.omenId)
-    entries.push({
-      id: 'omen',
-      label: t('shop.payout.omenEarned', {
-        name: t(`omens.items.${summary.omenId}.name`),
-      }),
-      amount: 0,
-      omenId: summary.omenId,
-    })
-  return entries
+  return sources.filter((entry) => entry.id === 'clear' || entry.amount !== 0)
 }

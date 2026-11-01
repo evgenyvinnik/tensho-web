@@ -11,13 +11,19 @@ const packageVersion = JSON.parse(
 const appVersion = process.env.VITE_APP_VERSION || packageVersion
 
 // https://vite.dev/config/
+// `--mode native` builds the iOS app's web layer (`bun run build:ios`). Capacitor
+// serves it from capacitor://localhost/ and answers every route with
+// index.html, and the App Store ships its updates: it needs neither the Pages
+// route entries nor a service worker.
 export default defineConfig(({ mode }) => ({
-  base: deploymentBase,
+  base: mode === 'native' ? '/' : deploymentBase,
+  build: mode === 'native' ? { outDir: 'dist-native' } : undefined,
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
   },
   plugins: [
-    publicSitePlugin(deploymentBase, process.env.VITE_SITE_URL),
+    mode !== 'native' &&
+      publicSitePlugin(deploymentBase, process.env.VITE_SITE_URL),
     react({
       // React Compiler is experimental - uncomment when using React 19+
       // babel: {
@@ -27,6 +33,7 @@ export default defineConfig(({ mode }) => ({
       // },
     }),
     VitePWA({
+      disable: mode === 'native',
       injectRegister: false,
       // main.tsx checks every loaded mode before accepting an update. autoUpdate
       // would bypass that consent callback and reload while a save is pending.
@@ -106,6 +113,9 @@ export default defineConfig(({ mode }) => ({
           ) as string[]
         ).map((path) => `assets/illustrations/${path}`),
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB for large font files
+        // public/privacy/ is a static page, not a game route: never answer
+        // /privacy (no slash) with the game shell; the host redirects it.
+        navigateFallbackDenylist: [/\/privacy\/?$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

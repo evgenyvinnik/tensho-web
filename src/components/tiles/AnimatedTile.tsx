@@ -65,8 +65,11 @@ export interface AnimatedTileProps {
 /**
  * AnimatedTile component
  * Wraps TileImage with comprehensive animations
+ *
+ * Memoized: every tap re-renders the table, but Tiles are immutable, so only
+ * the tiles whose props changed re-render and restart their springs.
  */
-export const AnimatedTile: React.FC<AnimatedTileProps> = ({
+export const AnimatedTile = React.memo(function AnimatedTile({
   tile,
   size = 'medium',
   selected = false,
@@ -85,7 +88,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
   enterDelay = 0,
   className = '',
   style,
-}) => {
+}: AnimatedTileProps) {
   const { t } = useTranslation()
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[size]
@@ -385,7 +388,7 @@ export const AnimatedTile: React.FC<AnimatedTileProps> = ({
       )}
     </animated.div>
   )
-}
+})
 
 /**
  * AnimatedTileRow component

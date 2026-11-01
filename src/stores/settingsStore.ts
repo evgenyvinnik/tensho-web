@@ -23,6 +23,8 @@ export interface SettingsState {
   showRankNumbers: boolean
   animationSpeed: 'slow' | 'normal' | 'fast'
   reducedMotion: boolean
+  /** One-key table shortcuts (P, R, A, Esc); can be turned off (WCAG 2.1.4). */
+  keyboardShortcuts: boolean
 
   // Language setting (synced with i18next via localStorage)
   language: SupportedLanguage
@@ -39,6 +41,7 @@ export interface SettingsState {
   setShowRankNumbers: (show: boolean) => void
   setAnimationSpeed: (speed: 'slow' | 'normal' | 'fast') => void
   setReducedMotion: (reduced: boolean) => void
+  setKeyboardShortcuts: (enabled: boolean) => void
   setLanguage: (language: SupportedLanguage) => void
   setRedFivesEnabled: (enabled: boolean) => void
   resetSettings: () => void
@@ -53,6 +56,7 @@ const DEFAULT_SETTINGS = {
   showRankNumbers: false,
   animationSpeed: 'normal' as const,
   reducedMotion: false,
+  keyboardShortcuts: true,
   language: 'en' as SupportedLanguage,
   redFivesEnabled: false, // Red fives disabled by default for backward compatibility
 }
@@ -103,6 +107,10 @@ export const useSettingsStore = create<SettingsState>()(
         set({ reducedMotion: reduced })
       },
 
+      setKeyboardShortcuts: (enabled: boolean) => {
+        set({ keyboardShortcuts: enabled })
+      },
+
       setLanguage: (language: SupportedLanguage) => {
         set({ language })
         // Also update localStorage for i18next synchronization
@@ -130,6 +138,7 @@ export const useSettingsStore = create<SettingsState>()(
         showRankNumbers: state.showRankNumbers,
         animationSpeed: state.animationSpeed,
         reducedMotion: state.reducedMotion,
+        keyboardShortcuts: state.keyboardShortcuts,
         language: state.language,
         redFivesEnabled: state.redFivesEnabled,
       }),

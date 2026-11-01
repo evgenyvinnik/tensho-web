@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { openTable } from './helpers/table'
 
 for (const fixture of [
   { language: 'en', width: 1280, height: 800, font: 16 },
@@ -8,31 +9,30 @@ for (const fixture of [
   { language: 'ja', width: 320, height: 568, font: 20 },
   { language: 'fr', width: 568, height: 320, font: 16 },
 ]) {
-  test(`illustrated guide teaches current bonuses without clipping (${fixture.language})`, async ({
+  test(`the ? guide teaches current bonuses without clipping (${fixture.language})`, async ({
     page,
     isMobile,
   }, testInfo) => {
     const copy = JSON.parse(
       readFileSync(`src/i18n/locales/${fixture.language}.json`, 'utf8')
     )
-    await page.setViewportSize(fixture)
+    await page.setViewportSize({ width: fixture.width, height: fixture.height })
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto(`/${fixture.language}/play`)
+    await openTable(page, `${fixture.language}/play`)
     await page.evaluate((font) => {
       document.documentElement.style.fontSize = `${font}px`
     }, fixture.font)
-    const open = page.locator('[data-open-beginner-guide]')
-    await expect(open).toHaveAccessibleName(copy.gameplay.learnPatterns)
+    const open = page.getByTestId('gameplay-help')
+    await expect(open).toHaveAccessibleName(copy.gameplay.help)
     expect((await open.boundingBox())!.height).toBeGreaterThanOrEqual(44)
     if (isMobile) await open.tap()
     else await open.click()
-    const dialog = page.getByRole('dialog', {
-      name: copy.gameplay.beginnerGuideTitle,
-    })
+    const dialog = page.getByRole('dialog', { name: copy.guide.title })
     await expect(dialog).toBeVisible()
     const guide = dialog.locator('[data-beginner-guide]')
     const scroll = dialog.locator('[data-popup-scroll]')
-    await expect(guide.locator('img')).toHaveCount(18)
+    await expect(guide.locator('[data-guide-art]')).toBeVisible()
+    await expect(guide.locator('[data-guide-tile-family]')).toHaveCount(5)
     await expect
       .poll(() =>
         guide
@@ -46,12 +46,18 @@ for (const fixture of [
           )
       )
       .toBe(true)
-    await expect(guide).toContainText(copy.gameplay.beginnerBonusHelp)
-    await expect(guide.locator('[data-guide-bonus]')).toHaveText(
-      [15, 30, 40, 65].map((points) =>
-        copy.gameplay.beginnerShapeBonus.replace('{{points}}', String(points))
-      )
-    )
+    // Each hand is named in the player's language with the group bonus the
+    // scorer pays: Pair +15, Sequence +30, Triplet +40, Quad +65.
+    for (const [id, points] of [
+      ['pair', 15],
+      ['sequence', 30],
+      ['triplet', 40],
+      ['quad', 65],
+    ] as const) {
+      const row = guide.locator(`[data-guide-pattern="${id}"]`)
+      await expect(row).toContainText(copy.patterns[id].name)
+      await expect(row).toContainText(`+${points}`)
+    }
     // One scrolling surface: all teaching content, including the final action,
     // is reachable without a nested scroll box or horizontally clipped labels.
     expect(
@@ -69,30 +75,36 @@ for (const fixture of [
         )
       })
     ).toBe(true)
+    // Text never clips; a Stamp's badge may overhang its own tile, but
+    // nothing crosses the guide's edges.
     expect(
       await guide.evaluate((node) => {
         const r = node.getBoundingClientRect()
         return Array.from(
           node.querySelectorAll<HTMLElement>('h3,h4,p,span,button,img')
-        ).every((el) => {
+        ).filter((el) => {
           const b = el.getBoundingClientRect()
+          const text =
+            el.matches('h3,h4,p,button') ||
+            Array.from(el.childNodes).some(
+              (child) =>
+                child.nodeType === Node.TEXT_NODE && child.textContent!.trim()
+            )
           return (
-            el.scrollWidth <= el.clientWidth + 1 &&
-            b.left >= r.left - 1 &&
-            b.right <= r.right + 1
+            (text && el.scrollWidth > el.clientWidth + 1) ||
+            b.left < r.left - 1 ||
+            b.right > r.right + 1
           )
-        })
+        }).length
       })
-    ).toBe(true)
+    ).toBe(0)
     await page.screenshot({ path: testInfo.outputPath('guide-intro.png') })
     for (const shape of await guide.locator('[data-guide-pattern]').all()) {
       await shape.scrollIntoViewIfNeeded()
       await expect(shape).toBeInViewport()
     }
     await page.screenshot({ path: testInfo.outputPath('guide-shapes.png') })
-    const close = guide.getByRole('button', {
-      name: copy.gameplay.showGuidedMove,
-    })
+    const close = guide.getByRole('button', { name: copy.guide.close })
     await close.scrollIntoViewIfNeeded()
     if (isMobile) await close.tap()
     else {

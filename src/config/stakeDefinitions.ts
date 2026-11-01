@@ -20,6 +20,8 @@ import { runRandom } from '../game/RunRandom'
 export interface StakeModifier {
   /** No reward Gold from Small Rounds */
   noSmallRoundReward?: boolean
+  /** Boss round score targets multiplier (from STAKE_BOSS_TARGET_FIRST_ACT) */
+  bossTargetMultiplier?: number
   /** Score requirement scaling multiplier */
   scoreScaling?: number
   /** Chance for Eternal sticker on shop Decrees (0-1) */
@@ -57,6 +59,7 @@ export interface StakeDefinition {
  */
 export interface CombinedStakeModifiers {
   noSmallRoundReward: boolean
+  bossTargetMultiplier: number
   scoreScaling: number
   eternalChance: number
   redrawPenalty: number
@@ -82,7 +85,7 @@ export interface StickerRollResult {
  * | Tier | Name | Japanese | New Modifier | Unlocks |
  * |------|------|----------|--------------|---------|
  * | 1 | White Stake | 白場 | Base difficulty | Starting tier |
- * | 2 | Red Stake | 赤場 | Small Round gives no reward Gold | Crimson Wall |
+ * | 2 | Red Stake | 赤場 | Small Round gives no reward Gold; Boss targets +20% from Act 2 | Crimson Wall |
  * | 3 | Green Stake | 緑場 | Score targets ramp to ×1.3 by Act 4 | Jade Wall |
  * | 4 | Black Stake | 黒場 | 30% Eternal stickers on shop Decrees | Obsidian Wall |
  * | 5 | Blue Stake | 青場 | -1 Redraw per round | Azure Wall |
@@ -105,8 +108,9 @@ export const STAKE_DEFINITIONS: StakeDefinition[] = [
     name: 'Red Stake',
     japaneseName: '赤場',
     color: '#E53935',
-    description: 'Small Round gives no reward Gold',
-    modifier: { noSmallRoundReward: true },
+    description:
+      'Small Round gives no reward Gold; Boss targets +20% from Act 2; from Act 2, the last Turn of a round can be extended with Gold',
+    modifier: { noSmallRoundReward: true, bossTargetMultiplier: 1.2 },
     unlocksWall: 'crimson_wall',
   },
   {
@@ -228,6 +232,7 @@ export const STICKER_DEFINITIONS: Record<StickerType, StickerConfig> = {
  */
 export const DEFAULT_STAKE_MODIFIERS: CombinedStakeModifiers = {
   noSmallRoundReward: false,
+  bossTargetMultiplier: 1,
   scoreScaling: 1.0,
   eternalChance: 0,
   redrawPenalty: 0,
@@ -266,6 +271,11 @@ export function calculateCombinedModifiers(stakeTier: number): CombinedStakeModi
     // Boolean modifiers - once true, always true
     if (mod.noSmallRoundReward) {
       combined.noSmallRoundReward = true
+    }
+
+    // Boss target multiplier - multiplicative stacking
+    if (mod.bossTargetMultiplier) {
+      combined.bossTargetMultiplier *= mod.bossTargetMultiplier
     }
 
     // Score scaling - multiplicative stacking
@@ -316,6 +326,20 @@ export function getActScoreScaling(
     Math.max(0, (actNumber - 1) / (STAKE_SCALING_FULL_ACT - 1))
   )
   return scoreScaling ** progress
+}
+
+/**
+ * Act from which a Stake's Boss target multiplier applies. Act 1 always uses
+ * White targets, as with score scaling above.
+ */
+export const STAKE_BOSS_TARGET_FIRST_ACT = 2
+
+/** Boss target multiplier for one Act: ×1 before STAKE_BOSS_TARGET_FIRST_ACT. */
+export function getActBossTargetMultiplier(
+  bossTargetMultiplier: number,
+  actNumber: number
+): number {
+  return actNumber >= STAKE_BOSS_TARGET_FIRST_ACT ? bossTargetMultiplier : 1
 }
 
 /**
@@ -502,6 +526,12 @@ export function getStakeModifierDescriptions(tier: number): string[] {
 
   if (mod.noSmallRoundReward) {
     descriptions.push('Small Rounds give no reward Gold')
+  }
+  if (mod.bossTargetMultiplier) {
+    const percent = Math.round((mod.bossTargetMultiplier - 1) * 100)
+    descriptions.push(
+      `Boss targets +${percent}% from Act ${STAKE_BOSS_TARGET_FIRST_ACT}`
+    )
   }
   if (mod.scoreScaling) {
     const percent = Math.round((mod.scoreScaling - 1) * 100)

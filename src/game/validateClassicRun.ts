@@ -148,6 +148,9 @@ const roundSummary = schema<RoundCashOutSummary>({
   nextTarget: nullable(nonnegative),
   omenId: optional(nullable(omenId)),
   omenGold: optional(nonnegative),
+  stakeWithheldReward: optional(nonnegative),
+  omenCopies: optional(nonnegative),
+  spareTurns: optional(nonnegative),
 })
 const meld: Check = (v, p) => {
   schema<ClassicRunState['melds'][number]>({
@@ -238,6 +241,8 @@ const stateFields = {
   handsAllowance: count,
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
+  emergencyTurnsBoughtThisRound: optional(count),
+  adTurns: optional(object({ actNumber: positive, count })),
   honorDiscardsThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),
@@ -333,8 +338,7 @@ const stateFields = {
     handsPlayed: count,
     lockedTileIds: uniqueIds,
     disabledDecreeIds: uniqueIds,
-    decreesShuffled: bool,
-    shuffledDecreeIds: array(id),
+    hiddenDecreeIds: uniqueIds,
     allTilesDebuffed: bool,
     modifiedRedraws: nullable(count),
     modifiedMaxHands: nullable(count),

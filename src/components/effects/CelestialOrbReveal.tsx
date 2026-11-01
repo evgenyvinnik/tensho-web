@@ -23,6 +23,7 @@ import { getGeneratedArt } from '../../utils/generatedArt'
 import { getCelestialOrbByYaku } from '../../systems/CelestialOrbSystem'
 import { DEFAULT_FAMILY_TONE, FAMILY_TONES } from '../gameplay/yakuFamilyTones'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { shownUpgradeLevel } from '../gameplay/yakuUpgradeLevel'
 
 const ORB_TONE = '#7dd3fc'
 
@@ -60,8 +61,8 @@ function LevelRow({
         <p className="text-sm font-bold text-[var(--color-golden-yellow)]">
           {t('upgradeFamilies.levelChange', {
             family: t(`upgradeFamilies.${change.yaku}.name`),
-            from: number(change.from),
-            to: number(change.to),
+            from: number(shownUpgradeLevel(change.from)),
+            to: number(shownUpgradeLevel(change.to)),
           })}
         </p>
         <p className="text-xs text-emerald-200">
@@ -81,7 +82,7 @@ function LevelRow({
           ['--pop-delay' as string]: `${index * 90}ms`,
         }}
       >
-        {number(change.to)}
+        {number(shownUpgradeLevel(change.to))}
       </span>
     </li>
   )
@@ -159,14 +160,15 @@ export function CelestialOrbReveal({ paused = false }: { paused?: boolean }) {
           <h2 className="font-decorative text-xl font-bold text-[var(--color-golden-yellow)]">
             {name}
           </h2>
-          {levels.length > 1 && (
-            <p
-              className="mt-1 text-xs font-black uppercase tracking-widest"
-              style={{ color: ORB_TONE }}
-            >
-              {t('upgradeFamilies.All.upgrade')}
-            </p>
-          )}
+          {/* The planet names the Orb; the family it raises is the subtitle. */}
+          <p
+            data-orb-reveal-family
+            className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-beige-white)]/60"
+          >
+            {orb.effect.targetYaku === 'All'
+              ? t('upgradeFamilies.All.upgrade')
+              : t(`upgradeFamilies.${orb.effect.targetYaku}.name`)}
+          </p>
           <ul
             data-orb-reveal-levels
             className="mt-3 max-h-[46vh] space-y-2 overflow-y-auto pr-0.5"

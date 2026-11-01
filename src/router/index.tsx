@@ -44,6 +44,7 @@ import { useGameRouteIndexing } from './useGameRouteIndexing'
 import { useDocumentLanguage } from './useDocumentLanguage'
 import { ScreenDownloadError } from './screenDownloadRecovery'
 import { ScreenDownloadFallback } from '../components/ui/ScreenDownloadFallback'
+import { adBreak } from '../native/adBreaks'
 
 // Re-export navigation hooks for use in components
 export { useNavigate, useLocation, useParams }
@@ -210,6 +211,11 @@ export function LanguageLayout() {
     if (screen === 'play') audioSystem.playMusic('gameplay')
     else if (screen === 'shop') audioSystem.playMusic('shop')
     else if (screen !== 'game-over') audioSystem.playMusic('menu')
+  }, [pathname])
+  // A due ad (iOS app, every second Boss) waits for the next screen.
+  useEffect(() => {
+    const screen = pathname.replace(/\/$/, '').split('/').at(-1)
+    if (screen === 'shop' || screen === 'game-over') adBreak()
   }, [pathname])
   return (
     <LanguageSync>

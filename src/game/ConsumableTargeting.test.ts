@@ -8,6 +8,7 @@ import {
   CELESTIAL_ORBS,
 } from '../systems/CelestialOrbSystem'
 import { Tile, TileSuit } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 import { consumableTargetRange } from '../gameplay/consumableTargeting'
 
 function fixture(id = 'seal_of_the_alchemist') {
@@ -212,6 +213,26 @@ describe('consumable targeting contract', () => {
     expect(game.canPerformAction(next)).toBe(true)
     expect(game.processAction(next).success).toBe(true)
     expect(game.getState().voidScripts).toHaveLength(0)
+  })
+
+  it.each([
+    ['seal_of_the_empress', EnhancementType.Mult],
+    ['seal_of_the_sage', EnhancementType.Bonus],
+  ] as const)('%s lays its own Mark on both chosen tiles', (id, mark) => {
+    const { game, seal } = fixture(id)
+    const targets = game
+      .getHandTiles()
+      .slice(0, 2)
+      .map((tile) => tile.id)
+    expect(
+      game.processAction({ type: 'useSeal', sealId: seal.instanceId, targets })
+        .success
+    ).toBe(true)
+    for (const id of targets)
+      expect(
+        game.getHandTiles().find((tile) => tile.id === id)?.modifiers
+          .enhancement
+      ).toBe(mark)
   })
 
   it('consumes an owned Orb once and rejects use outside gameplay', () => {

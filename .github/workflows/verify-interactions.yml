@@ -17,7 +17,8 @@ concurrency:
 jobs:
   release-surfaces:
     name: Public site, accessibility and save-aware update
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
@@ -89,7 +90,8 @@ jobs:
 
   core-acceptance:
     name: Complete runs and save recovery
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
@@ -122,7 +124,8 @@ jobs:
           retention-days: 7
 
   verify:
-    runs-on: ubuntu-latest
+    # Playwright 1.57 cannot install Chromium on ubuntu-latest (26.04).
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6

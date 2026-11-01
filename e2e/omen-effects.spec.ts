@@ -42,40 +42,49 @@ for (const [language, copy] of [
       // in the same seeded order.
       await swiftClear(page)
       await continueToNextRound(page)
-      const effects = page.getByTestId('pending-omens')
-      await expect(effects).not.toHaveAttribute('open')
-      // Native summary is operable with keyboard as well as touch.
-      if (isMobile) await effects.locator('summary').tap()
+      // The spent Omen keeps an icon on the rail, badged with rounds left.
+      const rail = page.locator('[data-collectible-rail]')
+      const effect = rail.locator(
+        `[data-omen-effect="${kind === 'restriction' ? 'no-interest' : 'interest-boost'}"]`
+      )
+      await expect(effect).toHaveText(kind === 'restriction' ? '1' : '3')
+      const name = (await effect.getAttribute('aria-label'))!
+      // Its panel opens from the keyboard as well as by touch.
+      if (isMobile) await effect.tap()
       else {
-        await effects.locator('summary').focus()
+        await effect.focus()
         await page.keyboard.press('Enter')
       }
+      const panel = page.getByRole('dialog', { name })
       const label =
         kind === 'restriction'
           ? copy.omens.effects.noInterest.replace('{{rounds}}', '1')
           : copy.omens.effects.interestBoost
               .replace('{{amount}}', '2')
               .replace('{{rounds}}', '3')
-      await expect(effects.getByText(label, { exact: true })).toBeVisible()
-      await expect(effects.locator('[data-omen-id]')).toHaveCount(0)
+      await expect(panel.getByText(label, { exact: true })).toBeVisible()
+      // Austerity and the Interest Omen are spent the moment they arrive.
+      await expect(rail.locator('[data-omen-id]')).toHaveCount(0)
       expect(
-        await effects.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
+        await panel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
-      await effects.screenshot({ path: testInfo.outputPath('live-effect.png') })
-      await effects.locator('summary').click()
+      await page.screenshot({ path: testInfo.outputPath('live-effect.png') })
+      await page.keyboard.press('Escape')
+      await expect(panel).toHaveCount(0)
       await swiftClear(page)
       await continueToNextRound(page)
-      if (kind === 'restriction') await expect(effects).toHaveCount(0)
+      if (kind === 'restriction') await expect(effect).toHaveCount(0)
       else {
-        await effects.locator('summary').click()
+        await expect(effect).toHaveText('2')
+        await effect.click()
         await expect(
-          effects.locator('[data-omen-effect="interest-boost"]')
+          page.locator('[data-omen-effect-details="interest-boost"]')
         ).toHaveText(
           copy.omens.effects.interestBoost
             .replace('{{amount}}', '2')
             .replace('{{rounds}}', '2')
         )
-        await effects.locator('summary').click()
+        await page.keyboard.press('Escape')
       }
       // Controlled Boss-winning deal, after real seeded Omen acquisition.
       await page.evaluate(async () => {

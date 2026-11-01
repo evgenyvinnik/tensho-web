@@ -36,7 +36,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'Satellite',
     japaneseName: '衛星',
     description:
-      '+1 Gold per Orb family above level 1 at the end of each won round',
+      'At the end of each won round, +1 Gold for each hand family you have raised above level 0 with Orbs.',
     rarity: 'rare',
     effects: [
       { type: 'gold_gain', value: 1, condition: 'per upgraded Orb family' },
@@ -48,7 +48,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     id: 'swift_andy',
     name: 'Swift Andy',
     japaneseName: '迅速',
-    description: '+2 free REDRAW per round, −2 rack size',
+    description: '+2 free redraws each round; −2 rack spaces.',
     rarity: 'uncommon',
     effects: [
       { type: 'discard_count', value: 2 },
@@ -61,8 +61,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     id: 'lucky_sixes',
     name: 'Lucky Sixes',
     japaneseName: '六福',
-    description:
-      '+6 Mult per played natural suited rank-6 tile; Stones do not count and Wild does not change rank',
+    description: '+6 Mult per numbered 6 played. Stone tiles do not count.',
     rarity: 'uncommon',
     effects: [
       {
@@ -79,7 +78,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     name: 'The Idol',
     japaneseName: '偶像',
     description:
-      '×3 Mult if at least 2 tiles are played and all have the same natural suit and rank; Stones break the match and Wild cannot impersonate faces',
+      '×3 Mult when you play at least two tiles and all of them are the same printed tile. Stone tiles break it; Wild tiles keep their printed face.',
     rarity: 'rare',
     effects: [
       {
@@ -95,7 +94,7 @@ export const ACHIEVEMENT_REWARD_DECREES: DecreeDefinition[] = [
     id: 'stuntman',
     name: 'Stuntman',
     japaneseName: '替え玉',
-    description: '+250 Points, −3 rack size',
+    description: '+250 Points; −3 rack spaces.',
     rarity: 'rare',
     effects: [
       { type: 'additive_chips', value: 250 },

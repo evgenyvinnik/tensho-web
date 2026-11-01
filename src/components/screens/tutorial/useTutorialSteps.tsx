@@ -29,7 +29,10 @@ import {
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
+  EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
 } from '../../../game/playRules'
+import { STAKE_NAME_KEYS } from '../../../i18n/stakeRules'
 import {
   TutorialStep,
   Highlight,
@@ -778,6 +781,14 @@ export function useTutorialSteps(): TutorialStep[] {
               </li>
             </ul>
             <p>{t('tutorial.turns.p2')}</p>
+            <p>
+              {t('tutorial.turns.emergency', {
+                act: EMERGENCY_TURN_FIRST_ACT,
+                stake: t(
+                  `stakes.${STAKE_NAME_KEYS[EMERGENCY_TURN_FIRST_STAKE - 1]}`
+                ),
+              })}
+            </p>
             <InfoBox type="warning">{t('tutorial.turns.warning')}</InfoBox>
           </div>
         ),

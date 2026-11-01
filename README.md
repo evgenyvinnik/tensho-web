@@ -78,24 +78,24 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Extension | Lines |
 |-----------|-------|
-| .ts       | 48,379 |
-| .tsx      | 21,611 |
-| .js/.mjs  | 5,242 |
-| .json     | 3,112 |
-| .md       | 686 |
-| .css      | 470 |
-| .html     | 109 |
-| **Total** | **79,609** |
+| .ts       | 130,428 |
+| .tsx      | 52,108 |
+| .js/.mjs  | 3,633 |
+| .json     | 891,884 |
+| .md       | 20,919 |
+| .css      | 2,160 |
+| .html     | 498 |
+| **Total** | **1,101,630** |
 
 ### Project Structure
 
 | Category | Count |
 |----------|-------|
 | Zustand Stores | 18 |
-| Game Systems | 27 |
-| React Components | 59 |
-| Unit Test Files | 68 (739 tests passing) |
-| E2E Scenarios | 99 (198/198 desktop/mobile checks passing without retries) |
+| Game Systems | 25 |
+| React Components | 184 |
+| Unit Test Files | 265 (3,818 tests passing) |
+| E2E Scenarios | 626 (1,252 desktop/mobile checks) |
 | Supported Locales | 13 |
 
 ### Implemented Systems

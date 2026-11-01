@@ -238,6 +238,8 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       return tiles.some((tile) => tile.suit === TileSuit.Wind)
     case 'contains_dragon':
       return tiles.some((tile) => tile.suit === TileSuit.Dragon)
+    case 'contains_honor':
+      return tiles.some((tile) => tile.isHonor)
     case 'half_manzu':
       return halfOfSuit(TileSuit.Manzu)
     case 'half_pinzu':
@@ -386,7 +388,7 @@ export const TANYAO_DISPENSATION: Decree = {
   id: 'tanyao_dispensation',
   name: 'Simples Dispensation',
   description:
-    'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.',
+    'All Simples (normally only 2–8 tiles) also accepts 1s and 9s. Winds and Dragons still break it.',
   category: 'YakuDoctrine',
   rarity: 'RegionalMandate',
   cost: 6,
@@ -400,12 +402,13 @@ export const TANYAO_DISPENSATION: Decree = {
 }
 
 /**
- * Moonlit Seal (Uncommon) - Honor tiles add stacking multiplier
+ * Moonlit Emblem (Uncommon) - Honor tiles add stacking multiplier
  */
 export const MOONLIT_SEAL: Decree = {
   id: 'moonlit_seal',
-  name: 'Moonlit Seal',
-  description: 'Each Honor tile in your winning hand adds +0.1x to multiplier.',
+  name: 'Moonlit Emblem',
+  description:
+    'Each Wind or Dragon played adds 0.1 to this Decree’s ×Mult (three give ×1.3).',
   category: 'Scaling',
   rarity: 'RegionalMandate',
   cost: 6,
@@ -427,7 +430,7 @@ export const PURE_SUIT_ASCETICISM: Decree = {
   id: 'pure_suit_asceticism',
   name: 'Pure Suit Asceticism',
   description:
-    'Tiles of your dominant suit gain +10% score each. Stacks multiplicatively.',
+    '×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6).',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 8,
@@ -458,7 +461,7 @@ export const STARTER_DECREES: Decree[] = [
 export const BROKEN_STAIR_EDICT: Decree = {
   id: 'broken_stair_edict',
   name: 'Broken Stair Edict',
-  description: 'Sequences may skip one rank (e.g., 1-3-4 is valid).',
+  description: 'Sequences may skip one number (1-3-4 or 1-2-4 counts).',
   category: 'Structural',
   rarity: 'RegionalMandate',
   cost: 7,
@@ -474,7 +477,8 @@ export const BROKEN_STAIR_EDICT: Decree = {
 export const FALSE_EYE_MANDATE: Decree = {
   id: 'false_eye_mandate',
   name: 'False Eye Mandate',
-  description: 'One meld may serve as the pair for hand validation.',
+  description:
+    'A complete hand may use one of its groups in place of the pair.',
   category: 'Structural',
   rarity: 'ImperialDecree',
   cost: 8,
@@ -491,7 +495,7 @@ export const HONOR_TRANSMUTATION: Decree = {
   id: 'honor_transmutation',
   name: 'Honor Transmutation',
   description:
-    'Honor tiles may count as suited tiles of your most common suit.',
+    'Winds and Dragons may count as numbered tiles of your most common suit.',
   category: 'TileIdentity',
   rarity: 'ImperialDecree',
   cost: 9,
@@ -507,7 +511,7 @@ export const HONOR_TRANSMUTATION: Decree = {
 export const CELESTIAL_WILDCARD: Decree = {
   id: 'celestial_wildcard',
   name: 'Celestial Wildcard',
-  description: 'One tile per hand may impersonate any other tile.',
+  description: 'One tile per play can stand in for any tile you need.',
   category: 'TileIdentity',
   rarity: 'HeavenlyOrdinance',
   cost: 12,
@@ -525,7 +529,7 @@ export const YAKUMAN_SUCCESSION: Decree = {
   id: 'yakuman_succession',
   name: 'Yakuman Succession',
   description:
-    'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.',
+    'While you hold at least 2 Flowers, these hands become Yakuman, the top tier (×4 each): Half Flush, Full Flush, Twice Pure Double Sequence (two pairs of identical sequences), Pure Outside Hand (a 1 or 9 in every group and the pair) and Seven Pairs. A hand weakened by a Mandate cannot rise. Copies do not stack.',
   category: 'YakuDoctrine',
   rarity: 'HeavenlyOrdinance',
   cost: 12,
@@ -542,7 +546,7 @@ export const DEAD_WALL_WRIT: Decree = {
   id: 'dead_wall_writ',
   name: 'Dead Wall Writ',
   description:
-    'Once per round, swap one selected tile for a Dead Wall tile without spending a Turn.',
+    'Once per round, swap one selected tile for a tile from the Dead Wall (the reserved tiles at the back of the wall) without spending a Turn.',
   category: 'Entropy',
   rarity: 'RegionalMandate',
   cost: 6,
@@ -558,7 +562,8 @@ export const DEAD_WALL_WRIT: Decree = {
 export const SHANTEN_CLEMENCY: Decree = {
   id: 'shanten_clemency',
   name: 'Shanten Clemency',
-  description: 'Hands may score at 1-shanten with a 50% score penalty.',
+  description:
+    'A hand one tile short of complete can be played as a complete hand, at half score.',
   category: 'Entropy',
   rarity: 'ImperialDecree',
   cost: 9,
@@ -575,7 +580,7 @@ export const CLOSED_HAND_AUSTERITY: Decree = {
   id: 'closed_hand_austerity',
   name: 'Closed-Hand Austerity',
   description:
-    'Complete concealed hands gain ×1.5, growing ×1.2 per earlier complete concealed hand this run, up to ×4 before Flower empowerment. Tactical plays and Shanten Clemency do not qualify.',
+    'Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 8,
@@ -585,7 +590,8 @@ export const CLOSED_HAND_AUSTERITY: Decree = {
 export const TERMINAL_DEVOTION: Decree = {
   id: 'terminal_devotion',
   name: 'Terminal Devotion',
-  description: 'Each terminal tile in your hand adds +5% to final score.',
+  description:
+    'Each Terminal (1 or 9) played adds 0.05 to this Decree’s ×Mult (four give ×1.2).',
   category: 'Scaling',
   rarity: 'RegionalMandate',
   cost: 5,
@@ -603,7 +609,7 @@ export const YAKU_REPETITION_CHARTER: Decree = {
   id: 'yaku_repetition_charter',
   name: 'Yaku Repetition Charter',
   description:
-    'Each Yaku scored in consecutive rounds compounds ×1.2 per prior round in its streak (up to ×4 before Flower empowerment). Missing or skipping a round breaks that Yaku’s streak.',
+    'A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 9,
@@ -1489,11 +1495,15 @@ export class DecreeSystem {
    * Extra plays per round. The legacy draw field/API name is kept for saves;
    * GameOrchestrator applies it to handsRemaining, never tile draws/redraws.
    */
-  getAdditionalDraws(): number {
+  getAdditionalDraws(excludedIds?: ReadonlySet<string>): number {
     let draws = 0
 
-    for (const decree of this.getActiveDecrees()) {
-      for (const effect of this.resolveEffects(decree, this.ownedDecrees)) {
+    for (const decree of this.getActiveDecrees(excludedIds)) {
+      for (const effect of this.resolveEffects(
+        decree,
+        this.ownedDecrees,
+        excludedIds
+      )) {
         if (effect.type === 'draw') {
           draws += effect.additionalDraws
         }
@@ -1504,21 +1514,28 @@ export class DecreeSystem {
   }
 
   /** Net hand-size change from Decrees, in tiles (may be negative). */
-  getHandSizeBonus(): number {
-    return this.sumRuleDelta('hand_size')
+  getHandSizeBonus(excludedIds?: ReadonlySet<string>): number {
+    return this.sumRuleDelta('hand_size', excludedIds)
   }
 
   /** Net change to discards per round from Decrees (may be negative). */
-  getAdditionalDiscards(): number {
-    return this.sumRuleDelta('discard_count')
+  getAdditionalDiscards(excludedIds?: ReadonlySet<string>): number {
+    return this.sumRuleDelta('discard_count', excludedIds)
   }
 
   /** Total `delta` carried by every active rule modification with this id. */
-  private sumRuleDelta(ruleId: string): number {
+  private sumRuleDelta(
+    ruleId: string,
+    excludedIds?: ReadonlySet<string>
+  ): number {
     let total = 0
 
-    for (const decree of this.getActiveDecrees()) {
-      for (const effect of this.resolveEffects(decree, this.ownedDecrees)) {
+    for (const decree of this.getActiveDecrees(excludedIds)) {
+      for (const effect of this.resolveEffects(
+        decree,
+        this.ownedDecrees,
+        excludedIds
+      )) {
         if (effect.type !== 'rule_modification' || effect.ruleId !== ruleId)
           continue
         const delta = effect.modification.delta

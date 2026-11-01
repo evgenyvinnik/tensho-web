@@ -184,4 +184,169 @@ describe('ActionBar', () => {
     expect(redraw.textContent).toBe('RECAMBIAR')
     expect(i18n.language).toBe('es')
   })
+
+  describe('emergency Turn', () => {
+    it('is absent unless one is on offer', () => {
+      const { container } = renderActionBar()
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+    })
+
+    it("takes REDRAW's place on the last Turn, with its price, and buys on tap", () => {
+      const onBuyTurn = vi.fn()
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 15, affordable: true },
+        onBuyTurn,
+      })
+      const buy = screen.getByRole('button', {
+        name: 'Buy one more Turn for 15 Gold',
+      })
+      expect(buy).toHaveTextContent('+1 Turn')
+      expect(buy).toHaveTextContent('15')
+      expect(buy).toBeEnabled()
+      // Same slot, same bar height: REDRAW is gone, Play hand stays.
+      expect(container.querySelector('[data-game-action="redraw"]')).toBeNull()
+      expect(buy.parentElement).toBe(
+        container.querySelector('.gameplay-action-controls')
+      )
+      expect(
+        buttons().map(
+          (button) => button.getAttribute('aria-label') ?? button.textContent
+        )
+      ).toEqual(['Buy one more Turn for 15 Gold', 'Play hand'])
+      fireEvent.click(buy)
+      expect(onBuyTurn).toHaveBeenCalledOnce()
+    })
+
+    it('leaves REDRAW in place while a free redraw is left', () => {
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        freeRedraws: 1,
+        redrawAllowed: true,
+        emergencyTurn: { cost: 15, affordable: true },
+      })
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+      expect(screen.getByRole('button', { name: /REDRAW/ })).toBeEnabled()
+    })
+
+    it('stays visible but disabled, with the reason, when Gold is short', () => {
+      const onBuyTurn = vi.fn()
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 30, affordable: false },
+        onBuyTurn,
+      })
+      const buy = screen.getByRole('button', {
+        name: 'Buy one more Turn for 30 Gold',
+      })
+      expect(buy).toBeDisabled()
+      expect(buy).toHaveAccessibleDescription(
+        'Not enough Gold: one more Turn costs 30'
+      )
+      fireEvent.click(buy)
+      expect(onBuyTurn).not.toHaveBeenCalled()
+    })
+
+    it('keeps the play reason floating alongside it', () => {
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        selectedCount: 1,
+        playReason: 'Select at least 2 tiles',
+        emergencyTurn: { cost: 10, affordable: true },
+      })
+      expect(container.querySelector('[data-emergency-turn]')).not.toBeNull()
+      expect(container.querySelector('[data-action-reason]')).toHaveTextContent(
+        'Select at least 2 tiles'
+      )
+    })
+
+    it('localizes the offer in Japanese', async () => {
+      await act(() => changeLanguage('ja'))
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 10, affordable: true },
+      })
+      expect(
+        screen.getByRole('button', {
+          name: i18n.t('gameplay.emergencyTurn.label', { cost: '10' }),
+        })
+      ).toHaveTextContent(i18n.t('gameplay.emergencyTurn.buy'))
+    })
+
+    it('offers a ready rewarded ad in place of a price it cannot pay', () => {
+      const onWatchAd = vi.fn()
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: true, watching: false },
+        onWatchAd,
+      })
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+      const watch = screen.getByRole('button', {
+        name: 'Watch an ad for one more Turn',
+      })
+      expect(watch).toHaveTextContent('+1 Turn')
+      expect(watch).toHaveTextContent('Watch ad')
+      fireEvent.click(watch)
+      expect(onWatchAd).toHaveBeenCalledOnce()
+    })
+
+    it('keeps the Gold price when it can be paid, or when no ad is ready', () => {
+      const { container, unmount } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: true },
+        adTurn: { available: true, watching: false },
+      })
+      expect(container.querySelector('[data-ad-turn]')).toBeNull()
+      expect(container.querySelector('[data-emergency-turn]')).toBeEnabled()
+      unmount()
+      const short = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: false, watching: false },
+      })
+      expect(short.container.querySelector('[data-ad-turn]')).toBeNull()
+      expect(
+        short.container.querySelector('[data-emergency-turn]')
+      ).toBeDisabled()
+    })
+
+    it('shows the ad as playing, without a second tap', () => {
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: false, watching: true },
+      })
+      const watch = screen.getByRole('button', {
+        name: 'Watch an ad for one more Turn',
+      })
+      expect(watch).toBeDisabled()
+      expect(watch).toHaveTextContent('Ad playing…')
+    })
+  })
+
+  it('announces and marks the one-key shortcuts only while they are on', () => {
+    const props = {
+      turnsLeft: 4,
+      freeRedraws: 0,
+      selectedCount: 2,
+      playAllowed: true,
+      redrawAllowed: true,
+      onRedraw: vi.fn(),
+      onPlayHand: vi.fn(),
+    }
+    const { container, rerender } = render(<ActionBar {...props} />)
+    const play = () => screen.getByRole('button', { name: 'Play hand' })
+    const redraw = () => screen.getByRole('button', { name: 'REDRAW' })
+    expect(play()).not.toHaveAttribute('aria-keyshortcuts')
+    expect(container.querySelector('[data-shortcut]')).toBeNull()
+
+    rerender(<ActionBar {...props} shortcuts />)
+    expect(play()).toHaveAttribute('aria-keyshortcuts', 'P')
+    expect(redraw()).toHaveAttribute('aria-keyshortcuts', 'R')
+    // The key cap is drawn by CSS from data-shortcut: the label is unchanged.
+    expect(play()).toHaveAttribute('data-shortcut', 'P')
+    expect(redraw()).toHaveAttribute('data-shortcut', 'R')
+    expect(play()).toHaveTextContent(/^Play hand$/)
+  })
 })

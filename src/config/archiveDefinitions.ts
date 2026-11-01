@@ -65,7 +65,7 @@ export const ARCHIVE_CATEGORIES: Record<
     id: 'walls',
     name: 'Walls',
     japaneseName: '山録',
-    description: 'Playable tables with distinct rules and atmosphere',
+    description: 'Wall variants with different tile mixes',
     expectedCount: TABLE_STYLE_DEFINITIONS.length,
     icon: 'wall',
   },
@@ -73,7 +73,7 @@ export const ARCHIVE_CATEGORIES: Record<
     id: 'charters',
     name: 'Imperial Charters',
     japaneseName: '皇勅録',
-    description: 'Permanent upgrades purchased after defeating Boss Mandates',
+    description: 'Permanent run upgrades bought in the Tea House',
     expectedCount: 32, // 16 base + 16 upgraded
     icon: 'certificate',
   },
@@ -88,16 +88,16 @@ export const ARCHIVE_CATEGORIES: Record<
   tileMarks: {
     id: 'tileMarks',
     name: 'Tile Marks',
-    japaneseName: '牌印録',
-    description: 'Enhancement types that modify tile behavior',
+    japaneseName: '牌紋録',
+    description: 'Marks that change how a tile scores or behaves',
     expectedCount: 8, // Enhancement types
     icon: 'sparkle',
   },
   seals: {
     id: 'seals',
-    name: 'Seals',
-    japaneseName: '封印録',
-    description: 'Special seals that add effects to tiles',
+    name: 'Stamps',
+    japaneseName: '封蝋録',
+    description: 'Wax stamps that give a tile an extra effect',
     expectedCount: 4, // Gold, Red, Blue, Purple
     icon: 'seal',
   },
@@ -105,7 +105,7 @@ export const ARCHIVE_CATEGORIES: Record<
     id: 'editions',
     name: 'Editions',
     japaneseName: '版録',
-    description: 'Visual and gameplay variants of items',
+    description: 'Shimmering finishes that add an effect to a tile or Decree',
     expectedCount: 5, // Base, Foil, Holo, Poly, Negative
     icon: 'shine',
   },
@@ -394,42 +394,44 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   {
     id: 'bonus',
     name: 'Bonus Mark',
-    japaneseName: '点印',
+    japaneseName: '加点紋',
     description: 'Tile scores extra points',
     effect: '+30 Points when scored',
   },
   {
     id: 'mult',
     name: 'Mult Mark',
-    japaneseName: '倍印',
+    japaneseName: '倍率紋',
     description: 'Tile adds multiplier',
     effect: '+4 Mult when scored',
   },
   {
     id: 'wild',
     name: 'Wild Mark',
-    japaneseName: '万印',
-    description: 'Tile can act as any suit',
+    japaneseName: '万能紋',
+    description: 'Counts as any suit, including for Yaku',
     effect: 'Counts as any suit for yaku',
   },
   {
     id: 'glass',
     name: 'Glass Mark',
-    japaneseName: '硝印',
-    description: 'Fragile but powerful',
+    japaneseName: '硝子紋',
+    description:
+      'Fragile but powerful. ×2 Mult when scored; 1 in 4 chance to shatter',
     effect: 'x2 Mult when scored, 25% chance to shatter',
   },
   {
     id: 'steel',
     name: 'Steel Mark',
-    japaneseName: '鋼印',
-    description: 'Bonus when held',
+    japaneseName: '鋼紋',
+    description:
+      '×1.5 Mult while it stays on your rack instead of being played',
     effect: 'x1.5 Mult while held in hand',
   },
   {
     id: 'stone',
     name: 'Stone Mark',
-    japaneseName: '石印',
+    japaneseName: '石紋',
     description: 'No rank or suit',
     effect:
       '+100 Points. The tile has no rank or suit, so it never joins a group, but it always scores in full.',
@@ -437,15 +439,16 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   {
     id: 'gold',
     name: 'Gold Mark',
-    japaneseName: '金印',
-    description: 'Generates gold',
+    japaneseName: '金紋',
+    description: '+3 Gold if it is still on your rack when the round ends',
     effect: '+3 Gold when held at round end',
   },
   {
     id: 'lucky',
     name: 'Lucky Mark',
-    japaneseName: '運印',
-    description: 'Random bonus chance',
+    japaneseName: '幸運紋',
+    description:
+      'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',
     effect:
       'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',
   },
@@ -473,23 +476,23 @@ export interface SealDefinition {
 export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   {
     id: 'gold',
-    name: 'Gold Seal',
+    name: 'Gold Stamp',
     japaneseName: '金封',
-    description: 'Earns gold when played',
+    description: '+3 Gold each time this tile scores',
     effect: '+3 Gold when scored in hand',
     color: '#FFD700',
   },
   {
     id: 'red',
-    name: 'Red Seal',
+    name: 'Red Stamp',
     japaneseName: '赤封',
-    description: 'Tile triggers twice',
+    description: 'This tile scores twice',
     effect: 'Retriggers once when scored',
     color: '#FF4444',
   },
   {
     id: 'blue',
-    name: 'Blue Seal',
+    name: 'Blue Stamp',
     japaneseName: '青封',
     description: 'Creates a random Celestial Orb',
     effect: 'When this tile is in the play that clears the round',
@@ -497,7 +500,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
   },
   {
     id: 'purple',
-    name: 'Purple Seal',
+    name: 'Purple Stamp',
     japaneseName: '紫封',
     description: 'Creates Fate Seal on discard or redraw',
     effect: 'Creates a random Fate Seal when discarded or redrawn',
@@ -553,7 +556,7 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     id: 'polychrome',
     name: 'Polychrome',
     japaneseName: '極彩',
-    description: 'Prismatic color shifting',
+    description: 'Prismatic color shifting. ×1.5 Mult when scored',
     effect: 'x1.5 Mult when scored',
     visualStyle: 'color_shift',
   },
@@ -562,7 +565,8 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     name: 'Negative',
     japaneseName: '陰影',
     description: 'Inverted colors, transcendent',
-    effect: '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
+    effect:
+      '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
     visualStyle: 'inverted',
   },
 ]
@@ -644,7 +648,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '牌袋',
     type: 'Tile',
     size: 'Normal',
-    description: 'Choose 1 from 3 modified tiles',
+    description: 'Choose 1 from 3 special tiles',
   },
   {
     id: 'tile_jumbo',
@@ -652,7 +656,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '大牌袋',
     type: 'Tile',
     size: 'Jumbo',
-    description: 'Choose up to 2 from 5 modified tiles',
+    description: 'Choose up to 2 from 5 special tiles',
   },
   {
     id: 'tile_mega',
@@ -660,7 +664,7 @@ export const PACK_VARIANT_DEFINITIONS: PackVariantDefinition[] = [
     japaneseName: '特大牌袋',
     type: 'Tile',
     size: 'Mega',
-    description: 'Choose up to 3 from 6 modified tiles',
+    description: 'Choose up to 3 from 6 special tiles',
   },
   // Decree Packs
   {

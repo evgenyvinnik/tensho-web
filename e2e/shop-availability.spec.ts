@@ -71,6 +71,12 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
   const details = (id: string) =>
     page.locator(`[data-shop-offer-details="${id}"]`)
   const buy = (id: string) => page.locator(`[data-shop-buy="${id}"]`)
+  // The reason sits in the panel's pinned footer, beside Buy.
+  const blocked = (id: string) =>
+    page
+      .getByRole('dialog')
+      .filter({ has: details(id) })
+      .locator('[data-purchase-blocked]')
   const press = (target: Locator) => (isMobile ? target.tap() : target.click())
   const openDetails = async (id: string) => {
     await card(id).scrollIntoViewIfNeeded()
@@ -80,9 +86,7 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
   const [flower, seal] = offers
 
   await openDetails(flower)
-  await expect(details(flower).locator('[data-purchase-blocked]')).toHaveText(
-    'Requiere 3 Flores; tienes 0.'
-  )
+  await expect(blocked(flower)).toHaveText('Requiere 3 Flores; tienes 0.')
   await expect(buy(flower)).toBeDisabled()
   const panel = page.getByRole('dialog').filter({ has: details(flower) })
   expect(
@@ -107,7 +111,7 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
 
   // Only Decrees have slots: nothing limits a Seal, used as it is bought.
   await openDetails(seal)
-  await expect(details(seal).locator('[data-purchase-blocked]')).toHaveCount(0)
+  await expect(blocked(seal)).toHaveCount(0)
   await expect(buy(seal)).toBeEnabled()
   await page.keyboard.press('Escape')
   await expect(details(seal)).toHaveCount(0)
@@ -136,7 +140,7 @@ test('Spanish purchase reasons fit a narrow screen and update with actual requir
   await clearReveals(page)
   for (const id of [flower, seal]) {
     await openDetails(id)
-    await expect(details(id).locator('[data-purchase-blocked]')).toHaveCount(0)
+    await expect(blocked(id)).toHaveCount(0)
     await expect(buy(id)).toBeEnabled()
     await press(buy(id))
     if (id === seal) {

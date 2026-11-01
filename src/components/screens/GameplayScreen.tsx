@@ -31,10 +31,9 @@ import { TablePattern } from '../ui/TablePattern'
 import { ConfirmPopup } from '../ui/Popup'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
-import { PendingOmens } from '../gameplay/PendingOmens'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
-import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { initializeClassicPersistence } from '../../game/classicPersistenceApp'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { feltPalette } from '../../utils/feltPalette'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -73,6 +72,12 @@ import {
   MIN_TACTICAL_PLAY_TILES,
 } from '../../game/playRules'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { useRewardedAd } from '../../hooks/useRewardedAd'
+import {
+  TABLE_SHORTCUTS,
+  useTableShortcuts,
+} from '../../hooks/useTableShortcuts'
+import { SimulatedAdOverlay } from '../gameplay/SimulatedAdOverlay'
 import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
 
@@ -84,6 +89,17 @@ function readGuideSeen(): boolean {
     return window.localStorage.getItem(HAND_GUIDE_SEEN_KEY) === 'true'
   } catch {
     return true
+  }
+}
+
+/** Focus sits on a control, with its keyboard focus ring showing. */
+function keyboardFocused(): boolean {
+  const active = document.activeElement
+  if (!(active instanceof HTMLElement) || active === document.body) return false
+  try {
+    return active.matches(':focus-visible')
+  } catch {
+    return false
   }
 }
 
@@ -99,9 +115,12 @@ export function GameplayScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
-  const { service: persistence } = useClassicPersistence()
+  // The service only: every checkpoint (each tap) changes the save status,
+  // and ClassicSaveNotice shows it without re-rendering the whole table.
+  const persistence = initializeClassicPersistence()
   const showTileHints = useSettingsStore((state) => state.showTileHints)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
+  const keyboardShortcuts = useSettingsStore((state) => state.keyboardShortcuts)
   // Omens change outside game events (a reward, a cancelled Script), so the
   // Script cost shown before use follows the Omen store itself.
   const scriptDownsideProtected = useOmenStore(() =>
@@ -118,6 +137,10 @@ export function GameplayScreen() {
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
   const wallDrawPending = useFloraRevealQueue((state) => state.queue.length > 0)
+  // Hand hints wait for the round's deal to land before they fade in.
+  const dealPending = useFloraRevealQueue((state) =>
+    state.queue.some((entry) => entry.kind === 'deal')
+  )
   const [actionError, setActionError] = useState<string | null>(null)
   const [targeting, setTargeting] = useState<VoidScript | null>(null)
   // A Seal the run makes here (a redrawn Purple tile) is used at once.
@@ -136,9 +159,7 @@ export function GameplayScreen() {
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
-  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(
-    null
-  )
+  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(null)
   const clearSecretReveal = useCallback(() => setSecretReveal(null), [])
   const toastCounter = useRef(0)
   const playButtonRef = useRef<HTMLButtonElement>(null)
@@ -295,21 +316,82 @@ export function GameplayScreen() {
         ? t('gameplay.reasonLastTurn', 'Your last Turn must be a Play')
         : t('gameplay.reasonNoReplacements', 'Not enough tiles left to draw')
 
+  // Playing or redrawing from the keyboard disables the button that had
+  // focus and removes the tiles on the felt, so focus would fall back to the
+  // page. It moves to the first rack tile instead (the felt's, when Select
+  // all has emptied the rack).
+  const rescueFocus = useRef(false)
+  useEffect(() => {
+    if (!rescueFocus.current) return
+    rescueFocus.current = false
+    const active = document.activeElement
+    if (
+      active instanceof HTMLElement &&
+      active !== document.body &&
+      !(active instanceof HTMLButtonElement && active.disabled)
+    )
+      return
+    const tile = (zone: string) =>
+      document.querySelector<HTMLButtonElement>(
+        `[data-play-zone="${zone}"] button[data-play-tile]:not(:disabled)`
+      )
+    ;(tile('hand') ?? tile('felt'))?.focus()
+  }, [game.handTiles, selectedIds])
+
   const handlePlayHand = useCallback(() => {
     if (selectedIds.length === 0) return
+    rescueFocus.current ||= keyboardFocused()
     const result = game.playHand([...selectedIds])
     if (result.success) setActionError(null)
-    else setActionError(result.errors?.[0] ?? playReason ?? null)
+    else {
+      rescueFocus.current = false
+      setActionError(result.errors?.[0] ?? playReason ?? null)
+    }
   }, [game, selectedIds, playReason])
 
   const handleRedraw = useCallback(() => {
     if (selectedIds.length === 0) return
+    rescueFocus.current ||= keyboardFocused()
     const result = game.redraw([...selectedIds])
     if (result.success) {
       setActionError(null)
       game.clearSelection()
-    } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
+    } else {
+      rescueFocus.current = false
+      setActionError(result.errors?.[0] ?? redrawReason ?? null)
+    }
   }, [game, selectedIds, redrawReason])
+
+  const handleBuyTurn = useCallback(() => {
+    const result = game.buyTurn()
+    setActionError(result.success ? null : (result.errors?.[0] ?? null))
+  }, [game])
+
+  // Short of Gold for the emergency Turn: offer a rewarded ad, once per Act,
+  // if ads are configured and one is ready. Each new last Turn is a new
+  // opportunity.
+  const offer = game.emergencyTurnOffer
+  const rewardedAd = useRewardedAd(
+    'emergency-turn',
+    offer?.adAvailable
+      ? `${game.currentAct}-${game.currentRound}-${game.state.handsAllowance}`
+      : null
+  )
+  const { watch: watchAd } = rewardedAd
+  const handleWatchAd = useCallback(async () => {
+    const outcome = await watchAd()
+    if (outcome === 'rewarded') {
+      const result = game.takeAdTurn()
+      setActionError(result.success ? null : (result.errors?.[0] ?? null))
+    } else
+      setActionError(
+        t(
+          outcome === 'dismissed'
+            ? 'gameplay.emergencyTurn.adIncomplete'
+            : 'gameplay.emergencyTurn.adUnavailable'
+        )
+      )
+  }, [game, watchAd, t])
 
   // REDRAW takes any number of tiles, so one tap picks every tile it can take
   // (a locked tile must be played); a second tap puts them all back.
@@ -326,24 +408,35 @@ export function GameplayScreen() {
         if (!selectedSet.has(id)) game.selectTile(id)
   }
 
+  // P, R, A and Esc (see useTableShortcuts); each only while its control
+  // would work. Focus that a shortcut removes moves to the rack.
+  const fromShortcut = (action: () => void) => () => {
+    const active = document.activeElement
+    rescueFocus.current =
+      active instanceof HTMLElement && active !== document.body
+    action()
+  }
+  useTableShortcuts(keyboardShortcuts && !tableClosed, {
+    onPlay: playAllowed ? fromShortcut(handlePlayHand) : null,
+    onRedraw: redrawAllowed ? fromShortcut(handleRedraw) : null,
+    onToggleAll:
+      redrawableIds.length > 1 ? fromShortcut(toggleSelectAll) : null,
+    onClear:
+      selectedIds.length > 0
+        ? fromShortcut(() => {
+            setActionError(null)
+            game.clearSelection()
+          })
+        : null,
+  })
+
   const handleExitGame = useCallback(async () => {
     if (await persistence.retrySave()) navigateTo(ROUTES.MENU)
   }, [persistence, navigateTo])
 
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
-  const displayedDecrees = useMemo(() => {
-    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0)
-      return ownedDecrees
-    const remaining = [...ownedDecrees]
-    const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
-      const index = remaining.findIndex(
-        (decree) => decreeKey(decree) === decreeId || decree.id === decreeId
-      )
-      return index === -1 ? [] : remaining.splice(index, 1)
-    })
-    return [...ordered, ...remaining]
-  }, [ownedDecrees, game.decreesFaceDown, game.decreeDisplayOrderIds])
   const disabledDecreeIds = new Set(game.disabledDecreeIds)
+  const hiddenDecreeIds = new Set(game.hiddenDecreeIds)
   const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
 
   const roundType: RoundType =
@@ -455,7 +548,7 @@ export function GameplayScreen() {
               data-tutorial="decrees"
               className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
             >
-              {displayedDecrees.map((decree, index) => (
+              {ownedDecrees.map((decree, index) => (
                 <DecreeCardCompact
                   key={decree.instanceId ?? `${decree.id}-${index}`}
                   decree={decree}
@@ -465,7 +558,7 @@ export function GameplayScreen() {
                     game.state.completeConcealedHandsPlayed
                   }
                   disabledDecreeIds={disabledDecreeIds}
-                  faceDown={game.decreesFaceDown}
+                  faceDown={isDecreeExcluded(decree, hiddenDecreeIds)}
                   disabledByMandate={isDecreeExcluded(
                     decree,
                     disabledDecreeIds
@@ -506,7 +599,7 @@ export function GameplayScreen() {
               />
             </div>
 
-            {/* Flowers, Seasons and held consumables; upgrades are in the Tea House. */}
+            {/* Flowers, Seasons, Omens and held consumables; upgrades are in the Tea House. */}
             <div className="gameplay-collection-items -mx-1 min-w-0 lg:mx-0">
               <CollectibleRail
                 flora={game.flora}
@@ -522,6 +615,7 @@ export function GameplayScreen() {
                 observatoryActive={game.state.charterSystem.hasCharter(
                   'observatory'
                 )}
+                omenSystem={game.state.omenSystem}
               />
             </div>
           </div>
@@ -535,7 +629,6 @@ export function GameplayScreen() {
               {t('mandateConsequence.debuff_until_sell')}
             </p>
           )}
-          <PendingOmens system={game.state.omenSystem} />
 
           {/* Fills the free table so the felt can sit in its middle. */}
           <div
@@ -583,6 +676,7 @@ export function GameplayScreen() {
                 debuffedIds={debuffedTileIds}
                 onToggle={handleToggle}
                 groupRules={showTileHints ? game.partialHandRules : null}
+                hintsHeld={dealPending}
                 disabled={tableClosed}
                 rackHeader={
                   <>
@@ -592,6 +686,17 @@ export function GameplayScreen() {
                           type="button"
                           data-select-all
                           onClick={toggleSelectAll}
+                          aria-keyshortcuts={
+                            keyboardShortcuts
+                              ? TABLE_SHORTCUTS.selectAll
+                              : undefined
+                          }
+                          data-shortcut={
+                            keyboardShortcuts
+                              ? TABLE_SHORTCUTS.selectAll
+                              : undefined
+                          }
+                          data-shortcut-inline
                           className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
                         >
                           {allPicked
@@ -634,6 +739,11 @@ export function GameplayScreen() {
           redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          shortcuts={keyboardShortcuts}
+          emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
+          onBuyTurn={handleBuyTurn}
+          adTurn={tableClosed ? null : rewardedAd}
+          onWatchAd={handleWatchAd}
           willClear={
             preview !== null &&
             preview.total >= Math.max(0, game.targetScore - game.score)
@@ -643,6 +753,7 @@ export function GameplayScreen() {
 
       {/* One thing at a time: the deal, then the guide, then Decrees. */}
       <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
+      <SimulatedAdOverlay />
       <BeginnerGuide
         isOpen={showGuide && !wallDrawPending}
         onClose={() => {
@@ -650,9 +761,7 @@ export function GameplayScreen() {
           setShowGuide(false)
         }}
       />
-      <DecreeReveal
-        paused={toast !== null || showGuide || wallDrawPending}
-      />
+      <DecreeReveal paused={toast !== null || showGuide || wallDrawPending} />
 
       <ConfirmPopup
         isOpen={showExitConfirm}

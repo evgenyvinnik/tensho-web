@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { settleReveals } from './helpers/table'
+import { closeOmenReveal, settleReveals } from './helpers/table'
 
 /**
  * What each play pays with all four Flowers awakened. The complete hand's
@@ -253,6 +253,8 @@ for (const language of ['en', 'es'])
         await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
       }
     }
+    // Clearing with Turns to spare earns an Omen, revealed before the shop.
+    await closeOmenReveal(page)
     await activate(
       page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
     )

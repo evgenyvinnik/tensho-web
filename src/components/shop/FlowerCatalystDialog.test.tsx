@@ -64,7 +64,7 @@ it.each(['en', 'es'] as const)(
     expect(dialog.querySelectorAll('fieldset img')).toHaveLength(4)
     expect(dialog.querySelector('button img')).toHaveAttribute(
       'src',
-      '/assets/illustrations/generated/controls/close.png'
+      '/assets/illustrations/controls-jade/close.webp'
     )
     expect(
       dialog.querySelector('img[src$="chrysanthemum-bloom.webp"]')

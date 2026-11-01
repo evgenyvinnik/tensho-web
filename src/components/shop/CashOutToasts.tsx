@@ -3,8 +3,8 @@
  *
  * The Tea House opens on the pay-out itself rather than a receipt. One toast
  * per source of Gold slides into the corner under the purse — the clear, the
- * interest, Decrees, Gold tiles, any adjustment, the rentals charged and a
- * swift-clear Omen — its coins fly into the purse, and the balance counts up
+ * interest, Decrees, Gold tiles, any adjustment, the rentals charged and
+ * Gold a swift-clear Omen paid — its coins fly into the purse, and the balance counts up
  * as each lands (rentals fly back out). The toasts fade on their own. Nothing
  * here moves money: the engine settled the round already, and the purse only
  * shows what has landed so far.
@@ -172,10 +172,10 @@ export function CashOutToasts({
               key={entry.id}
               data-cash-out-toast={entry.id}
               data-cash-out-phase={phase}
-              data-payout-value={entry.id === 'omen' ? undefined : entry.amount}
+              data-payout-value={entry.amount}
               data-payout-omen={entry.omenId}
               className={`flex max-w-full items-center gap-2 rounded-xl border px-3 py-1.5 text-sm text-[var(--color-beige-white)] shadow-xl [overflow-wrap:anywhere] ${
-                entry.id === 'omen'
+                entry.omenId
                   ? 'border-purple-300/60 bg-purple-950/90'
                   : 'border-[var(--color-golden-yellow)]/60 bg-[#10261d]/95'
               } ${
@@ -199,18 +199,26 @@ export function CashOutToasts({
                   className="h-6 w-6 shrink-0 object-contain"
                 />
               )}
-              <span className="min-w-0">{entry.label}</span>
-              {entry.id !== 'omen' && (
-                <span
-                  data-cash-out-amount
-                  className={`inline-flex shrink-0 items-center gap-1 font-black tabular-nums ${
-                    negative ? 'text-red-300' : 'text-emerald-300'
-                  }`}
-                >
-                  <GoldIcon className="h-4 w-4" />
-                  {signed(entry.amount)}G
-                </span>
-              )}
+              <span className="flex min-w-0 flex-col">
+                <span>{entry.label}</span>
+                {entry.note && (
+                  <span
+                    data-cash-out-note
+                    className="text-xs leading-snug text-[var(--color-beige-white)]/75"
+                  >
+                    {entry.note}
+                  </span>
+                )}
+              </span>
+              <span
+                data-cash-out-amount
+                className={`inline-flex shrink-0 items-center gap-1 font-black tabular-nums ${
+                  negative ? 'text-red-300' : 'text-emerald-300'
+                }`}
+              >
+                <GoldIcon className="h-4 w-4" />
+                {signed(entry.amount)}G
+              </span>
             </div>
           )
         })}

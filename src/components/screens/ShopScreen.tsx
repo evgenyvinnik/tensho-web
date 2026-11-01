@@ -6,8 +6,9 @@
  * - Item Slots (2-4 slots): Random items (Decrees, Fate Seals, Celestial Orbs)
  * - Blessing Packs (2 packs): Booster packs with random contents
  * - Imperial Charter (1 slot): Voucher-style permanent upgrade (after boss rounds)
- * - Reroll Button: Refresh item slots (5 gold base, +1 per reroll)
  * - Gold Display: Current gold amount
+ * - Reroll Button: Refresh item slots (5 gold base, +1 per reroll), right
+ *   above Next Round; the old item cards fade away and the new ones fade in
  * - Next Round Button: Proceed to next round
  *
  * Uses the run-owned ShopSession for purchases and pack settlement.
@@ -33,9 +34,11 @@ import {
 import { consumableMessage } from '../gameplay/consumableMessages'
 import { Button } from '../ui/Button'
 import { ShopHeader } from '../shop/ShopHeader'
+import { ShopRerollButton } from '../shop/ShopRerollButton'
 import { ShopOfferCard } from '../shop/ShopOfferCard'
 import { DecreeReveal } from '../effects/DecreeReveal'
 import { CelestialOrbReveal } from '../effects/CelestialOrbReveal'
+import { OmenReveal } from '../effects/OmenReveal'
 import { CashOutToasts } from '../shop/CashOutToasts'
 import type { CashOutEntry } from '../shop/cashOutEntries'
 import {
@@ -62,6 +65,9 @@ import { acceptsFlowerCatalyst } from '../../systems/flowerCatalysts'
 /** A Seal that is laid on wall tiles, so buying it first asks which. */
 const takesWallTiles = (seal: FateSeal) =>
   consumableTargetRange(seal.effect).max > 0
+
+/** How long a reroll's old item cards take to fade away (CSS matches). */
+const REROLL_LEAVE_MS = 180
 
 /** A pack claim waiting on the wall tiles for each of its chosen Seals. */
 interface PackSealSteps {
@@ -113,6 +119,17 @@ export function ShopScreen() {
     changes: SealedTile[]
   } | null>(null)
   const handleSealToastDone = useCallback(() => setSealUsed(null), [])
+  // A reroll swaps the item cards on screen: the ones showing fade away,
+  // then the new stock fades in. The engine has restocked already.
+  const [leavingItems, setLeavingItems] = useState<
+    TeaHouseOffering[] | null
+  >(null)
+  const [restocked, setRestocked] = useState(false)
+  useEffect(() => {
+    if (!leavingItems) return
+    const timer = setTimeout(() => setLeavingItems(null), REROLL_LEAVE_MS)
+    return () => clearTimeout(timer)
+  }, [leavingItems])
 
   useEffect(() => {
     triggerHints('shopEntered')
@@ -140,18 +157,22 @@ export function ShopScreen() {
     game.state.charterSystem.calculateEffects().interestCap +
     game.state.omenSystem.getInterestCapBonus()
 
-  // The round's pay arrives on screen once: toasts in the corner, coins into
-  // the purse, and the balance counting up as each lands. The engine settled
-  // it already; `pending` is only what has not landed yet. The count-up
-  // starts from the settled balance only while the purse still holds it: a
-  // run resumed after spending shows its real balance throughout.
+  // The round's pay arrives on screen once: a swift clear's Omen revealed
+  // centre stage first, then toasts in the corner, coins into the purse, and
+  // the balance counting up as each lands. The engine settled it already;
+  // `pending` is only what has not landed yet. The count-up starts from the
+  // settled balance only while the purse still holds it: a run resumed after
+  // spending shows its real balance throughout.
   const arrivalFor = (summary: NonNullable<typeof roundSummary>) => ({
     key: cashOutKey(summary),
     pending: game.gold === summary.goldAfter ? summary.netGoldChange : 0,
+    omen: Boolean(summary.omenId),
   })
   const [arrival, setArrival] = useState<{
     key: string
     pending: number
+    /** The earned Omen is still being revealed; the pay waits for it. */
+    omen: boolean
   } | null>(() => {
     if (!roundSummary) return null
     return wasCashOutShown(cashOutKey(roundSummary))
@@ -179,13 +200,26 @@ export function ShopScreen() {
     setPurseBump((count) => count + 1)
   }, [])
   const handleArrivalDone = useCallback(() => setArrival(null), [])
+  const handleOmenRevealed = useCallback(
+    () =>
+      setArrival((current) => (current ? { ...current, omen: false } : null)),
+    []
+  )
+  const revealingOmen = Boolean(arrival?.omen && roundSummary?.omenId)
   const displayGold = game.gold - (arrival?.pending ?? 0)
 
+  const shownItems = leavingItems ?? availableItems
   const offers: TeaHouseOffering[] = [
-    ...availableItems,
+    ...shownItems,
     ...availablePacks,
     ...(availableCharter ? [availableCharter] : []),
   ]
+  const itemTransition = (offering: TeaHouseOffering) => {
+    const index = shownItems.indexOf(offering)
+    if (index < 0 || reducedMotion) return undefined
+    if (leavingItems) return { phase: 'leave' as const, index }
+    return restocked ? { phase: 'enter' as const, index } : undefined
+  }
 
   /** The engine's own refusal, in words, before the player tries to buy. */
   const unavailableReasonFor = (offering: TeaHouseOffering) => {
@@ -384,8 +418,13 @@ export function ShopScreen() {
   )
 
   const handleReroll = useCallback(() => {
-    showResult(shop.reroll())
-  }, [shop, showResult])
+    const result = shop.reroll()
+    showResult(result)
+    if (!result.success || reducedMotion) return
+    // A reroll while cards are still leaving keeps those cards leaving.
+    setLeavingItems((leaving) => leaving ?? shownItems)
+    setRestocked(true)
+  }, [shop, showResult, reducedMotion, shownItems])
 
   const handleNextRound = useCallback(() => {
     if (shop.pendingPack) return
@@ -410,16 +449,12 @@ export function ShopScreen() {
         className="absolute inset-0 bg-[var(--color-dark-forest)]/45"
       />
 
-      {/* Header with gold, reroll, settings */}
+      {/* Header with gold and settings */}
       <ShopHeader
         interestCap={interestCap}
         gold={displayGold}
         purseBump={purseBump}
-        rerollCost={rerollCost}
-        canAffordReroll={game.gold >= rerollCost}
-        onReroll={handleReroll}
         onSettings={handleSettings}
-        rerollCount={shopState.rerollsThisVisit}
         status={<ClassicSaveNotice inline />}
       />
 
@@ -452,17 +487,14 @@ export function ShopScreen() {
             decrees={game.state.decreeSystem.getOwnedDecrees()}
             maxSlots={game.state.decreeSystem.getMaxSlots()}
             onSell={handleSellDecree}
-            upgrades={
-              game.yakuUpgrades.length > 0 ? (
-                <YakuUpgradeRow upgrades={game.yakuUpgrades} />
-              ) : undefined
-            }
+            upgrades={<YakuUpgradeRow upgrades={game.yakuFamilies} />}
           />
 
-          {/* One row: items, Blessing Packs and the Imperial Charter alike. */}
+          {/* Items, Blessing Packs and the Imperial Charter alike: three to a
+              row on a phone, scrolling down with the page, never sideways. */}
           <section data-shop-row className="mt-3 min-w-0">
             <h2 className="sr-only">{t('shop.ui.forSale', 'For sale')}</h2>
-            <div className="scroll-rail flex min-w-0 gap-2 overflow-x-auto px-3 py-2 sm:flex-wrap sm:justify-center sm:gap-3 sm:px-5">
+            <div className="grid min-w-0 grid-cols-3 gap-2 px-3 py-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3 sm:px-5">
               {offers.map((offering) => (
                 <ShopOfferCard
                   key={offering.id}
@@ -470,6 +502,7 @@ export function ShopScreen() {
                   canAfford={game.gold >= offering.finalCost}
                   unavailableReason={unavailableReasonFor(offering)}
                   onBuy={() => handleItemPurchase(offering)}
+                  transition={itemTransition(offering)}
                   onOfferFlower={
                     offering.itemType === 'Decree' &&
                     acceptsFlowerCatalyst(offering.item as Decree)
@@ -482,7 +515,7 @@ export function ShopScreen() {
                 />
               ))}
               {offers.length === 0 && (
-                <p className="w-full py-6 text-center text-[var(--color-beige-white)] opacity-50">
+                <p className="col-span-3 w-full py-6 text-center text-[var(--color-beige-white)] opacity-50">
                   {t('shop.ui.allPurchased')}
                 </p>
               )}
@@ -494,8 +527,19 @@ export function ShopScreen() {
         </div>
       </div>
 
-      {/* The last round's pay, arriving in the purse. */}
-      {arrival && roundSummary && (
+      {/* A swift clear's Omen, then the last round's pay arriving in the purse. */}
+      {revealingOmen && arrival && roundSummary?.omenId && (
+        <OmenReveal
+          key={arrival.key}
+          omenId={roundSummary.omenId}
+          roundType={roundSummary.roundType}
+          spareTurns={roundSummary.spareTurns}
+          copies={roundSummary.omenCopies}
+          onDone={handleOmenRevealed}
+          reducedMotion={reducedMotion}
+        />
+      )}
+      {arrival && !revealingOmen && roundSummary && (
         <CashOutToasts
           key={arrival.key}
           summary={roundSummary}
@@ -540,7 +584,12 @@ export function ShopScreen() {
       )}
 
       <div className="relative z-10 flex-shrink-0 border-t-2 border-[var(--color-saddle-brown)] bg-[var(--color-dark-forest)] safe-area-bottom">
-        <div className="screen-canvas px-3 py-3 sm:px-5 sm:py-4">
+        <div className="screen-canvas flex flex-col gap-2 px-3 py-3 sm:px-5 sm:py-4">
+          <ShopRerollButton
+            cost={rerollCost}
+            canAfford={game.gold >= rerollCost}
+            onReroll={handleReroll}
+          />
           <Button
             data-shop-continue
             variant="primary"
@@ -633,6 +682,7 @@ export function ShopScreen() {
         seals={game.fateSeals}
         wall={game.state.wallTemplate}
         paused={
+          revealingOmen ||
           sealOffering !== null ||
           packSeals !== null ||
           currentPackOffering !== null ||
@@ -641,8 +691,8 @@ export function ShopScreen() {
         settle={game.settleHeldFateSeal}
         onUsed={announceSeals}
       />
-      <DecreeReveal />
-      <CelestialOrbReveal />
+      <DecreeReveal paused={revealingOmen} />
+      <CelestialOrbReveal paused={revealingOmen} />
       <PackOpeningModal
         isOpen={currentPackOffering !== null}
         packOffering={currentPackOffering}

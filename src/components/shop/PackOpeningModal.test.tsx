@@ -178,7 +178,7 @@ it('names the one modifier and handles plain and Honor reward tiles', () => {
   const four = () => Tile.createNumbered(TileSuit.Souzu, 4)
   for (const [tile, name, rule] of [
     [four().withEnhancement(EnhancementType.Bonus), 'Bonus Mark', '+30'],
-    [four().withSeal(SealType.Gold), 'Gold Seal', '+3'],
+    [four().withSeal(SealType.Gold), 'Gold Stamp', '+3'],
     [four().withEdition(EditionType.Foil), 'Foil', '+50'],
   ] as const) {
     const text = tileRewardText(tile, i18n.t.bind(i18n))
@@ -243,7 +243,10 @@ it('draws a reward big in its rarity glow and shows its details card on hover or
 
   fireEvent.pointerEnter(choice, { pointerType: 'mouse' })
   expect(details()).toHaveTextContent(description)
-  expect(details()).toHaveTextContent(i18n.t('shop.kinds.orb'))
+  // The kind line names the family the Orb raises.
+  expect(details()).toHaveTextContent(
+    i18n.t('shop.kinds.orbFamily', { family: 'Pairs' })
+  )
   // The card only shows; the reward stays the thing to press.
   expect(details()).toHaveClass('pointer-events-none')
   fireEvent.pointerLeave(choice, { pointerType: 'mouse' })

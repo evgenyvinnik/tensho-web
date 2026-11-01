@@ -128,7 +128,7 @@
     "payout": "La ricompensa base per un round superato è di 3 monete d’oro per Piccolo, 5 per Grande e 10 per Boss, indipendentemente dai punti oltre l’obiettivo. Le poste possono eliminare la ricompensa Piccolo; Decreti e Presagi possono modificare il pagamento finale.",
     "interest": "Gli interessi si calcolano sull’oro posseduto prima del pagamento del round: 1 ogni 5, con un limite iniziale di 5. Carte e Presagi possono alzarlo; alcuni Presagi bloccano gli interessi. Una sconfitta non paga interessi.",
     "sale": "Controlla il pulsante Vendi di un Decreto per conoscerne il valore effettivo. I Decreti pagati con Fiori o ricevuti gratis possono valere 0 oro; quelli Eterni non sono vendibili. Vendere rimuove gli effetti e libera lo spazio occupato.",
-    "prices": "Controlla il prezzo di ogni offerta e il costo attuale del rinnovo. Sconti, edizioni, Carte e altri effetti possono cambiare i prezzi. Rinnovare non ripristina le Carte acquistate né l’offerta gratuita del Cartomante."
+    "prices": "Controlla il prezzo di ogni offerta e il costo attuale del rinnovo. Sconti, Edizioni, Carte e altri effetti possono cambiare i prezzi. Rinnovare non ripristina le Carte acquistate né l’offerta gratuita del Cartomante."
   },
   "achievements": {
     "firstSteps": {
@@ -161,19 +161,19 @@
     },
     "discardArtist": {
       "name": "Artista del cambio",
-      "description": "Cambia 2.500 tessere nel corso delle tue partite."
+      "description": "Ripesca 2.500 tessere nel corso delle tue partite."
     },
     "fortuneBuilt": {
       "name": "Fortuna accumulata",
-      "description": "Possiedi 400 monete d’oro in una sola partita."
+      "description": "Possiedi 400 Oro in una sola partita."
     },
     "wildFlush": {
       "name": "Colore selvaggio",
-      "description": "Segna punti con un Mezzo Colore composto solo da tessere Jolly."
+      "description": "Segna punti con un Mezzo colore (un seme più Venti o Draghi) composto solo da tessere Jolly."
     },
     "speedRun": {
       "name": "Corsa veloce",
-      "description": "Vinci una partita consumando al massimo 48 turni. I ricambi gratuiti non contano."
+      "description": "Vinci una partita consumando al massimo 48 turni. Le ripescate gratuite non contano."
     },
     "charterCollector": {
       "name": "Collezionista di carte",
@@ -181,23 +181,23 @@
     },
     "shattered": {
       "name": "In frantumi",
-      "description": "Rompi 2 tessere di Vetro in una sola giocata."
+      "description": "Rompi 2 tessere Vetro in una sola giocata."
     },
     "royalHand": {
       "name": "Mano regale",
-      "description": "Segna un Yakuman."
+      "description": "Segna uno Yakuman, una mano di livello massimo come Tre Grandi Draghi."
     },
     "retrograde": {
       "name": "Retrogrado",
-      "description": "Porta uno Yaku al livello 10."
+      "description": "Porta una famiglia di mani al livello 9."
     },
     "keeperOfWinds": {
       "name": "Custode dei venti",
-      "description": "Segna 10 Yaku del Vento in una sola partita."
+      "description": "Realizza un tris o un poker di Vento d’Est in una mano completa 5 volte in una partita."
     },
     "masterOfSilence": {
       "name": "Maestro del silenzio",
-      "description": "Vinci 3 round senza scartare tessere Onore."
+      "description": "Vinci 3 round senza ripescare alcun Vento o Drago."
     },
     "sealBearer": {
       "name": "Portatore di sigilli",
@@ -279,34 +279,34 @@
     }
   },
   "observatory": {
-    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. Buco Nero corrisponde a qualsiasi Yaku segnato.",
+    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. La Sfera del Buco Nero corrisponde a qualsiasi Yaku segnato.",
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
   },
   "closedHandAusterity": {
     "name": "Austerità della mano chiusa",
-    "description": "Le mani complete e chiuse ottengono ×1,5, con crescita ×1,2 per ogni precedente mano completa e chiusa nella partita, fino a ×4 prima del potenziamento dei Fiori. Le giocate tattiche e la Clemenza Shanten non contano.",
-    "progress": "Mani complete e chiuse: {{count}}. Prossima mano valida: ×{{factor}} prima dei Fiori."
+    "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten non contano.",
+    "progress": "Mani complete finora: {{count}}. Prossima: ×{{factor}} prima dei Fiori."
   },
   "yakuRepetition": {
     "name": "Editto della Ripetizione degli Yaku",
-    "description": "Ogni yaku segnato in round consecutivi accumula ×1,2 per round precedente della serie (fino a ×4). Saltare un round interrompe la serie. Il limite vale prima del potenziamento dei Fiori.",
+    "description": "Uno Yaku segnato in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quello Yaku interrompe la serie.",
     "title": "Combinazioni da ripetere",
     "streak": "{{name}} · {{rounds}} round precedenti consecutivi",
     "empty": "Nessuna serie precedente. Realizza uno Yaku in questo round per iniziarne una."
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "Realizza uno Yakuman.",
+    "seal_of_the_immortal": "Realizza uno Yakuman, una mano di livello massimo come Tre Grandi Draghi.",
     "seal_of_the_void": "Realizza tutti i 20 tipi di Yaku in una sola partita.",
     "planet_x_orb": "Realizza Sette Coppie.",
-    "ceres_orb": "Realizza una Mano esterna.",
-    "eris_orb": "Realizza Tredici orfani.",
+    "ceres_orb": "Realizza una Mano esterna: una mano completa con un 1, un 9, un Vento o un Drago in ogni gruppo e nella coppia.",
+    "eris_orb": "Realizza Tredici orfani: uno di ogni 1, 9, Vento e Drago, più un doppione.",
     "black_hole_orb": "Scopri tutte le altre 12 Sfere Celesti."
   },
   "decreeUnlocks": {
     "stage_master": "Raggiungi l’Atto 4.",
     "flower_pot": "Raggiungi l’Atto 8 nella modalità infinita facoltativa.",
-    "satellite": "Possiedi 400 monete d’oro in una sola partita.",
-    "swift_andy": "Vinci una partita consumando al massimo 48 turni. I ricambi gratuiti non contano.",
+    "satellite": "Possiedi 400 Oro in una sola partita.",
+    "swift_andy": "Vinci una partita consumando al massimo 48 turni. Le ripescate gratuite non contano.",
     "lucky_sixes": "Segna 10.000 punti in una sola giocata.",
     "the_idol": "Segna 1.000.000 punti in una sola giocata.",
     "stuntman": "Segna 100.000.000 punti in una sola giocata.",
@@ -314,9 +314,9 @@
     "astronomer": "Scopri tutte le Sfere Celesti.",
     "decree-blueprint": "Vinci una partita.",
     "decree-brainstorm": "Vinci una partita possedendo almeno cinque Decreti.",
-    "decree-heavenly-ordinance": "Segna un Yakuman.",
-    "decree-clone-army": "Vinci una partita alla posta Oro.",
-    "decree-yakuman-blessing": "Segna tre schemi Yakuman nella stessa partita.",
+    "decree-heavenly-ordinance": "Segna uno Yakuman, una mano di livello massimo come Tre Grandi Draghi.",
+    "decree-clone-army": "Vinci una partita al Livello Oro.",
+    "decree-yakuman-blessing": "Segna tre mani Yakuman nella stessa partita.",
     "decree-omega": "Completa l’atto 8 nella modalità infinita facoltativa."
   },
   "scoreThresholds": {
@@ -335,7 +335,7 @@
     "waiting": "In attesa di un altro Decreto.",
     "missing": "Bersaglio rimosso; nuova scelta al prossimo round.",
     "inactive": "Il copiatore o il bersaglio è inattivo.",
-    "rules": "Il bersaglio resta fisso nel round. Copia effetti e costi, non edizioni né catene di copie. Rimuoverlo o disattivarlo non seleziona un altro bersaglio."
+    "rules": "Il bersaglio resta fisso nel round. Copia effetti e costi, non Edizioni né catene di copie. Rimuoverlo o disattivarlo non seleziona un altro bersaglio."
   },
   "screenDownload": {
     "title": "Impossibile scaricare questa schermata",
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "Le modifiche alle tessere durano per tutta la partita, inclusi i round successivi. Una nuova partita riparte da zero.",
-    "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o scartarla conserva lo spazio; distruggerla o cambiarne l’edizione lo rimuove.",
+    "negativeTile": "+1 spazio Decreto finché questa tessera Negativa rimane nel tuo muro. Pescarla o mandarla nel fiume conserva lo spazio; distruggerla o cambiarne l’Edizione lo rimuove.",
     "overCapacity": "Capacità ridotta: conservi i Decreti posseduti. Libera spazio prima di acquisirne altri."
   },
   "yakuUpgrades": {
@@ -417,10 +417,10 @@
     "saveLeave": "Salva ed esci"
   },
   "omens": {
-    "pending": "Effetti dei presagi",
     "effects": {
       "shopFee": "Costo: {{amount}} oro quando questa offerta appare nel negozio. Nessun addebito se viene rinviata.",
       "seasonLock": "Prossima Stagione pescata: {{season}}. Il vincolo termina con quella pesca.",
+      "seasonLockLabel": "Prossima Stagione: {{season}}",
       "noInterest": "Interessi bloccati · round rimanenti: {{rounds}}",
       "interestBoost": "Limite interessi +{{amount}} oro · round rimanenti: {{rounds}}"
     },
@@ -439,11 +439,11 @@
       },
       "speed_omen": {
         "name": "Presagio della velocità",
-        "description": "Dà 5 oro per ogni vittoria rapida della partita."
+        "description": "Ottieni 5 Oro per ogni vittoria lampo in questa partita (un round piccolo o grande superato con turni d’avanzo)."
       },
       "throwback_omen": {
         "name": "Presagio del ritorno",
-        "description": "Ottiene ×0.25 Mult per vittoria rapida per il resto della partita."
+        "description": "Per il resto della partita, il punteggio di ogni giocata viene moltiplicato per 1 + 0,25 per ogni vittoria lampo (una dà ×1,25, due danno ×1,5)."
       },
       "fortune_omen": {
         "name": "Presagio della fortuna",
@@ -459,7 +459,7 @@
       },
       "seal_omen": {
         "name": "Presagio del Sigillo",
-        "description": "Il prossimo negozio offre sicuramente un Sigillo del Fato negli spazi per articoli."
+        "description": "Il prossimo negozio offre sicuramente un Sigillo del Destino negli spazi per articoli."
       },
       "decree_omen": {
         "name": "Presagio del Decreto",
@@ -471,11 +471,11 @@
       },
       "expansion_omen": {
         "name": "Presagio dell’espansione",
-        "description": "Ottieni +1 spazio Decreto permanente."
+        "description": "Ottieni +1 spazio Decreto per il resto di questa partita."
       },
       "precision_omen": {
         "name": "Presagio della precisione",
-        "description": "Nel prossimo round: +2 spazi per tessere in mano."
+        "description": "Nel prossimo round: +2 spazi del leggio."
       },
       "abundance_omen": {
         "name": "Presagio dell’abbondanza",
@@ -483,11 +483,11 @@
       },
       "polychrome_omen": {
         "name": "Presagio policromo",
-        "description": "Applica l’edizione Policroma a un Decreto casuale che possiedi."
+        "description": "Aggiunge un’Edizione Policroma a un Decreto casuale che possiedi."
       },
       "foil_omen": {
         "name": "Presagio laminato",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Laminata."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Laminata."
       },
       "interest_omen": {
         "name": "Presagio degli interessi",
@@ -495,11 +495,11 @@
       },
       "score_surge_omen": {
         "name": "Presagio dell’impennata",
-        "description": "La prossima mano che segna punti ottiene +100 punti base."
+        "description": "La prossima giocata che segna punti ottiene +100 Punti base."
       },
       "multiplication_omen": {
         "name": "Presagio della moltiplicazione",
-        "description": "La prossima mano che segna punti ottiene ×1,5 Molt."
+        "description": "La prossima giocata che segna punti ottiene ×1,5 Mult."
       },
       "blessing_pack_omen": {
         "name": "Presagio della benedizione",
@@ -507,7 +507,7 @@
       },
       "negative_omen": {
         "name": "Presagio negativo",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Negativa (+1 spazio)."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Negativa (+1 spazio)."
       },
       "austerity_omen": {
         "name": "Presagio dell’austerità",
@@ -515,7 +515,7 @@
       },
       "holographic_omen": {
         "name": "Presagio olografico",
-        "description": "Il prossimo Decreto acquistato ottiene l’edizione Olografica."
+        "description": "Il prossimo Decreto acquistato ottiene un’Edizione Olografica."
       },
       "double_omen": {
         "name": "Presagio doppio",
@@ -527,35 +527,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Sigillo dell’alchimista",
-        "description": "Potenzia 2 tessere selezionate con il Marchio Fortuna."
+        "description": "Aggiunge un Marchio Fortuna (una probabilità di +20 Mult o +20 Oro quando segna punti) a 2 tessere a tua scelta"
       },
       "seal_of_the_empress": {
         "name": "Sigillo dell’imperatrice",
-        "description": "Potenzia 2 tessere selezionate con il Marchio Bonus."
+        "description": "Aggiunge un Marchio Moltiplicatore (+4 Mult quando segna punti) a 2 tessere a tua scelta"
       },
       "seal_of_the_sage": {
         "name": "Sigillo del saggio",
-        "description": "Potenzia 2 tessere selezionate con il Marchio Bonus."
+        "description": "Aggiunge un Marchio Bonus (+30 Punti quando segna punti) a 2 tessere a tua scelta"
       },
       "seal_of_harmony": {
         "name": "Sigillo dell’armonia",
-        "description": "Converte 1 tessera in Jolly (conta come qualsiasi seme)."
+        "description": "Aggiunge un Marchio Jolly a 1 tessera a tua scelta (conta come ogni seme)"
       },
       "seal_of_fortitude": {
         "name": "Sigillo della fortezza",
-        "description": "Potenzia 1 tessera con il Marchio Acciaio (×1,5 Molt mentre resta in mano)."
+        "description": "Aggiunge un Marchio Acciaio a 1 tessera a tua scelta (×1,5 Mult finché resta sul leggio)"
       },
       "seal_of_glass": {
         "name": "Sigillo del vetro",
-        "description": "Potenzia 1 tessera con il Marchio Vetro (×2 Molt, può rompersi)."
+        "description": "Aggiunge un Marchio Vetro a 1 tessera a tua scelta (×2 Mult quando segna punti, ma può rompersi)"
       },
       "seal_of_wealth": {
         "name": "Sigillo della ricchezza",
-        "description": "Potenzia 1 tessera con il Marchio Oro (+3 Oro se resta in mano alla fine del round)."
+        "description": "Aggiunge un Marchio Oro a 1 tessera a tua scelta (+3 Oro se è sul leggio quando il round finisce)"
       },
       "seal_of_stone": {
         "name": "Sigillo della pietra",
-        "description": "Potenzia 1 tessera con il Marchio Pietra (+100 Punti; senza valore né seme, non entra mai in un gruppo, segna sempre per intero)."
+        "description": "Aggiunge un Marchio Pietra a 1 tessera a tua scelta (+100 Punti; senza numero né seme, non entra mai in un gruppo, segna sempre per intero)"
       },
       "seal_of_manzu": {
         "name": "Sigillo dei Caratteri",
@@ -575,11 +575,11 @@
       },
       "seal_of_the_emperor": {
         "name": "Sigillo dell’imperatore",
-        "description": "Crea 2 Sigilli del Fato casuali."
+        "description": "Crea 2 Sigilli del Destino casuali."
       },
       "seal_of_the_fool": {
         "name": "Sigillo del matto",
-        "description": "Crea l’ultimo Sigillo del Fato o l’ultima Sfera Celeste usati in questa partita."
+        "description": "Crea l’ultimo Sigillo del Destino o l’ultima Sfera Celeste usati in questa partita."
       },
       "seal_of_judgment": {
         "name": "Sigillo del giudizio",
@@ -587,35 +587,35 @@
       },
       "seal_of_the_hermit": {
         "name": "Sigillo dell’eremita",
-        "description": "Raddoppia l’Oro (massimo +20 Oro)."
+        "description": "Raddoppia il tuo Oro (fino a +20 Oro)"
       },
       "seal_of_balance": {
         "name": "Sigillo dell’equilibrio",
-        "description": "Ottieni il valore di vendita totale di tutti i Decreti (massimo 50 Oro)."
+        "description": "Ottieni Oro pari al valore di vendita totale dei tuoi Decreti (fino a 50 Oro)"
       },
       "seal_of_strength": {
         "name": "Sigillo della forza",
-        "description": "Aumenta di 1 il valore di un massimo di 2 tessere (massimo 9)."
+        "description": "Aumenta di 1 il numero di un massimo di 2 tessere (fino a 9)"
       },
       "seal_of_release": {
         "name": "Sigillo della liberazione",
-        "description": "Distrugge definitivamente fino a 2 tessere selezionate."
+        "description": "Distrugge fino a 2 tessere a tua scelta per il resto di questa partita"
       },
       "seal_of_transmutation": {
         "name": "Sigillo della trasmutazione",
-        "description": "Seleziona 2 tessere: quella a sinistra diventa una copia di quella a destra."
+        "description": "Scegli 2 tessere: la prima diventa una copia della seconda"
       },
       "seal_of_fortune": {
         "name": "Sigillo della fortuna",
-        "description": "Probabilità di 1 su 4 di aggiungere l’edizione Laminata, Olografica o Policroma a un Decreto casuale."
+        "description": "Probabilità di 1 su 4 di dare a un Decreto casuale un’Edizione Laminata, Olografica o Policroma"
       },
       "seal_of_the_immortal": {
         "name": "Sigillo dell’immortale",
-        "description": "Crea un Decreto mitico, se c’è spazio."
+        "description": "Crea il Decreto Ordinanza celeste, della rarità più alta (se hai spazio)"
       },
       "seal_of_the_void": {
         "name": "Sigillo del vuoto",
-        "description": "Potenzia ogni Yaku di 1 livello."
+        "description": "Aumenta di 1 livello ogni famiglia di mani"
       },
       "seal_of_unity": {
         "name": "Sigillo dell’Unità",
@@ -631,19 +631,19 @@
       },
       "mult": {
         "name": "Marchio Moltiplicatore",
-        "description": "+4 Moltiplicatore quando la tessera segna punti."
+        "description": "+4 Mult quando la tessera segna punti."
       },
       "wild": {
         "name": "Marchio Jolly",
-        "description": "Conta come qualsiasi seme per gli yaku."
+        "description": "Conta come qualsiasi seme, anche per gli Yaku."
       },
       "glass": {
         "name": "Marchio Vetro",
-        "description": "×2 Moltiplicatore quando segna punti; probabilità del 25% di rompersi dopo."
+        "description": "Fragile ma potente. ×2 Mult quando segna punti; probabilità di 1 su 4 di rompersi."
       },
       "steel": {
         "name": "Marchio Acciaio",
-        "description": "×1,5 Moltiplicatore mentre resta in mano, senza essere giocata."
+        "description": "×1,5 Mult finché resta sul leggio invece di essere giocata."
       },
       "stone": {
         "name": "Marchio Pietra",
@@ -651,11 +651,11 @@
       },
       "gold": {
         "name": "Marchio Oro",
-        "description": "+3 Oro se resta in mano alla fine del round."
+        "description": "+3 Oro se è ancora sul leggio quando il round finisce."
       },
       "lucky": {
         "name": "Marchio Fortuna",
-        "description": "Quando segna punti: probabilità di 1 su 5 di ottenere +20 Moltiplicatore e di 1 su 15 di ottenere +20 Oro."
+        "description": "Quando segna punti: probabilità di 1 su 5 di ottenere +20 Mult e di 1 su 15 di ottenere +20 Oro."
       }
     }
   },
@@ -671,11 +671,11 @@
       },
       "holographic": {
         "name": "Olografica",
-        "description": "+10 Moltiplicatore quando segna punti."
+        "description": "+10 Mult quando segna punti."
       },
       "polychrome": {
         "name": "Policroma",
-        "description": "×1,5 Moltiplicatore quando segna punti."
+        "description": "Colori prismatici cangianti. ×1,5 Mult quando segna punti."
       },
       "negative": {
         "name": "Negativa",
@@ -686,19 +686,19 @@
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "Sigillo d’Oro",
-        "description": "+3 Oro quando la tessera segna punti."
+        "name": "Timbro d’Oro",
+        "description": "+3 Oro ogni volta che questa tessera segna punti."
       },
       "red": {
-        "name": "Sigillo Rosso",
-        "description": "Riattiva la tessera una volta quando segna punti."
+        "name": "Timbro Rosso",
+        "description": "Questa tessera segna punti due volte."
       },
       "blue": {
-        "name": "Sigillo Blu",
+        "name": "Timbro Blu",
         "description": "Crea una Sfera Celeste casuale se questa tessera è nella giocata che supera il round."
       },
       "purple": {
-        "name": "Sigillo Viola",
+        "name": "Timbro Viola",
         "description": "Crea un Sigillo del Destino casuale quando questa tessera viene ripescata."
       }
     }
@@ -715,10 +715,10 @@
     "available": "{{name}} ({{count}} disponibili)",
     "penalty_lose_tile": "Perdi 1 tessera casuale.",
     "penalty_lose_gold": "Perdi tutto l’oro.",
-    "penalty_lose_hand_size": "Perdi permanentemente {{count}} spazio nella mano.",
-    "penalty_lock_tile": "Blocca 1 tessera casuale nella riserva morta.",
+    "penalty_lose_hand_size": "Perdi {{count}} spazio del leggio per il resto di questa partita.",
+    "penalty_lock_tile": "Blocca 1 tessera casuale nel fiume: non può più essere pescata.",
     "penalty_lose_decree_slot": "Perdi {{count}} spazio Decreto nel prossimo round.",
-    "penalty_halve_base_score": "Dimezza i punti base della prossima mano.",
+    "penalty_halve_base_score": "Dimezza i Punti base della prossima giocata.",
     "penalty_destroy_decrees": "Distruggi tutti gli altri Decreti.",
     "penalty_none": "Nessuna penalità aggiuntiva.",
     "protected": "La protezione del Presagio annulla la penalità aggiuntiva.",
@@ -728,7 +728,7 @@
     "targets": "Tessere bersaglio",
     "count": "Bersagli: {{selected}} / {{required}}",
     "copyOrder": "La tessera 1 diventa una copia della tessera 2. Scegli prima quella da modificare.",
-    "replacesModifier": "Sostituisce {{names}}: una tessera ha un solo marchio, sigillo o edizione.",
+    "replacesModifier": "Sostituisce {{names}}: una tessera speciale ha un solo Marchio, Timbro o Edizione.",
     "cost": "Costo del Vuoto",
     "failed": "Impossibile usare questo oggetto.",
     "unavailable": "Questo oggetto non può essere usato ora.",
@@ -800,6 +800,14 @@
     "fast": "Veloce",
     "resetSettings": "Ripristina Predefiniti",
     "dangerZone": "Zona pericolosa",
+    "privacy": {
+      "title": "Privacy",
+      "policy": "Informativa sulla privacy",
+      "policyDesc": "Cosa salva Tensho e cosa possono raccogliere le sue pubblicità",
+      "choices": "Scelte sulla privacy",
+      "choicesDesc": "Rivedi o modifica come le pubblicità possono usare i tuoi dati",
+      "choicesError": "Impossibile aprire le scelte sulla privacy. Controlla la connessione e riprova."
+    },
     "data": "Dati e progressi",
     "gameplay": "Gioco",
     "muteMusic": "Disattiva musica",
@@ -819,10 +827,12 @@
       "normal": "Normale",
       "slow": "Lenta"
     },
-    "tileHintsDesc": "Raggruppa la mano in Coppie, Sequenze e Tris sotto il leggio e segnala una mano Mahjong completa",
+    "tileHintsDesc": "Mostra Coppie, Sequenze e Tris suggeriti sotto il leggio e segnala una mano Mahjong completa",
     "visual": "Visivo",
     "rankNumbers": "Numeri sulle tessere",
     "rankNumbersDesc": "Mostra un piccolo 1–9 sulle tessere numerate e una lettera sui Draghi mentre impari le facce.",
+    "keyboardShortcuts": "Scorciatoie da tastiera",
+    "keyboardShortcutsDesc": "Al tavolo, P gioca la mano, R ripesca, A seleziona tutte le tessere ed Esc le rimette a posto. Le frecce spostano tra le tessere.",
     "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà.",
     "credits": {
       "title": "Crediti",
@@ -861,11 +871,14 @@
     "deadWallDraw": "Pesca dal muro morto",
     "winsRound": "Vince il round",
     "tilesInWall": "Tessere nel muro",
-    "handsRemaining": "Mani rimaste",
+    "handsRemaining": "Turni rimasti",
     "redrawsRemaining": "Ripescate rimaste",
     "redrawSelected": "Ripesca le tessere selezionate",
     "redrawHint": "Restituisce fino a 3 tessere selezionate e ne pesca altrettante",
     "decreeDisabledByMandate": "Disattivato da Cuore Cremisi in questa mano",
+    "hiddenDecreeTitle": "Decreto nascosto",
+    "faceDownDecree": "Decreto a faccia in giù",
+    "hiddenDecreeDescription": "La Ghianda d’ambra nasconde questo Decreto e ne spegne il potere finché non vinci il round.",
     "season": "Stagione:",
     "endless": "Infinito",
     "wall": "Muro:",
@@ -889,7 +902,7 @@
       "label": "Previsione",
       "selectOneMore": "Seleziona un’altra tessera per giocare questa combinazione",
       "notCompleteHand": "Questa selezione non è una mano completa",
-      "returnTiles": "Rimetti tessere finché ne restano 5, o completa la mano",
+      "returnTiles": "Rimetti tessere finché ne restano {{max}}, o completa la mano",
       "groupToScore": "Raggruppa le tessere per contare per intero; le mani complete aprono gli Yaku"
     },
     "previewConcealed": "Anteprima punteggio nascosta",
@@ -916,18 +929,18 @@
     "beginnerFullHand": "Più avanti, quattro figure e una coppia formano una mano completa e sbloccano potenti moltiplicatori Yaku.",
     "showGuidedMove": "Mostrami una mossa",
     "guidedMove": "Prima mossa guidata",
-    "beginnerPatternReady": "{{pattern}} pronta",
+    "beginnerPatternReady": "Combinazione pronta: {{pattern}}",
     "beginnerTapGlowing": "Tocca le {{count}} tessere luminose qui sotto. Formano già una figura che assegna punti.",
     "beginnerRedrawTitle": "Cambia le tessere isolate",
     "beginnerRedrawHelp": "Tocca le tessere isolate luminose, poi Ripesca per cercare una Coppia, una Sequenza o un Tris.",
     "beginnerRedrawReady": "Pronto: premi Ripesca per sostituire queste tessere isolate.",
-    "beginnerPatternComplete": "Ottimo: questa {{pattern}} vale +{{points}} punti figura. Controlla la previsione, poi gioca.",
+    "beginnerPatternComplete": "Ottimo: {{pattern}} vale +{{points}} punti figura. Controlla la previsione, poi gioca.",
     "beginnerSelectedProgress": "{{current}} tessere luminose preparate su {{total}}",
     "tilesReady": "{{count}} tessere pronte da giocare",
     "beginnerRedrawForecast": "Pronto per la ripesca",
     "beginnerPatternForecast": "{{pattern}} · +{{points}} punti figura",
     "beginnerChooseRedraw": "Scegli le tessere luminose",
-    "beginnerFindPattern": "Trova la {{pattern}} luminosa",
+    "beginnerFindPattern": "Trova la combinazione luminosa: {{pattern}}",
     "stageUnlockHint": "Le mani complete sbloccano la dichiarazione Mano Pronta in due fasi",
     "gameOver": "Partita finita",
     "redraw": "RIPESCA",
@@ -975,7 +988,7 @@
       "pointsNow": "Punti subito",
       "keepsPace": "Tiene il ritmo: questa mano chiede {{required}}.",
       "behindPace": "Resta sotto i {{required}} che questa mano chiede.",
-      "buildToward": "Costruire verso una {{pattern}}",
+      "buildToward": "Punta a: {{pattern}}",
       "buildTowardPlain": "Costruire verso una figura",
       "shapeCost": "Segna {{difference}} punti in meno ora con un gruppo completo. Non prevede le prossime pescate.",
       "tradeoff": "Confronta tessere e punti. Un suggerimento seleziona solo le tessere, senza consumare una giocata."
@@ -1004,7 +1017,21 @@
     "feltTiles": "Tessere da giocare",
     "collection": "I tuoi oggetti",
     "deadWallHint": "Scegli una sola tessera e scambiala con una del muro morto. Una volta per round, gratis.",
-    "turnsLabel": "Turni rimasti"
+    "turnsLabel": "Turni rimasti",
+    "emergencyTurn": {
+      "buy": "+1 turno",
+      "label": "Compra un turno in più per {{cost}} oro",
+      "short": "Oro insufficiente: un turno in più costa {{cost}}",
+      "watchAd": "Guarda pubblicità",
+      "watchAdLabel": "Guarda una pubblicità per un turno in più",
+      "adPlaying": "Pubblicità in corso…",
+      "adIncomplete": "La pubblicità è stata chiusa prima: nessun turno extra.",
+      "adUnavailable": "Nessuna pubblicità disponibile al momento.",
+      "simulatedAd": "Pubblicità (simulata)",
+      "adCountdown": "La ricompensa sarà pronta tra {{seconds}} s",
+      "adReady": "Ricompensa pronta",
+      "adClaim": "Ottieni +1 turno"
+    }
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -1024,9 +1051,9 @@
     "optional": "La vittoria si ottiene sconfiggendo il Boss dell'Atto {{total}}. La modalità infinita e i Livelli superiori sono sfide facoltative, non requisiti per finire il gioco.",
     "recommendation": "Per la tua prima vittoria, scegli Feltro Verde e Livello Bianco. I tavoli cambiano le regole, non solo l'aspetto; i Livelli aumentano la difficoltà. Il Livello Rosso mantiene gli obiettivi del Bianco, ma elimina l'Oro di ricompensa dei Round Piccoli.",
     "guideTitle": "Combina Decreti che lavorano insieme",
-    "guideEarly": "Inizia con bonus affidabili di +Punti e +Molt. Scegli bonus che si attivano con le tessere e le figure che giochi davvero, non con una mano rara che speri di ottenere.",
-    "guideLate": "Prima degli ultimi Atti, cerca Molt che cresca nel corso delle giocate o dei round, poi un Decreto ×Molt per amplificarlo. Aumentare soltanto i Punti fissi potrebbe non bastare.",
-    "guideExample": "Esempio: 100 Punti × (4 Molt + 6 Molt) × 2 = 2.000 punti. +Molt si somma al moltiplicatore; ×Molt lo moltiplica. Combina entrambi.",
+    "guideEarly": "Inizia con bonus affidabili di +Punti e +Mult. Scegli bonus che si attivano con le tessere e le figure che giochi davvero, non con una mano rara che speri di ottenere.",
+    "guideLate": "Prima degli ultimi Atti, cerca Mult che cresca nel corso delle giocate o dei round, poi un Decreto ×Mult per amplificarlo. Aumentare soltanto i Punti fissi potrebbe non bastare.",
+    "guideExample": "Esempio: 100 Punti × (4 Mult + 6 Mult) × 2 = 2.000 punti. +Mult si somma al moltiplicatore; ×Mult lo moltiplica. Combina entrambi.",
     "guideMatch": "Rispetta le condizioni: un bonus per i tris richiede tris; un bonus per un seme richiede quel seme. Leggi le regole di ogni pergamena. Un effetto potente che non si attiva mai è uno slot sprecato. Conserva Oro per acquisti utili invece di spenderlo tutto per rinnovare il negozio."
   },
   "shop": {
@@ -1073,7 +1100,7 @@
       "nextRound": "Continua al prossimo round",
       "confirmPurchase": "Conferma acquisto",
       "purchasePrompt": "Acquistare {{name}} per {{cost}}G?",
-      "baseEdition": "Edizione base",
+      "standardCharter": "Standard",
       "goldBalance": "{{amount}} oro",
       "rerollsUsed": "Rimescolamenti usati: {{count}}",
       "forSale": "In vendita"
@@ -1081,11 +1108,12 @@
     "payout": {
       "interest": "Interessi",
       "decrees": "Decreti",
-      "goldTiles": "Tessere d’oro",
+      "goldTiles": "Tessere Oro",
       "bonus": "Rettifica ricompensa",
       "rentals": "Affitti",
       "omenEarned": "Presagio: {{name}}",
-      "omen": "Presagio"
+      "omen": "Presagio",
+      "stakeWithheld": "{{stake}}: questo round non paga la ricompensa di {{amount}}G"
     },
     "packChoices": "Scegli fino a {{max}} ricompense tra {{count}}",
     "packInventoryFull": "Spazi Decreto insufficienti per questa selezione. Vendi un Decreto, scegline meno oppure salta il pacchetto.",
@@ -1114,11 +1142,12 @@
     "packSkipped": "Pacchetto saltato",
     "kinds": {
       "decree": "Decreto · {{rarity}}",
-      "decreeHelp": "Un Decreto è una regola permanente per questa partita. Occupa uno spazio Decreto e puoi venderlo quando vuoi.",
+      "decreeHelp": "Un Decreto cambia le regole finché lo possiedi. Di norma occupa uno spazio Decreto. Puoi venderlo, a meno che non sia Eterno.",
       "seal": "Sigillo del Destino · agisce subito",
       "sealHelp": "Usato nell’istante in cui lo prendi: scegli le tessere del tuo muro da cambiare, e restano cambiate per tutta la partita.",
       "sealHelpInstant": "Usato nell’istante in cui lo prendi.",
       "orb": "Sfera Celeste · potenzia una famiglia di mani",
+      "orbFamily": "Sfera Celeste · {{family}}",
       "script": "Scritto del Vuoto · potente, con un prezzo",
       "consumableHelp": "Resta tra i tuoi oggetti finché non lo usi. Toccalo sul tavolo per usarlo.",
       "tile": "Tessera · aggiunta al tuo muro",
@@ -1132,7 +1161,7 @@
     "buyFor": "Compra · {{price}} oro",
     "help": {
       "what": "La Casa del Tè è il negozio tra un round e l’altro.",
-      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli agiscono subito (un Sigillo chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
+      "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli del Destino agiscono subito (un Sigillo del Destino chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
       "interest": "L’oro che tieni frutta interessi: +1 ogni 5 posseduti a fine round, fino a +{{cap}}.",
       "cashOut": "La paga del round arriva nella borsa al tuo ingresso, un avviso per ogni fonte: il round superato, gli interessi, i Decreti, le tessere d’oro e gli affitti addebitati.",
       "build": "La tua configurazione mostra i tuoi Decreti accanto ai potenziamenti yaku: apri una pergamena per leggerne le regole o venderla, o un potenziamento per vederne il livello. Ogni acquisto avviene con il proprio pulsante Compra."
@@ -1161,31 +1190,31 @@
     "items": {
       "stage_master": {
         "name": "Maestro di Scena",
-        "description": "+25 Punti e +1 Molt per ogni Atto completato."
+        "description": "+25 Punti e +1 Mult per ogni Atto completato."
       },
       "flower_pot": {
         "name": "Vaso di Fiori",
-        "description": "×3 Molt finché possiedi tutti e quattro i Fiori diversi."
+        "description": "×3 Mult finché possiedi tutti e quattro i Fiori diversi."
       },
       "satellite": {
         "name": "Satellite",
-        "description": "+1 Oro per ogni famiglia di Sfere Celesti sopra il livello 1 alla fine di ogni round vinto."
+        "description": "Alla fine di ogni round vinto, +1 Oro per ogni famiglia di mani che hai portato sopra il livello 0 con le Sfere."
       },
       "swift_andy": {
         "name": "Andy Scattante",
-        "description": "+2 utilizzi gratuiti di RIPESCA per round; dimensione del portatessere −2."
+        "description": "+2 ripescate gratuite per round; −2 spazi del leggio."
       },
       "lucky_sixes": {
         "name": "Sei Fortunati",
-        "description": "+6 Molt per ogni tessera numerata 6 giocata. Le tessere Pietra non contano."
+        "description": "+6 Mult per ogni tessera numerata 6 giocata. Le tessere Pietra non contano."
       },
       "the_idol": {
         "name": "L’Idolo",
-        "description": "×3 Molt se giochi almeno due tessere e tutte hanno lo stesso seme e valore stampati. Le tessere Pietra invalidano la condizione; le tessere Jolly mantengono la propria identità stampata."
+        "description": "×3 Mult se giochi almeno due tessere e sono tutte la stessa tessera stampata. Le tessere Pietra la invalidano; le tessere Jolly mantengono la faccia stampata."
       },
       "stuntman": {
         "name": "Controfigura",
-        "description": "+250 Punti; dimensione del portatessere −3."
+        "description": "+250 Punti; −3 spazi del leggio."
       },
       "cartomancer": {
         "name": "Cartomante",
@@ -1209,79 +1238,79 @@
       },
       "decree-gentle-breeze": {
         "name": "Brezza leggera",
-        "description": "+2 Molt."
+        "description": "+2 Mult."
       },
       "decree-rising-sun": {
         "name": "Sole nascente",
-        "description": "+3 Molt."
+        "description": "+3 Mult."
       },
       "decree-lunar-glow": {
         "name": "Bagliore lunare",
-        "description": "+4 Molt."
+        "description": "+4 Mult."
       },
       "decree-crimson-banner": {
         "name": "Stendardo cremisi",
-        "description": "+5 Molt."
+        "description": "+5 Mult."
       },
       "decree-golden-seal": {
-        "name": "Sigillo dorato",
-        "description": "+6 Molt."
+        "name": "Insegne d'oro",
+        "description": "+6 Mult."
       },
       "decree-manzu-master": {
         "name": "Maestro dei Caratteri",
-        "description": "+3 Molt se la mano contiene tessere di Caratteri."
+        "description": "+3 Mult se la giocata include una tessera di Caratteri"
       },
       "decree-pinzu-perfectionist": {
         "name": "Perfezionista dei Cerchi",
-        "description": "+3 Molt se la mano contiene tessere di Cerchi."
+        "description": "+3 Mult se la giocata include una tessera di Cerchi"
       },
       "decree-souzu-scholar": {
         "name": "Studioso dei Bambù",
-        "description": "+3 Molt se la mano contiene tessere di Bambù."
+        "description": "+3 Mult se la giocata include una tessera di Bambù"
       },
       "decree-wind-walker": {
         "name": "Viandante dei venti",
-        "description": "+4 Molt se la mano contiene una tessera Vento."
+        "description": "+4 Mult se la giocata include un Vento"
       },
       "decree-dragon-disciple": {
         "name": "Discepolo dei draghi",
-        "description": "+4 Molt se la mano contiene una tessera Drago."
+        "description": "+4 Mult se la giocata include un Drago"
       },
       "decree-edge-runner": {
         "name": "Corridore sul filo",
-        "description": "+20 Punti per ogni tessera terminale nella mano."
+        "description": "+20 Punti per ogni tessera terminale (un 1 o un 9) giocata"
       },
       "decree-middle-way": {
         "name": "Via di mezzo",
-        "description": "+10 Punti per ogni tessera semplice nella mano."
+        "description": "+10 Punti per ogni tessera semplice (da 2 a 8) giocata"
       },
       "decree-green-fortune": {
         "name": "Fortuna verde",
-        "description": "+15 Punti per ogni tessera verde (2, 3, 4, 6, 8 di Bambù)."
+        "description": "+15 Punti per ogni tessera tutta verde giocata: 2, 3, 4, 6 e 8 di Bambù, e il Drago Verde"
       },
       "decree-coin-collector": {
         "name": "Collezionista di monete",
-        "description": "+1 Oro alla fine del round."
+        "description": "+1 Oro alla fine di ogni round"
       },
       "decree-merchants-favor": {
         "name": "Favore del mercante",
-        "description": "+2 Oro alla fine del round."
+        "description": "+2 Oro alla fine di ogni round"
       },
       "decree-lucky-coin": {
         "name": "Moneta fortunata",
-        "description": "+3 Oro alla fine del round."
+        "description": "+3 Oro alla fine di ogni round"
       },
       "decree-pair-lover": {
         "name": "Amante delle coppie",
-        "description": "+30 Punti se la mano contiene una coppia."
+        "description": "+30 Punti se la giocata include una coppia"
       },
       "decree-sequence-seeker": {
         "name": "Cercatore di sequenze",
-        "description": "+30 Punti se la mano contiene una sequenza."
+        "description": "+30 Punti se la giocata include una sequenza"
       },
       "decree-triplet-tracker": {
         "name": "Cacciatore di tris",
-        "description": "+40 Punti se la mano contiene un tris."
+        "description": "+40 Punti se la giocata include un tris"
       },
       "decree-flower-friend": {
         "name": "Amico dei fiori",
@@ -1289,11 +1318,11 @@
       },
       "decree-seasonal-blessing": {
         "name": "Benedizione stagionale",
-        "description": "+2 Molt per ogni Stagione attiva."
+        "description": "+2 Mult per ogni Stagione attiva."
       },
       "decree-wide-grip": {
         "name": "Presa ampia",
-        "description": "+1 spazio per tessere in mano."
+        "description": "+1 spazio del leggio"
       },
       "decree-second-chance": {
         "name": "Seconda possibilità",
@@ -1301,115 +1330,115 @@
       },
       "decree-balanced-path": {
         "name": "Sentiero dell’equilibrio",
-        "description": "+15 Punti e +2 Molt."
+        "description": "+15 Punti e +2 Mult."
       },
       "decree-modest-fortune": {
         "name": "Modesta fortuna",
-        "description": "+20 Punti e +1 Oro per round."
+        "description": "+20 Punti e +1 Oro alla fine di ogni round"
       },
       "decree-humble-power": {
         "name": "Potere umile",
-        "description": "+2 Molt e +1 Oro per round."
+        "description": "+2 Mult e +1 Oro alla fine di ogni round"
       },
       "decree-one-mastery": {
         "name": "Maestria degli uno",
-        "description": "+25 Punti per ogni tessera di valore 1 nella mano."
+        "description": "+25 Punti per ogni tessera numerata 1 giocata"
       },
       "decree-nine-mastery": {
         "name": "Maestria dei nove",
-        "description": "+25 Punti per ogni tessera di valore 9 nella mano."
+        "description": "+25 Punti per ogni tessera numerata 9 giocata"
       },
       "decree-five-blessing": {
         "name": "Benedizione dei cinque",
-        "description": "+35 Punti per ogni tessera di valore 5 nella mano."
+        "description": "+35 Punti per ogni tessera numerata 5 giocata"
       },
       "decree-spark": {
         "name": "Scintilla",
-        "description": "×1,2 Molt."
+        "description": "×1,2 Mult"
       },
       "decree-ember": {
         "name": "Brace",
-        "description": "×1,3 Molt."
+        "description": "×1,3 Mult"
       },
       "decree-riichi-devotee": {
         "name": "Devoto delle coppie",
-        "description": "+4 Mult se la giocata ha due o più coppie"
+        "description": "+4 Mult se la giocata include due o più coppie"
       },
       "decree-tanyao-tactician": {
         "name": "Stratega dei semplici",
-        "description": "+3 Molt quando realizzi una mano Tutti semplici."
+        "description": "+3 Mult quando realizzi Tutti semplici: una mano completa di sole tessere da 2 a 8, senza 1, 9, Venti o Draghi"
       },
       "decree-pinfu-purist": {
         "name": "Purista delle sequenze",
-        "description": "+3 Molt quando realizzi una mano Tutte sequenze."
+        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze più una coppia che non sia di Draghi o di Vento d’Est"
       },
       "decree-manzu-emperor": {
         "name": "Imperatore dei Caratteri",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Caratteri."
+        "description": "+8 Mult se almeno metà delle tessere giocate sono Caratteri"
       },
       "decree-pinzu-princess": {
         "name": "Principessa dei Cerchi",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Cerchi."
+        "description": "+8 Mult se almeno metà delle tessere giocate sono Cerchi"
       },
       "decree-souzu-sage": {
         "name": "Saggio dei Bambù",
-        "description": "+8 Molt se almeno metà delle tessere nella mano sono Bambù."
+        "description": "+8 Mult se almeno metà delle tessere giocate sono Bambù"
       },
       "decree-flush-fever": {
         "name": "Febbre del colore",
-        "description": "×1,5 Molt se la mano è di un solo seme."
+        "description": "×1,5 Mult se tutte le tessere numerate giocate sono di un solo seme (Venti e Draghi ammessi)"
       },
       "decree-honor-guard": {
         "name": "Guardia d’onore",
-        "description": "×1,5 Molt se la mano contiene almeno 3 tessere onore."
+        "description": "×1,5 Mult se la giocata include 3 o più Onori (Venti o Draghi)"
       },
       "decree-terminal-tide": {
         "name": "Marea dei terminali",
-        "description": "×1,5 Molt se la mano contiene almeno 4 tessere terminali."
+        "description": "×1,5 Mult se la giocata include 4 o più terminali (1 o 9)"
       },
       "decree-straight-arrow": {
         "name": "Freccia diritta",
-        "description": "+80 Punti se la mano contiene 3 sequenze."
+        "description": "+80 Punti se la giocata include 3 o più sequenze"
       },
       "decree-run-master": {
         "name": "Maestro delle sequenze",
-        "description": "+6 Molt per ogni sequenza nella mano."
+        "description": "+6 Mult per ogni sequenza giocata"
       },
       "decree-triplet-thunder": {
         "name": "Tuono dei tris",
-        "description": "+8 Molt per ogni tris nella mano."
+        "description": "+8 Mult per ogni tris giocato"
       },
       "decree-echo-stone": {
         "name": "Pietra dell’eco",
-        "description": "Riattiva la prima tessera che segna punti."
+        "description": "La prima tessera che segna punti lo fa due volte"
       },
       "decree-mirror-shard": {
         "name": "Frammento di specchio",
-        "description": "Riattiva l’ultima tessera che segna punti."
+        "description": "L’ultima tessera che segna punti lo fa due volte"
       },
       "decree-dragon-echo": {
         "name": "Eco dei draghi",
-        "description": "Riattiva tutte le tessere Drago."
+        "description": "Ogni Drago giocato segna punti due volte"
       },
       "decree-wind-echo": {
         "name": "Eco dei venti",
-        "description": "Riattiva tutte le tessere Vento."
+        "description": "Ogni Vento giocato segna punti due volte"
       },
       "decree-golden-ratio": {
         "name": "Sezione aurea",
-        "description": "+1 Molt ogni 5 Oro posseduti (massimo +10)."
+        "description": "+1 Mult ogni 5 Oro posseduti (massimo +10)"
       },
       "decree-tax-collector": {
         "name": "Esattore",
-        "description": "+4 Oro alla fine del round."
+        "description": "+4 Oro alla fine di ogni round"
       },
       "decree-garden-keeper": {
         "name": "Custode del giardino",
-        "description": "+4 Molt per ogni Fiore raccolto."
+        "description": "+4 Mult per ogni Fiore raccolto."
       },
       "decree-blossom-storm": {
         "name": "Tempesta di petali",
-        "description": "×1,2 Molt per ogni Fiore raccolto."
+        "description": "×1,2 Mult per ogni Fiore raccolto"
       },
       "decree-seasonal-wind": {
         "name": "Vento stagionale",
@@ -1417,15 +1446,15 @@
       },
       "decree-slow-burn": {
         "name": "Fuoco lento",
-        "description": "+2 Molt per ogni round giocato in questa partita."
+        "description": "+2 Mult per ogni round completato in questa partita"
       },
       "decree-momentum": {
         "name": "Slancio",
-        "description": "+15 Punti per ogni mano giocata in questo round."
+        "description": "+15 Punti per ogni giocata precedente in questo round"
       },
       "decree-crescendo": {
         "name": "Crescendo",
-        "description": "×1,1 Molt per ogni mano giocata in questo round."
+        "description": "×1,1 Mult per ogni giocata precedente in questo round"
       },
       "decree-waste-not": {
         "name": "Nulla va sprecato",
@@ -1437,27 +1466,27 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Zelota del valore",
-        "description": "×1,5 Molt quando realizzi una mano Tessere di valore."
+        "description": "×1,5 Mult quando realizzi Tessere di valore: una mano completa con un tris o un poker di Draghi o di Vento d’Est"
       },
       "decree-toitoi-titan": {
         "name": "Titano dei tris",
-        "description": "×1,5 Molt quando realizzi una mano Tutti tris."
+        "description": "×1,5 Mult quando realizzi Tutti tris: una mano completa di quattro tris o poker più una coppia"
       },
       "decree-ittsu-initiate": {
         "name": "Iniziato dei nove",
-        "description": "×1,5 Molt quando realizzi una mano Scala 1–9."
+        "description": "×1,5 Mult quando realizzi una Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme"
       },
       "decree-chinitsu-champion": {
         "name": "Campione del colore puro",
-        "description": "×2,0 Molt quando realizzi una mano Colore puro."
+        "description": "×2 Mult quando realizzi Colore puro: una mano completa di un solo seme, senza Venti né Draghi"
       },
       "decree-veteran": {
         "name": "Veterano",
-        "description": "+30 Punti per ogni atto completato."
+        "description": "+30 Punti per ogni Atto completato"
       },
       "decree-experience": {
         "name": "Esperienza",
-        "description": "×1,1 Molt per ogni atto completato."
+        "description": "×1,1 Mult per ogni Atto completato"
       },
       "decree-greater-jade": {
         "name": "Giada superiore",
@@ -1465,27 +1494,27 @@
       },
       "decree-blazing-banner": {
         "name": "Stendardo ardente",
-        "description": "+10 Molt."
+        "description": "+10 Mult."
       },
       "decree-flame": {
         "name": "Fiamma",
-        "description": "×1,5 Molt."
+        "description": "×1,5 Mult"
       },
       "decree-wind-dragon": {
         "name": "Vento e drago",
-        "description": "+5 Molt se la mano contiene sia un Vento sia un Drago."
+        "description": "+5 Mult se la giocata include sia un Vento sia un Drago"
       },
       "decree-all-suits": {
         "name": "Tutti i semi",
-        "description": "+8 Molt se la mano contiene tutti e 3 i semi."
+        "description": "+8 Mult se la giocata include Caratteri, Cerchi e Bambù"
       },
       "decree-bookends": {
         "name": "Reggilibri",
-        "description": "+60 Punti se la mano contiene sia un 1 sia un 9."
+        "description": "+60 Punti se la giocata include sia un 1 sia un 9"
       },
       "decree-expansive-grip": {
         "name": "Presa estesa",
-        "description": "+2 spazi per tessere in mano."
+        "description": "+2 spazi del leggio"
       },
       "decree-careful-player": {
         "name": "Giocatore prudente",
@@ -1493,119 +1522,119 @@
       },
       "decree-inferno": {
         "name": "Inferno",
-        "description": "×2,0 Molt."
+        "description": "×2 Mult"
       },
       "decree-supernova": {
         "name": "Supernova",
-        "description": "×2,5 Molt se questa giocata porta il punteggio del round ad almeno il doppio dell’obiettivo, prima dei bonus di Supernova e Perfezionista."
+        "description": "×2,5 Mult se questa giocata porta il punteggio del round ad almeno il doppio dell’obiettivo, prima dei bonus di Supernova e Perfezionista."
       },
       "decree-perfectionist": {
         "name": "Perfezionista",
-        "description": "×3 Molt se la prima giocata supera il round, prima dei bonus di Supernova e Perfezionista."
+        "description": "×3 Mult se la prima giocata supera il round, prima dei bonus di Supernova e Perfezionista."
       },
       "decree-compound-interest": {
         "name": "Interesse composto",
-        "description": "+2 Molt ogni 10 Oro posseduti."
+        "description": "+2 Mult ogni 10 Oro posseduti"
       },
       "decree-wealth-engine": {
         "name": "Motore della ricchezza",
-        "description": "+1 Oro per ogni Decreto posseduto alla fine del round."
+        "description": "+1 Oro per ogni Decreto posseduto alla fine di ogni round"
       },
       "decree-perpetual-motion": {
         "name": "Moto perpetuo",
-        "description": "+2 Molt per ogni mano giocata in questa partita."
+        "description": "+2 Mult per ogni giocata precedente in questa partita"
       },
       "decree-triple-echo": {
         "name": "Tripla eco",
-        "description": "Riattiva una volta tutte le tessere che segnano punti."
+        "description": "Ogni tessera che segna punti lo fa due volte"
       },
       "decree-terminal-resonance": {
         "name": "Risonanza dei terminali",
-        "description": "Riattiva due volte le tessere terminali."
+        "description": "Ogni tessera terminale (1 o 9) giocata segna punti tre volte"
       },
       "decree-honor-resonance": {
         "name": "Risonanza degli onori",
-        "description": "Riattiva due volte le tessere onore."
+        "description": "Ogni Onore (Vento o Drago) giocato segna punti tre volte"
       },
       "decree-manzu-monarch": {
         "name": "Monarca dei Caratteri",
-        "description": "×2,0 Molt se tutta la mano è composta da Caratteri."
+        "description": "×2 Mult se tutte le tessere giocate sono Caratteri"
       },
       "decree-pinzu-potentate": {
         "name": "Potentato dei Cerchi",
-        "description": "×2,0 Molt se tutta la mano è composta da Cerchi."
+        "description": "×2 Mult se tutte le tessere giocate sono Cerchi"
       },
       "decree-souzu-sovereign": {
         "name": "Sovrano dei Bambù",
-        "description": "×2,0 Molt se tutta la mano è composta da Bambù."
+        "description": "×2 Mult se tutte le tessere giocate sono Bambù"
       },
       "decree-flower-emperor": {
         "name": "Imperatore dei fiori",
-        "description": "×1,5 Molt per ogni Fiore raccolto."
+        "description": "×1,5 Mult per ogni Fiore raccolto"
       },
       "decree-season-lord": {
         "name": "Signore delle stagioni",
-        "description": "+10 Molt per ogni Stagione attiva."
+        "description": "+10 Mult per ogni Stagione attiva."
       },
       "decree-nature-bond": {
         "name": "Legame con la natura",
-        "description": "+3 Molt per ogni Fiore, +30 Punti per ogni Stagione."
+        "description": "+3 Mult per ogni Fiore, +30 Punti per ogni Stagione."
       },
       "decree-honitsu-herald": {
         "name": "Araldo del mezzo colore",
-        "description": "×2,0 Molt quando realizzi una mano Mezzo colore."
+        "description": "×2 Mult quando realizzi Mezzo colore: una mano completa di un seme più Venti o Draghi"
       },
       "decree-sanshoku-sage": {
         "name": "Saggio della tripla sequenza",
-        "description": "×2,0 Molt quando realizzi una mano Tripla sequenza mista."
+        "description": "×2 Mult quando realizzi Tripla sequenza mista: una mano completa con la stessa sequenza in tutti e tre i semi"
       },
       "decree-chanta-champion": {
         "name": "Campione della mano esterna",
-        "description": "×2,0 Molt quando realizzi una Mano esterna o una Mano esterna pura."
+        "description": "×2 Mult quando realizzi una Mano esterna: una mano completa con almeno una sequenza, in cui ogni gruppo e la coppia includono un 1, un 9, un Vento o un Drago. Vale anche la Mano esterna pura (uguale, ma senza Venti né Draghi, quindi ogni gruppo e la coppia includono un 1 o un 9)."
       },
       "decree-mandate-breaker": {
         "name": "Infrangitore di mandati",
-        "description": "+15 Molt e ×1,5 Molt durante i round Boss."
+        "description": "Durante i round Boss: +15 Mult e ×1,5 Mult"
       },
       "decree-boss-slayer": {
         "name": "Sterminatore di boss",
-        "description": "×2,0 Molt durante i round Boss."
+        "description": "×2 Mult durante i round Boss"
       },
       "decree-fortune-and-glory": {
         "name": "Fortuna e gloria",
-        "description": "+60 Punti, +8 Molt, +3 Oro per round."
+        "description": "+60 Punti e +8 Mult, e +3 Oro alla fine di ogni round"
       },
       "decree-emperors-blessing": {
         "name": "Benedizione dell’imperatore",
-        "description": "+100 Punti e +10 Molt."
+        "description": "+100 Punti e +10 Mult."
       },
       "decree-golden-age": {
         "name": "Età dell’oro",
-        "description": "+8 Oro alla fine del round."
+        "description": "+8 Oro alla fine di ogni round"
       },
       "decree-sacrifice": {
         "name": "Sacrificio",
-        "description": "×3.0 Mult, −1 turno per round"
+        "description": "×3 Mult; −1 turno per round"
       },
       "decree-transmuter": {
         "name": "Trasmutatore",
-        "description": "Tutte le tessere semplici diventano terminali nel calcolo del punteggio."
+        "description": "Le tessere da 2 a 8 giocate valgono come terminali (1 e 9)"
       },
       "decree-harmonizer": {
         "name": "Armonizzatore",
-        "description": "Tutti i semi contano come lo stesso seme per formare sequenze."
+        "description": "Le sequenze possono mescolare i semi (ad esempio 1 di Caratteri, 2 di Cerchi e 3 di Bambù)"
       },
       "decree-final-act": {
         "name": "Atto finale",
-        "description": "×1,5 Molt per ogni atto oltre il 4."
+        "description": "×1,5 Mult per ogni Atto oltre l’Atto 4"
       },
       "decree-endless-journey": {
         "name": "Viaggio senza fine",
-        "description": "×1,2 Molt per ogni atto completato."
+        "description": "×1,2 Mult per ogni Atto completato"
       },
       "decree-master-grip": {
         "name": "Presa magistrale",
-        "description": "+3 spazi per tessere in mano."
+        "description": "+3 spazi del leggio"
       },
       "decree-infinite-patience": {
         "name": "Pazienza infinita",
@@ -1613,47 +1642,47 @@
       },
       "decree-divine-flame": {
         "name": "Fiamma divina",
-        "description": "×3,0 Molt."
+        "description": "×3 Mult"
       },
       "decree-heavens-wrath": {
         "name": "Ira celeste",
-        "description": "×4,0 Molt se la mano non contiene tessere semplici."
+        "description": "×4 Mult se la giocata non contiene tessere da 2 a 8 (solo 1, 9, Venti e Draghi)"
       },
       "decree-void-blessing": {
         "name": "Benedizione del vuoto",
-        "description": "×5,0 Molt se la mano è composta solo da Onori."
+        "description": "×5 Mult se tutte le tessere giocate sono Venti o Draghi"
       },
       "decree-eternal-echo": {
         "name": "Eco eterna",
-        "description": "Riattiva due volte tutte le tessere che segnano punti."
+        "description": "Ogni tessera che segna punti lo fa tre volte"
       },
       "decree-dragon-king": {
         "name": "Re dei draghi",
-        "description": "Riattiva le tessere Drago 3 volte."
+        "description": "Ogni Drago giocato segna punti quattro volte"
       },
       "decree-yaku-amplifier": {
         "name": "Amplificatore degli Yaku",
-        "description": "Tutti i moltiplicatori degli Yaku aumentano di ×1,5."
+        "description": "Quando una mano completa segna Yaku, il loro moltiplicatore combinato viene moltiplicato per 1,5"
       },
       "decree-yakuman-seeker": {
         "name": "Cercatore di Yakuman",
-        "description": "×5,0 Molt quando realizzi uno Yakuman."
+        "description": "×5 Mult quando realizzi uno Yakuman, una mano di livello massimo come Tre Grandi Draghi o Tredici orfani"
       },
       "decree-four-seasons-master": {
         "name": "Maestro delle quattro stagioni",
-        "description": "×2,0 Molt per ogni Stagione attiva."
+        "description": "×2 Mult per ogni Stagione attiva"
       },
       "decree-eternal-garden": {
         "name": "Giardino eterno",
-        "description": "+10 Molt per ogni Fiore; i Fiori non possono essere persi."
+        "description": "+10 Mult per ogni Fiore. La Siccità non può annullare i tuoi Fiori."
       },
       "decree-midas-touch": {
         "name": "Tocco di Mida",
-        "description": "+10 Oro alla fine del round."
+        "description": "+10 Oro alla fine di ogni round"
       },
       "decree-infinite-wealth": {
         "name": "Ricchezza infinita",
-        "description": "×1,1 Molt ogni 10 Oro posseduti."
+        "description": "×1,1 Mult ogni 10 Oro posseduti"
       },
       "decree-doppelganger": {
         "name": "Sosia",
@@ -1661,23 +1690,23 @@
       },
       "decree-manzu-god": {
         "name": "Divinità dei Caratteri",
-        "description": "×3,0 Molt se tutte le tessere sono Caratteri."
+        "description": "×3 Mult se tutte le tessere giocate sono Caratteri"
       },
       "decree-pinzu-god": {
         "name": "Divinità dei Cerchi",
-        "description": "×3,0 Molt se tutte le tessere sono Cerchi."
+        "description": "×3 Mult se tutte le tessere giocate sono Cerchi"
       },
       "decree-souzu-god": {
         "name": "Divinità dei Bambù",
-        "description": "×3,0 Molt se tutte le tessere sono Bambù."
+        "description": "×3 Mult se tutte le tessere giocate sono Bambù"
       },
       "decree-glass-cannon": {
         "name": "Cannone di vetro",
-        "description": "×6,0 Molt; si distrugge se perdi un round Boss."
+        "description": "×6 Mult. Si distrugge se perdi un round Boss."
       },
       "decree-phoenix": {
         "name": "Fenice",
-        "description": "Impedisce una sconfitta per partita, poi si vende da sola."
+        "description": "Se stai per perdere un round, lo superi invece. Poi questo Decreto viene distrutto."
       },
       "decree-time-lord": {
         "name": "Signore del tempo",
@@ -1685,51 +1714,51 @@
       },
       "decree-exponential": {
         "name": "Crescita esponenziale",
-        "description": "×1,3 Molt ogni 100 punti base segnati."
+        "description": "×1,3 Mult ogni 100 Punti base nella giocata"
       },
       "decree-chain-reaction": {
         "name": "Reazione a catena",
-        "description": "×1,5 Molt per ogni Yaku realizzato in questa mano."
+        "description": "×1,5 Mult per ogni Yaku nella mano realizzata"
       },
       "decree-cosmic-jade": {
         "name": "Giada cosmica",
-        "description": "+200 Punti, ×1,5 Molt."
+        "description": "+200 Punti e ×1,5 Mult"
       },
       "decree-solar-banner": {
         "name": "Stendardo solare",
-        "description": "+25 Molt, ×2,0 Molt."
+        "description": "+25 Mult e ×2 Mult"
       },
       "decree-universal-grip": {
         "name": "Presa universale",
-        "description": "+4 spazi per tessere in mano."
+        "description": "+4 spazi del leggio"
       },
       "decree-celestial-throne": {
         "name": "Trono celeste",
-        "description": "×10.0 Mult, −2 al leggio, −1 turno per round"
+        "description": "×10 Mult; −2 spazi del leggio e −1 turno per round"
       },
       "decree-void-emperor": {
         "name": "Imperatore del vuoto",
-        "description": "×8,0 Molt se il punteggio della mano precedente era 0."
+        "description": "×8 Mult se la tua giocata precedente ha segnato 0"
       },
       "decree-echo-dimension": {
         "name": "Dimensione dell’eco",
-        "description": "Tutti gli effetti di riattivazione si attivano due volte."
+        "description": "Raddoppia i punteggi extra concessi dagli altri tuoi Decreti (una tessera che segna due volte segna tre volte)"
       },
       "decree-world-tree": {
         "name": "Albero del mondo",
-        "description": "×2,0 Molt per ogni Fiore, ×1,5 per ogni Stagione."
+        "description": "×2 Mult per ogni Fiore e ×1,5 Mult per ogni Stagione attiva"
       },
       "decree-dragon-hoard": {
         "name": "Tesoro del drago",
-        "description": "×1,2 Molt ogni 10 Oro posseduti."
+        "description": "×1,2 Mult ogni 10 Oro posseduti"
       },
       "decree-yaku-nexus": {
         "name": "Nesso degli Yaku",
-        "description": "Tutti gli Yaku segnano punti a una categoria superiore (+1)."
+        "description": "Ogni Yaku segna come se fosse di un livello superiore (un Livello 1 da ×1,3 diventa ×1,6)"
       },
       "decree-reality-warp": {
         "name": "Distorsione della realtà",
-        "description": "Tutte le tessere contano come qualsiasi seme e valore."
+        "description": "Qualsiasi gruppo di 14 tessere selezionate può formare una mano completa"
       },
       "decree-time-master": {
         "name": "Maestro del tempo",
@@ -1737,75 +1766,75 @@
       },
       "decree-immortal-decree": {
         "name": "Decreto immortale",
-        "description": "Impedisce tutte le sconfitte, ma dimezza il punteggio."
+        "description": "Ogni volta che staresti per perdere un round, lo superi invece. Dopo il primo salvataggio, i tuoi punteggi vengono dimezzati per il resto della partita, anche se vendi questo Decreto."
       },
       "broken_stair_edict": {
         "name": "Editto della Scala Spezzata",
-        "description": "Le sequenze possono saltare un valore (ad esempio, 1-3-4 è valido)."
+        "description": "Le sequenze possono saltare un numero (1-3-4 o 1-2-4 valgono)."
       },
       "false_eye_mandate": {
         "name": "Mandato del falso occhio",
-        "description": "Un gruppo può fungere da coppia per la validazione della mano."
+        "description": "Una mano completa può usare uno dei suoi gruppi al posto della coppia."
       },
       "honor_transmutation": {
         "name": "Trasmutazione degli onori",
-        "description": "Le tessere onore possono contare come tessere numerate del seme più presente nella tua mano."
+        "description": "Venti e Draghi possono contare come tessere numerate del tuo seme più presente."
       },
       "celestial_wildcard": {
         "name": "Jolly celeste",
-        "description": "Una tessera per mano può sostituire qualsiasi altra tessera."
+        "description": "Una tessera per giocata può sostituire qualsiasi tessera ti serva."
       },
       "dead_wall_writ": {
         "name": "Editto del muro morto",
-        "description": "Una volta per round, scambia una tessera scelta con una del muro morto senza spendere turni."
+        "description": "Una volta per round, scambia una tessera scelta con una del muro morto (le tessere riservate in fondo al muro) senza spendere turni."
       },
       "shanten_clemency": {
         "name": "Clemenza Shanten",
-        "description": "Le mani possono segnare punti a 1-shanten con una penalità del 50% al punteggio."
+        "description": "Una mano a cui manca una tessera per essere completa può essere giocata come mano completa, a metà punteggio."
       },
       "closed_hand_austerity": {
         "name": "Austerità della mano chiusa",
-        "description": "Le mani completamente chiuse ottengono un moltiplicatore del punteggio ×1,5."
+        "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten non contano."
       },
       "terminal_devotion": {
         "name": "Devozione ai terminali",
-        "description": "Ogni tessera terminale nella mano aggiunge +5% al punteggio finale."
+        "description": "Ogni tessera terminale (1 o 9) giocata aggiunge 0,05 al ×Mult di questo Decreto (quattro danno ×1,2)."
       },
       "yaku_repetition_charter": {
         "name": "Editto della Ripetizione degli Yaku",
-        "description": "Realizzare lo stesso tipo di Yaku in round consecutivi fa crescere i moltiplicatori in modo composto."
+        "description": "Uno Yaku segnato in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quello Yaku interrompe la serie."
       },
       "decree-blueprint": {
         "name": "Progetto",
-        "description": "Copia l’effetto del Decreto a destra."
+        "description": "Copia l’effetto del Decreto alla sua destra"
       },
       "decree-brainstorm": {
         "name": "Tempesta di idee",
-        "description": "Copia l’effetto del Decreto più a sinistra."
+        "description": "Copia l’effetto del tuo Decreto più a sinistra"
       },
       "decree-heavenly-ordinance": {
         "name": "Ordinanza celeste",
-        "description": "Moltiplicatore ×5."
+        "description": "×5 Mult"
       },
       "decree-clone-army": {
         "name": "Armata di cloni",
-        "description": "Copia gli effetti di tutti gli altri Decreti."
+        "description": "Copia gli effetti di tutti gli altri tuoi Decreti"
       },
       "decree-yakuman-blessing": {
         "name": "Benedizione Yakuman",
-        "description": "Moltiplicatore ×10 quando segni uno Yakuman."
+        "description": "×10 Mult quando realizzi uno Yakuman, una mano di livello massimo come Tre Grandi Draghi o Tredici orfani"
       },
       "decree-omega": {
         "name": "Omega",
-        "description": "+500 punti base, +50 al moltiplicatore, poi moltiplicatore ×2."
+        "description": "+500 Punti, +50 Mult e ×2 Mult"
       },
       "decree-treasure-hunter": {
         "name": "Cacciatore di tesori",
-        "description": "+1 oro per ogni seme distinto rimasto in mano quando vinci un round. Venti e Draghi contano separatamente."
+        "description": "Quando vinci un round, +1 Oro per ogni seme diverso rimasto sul leggio. Venti e Draghi contano come semi separati."
       },
       "yakuman_succession": {
         "name": "Successione Yakuman",
-        "description": "Con almeno 2 fiori, Mezzo colore, Colore puro, Doppia sequenza pura doppia, Mano esterna pura e Sette coppie diventano Yakuman (×4 ciascuno). Le combinazioni declassate da un Mandato non ascendono. Le copie non si sommano."
+        "description": "Finché possiedi almeno 2 Fiori, queste mani diventano Yakuman, il livello massimo (×4 ciascuna): Mezzo colore, Colore puro, Doppia sequenza pura doppia (due volte due sequenze identiche), Mano esterna pura (un 1 o un 9 in ogni gruppo e nella coppia) e Sette coppie. Una mano indebolita da un Mandato non può salire. Le copie non si sommano."
       },
       "river_tax": {
         "name": "Tassa fluviale",
@@ -1817,15 +1846,15 @@
       },
       "tanyao_dispensation": {
         "name": "Deroga dei semplici",
-        "description": "Le tessere terminali (1 e 9) sono ammesse nelle mani Tutti semplici; gli Onori restano esclusi."
+        "description": "Tutti semplici (di norma solo tessere da 2 a 8) accetta anche 1 e 9. Venti e Draghi continuano a invalidarlo."
       },
       "moonlit_seal": {
-        "name": "Sigillo lunare",
-        "description": "Ogni tessera onore nella mano giocata aggiunge +0,1x al moltiplicatore."
+        "name": "Emblema lunare",
+        "description": "Ogni Vento o Drago giocato aggiunge 0,1 al ×Mult di questo Decreto (tre danno ×1,3)."
       },
       "pure_suit_asceticism": {
         "name": "Ascetismo di un solo seme",
-        "description": "Le tessere del seme dominante aumentano il punteggio del 10% ciascuna. I bonus si moltiplicano."
+        "description": "×1,1 Mult per ogni tessera giocata del seme più presente nella giocata, in modo composto (cinque danno circa ×1,6)."
       },
       "decree-half-suited": {
         "name": "Mezzo Colore",
@@ -1833,7 +1862,7 @@
       },
       "decree-photograph": {
         "name": "Fotografia",
-        "description": "+2 Molt per Tris Puri"
+        "description": "×2 Mult se la giocata include un Onore (un Vento o un Drago)"
       },
       "decree-polished-stone": {
         "name": "Pietra Levigata",
@@ -1841,19 +1870,19 @@
       },
       "decree-ancient-scroll": {
         "name": "Pergamena Antica",
-        "description": "+150 Punti, −2 spazi per tessere in mano."
+        "description": "+150 Punti; −2 spazi del leggio"
       },
       "decree-philosophers-stone": {
         "name": "Pietra Filosofale",
-        "description": "Raddoppia tutto l'Oro guadagnato."
+        "description": "Raddoppia l’Oro che guadagni da giocate, RIPESCA, oggetti e premi di fine round (non dalla vendita di Decreti né dai Presagi)"
       },
       "decree-triple-threat": {
         "name": "Tripla Minaccia",
-        "description": "+80 Punti se la mano contiene 2+ tris."
+        "description": "+80 Punti se la giocata include 2 o più tris"
       },
       "decree-infinite-loop": {
         "name": "Ciclo Infinito",
-        "description": "Riattiva tutte le tessere che segnano punti 3 volte."
+        "description": "Ogni tessera che segna punti lo fa quattro volte"
       }
     }
   },
@@ -1896,13 +1925,13 @@
       "decayPenalty": "Penalità del Declino per giocata: −{{points}} punti.",
       "partial": "Alcune regole stagionali sono ancora in sviluppo. Sono mostrati solo gli effetti attuali.",
       "unwired": "Non ancora implementato.",
-      "spring": "+2 spazi in mano per questo round, riempiti dal muro vivo. Cumulabile; il Serpente continua a sostituire solo 3 tessere.",
+      "spring": "+2 spazi del leggio per questo round, riempiti dal muro vivo. Cumulabile; il Serpente continua a sostituire solo 3 tessere.",
       "summer": "Punteggio ×1,3. Mette da parte il 20% del muro vivo rimanente per questo round (tessere disponibili arrotondate per difetto).",
       "summerSheltered": "Punteggio ×1,3. Protezione del Bambù ottenuta: Estate non può più ridurre il muro in questo round.",
       "autumn": "Moltiplicatore yaku +20%. Ogni Autunno normale pescato dà 1 RIPESCA gratuita in questo round.",
       "winter": "Le sequenze dello stesso seme possono saltare un numero (1–2–4 o 1–3–4). Punteggio ×0,75.",
       "drought": "Annulla i bonus al punteggio dei fiori non protetti.",
-      "frostbite": "Ogni Congelamento dimezza di nuovo le ricompense di punti, moltiplicatore, oro e riattivazioni dei Decreti. Effetti propri delle tessere, permessi, capacità, azioni e costi restano invariati.",
+      "frostbite": "Ogni Congelamento dimezza di nuovo le ricompense di Punti, Mult, Oro e punteggio extra dei Decreti. Ricompense proprie delle tessere, permessi delle regole, capacità, budget di azioni e costi restano invariati.",
       "decay": "−10 punti per ogni RIPESCA di questo round, mai sotto zero.",
       "droughtName": "Siccità",
       "monsoonName": "Monsone",
@@ -1969,6 +1998,7 @@
     "windName": "Vento {{name}}",
     "flowerName": "Fiore {{name}}",
     "seasonName": "Stagione {{name}}",
+    "stoneName": "Tessera Pietra",
     "numberedRule": "Abbina tessere identiche per formare una coppia o un tris. Tre numeri consecutivi dello stesso seme formano una sequenza.",
     "honorRule": "Gli onori formano coppie o tris identici, non sequenze numeriche.",
     "basePoints": "{{points}} punti base prima di bonus dei gruppi, riduzioni e altri effetti.",
@@ -1992,9 +2022,10 @@
     "white": "Drago Bianco",
     "green": "Drago Verde",
     "red": "Drago Rosso",
-    "modifiers": "Modificatori:",
-    "tileModifiers": "Modificatori tessera",
-    "enhancement": "Potenziamento",
+    "modifiers": "Tessera speciale:",
+    "tileModifiers": "Tessera speciale",
+    "enhancement": "Marchio",
+    "stamp": "Timbro",
     "edition": "Edizione",
     "debuffed": "Tessera indebolita",
     "lockedMustPlay": "Tessera bloccata: va giocata",
@@ -2043,7 +2074,7 @@
       },
       "the_wall": {
         "name": "Il Muro",
-        "description": "Obiettivo di punteggio molto elevato (4× invece di 2×)."
+        "description": "Obiettivo di punteggio ×4 invece del solito ×2 del Boss"
       },
       "the_eye": {
         "name": "L’Occhio",
@@ -2063,7 +2094,7 @@
       },
       "the_pillar": {
         "name": "Il Pilastro",
-        "description": "Le tessere usate nei round precedenti di questo atto sono indebolite."
+        "description": "Le tessere giocate nei round precedenti di questo Atto non segnano punti"
       },
       "the_water": {
         "name": "L’Acqua",
@@ -2079,23 +2110,23 @@
       },
       "the_club": {
         "name": "La Clava",
-        "description": "Tutte le tessere di Bambù sono indebolite."
+        "description": "Le tessere di Bambù non segnano punti"
       },
       "the_goad": {
         "name": "Il Pungolo",
-        "description": "Tutte le tessere di Cerchi sono indebolite."
+        "description": "Le tessere di Cerchi non segnano punti"
       },
       "the_window": {
         "name": "La Finestra",
-        "description": "Tutte le tessere di Caratteri sono indebolite."
+        "description": "Le tessere di Caratteri non segnano punti"
       },
       "the_head": {
         "name": "La Testa",
-        "description": "Tutte le tessere Drago sono indebolite."
+        "description": "I Draghi non segnano punti"
       },
       "the_plant": {
         "name": "La Pianta",
-        "description": "Tutte le tessere onore sono indebolite."
+        "description": "Venti e Draghi non segnano punti"
       },
       "the_ox": {
         "name": "Il Bue",
@@ -2103,7 +2134,7 @@
       },
       "the_house": {
         "name": "La Casa",
-        "description": "La prima mano viene pescata a faccia in giù."
+        "description": "Il leggio iniziale viene distribuito a faccia in giù"
       },
       "the_wheel": {
         "name": "La Ruota",
@@ -2111,7 +2142,7 @@
       },
       "the_fish": {
         "name": "Il Pesce",
-        "description": "Dopo ogni mano, le tessere vengono pescate a faccia in giù."
+        "description": "Le tessere pescate dopo ogni giocata arrivano a faccia in giù"
       },
       "the_serpent": {
         "name": "Il Serpente",
@@ -2122,8 +2153,8 @@
         "description": "Perdi 1 Oro per ogni tessera giocata."
       },
       "the_mark": {
-        "name": "Il Marchio",
-        "description": "Tutte le tessere onore vengono pescate a faccia in giù."
+        "name": "Il Velo",
+        "description": "Venti e Draghi vengono pescati a faccia in giù"
       },
       "the_manacle": {
         "name": "La Manetta",
@@ -2131,23 +2162,23 @@
       },
       "amber_acorn": {
         "name": "Ghianda d’ambra",
-        "description": "Tutti i Decreti vengono mescolati e girati a faccia in giù"
+        "description": "Metà dei tuoi Decreti, scelti a caso, sono nascosti e disattivati"
       },
       "verdant_leaf": {
         "name": "Foglia verdeggiante",
-        "description": "Tutte le tessere sono indebolite finché non vendi 1 Decreto"
+        "description": "Nessuna tessera segna punti finché non vendi un Decreto"
       },
       "violet_vessel": {
         "name": "Vaso violetto",
-        "description": "Obiettivo estremamente alto (6× invece di 2×)"
+        "description": "Obiettivo di punteggio ×6 invece del solito ×2 del Boss"
       },
       "crimson_heart": {
         "name": "Cuore cremisi",
-        "description": "Un Decreto casuale viene disattivato a ogni ciclo di mano"
+        "description": "Un Decreto casuale viene disattivato a ogni giocata"
       },
       "cerulean_bell": {
         "name": "Campana Cerulea",
-        "description": "Dopo ogni ciclo di pesca, una tessera casuale deve essere giocata; il blocco precedente viene rimosso."
+        "description": "Dopo ogni pescata, una tessera casuale del leggio viene bloccata e deve far parte della giocata successiva. Il blocco precedente viene rimosso."
       }
     },
     "title": "Mandato del Boss",
@@ -2170,10 +2201,12 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
+      "bossTargets": "Obiettivi del boss: più alti del {{percent}} dall’Atto {{act}}.",
+      "emergencyTurn": "Turni di emergenza dall’Atto {{act}}: all’ultimo turno, compra un turno in più con l’oro ({{cost}} oro nell’Atto {{act}}, {{nextCost}} nell’Atto {{nextAct}} e così via; raddoppia per ogni turno comprato nello stesso round).",
       "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Turni per round: −{{amount}}.",
       "eternalChance": "Decreti nel negozio: {{chance}} di probabilità di Eterno (non può essere venduto o distrutto).",
-      "perishableChance": "Decreti non Eterni nel negozio: {{chance}} di probabilità di Deperibile (indebolito dopo {{rounds}} round).",
+      "perishableChance": "Decreti non Eterni nel negozio: {{chance}} di probabilità di Deperibile (smette di funzionare dopo {{rounds}} round).",
       "rentalChance": "Decreti nel negozio: {{chance}} di probabilità di Noleggio ({{price}} oro all’acquisto, poi {{fee}} oro per round)."
     },
     "title": "Livelli Tavolo",
@@ -2211,7 +2244,7 @@
       "note1": "Puoi <1>rigenerare</1> l'offerta del negozio per 5 monete d'oro. Ogni rigenerazione costa 1 in più.",
       "note2": "Tenere <1>25 o più monete d'oro</1> massimizza gli interessi! Però spendere in buoni Decreti di solito rende di più.",
       "p1": "Non serve memorizzare tutto: imparerai giocando!",
-      "note3": "Puoi sempre tornare a questo codice dal menu delle impostazioni se ti serve un ripasso."
+      "note3": "Apri il Codice dal menu principale ogni volta che ti serve un ripasso."
     },
     "game_concept": {
       "p1": "A differenza del Mahjong tradizionale, che si gioca contro avversari, Tensho è un <1>gioco di enigmi per un solo giocatore</1>. Corri contro il punteggio obiettivo, non contro altri giocatori.",
@@ -2222,7 +2255,7 @@
       "p1": "Il gioco usa <1>144 tessere</1> in tutto:"
     },
     "numbered_suits": {
-      "note1": "Ogni tessera standard compare <1>4 volte</1> nel gioco. È importante per pianificare la mano!",
+      "note1": "Nel muro standard ogni tessera compare <1>4 volte</1>. È importante per pianificare la mano!",
       "p1": "Ci sono <1>tre semi numerati</1>, ciascuno con tessere da 1 a 9:",
       "p2": "<0>Caratteri (萬子 / Manzu)</0> — Mostrano numeri cinesi con il carattere 萬 (wan, «diecimila»)",
       "p3": "<0>Cerchi (筒子 / Pinzu)</0> — Mostrano motivi circolari che rappresentano monete o punti",
@@ -2245,7 +2278,7 @@
       "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna aggiunge +2 al Mult, +4 dentro un gruppo. Non possono formare scale."
     },
     "bonus_tiles": {
-      "p1": "Le <0>tessere bonus</0> sono tessere speciali che non fanno parte della mano:"
+      "p1": "Le <0>tessere bonus</0> sono tessere extra che non fanno parte della mano:"
     },
     "sequences": {
       "note1": "Quando peschi una tessera bonus viene scoperta subito e ne peschi una sostitutiva. Fiori e Stagioni danno bonus ed effetti crescenti!",
@@ -2268,7 +2301,7 @@
       "li2": "<2>Non possono chiudersi ad anello</2> (niente 9-1-2)",
       "li3": "Le tessere d'Onore <2>non possono formare scale</2>",
       "p1": "Un <1>poker</1> (detto anche «kong» o «kan») è composto da <4>4 tessere identiche</4>.",
-      "p2": "I poker sono la combinazione più rara, perché servono tutte e 4 le copie di una tessera!"
+      "p2": "I poker sono la combinazione più rara: nel muro standard usano tutte e 4 le copie di una tessera!"
     },
     "pairs": {
       "li1": "Tre 5 di Bambù",
@@ -2278,7 +2311,7 @@
       "p2": "Ogni mano vincente standard richiede <2>esattamente una coppia</2>. A volte viene chiamata la «testa» (雀頭) della mano."
     },
     "winning_hand": {
-      "note1": "I tris valgono <1>+40 punti</1>, più delle scale (+30)! Sono però più difficili da completare: servono 3 tessere uguali e ogni tessera compare solo 4 volte.",
+      "note1": "I tris valgono <1>+40 punti</1>, più delle sequenze (+30)! Sono però più difficili da completare: servono 3 tessere uguali e il muro standard ne contiene solo 4 copie.",
       "li1": "Vale <1>+65 punti</1>: il massimo tra le combinazioni",
       "li2": "Conta come una sola combinazione pur avendo 4 tessere",
       "li3": "Quando lo dichiari, peschi una tessera sostitutiva",
@@ -2330,7 +2363,7 @@
       "p1": "I Decreti hanno <1>4 livelli di rarità</1>:"
     },
     "decrees_intro": {
-      "p1": "I <0>Decreti (法令)</0> sono carte che modificano le regole e restano per tutta la partita. Consideralii l'equivalente dei «Jolly» di Balatro.",
+      "p1": "I <0>Decreti (法令)</0> sono carte che modificano le regole e restano per tutta la partita. Considerali l'equivalente dei «Jolly» di Balatro.",
       "p2": "I Decreti possono:"
     },
     "flowers_system": {
@@ -2373,7 +2406,8 @@
       "play": "fai punti con le tessere scelte: fino a {{max}}, o una mano di Mahjong completa.",
       "redraw": "manda nel fiume quante tessere scelte vuoi e pescane di nuove.",
       "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
-      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita."
+      "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita.",
+      "emergency": "Dal {{stake}} in su, dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
     },
     "select": {
       "title": "Selezionare le tessere",
@@ -2383,7 +2417,7 @@
     },
     "refill": {
       "title": "Pescare tessere",
-      "p1": "Il leggio si riempie dal muro dopo ogni giocata e ogni ripescata: scegli sempre da una mano completa."
+      "p1": "Dopo una giocata o una ripescata, si pescano tessere sostitutive dal muro. Di norma questo riempie il leggio, ma un muro quasi vuoto o un effetto attivo possono cambiare la pescata."
     },
     "redraw": {
       "title": "RIPESCA",
@@ -2483,27 +2517,27 @@
       },
       "walls": {
         "name": "Tavoli",
-        "description": "Varianti del tavolo con regole iniziali diverse."
+        "description": "Varianti del tavolo con mix di tessere diversi."
       },
       "charters": {
         "name": "Carte imperiali",
-        "description": "Potenziamenti che durano per tutta la partita."
+        "description": "Potenziamenti permanenti per la partita, acquistati nella Casa del Tè."
       },
       "consumables": {
         "name": "Consumabili",
-        "description": "Oggetti monouso: Sigilli del Fato, Sfere Celesti e Scritti del Vuoto."
+        "description": "Oggetti monouso: Sigilli del Destino, Sfere Celesti e Scritti del Vuoto."
       },
       "tileMarks": {
         "name": "Marchi delle tessere",
-        "description": "Potenziamenti che modificano le proprietà delle tessere."
+        "description": "Marchi che cambiano come una tessera segna punti o si comporta."
       },
       "seals": {
-        "name": "Sigilli",
-        "description": "Sigilli speciali che aggiungono effetti alle tessere."
+        "name": "Timbri",
+        "description": "Timbri di ceralacca che danno a una tessera un effetto extra."
       },
       "editions": {
         "name": "Edizioni",
-        "description": "Varianti degli oggetti con aspetto ed effetti speciali."
+        "description": "Finiture scintillanti che aggiungono un effetto a una tessera o a un Decreto."
       },
       "packs": {
         "name": "Pacchetti benedizione",
@@ -2531,7 +2565,7 @@
       },
       "sharp_edge": {
         "name": "Bordo affilato",
-        "description": "Le edizioni compaiono 2× più spesso."
+        "description": "Le Edizioni compaiono il doppio delle volte"
       },
       "reroll_surplus": {
         "name": "Rinnovi in riserva",
@@ -2539,11 +2573,11 @@
       },
       "crystal_lens": {
         "name": "Lente di cristallo",
-        "description": "I Pacchetti Arcani offrono +1 scelta."
+        "description": "I Pacchetti Arcani mostrano una ricompensa in più tra cui scegliere; il numero che puoi prendere non cambia."
       },
       "star_chart": {
         "name": "Mappa stellare",
-        "description": "I Pacchetti Celesti contengono una Sfera per lo Yaku usato più spesso."
+        "description": "I Pacchetti Celesti includono sempre la Sfera della tua famiglia di mani più giocata"
       },
       "steady_hand": {
         "name": "Mano ferma",
@@ -2555,11 +2589,11 @@
       },
       "seal_merchant": {
         "name": "Mercante di Sigilli",
-        "description": "I Sigilli del Fato compaiono 2× più spesso."
+        "description": "I Sigilli del Destino compaiono il doppio delle volte"
       },
       "orb_merchant": {
         "name": "Mercante di Sfere",
-        "description": "Le Sfere Celesti compaiono 2× più spesso."
+        "description": "Le Sfere Celesti compaiono il doppio delle volte"
       },
       "seed_pouch": {
         "name": "Sacchetto di semi",
@@ -2571,19 +2605,19 @@
       },
       "tile_trading": {
         "name": "Commercio di tessere",
-        "description": "Puoi acquistare tessere nel negozio."
+        "description": "Puoi acquistare tessere nella Casa del Tè"
       },
       "ancient_script": {
         "name": "Scritto antico",
-        "description": "−1 atto, −1 turno per round"
+        "description": "Ti riporta indietro di un Atto (obiettivi più bassi, un Atto in più da giocare); −1 turno per round"
       },
       "directors_take": {
         "name": "Ripresa del regista",
-        "description": "Puoi cambiare il Mandato del Boss 1 volta per atto (10 Oro)."
+        "description": "Cambia il prossimo Mandato del Boss una volta per Atto (10 Oro)"
       },
       "brush_stroke": {
         "name": "Pennellata",
-        "description": "+1 spazio per tessere in mano."
+        "description": "+1 spazio del leggio"
       },
       "liquidation_sale": {
         "name": "Liquidazione",
@@ -2591,7 +2625,7 @@
       },
       "radiant_edge": {
         "name": "Bordo radioso",
-        "description": "Le edizioni compaiono 4× più spesso."
+        "description": "Le Edizioni compaiono quattro volte più spesso"
       },
       "reroll_abundance": {
         "name": "Rinnovi in abbondanza",
@@ -2603,7 +2637,7 @@
       },
       "observatory": {
         "name": "Osservatorio",
-        "description": "Le Sfere Celesti conservate conferiscono ×1,5 Molt."
+        "description": "Le Sfere Celesti conservate conferiscono ×1,5 Mult"
       },
       "swift_hand": {
         "name": "Mano veloce",
@@ -2615,11 +2649,11 @@
       },
       "seal_tycoon": {
         "name": "Magnate dei Sigilli",
-        "description": "I Sigilli del Fato compaiono 4× più spesso."
+        "description": "I Sigilli del Destino compaiono quattro volte più spesso"
       },
       "orb_tycoon": {
         "name": "Magnate delle Sfere",
-        "description": "Le Sfere Celesti compaiono 4× più spesso."
+        "description": "Le Sfere Celesti compaiono quattro volte più spesso"
       },
       "money_tree": {
         "name": "Albero del denaro",
@@ -2631,19 +2665,19 @@
       },
       "illusion_tiles": {
         "name": "Tessere illusorie",
-        "description": "Le tessere nel negozio possono avere edizioni."
+        "description": "Le tessere nella Casa del Tè possono avere Edizioni"
       },
       "stone_script": {
         "name": "Scritto di pietra",
-        "description": "−1 atto ancora, −1 turno per round"
+        "description": "Ti riporta indietro di un altro Atto; −1 turno in più per round"
       },
       "final_cut": {
         "name": "Montaggio finale",
-        "description": "Puoi cambiare il Mandato del Boss un numero illimitato di volte (10 Oro ciascuna)."
+        "description": "Cambia il prossimo Mandato del Boss tutte le volte che vuoi (10 Oro ciascuna)"
       },
       "full_palette": {
         "name": "Tavolozza completa",
-        "description": "Un ulteriore +1 spazio per tessere in mano."
+        "description": "+1 spazio del leggio in più"
       },
       "plentiful_stock": {
         "name": "Scorte abbondanti",
@@ -2655,43 +2689,43 @@
     "items": {
       "script_of_kinship": {
         "name": "Scritto della parentela",
-        "description": "Distrugge 1 tessera casuale e aggiunge 3 tessere onore potenziate casuali (Venti/Draghi)."
+        "description": "Distrugge 1 tessera casuale e aggiunge 3 Venti o Draghi casuali, ognuno con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_the_grave": {
         "name": "Scritto della tomba",
-        "description": "Distrugge 1 tessera casuale e aggiunge 2 tessere terminali potenziate casuali."
+        "description": "Distrugge 1 tessera casuale e aggiunge 2 tessere 1 o 9 casuali, ognuna con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_incantation": {
         "name": "Scritto dell’incantesimo",
-        "description": "Distrugge 1 tessera casuale e aggiunge 4 tessere numerate potenziate casuali."
+        "description": "Distrugge 1 tessera casuale e aggiunge 4 tessere casuali da 2 a 8, ognuna con un Marchio Bonus, Moltiplicatore o Fortuna casuale"
       },
       "script_of_immolation": {
         "name": "Scritto dell’immolazione",
-        "description": "Distrugge 5 tessere casuali dalla mano. Ottieni 20 Oro."
+        "description": "Distrugge 5 tessere casuali sul leggio. Ottieni 20 Oro."
       },
       "script_of_the_cryptid": {
         "name": "Scritto del criptide",
-        "description": "Crea 2 copie di 1 tessera selezionata nella mano."
+        "description": "Crea 2 copie di 1 tessera del leggio a tua scelta"
       },
       "script_of_the_gold_seal": {
-        "name": "Scritto del Sigillo d’Oro",
-        "description": "Aggiunge un Sigillo d’Oro a 1 tessera selezionata."
+        "name": "Scritto del Timbro d’Oro",
+        "description": "Aggiunge un Timbro d’Oro a 1 tessera a tua scelta (+3 Oro quando segna punti)"
       },
       "script_of_deja_vu": {
         "name": "Scritto del déjà-vu",
-        "description": "Aggiunge un Sigillo Rosso a 1 tessera selezionata (riattivazione)."
+        "description": "Aggiunge un Timbro Rosso a 1 tessera a tua scelta (segna punti due volte)"
       },
       "script_of_the_trance": {
         "name": "Scritto della trance",
-        "description": "Aggiunge un Sigillo Blu a 1 tessera (crea una Sfera per la mano finale)."
+        "description": "Aggiunge un Timbro Blu a 1 tessera a tua scelta (crea una Sfera Celeste se la tessera è nella giocata che supera il round)"
       },
       "script_of_the_medium": {
         "name": "Scritto del medium",
-        "description": "Aggiunge un Sigillo Viola a 1 tessera (crea un Sigillo del Destino quando ripescata)"
+        "description": "Aggiunge un Timbro Viola a 1 tessera selezionata (crea un Sigillo del Destino quando viene ripescata)."
       },
       "script_of_aura": {
         "name": "Scritto dell’aura",
-        "description": "Aggiunge l’edizione Laminata, Olografica o Policroma a 1 tessera selezionata."
+        "description": "Dà a 1 tessera a tua scelta un’Edizione casuale: Laminata, Olografica o Policroma"
       },
       "script_of_the_wraith": {
         "name": "Scritto dello spettro",
@@ -2703,39 +2737,39 @@
       },
       "script_of_the_hex": {
         "name": "Scritto della maledizione",
-        "description": "Aggiunge l’edizione Policroma a un Decreto casuale e distrugge tutti gli altri."
+        "description": "Dà a un Decreto casuale l’Edizione Policroma e distrugge tutti gli altri Decreti"
       },
       "script_of_the_sigil": {
         "name": "Scritto del simbolo",
-        "description": "Converte TUTTE le tessere nella mano in un unico seme casuale."
+        "description": "Converte ogni tessera sul leggio in un unico seme casuale"
       },
       "script_of_the_ouija": {
         "name": "Scritto della ouija",
-        "description": "Converte TUTTE le tessere nella mano a un unico valore casuale."
+        "description": "Converte ogni tessera sul leggio in un unico numero casuale"
       },
       "script_of_the_soul": {
         "name": "Scritto dell’anima",
-        "description": "Crea un Decreto leggendario (Ordinanza celeste)."
+        "description": "Crea il Decreto Ordinanza celeste, della rarità più alta"
       },
       "script_of_the_singularity": {
         "name": "Scritto della singolarità",
-        "description": "Potenzia ogni Yaku di 1 livello."
+        "description": "Aumenta di 1 livello ogni famiglia di mani"
       },
       "script_of_eclipse": {
         "name": "Scritto dell’eclissi",
-        "description": "In questo round puoi segnare punti a 1-shanten."
+        "description": "In questo round, una mano a cui manca una tessera per essere completa può segnare come mano completa"
       },
       "script_of_mirrors": {
         "name": "Scritto degli specchi",
-        "description": "Duplica una tessera nella mano."
+        "description": "Duplica una tessera del leggio a tua scelta"
       },
       "script_of_silence": {
         "name": "Scritto del silenzio",
-        "description": "Ignora un gruppo non valido in questa mano."
+        "description": "La tua prossima mano completa può includere un gruppo che non torna"
       },
       "script_of_ectoplasm": {
         "name": "Scritto dell’ectoplasma",
-        "description": "Aggiunge l’edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
+        "description": "Aggiunge un’Edizione Negativa a un Decreto casuale (+1 spazio Decreto)."
       }
     }
   },
@@ -2743,55 +2777,55 @@
     "items": {
       "pluto_orb": {
         "name": "Sfera di Plutone",
-        "description": "Potenzia le coppie: Coppia, Doppia coppia e Tre coppie. +1 Mult e +10 punti per livello."
+        "description": "Alza la famiglia «Coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Coppie» riceve altri +10 punti base e +1 Mult."
       },
       "mercury_orb": {
         "name": "Sfera di Mercurio",
-        "description": "Potenzia Tutti semplici: giocate solo da 2 a 8 e la mano Tutti semplici. +1 Mult e +15 punti per livello."
+        "description": "Alza la famiglia «Tutti semplici» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tutti semplici» riceve altri +15 punti base e +1 Mult."
       },
       "uranus_orb": {
         "name": "Sfera di Urano",
-        "description": "Potenzia gli Onori: ogni gruppo di Venti o Draghi e la mano Tessere di valore. +1 Mult e +20 punti per livello."
+        "description": "Alza la famiglia «Onori» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Onori» riceve altri +20 punti base e +1 Mult."
       },
       "venus_orb": {
         "name": "Sfera di Venere",
-        "description": "Potenzia le sequenze: Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze. +2 Mult e +20 punti per livello."
+        "description": "Alza la famiglia «Sequenze» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sequenze» riceve altri +20 punti base e +2 Mult."
       },
       "saturn_orb": {
         "name": "Sfera di Saturno",
-        "description": "Potenzia le scale: di quattro e di cinque, e la mano Scala 1–9. +3 Mult e +30 punti per livello."
+        "description": "Alza la famiglia «Scale» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Scale» riceve altri +30 punti base e +3 Mult."
       },
       "jupiter_orb": {
         "name": "Sfera di Giove",
-        "description": "Potenzia Mezzo colore: mani complete di un seme più Onori. +2 Mult e +15 punti per livello."
+        "description": "Alza la famiglia «Mezzo colore» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mezzo colore» riceve altri +15 punti base e +2 Mult."
       },
       "earth_orb": {
         "name": "Sfera della Terra",
-        "description": "Potenzia tris e poker, e la mano Tutti tris. +2 Mult e +25 punti per livello."
+        "description": "Alza la famiglia «Tris e poker» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tris e poker» riceve altri +25 punti base e +2 Mult."
       },
       "mars_orb": {
         "name": "Sfera di Marte",
-        "description": "Potenzia Colore puro: mani complete di un solo seme. +3 Mult e +30 punti per livello."
+        "description": "Alza la famiglia «Colore puro» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Colore puro» riceve altri +30 punti base e +3 Mult."
       },
       "neptune_orb": {
         "name": "Sfera di Nettuno",
-        "description": "Potenzia Triplo misto: mani complete con la stessa sequenza nei tre semi. +4 Mult e +40 punti per livello."
+        "description": "Alza la famiglia «Triplo misto» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Triplo misto» riceve altri +40 punti base e +4 Mult."
       },
       "planet_x_orb": {
         "name": "Sfera del Pianeta X",
-        "description": "Potenzia Sette coppie: la mano Sette coppie. +3 Mult e +35 punti per livello."
+        "description": "Alza la famiglia «Sette coppie» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Sette coppie» riceve altri +35 punti base e +3 Mult."
       },
       "ceres_orb": {
         "name": "Sfera di Cerere",
-        "description": "Potenzia Mano esterna: mani complete con un terminale o Onore in ogni gruppo. +4 Mult e +40 punti per livello."
+        "description": "Alza la famiglia «Mano esterna» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Mano esterna» riceve altri +40 punti base e +4 Mult."
       },
       "eris_orb": {
         "name": "Sfera di Eris",
-        "description": "Potenzia Tredici orfani: la mano Tredici orfani. +3 Mult e +50 punti per livello."
+        "description": "Alza la famiglia «Tredici orfani» di 1 livello per questa partita (massimo 10). Ogni giocata che segna «Tredici orfani» riceve altri +50 punti base e +3 Mult."
       },
       "black_hole_orb": {
         "name": "Sfera del Buco Nero",
-        "description": "Potenzia TUTTI gli Yaku di 1 livello quando viene usata."
+        "description": "Alza di 1 livello tutte le 12 famiglie di mani per questa partita (massimo 10 ciascuna). Ogni famiglia riceve i suoi soliti punti base e Mult; una famiglia già al livello 10 resta lì."
       }
     }
   },
@@ -2863,15 +2897,15 @@
     "items": {
       "arcana_normal": {
         "name": "Pacchetto Arcano",
-        "description": "Scegli 1 fra 3 Sigilli del Fato."
+        "description": "Scegli 1 fra 3 Sigilli del Destino."
       },
       "arcana_jumbo": {
         "name": "Pacchetto Arcano Gigante",
-        "description": "Scegli 2 fra 5 Sigilli del Fato."
+        "description": "Scegli 2 fra 5 Sigilli del Destino."
       },
       "arcana_mega": {
         "name": "Megapacchetto Arcano",
-        "description": "Scegli 3 fra 6 Sigilli del Fato."
+        "description": "Scegli 3 fra 6 Sigilli del Destino."
       },
       "celestial_normal": {
         "name": "Pacchetto Celeste",
@@ -2887,15 +2921,15 @@
       },
       "tile_normal": {
         "name": "Pacchetto di Tessere",
-        "description": "Scegli 1 fra 3 tessere modificate."
+        "description": "Scegli 1 fra 3 tessere speciali."
       },
       "tile_jumbo": {
         "name": "Pacchetto Gigante di Tessere",
-        "description": "Scegli 2 fra 5 tessere modificate."
+        "description": "Scegli 2 fra 5 tessere speciali."
       },
       "tile_mega": {
         "name": "Megapacchetto di Tessere",
-        "description": "Scegli 3 fra 6 tessere modificate."
+        "description": "Scegli 3 fra 6 tessere speciali."
       },
       "decree_normal": {
         "name": "Pacchetto di Decreti",
@@ -2953,7 +2987,7 @@
     "unlockProgress": "Progresso verso {{name}}",
     "title": "Scegli il tavolo",
     "titleJp": "卓風",
-    "subtitle": "Scegli uno stile di tavolo per la partita",
+    "subtitle": "Scegli il tavolo iniziale e le sue regole",
     "table": "Preparazione",
     "selected": "Selezionato:",
     "chooseTable": "Scegli tavolo e posta"
@@ -2966,7 +3000,7 @@
         "description": "La lacca cremisi e i draghi dorati favoriscono una strategia incentrata sui Draghi, con meno spazio per i Decreti.",
         "unlock": "Vinci al Livello Rosso o superiore",
         "modifiers": {
-          "0": "I Draghi iniziali hanno Marchi Moltiplicatore (+4 Molt quando segnano punti)",
+          "0": "I Draghi iniziali hanno Marchi Moltiplicatore (+4 Mult quando segnano punti)",
           "1": "−1 slot Decreto iniziale"
         }
       },
@@ -3125,7 +3159,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Una mano completa: quattro gruppi e una coppia, di solito 14 tessere. I suoi yaku moltiplicano il punteggio."
+      "explain": "Una mano completa: quattro gruppi (sequenze, tris o poker) e una coppia, di solito 14 tessere. Sette coppie e Tredici orfani sono eccezioni speciali. I suoi yaku moltiplicano il punteggio."
     },
     "three_dragons": {
       "name": "Tre Draghi",
@@ -3146,7 +3180,7 @@
     "turnsTitle": "Il tuo turno",
     "playHelp": "fa punti con le tessere scelte.",
     "redrawHelp": "manda al fiume quante tessere scelte vuoi e ne pesca di nuove.",
-    "turnsHelp": "Ogni round ti dà {{turns}} turni. Gioca mano e RIPESCA costano un turno ciascuno. Supera un round piccolo o grande con {{spare}} turni d’avanzo per ottenere un presagio.",
+    "turnsHelp": "Ogni round ti dà {{turns}} turni. Gioca mano e RIPESCA costano un turno ciascuno; le ripescate gratuite non costano nulla e l’ultimo turno deve essere una giocata. Supera un round piccolo o grande con {{spare}} turni d’avanzo per ottenere un presagio.",
     "scoreTitle": "Il tuo punteggio",
     "points": "Punti",
     "mult": "Mult",
@@ -3156,12 +3190,15 @@
     "secretTitle": "Mani segrete",
     "secretFound": "Mano segreta scoperta",
     "secretInGuide": "Ora è nella guida ?.",
-    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1, poker e scale di cinque +2. Ogni tessera conta una volta; massimo 6 tessere per giocata, salvo una mano di Mahjong completa.",
+    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",
     "specialTitle": "Tessere speciali",
-    "specialHelp": "Una cornice colorata con gemma è un marchio, un timbro di ceralacca è un sigillo e uno scintillio è un’edizione. Una tessera ne può avere solo uno. Passa sopra o seleziona una tessera per leggerne l’effetto.",
+    "specialHelp": "Una tessera speciale ha un effetto extra: un Marchio (cornice colorata con gemma), un Timbro (impronta di ceralacca) o un’Edizione (scintillio).",
+    "marks": "Marchi",
+    "seals": "Timbri",
+    "editions": "Edizioni",
     "close": "Giochiamo"
   },
   "mandateConsequence": {
@@ -3187,7 +3224,7 @@
     "tiles_face_down_after_play": "Nuove tessere coperte",
     "fixed_draw_count": "Peschi sempre {{count}}",
     "honor_tiles_face_down": "Onori coperti",
-    "shuffle_decrees": "Decreti nascosti",
+    "hide_half_decrees": "Metà dei Decreti spenti",
     "debuff_until_sell": "Tutte le tessere valgono 0 finché non vendi un Decreto",
     "disable_random_decree": "1 Decreto spento per giocata",
     "lock_random_tile": "Una tessera si blocca a ogni pescata"
@@ -3195,55 +3232,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Coppie",
-      "covers": "Coppia, Doppia coppia e Tre coppie"
+      "covers": "Coppia, Doppia coppia o Tre coppie (una coppia sono due tessere identiche). La mano Sette coppie ha una famiglia tutta sua."
     },
     "Pinfu": {
       "name": "Sequenze",
-      "covers": "Sequenza, Sequenza + Coppia, Due sequenze e la mano Tutte sequenze"
+      "covers": "Sequenza, Sequenza + Coppia o Due sequenze (una sequenza sono tre numeri consecutivi dello stesso seme), e Tutte sequenze: una mano completa di quattro sequenze più una coppia che non sia di Draghi o di Vento d’Est."
     },
     "Ittsu": {
       "name": "Scale",
-      "covers": "Scale di quattro e cinque, e la mano Scala 1–9"
+      "covers": "Scala di quattro, Scala di cinque o Scala + Coppia (numeri consecutivi dello stesso seme), e Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme."
     },
     "Toitoi": {
       "name": "Tris e poker",
-      "covers": "Ogni giocata con tris o poker, e la mano Tutti tris"
+      "covers": "Tris, Full, Due tris, Tris + Sequenza, Poker o Poker + Coppia (un tris sono tre tessere identiche, un poker quattro), e Tutti tris: una mano completa di quattro tris o poker più una coppia."
     },
     "Yakuhai": {
       "name": "Onori",
-      "covers": "Ogni gruppo di Venti o Draghi, e le mani Tessere di valore"
+      "covers": "Ogni giocata con un gruppo di soli Venti o Draghi, e Tessere di valore: una mano completa con un tris o un poker di Draghi o di Vento d’Est."
     },
     "Tanyao": {
       "name": "Tutti semplici",
-      "covers": "Giocate solo con tessere da 2 a 8, e la mano Tutti semplici"
+      "covers": "Ogni giocata che forma un gruppo usando solo tessere da 2 a 8, senza 1, 9, Venti o Draghi (le tessere Pietra vengono ignorate), e Tutti semplici: una mano completa di sole tessere da 2 a 8."
     },
     "Honitsu": {
       "name": "Mezzo colore",
-      "covers": "Mani complete di un seme più Onori"
+      "covers": "Mezzo colore: una mano completa di un seme più Venti o Draghi. Una giocata più corta di un solo seme non conta."
     },
     "Chinitsu": {
       "name": "Colore puro",
-      "covers": "Mani complete di un solo seme"
+      "covers": "Colore puro: una mano completa di un solo seme, senza Venti né Draghi. Una giocata più corta di un solo seme non conta."
     },
     "Sanshoku": {
       "name": "Triplo misto",
-      "covers": "Mani complete con la stessa sequenza nei tre semi"
+      "covers": "Tripla sequenza mista: una mano completa con la stessa sequenza in tutti e tre i semi, come 2-3-4 in Caratteri, Cerchi e Bambù."
     },
     "SevenPairs": {
       "name": "Sette coppie",
-      "covers": "La mano Sette coppie"
+      "covers": "Sette coppie: una mano completa di esattamente sette coppie diverse (14 tessere). Le giocate più corte di coppie appartengono alla famiglia Coppie."
     },
     "Chanta": {
       "name": "Mano esterna",
-      "covers": "Mani complete con un terminale o Onore in ogni gruppo"
+      "covers": "Mano esterna: una mano completa con almeno una sequenza, in cui ogni gruppo e la coppia includono un 1, un 9, un Vento o un Drago. Vale anche la Mano esterna pura (uguale, ma senza Venti né Draghi)."
     },
     "Kokushi": {
       "name": "Tredici orfani",
-      "covers": "La mano Tredici orfani"
+      "covers": "Tredici orfani: una mano completa con uno di ogni 1, 9, Vento e Drago, più un doppione."
     },
     "All": {
       "name": "Tutte le famiglie",
-      "covers": "Tutte le famiglie di potenziamento",
+      "covers": "Tutte le 12 famiglie di mani, Coppie e Sette coppie comprese.",
       "upgrade": "Tutte le famiglie +1 livello"
     },
     "levelChange": "{{family}}: livello {{from}} → {{to}}",
@@ -3264,5 +3301,31 @@
   "orbReveal": {
     "used": "Sfera Celeste usata",
     "title": "{{name}} usata: yaku potenziato"
+  },
+  "omenReveal": {
+    "title": "Presagio ottenuto: {{name}}",
+    "swiftClear": "Vittoria lampo",
+    "cleared": "{{round}} superato",
+    "spareTurns_one": "{{formattedCount}} turno di avanzo",
+    "spareTurns_other": "{{formattedCount}} turni di avanzo",
+    "earned": "Presagio ottenuto",
+    "copies": "×{{amount}}",
+    "copiesNote": "Copiato dal Presagio doppio: ×{{amount}}",
+    "when": "Quando agisce",
+    "timing": {
+      "shop": "Adesso, in questa Casa del Tè. Il suo effetto è già sulle offerte.",
+      "round": "All’inizio del prossimo round.",
+      "hand": "Sulla tua prossima mano che segna punti.",
+      "voidScript": "La prossima volta che usi uno Scritto del Vuoto.",
+      "now": "Subito. È già stato applicato.",
+      "run": "Su ogni mano che segna punti per il resto della partita.",
+      "nextOmen": "Quando otterrai il tuo prossimo Presagio."
+    },
+    "rail": {
+      "waits": "Fino ad allora aspetta sul tavolo con i tuoi oggetti.",
+      "stays": "Resta sul tavolo con i tuoi oggetti."
+    },
+    "tradeoff": "Contropartita",
+    "rule": "Supera un Round Piccolo o Grande con {{spare}} o più turni di avanzo per ottenere un Presagio. I Round Boss non ne danno."
   }
 }

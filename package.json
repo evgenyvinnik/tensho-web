@@ -1,11 +1,13 @@
 {
   "name": "tensho-web",
   "private": true,
-  "version": "1.0.261031-1",
+  "version": "1.0.261101-9",
   "type": "module",
   "scripts": {
     "dev": "node ./node_modules/.bin/vite",
     "build": "tsc -b && node ./node_modules/.bin/vite build && node scripts/verify-asset-delivery.mjs",
+    "build:ios": "tsc -b && node ./node_modules/.bin/vite build --mode native && node scripts/prepare-native-build.mjs && node ./node_modules/.bin/cap sync ios",
+    "ios:open": "node ./node_modules/.bin/cap open ios",
     "lint": "eslint .",
     "preview": "node ./node_modules/.bin/vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
@@ -21,8 +23,11 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^8.2.1",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3",
+    "@capacitor/preferences": "^8.0.1",
     "@react-spring/web": "^9.7.4",
-    "@tanstack/react-query": "^5.62.8",
     "i18next": "^25.7.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "react": "^19.0.0",
@@ -32,6 +37,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
     "@eslint/js": "^9.17.0",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.0.0",

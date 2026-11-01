@@ -124,7 +124,7 @@ describe('DecreeCardCompact mandate states', () => {
       ...decree,
       id: 'decree-wealth-engine',
       name: 'Wealth Engine',
-      description: '+1G per Decree owned at end of round',
+      description: '+1 Gold per Decree owned at the end of each round',
     }
     const { container, rerender } = render(
       <DecreeCardCompact decree={wealth} />

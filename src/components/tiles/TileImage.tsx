@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
-import { getTileImagePath } from '../../utils/assets'
+import { getTileImagePath, getTileFinishPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
@@ -111,8 +111,11 @@ export const TileImage: React.FC<TileImageProps> = ({
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
   // A Stone tile has no rank or suit: its face is the stone itself.
   const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
-  const enhancedFace =
-    !faceDown && tile && tile.enhancement !== EnhancementType.None
+  // A Mark is drawn as the whole tile in its material, symbols included.
+  const finishArt =
+    !faceDown && tile
+      ? getTileFinishPath(tile.suit, tile.rank, tile.enhancement)
+      : null
   const indexHint =
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
@@ -314,26 +317,22 @@ export const TileImage: React.FC<TileImageProps> = ({
       aria-disabled={disabled}
       aria-describedby={tooltipOpen && isInteractive ? tooltipId : undefined}
     >
-      {stoneFace ? (
-        <span
-          role="img"
-          aria-label={t('tileMarks.items.stone.name', 'Stone Mark')}
-          className="absolute inset-0 rounded-md bg-stone-600"
-        />
-      ) : faceDown || !tile ? (
+      {faceDown || !tile ? (
         <TileBack label={tileInfo.name} />
       ) : (
         <img
-          src={getTileImagePath(tile.suit, tile.rank)}
-          alt={tileInfo.name}
+          // Stone's sprite is blank, hiding its original rank and suit.
+          src={finishArt ?? getTileImagePath(tile.suit, tile.rank)}
+          alt={
+            stoneFace ? t('tileDetails.stoneName', 'Stone tile') : tileInfo.name
+          }
+          data-tile-base-art
+          data-tile-face={
+            stoneFace ? 'stone' : finishArt ? 'finished' : undefined
+          }
           className="w-full h-full object-contain select-none pointer-events-none rounded-sm"
           draggable={false}
           loading={loading}
-          style={
-            enhancedFace
-              ? { padding: '12% 10%', backgroundColor: '#eee8d4' }
-              : undefined
-          }
         />
       )}
       {indexHint && (
@@ -399,7 +398,7 @@ export const TileImage: React.FC<TileImageProps> = ({
               {tile.hasModifiers && (
                 <div className="mt-2 pt-2 border-t border-gray-600">
                   <div className="text-golden-yellow text-xs font-medium mb-1">
-                    {t('tiles.modifiers', 'Modifiers:')}
+                    {t('tiles.modifiers', 'Special tile:')}
                   </div>
                   {tileInfo.modifiers.map((entry) => (
                     <div

@@ -1,6 +1,11 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { clearReveals, handScoreTotal, settleReveals } from './helpers/table'
+import {
+  clearReveals,
+  closeOmenReveal,
+  handScoreTotal,
+  settleReveals,
+} from './helpers/table'
 
 for (const language of ['en', 'es', 'ru'])
   for (const kind of ['single', 'all'])
@@ -130,22 +135,29 @@ for (const language of ['en', 'es', 'ru'])
       const play = page.locator('[data-game-action="play"]')
       await activate(play)
       await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+      await closeOmenReveal(page)
       const shop = await saved()
       expect(
         new Intl.NumberFormat(language, { maximumFractionDigits: 20 }).format(
           shop.state.lastHandScore
         )
       ).toBe(forecast)
-      // The Tea House lists every upgrade inline in the build panel: one
-      // token per family with its level, no popup and no empty-state prose.
+      // The Tea House lists the upgrades inline in the build panel: one
+      // token per family with its level counted from 0, no popup and no
+      // empty-state prose. The nine families any run can find always show;
+      // the secret Seven Pairs family joins them once upgraded.
       await expect(page.getByTestId('yaku-upgrades-trigger')).toHaveCount(0)
       const row = page.locator('[data-shop-build] [data-yaku-upgrades]')
       await expect(row).toBeVisible()
       await expect(row).toHaveAccessibleName(copy.yakuUpgrades.title)
+      const families = kind === 'all' ? 12 : 10
       const shopTokens = row.locator('[data-yaku-upgrade]')
-      await expect(shopTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      await expect(shopTokens).toHaveCount(families)
+      await expect(row.locator('[data-yaku-upgrade-level="0"]')).toHaveCount(
+        kind === 'all' ? 0 : 9
+      )
       const portraits = row.locator('[data-upgrade-art] img')
-      await expect(portraits).toHaveCount(kind === 'all' ? 12 : 1)
+      await expect(portraits).toHaveCount(families)
       const imageSources = await portraits.evaluateAll(async (images) => {
         await Promise.all(
           images.map(async (image) => {
@@ -164,7 +176,7 @@ for (const language of ['en', 'es', 'ru'])
       await expect(shopPair).toHaveAccessibleName(
         copy.upgradeFamilies.tokenLabel
           .replace('{{family}}', copy.upgradeFamilies.SevenPairs.name)
-          .replace('{{level}}', (2).toLocaleString(language))
+          .replace('{{level}}', (1).toLocaleString(language))
       )
       await activate(shopPair)
       await expect(pairPanel).toContainText(
@@ -189,7 +201,7 @@ for (const language of ['en', 'es', 'ru'])
       expect(await saved()).toEqual(shop)
       await page.reload()
       expect(await saved()).toEqual(shop)
-      await expect(shopTokens).toHaveCount(kind === 'all' ? 12 : 1)
+      await expect(shopTokens).toHaveCount(families)
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth + 1

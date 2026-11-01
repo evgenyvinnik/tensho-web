@@ -345,7 +345,7 @@ For a full, expanded list of Decrees with triggers, rarity, and design notes, se
 | **Pure Suit Asceticism** | Scaling | Rare | Dominant suit tiles scale multiplicatively. |
 | **Closed-Hand Austerity** | Scaling | Rare | Concealed hands gain exponential scaling. |
 | **River Tax** | Entropy & Fate | Common | Each discard yields small gold. |
-| **Moonlit Seal** | Scaling | Uncommon | Honor tiles add a stacking multiplier. |
+| **Moonlit Emblem** | Scaling | Uncommon | Honor tiles add a stacking multiplier. |
 
 ---
 
@@ -574,6 +574,10 @@ See [run ownership rules and verification](RUN_OWNERSHIP_IMPLEMENTATION.md).
 - Level 1 is the baseline with no Orb bonus. Each earned level adds the listed
   Chips and Mult when that family scores. Another Orb is needed for another
   ordinary upgrade; merely holding one grants nothing.
+- Players read levels as upgrades, counted from 0: the engine's level 1 shows
+  as 0 and its cap of 10 as 9 (`shownUpgradeLevel` in
+  `src/components/gameplay/yakuUpgradeLevel.ts`). The Tea House lists every
+  family whose Orb any run can find from 0, and a secret family once upgraded.
 - Black Hole raises every uncapped family by one level. Scoring records
   occurrences for the ledger and Star Chart, but does not grant experience or
   automatic levels.
@@ -605,9 +609,14 @@ matching hands earn the reward rather than being a prerequisite XP grind.*
 **Mahjong Twist:** Scripts can corrupt Seasons or weaken Decrees temporarily.
 
 **Example Effects (Original):**
-- **Script of Eclipse:** Score at 1-shanten, lose a Decree slot next round.
+- **Script of Eclipse:** For the rest of the round, a hand one tile short of
+  complete scores as complete, without Shanten Clemency's half-score penalty;
+  lose a Decree slot next round.
 - **Script of Mirrors:** Duplicate one tile, but lock a random tile in Dead Pool.
-- **Script of Silence:** Ignore one invalid meld, but halve base score.
+- **Script of Silence:** The next complete hand that needs it may hold three
+  tiles that form no group in one group's place. They score their tile points
+  but no group bonus, and no Yaku reads them. The bypass waits through other
+  plays and rounds until a hand uses it; the next play scores half.
 
 ### 7d. Imperial Charters (Voucher analog)
 

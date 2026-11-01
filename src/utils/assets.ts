@@ -4,6 +4,7 @@
  */
 
 import { TileSuit } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 import { tileFaceAsset } from './tileFaceAsset'
 import type {
   CorruptedSeasonVariant,
@@ -31,6 +32,24 @@ const MAHJONG_PNG_BASE = `${ASSET_BASE}/Mahjong/file/png`
  */
 export function getTileImagePath(suit: TileSuit, rank: number): string {
   return `${ASSET_BASE}/${tileFaceAsset(suit, rank)}`
+}
+
+/**
+ * Finished artwork for a tile carrying a Mark. Each sprite paints the face,
+ * bevel and red back in the Mark's material with the tile's own symbols, so
+ * it replaces the plain face rather than framing it. Stone is one blank
+ * sprite: it has no rank or suit. Unmarked tiles return null.
+ */
+export function getTileFinishPath(
+  suit: TileSuit,
+  rank: number,
+  enhancement: EnhancementType
+): string | null {
+  if (enhancement === EnhancementType.None) return null
+  if (enhancement === EnhancementType.Stone)
+    return `${ASSET_BASE}/tiles/stone.webp`
+  // Keys use saved ranks (dragon_01 is the White Dragon), not file order.
+  return `${ASSET_BASE}/tiles/${enhancement}/${suit}_${String(rank).padStart(2, '0')}.webp`
 }
 
 /**
@@ -242,6 +261,13 @@ export function getCodexCategoryIllustration(category?: string): string {
   return (
     CODEX_CATEGORY_ILLUSTRATIONS[category] || illustrationAssets.codex.archive
   )
+}
+
+export type PavilionPage = 'codex' | 'settings' | 'achievements' | 'collection'
+
+/** The painted emblem of each pavilion room (its screen header and menu icon). */
+export function getPavilionEmblem(page: PavilionPage): string {
+  return `${ASSET_BASE}/illustrations/pavilion/${page}.webp`
 }
 
 const VOID_SCRIPT_ILLUSTRATION_IDS = new Set([

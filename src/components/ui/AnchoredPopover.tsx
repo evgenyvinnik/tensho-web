@@ -50,6 +50,28 @@ interface Placement {
   maxHeight: number
 }
 
+interface Insets {
+  top: number
+  bottom: number
+}
+
+let insetProbe: HTMLElement | null = null
+/** The notch and home indicator, which a panel must not sit under. */
+function safeAreaInsets(): Insets {
+  if (!insetProbe) {
+    insetProbe = document.createElement('div')
+    insetProbe.setAttribute('aria-hidden', 'true')
+    insetProbe.style.cssText =
+      'position:fixed;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)'
+    document.body.appendChild(insetProbe)
+  }
+  const style = getComputedStyle(insetProbe)
+  return {
+    top: parseFloat(style.paddingTop) || 0,
+    bottom: parseFloat(style.paddingBottom) || 0,
+  }
+}
+
 export interface AnchoredPopoverProps {
   open: boolean
   anchorRef: RefObject<HTMLElement | null>
@@ -62,6 +84,11 @@ export interface AnchoredPopoverProps {
   onPointerEnter?: () => void
   onPointerLeave?: () => void
   id?: string
+  /**
+   * Actions pinned to the panel's bottom edge, so a Buy or Sell button stays
+   * on screen however far the details scroll.
+   */
+  footer?: ReactNode
   children: ReactNode
 }
 
@@ -73,32 +100,44 @@ const clamp = (value: number, low: number, high: number) =>
  * above it — and always fully on screen, even when the trigger itself has
  * scrolled out of view.
  */
-function place(anchor: DOMRect, contentHeight: number): Placement {
+function place(
+  anchor: DOMRect,
+  contentHeight: number,
+  insets: Insets
+): Placement {
   const viewport = window.visualViewport
   const vw = viewport?.width ?? innerWidth
   const vh = viewport?.height ?? innerHeight
+  const top = Math.max(MARGIN, insets.top)
+  const bottom = Math.max(MARGIN, insets.bottom)
   const width = Math.min(MAX_WIDTH, vw - MARGIN * 2)
   const left = clamp(
     anchor.left + anchor.width / 2 - width / 2,
     MARGIN,
     vw - width - MARGIN
   )
-  const below = vh - anchor.bottom - GAP - MARGIN
-  const above = anchor.top - GAP - MARGIN
+  const below = vh - anchor.bottom - GAP - bottom
+  const above = anchor.top - GAP - top
   const openBelow = below >= MIN_COMFORTABLE_HEIGHT || below >= above
   const maxHeight = Math.min(
-    Math.max(120, vh - MARGIN * 2),
+    Math.max(120, vh - top - bottom),
     Math.max(120, openBelow ? below : above)
   )
   const height = Math.min(contentHeight || maxHeight, maxHeight)
   const ideal = openBelow ? anchor.bottom + GAP : anchor.top - GAP - height
   return {
     left,
-    top: clamp(ideal, MARGIN, vh - MARGIN - height),
+    top: clamp(ideal, top, vh - bottom - height),
     width,
     maxHeight,
   }
 }
+
+/** Touch pointers always leave when the finger lifts or a scroll starts. */
+const mouseOnly =
+  (handler?: () => void) => (event: { pointerType: string }) => {
+    if (event.pointerType === 'mouse') handler?.()
+  }
 
 export function AnchoredPopover({
   open,
@@ -109,6 +148,7 @@ export function AnchoredPopover({
   onPointerEnter,
   onPointerLeave,
   id,
+  footer,
   children,
 }: AnchoredPopoverProps) {
   const { t } = useTranslation()
@@ -120,7 +160,11 @@ export function AnchoredPopover({
     const anchor = anchorRef.current
     if (!anchor) return
     setPlacement(
-      place(anchor.getBoundingClientRect(), panelRef.current?.scrollHeight ?? 0)
+      place(
+        anchor.getBoundingClientRect(),
+        panelRef.current?.scrollHeight ?? 0,
+        safeAreaInsets()
+      )
     )
   }, [anchorRef])
 
@@ -223,10 +267,14 @@ export function AnchoredPopover({
       aria-modal="false"
       aria-label={title}
       data-popup-frame
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
+      onPointerEnter={mouseOnly(onPointerEnter)}
+      onPointerLeave={mouseOnly(onPointerLeave)}
       onKeyDown={onPanelKeyDown}
-      className="fixed z-[90] overflow-y-auto overscroll-contain rounded-xl border border-[var(--color-metallic-gold)]/80 bg-[#0b1b15]/[0.98] p-3 text-left text-[var(--color-beige-white)] shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
+      // No transitions: reduced motion gives every element a one-frame one,
+      // which would sweep the panel from its measuring spot across the page
+      // under a resting mouse, and closing it then reads as re-entering the
+      // trigger, reopening a hover panel.
+      className="fixed z-[90] overflow-y-auto overscroll-contain rounded-xl transition-none border border-[var(--color-metallic-gold)]/80 bg-[#0b1b15]/[0.98] p-3 text-left text-[var(--color-beige-white)] shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
       style={
         placement
           ? {
@@ -260,6 +308,14 @@ export function AnchoredPopover({
         </button>
       </div>
       {children}
+      {footer && (
+        <div
+          data-popover-footer
+          className="sticky -bottom-3 z-10 -mx-3 -mb-3 mt-2 space-y-2 rounded-b-xl border-t border-white/10 bg-[#0b1b15] px-3 pb-3 pt-2"
+        >
+          {footer}
+        </div>
+      )}
     </div>,
     document.body
   )

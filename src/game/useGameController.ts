@@ -42,7 +42,8 @@ export interface GameController {
   shop: GameOrchestrator['shop']
   flora: ReturnType<GameOrchestrator['getFloraState']>
   partialHandRules: ReturnType<GameOrchestrator['getPartialHandRules']>
-  yakuUpgrades: ReturnType<GameOrchestrator['getYakuUpgradeState']>
+  /** Every family the Tea House lists, upgraded or not. */
+  yakuFamilies: ReturnType<GameOrchestrator['getYakuFamilyState']>
   // State (reactive)
   state: OrchestratorState
   handTiles: Tile[]
@@ -51,8 +52,8 @@ export interface GameController {
   lockedTileIds: string[]
   debuffedTileIds: string[]
   disabledDecreeIds: string[]
-  decreesFaceDown: boolean
-  decreeDisplayOrderIds: string[]
+  /** Decrees Amber Acorn turned face-down (and disabled) this round. */
+  hiddenDecreeIds: string[]
   isRunActive: boolean
   phase: 'menu' | 'gameplay' | 'shop' | 'gameOver'
 
@@ -137,6 +138,16 @@ export interface GameController {
   addTileToWall: (tile: Tile) => boolean
   canRerollBossMandate: () => boolean
   rerollBossMandate: () => ActionResult
+  /** The extra Turn on sale (Red Stake on, last Turn, Act 2 on), or null. */
+  emergencyTurnOffer: {
+    cost: number
+    affordable: boolean
+    adAvailable: boolean
+  } | null
+  /** Buy one more Turn with Gold. */
+  buyTurn: () => ActionResult
+  /** Take one more Turn for a watched rewarded ad. */
+  takeAdTurn: () => ActionResult
   canUseDeadWallWrit: (tileId?: string) => boolean
   useDeadWallWrit: (tileId: string) => ActionResult
 
@@ -429,6 +440,16 @@ export function useGameController(
     if (result.success) setTick((tick) => tick + 1)
     return result
   }, [orchestrator])
+  const buyTurn = useCallback(() => {
+    const result = orchestrator.processAction({ type: 'buyTurn' })
+    if (result.success) setTick((tick) => tick + 1)
+    return result
+  }, [orchestrator])
+  const takeAdTurn = useCallback(() => {
+    const result = orchestrator.processAction({ type: 'adTurn' })
+    if (result.success) setTick((tick) => tick + 1)
+    return result
+  }, [orchestrator])
   const canUseDeadWallWrit = useCallback(
     (tileId?: string) => orchestrator.canUseDeadWallWrit(tileId),
     [orchestrator]
@@ -480,7 +501,7 @@ export function useGameController(
     shop: orchestrator.shop,
     flora: orchestrator.getFloraState(),
     partialHandRules: orchestrator.getPartialHandRules(),
-    yakuUpgrades: orchestrator.getYakuUpgradeState(),
+    yakuFamilies: orchestrator.getYakuFamilyState(),
     // State
     state,
     handTiles,
@@ -489,8 +510,7 @@ export function useGameController(
     lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
     debuffedTileIds: Array.from(state.debuffSystem.getDebuffedTileIds()),
     disabledDecreeIds: state.mandateEffectSystem.getDisabledDecreeIds(),
-    decreesFaceDown: state.mandateEffectSystem.areDecreesShuffled(),
-    decreeDisplayOrderIds: state.mandateEffectSystem.getShuffledDecreeIds(),
+    hiddenDecreeIds: state.mandateEffectSystem.getHiddenDecreeIds(),
     isRunActive: state.isRunActive,
     phase: state.phase,
 
@@ -558,6 +578,9 @@ export function useGameController(
     addTileToWall,
     canRerollBossMandate,
     rerollBossMandate,
+    emergencyTurnOffer: orchestrator.getEmergencyTurnOffer(),
+    buyTurn,
+    takeAdTurn,
     canUseDeadWallWrit,
     useDeadWallWrit,
 

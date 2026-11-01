@@ -28,7 +28,15 @@ export interface ShopOfferCardProps {
   onBuy: () => void
   /** Decrees that accept a Flower as payment. */
   onOfferFlower?: () => void
+  /**
+   * A reroll's swap: the old card fades away, untouchable, then the new one
+   * fades in, `index` places after the first.
+   */
+  transition?: { phase: 'enter' | 'leave'; index: number }
 }
+
+/** Gap between one arriving card and the next. */
+const ENTER_STAGGER_MS = 60
 
 export function ShopOfferCard({
   offering,
@@ -36,6 +44,7 @@ export function ShopOfferCard({
   unavailableReason,
   onBuy,
   onOfferFlower,
+  transition,
 }: ShopOfferCardProps) {
   const { t, i18n } = useTranslation()
   const text = useOfferText(offering)
@@ -46,8 +55,12 @@ export function ShopOfferCard({
   const pinned = useRef(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const buying = useRef(false)
+  const leaving = transition?.phase === 'leave'
   const canBuy =
-    canAfford && !unavailableReason && !offering.isLocked && !offering.isPurchased
+    canAfford &&
+    !unavailableReason &&
+    !offering.isLocked &&
+    !offering.isPurchased
   const rarityColor = RARITY_COLORS[text.rarity] ?? '#A0A0A0'
   const price = offering.finalCost.toLocaleString(i18n.resolvedLanguage)
   const fullPrice = offering.baseCost + offering.editionCost
@@ -76,9 +89,12 @@ export function ShopOfferCard({
         type="button"
         data-shop-offer={offering.id}
         data-shop-offer-type={offering.itemType}
+        data-shop-offer-transition={transition?.phase}
+        inert={leaving}
+        aria-hidden={leaving || undefined}
         aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
+        aria-expanded={open && !leaving}
+        aria-controls={open && !leaving ? panelId : undefined}
         aria-label={t('shop.offerLabel', { name: text.name, price })}
         onPointerEnter={(event) => {
           if (
@@ -108,10 +124,16 @@ export function ShopOfferCard({
             setOpen(true)
           }
         }}
-        className="shop-offer-card group relative flex shrink-0 flex-col items-center overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)]/95 p-1.5 text-center shadow-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]"
+        className={`shop-offer-card ${
+          transition ? `shop-offer-${transition.phase}` : ''
+        } group relative flex shrink-0 flex-col items-center overflow-hidden rounded-xl border-2 bg-[var(--color-dark-forest)]/95 p-1.5 text-center shadow-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)]`}
         style={{
           borderColor: rarityColor,
           boxShadow: `0 0 14px ${rarityColor}35`,
+          animationDelay:
+            transition?.phase === 'enter'
+              ? `${transition.index * ENTER_STAGGER_MS}ms`
+              : undefined,
         }}
       >
         <span className="shop-offer-art flex w-full items-center justify-center">
@@ -135,7 +157,7 @@ export function ShopOfferCard({
         </span>
       </button>
       <AnchoredPopover
-        open={open}
+        open={open && !leaving}
         anchorRef={anchorRef}
         id={panelId}
         title={text.name}
@@ -143,8 +165,58 @@ export function ShopOfferCard({
         focusOnOpen={keyboardOpened}
         onPointerEnter={cancelClose}
         onPointerLeave={scheduleClose}
+        // Buy stays on screen while a long description scrolls.
+        footer={
+          <div className="space-y-2 text-sm [overflow-wrap:anywhere]">
+            {unavailableReason && (
+              <p data-purchase-blocked className="text-xs text-amber-200">
+                {unavailableReason}
+              </p>
+            )}
+            <button
+              type="button"
+              data-shop-buy={offering.id}
+              disabled={!canBuy}
+              onClick={() => {
+                if (buying.current || !canBuy) return
+                buying.current = true
+                try {
+                  onBuy()
+                } finally {
+                  buying.current = false
+                  close()
+                }
+              }}
+              className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-4 font-bold text-white shadow disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-600 disabled:text-gray-300"
+            >
+              {t('shop.buyFor', { price })}
+              {fullPrice > offering.finalCost && (
+                <span className="text-xs line-through opacity-70">
+                  {fullPrice.toLocaleString(i18n.resolvedLanguage)}
+                </span>
+              )}
+            </button>
+            {onOfferFlower && (
+              <button
+                type="button"
+                data-offer-flower
+                onClick={() => {
+                  close()
+                  onOfferFlower()
+                }}
+                disabled={offering.isPurchased || offering.isLocked}
+                className="min-h-11 w-full rounded-lg border border-[var(--color-metallic-gold)] px-3 text-sm disabled:opacity-40"
+              >
+                {t('shop.catalyst.offer')}
+              </button>
+            )}
+          </div>
+        }
       >
-        <div data-shop-offer-details={offering.id} className="space-y-2 text-sm [overflow-wrap:anywhere]">
+        <div
+          data-shop-offer-details={offering.id}
+          className="space-y-2 text-sm [overflow-wrap:anywhere]"
+        >
           <div className="flex items-start gap-3">
             <span className="flex h-24 w-24 shrink-0 items-center justify-center">
               <OfferArt offering={offering} large />
@@ -165,7 +237,7 @@ export function ShopOfferCard({
             </p>
           )}
           {text.extra && (
-            <p className="rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
+            <p className="whitespace-pre-line rounded-lg bg-black/25 p-2 text-xs text-[var(--color-beige-white)]/80">
               {text.extra}
             </p>
           )}
@@ -176,48 +248,6 @@ export function ShopOfferCard({
                 edition: (offering.item as Decree).edition ?? offering.edition,
               }}
             />
-          )}
-          {unavailableReason && (
-            <p data-purchase-blocked className="text-xs text-amber-200">
-              {unavailableReason}
-            </p>
-          )}
-          <button
-            type="button"
-            data-shop-buy={offering.id}
-            disabled={!canBuy}
-            onClick={() => {
-              if (buying.current || !canBuy) return
-              buying.current = true
-              try {
-                onBuy()
-              } finally {
-                buying.current = false
-                close()
-              }
-            }}
-            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-[var(--color-golden-yellow)] bg-[var(--color-vibrant-orange)] px-4 font-bold text-white shadow disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-600 disabled:text-gray-300"
-          >
-            {t('shop.buyFor', { price })}
-            {fullPrice > offering.finalCost && (
-              <span className="text-xs line-through opacity-70">
-                {fullPrice.toLocaleString(i18n.resolvedLanguage)}
-              </span>
-            )}
-          </button>
-          {onOfferFlower && (
-            <button
-              type="button"
-              data-offer-flower
-              onClick={() => {
-                close()
-                onOfferFlower()
-              }}
-              disabled={offering.isPurchased || offering.isLocked}
-              className="min-h-11 w-full rounded-lg border border-[var(--color-metallic-gold)] px-3 text-sm disabled:opacity-40"
-            >
-              {t('shop.catalyst.offer')}
-            </button>
           )}
         </div>
       </AnchoredPopover>

@@ -6,6 +6,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { resetMetaProgressionRunContext } from './MetaProgressionBridge'
 import { useOmenStore } from '../stores/omenStore'
+import { advanceRound, advanceToRound } from '../test/roundHelpers'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
@@ -84,6 +85,67 @@ it.each(TABLE_STYLE_DEFINITIONS.map((t) => t.id))(
     }
   }
 )
+
+it('keeps the Red Stake withheld reward through save and load, and rejects a negative one', () => {
+  const game = start(7, 2)
+  const state = game.getState() as OrchestratorState
+  state.targetScore = 1
+  state.roundManager.getCurrentRound()!.scoreTarget = 1
+  game.processAction({
+    type: 'play',
+    tileIds: game
+      .getHandTiles()
+      .slice(0, 2)
+      .map((t) => t.id),
+  })
+  expect(state.phase).toBe('shop')
+  const saved = check(game)
+  expect(saved.state.lastRoundSummary?.stakeWithheldReward).toBe(3)
+  saved.state.lastRoundSummary!.stakeWithheldReward = -3
+  expect(() => parseClassicRunSnapshot(saved)).toThrow()
+})
+
+it('loads a Red Stake save from before the Boss target rule and reads the rule from the catalog', () => {
+  const saved = json(start(7, 2).captureRun())
+  const modifiers = saved.state.roundManager.stakeModifiers as unknown as Record<
+    string,
+    unknown
+  >
+  delete modifiers.bossTargetMultiplier
+  const parsed = parseClassicRunSnapshot(saved)
+  expect(parsed.state.roundManager.stakeModifiers.bossTargetMultiplier).toBe(
+    1.2
+  )
+  // Targets already generated for the saved Act are never rewritten.
+  expect(parsed.state.roundManager.currentAct).toEqual(
+    saved.state.roundManager.currentAct
+  )
+})
+
+it('saves emergency Turns bought this round, and loads saves from before them', () => {
+  const game = start(7, 2)
+  advanceToRound(game, 'Boss')
+  advanceRound(game)
+  const state = game.getState() as OrchestratorState
+  expect(state.currentAct).toBe(2)
+  state.handsRemaining = 1
+  state.gold = 50
+  expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
+  const saved = check(game)
+  expect(saved.state.emergencyTurnsBoughtThisRound).toBe(1)
+  expect(saved.state.handsRemaining).toBe(2)
+  // An ad Turn is saved with its Act. (check() restored a fresh state.)
+  const restored = game.getState() as OrchestratorState
+  restored.handsRemaining = 1
+  restored.gold = 0
+  expect(game.processAction({ type: 'adTurn' }).success).toBe(true)
+  expect(check(game).state.adTurns).toEqual({ actNumber: 2, count: 1 })
+  const legacy = json(saved)
+  delete legacy.state.emergencyTurnsBoughtThisRound
+  expect(() => parseClassicRunSnapshot(legacy)).not.toThrow()
+  legacy.state.emergencyTurnsBoughtThisRound = -1
+  expect(() => parseClassicRunSnapshot(legacy)).toThrow()
+})
 
 it.each([7, 19, 413, 991, 2026])(
   'accepts shop, paid pack, claim and next-round checkpoints (seed %i)',
@@ -452,6 +514,7 @@ describe('untrusted save boundary', () => {
         [
           'playsThisRound',
           'tilesRedrawnThisRound',
+          'emergencyTurnsBoughtThisRound',
           'honorDiscardsThisRound',
           'patternPlayCounts',
         ].includes(key)

@@ -10,11 +10,8 @@ import {
 } from '../../config/tableStyleDefinitions'
 import { feltPalette } from '../../utils/feltPalette'
 import { withBasePath } from '../../utils/basePath'
+import { getPavilionEmblem, type PavilionPage } from '../../utils/assets'
 import './pavilion.css'
-
-export type PavilionPage = 'codex' | 'settings' | 'achievements' | 'collection'
-const pavilionArt = (page: PavilionPage) =>
-  withBasePath(`assets/illustrations/pavilion/${page}.webp`)
 
 /** Dedicated painted rooms with the selected table's felt and safe corner frame. */
 export function PavilionScreen({
@@ -73,7 +70,7 @@ export function PavilionScreen({
             </div>
             <img
               className="pavilion-emblem"
-              src={pavilionArt(page)}
+              src={getPavilionEmblem(page)}
               width={112}
               height={112}
               alt=""

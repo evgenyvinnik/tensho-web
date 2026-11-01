@@ -125,7 +125,7 @@
     "farewell": "愿麻将牌为你的升天之旅带来好运！"
   },
   "codexEconomy": {
-    "payout": "通关基础奖励为小轮3金币、大轮5金币、首领轮10金币，不随超出目标的分数增加。赌注可能取消小轮奖励；法令和预兆可能改变最终收益。",
+    "payout": "通关基础奖励为小局3金币、大局5金币、首领局10金币，不随超出目标的分数增加。赌注可能取消小局奖励；法令和征兆可能改变最终收益。",
     "interest": "利息按领取通关奖励前的金币计算：每5金币获得1金币，默认上限为5。特许和预兆可提高上限；某些预兆会阻止利息。失败时不支付利息。",
     "sale": "法令的实际售价请查看出售按钮。以花支付或免费获得的法令可能只能卖0金币；永恒法令无法出售。出售会移除其效果，并释放它占用的槽位。",
     "prices": "请以各商品的标价和当前刷新费用为准。折扣、版本、特许及其他效果会改变价格。刷新不会补回已购买的特许或纸牌占卜师的免费商品。"
@@ -169,15 +169,15 @@
     },
     "wildFlush": {
       "name": "百搭混一色",
-      "description": "用全部由万能牌组成的混一色得分。"
+      "description": "用全部由万能牌组成的混一色（一种花色加风牌或三元牌）得分。"
     },
     "speedRun": {
       "name": "疾速通关",
-      "description": "消耗不超过48个行动回合赢得一次冒险。免费换牌不计入。"
+      "description": "在消耗不超过48次行动的情况下赢得一次冒险。免费重抽不计入。"
     },
     "charterCollector": {
-      "name": "敕令收藏家",
-      "description": "在同一局中，第5幕结束前购买5项帝国特许状。"
+      "name": "特许状收藏家",
+      "description": "在同一次冒险中，第5幕结束前购买5项帝国特许状。"
     },
     "shattered": {
       "name": "粉碎",
@@ -185,22 +185,22 @@
     },
     "royalHand": {
       "name": "王者之手",
-      "description": "以役满得分。"
+      "description": "以役满（大三元等最高等级的牌型）得分。"
     },
     "retrograde": {
       "name": "逆行",
-      "description": "将一种役提升到10级。"
+      "description": "将一个牌型类别提升到9级。"
     },
     "keeperOfWinds": {
       "name": "风之守护者",
-      "description": "在单次挑战中累计以10个风牌役得分。"
+      "description": "在一次冒险中，以含东风刻子或杠子的和牌得分5次。"
     },
     "masterOfSilence": {
       "name": "寂静大师",
-      "description": "在不弃掉字牌的情况下赢得3局。"
+      "description": "在不重抽任何风牌或三元牌的情况下赢得3个回合。"
     },
     "sealBearer": {
-      "name": "印记持有者",
+      "name": "符印持有者",
       "description": "使用10个命运符印。"
     },
     "score10k": {
@@ -216,7 +216,7 @@
       "description": "一次出牌获得100,000,000分。"
     },
     "sealScholar": {
-      "name": "印记学者",
+      "name": "符印学者",
       "description": "发现全部命运符印。"
     },
     "starGazer": {
@@ -228,7 +228,7 @@
       "description": "发现全部虚空卷轴。"
     },
     "charterComplete": {
-      "name": "敕令全收集",
+      "name": "特许状全收集",
       "description": "发现全部帝国特许状。"
     },
     "archiveComplete": {
@@ -279,44 +279,44 @@
     }
   },
   "observatory": {
-    "description": "每颗持有的天球在对应役种得分时提供×1.5倍率，每次出牌每颗仅生效一次。黑洞可对应任何已得分的役。",
-    "holdingNote": "天文台奖励持有这颗天球。使用后可获得永久升级，但会失去这颗天球的持有加成。"
+    "description": "每颗持有的天体宝珠在对应役种得分时提供×1.5倍率，每次出牌每颗仅生效一次。黑洞球可对应任何已得分的役。",
+    "holdingNote": "观星台奖励持有这颗天体宝珠。使用后可获得永久升级，但会失去这颗天体宝珠的持有加成。"
   },
   "closedHandAusterity": {
     "name": "门前苦修",
-    "description": "完整门前手获得×1.5。本局每先前完成一次门前手，再增长×1.2，花牌强化前最高×4。战术出牌与向听宽恕不计入。",
-    "progress": "已完成门前手：{{count}}次。下次符合条件的手牌：花牌强化前×{{factor}}。"
+    "description": "每副和牌获得×1.5，本局此前每完成一副和牌再增长×1.2，花牌加成前最高×4。较小的出牌和由向听宽宥完成的手牌不计入。",
+    "progress": "目前已完成和牌：{{count}}次。下一次：花牌加成前×{{factor}}。"
   },
   "yakuRepetition": {
     "name": "连役敕令",
-    "description": "连续回合中得分的役种，每连续一回合累积×1.2（最多×4）。中断一回合即断开连续。上限在花牌强化前计算。",
+    "description": "在连续回合中得分的役，其连续记录中此前每有一个回合，就获得×1.2，花牌加成前最高×4。某回合没有打出该役即中断连续。",
     "title": "可重复的役",
     "streak": "{{name}} · 此前连续{{rounds}}回合",
     "empty": "暂无连续记录。在本回合以役得分即可开始。"
   },
   "consumableUnlocks": {
-    "seal_of_the_immortal": "以役满得分。",
-    "seal_of_the_void": "在一次挑战中以全部20种役得分。",
+    "seal_of_the_immortal": "以役满（大三元等最高等级的牌型）得分。",
+    "seal_of_the_void": "在一次冒险中以全部20种役得分。",
     "planet_x_orb": "以七对子得分。",
-    "ceres_orb": "以混全带幺九得分。",
-    "eris_orb": "以国士无双得分。",
+    "ceres_orb": "以混全带幺九得分：每组面子和对子都含1、9、风牌或三元牌的和牌。",
+    "eris_orb": "以国士无双得分：1、9、风牌和三元牌每种各一张，再加其中任意一张。",
     "black_hole_orb": "发现其余全部12种天体宝珠。"
   },
   "decreeUnlocks": {
     "stage_master": "到达第4幕。",
     "flower_pot": "在可选的无尽模式中到达第8幕。",
     "satellite": "在一次冒险中持有400金币。",
-    "swift_andy": "消耗不超过48个行动回合赢得一次冒险。免费换牌不计入。",
+    "swift_andy": "在消耗不超过48次行动的情况下赢得一次冒险。免费重抽不计入。",
     "lucky_sixes": "一次出牌获得10,000分。",
     "the_idol": "一次出牌获得1,000,000分。",
     "stuntman": "一次出牌获得100,000,000分。",
     "cartomancer": "发现全部命运符印。",
     "astronomer": "发现全部天体宝珠。",
-    "decree-blueprint": "赢得一局挑战。",
-    "decree-brainstorm": "持有至少五个法令并赢得挑战。",
-    "decree-heavenly-ordinance": "以役满得分。",
-    "decree-clone-army": "在黄金底注下赢得挑战。",
-    "decree-yakuman-blessing": "在同一次挑战中以三个役满牌型得分。",
+    "decree-blueprint": "赢得一次冒险。",
+    "decree-brainstorm": "持有至少五个法令并赢得一次冒险。",
+    "decree-heavenly-ordinance": "以役满（大三元等最高等级的牌型）得分。",
+    "decree-clone-army": "在金级难度赢得一次冒险。",
+    "decree-yakuman-blessing": "在一次冒险中以役满得分三次。",
     "decree-omega": "在可选的无尽模式中完成第8幕。"
   },
   "scoreThresholds": {
@@ -349,7 +349,7 @@
   },
   "runOwnership": {
     "fateSeal": "牌的变化会持续整个本局，包括后续回合。新开一局会重置。",
-    "negativeTile": "只要这张负片牌仍属于你的牌山，就提供+1法令槽位。摸牌或弃牌不会移除槽位；销毁此牌或更换版本会移除槽位。",
+    "negativeTile": "只要这张实体负影牌仍在你的牌山中，就提供+1法令栏位。摸到它或把它送进牌河都会保留栏位；销毁此牌或更换其版本会移除栏位。",
     "overCapacity": "容量减少：已有法令不会丢失。获得更多法令前需腾出空间。"
   },
   "yakuUpgrades": {
@@ -428,10 +428,10 @@
     "available": "{{name}}（可用：{{count}}）",
     "penalty_lose_tile": "失去1张随机牌。",
     "penalty_lose_gold": "失去所有金币。",
-    "penalty_lose_hand_size": "手牌上限永久减少{{count}}张。",
-    "penalty_lock_tile": "将1张随机牌锁入死牌池。",
+    "penalty_lose_hand_size": "本局剩余时间内手牌上限减少{{count}}张。",
+    "penalty_lock_tile": "将1张随机牌锁定在牌河中：它无法再被摸到。",
     "penalty_lose_decree_slot": "下一轮失去{{count}}个法令槽位。",
-    "penalty_halve_base_score": "下一手的基础分减半。",
+    "penalty_halve_base_score": "下一次出牌的基础分减半。",
     "penalty_destroy_decrees": "摧毁所有其他法令。",
     "penalty_none": "无额外代价。",
     "protected": "预兆保护会抵消额外代价。",
@@ -441,7 +441,7 @@
     "targets": "目标牌",
     "count": "目标：{{selected}} / {{required}}",
     "copyOrder": "牌1将变成牌2的复制品。请先选择要改变的牌。",
-    "replacesModifier": "将替换{{names}}：每张牌只能拥有一种印记、封印或版本效果。",
+    "replacesModifier": "将替换{{names}}：每张特殊牌只能拥有一种印记、蜡封或版本。",
     "cost": "虚空代价",
     "failed": "无法使用此道具。",
     "unavailable": "此道具当前无法使用。",
@@ -513,6 +513,14 @@
     "fast": "快",
     "resetSettings": "重置为默认",
     "dangerZone": "危险操作",
+    "privacy": {
+      "title": "隐私",
+      "policy": "隐私政策",
+      "policyDesc": "了解天翔会保存哪些内容，以及广告可能收集哪些信息",
+      "choices": "隐私选项",
+      "choicesDesc": "查看或更改广告使用你数据的方式",
+      "choicesError": "无法打开隐私选项。请检查网络连接后重试。"
+    },
     "data": "数据与进度",
     "gameplay": "游戏",
     "muteMusic": "静音音乐",
@@ -532,10 +540,12 @@
       "normal": "正常",
       "slow": "慢"
     },
-    "tileHintsDesc": "在牌架下把手牌分组为对子、顺子和刻子，并在凑成和牌时提示",
+    "tileHintsDesc": "在手牌下方显示建议的对子、顺子和刻子，并在凑成和牌时提示",
     "visual": "显示",
     "rankNumbers": "牌上显示数字",
     "rankNumbersDesc": "在熟悉牌面之前，在数牌上显示1–9，在三元牌上显示字母。",
+    "keyboardShortcuts": "键盘快捷键",
+    "keyboardShortcutsDesc": "牌桌上按 P 出牌，R 重抽，A 选中全部牌，Esc 把牌放回。方向键可在牌之间移动。",
     "unreadableSave": "无法读取已保存的进度。开始新的一局会替换它，你可以先下载为文件。",
     "credits": {
       "title": "致谢",
@@ -574,11 +584,14 @@
     "deadWallDraw": "从岭上牌摸牌",
     "winsRound": "可通关",
     "tilesInWall": "牌山剩余",
-    "handsRemaining": "剩余手数",
+    "handsRemaining": "剩余行动",
     "redrawsRemaining": "剩余重抽",
     "redrawSelected": "重抽选中的牌",
     "redrawHint": "最多退回3张选中的牌并补抽",
     "decreeDisabledByMandate": "本手因绯红之心而失效",
+    "hiddenDecreeTitle": "隐藏法令",
+    "faceDownDecree": "背面法令",
+    "hiddenDecreeDescription": "琥珀橡实隐藏了这张法令，并封住其效果，直到本轮获胜。",
     "season": "季节：",
     "endless": "无尽",
     "wall": "牌山：",
@@ -602,7 +615,7 @@
       "label": "预测",
       "selectOneMore": "再选一张才能打出这副面子",
       "notCompleteHand": "这个选择不是一副完整的和牌",
-      "returnTiles": "退回到五张，或者凑成完整的一手",
+      "returnTiles": "退回牌直到剩{{max}}张，或凑成完整和牌",
       "groupToScore": "组成面子才算满分，完整的一手还能开役"
     },
     "previewConcealed": "得分预览已隐藏",
@@ -717,24 +730,38 @@
     "feltTiles": "要打出的牌",
     "collection": "你的物品",
     "deadWallHint": "只选一张牌，与岭上的一张交换。每回合一次，不消耗行动。",
-    "turnsLabel": "剩余行动"
+    "turnsLabel": "剩余行动",
+    "emergencyTurn": {
+      "buy": "行动 +1",
+      "label": "花费 {{cost}} 金币再购买一次行动",
+      "short": "金币不足：再购买一次行动需要 {{cost}} 金币",
+      "watchAd": "看广告",
+      "watchAdLabel": "观看广告再获得一次行动",
+      "adPlaying": "广告播放中…",
+      "adIncomplete": "广告提前关闭，未获得额外行动。",
+      "adUnavailable": "当前没有可播放的广告。",
+      "simulatedAd": "广告（模拟）",
+      "adCountdown": "{{seconds}} 秒后可领取奖励",
+      "adReady": "奖励已就绪",
+      "adClaim": "领取行动 +1"
+    }
   },
   "rounds": {
     "small": "小局",
     "large": "大局",
-    "boss": "Boss局",
+    "boss": "首领局",
     "smallJp": "小局",
     "largeJp": "大局",
     "bossJp": "親局",
     "smallShort": "小局",
     "largeShort": "大局",
-    "bossShort": "Boss局"
+    "bossShort": "首领局"
   },
   "runJourney": {
     "position": "第{{act}}幕 / 共{{total}}幕 · 第{{round}}局 / 共3局已通过",
     "next": "下一局：第{{act}}幕 · 第{{round}}局",
     "complete": "全部{{total}}幕已完成 · 胜利已锁定",
-    "optional": "击败第{{total}}幕的Boss即可获胜。无尽模式和更高难度级别都是可选挑战，并非通关要求。",
+    "optional": "击败第{{total}}幕的首领即可获胜。无尽模式和更高难度级别都是可选挑战，并非通关要求。",
     "recommendation": "首次争取胜利时，建议选择绿绒台和白级。牌桌不仅改变外观，也会改变规则；难度级别则增加挑战。红级的目标分数与白级相同，但小局不再奖励金币。",
     "guideTitle": "搭配能相互配合的法令",
     "guideEarly": "先从稳定的加分和加倍率效果开始。选择能被你实际使用的牌和牌型触发的加成，不要寄望于难得一见的手牌。",
@@ -786,7 +813,7 @@
       "nextRound": "进入下一局",
       "confirmPurchase": "确认购买",
       "purchasePrompt": "花费{{cost}}G购买「{{name}}」？",
-      "baseEdition": "基础版",
+      "standardCharter": "标准",
       "goldBalance": "金币：{{amount}}",
       "rerollsUsed": "已刷新次数：{{count}}",
       "forSale": "出售中"
@@ -794,11 +821,12 @@
     "payout": {
       "interest": "利息",
       "decrees": "法令",
-      "goldTiles": "金牌",
+      "goldTiles": "黄金牌",
       "bonus": "奖励调整",
       "rentals": "租金",
       "omenEarned": "征兆：{{name}}",
-      "omen": "征兆"
+      "omen": "征兆",
+      "stakeWithheld": "{{stake}}：本回合的 {{amount}}G 奖励不予发放"
     },
     "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
     "packInventoryFull": "法令槽位不足，无法领取所选奖励。请出售法令、减少选择或跳过卡包。",
@@ -827,11 +855,12 @@
     "packSkipped": "已跳过卡包",
     "kinds": {
       "decree": "法令 · {{rarity}}",
-      "decreeHelp": "法令是本局一直有效的规则，占用一个法令栏位，随时可以卖出。",
+      "decreeHelp": "法令在你持有期间改变规则，通常占用一个法令栏位。除非带有永恒贴纸，否则可以卖出。",
       "seal": "命运符印 · 立即生效",
       "sealHelp": "拿到的那一刻即刻使用：选择要改变的牌山中的牌，改变会在本局中一直保持。",
       "sealHelpInstant": "拿到的那一刻即刻使用。",
       "orb": "天体宝珠 · 升级一类牌型",
+      "orbFamily": "天体宝珠 · {{family}}",
       "script": "虚空卷轴 · 强力但有代价",
       "consumableHelp": "使用前一直保存在物品栏中。在牌桌上点击即可使用。",
       "tile": "牌 · 加入牌墙",
@@ -845,9 +874,9 @@
     "buyFor": "购买 · {{price}}金币",
     "help": {
       "what": "茶寮是两局之间的商店。",
-      "buy": "点击任意物品查看效果，再点购买。法令改变规则，宝珠和符印立即生效（符印会让你选择要改变牌山中的哪些牌），虚空卷轴在回合中使用，祝福包可挑选奖励，特许状强化整局游戏。",
+      "buy": "点击任意物品查看效果，再点购买。法令改变规则，宝珠和命运符印立即生效（命运符印会让你选择要改变牌山中的哪些牌），虚空卷轴在回合中使用，祝福包可挑选奖励，特许状强化整局游戏。",
       "interest": "保留的金币会产生利息：回合结束时每持有5金币+1（最多+{{cap}}）。",
-      "cashOut": "进入茶寮时，上一局的金币会进入钱袋，每个来源各有一条提示：回合通过、利息、法令、金牌以及扣除的租金。",
+      "cashOut": "进入茶寮时，上一局的金币会进入钱袋，每个来源各有一条提示：回合通过、利息、法令、黄金牌以及扣除的租金。",
       "build": "“你的配置”列出持有的法令，旁边是役种升级。打开卷轴可查看规则或出售，打开升级可查看等级。每次购买都通过对应的购买按钮完成。"
     },
     "sealUsed": "已使用{{name}}",
@@ -882,11 +911,11 @@
       },
       "satellite": {
         "name": "卫星",
-        "description": "每个获胜回合结束时，每个等级高于1的天体宝珠牌型家族提供+1金币。"
+        "description": "每个获胜回合结束时，每有一个用天体宝珠提升到高于0级的牌型类别，+1金币。"
       },
       "swift_andy": {
         "name": "迅捷安迪",
-        "description": "每回合免费重抽次数+2；牌架容量−2。"
+        "description": "每回合免费重抽+2；手牌上限−2。"
       },
       "lucky_sixes": {
         "name": "幸运六",
@@ -894,11 +923,11 @@
       },
       "the_idol": {
         "name": "偶像",
-        "description": "打出至少两张牌，且所有打出牌的印刷花色与点数均相同时，倍率×3。磐石牌会破坏此条件；万能牌仍按其原本印刷的牌面判定。"
+        "description": "打出至少两张牌，且全部是同一种印刷牌面时，倍率×3。磐石牌会破坏此条件；万能牌仍按其印刷牌面判定。"
       },
       "stuntman": {
         "name": "特技演员",
-        "description": "+250分；牌架容量−3。"
+        "description": "+250分；手牌上限−3。"
       },
       "cartomancer": {
         "name": "纸牌占卜师",
@@ -945,64 +974,64 @@
         "description": "+5倍率"
       },
       "decree-golden-seal": {
-        "name": "金印",
+        "name": "金玺",
         "description": "+6倍率"
       },
       "decree-manzu-master": {
         "name": "万子师",
-        "description": "含万子时+3倍率"
+        "description": "打出的牌含万子时+3倍率"
       },
       "decree-pinzu-perfectionist": {
         "name": "筒子匠",
-        "description": "含筒子时+3倍率"
+        "description": "打出的牌含筒子时+3倍率"
       },
       "decree-souzu-scholar": {
         "name": "索子学",
-        "description": "含索子时+3倍率"
+        "description": "打出的牌含索子时+3倍率"
       },
       "decree-wind-walker": {
         "name": "风行者",
-        "description": "含风牌时+4倍率"
+        "description": "打出的牌含风牌时+4倍率"
       },
       "decree-dragon-disciple": {
         "name": "龙弟子",
-        "description": "含三元牌时+4倍率"
+        "description": "打出的牌含三元牌时+4倍率"
       },
       "decree-edge-runner": {
         "name": "端走者",
-        "description": "每张老头牌+20分"
+        "description": "每打出一张老头牌（1或9），+20分"
       },
       "decree-middle-way": {
         "name": "中道",
-        "description": "每张中张牌+10分"
+        "description": "每打出一张中张牌（2–8的牌），+10分"
       },
       "decree-green-fortune": {
         "name": "绿运",
-        "description": "每张绿牌+15分（2,3,4,6,8索）"
+        "description": "每打出一张全绿的牌，+15分：2、3、4、6、8索，以及发"
       },
       "decree-coin-collector": {
         "name": "钱币收集者",
-        "description": "回合结束时+1金"
+        "description": "每回合结束时+1金币"
       },
       "decree-merchants-favor": {
         "name": "商人恩惠",
-        "description": "回合结束时+2金"
+        "description": "每回合结束时+2金币"
       },
       "decree-lucky-coin": {
         "name": "幸运币",
-        "description": "回合结束时+3金"
+        "description": "每回合结束时+3金币"
       },
       "decree-pair-lover": {
         "name": "对子爱好者",
-        "description": "含对子时+30分"
+        "description": "打出的牌含对子时+30分"
       },
       "decree-sequence-seeker": {
         "name": "顺子探索者",
-        "description": "含顺子时+30分"
+        "description": "打出的牌含顺子时+30分"
       },
       "decree-triplet-tracker": {
         "name": "刻子追踪者",
-        "description": "含刻子时+40分"
+        "description": "打出的牌含刻子时+40分"
       },
       "decree-flower-friend": {
         "name": "花友",
@@ -1014,7 +1043,7 @@
       },
       "decree-wide-grip": {
         "name": "宽握",
-        "description": "+1手牌上限"
+        "description": "手牌上限+1"
       },
       "decree-second-chance": {
         "name": "第二次机会",
@@ -1026,111 +1055,111 @@
       },
       "decree-modest-fortune": {
         "name": "谦逊财运",
-        "description": "+20分和每回合+1金"
+        "description": "+20分，且每回合结束时+1金币"
       },
       "decree-humble-power": {
         "name": "谦卑力量",
-        "description": "+2倍率和每回合+1金"
+        "description": "+2倍率，且每回合结束时+1金币"
       },
       "decree-one-mastery": {
         "name": "一极",
-        "description": "每张1牌+25分"
+        "description": "每打出一张数字为1的数牌，+25分"
       },
       "decree-nine-mastery": {
         "name": "九极",
-        "description": "每张9牌+25分"
+        "description": "每打出一张数字为9的数牌，+25分"
       },
       "decree-five-blessing": {
         "name": "五福",
-        "description": "每张5牌+35分"
+        "description": "每打出一张数字为5的数牌，+35分"
       },
       "decree-spark": {
         "name": "火花",
-        "description": "x1.2倍率"
+        "description": "×1.2倍率"
       },
       "decree-ember": {
         "name": "余烬",
-        "description": "x1.3倍率"
+        "description": "×1.3倍率"
       },
       "decree-riichi-devotee": {
         "name": "对子信徒",
-        "description": "含两组以上对子时倍率+4"
+        "description": "打出的牌含两组或以上对子时+4倍率"
       },
       "decree-tanyao-tactician": {
         "name": "断幺战术家",
-        "description": "断幺九得分时+3倍率"
+        "description": "以断幺九得分时+3倍率：只由2–8的牌组成、没有1、9、风牌和三元牌的和牌"
       },
       "decree-pinfu-purist": {
         "name": "平和纯粹者",
-        "description": "平和得分时+3倍率"
+        "description": "以平和得分时+3倍率：由四组顺子加一对组成的和牌，且对子不是三元牌或东风"
       },
       "decree-manzu-emperor": {
         "name": "万子皇帝",
-        "description": "手牌一半以上为万子时+8倍率"
+        "description": "打出的牌至少一半为万子时+8倍率"
       },
       "decree-pinzu-princess": {
         "name": "筒子公主",
-        "description": "手牌一半以上为筒子时+8倍率"
+        "description": "打出的牌至少一半为筒子时+8倍率"
       },
       "decree-souzu-sage": {
         "name": "索子贤者",
-        "description": "手牌一半以上为索子时+8倍率"
+        "description": "打出的牌至少一半为索子时+8倍率"
       },
       "decree-flush-fever": {
         "name": "一色狂热",
-        "description": "单一花色时x1.5倍率"
+        "description": "打出的数牌全部为同一花色时×1.5倍率（可含风牌和三元牌）"
       },
       "decree-honor-guard": {
         "name": "字牌守护",
-        "description": "3张以上字牌时x1.5倍率"
+        "description": "打出的牌含3张或以上字牌（风牌或三元牌）时×1.5倍率"
       },
       "decree-terminal-tide": {
         "name": "老头牌潮流",
-        "description": "4张以上老头牌时x1.5倍率"
+        "description": "打出的牌含4张或以上老头牌（1或9）时×1.5倍率"
       },
       "decree-straight-arrow": {
         "name": "直矢",
-        "description": "3组顺子时+80分"
+        "description": "打出的牌含3组或以上顺子时+80分"
       },
       "decree-run-master": {
         "name": "连续师",
-        "description": "每组顺子+6倍率"
+        "description": "每打出一组顺子+6倍率"
       },
       "decree-triple-threat": {
         "name": "三重威胁",
-        "description": "2组以上刻子时+80分"
+        "description": "打出的牌含2组或以上刻子时+80分"
       },
       "decree-triplet-thunder": {
         "name": "刻子雷",
-        "description": "每组刻子+8倍率"
+        "description": "每打出一组刻子+8倍率"
       },
       "decree-echo-stone": {
         "name": "回响石",
-        "description": "重新触发第一张得分牌"
+        "description": "第一张得分牌计分两次"
       },
       "decree-mirror-shard": {
         "name": "镜片",
-        "description": "重新触发最后一张得分牌"
+        "description": "最后一张得分牌计分两次"
       },
       "decree-dragon-echo": {
         "name": "龙响",
-        "description": "重新触发所有三元牌"
+        "description": "打出的每张三元牌计分两次"
       },
       "decree-wind-echo": {
         "name": "风响",
-        "description": "重新触发所有风牌"
+        "description": "打出的每张风牌计分两次"
       },
       "decree-golden-ratio": {
         "name": "黄金比例",
-        "description": "每5金+1倍率（最高+10）"
+        "description": "每持有5金币+1倍率（最高+10）"
       },
       "decree-treasure-hunter": {
         "name": "寻宝者",
-        "description": "赢得回合时，手中剩余的每种花色获得1金币。风牌与三元牌分别计算。"
+        "description": "赢得回合时，手牌中每剩一种不同花色，+1金币。风牌与三元牌各算一种花色。"
       },
       "decree-tax-collector": {
         "name": "税务官",
-        "description": "回合结束时+4金"
+        "description": "每回合结束时+4金币"
       },
       "decree-garden-keeper": {
         "name": "园丁",
@@ -1138,7 +1167,7 @@
       },
       "decree-blossom-storm": {
         "name": "花风暴",
-        "description": "每张收集的花牌x1.2倍率"
+        "description": "每收集一张花牌×1.2倍率"
       },
       "decree-seasonal-wind": {
         "name": "季节风",
@@ -1146,15 +1175,15 @@
       },
       "decree-slow-burn": {
         "name": "慢燃",
-        "description": "本局每回合+2倍率"
+        "description": "本局每完成一个回合+2倍率"
       },
       "decree-momentum": {
         "name": "势头",
-        "description": "本回合每手牌+15分"
+        "description": "本回合此前每出牌一次，+15分"
       },
       "decree-crescendo": {
         "name": "渐强",
-        "description": "本回合每手牌x1.1倍率"
+        "description": "本回合此前每出牌一次，×1.1倍率"
       },
       "decree-waste-not": {
         "name": "无浪费",
@@ -1166,19 +1195,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "役牌狂热者",
-        "description": "役牌得分时x1.5倍率"
+        "description": "以役牌得分时×1.5倍率：含三元牌或东风刻子（或杠子）的和牌"
       },
       "decree-toitoi-titan": {
         "name": "对对巨人",
-        "description": "对对和得分时x1.5倍率"
+        "description": "以对对和得分时×1.5倍率：由四组刻子或杠子加一对组成的和牌"
       },
       "decree-ittsu-initiate": {
         "name": "一通入门",
-        "description": "一气通贯得分时x1.5倍率"
+        "description": "以一气通贯得分时×1.5倍率：含同一花色1-2-3、4-5-6和7-8-9的和牌"
       },
       "decree-chinitsu-champion": {
         "name": "清一色冠军",
-        "description": "清一色得分时x2.0倍率"
+        "description": "以清一色得分时×2倍率：只由一种花色组成、没有风牌和三元牌的和牌"
       },
       "decree-veteran": {
         "name": "老兵",
@@ -1186,7 +1215,7 @@
       },
       "decree-experience": {
         "name": "经验",
-        "description": "每完成一幕x1.1倍率"
+        "description": "每完成一幕×1.1倍率"
       },
       "decree-greater-jade": {
         "name": "大玉",
@@ -1198,23 +1227,23 @@
       },
       "decree-flame": {
         "name": "火焰",
-        "description": "x1.5倍率"
+        "description": "×1.5倍率"
       },
       "decree-wind-dragon": {
         "name": "风龙",
-        "description": "同时有风牌和三元牌时+5倍率"
+        "description": "打出的牌同时含风牌和三元牌时+5倍率"
       },
       "decree-all-suits": {
         "name": "三色齐",
-        "description": "含三种花色时+8倍率"
+        "description": "打出的牌同时含万子、筒子和索子时+8倍率"
       },
       "decree-bookends": {
         "name": "两端",
-        "description": "同时有1和9时+60分"
+        "description": "打出的牌同时含1和9时+60分"
       },
       "decree-expansive-grip": {
         "name": "扩展握",
-        "description": "+2手牌上限"
+        "description": "手牌上限+2"
       },
       "decree-careful-player": {
         "name": "谨慎玩家",
@@ -1222,7 +1251,7 @@
       },
       "decree-inferno": {
         "name": "业火",
-        "description": "x2.0倍率"
+        "description": "×2倍率"
       },
       "decree-supernova": {
         "name": "超新星",
@@ -1234,43 +1263,43 @@
       },
       "decree-compound-interest": {
         "name": "复利",
-        "description": "每10金+2倍率"
+        "description": "每持有10金币+2倍率"
       },
       "decree-wealth-engine": {
         "name": "财富引擎",
-        "description": "回合结束时每张法令+1金"
+        "description": "每回合结束时，每拥有一个法令+1金币"
       },
       "decree-perpetual-motion": {
         "name": "永动机",
-        "description": "本局每手牌+2倍率"
+        "description": "本局此前每出牌一次，+2倍率"
       },
       "decree-triple-echo": {
         "name": "三重回响",
-        "description": "所有得分牌重新触发一次"
+        "description": "每张得分牌计分两次"
       },
       "decree-terminal-resonance": {
         "name": "老头牌共鸣",
-        "description": "老头牌重新触发两次"
+        "description": "打出的每张老头牌（1或9）计分三次"
       },
       "decree-honor-resonance": {
         "name": "字牌共鸣",
-        "description": "字牌重新触发两次"
+        "description": "打出的每张字牌（风牌或三元牌）计分三次"
       },
       "decree-manzu-monarch": {
         "name": "万子王",
-        "description": "全部万子时x2.0倍率"
+        "description": "打出的牌全部为万子时×2倍率"
       },
       "decree-pinzu-potentate": {
         "name": "筒子君主",
-        "description": "全部筒子时x2.0倍率"
+        "description": "打出的牌全部为筒子时×2倍率"
       },
       "decree-souzu-sovereign": {
         "name": "索子主权",
-        "description": "全部索子时x2.0倍率"
+        "description": "打出的牌全部为索子时×2倍率"
       },
       "decree-flower-emperor": {
         "name": "花帝",
-        "description": "每张收集的花牌x1.5倍率"
+        "description": "每收集一张花牌×1.5倍率"
       },
       "decree-season-lord": {
         "name": "季节主",
@@ -1282,27 +1311,27 @@
       },
       "decree-honitsu-herald": {
         "name": "混一色先驱",
-        "description": "混一色得分时x2.0倍率"
+        "description": "以混一色得分时×2倍率：由一种花色加风牌或三元牌组成的和牌"
       },
       "decree-sanshoku-sage": {
         "name": "三色贤者",
-        "description": "三色同顺得分时x2.0倍率"
+        "description": "以三色同顺得分时×2倍率：三种花色中都有相同顺子的和牌"
       },
       "decree-chanta-champion": {
         "name": "全带冠军",
-        "description": "混全带幺九得分时x2.0倍率"
+        "description": "以混全带幺九得分时×2倍率：至少含一组顺子，且每组面子和对子都含1、9、风牌或三元牌的和牌。纯全带幺九（同样的和牌，但没有风牌和三元牌，因此每组面子和对子都含1或9）也算。"
       },
       "decree-mandate-breaker": {
         "name": "令破坏者",
-        "description": "Boss回合中+15倍率，x1.5倍率"
+        "description": "首领回合中：+15倍率并×1.5倍率"
       },
       "decree-boss-slayer": {
-        "name": "亲卫杀手",
-        "description": "Boss回合中x2.0倍率"
+        "name": "首领克星",
+        "description": "首领回合中×2倍率"
       },
       "decree-fortune-and-glory": {
         "name": "财富与荣耀",
-        "description": "+60分，+8倍率，每回合+3金"
+        "description": "+60分和+8倍率，且每回合结束时+3金币"
       },
       "decree-emperors-blessing": {
         "name": "皇帝祝福",
@@ -1310,43 +1339,43 @@
       },
       "decree-golden-age": {
         "name": "黄金时代",
-        "description": "回合结束时+8金"
+        "description": "每回合结束时+8金币"
       },
       "decree-blueprint": {
         "name": "蓝图",
-        "description": "复制右侧法令的效果"
+        "description": "复制其右侧法令的效果"
       },
       "decree-photograph": {
         "name": "照片",
-        "description": "第一张得分牌给予x2倍率"
+        "description": "打出的牌含字牌（风牌或三元牌）时×2倍率"
       },
       "decree-ancient-scroll": {
         "name": "古代卷轴",
-        "description": "+150分，-2手牌上限"
+        "description": "+150分；手牌上限−2"
       },
       "decree-sacrifice": {
         "name": "牺牲",
-        "description": "倍率×3.0，每回合行动−1"
+        "description": "×3倍率；每回合行动−1"
       },
       "decree-transmuter": {
         "name": "变换者",
-        "description": "计分时中张牌变为老头牌"
+        "description": "打出的2–8的牌按老头牌（1和9）计分"
       },
       "decree-harmonizer": {
         "name": "调和者",
-        "description": "所有花色可组成顺子"
+        "description": "顺子可混用花色（例如1万、2筒、3索）"
       },
       "decree-final-act": {
         "name": "终幕",
-        "description": "第4幕后每幕x1.5倍率"
+        "description": "第4幕之后每多一幕×1.5倍率"
       },
       "decree-endless-journey": {
         "name": "无尽旅途",
-        "description": "每完成一幕x1.2倍率"
+        "description": "每完成一幕×1.2倍率"
       },
       "decree-master-grip": {
         "name": "大师握",
-        "description": "+3手牌上限"
+        "description": "手牌上限+3"
       },
       "decree-infinite-patience": {
         "name": "无限耐心",
@@ -1354,51 +1383,51 @@
       },
       "decree-divine-flame": {
         "name": "神炎",
-        "description": "x3.0倍率"
+        "description": "×3倍率"
       },
       "decree-heavens-wrath": {
         "name": "天罚",
-        "description": "无中张牌时x4.0倍率"
+        "description": "打出的牌不含2–8的牌时×4倍率（只有1、9、风牌和三元牌）"
       },
       "decree-void-blessing": {
         "name": "虚空祝福",
-        "description": "全部字牌时x5.0倍率"
+        "description": "打出的牌全部为风牌或三元牌时×5倍率"
       },
       "decree-eternal-echo": {
         "name": "永恒回响",
-        "description": "所有得分牌重新触发两次"
+        "description": "每张得分牌计分三次"
       },
       "decree-dragon-king": {
         "name": "龙王",
-        "description": "三元牌重新触发3次"
+        "description": "打出的每张三元牌计分四次"
       },
       "decree-yaku-amplifier": {
         "name": "役放大器",
-        "description": "所有役倍率增加x1.5"
+        "description": "和牌计入役时，役的合计倍率再乘以1.5"
       },
       "decree-yakuman-seeker": {
         "name": "役满求道者",
-        "description": "役满得分时x5.0倍率"
+        "description": "以役满（最高等级的牌型，如大三元或国士无双）得分时×5倍率"
       },
       "decree-four-seasons-master": {
         "name": "四季达人",
-        "description": "每个活跃季节x2.0倍率"
+        "description": "每个活跃季节×2倍率"
       },
       "decree-eternal-garden": {
         "name": "永恒花园",
-        "description": "每张花牌+10倍率，花牌不会丢失"
+        "description": "每张花牌+10倍率。干旱无法压制你的花牌。"
       },
       "decree-midas-touch": {
         "name": "点金手",
-        "description": "回合结束时+10金"
+        "description": "每回合结束时+10金币"
       },
       "decree-infinite-wealth": {
         "name": "无限财富",
-        "description": "每10金x1.1倍率"
+        "description": "每持有10金币×1.1倍率"
       },
       "decree-brainstorm": {
         "name": "脑风暴",
-        "description": "复制最左侧法令的效果"
+        "description": "复制你最左侧法令的效果"
       },
       "decree-doppelganger": {
         "name": "分身",
@@ -1406,23 +1435,23 @@
       },
       "decree-manzu-god": {
         "name": "万子神",
-        "description": "全部万子时x3.0倍率"
+        "description": "打出的牌全部为万子时×3倍率"
       },
       "decree-pinzu-god": {
         "name": "筒子神",
-        "description": "全部筒子时x3.0倍率"
+        "description": "打出的牌全部为筒子时×3倍率"
       },
       "decree-souzu-god": {
         "name": "索子神",
-        "description": "全部索子时x3.0倍率"
+        "description": "打出的牌全部为索子时×3倍率"
       },
       "decree-glass-cannon": {
         "name": "玻璃炮",
-        "description": "x6.0倍率，Boss回合失败时销毁"
+        "description": "×6倍率。输掉首领回合时销毁。"
       },
       "decree-phoenix": {
         "name": "凤凰",
-        "description": "防止一次失败，然后自行出售"
+        "description": "如果你将要输掉一个回合，改为视作过关。之后此法令会被销毁。"
       },
       "decree-time-lord": {
         "name": "时间主宰",
@@ -1430,71 +1459,71 @@
       },
       "decree-exponential": {
         "name": "指数级",
-        "description": "每100基础分x1.3倍率"
+        "description": "打出的牌每有100基础分，×1.3倍率"
       },
       "decree-chain-reaction": {
         "name": "连锁反应",
-        "description": "本手每个役x1.5倍率"
+        "description": "计分的和牌中每有一个役，×1.5倍率"
       },
       "decree-cosmic-jade": {
         "name": "宇宙玉",
-        "description": "+200分，x1.5倍率"
+        "description": "+200分和×1.5倍率"
       },
       "decree-solar-banner": {
         "name": "太阳旗",
-        "description": "+25倍率，x2.0倍率"
+        "description": "+25倍率和×2倍率"
       },
       "decree-universal-grip": {
         "name": "万能握",
-        "description": "+4手牌上限"
+        "description": "手牌上限+4"
       },
       "decree-heavenly-ordinance": {
         "name": "天命",
-        "description": "x5.0倍率"
+        "description": "×5倍率"
       },
       "decree-celestial-throne": {
         "name": "天座",
-        "description": "倍率×10.0，手牌−2，每回合行动−1"
+        "description": "×10倍率；手牌上限−2，每回合行动−1"
       },
       "decree-void-emperor": {
         "name": "虚帝",
-        "description": "上一手为0分时x8.0倍率"
+        "description": "上一次出牌得0分时×8倍率"
       },
       "decree-infinite-loop": {
         "name": "无限循环",
-        "description": "所有得分牌重新触发3次"
+        "description": "每张得分牌计分四次"
       },
       "decree-echo-dimension": {
         "name": "回响次元",
-        "description": "所有重新触发效果触发两次"
+        "description": "你其他法令给予的额外计分次数翻倍（计分两次的牌改为计分三次）"
       },
       "decree-clone-army": {
         "name": "克隆军团",
-        "description": "复制所有其他法令的效果"
+        "description": "复制你所有其他法令的效果"
       },
       "decree-world-tree": {
         "name": "世界树",
-        "description": "每张花牌x2.0倍率，每个季节x1.5倍率"
+        "description": "每张花牌×2倍率，每个活跃季节×1.5倍率"
       },
       "decree-philosophers-stone": {
         "name": "贤者之石",
-        "description": "获得金币翻倍"
+        "description": "出牌、重抽、道具和回合收益获得的金币翻倍（出售法令和征兆所得的金币除外）"
       },
       "decree-dragon-hoard": {
         "name": "龙之宝库",
-        "description": "每10金x1.2倍率"
+        "description": "每持有10金币×1.2倍率"
       },
       "decree-yaku-nexus": {
         "name": "役结点",
-        "description": "所有役+1等级"
+        "description": "每个役都按高一级计算（第1级的×1.3变为×1.6）"
       },
       "decree-yakuman-blessing": {
         "name": "役满祝福",
-        "description": "役满得分时x10.0倍率"
+        "description": "以役满（最高等级的牌型，如大三元或国士无双）得分时×10倍率"
       },
       "decree-reality-warp": {
         "name": "现实扭曲",
-        "description": "所有牌视为任意花色和数字"
+        "description": "你选择的任意14张牌都能组成和牌"
       },
       "decree-time-master": {
         "name": "时间支配者",
@@ -1502,15 +1531,15 @@
       },
       "decree-immortal-decree": {
         "name": "不死法令",
-        "description": "防止所有失败（但分数减半）"
+        "description": "每当你将要输掉一个回合时，改为视作过关。第一次救场后，本局剩余时间内你的得分减半，即使卖掉此法令也一样。"
       },
       "decree-omega": {
         "name": "终极",
-        "description": "+500分，+50倍率，x2.0倍率"
+        "description": "+500分、+50倍率和×2倍率"
       },
       "yakuman_succession": {
         "name": "役满承继",
-        "description": "持有至少2种花牌时，混一色、清一色、二杯口、纯全带幺九和七对子升为役满（各×4）。被敕令降级的役不能晋升。复制品不叠加。"
+        "description": "持有至少2张花牌时，以下牌型成为最高等级的役满（各×4）：混一色、清一色、二杯口（两对完全相同的顺子）、纯全带幺九（每组面子和对子都含1或9）和七对子。被敕令削弱的牌型无法晋升。复制品不叠加。"
       },
       "river_tax": {
         "name": "河川税",
@@ -1522,51 +1551,51 @@
       },
       "tanyao_dispensation": {
         "name": "断幺特许",
-        "description": "断幺九手牌中允许出现幺九牌（1与9）。"
+        "description": "断幺九（通常只含2–8的牌）也允许1和9。风牌和三元牌仍会破坏它。"
       },
       "moonlit_seal": {
-        "name": "月光之封",
-        "description": "和牌中每张字牌使倍率+0.1x。"
+        "name": "月光徽章",
+        "description": "打出的每张风牌或三元牌使本法令的×倍率+0.1（三张为×1.3）。"
       },
       "pure_suit_asceticism": {
         "name": "纯色苦行",
-        "description": "主花色的每张牌使得分+10%，以乘法叠加。"
+        "description": "打出的牌中，每张属于出牌中最多花色的牌×1.1倍率，连乘计算（五张约为×1.6）。"
       },
       "broken_stair_edict": {
         "name": "断阶敕令",
-        "description": "顺子可跳过一个点数（如1-3-4亦有效）。"
+        "description": "顺子可跳过一个数字（1-3-4或1-2-4都算）。"
       },
       "false_eye_mandate": {
         "name": "伪眼敕命",
-        "description": "一个面子可兼作将牌。"
+        "description": "和牌可用其中一组面子代替对子。"
       },
       "honor_transmutation": {
         "name": "字牌嬗变",
-        "description": "字牌可算作你最多花色的数牌。"
+        "description": "风牌和三元牌可算作你最多花色的数牌。"
       },
       "celestial_wildcard": {
         "name": "天之万能牌",
-        "description": "每手可有1张牌充当任意其他牌。"
+        "description": "每次出牌可有1张牌充当你需要的任意牌。"
       },
       "dead_wall_writ": {
         "name": "王牌令状",
-        "description": "每回合一次，将一张选中的牌与岭上牌交换，不消耗行动。"
+        "description": "每回合一次，将一张选中的牌与岭上牌（牌山末尾预留的牌）中的一张交换，不消耗行动。"
       },
       "shanten_clemency": {
         "name": "向听宽宥",
-        "description": "一向听亦可计分，但扣减50%得分。"
+        "description": "差一张即可完成的手牌可作为和牌打出，但得分减半。"
       },
       "closed_hand_austerity": {
         "name": "门清苦修",
-        "description": "完全门清的手牌获得×1.5倍率。"
+        "description": "每副和牌获得×1.5，本局此前每完成一副和牌再增长×1.2，花牌加成前最高×4。较小的出牌和由向听宽宥完成的手牌不计入。"
       },
       "terminal_devotion": {
-        "name": "幺九虔信",
-        "description": "手中每张幺九牌使最终得分+5%。"
+        "name": "老头虔信",
+        "description": "打出的每张老头牌（1或9）使本法令的×倍率+0.05（四张为×1.2）。"
       },
       "yaku_repetition_charter": {
         "name": "役重复敕许",
-        "description": "重复计入上一回合的役可提升倍率。"
+        "description": "在连续回合中得分的役，其连续记录中此前每有一个回合，就获得×1.2，花牌加成前最高×4。某回合没有打出该役即中断连续。"
       }
     }
   },
@@ -1615,7 +1644,7 @@
       "autumn": "役种倍率+20%。每摸到一张普通的秋，本回合免费重抽+1。",
       "winter": "同花色顺子可跳过一个数字（1–2–4或1–3–4）。得分 ×0.75。",
       "drought": "压制未受保护的花牌得分加成。",
-      "frostbite": "每层冻伤都会再次减半法令带来的点数、倍率、金币和重复触发奖励。牌本身的效果、规则许可、容量、行动次数与费用不变。",
+      "frostbite": "每层冻伤都会再次减半法令带来的分数、倍率、金币和额外计分奖励。牌本身的效果、规则许可、容量、行动次数与费用不变。",
       "decay": "本回合每次重抽得分−10，最低为0。",
       "droughtName": "干旱",
       "monsoonName": "季风",
@@ -1682,6 +1711,7 @@
     "windName": "{{name}}风",
     "flowerName": "{{name}}花牌",
     "seasonName": "{{name}}季节牌",
+    "stoneName": "磐石牌",
     "numberedRule": "相同的牌可组成对子或刻子。同一花色连续的三个数字可组成顺子。",
     "honorRule": "字牌可组成相同的对子或刻子，不能组成数字顺子。",
     "basePoints": "应用牌组加成、减分和其他效果之前的基础分：{{points}}。",
@@ -1705,9 +1735,10 @@
     "white": "白",
     "green": "发",
     "red": "中",
-    "modifiers": "修饰：",
-    "tileModifiers": "牌面修饰",
-    "enhancement": "强化",
+    "modifiers": "特殊牌：",
+    "tileModifiers": "特殊牌",
+    "enhancement": "印记",
+    "stamp": "蜡封",
     "edition": "版本",
     "debuffed": "被削弱的牌",
     "lockedMustPlay": "锁定牌：必须打出",
@@ -1729,7 +1760,7 @@
     "shortfall": "差额分数",
     "remainingGold": "剩余金币",
     "rentalPaid": "扣除租金",
-    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、法令收益或手中金牌的收益。",
+    "defeatIncome": "失败时仍会扣除租金，但不会发放轮次奖励、利息、法令收益或手中黄金牌的收益。",
     "endlessComplete": "无尽攀登结束",
     "victorySubtitle": "你已赢得第{{act}}幕的决战。胜利已被记录。",
     "endlessSubtitle": "本次攀登虽已结束，你的胜利记录仍然保留。",
@@ -1749,7 +1780,7 @@
     "tryAgain": "再试一次"
   },
   "mandates": {
-    "title": "Boss敕令",
+    "title": "首领敕令",
     "theHook": "钩",
     "theWall": "壁",
     "theEye": "目",
@@ -1766,7 +1797,7 @@
       },
       "the_wall": {
         "name": "墙",
-        "description": "超大分数要求（4倍而非2倍）"
+        "description": "分数目标×4，而非首领局通常的×2"
       },
       "the_eye": {
         "name": "眼",
@@ -1786,7 +1817,7 @@
       },
       "the_pillar": {
         "name": "柱",
-        "description": "本幕先前回合用过的牌被削弱"
+        "description": "本幕先前回合打出过的牌不计分"
       },
       "the_water": {
         "name": "水",
@@ -1802,23 +1833,23 @@
       },
       "the_club": {
         "name": "棍",
-        "description": "所有索子被削弱"
+        "description": "索子不计分"
       },
       "the_goad": {
         "name": "刺棒",
-        "description": "所有筒子被削弱"
+        "description": "筒子不计分"
       },
       "the_window": {
         "name": "窗",
-        "description": "所有万子被削弱"
+        "description": "万子不计分"
       },
       "the_head": {
         "name": "首",
-        "description": "所有箭牌被削弱"
+        "description": "三元牌不计分"
       },
       "the_plant": {
         "name": "草木",
-        "description": "所有字牌被削弱"
+        "description": "风牌和三元牌不计分"
       },
       "the_ox": {
         "name": "牛",
@@ -1826,7 +1857,7 @@
       },
       "the_house": {
         "name": "屋",
-        "description": "首手背面发牌"
+        "description": "起始手牌背面朝上发出"
       },
       "the_wheel": {
         "name": "轮",
@@ -1834,7 +1865,7 @@
       },
       "the_fish": {
         "name": "鱼",
-        "description": "每手之后所摸的牌为背面"
+        "description": "每次出牌后摸到的牌背面朝上"
       },
       "the_serpent": {
         "name": "蛇",
@@ -1845,8 +1876,8 @@
         "description": "每打出1张牌损失1金币"
       },
       "the_mark": {
-        "name": "印记",
-        "description": "所有字牌背面发出"
+        "name": "幕",
+        "description": "风牌和三元牌背面朝上摸入"
       },
       "the_manacle": {
         "name": "镣铐",
@@ -1854,23 +1885,23 @@
       },
       "amber_acorn": {
         "name": "琥珀橡实",
-        "description": "所有法令被洗乱并翻至背面"
+        "description": "随机一半的法令被翻至背面并失效"
       },
       "verdant_leaf": {
         "name": "翠叶",
-        "description": "售出1个法令前所有牌被削弱"
+        "description": "在你卖出一个法令之前，所有牌都不计分"
       },
       "violet_vessel": {
         "name": "紫器",
-        "description": "超超大目标（6倍而非2倍）"
+        "description": "分数目标×6，而非首领局通常的×2"
       },
       "crimson_heart": {
         "name": "绯红之心",
-        "description": "每个出牌循环随机禁用1个法令"
+        "description": "每次出牌时随机关闭一个法令"
       },
       "cerulean_bell": {
         "name": "蔚蓝之铃",
-        "description": "每轮摸牌结束后，随机一张牌必须打出；上一张牌的锁定解除。"
+        "description": "每次摸牌后，随机锁定一张手牌，它必须包含在你的下一次出牌中。上一张牌的锁定会解除。"
       }
     }
   },
@@ -1883,10 +1914,12 @@
     "rules": {
       "base": "基础难度：没有额外惩罚。",
       "noSmallRoundReward": "小局不再提供奖励金币。",
+      "bossTargets": "从第 {{act}} 幕起，首领局目标分提高 {{percent}}。",
+      "emergencyTurn": "第 {{act}} 幕起可紧急加行动：最后一次行动时可花金币再买一次行动（第 {{act}} 幕 {{cost}} 金币，第 {{nextAct}} 幕 {{nextCost}} 金币，依此类推；同一局内每多买一次翻倍）。",
       "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每回合行动：−{{amount}}。",
       "eternalChance": "商店法令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
-      "perishableChance": "没有永恒贴纸的商店法令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后削弱）。",
+      "perishableChance": "没有永恒贴纸的商店法令有{{chance}}的概率带有易逝贴纸（{{rounds}}局后失效）。",
       "rentalChance": "商店法令有{{chance}}的概率带有租赁贴纸（购买花费{{price}}金币，之后每局支付{{fee}}金币）。"
     },
     "title": "难度等级",
@@ -1924,7 +1957,7 @@
       "note1": "你可以花5金币<1>刷新</1>商店的商品，每次刷新费用再加1。",
       "note2": "保留<1>25金币以上</1>可让利息最大化！不过把钱花在好法令上通常更划算。",
       "p1": "不必强记所有内容——边玩边学就好。",
-      "note3": "如需复习，随时可以从设置菜单回到本法典。"
+      "note3": "需要复习时，随时可以从主菜单打开法典。"
     },
     "game_concept": {
       "p1": "与对局他人的传统麻将不同，天翔是一款<1>单人解谜游戏</1>。你要追赶的是目标分数，而非其他玩家。",
@@ -1935,7 +1968,7 @@
       "p1": "本作共使用<1>144张牌</1>："
     },
     "numbered_suits": {
-      "note1": "每种牌各有<1>4张</1>。这在规划牌型时非常重要！",
+      "note1": "在标准牌山中，每种牌各有<1>4张</1>。这在规划牌型时非常重要！",
       "p1": "共有<1>三种数牌</1>，每种从1到9：",
       "p2": "<0>万子（萬子）</0> — 以汉字数字搭配「萬」字（意为一万）",
       "p3": "<0>筒子</0> — 圆形图案，代表铜钱或圆点",
@@ -1945,7 +1978,7 @@
       "p1": "数牌分为两个重要类别："
     },
     "wind_tiles": {
-      "note1": "幺九牌的分数是中张牌的两倍！许多役也专门要求或排除幺九牌。",
+      "note1": "老头牌的分数是中张牌的两倍！许多役也专门要求或排除老头牌。",
       "p1": "共有<1>四张风牌</1>，代表四个方位：",
       "p2": "风牌属于<1>字牌</1>，每张<4>50分</4>，在组合中100分——基础分最高！"
     },
@@ -1958,7 +1991,7 @@
       "p5": "箭牌是<1>字牌</1>，价值<4>15分</4>，每计分一张箭牌，倍率+2，在组合中+4。箭牌不能组成顺子。"
     },
     "bonus_tiles": {
-      "p1": "<0>花牌</0>是不计入手牌的特殊牌："
+      "p1": "<0>花牌</0>是不计入手牌的额外牌："
     },
     "sequences": {
       "note1": "摸到花牌时会立即亮出，并补摸一张。花与季节提供可成长的加成与效果！",
@@ -1981,7 +2014,7 @@
       "li2": "<2>不能循环相接</2>（没有9-1-2）",
       "li3": "字牌<2>不能组成顺子</2>",
       "p1": "<1>杠子</1>（也称「杠」）是<4>4张相同的牌</4>。",
-      "p2": "需要凑齐一种牌的全部4张，因此杠子是最稀有的面子！"
+      "p2": "杠子是最稀有的面子：在标准牌山中，它要用掉一种牌的全部4张！"
     },
     "pairs": {
       "li1": "三张索子5",
@@ -1991,7 +2024,7 @@
       "p2": "每个标准和牌都需要<2>恰好一个对子</2>，它有时被称作牌型的「将牌」（雀头）。"
     },
     "winning_hand": {
-      "note1": "刻子价值<1>+40分</1>——高于顺子（+30）！但需要3张相同的牌，而每种牌全局只有4张，因此更难凑齐。",
+      "note1": "刻子价值<1>+40分</1>——高于顺子（+30）！但需要3张相同的牌，而标准牌山中每种牌只有4张，因此更难凑齐。",
       "li1": "价值<1>+65分</1>——所有面子中最高",
       "li2": "虽有4张牌，仍只算作一个面子",
       "li3": "宣告后可补摸一张牌",
@@ -2022,7 +2055,7 @@
       "p1": "以下是你会经常遇到的一些役："
     },
     "boss_mandates": {
-      "p1": "每个<1>Boss局</1>都有特殊的<3>敕令</3>——一项限制或挑战："
+      "p1": "每个<1>首领局</1>都有特殊的<3>敕令</3>——一项限制或挑战："
     },
     "decree_categories": {
       "note1": "役是<1>相乘叠加</1>的！×1.3与×2.0的役合计为×2.6。组合搭配可获得巨额分数！",
@@ -2086,7 +2119,8 @@
       "play": "为所选牌计分：最多{{max}}张，或一整副和牌。",
       "redraw": "把任意张所选牌打入牌河，并摸入新牌。",
       "p2": "在行动用完前达到本局目标。最后一次行动必定是出牌；道具可提供不消耗行动的免费重抽。",
-      "warning": "行动用完仍未达到目标，本次挑战即告结束。"
+      "warning": "行动用完仍未达到目标，本次挑战即告结束。",
+      "emergency": "在{{stake}}及以上，从第 {{act}} 幕起，最后一次行动时可以花金币再购买一次行动。价格每幕上涨，同一局内每多买一次就翻倍。"
     },
     "select": {
       "title": "选择牌",
@@ -2096,20 +2130,20 @@
     },
     "refill": {
       "title": "摸牌",
-      "p1": "每次出牌或重抽后，手牌都会从牌墙补满，让你始终有一整手牌可选。"
+      "p1": "每次出牌或重抽后，都会从牌墙摸入补充牌。通常这会把手牌补满，但牌墙快空或有效果生效时，摸牌数可能不同。"
     },
     "redraw": {
       "title": "重抽",
       "p1": "选择任意多张不需要的牌，按下“重抽”。它们会进入牌河，新牌补入。",
       "li1": "优先使用道具给的免费重抽；没有时每次重抽消耗一次行动。",
       "li2": "重抽掉的牌在本局剩余时间里留在牌河中。",
-      "li3": "有些法令会奖励每次重抽，首领敕令可能禁止重抽，季牌也可能改变它的消耗。请先查看生效中的效果。",
+      "li3": "有些法令会奖励每次重抽，首领敕令可能禁止重抽，季节也可能改变它的消耗。请先查看生效中的效果。",
       "note": "保留已经成组的牌，重抽落单的牌。"
     },
     "score": {
       "title": "计分方式",
       "p1": "每次出牌的得分：",
-      "note": "更大的牌型、箭牌、星球和法令都会提高倍率，而倍率会乘以一切。"
+      "note": "更大的牌型、三元牌、天体宝珠和法令都会提高倍率，而倍率会乘以一切。"
     },
     "points": {
       "title": "牌的分数",
@@ -2117,10 +2151,10 @@
       "headerTile": "牌",
       "headerPoints": "分数",
       "simples": "中张（2–8）",
-      "terminals": "幺九（1和9）",
+      "terminals": "老头牌（1和9）",
       "dragonValue": "{{points}}，倍率+{{mult}}（在组合中+{{groupMult}}）",
       "windValue": "{{points}}（在组合中{{groupPoints}}）",
-      "note": "风牌价值是中张的十倍；箭牌则提高倍率。对子或更大的组合会让两者翻倍。不在任何组合中的数牌只得一半分数。"
+      "note": "风牌价值是中张的十倍；三元牌则提高倍率。对子或更大的组合会让两者翻倍。不在任何组合中的数牌只得一半分数。"
     },
     "groups": {
       "title": "组合加分",
@@ -2132,9 +2166,9 @@
     },
     "swift": {
       "title": "速通",
-      "p1": "对局不能跳过。在小局或大局剩余{{spare}}次或更多行动时过关，即可获得征兆。",
+      "p1": "各局不能跳过。在小局或大局剩余{{spare}}次或更多行动时过关，即可获得征兆。",
       "li1": "仍可领取本局金币并前往茶寮。",
-      "li2": "Boss局不会给予征兆。",
+      "li2": "首领局不会给予征兆。",
       "note": "开局打出好牌型能省下行动，省下的行动会变成征兆。"
     },
     "saving": {
@@ -2218,7 +2252,7 @@
     "unlockProgress": "{{name}}的解锁进度",
     "title": "选择牌桌",
     "titleJp": "卓風",
-    "subtitle": "为本次旅程选择牌桌样式",
+    "subtitle": "选择起始牌桌及其规则",
     "table": "开局设置",
     "selected": "已选择：",
     "chooseTable": "选择牌桌与赌注"
@@ -2235,7 +2269,7 @@
       },
       "sharp_edge": {
         "name": "锋锐边饰",
-        "description": "版本出现率提高2倍"
+        "description": "版本的出现频率翻倍"
       },
       "reroll_surplus": {
         "name": "刷新盈余",
@@ -2243,11 +2277,11 @@
       },
       "crystal_lens": {
         "name": "水晶透镜",
-        "description": "秘仪包选项+1"
+        "description": "秘仪包多展示一个可选奖励；可拿取的数量不变"
       },
       "star_chart": {
         "name": "星图",
-        "description": "天球包内含最常用役的天球"
+        "description": "天球包必定包含你最常打出的牌型类别所对应的天体宝珠"
       },
       "steady_hand": {
         "name": "稳健之手",
@@ -2259,11 +2293,11 @@
       },
       "seal_merchant": {
         "name": "符商",
-        "description": "命运符出现率提高2倍"
+        "description": "命运符印的出现频率翻倍"
       },
       "orb_merchant": {
         "name": "天球商",
-        "description": "天球出现率提高2倍"
+        "description": "天体宝珠的出现频率翻倍"
       },
       "seed_pouch": {
         "name": "种袋",
@@ -2275,15 +2309,15 @@
       },
       "tile_trading": {
         "name": "牌市",
-        "description": "可在商店购买牌"
+        "description": "可在茶寮购买牌"
       },
       "ancient_script": {
         "name": "古卷",
-        "description": "幕−1，每回合行动−1"
+        "description": "让你退回一幕（目标降低，但要多打一幕）；每回合行动−1"
       },
       "directors_take": {
         "name": "班主分成",
-        "description": "每幕可重掷敕令1次（10金币）"
+        "description": "每幕可重掷一次即将到来的首领敕令（10金币）"
       },
       "brush_stroke": {
         "name": "一笔",
@@ -2299,7 +2333,7 @@
       },
       "radiant_edge": {
         "name": "辉光边饰",
-        "description": "版本出现率提高4倍"
+        "description": "版本的出现频率变为4倍"
       },
       "reroll_abundance": {
         "name": "刷新丰盈",
@@ -2307,11 +2341,11 @@
       },
       "omen_lens": {
         "name": "预兆透镜",
-        "description": "秘仪包中可能出现虚空文"
+        "description": "秘仪包中可能出现虚空卷轴"
       },
       "observatory": {
         "name": "观星台",
-        "description": "持有的天球每个提供×1.5倍率"
+        "description": "持有的每个天体宝珠提供×1.5倍率"
       },
       "swift_hand": {
         "name": "迅捷之手",
@@ -2323,11 +2357,11 @@
       },
       "seal_tycoon": {
         "name": "符业巨贾",
-        "description": "命运符出现率提高4倍"
+        "description": "命运符印的出现频率变为4倍"
       },
       "orb_tycoon": {
         "name": "天球巨贾",
-        "description": "天球出现率提高4倍"
+        "description": "天体宝珠的出现频率变为4倍"
       },
       "money_tree": {
         "name": "摇钱树",
@@ -2339,15 +2373,15 @@
       },
       "illusion_tiles": {
         "name": "幻影之牌",
-        "description": "商店的牌可能带有版本"
+        "description": "茶寮中的牌可能带有版本"
       },
       "stone_script": {
         "name": "石刻",
-        "description": "再−1幕，每回合行动−1"
+        "description": "让你再退回一幕；每回合行动再−1"
       },
       "final_cut": {
         "name": "终剪",
-        "description": "可无限次重掷敕令（每次10金币）"
+        "description": "可任意次数重掷即将到来的首领敕令（每次10金币）"
       },
       "full_palette": {
         "name": "全色调色",
@@ -2359,63 +2393,63 @@
     "items": {
       "pluto_orb": {
         "name": "冥王星球",
-        "description": "升级对子类（对子、两对、三对）。每级倍率+1，分数+10。"
+        "description": "将「对子类」提升1级（本局内有效，最高10级）。每次以「对子类」得分，额外获得基础分+10、倍率+1。"
       },
       "mercury_orb": {
         "name": "水星球",
-        "description": "升级断幺九类（只含2到8的出牌与断幺九）。每级倍率+1，分数+15。"
+        "description": "将「断幺九」提升1级（本局内有效，最高10级）。每次以「断幺九」得分，额外获得基础分+15、倍率+1。"
       },
       "uranus_orb": {
         "name": "天王星球",
-        "description": "升级字牌类（风牌或三元牌组合与役牌）。每级倍率+1，分数+20。"
+        "description": "将「字牌类」提升1级（本局内有效，最高10级）。每次以「字牌类」得分，额外获得基础分+20、倍率+1。"
       },
       "venus_orb": {
         "name": "金星球",
-        "description": "升级顺子类（顺子、顺子+对子、两组顺子与平和）。每级倍率+2，分数+20。"
+        "description": "将「顺子类」提升1级（本局内有效，最高10级）。每次以「顺子类」得分，额外获得基础分+20、倍率+2。"
       },
       "saturn_orb": {
         "name": "土星球",
-        "description": "升级连顺类（四连顺、五连顺与一气通贯）。每级倍率+3，分数+30。"
+        "description": "将「连顺类」提升1级（本局内有效，最高10级）。每次以「连顺类」得分，额外获得基础分+30、倍率+3。"
       },
       "jupiter_orb": {
         "name": "木星球",
-        "description": "契合混一色役。每级+2倍率、+15分。"
+        "description": "将「混一色」提升1级（本局内有效，最高10级）。每次以「混一色」得分，额外获得基础分+15、倍率+2。"
       },
       "earth_orb": {
         "name": "地球球",
-        "description": "升级刻子类（含刻子或杠子的出牌与对对和）。每级倍率+2，分数+25。"
+        "description": "将「刻子类」提升1级（本局内有效，最高10级）。每次以「刻子类」得分，额外获得基础分+25、倍率+2。"
       },
       "mars_orb": {
         "name": "火星球",
-        "description": "契合清一色役。每级+3倍率、+30分。"
+        "description": "将「清一色」提升1级（本局内有效，最高10级）。每次以「清一色」得分，额外获得基础分+30、倍率+3。"
       },
       "neptune_orb": {
         "name": "海王星球",
-        "description": "契合三色同顺役。每级+4倍率、+40分。"
+        "description": "将「三色同顺」提升1级（本局内有效，最高10级）。每次以「三色同顺」得分，额外获得基础分+40、倍率+4。"
       },
       "planet_x_orb": {
         "name": "X行星球",
-        "description": "契合七对子役。每级+3倍率、+35分。"
+        "description": "将「七对子」提升1级（本局内有效，最高10级）。每次以「七对子」得分，额外获得基础分+35、倍率+3。"
       },
       "ceres_orb": {
         "name": "谷神星球",
-        "description": "契合混全带幺九役。每级+4倍率、+40分。"
+        "description": "将「混全带幺九」提升1级（本局内有效，最高10级）。每次以「混全带幺九」得分，额外获得基础分+40、倍率+4。"
       },
       "eris_orb": {
         "name": "阋神星球",
-        "description": "契合国士无双役。每级+3倍率、+50分。"
+        "description": "将「国士无双」提升1级（本局内有效，最高10级）。每次以「国士无双」得分，额外获得基础分+50、倍率+3。"
       },
       "black_hole_orb": {
         "name": "黑洞球",
-        "description": "使用时所有役提升1级。"
+        "description": "本局内将全部12个牌型类别各提升1级（每个最高10级）。每个类别获得各自平常的基础分和倍率；已达10级的类别保持不变。"
       }
     }
   },
   "omens": {
-    "pending": "征兆效果",
     "effects": {
       "shopFee": "此商店商品提供时支付 {{amount}} 金币。延期提供期间不收费。",
       "seasonLock": "下一张抽到的季节：{{season}}。抽到后解除锁定。",
+      "seasonLockLabel": "下一个季节：{{season}}",
       "noInterest": "利息暂停 · 剩余回合：{{rounds}}",
       "interestBoost": "利息上限 +{{amount}} 金币 · 剩余回合：{{rounds}}"
     },
@@ -2426,11 +2460,11 @@
       },
       "omen_of_crescents": {
         "name": "新月之兆",
-        "description": "下次商店的商品栏必定出现天球。"
+        "description": "下次商店的商品栏必定出现天体宝珠。"
       },
       "omen_of_ash": {
         "name": "灰烬之兆",
-        "description": "下一个使用的虚空文没有负面代价。"
+        "description": "下一个使用的虚空卷轴没有负面代价。"
       },
       "omen_of_rivers": {
         "name": "河川之兆",
@@ -2438,11 +2472,11 @@
       },
       "speed_omen": {
         "name": "疾风之兆",
-        "description": "本局每次速攻通关获得5金币。"
+        "description": "本局每次速通获得5金币（速通：在小局或大局中留有剩余行动时过关）。"
       },
       "throwback_omen": {
         "name": "回溯之兆",
-        "description": "每次速攻通关倍率×0.25，持续到本局结束。"
+        "description": "本局剩余时间内，每次出牌的得分乘以1 + 0.25 × 速通次数（一次为×1.25，两次为×1.5）。"
       },
       "fortune_omen": {
         "name": "福运之兆",
@@ -2458,7 +2492,7 @@
       },
       "seal_omen": {
         "name": "符印之兆",
-        "description": "下次商店的商品栏必定出现命运符。"
+        "description": "下次商店的商品栏必定出现命运符印。"
       },
       "decree_omen": {
         "name": "法令之兆",
@@ -2466,15 +2500,15 @@
       },
       "void_omen": {
         "name": "虚空之兆",
-        "description": "下次商店的商品栏提供虚空文。"
+        "description": "下次商店的商品栏提供虚空卷轴。"
       },
       "expansion_omen": {
         "name": "扩张之兆",
-        "description": "永久获得法令栏位+1。"
+        "description": "本局剩余时间内法令栏位+1。"
       },
       "precision_omen": {
         "name": "精准之兆",
-        "description": "下回合手牌上限+2。"
+        "description": "下一回合：手牌上限+2。"
       },
       "abundance_omen": {
         "name": "丰饶之兆",
@@ -2494,11 +2528,11 @@
       },
       "score_surge_omen": {
         "name": "涌分之兆",
-        "description": "下一次计分的手牌获得+100基础分。"
+        "description": "下一次计分的出牌获得+100基础分。"
       },
       "multiplication_omen": {
         "name": "倍增之兆",
-        "description": "下一次计分的手牌获得×1.5倍率。"
+        "description": "下一次计分的出牌获得×1.5倍率。"
       },
       "blessing_pack_omen": {
         "name": "祝福包之兆",
@@ -2522,35 +2556,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "炼金术士之符",
-        "description": "为选中的2张牌附加幸运印记"
+        "description": "为你选择的2张牌附加幸运印记（计分时有机会+20倍率或+20金币）"
       },
       "seal_of_the_empress": {
         "name": "女帝之符",
-        "description": "为选中的2张牌附加加分印记"
+        "description": "为你选择的2张牌附加倍率印记（计分时+4倍率）"
       },
       "seal_of_the_sage": {
         "name": "贤者之符",
-        "description": "为选中的2张牌附加加分印记"
+        "description": "为你选择的2张牌附加加分印记（计分时+30分）"
       },
       "seal_of_harmony": {
         "name": "和谐之符",
-        "description": "将1张牌转为万能牌（可当作任意花色）"
+        "description": "为你选择的1张牌附加万能印记（视为所有花色）"
       },
       "seal_of_fortitude": {
         "name": "坚毅之符",
-        "description": "将1张牌强化为钢铁印记（持有时×1.5倍率）"
+        "description": "为你选择的1张牌附加钢铁印记（留在手牌中时×1.5倍率）"
       },
       "seal_of_glass": {
         "name": "琉璃之符",
-        "description": "将1张牌强化为玻璃印记（×2倍率，可能碎裂）"
+        "description": "为你选择的1张牌附加玻璃印记（计分时×2倍率，但可能碎裂）"
       },
       "seal_of_wealth": {
         "name": "财富之符",
-        "description": "将1张牌强化为黄金印记（回合结束时持有则+3金币）"
+        "description": "为你选择的1张牌附加黄金印记（回合结束时若在手牌中，+3金币）"
       },
       "seal_of_stone": {
         "name": "磐石之符",
-        "description": "将1张牌强化为石之印记（+100分，无花色和数字，不加入任何组合，始终全额计分）"
+        "description": "为你选择的1张牌附加磐石印记（+100分，没有数字和花色，不加入任何组合，始终全额计分）"
       },
       "seal_of_manzu": {
         "name": "万子之符",
@@ -2570,15 +2604,15 @@
       },
       "seal_of_the_oracle": {
         "name": "先知之符",
-        "description": "创造2个随机天球"
+        "description": "创造2个随机天体宝珠"
       },
       "seal_of_the_emperor": {
         "name": "皇帝之符",
-        "description": "创造2个随机命运符"
+        "description": "创造2个随机命运符印"
       },
       "seal_of_the_fool": {
         "name": "愚者之符",
-        "description": "创造本次旅程最后使用的命运符或天球"
+        "description": "创造本局最后使用的命运符印或天体宝珠"
       },
       "seal_of_judgment": {
         "name": "审判之符",
@@ -2586,35 +2620,35 @@
       },
       "seal_of_the_hermit": {
         "name": "隐士之符",
-        "description": "金币翻倍（最多+20金币）"
+        "description": "你的金币翻倍（最多+20金币）"
       },
       "seal_of_balance": {
         "name": "均衡之符",
-        "description": "获得所有法令的售价总额（最多50金币）"
+        "description": "获得与你所有法令售价总和相等的金币（最多50金币）"
       },
       "seal_of_strength": {
         "name": "力量之符",
-        "description": "最多将2张牌的点数+1（上限9）"
+        "description": "最多将2张牌的数字+1（最高为9）"
       },
       "seal_of_release": {
         "name": "解脱之符",
-        "description": "永久销毁选中的最多2张牌"
+        "description": "销毁你选择的最多2张牌，直到本局结束"
       },
       "seal_of_transmutation": {
         "name": "嬗变之符",
-        "description": "选择2张牌，左边变为右边的复制"
+        "description": "选择2张牌：第一张变为第二张的复制"
       },
       "seal_of_fortune": {
         "name": "机运之符",
-        "description": "有1/4概率为随机法令附加箔光、全息或多彩。"
+        "description": "有1/4的概率为随机一个法令附加箔光、全息或多彩版本"
       },
       "seal_of_the_immortal": {
         "name": "不朽之符",
-        "description": "创造一个神话法令（若有空位）"
+        "description": "创造一个最稀有等级的天命级法令（若有空位）"
       },
       "seal_of_the_void": {
         "name": "虚无之符",
-        "description": "所有役提升1级"
+        "description": "所有牌型类别提升1级"
       }
     }
   },
@@ -2622,47 +2656,47 @@
     "items": {
       "script_of_kinship": {
         "name": "血亲之文",
-        "description": "销毁1张随机牌，加入3张随机强化字牌（风／箭）"
+        "description": "销毁1张随机牌，再加入3张随机的风牌或三元牌，每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_the_grave": {
         "name": "坟茔之文",
-        "description": "销毁1张随机牌，加入2张随机强化幺九牌"
+        "description": "销毁1张随机牌，再加入2张随机的1或9，每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_incantation": {
         "name": "咒言之文",
-        "description": "销毁1张随机牌，加入4张随机强化数牌"
+        "description": "销毁1张随机牌，再加入4张随机的2–8的牌，每张各带一个随机的加分、倍率或幸运印记"
       },
       "script_of_immolation": {
         "name": "焚身之文",
-        "description": "销毁手中5张随机牌。获得20金币。"
+        "description": "销毁手牌中5张随机牌。获得20金币。"
       },
       "script_of_the_cryptid": {
         "name": "秘兽之文",
-        "description": "为手中选中的1张牌创造2份复制"
+        "description": "为你选择的1张手牌创造2份复制"
       },
       "script_of_the_gold_seal": {
-        "name": "金印之文",
-        "description": "为选中的1张牌附加金封"
+        "name": "金蜡封之文",
+        "description": "为你选择的1张牌附加金蜡封（该牌计分时+3金币）"
       },
       "script_of_deja_vu": {
         "name": "既视之文",
-        "description": "为选中的1张牌附加红封（重复计分）"
+        "description": "为你选择的1张牌附加红蜡封（该牌计分两次）"
       },
       "script_of_the_trance": {
         "name": "恍惚之文",
-        "description": "为1张牌附加蓝封（最终手牌时生成天球）"
+        "description": "为你选择的1张牌附加蓝蜡封（若该牌在达成本回合目标的出牌中，生成一个天体宝珠）"
       },
       "script_of_the_medium": {
         "name": "通灵之文",
-        "description": "为1张牌添加紫色封印（重抽时生成命运符印）"
+        "description": "为选中的1张牌附加紫蜡封（重抽时生成命运符印）"
       },
       "script_of_aura": {
         "name": "灵光之文",
-        "description": "为选中的1张牌附加箔光、全息或多彩。"
+        "description": "为你选择的1张牌附加随机版本：箔光、全息或多彩"
       },
       "script_of_ectoplasm": {
         "name": "灵质之文",
-        "description": "为随机法令附加负影（法令栏位+1）"
+        "description": "为随机法令附加负影版本（法令栏位+1）"
       },
       "script_of_the_wraith": {
         "name": "幽魂之文",
@@ -2674,35 +2708,35 @@
       },
       "script_of_the_hex": {
         "name": "咒诅之文",
-        "description": "为随机法令附加多彩，销毁其余全部法令。"
+        "description": "为随机一个法令附加多彩版本，并销毁其余所有法令"
       },
       "script_of_the_sigil": {
-        "name": "符印之文",
-        "description": "将手中所有牌转为随机的单一花色"
+        "name": "秘纹之文",
+        "description": "将手牌中所有牌转为同一种随机花色"
       },
       "script_of_the_ouija": {
         "name": "通灵板之文",
-        "description": "将手中所有牌转为随机的单一点数"
+        "description": "将手牌中所有牌转为同一个随机数字"
       },
       "script_of_the_soul": {
         "name": "灵魂之文",
-        "description": "创造一个传说（天启）法令"
+        "description": "创造一个最稀有等级的天命级法令"
       },
       "script_of_the_singularity": {
         "name": "奇点之文",
-        "description": "所有役提升1级"
+        "description": "所有牌型类别提升1级"
       },
       "script_of_eclipse": {
         "name": "蚀之文",
-        "description": "本回合可在一向听时计分"
+        "description": "本回合中，差一张即可完成的手牌可作为和牌计分"
       },
       "script_of_mirrors": {
         "name": "镜之文",
-        "description": "复制手中的1张牌"
+        "description": "复制你选择的1张手牌"
       },
       "script_of_silence": {
         "name": "寂静之文",
-        "description": "本手忽略一个不合法的面子"
+        "description": "你的下一副和牌可包含一组不合规的面子"
       }
     }
   },
@@ -2714,39 +2748,39 @@
       },
       "walls": {
         "name": "牌山",
-        "description": "拥有独特牌型构成的牌山变体"
+        "description": "牌的组成各不相同的牌山变体"
       },
       "charters": {
         "name": "帝国特许状",
-        "description": "击败敕令后可购买的永久强化"
+        "description": "在茶寮购买的本局永久强化"
       },
       "consumables": {
         "name": "消耗品",
-        "description": "一次性物品：命运符、天球、虚空文"
+        "description": "一次性物品：命运符印、天体宝珠、虚空卷轴"
       },
       "tileMarks": {
-        "name": "牌印",
-        "description": "改变牌之行为的强化类型"
+        "name": "牌面印记",
+        "description": "改变牌的计分方式或行为的印记"
       },
       "seals": {
-        "name": "封印",
-        "description": "为牌附加效果的特殊封印"
+        "name": "蜡封",
+        "description": "盖在牌上、赋予额外效果的蜡封"
       },
       "editions": {
         "name": "版本",
-        "description": "物品的外观与效果变体"
+        "description": "为牌或法令附加效果的闪光涂层"
       },
       "packs": {
         "name": "祝福包",
         "description": "内含各类强化的补充包"
       },
       "omens": {
-        "name": "预兆标记",
+        "name": "预兆",
         "description": "留有行动通关时获得的一次性奖励"
       },
       "mandates": {
         "name": "敕令",
-        "description": "Boss回合的限制与挑战"
+        "description": "首领回合的限制与挑战"
       }
     }
   },
@@ -2786,7 +2820,7 @@
       },
       "ivory_wall": {
         "name": "象牙牌山",
-        "description": "以幺九牌为主的牌山"
+        "description": "以老头牌（1和9）为主的牌山"
       },
       "bamboo_wall": {
         "name": "翠竹牌山",
@@ -2826,15 +2860,15 @@
       },
       "wild": {
         "name": "万能印记",
-        "description": "该牌可充当任意花色。判定役时可视为任意花色"
+        "description": "可视为任意花色，判定役时也一样"
       },
       "glass": {
         "name": "玻璃印记",
-        "description": "脆弱却强大。计分时×2倍率，有25%机率碎裂"
+        "description": "脆弱却强大。计分时×2倍率；有1/4的概率碎裂"
       },
       "steel": {
         "name": "钢铁印记",
-        "description": "持有时获益。留在手中时×1.5倍率"
+        "description": "留在手牌中而不打出时×1.5倍率"
       },
       "stone": {
         "name": "磐石印记",
@@ -2842,30 +2876,30 @@
       },
       "gold": {
         "name": "黄金印记",
-        "description": "产出金币。回合结束时持有则+3金币"
+        "description": "回合结束时若仍在手牌中，+3金币"
       },
       "lucky": {
         "name": "幸运印记",
-        "description": "随机的额外收益。计分时有1/5机率+20倍率，1/15机率+20金币"
+        "description": "计分时：1/5概率+20倍率，1/15概率+20金币"
       }
     }
   },
   "archiveSeals": {
     "items": {
       "gold": {
-        "name": "金封",
-        "description": "打出时获得金币。在手牌中计分时+3金币"
+        "name": "金蜡封",
+        "description": "这张牌每次计分时+3金币"
       },
       "red": {
-        "name": "红封",
-        "description": "该牌触发两次。计分时额外重复一次"
+        "name": "红蜡封",
+        "description": "这张牌计分两次"
       },
       "blue": {
-        "name": "蓝封",
-        "description": "这张牌所在的出牌达成回合目标时，生成一个随机天球。"
+        "name": "蓝蜡封",
+        "description": "这张牌所在的出牌达成回合目标时，生成一个随机天体宝珠。"
       },
       "purple": {
-        "name": "紫封",
+        "name": "紫蜡封",
         "description": "重抽这张牌时，生成随机命运符印。"
       }
     }
@@ -2898,39 +2932,39 @@
     "items": {
       "arcana_normal": {
         "name": "秘仪包",
-        "description": "从3个命运符中选1个"
+        "description": "从3个命运符印中选1个"
       },
       "arcana_jumbo": {
         "name": "大秘仪包",
-        "description": "从5个命运符中选2个"
+        "description": "从5个命运符印中最多选2个"
       },
       "arcana_mega": {
         "name": "特大秘仪包",
-        "description": "从6个命运符中选3个"
+        "description": "从6个命运符印中最多选3个"
       },
       "celestial_normal": {
         "name": "天球包",
-        "description": "从3个天球中选1个"
+        "description": "从3个天体宝珠中选1个"
       },
       "celestial_jumbo": {
         "name": "大天球包",
-        "description": "从5个天球中选2个"
+        "description": "从5个天体宝珠中最多选2个"
       },
       "celestial_mega": {
         "name": "特大天球包",
-        "description": "从6个天球中选3个"
+        "description": "从6个天体宝珠中最多选3个"
       },
       "tile_normal": {
         "name": "牌包",
-        "description": "从3张改造牌中选1张"
+        "description": "从3张特殊牌中选1张"
       },
       "tile_jumbo": {
         "name": "大牌包",
-        "description": "从5张改造牌中选2张"
+        "description": "从5张特殊牌中最多选2张"
       },
       "tile_mega": {
         "name": "特大牌包",
-        "description": "从6张改造牌中选3张"
+        "description": "从6张特殊牌中最多选3张"
       },
       "decree_normal": {
         "name": "法令包",
@@ -2938,23 +2972,23 @@
       },
       "decree_jumbo": {
         "name": "大法令包",
-        "description": "从5个法令中选2个"
+        "description": "从5个法令中最多选2个"
       },
       "decree_mega": {
         "name": "特大法令包",
-        "description": "从6个法令中选3个"
+        "description": "从6个法令中最多选3个"
       },
       "void_normal": {
         "name": "虚空包",
-        "description": "从3个虚空文中选1个"
+        "description": "从3个虚空卷轴中选1个"
       },
       "void_jumbo": {
         "name": "大虚空包",
-        "description": "从5个虚空文中选2个"
+        "description": "从5个虚空卷轴中最多选2个"
       },
       "void_mega": {
         "name": "特大虚空包",
-        "description": "从6个虚空文中选3个"
+        "description": "从6个虚空卷轴中最多选3个"
       }
     }
   },
@@ -3089,7 +3123,7 @@
     },
     "two_pairs": {
       "name": "两对",
-      "explain": "一次打出两组对子。"
+      "explain": "一次打出两组不同的对子。"
     },
     "three_pairs": {
       "name": "三对",
@@ -3125,7 +3159,7 @@
     },
     "mahjong": {
       "name": "和牌",
-      "explain": "完整的一手：四组面子加一对（通常十四张）。役种会让得分翻倍。"
+      "explain": "完整的和牌：四组面子（顺子、刻子或杠子）加一对，通常十四张。七对子和国士无双是特殊例外。其中的役会为得分乘上倍数。"
     },
     "three_dragons": {
       "name": "三元齐",
@@ -3146,26 +3180,29 @@
     "turnsTitle": "你的行动",
     "playHelp": "用选中的牌得分。",
     "redrawHelp": "把任意张选中的牌打入牌河并摸新牌。",
-    "turnsHelp": "每局有{{turns}}次行动，出牌和重抽各消耗一次。在小局或大局中剩余{{spare}}次以上行动通关，可获得征兆。",
+    "turnsHelp": "每局有{{turns}}次行动，出牌和重抽各消耗一次；免费重抽不消耗行动，最后一次行动必须是出牌。在小局或大局中剩余{{spare}}次以上行动通关，可获得征兆。",
     "scoreTitle": "得分",
     "points": "分数",
     "mult": "倍率",
     "score": "得分",
-    "scoreHelp": "分数 = 牌面分 + 每组面子的加成。倍率从1开始，随大牌型、三元牌、宝珠和法令提升。不在组合里的数牌只得一半。",
+    "scoreHelp": "分数 = 牌面分 + 每组面子的加成。倍率从1开始，随大牌型、三元牌、天体宝珠和法令提升。不在组合里的数牌只得一半。",
     "handsTitle": "牌型",
     "secretTitle": "秘密牌型",
     "secretFound": "发现秘密牌型",
     "secretInGuide": "已加入“?”指南。",
-    "patternRule": "从第二组起，每多一组倍率+1。刻子和四连顺再+1，杠子和五连顺+2。每张牌只计一次；除完整和牌外，每次最多6张。",
+    "patternRule": "从第二组起，每多一组倍率+1。刻子和四连顺再+1，杠子和五连顺+2。通常每张牌只计一次；除完整和牌外，每次出牌最多6张。",
     "tilesTitle": "牌的种类",
     "tilesHelp": "万子用汉字一到九表示，筒子和索子用数量表示（一索是一只鸟）。可在设置中打开牌上的数字。",
     "honorsHelp": "风牌每张{{wind}}分，在组合中{{windGroup}}分。每张三元牌倍率+{{dragon}}，在组合中+{{dragonGroup}}。",
     "specialTitle": "特殊牌",
-    "specialHelp": "带宝石的彩色边框是印记，火漆印是封印，闪光是版本效果。每张牌只能拥有其中一种。将鼠标悬停或聚焦在牌上即可查看效果。",
+    "specialHelp": "特殊牌带有一种额外效果：印记（带宝石的彩色边框）、蜡封（火漆）或版本（闪光）。",
+    "marks": "印记",
+    "seals": "蜡封",
+    "editions": "版本",
     "close": "开始游戏"
   },
   "mandateConsequence": {
-    "discard_after_draw": "每次摸牌弃{{count}}张",
+    "discard_after_draw": "每次摸牌随机失去{{count}}张",
     "score_multiplier": "目标×{{value}}",
     "no_repeat_pattern": "牌型不能重复",
     "single_play_pattern": "只能一种牌型",
@@ -3187,7 +3224,7 @@
     "tiles_face_down_after_play": "新牌背面朝上",
     "fixed_draw_count": "每次固定摸{{count}}张",
     "honor_tiles_face_down": "字牌背面朝上",
-    "shuffle_decrees": "法令被隐藏",
+    "hide_half_decrees": "一半法令失效",
     "debuff_until_sell": "卖出一张法令前所有牌得0分",
     "disable_random_decree": "每次出牌一张法令失效",
     "lock_random_tile": "每次摸牌锁定一张"
@@ -3195,55 +3232,55 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "对子类",
-      "covers": "对子、两对、三对"
+      "covers": "对子、两对、三对（对子是两张相同的牌）。七对子和牌属于另一个类别。"
     },
     "Pinfu": {
       "name": "顺子类",
-      "covers": "顺子、顺子+对子、两组顺子，以及平和"
+      "covers": "顺子、顺子+对子、两组顺子（顺子是同一花色的三个连续数字），以及平和：由四组顺子加一对组成的和牌，且对子不是三元牌或东风。"
     },
     "Ittsu": {
       "name": "连顺类",
-      "covers": "四连顺、五连顺，以及一气通贯"
+      "covers": "四连顺、五连顺、四连顺+对子（同一花色的连续数字），以及一气通贯：含同一花色1-2-3、4-5-6和7-8-9的和牌。"
     },
     "Toitoi": {
       "name": "刻子类",
-      "covers": "含刻子或杠子的出牌，以及对对和"
+      "covers": "刻子、满堂红（刻子+对子）、两组刻子、刻子+顺子、杠子、杠子+对子（刻子是三张相同的牌，杠子是四张），以及对对和：由四组刻子或杠子加一对组成的和牌。"
     },
     "Yakuhai": {
       "name": "字牌类",
-      "covers": "任何风牌或三元牌组合，以及役牌"
+      "covers": "含有只由风牌或三元牌组成的组合的出牌，以及役牌：含三元牌或东风刻子（或杠子）的和牌。"
     },
     "Tanyao": {
       "name": "断幺九",
-      "covers": "只含2到8的出牌，以及断幺九"
+      "covers": "只用2–8的牌组成组合的出牌（没有1、9、风牌和三元牌，磐石牌不影响判定），以及断幺九：只由2–8的牌组成的和牌。"
     },
     "Honitsu": {
       "name": "混一色",
-      "covers": "一种花色加字牌的和牌"
+      "covers": "混一色：由一种花色加风牌或三元牌组成的和牌。只有一种花色的较短出牌不算。"
     },
     "Chinitsu": {
       "name": "清一色",
-      "covers": "只有一种花色的和牌"
+      "covers": "清一色：只由一种花色组成、没有风牌和三元牌的和牌。只有一种花色的较短出牌不算。"
     },
     "Sanshoku": {
       "name": "三色同顺",
-      "covers": "三种花色同顺的和牌"
+      "covers": "三色同顺：三种花色中都有相同顺子的和牌（例如万子、筒子、索子各一组2-3-4）。"
     },
     "SevenPairs": {
       "name": "七对子",
-      "covers": "七对子"
+      "covers": "七对子：恰好由七个不同对子组成的和牌（14张）。只出对子的较短出牌属于对子类。"
     },
     "Chanta": {
       "name": "混全带幺九",
-      "covers": "每组都含幺九牌的和牌"
+      "covers": "混全带幺九：至少含一组顺子，且每组面子和对子都含1、9、风牌或三元牌的和牌。纯全带幺九（同样的和牌，但没有风牌和三元牌）也算。"
     },
     "Kokushi": {
       "name": "国士无双",
-      "covers": "国士无双"
+      "covers": "国士无双：1、9、风牌和三元牌每种各一张，再加其中任意一张的和牌。"
     },
     "All": {
       "name": "全部类别",
-      "covers": "所有升级类别",
+      "covers": "全部12个升级类别（包括对子类和七对子）。",
       "upgrade": "所有类别等级+1"
     },
     "levelChange": "{{family}}：等级 {{from}} → {{to}}",
@@ -3264,5 +3301,31 @@
   "orbReveal": {
     "used": "已使用天体宝珠",
     "title": "已使用{{name}}：役种升级"
+  },
+  "omenReveal": {
+    "title": "获得征兆：{{name}}",
+    "swiftClear": "速通",
+    "cleared": "{{round}}过关",
+    "spareTurns_one": "剩余{{formattedCount}}次行动",
+    "spareTurns_other": "剩余{{formattedCount}}次行动",
+    "earned": "获得征兆",
+    "copies": "×{{amount}}",
+    "copiesNote": "双生征兆复制：×{{amount}}",
+    "when": "生效时机",
+    "timing": {
+      "shop": "现在，就在这间茶寮。效果已体现在商品上。",
+      "round": "下一局开始时。",
+      "hand": "下一次计分的手牌。",
+      "voidScript": "下次使用虚空卷轴时。",
+      "now": "立即生效，已经应用。",
+      "run": "本局结束前的每一次计分手牌。",
+      "nextOmen": "获得下一个征兆时。"
+    },
+    "rail": {
+      "waits": "在此之前，它会在牌桌上与你的物品一起等待。",
+      "stays": "它会一直留在牌桌上你的物品中。"
+    },
+    "tradeoff": "代价",
+    "rule": "在小局或大局剩余{{spare}}次或更多行动时过关，即可获得征兆。Boss局不会给予。"
   }
 }

@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { closeOmenReveal } from './helpers/table'
 
 const replayPath = process.env.CATALYSTS_REPLAY_PATH
 for (const language of ['en', 'es'])
@@ -124,6 +125,7 @@ for (const language of ['en', 'es'])
       await page.reload()
     }
     await expect(page).toHaveURL(/\/shop$/)
+    await closeOmenReveal(page)
     const before = await saved()
     const offerId = before.shop.teaHouse.itemOfferings[0].id
     // The Flower payment sits in the offer's details, beside Buy.
@@ -132,9 +134,12 @@ for (const language of ['en', 'es'])
       await offer.scrollIntoViewIfNeeded()
       await activate(offer)
       await activate(
-        page.locator(
-          `[data-shop-offer-details="${offerId}"] [data-offer-flower]`
-        )
+        page
+          .getByRole('dialog')
+          .filter({
+            has: page.locator(`[data-shop-offer-details="${offerId}"]`),
+          })
+          .locator('[data-offer-flower]')
       )
     }
     await offerFlower()

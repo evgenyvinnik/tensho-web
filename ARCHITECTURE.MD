@@ -209,7 +209,8 @@ src/
 │   │   ├── CategoryTabs.tsx # Category navigation
 │   │   └── ItemDetailModal.tsx # Item details
 │   └── gameplay/            # Gameplay components
-│       └── PlaySurface.tsx  # Game table surface
+│       ├── HandRack.tsx     # The player's tiles, grouped
+│       └── PlayFelt.tsx     # Tiles picked to play
 │
 ├── hooks/                   # Custom React hooks
 │   ├── useAudio.ts          # Audio playback hook

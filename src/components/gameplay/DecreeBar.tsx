@@ -84,7 +84,7 @@ export interface DecreeCardCompactProps {
   decree: OwnedDecree
   /** Optional tap handler for mobile interaction */
   onTap?: () => void
-  /** Hide the Decree identity for Amber Acorn. */
+  /** Amber Acorn hid (and disabled) this Decree for the round. */
   faceDown?: boolean
   /** Suppress this Decree for the current hand (Crimson Heart). */
   disabledByMandate?: boolean
@@ -429,7 +429,7 @@ export function DecreeCardCompact({
                 {faceDown
                   ? t(
                       'gameplay.hiddenDecreeDescription',
-                      'Amber Acorn conceals this Decree until the Showdown ends.'
+                      'Amber Acorn hides this Decree and silences its power until the round is won.'
                     )
                   : decreeDescription}
               </p>

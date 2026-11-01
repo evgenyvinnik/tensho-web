@@ -252,7 +252,7 @@ export function getGameplayTutorialSteps(t: TFunction): GameTutorialStep[] {
     {
       id: 'hands-remaining',
       targetSelector: '[data-tutorial="hands-remaining"]',
-      arrowDirection: 'bottom', // Hands remaining is in PlaySurface header, tooltip above with arrow pointing down
+      arrowDirection: 'bottom', // Hands remaining is in the action bar, tooltip above with arrow pointing down
       title: t('gameTutorial.handsRemaining.title', 'Hands Remaining'),
       content: t(
         'gameTutorial.handsRemaining.content',

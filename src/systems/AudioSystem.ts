@@ -45,6 +45,8 @@ export class AudioSystem {
     isCrossfading: false,
   }
   private unlocked = false
+  private appInactive = false
+  private pageHidden = false
   private musicWanted = false
   private music: HTMLAudioElement[] = []
   private active = 0
@@ -87,10 +89,12 @@ export class AudioSystem {
     })
     this.state.isTabVisible = document.visibilityState !== 'hidden'
     document.addEventListener('visibilitychange', this.onVisibility)
-    // iOS can hide a page (back-forward cache, home-screen app switch)
+    document.addEventListener('appinactive', this.onAppActivity)
+    document.addEventListener('appactive', this.onAppActivity)
+    // Safari can hide a page (back-forward cache, home-screen app switch)
     // without a visibilitychange; pagehide/pageshow cover those exits.
     window.addEventListener('pagehide', this.onPageHide)
-    window.addEventListener('pageshow', this.onVisibility)
+    window.addEventListener('pageshow', this.onPageShow)
     this.state.isInitialized = true
     for (const id of getPreloadSounds()) this.pool(id)
     this.connectEvents()
@@ -123,8 +127,12 @@ export class AudioSystem {
     this.unsubscribeEvents.forEach((off) => off())
     this.unsubscribeEvents = []
     document.removeEventListener('visibilitychange', this.onVisibility)
+    document.removeEventListener('appinactive', this.onAppActivity)
+    document.removeEventListener('appactive', this.onAppActivity)
     window.removeEventListener('pagehide', this.onPageHide)
-    window.removeEventListener('pageshow', this.onVisibility)
+    window.removeEventListener('pageshow', this.onPageShow)
+    this.appInactive = false
+    this.pageHidden = false
     this.state.isInitialized = false
     this.notify()
   }
@@ -460,16 +468,46 @@ export class AudioSystem {
   private onMusicEnded = () => {
     if (this.canPlayMusic() && !this.state.isCrossfading) this.nextTrack()
   }
-  private onVisibility = () =>
-    this.setTabVisible(document.visibilityState !== 'hidden')
-  private onPageHide = () => this.setTabVisible(false)
-  /** A hidden tab is silent; showing it again resumes, never replays effects. */
-  private setTabVisible(visible: boolean) {
+  /** iOS app only: a locked screen deactivates the app without hiding the page. */
+  private onAppActivity = (event: Event) => {
+    this.appInactive = event.type === 'appinactive'
+    this.onVisibility()
+  }
+  private onPageHide = () => {
+    this.pageHidden = true
+    this.onVisibility()
+  }
+  private onPageShow = () => {
+    this.pageHidden = false
+    this.onVisibility()
+  }
+  /** A hidden page is silent; showing it again resumes, never replays effects. */
+  private onVisibility = () => {
+    const visible =
+      document.visibilityState !== 'hidden' &&
+      !this.appInactive &&
+      !this.pageHidden
+    if (visible === this.state.isTabVisible) return
     this.state.isTabVisible = visible
-    if (!visible) {
+    this.setElementsMuted(!visible)
+    if (!this.state.isTabVisible) {
       this.stopEffects()
       this.pausePlayback()
     } else if (this.musicWanted) this.resumeMusic()
+  }
+  /**
+   * Once audio has played, every unmuted element, paused or not, stays
+   * eligible for the lock-screen media player. Only muted ones are not.
+   */
+  private setElementsMuted(muted: boolean) {
+    this.music.forEach((audio) => {
+      audio.muted = muted
+    })
+    this.pools.forEach((voices) =>
+      voices.forEach((v) => {
+        v.element.muted = muted
+      })
+    )
   }
 
   setMasterVolume(volume: number) {

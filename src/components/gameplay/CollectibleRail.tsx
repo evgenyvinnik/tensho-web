@@ -1,7 +1,10 @@
 /**
- * CollectibleRail: the table's Flowers, Seasons and held consumables.
+ * CollectibleRail: the table's Flowers, Seasons, Omens and held consumables.
  *
  * Three Orbs are three icons; a Flower and a Season are separate icons.
+ * Every earned Omen is an icon until it triggers, and an effect an Omen
+ * leaves running (a locked Season, blocked or boosted interest) keeps an icon
+ * of its own, badged with the rounds it has left.
  * Every icon is the same height and opens its own small panel. An Orb's panel is its use
  * confirmation: one tap to look, one tap to use that exact Orb.
  *
@@ -11,7 +14,7 @@
  * @module components/gameplay/CollectibleRail
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { GameOrchestrator } from '../../game/GameOrchestrator'
 import { eventBus } from '../../game/EventBus'
@@ -27,13 +30,23 @@ import {
   type YakuCategory,
 } from '../../systems/CelestialOrbSystem'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import type { OmenTagSystem } from '../../systems/OmenTagSystem'
+import { ALL_OMENS } from '../../config/omenDefinitions'
+import { useOmenStore } from '../../stores/omenStore'
 import { consumableTargetRange } from '../../gameplay/consumableTargeting'
 import { useItemText } from '../../i18n/useItemText'
+import { getGeneratedArt } from '../../utils/generatedArt'
 import { getFlowerArt, getItemArt, getSeasonArt } from '../../utils/itemArt'
+import { getOmenIllustration } from '../../utils/omenArt'
 import { CollectibleToken } from '../ui/CollectibleToken'
 import { CharterArtwork } from '../ui/CharterArtwork'
 import { FlowerDetails, SeasonDetails, useSeasonName } from './FloraDetails'
+import { OmenDetails } from './OmenDetails'
 import { consumableMessage } from './consumableMessages'
+import { shownUpgradeLevel } from './yakuUpgradeLevel'
+
+const OMEN_TONE = '#c4b5fd'
+const omenById = (id: string) => ALL_OMENS.find((omen) => omen.id === id)
 
 type ConsumableAction = Extract<
   PlayerAction,
@@ -56,6 +69,8 @@ export interface CollectibleRailProps {
   scriptDownsideProtected?: boolean
   /** The Observatory Charter pays for Orbs held rather than used. */
   observatoryActive?: boolean
+  /** Earned Omens and the effects they leave running. */
+  omenSystem?: OmenTagSystem
 }
 
 function actionFor(item: Consumable, targets: string[] = []): ConsumableAction {
@@ -150,10 +165,13 @@ export function CollectibleRail({
   onChooseTargets,
   scriptDownsideProtected = false,
   observatoryActive = false,
+  omenSystem,
 }: CollectibleRailProps) {
   const { t, i18n } = useTranslation()
   const itemText = useItemText()
   const seasonName = useSeasonName()
+  const { activeTags: omenTags } = useOmenStore()
+  const omenEffects = omenSystem?.getOngoingEffects()
   const number = (value: number) =>
     value.toLocaleString(i18n.resolvedLanguage ?? i18n.language)
   // Closing a used item's panel: its token disappears with the item.
@@ -219,9 +237,11 @@ export function CollectibleRail({
                   ? t('upgradeFamilies.All.upgrade', 'Every family +1 level')
                   : t('upgradeFamilies.levelChange', {
                       family: familyName(family),
-                      from: number(level ?? 1),
+                      from: number(shownUpgradeLevel(level ?? 1)),
                       to: number(
-                        Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        shownUpgradeLevel(
+                          Math.min(DEFAULT_ORB_MAX_LEVEL, (level ?? 1) + 1)
+                        )
                       ),
                     })}
               </p>
@@ -276,6 +296,81 @@ export function CollectibleRail({
     )
   }
 
+  // What a spent Omen still does: its own icon, so it never reads as a held
+  // Omen or a drawn Season.
+  const omenEffect = (
+    effect: 'season-lock' | 'no-interest' | 'interest-boost',
+    label: string,
+    art: string | undefined,
+    badge: ReactNode,
+    text: string
+  ) => (
+    <CollectibleToken
+      key={`omen-effect-${effect}`}
+      label={label}
+      art={art}
+      tone={OMEN_TONE}
+      badge={badge}
+      data={{ 'data-omen-effect': effect }}
+      {...control(`omen-effect-${effect}`)}
+    >
+      <p
+        data-omen-effect-details={effect}
+        className={`text-sm leading-relaxed ${
+          effect === 'no-interest' ? 'text-amber-200' : ''
+        }`}
+      >
+        {text}
+      </p>
+    </CollectibleToken>
+  )
+  const omenEffectTokens = []
+  if (omenEffects?.lockedSeason) {
+    const season = t(`flora.${omenEffects.lockedSeason.toLowerCase()}`)
+    omenEffectTokens.push(
+      omenEffect(
+        'season-lock',
+        t('omens.effects.seasonLockLabel', { season }),
+        getSeasonArt(omenEffects.lockedSeason),
+        <img
+          src={getGeneratedArt('controls', 'lock')}
+          alt=""
+          className="inline-block h-3 w-3 align-[-2px]"
+        />,
+        t('omens.effects.seasonLock', { season })
+      )
+    )
+  }
+  // Austerity is the only Omen that blocks interest, and the Interest Omen
+  // the only one that raises its cap; both are spent the moment they arrive.
+  const austerity = omenById('austerity_omen')
+  if (omenEffects?.noInterestRounds && austerity)
+    omenEffectTokens.push(
+      omenEffect(
+        'no-interest',
+        itemText.name('omens', austerity),
+        getOmenIllustration(austerity.id),
+        number(omenEffects.noInterestRounds),
+        t('omens.effects.noInterest', {
+          rounds: number(omenEffects.noInterestRounds),
+        })
+      )
+    )
+  const interest = omenById('interest_omen')
+  if (omenEffects?.interestBoostRounds && interest)
+    omenEffectTokens.push(
+      omenEffect(
+        'interest-boost',
+        itemText.name('omens', interest),
+        getOmenIllustration(interest.id),
+        number(omenEffects.interestBoostRounds),
+        t('omens.effects.interestBoost', {
+          amount: number(omenEffects.interestCapBonus),
+          rounds: number(omenEffects.interestBoostRounds),
+        })
+      )
+    )
+
   const owned = [
     ...flora.flowers.flowers.map((flower) => (
       <CollectibleToken
@@ -314,6 +409,24 @@ export function CollectibleRail({
         <SeasonDetails season={season} flora={flora} />
       </CollectibleToken>
     )),
+    ...omenTags.flatMap((tag) => {
+      const omen = omenById(tag.definitionId)
+      return omen
+        ? [
+            <CollectibleToken
+              key={tag.id}
+              label={itemText.name('omens', omen)}
+              art={getOmenIllustration(omen.id)}
+              tone={OMEN_TONE}
+              data={{ 'data-omen-id': omen.id }}
+              {...control(tag.id)}
+            >
+              <OmenDetails omen={omen} />
+            </CollectibleToken>,
+          ]
+        : []
+    }),
+    ...omenEffectTokens,
     ...celestialOrbs.map((orb) => consumable(orb, 'orbs')),
     ...voidScripts.map((script) => consumable(script, 'scripts')),
   ]

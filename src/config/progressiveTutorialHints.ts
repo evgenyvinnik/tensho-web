@@ -91,7 +91,7 @@ export function getProgressiveHints(
       id: 'discard-intro',
       trigger: 'firstDiscard',
       targetSelector: '[data-tutorial="hand"]',
-      arrowDirection: 'bottom', // Changed from 'top' - tooltip above PlaySurface
+      arrowDirection: 'bottom', // Changed from 'top' - tooltip above the rack
       title: t('progressiveHints.discard.title', 'Improve your hand'),
       content: t(
         'progressiveHints.discard.content',
