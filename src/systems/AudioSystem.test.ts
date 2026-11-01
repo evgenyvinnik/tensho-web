@@ -2,11 +2,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { act, renderHook } from '@testing-library/react'
-import { AudioSystem, audioSystem } from './AudioSystem'
+import { AudioSystem, audioSystem, LAUNCH_TRACK_KEY } from './AudioSystem'
 import {
   ALL_SOUND_IDS,
   SOUND_EFFECT_CONFIG,
   MUSIC_CONFIG,
+  getMusicForContext,
   TILE_SOUNDS,
   GAME_SOUNDS,
   SPECIAL_SOUNDS,
@@ -135,7 +136,7 @@ describe('audio lifetime and effects', () => {
     const voice = playedEffects()[0]
     audio.setSfxVolume(0.5)
     audio.setMasterVolume(0.4)
-    expect(voice.volume).toBeCloseTo(0.45 * 0.5 * 0.4)
+    expect(voice.volume).toBeCloseTo(0.5 * 0.5 * 0.4)
     audio.setSfxMuted(true)
     expect(voice.paused).toBe(true)
     advance(100)
@@ -294,6 +295,71 @@ describe('music and settings', () => {
     await flush()
     expect(audio.getState().isPlaying).toBe(true)
     expect(playedEffects()[0].play).toHaveBeenCalledTimes(1)
+  })
+
+  it('pauses music on pagehide and resumes on pageshow', async () => {
+    audio.initialize()
+    audio.unlock()
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+    window.dispatchEvent(new Event('pagehide'))
+    expect(MockAudio.all.every((a) => a.paused)).toBe(true)
+    expect(audio.getState().isPlaying).toBe(false)
+    window.dispatchEvent(new Event('pageshow'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+  })
+
+  it('pauses a play() that resolves after the page was hidden', async () => {
+    audio.initialize()
+    const [music] = MockAudio.all
+    let resolve!: () => void
+    music.play = vi.fn(() => {
+      music.paused = false
+      return new Promise<void>((done) => (resolve = done))
+    })
+    audio.unlock()
+    window.dispatchEvent(new Event('pagehide'))
+    // Some browsers start the element anyway when the pending play settles.
+    music.paused = false
+    resolve()
+    await flush()
+    expect(music.paused).toBe(true)
+    expect(audio.getState().isPlaying).toBe(false)
+  })
+
+  it('opens each launch on a different melody than the previous launch', async () => {
+    // The shared test setup stubs localStorage as a no-op; give it a memory.
+    const stored = new Map<string, string>()
+    vi.spyOn(localStorage, 'getItem').mockImplementation(
+      (key) => stored.get(key) ?? null
+    )
+    vi.spyOn(localStorage, 'setItem').mockImplementation((key, value) => {
+      stored.set(key, value)
+    })
+    const menu = getMusicForContext('menu').map((track) => track.path)
+    expect(menu.length).toBeGreaterThan(1)
+    for (let launch = 0; launch < 24; launch++) {
+      const previous = menu[launch % menu.length]
+      localStorage.setItem(LAUNCH_TRACK_KEY, previous)
+      // The router asks for menu music on mount (React may run that child
+      // effect before the audio owner initializes); the first tap unlocks.
+      const session = new AudioSystem()
+      if (launch % 2) {
+        session.playMusic('menu')
+        session.initialize()
+      } else {
+        session.initialize()
+        session.playMusic('menu')
+      }
+      session.unlock()
+      await flush()
+      const opened = session.getState().currentTrack
+      expect(opened).not.toBe(previous)
+      expect(menu).toContain(opened)
+      expect(localStorage.getItem(LAUNCH_TRACK_KEY)).toBe(opened)
+      session.destroy()
+    }
   })
 
   it('cleans up a pending crossfade and can initialize again', async () => {

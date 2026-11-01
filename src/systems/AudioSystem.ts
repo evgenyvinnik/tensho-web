@@ -27,6 +27,8 @@ interface Voice {
 }
 const clamp = (n: number) =>
   Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : 0
+/** The track the previous launch opened with, so the next one opens differently. */
+export const LAUNCH_TRACK_KEY = 'tensho-launch-track'
 
 export class AudioSystem {
   private state = {
@@ -51,6 +53,7 @@ export class AudioSystem {
   private frame: number | null = null
   private fade = 1
   private queue: string[] = []
+  private launchChosen = false
   private pools = new Map<SoundEffectId, Voice[]>()
   private lastPlayed = new Map<SoundEffectId, number>()
   private unsubscribeEvents: (() => void)[] = []
@@ -84,6 +87,10 @@ export class AudioSystem {
     })
     this.state.isTabVisible = document.visibilityState !== 'hidden'
     document.addEventListener('visibilitychange', this.onVisibility)
+    // iOS can hide a page (back-forward cache, home-screen app switch)
+    // without a visibilitychange; pagehide/pageshow cover those exits.
+    window.addEventListener('pagehide', this.onPageHide)
+    window.addEventListener('pageshow', this.onVisibility)
     this.state.isInitialized = true
     for (const id of getPreloadSounds()) this.pool(id)
     this.connectEvents()
@@ -116,6 +123,8 @@ export class AudioSystem {
     this.unsubscribeEvents.forEach((off) => off())
     this.unsubscribeEvents = []
     document.removeEventListener('visibilitychange', this.onVisibility)
+    window.removeEventListener('pagehide', this.onPageHide)
+    window.removeEventListener('pageshow', this.onVisibility)
     this.state.isInitialized = false
     this.notify()
   }
@@ -315,8 +324,25 @@ export class AudioSystem {
   nextTrack() {
     if (!this.canPlayMusic()) return
     if (!this.queue.length) this.refillQueue()
+    if (!this.launchChosen) this.chooseLaunchTrack()
     const path = this.queue.shift()
     if (path) this.startTrack(path)
+  }
+  /**
+   * The first track of a launch is never the one the previous launch opened
+   * with. Decided at first playback, so the order of mount effects is moot.
+   */
+  private chooseLaunchTrack() {
+    if (!this.queue.length) return
+    this.launchChosen = true
+    try {
+      const previous = localStorage.getItem(LAUNCH_TRACK_KEY)
+      if (this.queue.length > 1 && this.queue[0] === previous)
+        this.queue.push(this.queue.shift()!)
+      localStorage.setItem(LAUNCH_TRACK_KEY, this.queue[0])
+    } catch {
+      // Private mode or blocked storage: the launch is merely random.
+    }
   }
   private startTrack(path: string) {
     this.cancelFade()
@@ -333,7 +359,14 @@ export class AudioSystem {
     void incoming
       .play()
       .then(() => {
-        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        // A play() that resolves after the page was hidden or muted must not
+        // leave music running in the background.
+        if (!this.canPlayMusic()) {
+          incoming.pause()
+          if (epoch === this.epoch) this.pendingMusic = false
+          return
+        }
+        if (epoch !== this.epoch) return
         this.pendingMusic = false
         this.state.isPlaying = true
         this.state.currentTrack = path
@@ -396,7 +429,12 @@ export class AudioSystem {
     void audio
       .play()
       .then(() => {
-        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        if (!this.canPlayMusic()) {
+          audio.pause()
+          if (epoch === this.epoch) this.pendingMusic = false
+          return
+        }
+        if (epoch !== this.epoch) return
         this.pendingMusic = false
         this.state.isPlaying = true
         this.notify()
@@ -422,9 +460,13 @@ export class AudioSystem {
   private onMusicEnded = () => {
     if (this.canPlayMusic() && !this.state.isCrossfading) this.nextTrack()
   }
-  private onVisibility = () => {
-    this.state.isTabVisible = document.visibilityState !== 'hidden'
-    if (!this.state.isTabVisible) {
+  private onVisibility = () =>
+    this.setTabVisible(document.visibilityState !== 'hidden')
+  private onPageHide = () => this.setTabVisible(false)
+  /** A hidden tab is silent; showing it again resumes, never replays effects. */
+  private setTabVisible(visible: boolean) {
+    this.state.isTabVisible = visible
+    if (!visible) {
       this.stopEffects()
       this.pausePlayback()
     } else if (this.musicWanted) this.resumeMusic()

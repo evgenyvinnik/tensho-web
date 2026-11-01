@@ -1,22 +1,24 @@
-/** Original, deterministic PCM sound design. No samples, downloads or dependencies.
+/** Deterministic sound build: recorded foley plus original synthesis.
  *
- * Every cue is assembled from a few physically-inspired voices instead of
- * sine beeps, so ordinary actions sound like objects rather than synthesizers:
+ * Ordinary actions use real recordings from scripts/sfx-sources (SOURCES.md
+ * lists each file's origin and licence): mahjong tiles for every tile action,
+ * Kenney's CC0 interface clicks, casino chips and card packs. Payoffs and
+ * refusals are synthesized from physically-inspired voices:
  *
- *   clack  resin tile impact: broadband contact click + very short damped modes
+ *   sample recorded slice: leading silence skipped, room hiss gated, faded
  *   thump  felt-muffled table body under a landing tile
- *   tick   light wood/paper tick for interface feedback
- *   bead   soroban (abacus) bead for score counting
+ *   tick   light wood/paper tick
  *   wood   hollow woodblock; gentle "no" instead of a buzzer
  *   clap   hyoshigi wooden clappers for round and act accents
- *   coin   small metal disc with beating inharmonic partials
  *   koto   plucked string (Karplus-Strong) for rewards, pentatonic
  *   bell   small rin bell; glass for Celestial Orbs
  *   taiko  low drum with a pitch drop for the biggest moments
- *   noise  friction, curtain swish, paper tear, tile shuffle
+ *   noise  friction, curtain swish
  *
  * Loudness is matched on a K-weighted short-term RMS, capped by a peak ceiling,
  * so a 30 ms click and a one-second phrase land at intended relative levels.
+ * The category balance is baked in too, because iOS ignores
+ * HTMLMediaElement.volume and plays every file at its own level.
  *
  * Run: node scripts/generate-sfx.mjs. --check verifies committed assets byte-for-byte.
  */
@@ -139,6 +141,112 @@ function biquad(type, frequency, q = 0.707, gainDb = 0) {
 const at = (t) => Math.max(0, Math.round(t * RATE))
 
 // =============================================================================
+// Recorded sources
+// =============================================================================
+
+const sources = new Map()
+
+/** Mono 16-bit PCM WAV at RATE, converted with the ffmpeg line in SOURCES.md. */
+function source(name) {
+  if (!sources.has(name)) {
+    const bytes = readFileSync(new URL(`scripts/sfx-sources/${name}.wav`, root))
+    let offset = 12
+    let format, data
+    while (offset + 8 <= bytes.length) {
+      const id = bytes.toString('ascii', offset, offset + 4)
+      const size = bytes.readUInt32LE(offset + 4)
+      if (id === 'fmt ') format = bytes.subarray(offset + 8, offset + 8 + size)
+      if (id === 'data') data = bytes.subarray(offset + 8, offset + 8 + size)
+      offset += 8 + size + (size & 1)
+    }
+    if (
+      !format ||
+      !data ||
+      format.readUInt16LE(0) !== 1 ||
+      format.readUInt16LE(2) !== 1 ||
+      format.readUInt32LE(4) !== RATE ||
+      format.readUInt16LE(14) !== 16
+    )
+      throw new Error(`${name}.wav must be mono 16-bit PCM at ${RATE} Hz`)
+    const samples = new Float64Array(data.length / 2)
+    for (let i = 0; i < samples.length; i++)
+      samples[i] = data.readInt16LE(i * 2) / 32768
+    sources.set(name, samples)
+  }
+  return sources.get(name)
+}
+
+/**
+ * Mix a slice [from, to) of a recording at time t. Silence before the hit is
+ * skipped, because every millisecond of it is heard as input lag. `gate` (dB
+ * below the slice peak) pulls room hiss down between transients; the
+ * high-pass removes DC offset and rumble the recordings carry.
+ */
+function sample(ctx, t, name, options = {}) {
+  const {
+    from = 0,
+    to,
+    gain = 1,
+    rate = 1,
+    fadeOut = 0.012,
+    gate = 0,
+    highpass = 60,
+  } = options
+  const clip = source(name)
+  const first = Math.round(from * RATE)
+  const end = Math.min(
+    clip.length,
+    to === undefined ? clip.length : Math.round(to * RATE)
+  )
+  let peak = 0
+  for (let i = first; i < end; i++) peak = Math.max(peak, Math.abs(clip[i]))
+  let start = first
+  while (start < end && Math.abs(clip[start]) < peak * 0.05) start++
+  start = Math.max(first, start - Math.round(0.001 * RATE))
+  // Peak envelope with a 20 ms release drives a 2:1 downward expander.
+  const threshold = gate > 0 ? peak * 10 ** (-gate / 20) : 0
+  const release = Math.exp(-1 / (0.02 * RATE))
+  const envelope = new Float64Array(end - start)
+  let level = 0
+  for (let i = start; i < end; i++) {
+    level = Math.max(Math.abs(clip[i]), level * release)
+    envelope[i - start] = level
+  }
+  const { data } = ctx
+  const offset = at(t)
+  const length = Math.min(
+    data.length - offset,
+    Math.floor((end - start - 1) / rate)
+  )
+  const filter = biquad('highpass', highpass, 0.707)
+  const fadeIn = Math.round(0.0005 * RATE)
+  const fadeLength = Math.max(1, Math.round(fadeOut * RATE))
+  for (let k = 0; k < length; k++) {
+    const position = k * rate
+    const i = Math.floor(position)
+    const fraction = position - i
+    const value =
+      clip[start + i] * (1 - fraction) + clip[start + i + 1] * fraction
+    const expand =
+      threshold > 0 && envelope[i] < threshold
+        ? (envelope[i] / threshold) ** 2
+        : 1
+    const shape =
+      Math.min(1, (k + 1) / fadeIn) * Math.min(1, (length - k) / fadeLength)
+    data[offset + k] += gain * expand * shape * filter(value)
+  }
+}
+
+const MAHJONG = 'mahjong/mahjong-tiles'
+/** A slice of the mahjong recording; times are seconds into the source clip. */
+const tiles = (ctx, t, from, to, options = {}) =>
+  sample(ctx, t, MAHJONG, { from, to, gate: 34, highpass: 120, ...options })
+const ui = (ctx, t, name, options) =>
+  sample(ctx, t, `kenney-interface/${name}`, options)
+const casino = (ctx, t, name, options) =>
+  sample(ctx, t, `kenney-casino/${name}`, options)
+
+// =============================================================================
 // Primitive voices
 // =============================================================================
 
@@ -175,53 +283,6 @@ function noise(ctx, t, duration, amplitude, options = {}) {
     if (shape) envelope *= shape(i / length)
     data[start + i] += amplitude * envelope * x
   }
-}
-
-/** A resin tile meeting another hard surface. */
-function clack(
-  ctx,
-  t,
-  { pitch = 1, gain = 1, hardness = 1, bounce = 0.22 } = {}
-) {
-  const { jitter, range } = ctx
-  // Contact: a sub-millisecond broadband snap, brighter for harder hits.
-  noise(ctx, t, 0.004, 0.3 * gain * hardness, {
-    decay: 0.0004 + 0.0003 * (1 - hardness),
-    filters: [['highpass', 1500 + 1500 * hardness, 0.7]],
-  })
-  const modes = [
-    [1150, 0.32, 0.011],
-    [2390, 1.0, 0.0072],
-    [3570, 0.7, 0.0055],
-    [4820, 0.45, 0.0042],
-    [6340, 0.28 * hardness, 0.0032],
-    [8150, 0.14 * hardness, 0.0024],
-  ]
-  for (const [f, a, tau] of modes)
-    mode(
-      ctx,
-      t,
-      f * pitch * jitter(0.03),
-      0.3 * a * gain * jitter(0.15),
-      tau * jitter(0.12)
-    )
-  // Modal density: a cluster of weaker modes makes it an object, not a tone.
-  for (let k = 0; k < 8; k++)
-    mode(
-      ctx,
-      t,
-      1600 * 4.5 ** ctx.random() * pitch,
-      0.1 * gain * range(0.4, 1),
-      range(0.002, 0.006)
-    )
-  // Hard objects rarely land once: a quieter micro-bounce a few ms later.
-  if (bounce > 0)
-    clack(ctx, t + ctx.range(0.005, 0.009), {
-      pitch: pitch * 1.03,
-      gain: gain * bounce,
-      hardness: hardness * 0.8,
-      bounce: 0,
-    })
 }
 
 /** Felt-covered table under a landing tile: short, muffled, low. */
@@ -261,17 +322,6 @@ function tick(ctx, t, { frequency = 1900, gain = 1, tau = 0.005 } = {}) {
   mode(ctx, t, frequency * 0.52, 0.12 * gain, tau * 1.3)
 }
 
-/** Soroban bead: hard little wood bead snapping against its neighbour. */
-function bead(ctx, t, { pitch = 1, gain = 1 } = {}) {
-  noise(ctx, t, 0.002, 0.2 * gain, {
-    decay: 0.0003,
-    filters: [['highpass', 2500, 0.7]],
-  })
-  mode(ctx, t, 2650 * pitch, 0.5 * gain, 0.0068)
-  mode(ctx, t, 1330 * pitch, 0.2 * gain, 0.0095)
-  mode(ctx, t, 5150 * pitch, 0.16 * gain, 0.003)
-}
-
 /** Hollow woodblock (mokugyo). Two of these say "no" without a buzzer. */
 function wood(ctx, t, frequency, { gain = 1, tau = 0.03 } = {}) {
   noise(ctx, t, 0.004, 0.15 * gain, {
@@ -293,27 +343,6 @@ function clap(ctx, t, { pitch = 1, gain = 1 } = {}) {
   mode(ctx, t, 2640 * pitch, 0.32 * gain, 0.016)
   mode(ctx, t, 3420 * pitch, 0.2 * gain, 0.011)
   mode(ctx, t, 980 * pitch, 0.14 * gain, 0.012)
-}
-
-/** Small metal coin. Close partial pairs beat for a lively shimmer. */
-function coin(ctx, t, { pitch = 1, gain = 1, ring = 1 } = {}) {
-  const { jitter } = ctx
-  noise(ctx, t, 0.003, 0.2 * gain, {
-    decay: 0.0004,
-    filters: [['highpass', 3000, 0.7]],
-  })
-  const base = 2480 * pitch * jitter(0.01)
-  const partials = [
-    [1, 1, 0.16],
-    [1.009, 0.6, 0.16],
-    [1.59, 0.5, 0.11],
-    [2.14, 0.42, 0.085],
-    [2.3, 0.28, 0.07],
-    [2.65, 0.22, 0.055],
-    [3.16, 0.12, 0.04],
-  ]
-  for (const [ratio, a, tau] of partials)
-    mode(ctx, t, base * ratio, 0.28 * a * gain, tau * ring)
 }
 
 /** Karplus-Strong plucked string with a tuned fractional delay. */
@@ -429,31 +458,6 @@ function whoosh(
   }
 }
 
-/** Paper tear: a dense, accelerating crackle over soft friction. */
-function paperTear(ctx, t, duration, { gain = 1 } = {}) {
-  friction(ctx, t, duration, { gain: 0.35 * gain, center: 3200, q: 0.6 })
-  const count = 46
-  for (let k = 0; k < count; k++) {
-    const p = (k / count) ** 0.75
-    noise(ctx, t + p * duration * 0.92, 0.004, gain * ctx.range(0.15, 0.6), {
-      decay: ctx.range(0.0004, 0.0012),
-      filters: [['bandpass', ctx.range(1800, 6000), 1.2]],
-    })
-  }
-}
-
-/** Washing tiles: many small clacks over friction. */
-function shuffle(ctx, t, duration, { gain = 1, count = 14 } = {}) {
-  friction(ctx, t, duration, { gain: 0.25 * gain, center: 2200, q: 0.8 })
-  for (let k = 0; k < count; k++)
-    clack(ctx, t + ctx.range(0, duration * 0.9), {
-      pitch: ctx.range(0.85, 1.25),
-      gain: gain * ctx.range(0.25, 0.8),
-      hardness: ctx.range(0.5, 0.9),
-      bounce: 0,
-    })
-}
-
 /** Hanko seal pressed onto paper. */
 function stamp(ctx, t, { gain = 1 } = {}) {
   thump(ctx, t, { frequency: 120, gain: 0.9 * gain })
@@ -525,150 +529,62 @@ const arpeggio = (ctx, t, notes, spacing, options = {}) =>
 // =============================================================================
 
 const RECIPES = {
-  // --- Tiles: no pitched tone, just resin on resin or felt -------------------
-  tile_select: [
-    0.09,
-    -19,
-    (c) => clack(c, 0, { pitch: 1.18, hardness: 0.75, bounce: 0 }),
-  ],
+  // --- Tiles: real mahjong tiles ---------------------------------------------
+  tile_select: [0.12, -19, (c) => tiles(c, 0, 2.47, 2.565)],
   tile_deselect: [
-    0.1,
+    0.12,
     -21,
     (c) => {
-      clack(c, 0, { pitch: 0.98, hardness: 0.6, bounce: 0.15 })
-      thump(c, 0, { gain: 0.25 })
+      tiles(c, 0, 3.714, 3.8, { rate: 0.96 })
+      thump(c, 0, { gain: 0.2 })
     },
   ],
-  tile_draw: [
-    0.11,
-    -20,
-    (c) => {
-      friction(c, 0, 0.04, { gain: 0.3, center: 3000 })
-      clack(c, 0.032, { pitch: 1.08, hardness: 0.8 })
-    },
-  ],
+  // Two quick clacks: the tile leaves the wall and lands in the hand.
+  tile_draw: [0.16, -20, (c) => tiles(c, 0, 0.645, 0.775)],
   tile_discard: [
-    0.13,
+    0.12,
     -17,
     (c) => {
-      thump(c, 0, { frequency: 170, gain: 0.6 })
-      clack(c, 0, { pitch: 0.92 })
+      thump(c, 0, { frequency: 170, gain: 0.5 })
+      tiles(c, 0, 0.166, 0.206, { fadeOut: 0.008 })
     },
   ],
-  tile_place: [
-    0.12,
-    -18,
-    (c) => {
-      clack(c, 0, { pitch: 1.0, bounce: 0 })
-      clack(c, 0.027, { pitch: 1.07, gain: 0.7, bounce: 0.15 })
-    },
-  ],
+  tile_place: [0.12, -18, (c) => tiles(c, 0, 0.166, 0.236)],
   tile_slide: [
-    0.22,
+    0.24,
     -21,
     (c) => {
-      friction(c, 0, 0.16, { gain: 0.8, center: 2300 })
-      clack(c, 0.15, { pitch: 1.04, gain: 0.6, hardness: 0.7 })
+      friction(c, 0, 0.14, { gain: 0.8, center: 2300 })
+      tiles(c, 0.13, 3.714, 3.8, { gain: 0.8 })
     },
   ],
-  tile_flip: [
-    0.12,
-    -19,
-    (c) => {
-      clack(c, 0, { pitch: 1.25, gain: 0.5, hardness: 0.6, bounce: 0 })
-      clack(c, 0.052, { pitch: 0.98, gain: 0.9 })
-    },
-  ],
+  tile_flip: [0.12, -19, (c) => tiles(c, 0, 4.448, 4.545)],
 
-  // --- Interface: small, dry and quiet; heard on every button ---------------
-  ui_button_click: [0.04, -25, (c) => tick(c, 0, { frequency: 1750 })],
-  ui_button_hover: [
-    0.04,
-    -33,
-    (c) => tick(c, 0, { frequency: 2600, gain: 0.6, tau: 0.003 }),
-  ],
-  ui_menu_open: [
-    0.13,
-    -25,
-    (c) => {
-      whoosh(c, 0, 0.09, { from: 700, to: 2600, gain: 0.5 })
-      tick(c, 0.07, { frequency: 2100, gain: 0.8 })
-    },
-  ],
-  ui_menu_close: [
-    0.12,
-    -26,
-    (c) => {
-      whoosh(c, 0, 0.08, { from: 2400, to: 700, gain: 0.5 })
-      tick(c, 0.06, { frequency: 1500, gain: 0.8 })
-    },
-  ],
-  ui_navigate: [0.05, -26, (c) => tick(c, 0, { frequency: 2250, gain: 0.9 })],
-  ui_toggle: [
-    0.07,
-    -25,
-    (c) => {
-      tick(c, 0, { frequency: 1650 })
-      tick(c, 0.028, { frequency: 2450, gain: 0.65 })
-    },
-  ],
-  ui_slider: [
-    0.035,
-    -29,
-    (c) => tick(c, 0, { frequency: 3100, gain: 0.8, tau: 0.0028 }),
-  ],
-  ui_tab_switch: [
-    0.06,
-    -25,
-    (c) => {
-      tick(c, 0, { frequency: 2050 })
-      friction(c, 0, 0.035, { gain: 0.15, center: 4200 })
-    },
-  ],
+  // --- Interface: Kenney clicks, quiet; heard on every button ----------------
+  ui_button_click: [0.04, -25, (c) => ui(c, 0, 'click_001')],
+  ui_button_hover: [0.03, -33, (c) => ui(c, 0, 'tick_001')],
+  ui_menu_open: [0.3, -25, (c) => ui(c, 0, 'maximize_001')],
+  ui_menu_close: [0.3, -26, (c) => ui(c, 0, 'minimize_001')],
+  ui_navigate: [0.03, -26, (c) => ui(c, 0, 'click_005')],
+  ui_toggle: [0.15, -25, (c) => ui(c, 0, 'switch_002')],
+  ui_slider: [0.03, -29, (c) => ui(c, 0, 'tick_002')],
+  ui_tab_switch: [0.03, -25, (c) => ui(c, 0, 'click_002')],
 
   // --- Game ------------------------------------------------------------------
+  // Three real tiles slapped down in a row, over a felt thump.
   game_hand_played: [
-    0.22,
+    0.2,
     -15,
     (c) => {
-      // Tiles slapped down as a group, then one rocks and settles.
-      thump(c, 0, { frequency: 140, gain: 0.8 })
-      ;[0, 0.014, 0.03, 0.048].forEach((t, k) =>
-        clack(c, t, {
-          pitch: [0.95, 1.08, 0.9, 1.15][k],
-          gain: [1, 0.8, 0.65, 0.5][k],
-          bounce: 0,
-        })
-      )
-      clack(c, 0.105, { pitch: 1.12, gain: 0.25, hardness: 0.6, bounce: 0 })
+      thump(c, 0, { frequency: 140, gain: 0.7 })
+      tiles(c, 0, 0.166, 0.3)
     },
   ],
-  game_score_chip: [0.05, -22, (c) => bead(c, 0)],
-  game_score_tally: [
-    0.26,
-    -21,
-    (c) =>
-      [0, 0.045, 0.085, 0.12, 0.15, 0.176, 0.198].forEach((t, k) =>
-        bead(c, t, { pitch: 1 + k * 0.015, gain: 1 - k * 0.06 })
-      ),
-  ],
-  game_gold_earned: [
-    0.5,
-    -19,
-    (c) => {
-      coin(c, 0)
-      coin(c, 0.06, { pitch: 1.07, gain: 0.7 })
-      coin(c, 0.11, { pitch: 0.96, gain: 0.5 })
-    },
-  ],
-  game_gold_spent: [
-    0.4,
-    -21,
-    (c) => {
-      friction(c, 0, 0.07, { gain: 0.3, center: 3600 })
-      coin(c, 0.05, { pitch: 0.88, gain: 0.8, ring: 0.8 })
-    },
-  ],
+  game_score_chip: [0.08, -22, (c) => casino(c, 0, 'chips-collide-4')],
+  game_score_tally: [0.36, -21, (c) => casino(c, 0, 'chips-handle-4')],
+  // Gold is a stack of casino chips: clacking in, sliding out.
+  game_gold_earned: [0.4, -19, (c) => casino(c, 0, 'chips-stack-3')],
+  game_gold_spent: [0.25, -21, (c) => casino(c, 0, 'chips-handle-3')],
   game_round_complete: [
     1.2,
     -18,
@@ -807,7 +723,11 @@ const RECIPES = {
       chimes(c, 0.02, 0.9, { count: 7 })
     },
   ],
-  special_pack_opening: [0.34, -19, (c) => paperTear(c, 0, 0.3)],
+  special_pack_opening: [
+    0.62,
+    -19,
+    (c) => casino(c, 0, 'cards-pack-open-2', { to: 0.6, fadeOut: 0.08 }),
+  ],
   special_item_reveal: [
     0.8,
     -20,
@@ -869,22 +789,8 @@ const RECIPES = {
       koto(c, 0.01, yo(7), { sustain: 0.45 })
     },
   ],
-  feedback_cancel: [
-    0.09,
-    -25,
-    (c) => {
-      tick(c, 0, { frequency: 2000 })
-      tick(c, 0.04, { frequency: 1500, gain: 0.8 })
-    },
-  ],
-  feedback_notification: [
-    0.7,
-    -22,
-    (c) => {
-      bell(c, 0, yo(10), { tau: 0.4 })
-      bell(c, 0.09, yo(12), { tau: 0.35, gain: 0.7 })
-    },
-  ],
+  feedback_cancel: [0.07, -25, (c) => ui(c, 0, 'back_002')],
+  feedback_notification: [0.22, -22, (c) => ui(c, 0, 'glass_001')],
 
   // --- Consumables -----------------------------------------------------------
   consumable_fate_seal: [0.3, -18, (c) => stamp(c, 0)],
@@ -931,27 +837,23 @@ const RECIPES = {
     0.6,
     -19,
     (c) => {
-      coin(c, 0)
-      coin(c, 0.05, { pitch: 1.08, gain: 0.6 })
-      koto(c, 0.08, yo(7), { sustain: 0.5, gain: 0.6 })
+      casino(c, 0, 'chips-collide-2')
+      koto(c, 0.06, yo(7), { sustain: 0.5, gain: 0.6 })
     },
   ],
-  shop_reroll: [0.4, -19, (c) => shuffle(c, 0, 0.32)],
-  shop_sell: [
+  // Real tiles being washed.
+  shop_reroll: [
     0.45,
-    -20,
-    (c) => {
-      friction(c, 0, 0.05, { gain: 0.3, center: 3600 })
-      coin(c, 0.02, { pitch: 0.95 })
-      coin(c, 0.09, { pitch: 1.04, gain: 0.7 })
-    },
+    -19,
+    (c) => tiles(c, 0, 0.815, 1.245, { gate: 30, fadeOut: 0.05 }),
   ],
+  shop_sell: [0.42, -20, (c) => casino(c, 0, 'chips-handle-1')],
   shop_cant_afford: [
-    0.24,
+    0.3,
     -22,
     (c) => {
-      coin(c, 0, { pitch: 0.75, gain: 0.5, ring: 0.25 })
-      wood(c, 0.06, 340, { gain: 0.9 })
+      casino(c, 0, 'chip-lay-3', { gain: 0.6 })
+      wood(c, 0.07, 340, { gain: 0.9 })
     },
   ],
 
@@ -1014,6 +916,13 @@ function shortTermRms(data) {
   return Math.sqrt(best)
 }
 
+/**
+ * Category balance lives in the files, not in per-category element volumes:
+ * iOS ignores HTMLMediaElement.volume, so only baked levels survive there.
+ * Interface ticks sit 8 dB under game cues, tiles just under them.
+ */
+const CATEGORY_TRIM_DB = { ui: -8, tile: -0.9 }
+
 export function render(id) {
   const recipe = RECIPES[id]
   if (!recipe) throw new Error(`No sound recipe for ${id}`)
@@ -1022,11 +931,12 @@ export function render(id) {
   build(ctx)
   const { data } = ctx
   const peak = data.reduce((m, v) => Math.max(m, Math.abs(v)), 0)
+  const target = loudness + (CATEGORY_TRIM_DB[id.split('_')[0]] ?? 0)
   // Up to ~4 dB of a contact spike may ride into the soft knee instead of
   // dragging the whole cue down; everything below half the ceiling is untouched.
   const gain = Math.min(
     (PEAK * 1.6) / peak,
-    10 ** (loudness / 20) / shortTermRms(data)
+    10 ** (target / 20) / shortTermRms(data)
   )
   const knee = PEAK / 2
   for (let i = 0; i < data.length; i++) {

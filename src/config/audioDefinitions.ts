@@ -171,8 +171,8 @@ export interface SoundEffectConfig {
 }
 
 /**
- * Every declared cue has an original generated WAV, rebuilt by
- * scripts/generate-sfx.mjs. Tiles are percussive clacks with no pitched tone.
+ * Every declared cue has a WAV rebuilt by scripts/generate-sfx.mjs: recorded
+ * tiles, clicks and chips (scripts/sfx-sources/SOURCES.md) plus synthesis.
  */
 export const ALL_SOUND_IDS: SoundEffectId[] = [
   ...Object.values(TILE_SOUNDS),
@@ -219,8 +219,11 @@ export const SOUND_EFFECT_CONFIG = Object.fromEntries(
       id,
       {
         path: withBasePath(`assets/sfx/${id}.wav`),
-        // Button ticks sit well under tiles; tiles under scoring payoffs.
-        volume: category === 'ui' ? 0.2 : category === 'tile' ? 0.45 : 0.5,
+        // One level for every cue: the category balance is baked into the
+        // files by scripts/generate-sfx.mjs, because iOS ignores element
+        // volume. 0.5 matches music's 0.7 × 0.7, so the music/effects
+        // balance is the same on iPhone, where both play at file level.
+        volume: 0.5,
         category,
         allowOverlap: category === 'tile' || id === GAME_SOUNDS.scoreChip,
         maxInstances: category === 'tile' ? 3 : 1,
@@ -280,7 +283,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     name: 'Dragon Dance',
     volume: 0.7,
     loop: true,
-    contexts: ['gameplay', 'boss'],
+    contexts: ['menu', 'gameplay', 'boss'],
     bpm: 120,
   },
   {
@@ -296,7 +299,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     name: 'Lotus Pond',
     volume: 0.7,
     loop: true,
-    contexts: ['gameplay', 'shop', 'victory'],
+    contexts: ['menu', 'gameplay', 'shop', 'victory'],
     bpm: 80,
   },
   {
@@ -304,7 +307,7 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     name: 'The Dojo',
     volume: 0.7,
     loop: true,
-    contexts: ['gameplay'],
+    contexts: ['menu', 'gameplay'],
     bpm: 110,
   },
 ]
