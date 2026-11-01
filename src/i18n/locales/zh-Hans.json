@@ -708,7 +708,21 @@
     "feltTiles": "要打出的牌",
     "collection": "你的物品",
     "deadWallHint": "只选一张牌，与岭上的一张交换。每回合一次，不消耗行动。",
-    "turnsLabel": "剩余行动"
+    "turnsLabel": "剩余行动",
+    "emergencyTurn": {
+      "buy": "行动 +1",
+      "label": "花费 {{cost}} 金币再购买一次行动",
+      "short": "金币不足：再购买一次行动需要 {{cost}} 金币",
+      "watchAd": "看广告",
+      "watchAdLabel": "观看广告再获得一次行动",
+      "adPlaying": "广告播放中…",
+      "adIncomplete": "广告提前关闭，未获得额外行动。",
+      "adUnavailable": "当前没有可播放的广告。",
+      "simulatedAd": "广告（模拟）",
+      "adCountdown": "{{seconds}} 秒后可领取奖励",
+      "adReady": "奖励已就绪",
+      "adClaim": "领取行动 +1"
+    }
   },
   "rounds": {
     "small": "小局",
@@ -789,7 +803,8 @@
       "bonus": "奖励调整",
       "rentals": "租金",
       "omenEarned": "征兆：{{name}}",
-      "omen": "征兆"
+      "omen": "征兆",
+      "stakeWithheld": "{{stake}}：本回合的 {{amount}}G 奖励不予发放"
     },
     "packChoices": "从 {{count}} 个奖励中选择最多 {{max}} 个",
     "packInventoryFull": "法令槽位不足，无法领取所选奖励。请出售法令、减少选择或跳过卡包。",
@@ -1877,6 +1892,8 @@
     "rules": {
       "base": "基础难度：没有额外惩罚。",
       "noSmallRoundReward": "小局不再提供奖励金币。",
+      "bossTargets": "从第 {{act}} 幕起，首领局目标分提高 {{percent}}。",
+      "emergencyTurn": "第 {{act}} 幕起可紧急加行动：最后一次行动时可花金币再买一次行动（第 {{act}} 幕 {{cost}} 金币，第 {{nextAct}} 幕 {{nextCost}} 金币，依此类推；同一局内每多买一次翻倍）。",
       "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每回合行动：−{{amount}}。",
       "eternalChance": "商店法令有{{chance}}的概率带有永恒贴纸（不可出售或摧毁）。",
@@ -2080,7 +2097,8 @@
       "play": "为所选牌计分：最多{{max}}张，或一整副和牌。",
       "redraw": "把任意张所选牌打入牌河，并摸入新牌。",
       "p2": "在行动用完前达到本局目标。最后一次行动必定是出牌；道具可提供不消耗行动的免费重抽。",
-      "warning": "行动用完仍未达到目标，本次挑战即告结束。"
+      "warning": "行动用完仍未达到目标，本次挑战即告结束。",
+      "emergency": "在{{stake}}及以上，从第 {{act}} 幕起，最后一次行动时可以花金币再购买一次行动。价格每幕上涨，同一局内每多买一次就翻倍。"
     },
     "select": {
       "title": "选择牌",

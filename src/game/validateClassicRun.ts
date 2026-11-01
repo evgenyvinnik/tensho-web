@@ -148,6 +148,7 @@ const roundSummary = schema<RoundCashOutSummary>({
   nextTarget: nullable(nonnegative),
   omenId: optional(nullable(omenId)),
   omenGold: optional(nonnegative),
+  stakeWithheldReward: optional(nonnegative),
   omenCopies: optional(nonnegative),
   spareTurns: optional(nonnegative),
 })
@@ -240,6 +241,8 @@ const stateFields = {
   handsAllowance: count,
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
+  emergencyTurnsBoughtThisRound: optional(count),
+  adTurns: optional(object({ actNumber: positive, count })),
   honorDiscardsThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),

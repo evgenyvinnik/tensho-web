@@ -1,8 +1,9 @@
 /**
  * RunHeader: the round at a glance, in one row.
  *
- *   [Gold]  Act 1 · Small Round   120 / 300   [?] [Exit] [Settings]
- *   ───────────────── round progress ─────────────────
+ *   Act 1 · Small Round                         120 / 300
+ *   ──── round progress ────  [2] [Gold]  [?] [Exit] [Settings]
+ *   ([2] is the Stake; tapping it lists the Stake's active rules)
  *   [boss art] The Manacle · Rack −1                  (Boss rounds only)
  *              The full rule (tablet and desktop; on a phone, on tap)
  *
@@ -18,7 +19,8 @@ import { useTranslation } from 'react-i18next'
 import { GoldIcon } from '../ui/GoldIcon'
 import { ControlIcon } from '../ui/ControlIcon'
 import { AnchoredPopover } from '../ui/AnchoredPopover'
-import { getStakeRules } from '../../i18n/stakeRules'
+import { getStakeRules, STAKE_NAME_KEYS } from '../../i18n/stakeRules'
+import { getStakeByTier } from '../../config/stakeDefinitions'
 import { scoreNumber } from '../../utils/scoreNumber'
 import { getMandateIllustration } from '../../utils/assets'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
@@ -97,7 +99,6 @@ export function RunHeader({
   const { t, i18n } = useTranslation()
   const language = i18n.resolvedLanguage ?? i18n.language
   const number = new Intl.NumberFormat(language)
-  const stakeRules = getStakeRules(t, language, stake).join('\n')
   const cleared = score >= target
   const progress = target > 0 ? Math.min(100, (score / target) * 100) : 0
   const scoreText = scoreNumber(score, language)
@@ -163,7 +164,7 @@ export function RunHeader({
             score: scoreText.exact,
             target: targetText.exact,
           })}
-          className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-white/10"
+          className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-white/10 max-[359px]:invisible"
         >
           <div
             className={`h-full rounded-full transition-[width] duration-500 ${
@@ -172,13 +173,13 @@ export function RunHeader({
             style={{ width: `${progress}%` }}
           />
         </div>
+        <StakeBadge stake={stake} />
         <span
           data-tutorial="gold"
           className="inline-flex shrink-0 items-center gap-1 text-sm font-bold tabular-nums text-[var(--color-golden-yellow)]"
           aria-label={t('shop.ui.goldBalance', {
             amount: number.format(gold),
           })}
-          title={stakeRules}
         >
           <GoldIcon className="h-4 w-4" />
           {number.format(gold)}
@@ -234,6 +235,76 @@ export function RunHeader({
         </div>
       )}
     </header>
+  )
+}
+
+/**
+ * The run's Stake as a coloured tier number. Its rules change the round
+ * without showing on the table, so a tap (or hover) lists them.
+ */
+export function StakeBadge({ stake }: { stake: number }) {
+  const { t, i18n } = useTranslation()
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  const [open, setOpen] = useState(false)
+  const language = i18n.resolvedLanguage ?? i18n.language
+  const definition = getStakeByTier(stake)
+  const nameKey = STAKE_NAME_KEYS[stake - 1]
+  if (!definition || !nameKey) return null
+  const name = t(`stakes.${nameKey}`)
+  const rules = getStakeRules(t, language, stake)
+  const label = `${name} · ${t('stakes.rulesTitle')}`
+
+  return (
+    <>
+      <button
+        ref={anchorRef}
+        type="button"
+        data-run-header-stake={stake}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-label={label}
+        title={[name, ...rules].join('\n')}
+        onClick={() => setOpen((value) => !value)}
+        className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-[var(--color-golden-yellow)]"
+      >
+        <span
+          aria-hidden="true"
+          className="flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-black tabular-nums"
+          style={{
+            borderColor: definition.color,
+            backgroundColor: `${definition.color}33`,
+            color: '#fff',
+          }}
+        >
+          {new Intl.NumberFormat(language).format(stake)}
+        </span>
+      </button>
+      <AnchoredPopover
+        open={open}
+        anchorRef={anchorRef}
+        title={name}
+        onClose={() => setOpen(false)}
+      >
+        <div data-stake-rules={stake} className="[overflow-wrap:anywhere]">
+          <p
+            className="text-xs font-black uppercase tracking-wider"
+            style={{ color: definition.color }}
+          >
+            {t('gameplay.stake', { tier: stake })} · {t('stakes.rulesTitle')}
+          </p>
+          <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+            {rules.map((rule) => (
+              <li key={rule}>{rule}</li>
+            ))}
+          </ul>
+          {stake > 1 && (
+            <p className="mt-2 text-xs leading-snug opacity-75">
+              {t('stakes.cumulative')}
+            </p>
+          )}
+        </div>
+      </AnchoredPopover>
+    </>
   )
 }
 

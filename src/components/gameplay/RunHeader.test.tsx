@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
-import { BossMandateBadge } from './RunHeader'
+import { BossMandateBadge, RunHeader, StakeBadge } from './RunHeader'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../../config/mandateDefinitions'
 import { getMandateIllustration } from '../../utils/assets'
 
@@ -69,4 +69,63 @@ it.each(SHOWDOWN_MANDATES)('shows $name with its painted portrait', (mandate) =>
       .getByRole('region', { name: mandate.name })
       .querySelector(`img[src="${getMandateIllustration(mandate.id)}"]`)
   ).not.toBeNull()
+})
+
+it('opens the Stake rules on tap, so a phone player can read them', () => {
+  render(<StakeBadge stake={2} />)
+  const opener = screen.getByRole('button', {
+    name: 'Red Stake · Active rules',
+  })
+  expect(opener).toHaveAttribute('aria-haspopup', 'dialog')
+  expect(opener).toHaveTextContent('2')
+  expect(screen.queryByRole('dialog')).toBeNull()
+  fireEvent.click(opener)
+  const dialog = screen.getByRole('dialog', { name: 'Red Stake' })
+  expect(dialog).toHaveTextContent('No reward gold from Small Rounds.')
+  expect(dialog).toHaveTextContent('Boss targets: 20% higher from Act 2.')
+  expect(dialog).toHaveTextContent('Emergency Turns from Act 2')
+  expect(dialog).toHaveTextContent(
+    'Higher tiers include the earlier tiers’ rules.'
+  )
+})
+
+it('lists every cumulative rule at the top Stake and the base rule on White', () => {
+  const { unmount } = render(<StakeBadge stake={8} />)
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Gold Stake · Active rules' })
+  )
+  const dialog = screen.getByRole('dialog', { name: 'Gold Stake' })
+  expect(dialog.querySelectorAll('li')).toHaveLength(8)
+  unmount()
+  render(<StakeBadge stake={1} />)
+  fireEvent.click(
+    screen.getByRole('button', { name: 'White Stake · Active rules' })
+  )
+  const white = screen.getByRole('dialog', { name: 'White Stake' })
+  expect(white).toHaveTextContent('Base difficulty: no added penalties.')
+  expect(white).not.toHaveTextContent('Higher tiers')
+  expect(white).not.toHaveTextContent('Emergency Turns')
+})
+
+it('shows the Stake in the run header instead of hiding it in the Gold tooltip', () => {
+  render(
+    <RunHeader
+      gold={12}
+      stake={3}
+      currentAct={2}
+      hasEnteredEndless={false}
+      roundType="Small"
+      score={0}
+      target={873}
+      onHelp={() => {}}
+      onExit={() => {}}
+      onSettings={() => {}}
+    />
+  )
+  expect(
+    screen.getByRole('button', { name: 'Green Stake · Active rules' })
+  ).toBeInTheDocument()
+  expect(document.querySelector('[data-tutorial="gold"]')).not.toHaveAttribute(
+    'title'
+  )
 })

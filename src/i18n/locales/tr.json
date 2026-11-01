@@ -995,7 +995,21 @@
     "feltTiles": "Oynanacak taşlar",
     "collection": "Eşyaların",
     "deadWallHint": "Tek bir taş seçin ve ölü duvardan bir taşla değiştirin. Tur başına bir kez, bedava.",
-    "turnsLabel": "Kalan hamle"
+    "turnsLabel": "Kalan hamle",
+    "emergencyTurn": {
+      "buy": "+1 hamle",
+      "label": "{{cost}} altına bir hamle daha satın al",
+      "short": "Yeterli altın yok: bir hamle daha {{cost}} altın",
+      "watchAd": "Reklam izle",
+      "watchAdLabel": "Bir hamle daha için reklam izle",
+      "adPlaying": "Reklam oynatılıyor…",
+      "adIncomplete": "Reklam erken kapatıldı, ek hamle yok.",
+      "adUnavailable": "Şu anda gösterilecek reklam yok.",
+      "simulatedAd": "Reklam (simülasyon)",
+      "adCountdown": "Ödülün {{seconds}} sn içinde hazır",
+      "adReady": "Ödül hazır",
+      "adClaim": "+1 hamle al"
+    }
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -1076,7 +1090,8 @@
       "bonus": "Ödül düzeltmesi",
       "rentals": "Kiralar",
       "omenEarned": "Alamet: {{name}}",
-      "omen": "Alamet"
+      "omen": "Alamet",
+      "stakeWithheld": "{{stake}}: bu turun {{amount}}G ödülü verilmez"
     },
     "packChoices": "{{count}} ödülden en fazla {{max}} tanesini seçin",
     "packInventoryFull": "Bu seçim için yeterli Ferman yuvası yok. Bir Ferman satarak yer açın, daha az seçin ya da paketi atlayın.",
@@ -2164,6 +2179,8 @@
     "rules": {
       "base": "Temel zorluk: ek ceza yok.",
       "noSmallRoundReward": "Küçük turlar ödül altını vermez.",
+      "bossTargets": "Patron hedefleri: {{act}}. Perde'den itibaren {{percent}} daha yüksek.",
+      "emergencyTurn": "{{act}}. Perde'den itibaren acil hamle: son hamlende altınla bir hamle daha satın al ({{act}}. Perde'de {{cost}} altın, {{nextAct}}. Perde'de {{nextCost}} altın ve böyle devam eder; aynı turda her alımda iki katı).",
       "scoreScaling": "Puan hedefleri Perde 1’de Beyaz kademeyle aynıdır; ardından her perdede artar ve Perde {{act}} itibarıyla Beyaz kademenin {{multiplier}} katına ulaşır. Masa değiştiricileri de uygulanır.",
       "redrawPenalty": "Tur başına hamle: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
@@ -2367,7 +2384,8 @@
       "play": "seçili taşlarla puan al: en fazla {{max}} taş ya da tam bir Mahjong eli.",
       "redraw": "seçtiğin taşları istediğin kadar nehre gönder ve yenilerini çek.",
       "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
-      "warning": "Hedefin altında hamlelerin biterse oyun sona erer."
+      "warning": "Hedefin altında hamlelerin biterse oyun sona erer.",
+      "emergency": "{{stake}} ve üzerinde, {{act}}. Perde'den itibaren son hamlende altınla bir hamle daha satın alabilirsin. Fiyat her Perde'de artar ve aynı turda alınan her ek hamlede iki katına çıkar."
     },
     "select": {
       "title": "Taş seçmek",

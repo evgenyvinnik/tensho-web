@@ -708,7 +708,21 @@
     "feltTiles": "낼 패",
     "collection": "보유 아이템",
     "deadWallHint": "패를 한 장만 고른 뒤 왕패 한 장과 바꿔요. 라운드당 한 번, 턴을 쓰지 않아요.",
-    "turnsLabel": "남은 턴"
+    "turnsLabel": "남은 턴",
+    "emergencyTurn": {
+      "buy": "턴 +1",
+      "label": "{{cost}}골드로 턴 하나 더 구매",
+      "short": "골드가 부족해요: 턴 추가에는 {{cost}}골드가 필요해요",
+      "watchAd": "광고 보기",
+      "watchAdLabel": "광고를 보고 턴 하나 더 받기",
+      "adPlaying": "광고 재생 중…",
+      "adIncomplete": "광고를 일찍 닫아서 추가 턴이 없습니다.",
+      "adUnavailable": "지금은 볼 수 있는 광고가 없습니다.",
+      "simulatedAd": "광고 (시뮬레이션)",
+      "adCountdown": "{{seconds}}초 후 보상을 받을 수 있습니다",
+      "adReady": "보상 준비 완료",
+      "adClaim": "턴 +1 받기"
+    }
   },
   "rounds": {
     "small": "소국",
@@ -789,7 +803,8 @@
       "bonus": "보상 조정",
       "rentals": "대여료",
       "omenEarned": "징조: {{name}}",
-      "omen": "징조"
+      "omen": "징조",
+      "stakeWithheld": "{{stake}}: 이번 라운드 보상 {{amount}}G가 지급되지 않습니다"
     },
     "packChoices": "보상 {{count}}개 중 최대 {{max}}개 선택",
     "packInventoryFull": "선택한 보상을 받을 법령 슬롯이 부족합니다. 법령을 판매하거나, 선택을 줄이거나, 팩을 건너뛰세요.",
@@ -1877,6 +1892,8 @@
     "rules": {
       "base": "기본 난도: 추가 불이익이 없습니다.",
       "noSmallRoundReward": "소형 라운드에서 보상 골드를 받지 못합니다.",
+      "bossTargets": "{{act}}막부터 보스 목표 점수가 {{percent}} 높아집니다.",
+      "emergencyTurn": "{{act}}막부터 비상 턴: 마지막 턴에 골드로 턴을 하나 더 살 수 있습니다({{act}}막 {{cost}}골드, {{nextAct}}막 {{nextCost}}골드 순으로 오르며, 같은 라운드에서 살 때마다 두 배).",
       "scoreScaling": "목표 점수는 1막에서는 백색 단계와 같고, 막마다 올라 {{act}}막부터 백색 단계의 {{multiplier}}배가 됩니다. 테이블 보정도 적용됩니다.",
       "redrawPenalty": "라운드당 턴: −{{amount}}.",
       "eternalChance": "상점 법령에 {{chance}} 확률로 영구 스티커가 붙습니다(판매 및 파괴 불가).",
@@ -2080,7 +2097,8 @@
       "play": "선택한 패로 득점합니다. 최대 {{max}}장, 또는 완성된 화료패 한 벌.",
       "redraw": "선택한 패를 원하는 만큼 버림패 더미로 보내고 새 패를 뽑습니다.",
       "p2": "턴이 떨어지기 전에 라운드 목표 점수에 도달하세요. 마지막 턴은 항상 패 내기이며, 아이템으로 턴을 쓰지 않는 무료 다시 뽑기를 얻을 수 있습니다.",
-      "warning": "목표에 못 미친 채 턴이 떨어지면 런이 끝납니다."
+      "warning": "목표에 못 미친 채 턴이 떨어지면 런이 끝납니다.",
+      "emergency": "{{stake}} 이상에서는 {{act}}막부터 마지막 턴에 골드로 턴을 하나 더 살 수 있습니다. 가격은 막마다 오르고, 같은 라운드에서 추가로 살 때마다 두 배가 됩니다."
     },
     "select": {
       "title": "패 고르기",

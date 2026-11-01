@@ -708,7 +708,21 @@
     "feltTiles": "Tuiles à jouer",
     "collection": "Vos objets",
     "deadWallHint": "Choisissez une seule tuile et échangez-la contre une du mur mort. Une fois par manche, gratuit.",
-    "turnsLabel": "Tours restants"
+    "turnsLabel": "Tours restants",
+    "emergencyTurn": {
+      "buy": "+1 tour",
+      "label": "Acheter un tour de plus pour {{cost}} or",
+      "short": "Pas assez d’or : un tour de plus coûte {{cost}}",
+      "watchAd": "Voir une pub",
+      "watchAdLabel": "Regarder une publicité pour un tour de plus",
+      "adPlaying": "Publicité en cours…",
+      "adIncomplete": "La publicité a été fermée trop tôt : pas de tour supplémentaire.",
+      "adUnavailable": "Aucune publicité disponible pour le moment.",
+      "simulatedAd": "Publicité (simulée)",
+      "adCountdown": "Votre récompense sera prête dans {{seconds}} s",
+      "adReady": "Récompense prête",
+      "adClaim": "Obtenir +1 tour"
+    }
   },
   "rounds": {
     "small": "Petite Manche",
@@ -789,7 +803,8 @@
       "bonus": "Ajustement de récompense",
       "rentals": "Locations",
       "omenEarned": "Présage : {{name}}",
-      "omen": "Présage"
+      "omen": "Présage",
+      "stakeWithheld": "{{stake}} : cette manche ne verse pas sa récompense de {{amount}}G"
     },
     "packChoices": "Choisissez jusqu’à {{max}} récompenses parmi {{count}}",
     "packInventoryFull": "Pas assez d’emplacements de Décret pour cette sélection. Vendez un Décret, choisissez-en moins ou passez le paquet.",
@@ -1877,6 +1892,8 @@
     "rules": {
       "base": "Difficulté de base : aucune pénalité supplémentaire.",
       "noSmallRoundReward": "Les petites manches ne donnent pas d’or en récompense.",
+      "bossTargets": "Objectifs du boss : {{percent}} plus élevés à partir de l’Acte {{act}}.",
+      "emergencyTurn": "Tours d’urgence dès l’Acte {{act}} : à votre dernier tour, achetez un tour de plus avec de l’or ({{cost}} or à l’Acte {{act}}, {{nextCost}} à l’Acte {{nextAct}}, et ainsi de suite ; doublé pour chaque tour acheté dans la même manche).",
       "scoreScaling": "Objectifs de score du palier : identiques au Blanc à l’Acte 1, puis en hausse à chaque acte jusqu’à ×{{multiplier}} par rapport au Blanc à partir de l’Acte {{act}}. Les modificateurs de table s’appliquent aussi.",
       "redrawPenalty": "Tours par manche : −{{amount}}.",
       "eternalChance": "Décrets en boutique : {{chance}} de chance d’être Éternels (impossibles à vendre ou détruire).",
@@ -2080,7 +2097,8 @@
       "play": "marquer les tuiles choisies : jusqu'à {{max}}, ou une main de Mahjong complète.",
       "redraw": "envoyer à la rivière autant de tuiles choisies que vous voulez et en piocher de nouvelles.",
       "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
-      "warning": "À court de tours sous l'objectif, la partie est terminée."
+      "warning": "À court de tours sous l'objectif, la partie est terminée.",
+      "emergency": "Au {{stake}} et au-delà, à partir de l’Acte {{act}}, votre dernier tour peut être prolongé : achetez un tour de plus avec de l’or. Le prix augmente à chaque Acte et double pour chaque tour supplémentaire acheté dans la même manche."
     },
     "select": {
       "title": "Sélectionner des tuiles",

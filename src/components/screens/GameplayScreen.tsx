@@ -72,6 +72,8 @@ import {
   MIN_TACTICAL_PLAY_TILES,
 } from '../../game/playRules'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
+import { useRewardedAd } from '../../hooks/useRewardedAd'
+import { SimulatedAdOverlay } from '../gameplay/SimulatedAdOverlay'
 import type { RoundType, YakuRevealState } from '../gameplay/gameplayTypes'
 import type { MandateDefinition } from '../../config/mandateDefinitions'
 
@@ -313,6 +315,37 @@ export function GameplayScreen() {
       game.clearSelection()
     } else setActionError(result.errors?.[0] ?? redrawReason ?? null)
   }, [game, selectedIds, redrawReason])
+
+  const handleBuyTurn = useCallback(() => {
+    const result = game.buyTurn()
+    setActionError(result.success ? null : (result.errors?.[0] ?? null))
+  }, [game])
+
+  // Short of Gold for the emergency Turn: offer a rewarded ad, once per Act,
+  // if ads are configured and one is ready. Each new last Turn is a new
+  // opportunity.
+  const offer = game.emergencyTurnOffer
+  const rewardedAd = useRewardedAd(
+    'emergency-turn',
+    offer?.adAvailable
+      ? `${game.currentAct}-${game.currentRound}-${game.state.handsAllowance}`
+      : null
+  )
+  const { watch: watchAd } = rewardedAd
+  const handleWatchAd = useCallback(async () => {
+    const outcome = await watchAd()
+    if (outcome === 'rewarded') {
+      const result = game.takeAdTurn()
+      setActionError(result.success ? null : (result.errors?.[0] ?? null))
+    } else
+      setActionError(
+        t(
+          outcome === 'dismissed'
+            ? 'gameplay.emergencyTurn.adIncomplete'
+            : 'gameplay.emergencyTurn.adUnavailable'
+        )
+      )
+  }, [game, watchAd, t])
 
   // REDRAW takes any number of tiles, so one tap picks every tile it can take
   // (a locked tile must be played); a second tap puts them all back.
@@ -638,6 +671,10 @@ export function GameplayScreen() {
           redrawReason={redrawReason}
           onRedraw={handleRedraw}
           onPlayHand={handlePlayHand}
+          emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
+          onBuyTurn={handleBuyTurn}
+          adTurn={tableClosed ? null : rewardedAd}
+          onWatchAd={handleWatchAd}
           willClear={
             preview !== null &&
             preview.total >= Math.max(0, game.targetScore - game.score)
@@ -647,6 +684,7 @@ export function GameplayScreen() {
 
       {/* One thing at a time: the deal, then the guide, then Decrees. */}
       <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
+      <SimulatedAdOverlay />
       <BeginnerGuide
         isOpen={showGuide && !wallDrawPending}
         onClose={() => {

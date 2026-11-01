@@ -112,6 +112,7 @@ const DEFAULT_STAKE_TIER = 1
 
 const DEFAULT_MODIFIERS: CombinedStakeModifiers = {
   noSmallRoundReward: false,
+  bossTargetMultiplier: 1,
   scoreScaling: 1.0,
   eternalChance: 0,
   redrawPenalty: 0,

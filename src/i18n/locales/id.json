@@ -916,7 +916,21 @@
     "feltTiles": "Ubin untuk dimainkan",
     "collection": "Barangmu",
     "deadWallHint": "Pilih satu ubin, lalu tukar dengan ubin dinding mati. Sekali per ronde, gratis.",
-    "turnsLabel": "Sisa giliran"
+    "turnsLabel": "Sisa giliran",
+    "emergencyTurn": {
+      "buy": "+1 giliran",
+      "label": "Beli satu giliran lagi seharga {{cost}} emas",
+      "short": "Emas tidak cukup: satu giliran lagi seharga {{cost}}",
+      "watchAd": "Tonton iklan",
+      "watchAdLabel": "Tonton iklan untuk satu giliran lagi",
+      "adPlaying": "Iklan diputar…",
+      "adIncomplete": "Iklan ditutup terlalu cepat, jadi tidak ada giliran tambahan.",
+      "adUnavailable": "Tidak ada iklan yang tersedia saat ini.",
+      "simulatedAd": "Iklan (simulasi)",
+      "adCountdown": "Hadiahmu siap dalam {{seconds}} dtk",
+      "adReady": "Hadiah siap",
+      "adClaim": "Ambil +1 giliran"
+    }
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -997,7 +1011,8 @@
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
       "omenEarned": "Pertanda: {{name}}",
-      "omen": "Pertanda"
+      "omen": "Pertanda",
+      "stakeWithheld": "{{stake}}: hadiah {{amount}}G ronde ini ditahan"
     },
     "packChoices": "Pilih hingga {{max}} dari {{count}} hadiah",
     "packInventoryFull": "Slot Dekrit tidak cukup untuk pilihan ini. Jual Dekrit, pilih lebih sedikit, atau lewati paket.",
@@ -2085,6 +2100,8 @@
     "rules": {
       "base": "Kesulitan dasar: tanpa penalti tambahan.",
       "noSmallRoundReward": "Ronde Kecil tidak memberi hadiah emas.",
+      "bossTargets": "Target bos: {{percent}} lebih tinggi mulai Babak {{act}}.",
+      "emergencyTurn": "Giliran darurat mulai Babak {{act}}: di giliran terakhir, beli satu giliran lagi dengan emas ({{cost}} emas di Babak {{act}}, {{nextCost}} di Babak {{nextAct}}, dan seterusnya; berlipat dua untuk tiap pembelian di ronde yang sama).",
       "scoreScaling": "Target skor tingkat ini: sama dengan Putih di Babak 1, lalu naik setiap babak hingga ×{{multiplier}} dibanding Putih mulai Babak {{act}}. Pengubah meja tetap berlaku.",
       "redrawPenalty": "Giliran per ronde: −{{amount}}.",
       "eternalChance": "Dekrit toko: peluang {{chance}} mendapat Abadi (tidak dapat dijual atau dihancurkan).",
@@ -2288,7 +2305,8 @@
       "play": "cetak poin dari ubin terpilih: hingga {{max}}, atau satu tangan Mahjong lengkap.",
       "redraw": "kirim ubin terpilih sebanyak apa pun ke sungai dan ambil yang baru.",
       "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
-      "warning": "Jika Giliran habis di bawah target, permainan berakhir."
+      "warning": "Jika Giliran habis di bawah target, permainan berakhir.",
+      "emergency": "Di {{stake}} ke atas, mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
     },
     "select": {
       "title": "Memilih ubin",

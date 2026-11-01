@@ -704,7 +704,21 @@
     "feltTiles": "Tiles to play",
     "collection": "Your items",
     "deadWallHint": "Select exactly one tile, then swap it for a Dead Wall tile. Once per round, free.",
-    "turnsLabel": "Turns left"
+    "turnsLabel": "Turns left",
+    "emergencyTurn": {
+      "buy": "+1 Turn",
+      "label": "Buy one more Turn for {{cost}} Gold",
+      "short": "Not enough Gold: one more Turn costs {{cost}}",
+      "watchAd": "Watch ad",
+      "watchAdLabel": "Watch an ad for one more Turn",
+      "adPlaying": "Ad playing…",
+      "adIncomplete": "The ad was closed early, so no extra Turn.",
+      "adUnavailable": "No ad is available right now.",
+      "simulatedAd": "Advertisement (simulated)",
+      "adCountdown": "Your reward is ready in {{seconds}} s",
+      "adReady": "Reward ready",
+      "adClaim": "Claim +1 Turn"
+    }
   },
   "rounds": {
     "small": "Small Round",
@@ -785,7 +799,8 @@
       "bonus": "Reward adjustment",
       "rentals": "Rentals",
       "omenEarned": "Omen: {{name}}",
-      "omen": "Omen"
+      "omen": "Omen",
+      "stakeWithheld": "{{stake}}: this round's {{amount}}G reward is withheld"
     },
     "packChoices": "Choose up to {{max}} from {{count}} rewards",
     "packInventoryFull": "Not enough Decree slots for this selection. Sell a Decree, choose fewer, or skip the pack.",
@@ -1873,6 +1888,8 @@
     "rules": {
       "base": "Base difficulty: no added penalties.",
       "noSmallRoundReward": "No reward gold from Small Rounds.",
+      "bossTargets": "Boss targets: {{percent}} higher from Act {{act}}.",
+      "emergencyTurn": "Emergency Turns from Act {{act}}: on your last Turn, buy one more Turn with Gold ({{cost}}G in Act {{act}}, {{nextCost}}G in Act {{nextAct}}, and so on; doubling for each one bought in the same round).",
       "scoreScaling": "Stake score targets: same as White in Act 1, then rising each Act to ×{{multiplier}} compared with White from Act {{act}} on. Table modifiers still apply.",
       "redrawPenalty": "Turns each round: −{{amount}}.",
       "eternalChance": "Shop Decrees: {{chance}} chance of Eternal (cannot be sold or destroyed).",
@@ -2076,7 +2093,8 @@
       "play": "score the selected tiles: up to {{max}}, or a whole Mahjong hand.",
       "redraw": "send any number of selected tiles to the river and draw new ones.",
       "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
-      "warning": "Run out of Turns below the target and the run is over."
+      "warning": "Run out of Turns below the target and the run is over.",
+      "emergency": "On {{stake}} and higher, from Act {{act}}, your last Turn can be extended: buy one more Turn with Gold. The price rises each Act and doubles for each extra Turn bought in the same round."
     },
     "select": {
       "title": "Selecting Tiles",

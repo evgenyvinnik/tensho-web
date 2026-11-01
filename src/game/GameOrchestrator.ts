@@ -131,9 +131,13 @@ import {
 } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
+  AD_TURNS_PER_ACT,
+  EMERGENCY_TURN_FIRST_ACT,
+  EMERGENCY_TURN_FIRST_STAKE,
   MAX_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
+  emergencyTurnCost,
 } from './playRules'
 import { createSeededRandom, runRandom, RunRandom } from './RunRandom'
 import { captureClassicState, restoreClassicState } from './ClassicRunState'
@@ -178,6 +182,11 @@ export interface RoundCashOutSummary {
   omenId?: string | null
   /** Gold the swift-clear Omen paid at once, included in netGoldChange. */
   omenGold?: number
+  /**
+   * Clear reward the Stake withheld (Red Stake's Small round), not paid and
+   * not in netGoldChange. Absent when nothing was withheld.
+   */
+  stakeWithheldReward?: number
   /** Copies of that Omen earned: more than one when Double Omen was held. */
   omenCopies?: number
   /** Turns left unspent when the round was cleared. */
@@ -240,6 +249,16 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /**
+   * Emergency Turns bought with Gold this round; each doubles the next one's
+   * price. Missing in older saves: none bought.
+   */
+  emergencyTurnsBoughtThisRound?: number
+  /**
+   * Turns taken for a watched rewarded ad in the current Act, with the Act
+   * they belong to. Missing in older saves: none taken.
+   */
+  adTurns?: { actNumber: number; count: number }
   /** Missing in legacy saves: unknown eligibility until the next round. */
   honorDiscardsThisRound?: number
   /**
@@ -754,6 +773,7 @@ export class GameOrchestrator {
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
 
     this.state.handsRemaining = Math.max(
@@ -1388,7 +1408,11 @@ export class GameOrchestrator {
     const validation =
       action.type === 'play'
         ? this.validatePlaySelection(action.tileIds)
-        : action.type === 'useSeal' ||
+        : action.type === 'buyTurn'
+          ? this.validateEmergencyTurn()
+          : action.type === 'adTurn'
+            ? this.validateAdTurn()
+          : action.type === 'useSeal' ||
             action.type === 'useScript' ||
             action.type === 'useOrb'
           ? this.validateConsumableAction(action)
@@ -1475,6 +1499,12 @@ export class GameOrchestrator {
       case 'redraw':
         return this.executeRedraw(action.tileIds, effects)
 
+      case 'buyTurn':
+        return this.executeBuyTurn(effects)
+
+      case 'adTurn':
+        return this.executeAdTurn(effects)
+
       case 'useSeal':
         return this.executeUseSeal(action.sealId, action.targets, effects)
 
@@ -1487,6 +1517,120 @@ export class GameOrchestrator {
       default:
         return { success: false, effects, errors: ['Unknown action type'] }
     }
+  }
+
+  /**
+   * The emergency Turn on offer right now, or null when there is none: it is
+   * sold only on Red Stake and above, on the last Turn of a round, from Act 2
+   * on. `affordable` is false when the player is short of Gold, so the offer
+   * can still be shown.
+   */
+  getEmergencyTurnOffer(): {
+    cost: number
+    affordable: boolean
+    /** Short of Gold, the Turn may be taken for a rewarded ad instead. */
+    adAvailable: boolean
+  } | null {
+    if (!this.state.isRunActive || this.state.phase !== 'gameplay') return null
+    if (this.state.stake < EMERGENCY_TURN_FIRST_STAKE) return null
+    if (this.state.currentAct < EMERGENCY_TURN_FIRST_ACT) return null
+    if (this.state.handsRemaining !== 1) return null
+    if (this.state.score >= this.state.targetScore) return null
+    const cost = emergencyTurnCost(
+      this.state.currentAct,
+      this.state.emergencyTurnsBoughtThisRound ?? 0
+    )
+    const affordable = this.state.gold >= cost
+    const adTurnsThisAct =
+      this.state.adTurns?.actNumber === this.state.currentAct
+        ? this.state.adTurns.count
+        : 0
+    return {
+      cost,
+      affordable,
+      adAvailable: !affordable && adTurnsThisAct < AD_TURNS_PER_ACT,
+    }
+  }
+
+  private validateAdTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer?.adAvailable)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn for an ad is available only when Gold is short, ${AD_TURNS_PER_ACT} per Act`,
+        ],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** One more Turn this round, for a rewarded ad the player watched. */
+  private executeAdTurn(effects: Effect[]): ActionResult {
+    const act = this.state.currentAct
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.adTurns = {
+      actNumber: act,
+      count:
+        (this.state.adTurns?.actNumber === act
+          ? this.state.adTurns.count
+          : 0) + 1,
+    }
+    effects.push({
+      type: 'round_state_changed',
+      description: 'Emergency Turn granted for a rewarded ad',
+      handsRemaining: this.state.handsRemaining,
+      discardsRemaining: this.state.discardsRemaining,
+      redrawsRemaining: this.state.redrawsRemaining,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold: this.state.gold,
+      newGold: this.state.gold,
+      delta: 0,
+      reason: 'Emergency Turn (ad)',
+    })
+    return { success: true, effects }
+  }
+
+  private validateEmergencyTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn can be bought only on Stake ${EMERGENCY_TURN_FIRST_STAKE} or higher, on the last Turn of a round, from Act ${EMERGENCY_TURN_FIRST_ACT}`,
+        ],
+      }
+    if (!offer.affordable)
+      return {
+        isValid: false,
+        errors: [`An extra Turn costs ${offer.cost} Gold`],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** Spend Gold for one more Turn this round. */
+  private executeBuyTurn(effects: Effect[]): ActionResult {
+    const { cost } = this.getEmergencyTurnOffer()!
+    const previousGold = this.state.gold
+    this.state.gold -= cost
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.emergencyTurnsBoughtThisRound =
+      (this.state.emergencyTurnsBoughtThisRound ?? 0) + 1
+    effects.push({
+      type: 'gold_changed',
+      description: `Emergency Turn bought for ${cost} Gold`,
+      delta: -cost,
+      newTotal: this.state.gold,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold,
+      newGold: this.state.gold,
+      delta: -cost,
+      reason: 'Emergency Turn',
+    })
+    return { success: true, effects }
   }
 
   /**
@@ -4102,14 +4246,14 @@ export class GameOrchestrator {
 
     const roundState = completedRound
     let goldReward = 0
+    let stakeWithheldReward = 0
 
     if (roundState) {
       switch (roundState.roundType) {
         case 'Small':
-          goldReward = this.state.roundManager.getStakeModifiers()
-            .noSmallRoundReward
-            ? 0
-            : 3
+          if (this.state.roundManager.getStakeModifiers().noSmallRoundReward)
+            stakeWithheldReward = 3
+          else goldReward = 3
           break
         case 'Large':
           goldReward = 5
@@ -4192,6 +4336,7 @@ export class GameOrchestrator {
       omenGold,
       omenCopies: swiftOmen?.omen ? swiftOmen.copies : 0,
       spareTurns: this.state.handsRemaining,
+      ...(stakeWithheldReward ? { stakeWithheldReward } : {}),
     }
 
     eventBus.emit('roundEnd', {
@@ -5109,7 +5254,11 @@ export class GameOrchestrator {
    */
   getAvailableActions(): PlayerAction['type'][] {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return []
-    return this.actionProcessor.getAvailableActions(this.createStateSnapshot())
+    const available = this.actionProcessor.getAvailableActions(
+      this.createStateSnapshot()
+    )
+    if (this.getEmergencyTurnOffer()?.affordable) available.push('buyTurn')
+    return available
   }
 
   /**
