@@ -34,7 +34,8 @@ for (const language of [
     const steps = page.locator('.pavilion-codex-steps')
     for (const [section, title, key, count] of [
       ['flowers', copy.flora.flowers, 'empowerment', 4],
-      ['awakening', copy.flora.mutations.awakened, 'awakeningLifecycle', 4],
+      // The rebloom illustration, then the four awakened portraits.
+      ['awakening', copy.flora.mutations.awakened, 'awakeningLifecycle', 5],
       ['seasons', copy.flora.seasons, 'distinction', 4],
       ['corruption', copy.flora.details.corruptedName, 'corruption', 4],
       [

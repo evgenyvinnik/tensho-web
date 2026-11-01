@@ -546,7 +546,15 @@
     "rankNumbersDesc": "Affiche un petit 1–9 sur les tuiles numérotées et une lettre sur les Dragons, le temps d’apprendre les faces.",
     "keyboardShortcuts": "Raccourcis clavier",
     "keyboardShortcutsDesc": "À la table, P joue votre main, R repioche, A sélectionne toutes les tuiles et Échap les remet en place. Les flèches passent d’une tuile à l’autre.",
-    "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera."
+    "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera.",
+    "credits": {
+      "title": "Crédits",
+      "soundEffects": "Effets sonores",
+      "interface": "Sons des boutons et des menus",
+      "casino": "Sons des tuiles, jetons, or et paquets de cartes",
+      "modified": "Découpé en sons individuels, nettoyé et égalisé en volume pour Tensho.",
+      "original": "Tous les autres effets sonores, dont le koto, les cloches et le taiko, sont des sons originaux synthétisés pour Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Acte {{current}} sur {{total}}",
@@ -620,7 +628,7 @@
     "beginnerGuideTitle": "Le mah-jong en une minute",
     "beginnerGuideIntro": "Vous n’avez pas encore besoin de connaître une main complète. Dans Tensho, commencez par repérer une petite figure et jouez-la pour marquer.",
     "beginnerFamiliesTitle": "Lire les familles de tuiles",
-    "beginnerFamiliesHelp": "Les Caractères, Cercles et Bambous vont de 1 à 9. Les Vents et Dragons sont des Honneurs : associez-les, mais ne les mettez jamais dans une suite.",
+    "beginnerFamiliesHelp": "Les Caractères, Cercles et Bambous vont de 1 à 9. Les Vents et Dragons sont des Honneurs : associez-les, mais ne les mettez jamais dans une séquence.",
     "beginnerShapesTitle": "Figures à repérer",
     "beginnerPairHelp": "Deux tuiles identiques. La figure la plus facile à reconnaître.",
     "beginnerSequenceHelp": "Trois nombres consécutifs de la même famille.",
@@ -636,7 +644,7 @@
     "beginnerPatternReady": "Combinaison prête : {{pattern}}",
     "beginnerTapGlowing": "Touchez les {{count}} tuiles lumineuses ci-dessous. Elles forment déjà une figure qui rapporte.",
     "beginnerRedrawTitle": "Renouveler les tuiles isolées",
-    "beginnerRedrawHelp": "Touchez les tuiles isolées lumineuses, puis Repiocher pour chercher une Paire, une Suite ou un Brelan.",
+    "beginnerRedrawHelp": "Touchez les tuiles isolées lumineuses, puis Repiocher pour chercher une Paire, une Séquence ou un Brelan.",
     "beginnerRedrawReady": "Prêt : appuyez sur Repiocher pour remplacer ces tuiles isolées.",
     "beginnerPatternComplete": "Superbe : cette {{pattern}} rapporte +{{points}} points de figure. Vérifiez la prévision, puis jouez.",
     "beginnerSelectedProgress": "{{current}} tuiles lumineuses préparées sur {{total}}",
@@ -1113,7 +1121,7 @@
         "description": "+80 Points si le coup contient au moins 3 séquences"
       },
       "decree-run-master": {
-        "name": "Maître des Suites",
+        "name": "Maître des Séquences",
         "description": "+6 Mult par séquence jouée"
       },
       "decree-triple-threat": {
@@ -1612,10 +1620,10 @@
       "locked": "Réunissez les quatre types de Fleurs en une partie pour débloquer la refloraison. Puis piochez à nouveau une Fleur possédée pour l’éveiller.",
       "ready": "Refloraison débloquée. Piocher une Fleur possédée l’éveille pour cette partie.",
       "awakened": "Éveillée",
-      "plum": "Une fois par coup, deux suites peuvent partager une tuile. Une main complète peut utiliser 13 tuiles.",
+      "plum": "Une fois par coup, deux séquences peuvent partager une tuile. Une main complète peut utiliser 13 tuiles.",
       "orchid": "Les Dragons comptent comme deux Honneurs pour les Fleurs et les Décrets. Ni les tuiles ni les groupes de Yaku ne sont dupliqués.",
       "chrysanthemum": "Les coups fermés gagnent ×{{factor}} par groupe à la place du bonus ordinaire du Chrysanthème. Les paires ne comptent pas.",
-      "bamboo": "Un 1 ou un 9 peut ancrer deux rangs consécutifs dans une suite. Les faces et les points des tuiles restent inchangés."
+      "bamboo": "Un 1 ou un 9 peut ancrer deux rangs consécutifs dans une séquence. Les faces et les points des tuiles restent inchangés."
     },
     "details": {
       "plumRecovery": "Tuiles récupérées dans la rivière par le Prunier : {{count}}. Ce ne sont pas des copies.",
@@ -1633,7 +1641,7 @@
       "summer": "Score ×1,3. Met de côté 20% du mur vivant restant pour cette manche (nombre de tuiles conservées arrondi à l’entier inférieur).",
       "summerSheltered": "Score ×1,3. Protection du Bambou acquise : Été ne peut plus réduire le mur pendant cette manche.",
       "autumn": "Multiplicateur de yaku +20 %. Chaque Automne normal pioché donne 1 REPIOCHE gratuite cette manche.",
-      "winter": "Les suites de la même famille peuvent sauter un rang (1–2–4 ou 1–3–4). Score ×0,75.",
+      "winter": "Les séquences de la même famille peuvent sauter un rang (1–2–4 ou 1–3–4). Score ×0,75.",
       "drought": "Neutralise les bonus de score des fleurs non protégées.",
       "frostbite": "Chaque Gelure divise à nouveau par deux les gains de Points, de Mult, d’or et de décompte supplémentaire des Décrets. Les effets propres des tuiles, permissions, capacités, budgets d’actions et coûts restent inchangés.",
       "decay": "−10 points par REPIOCHE cette manche, jamais en dessous de zéro.",
@@ -1703,8 +1711,8 @@
     "flowerName": "Fleur {{name}}",
     "seasonName": "Saison {{name}}",
     "stoneName": "Tuile de Pierre",
-    "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une suite.",
-    "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des suites numériques.",
+    "numberedRule": "Associez des tuiles identiques pour former une paire ou un brelan. Trois nombres consécutifs de la même famille forment une séquence.",
+    "honorRule": "Les honneurs forment des paires ou des brelans identiques, pas des séquences numériques.",
     "basePoints": "{{points}} points de base avant les bonus de groupe, réductions et autres effets.",
     "dragonMult": "+{{mult}} Mult, ou +{{groupMult}} quand elle marque dans un groupe.",
     "windGroup": "{{points}} quand elle marque dans un groupe.",
@@ -1974,20 +1982,20 @@
       "p2": "Les Vents sont des <1>tuiles d'Honneur</1> et valent <4>50 points</4> chacune, 100 dans un groupe — la valeur de base la plus élevée !"
     },
     "dragon_tiles": {
-      "note1": "Les Vents ne peuvent pas former de suites. Uniquement des brelans ou des paires.",
+      "note1": "Les Vents ne peuvent pas former de séquences. Uniquement des brelans ou des paires.",
       "p1": "Il existe <1>trois tuiles de Dragon</1> :",
       "p2": "<0>白 (Dragon Blanc / Haku)</0> — Une tuile vierge ou encadrée, symbole de pureté ou de vide",
       "p3": "<0>發 (Dragon Vert / Hatsu)</0> — Le caractère 發 en vert, signifiant « prospérité » ou « émettre »",
       "p4": "<0>中 (Dragon Rouge / Chun)</0> — Le caractère 中 en rouge, signifiant « centre »",
-      "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon qui marque ajoute +2 au Mult, +4 dans un groupe. Ils ne peuvent pas former de suites."
+      "p5": "Les Dragons sont des <1>tuiles d'Honneur</1> valant <4>15 points</4>, et chaque Dragon qui marque ajoute +2 au Mult, +4 dans un groupe. Ils ne peuvent pas former de séquences."
     },
     "bonus_tiles": {
       "p1": "Les <0>tuiles bonus</0> sont des tuiles supplémentaires qui ne font pas partie de votre main :"
     },
     "sequences": {
       "note1": "Quand vous piochez une tuile bonus, elle est aussitôt révélée et vous piochez une tuile de remplacement. Fleurs et Saisons offrent des bonus et des effets évolutifs !",
-      "p1": "Une <1>suite</1>, ce sont <4>3 tuiles consécutives de la même famille</4>.",
-      "p2": "Exemples de suites valides :"
+      "p1": "Une <1>séquence</1>, ce sont <4>3 tuiles consécutives de la même famille</4>.",
+      "p2": "Exemples de séquences valides :"
     },
     "melds_overview": {
       "p1": "Une <1>combinaison</1> (aussi appelée « groupe ») est un assemblage précis de tuiles :",
@@ -2001,9 +2009,9 @@
       "p2": "Exemples de brelans valides :"
     },
     "quads": {
-      "li1": "Les suites doivent être de la <1>même famille</1>",
+      "li1": "Les séquences doivent être de la <1>même famille</1>",
       "li2": "Elles <2>ne peuvent pas boucler</2> (pas de 9-1-2)",
-      "li3": "Les tuiles d'Honneur <2>ne peuvent pas former de suites</2>",
+      "li3": "Les tuiles d'Honneur <2>ne peuvent pas former de séquences</2>",
       "p1": "Un <1>carré</1> (aussi appelé « kong » ou « kan »), ce sont <4>4 tuiles identiques</4>.",
       "p2": "Les carrés sont la combinaison la plus rare : dans le mur standard, ils utilisent les 4 exemplaires d’une tuile !"
     },
@@ -2023,9 +2031,9 @@
     },
     "gameplay_overview": {
       "note1": "La paire vaut <1>+15 points</1>. N'importe quelle tuile peut former une paire : numérotée, vent ou dragon.",
-      "li1": "1-2-3 Cercles (suite)",
+      "li1": "1-2-3 Cercles (séquence)",
       "li2": "5-5-5 Bambous (brelan)",
-      "li3": "6-7-8 Caractères (suite)",
+      "li3": "6-7-8 Caractères (séquence)",
       "li4": "Est-Est-Est (brelan)",
       "li5": "Paire de Dragon Rouge"
     },
@@ -3112,6 +3120,10 @@
       "name": "Suite de cinq",
       "explain": "Cinq nombres qui se suivent, même famille."
     },
+    "straight6": {
+      "name": "Suite de six",
+      "explain": "Six nombres qui se suivent, même famille."
+    },
     "two_pairs": {
       "name": "Double paire",
       "explain": "Deux paires différentes en un coup."
@@ -3122,7 +3134,7 @@
     },
     "two_sequences": {
       "name": "Deux séquences",
-      "explain": "Deux séquences en un coup (six tuiles)."
+      "explain": "Deux séquences en un coup. Une suite exige une seule famille et chaque nombre une fois : une série qui change de famille ou répète un nombre (2-3-3-4-4-5) compte comme deux séquences."
     },
     "two_triplets": {
       "name": "Deux brelans",
@@ -3181,7 +3193,7 @@
     "secretTitle": "Mains secrètes",
     "secretFound": "Main secrète découverte",
     "secretInGuide": "Désormais dans le guide ?.",
-    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
+    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2, les suites de six +3. Si des tuiles peuvent se grouper de plusieurs façons, le coup retient celle qui rapporte le plus. Chaque tuile compte une fois ; seul un Prunier éveillé permet à deux séquences d’en partager une, affichées Séquence ×2. Un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",
@@ -3231,7 +3243,7 @@
     },
     "Ittsu": {
       "name": "Suites",
-      "covers": "Suite de quatre, Suite de cinq ou Suite + Paire (nombres consécutifs d’une même famille), et Suite 1–9 : une main complète contenant 1-2-3, 4-5-6 et 7-8-9 d’une même famille."
+      "covers": "Suite de quatre, Suite de cinq, Suite de six ou Suite + Paire (nombres consécutifs d’une même famille), et Suite 1–9 : une main complète contenant 1-2-3, 4-5-6 et 7-8-9 d’une même famille."
     },
     "Toitoi": {
       "name": "Brelans et carrés",

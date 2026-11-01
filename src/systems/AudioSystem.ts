@@ -28,6 +28,8 @@ interface Voice {
 }
 const clamp = (n: number) =>
   Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : 0
+/** The track the previous launch opened with, so the next one opens differently. */
+export const LAUNCH_TRACK_KEY = 'tensho-launch-track'
 
 export class AudioSystem {
   private state = {
@@ -45,6 +47,7 @@ export class AudioSystem {
   }
   private unlocked = false
   private appInactive = false
+  private pageHidden = false
   private windowBlurred = false
   private musicWanted = false
   private music: HTMLAudioElement[] = []
@@ -54,6 +57,7 @@ export class AudioSystem {
   private frame: number | null = null
   private fade = 1
   private queue: string[] = []
+  private launchChosen = false
   private pools = new Map<SoundEffectId, Voice[]>()
   private lastPlayed = new Map<SoundEffectId, number>()
   private unsubscribeEvents: (() => void)[] = []
@@ -89,6 +93,10 @@ export class AudioSystem {
     document.addEventListener('visibilitychange', this.onVisibility)
     document.addEventListener('appinactive', this.onAppActivity)
     document.addEventListener('appactive', this.onAppActivity)
+    // Safari can hide a page (back-forward cache, home-screen app switch)
+    // without a visibilitychange; pagehide/pageshow cover those exits.
+    window.addEventListener('pagehide', this.onPageHide)
+    window.addEventListener('pageshow', this.onPageShow)
     // The iOS app reports lock and background itself, through appinactive.
     if (!IS_NATIVE_APP) {
       window.addEventListener('blur', this.onWindowFocus)
@@ -133,9 +141,12 @@ export class AudioSystem {
     document.removeEventListener('visibilitychange', this.onVisibility)
     document.removeEventListener('appinactive', this.onAppActivity)
     document.removeEventListener('appactive', this.onAppActivity)
+    window.removeEventListener('pagehide', this.onPageHide)
+    window.removeEventListener('pageshow', this.onPageShow)
     window.removeEventListener('blur', this.onWindowFocus)
     window.removeEventListener('focus', this.onWindowFocus)
     this.appInactive = false
+    this.pageHidden = false
     this.windowBlurred = false
     this.state.isInitialized = false
     this.notify()
@@ -152,6 +163,15 @@ export class AudioSystem {
   private createVoice(config: SoundEffectConfig): Voice {
     const element = new Audio(config.path)
     element.preload = config.preload ? 'auto' : 'none'
+    // Pitch variation must change pitch, not time-stretch a 40 ms click.
+    const media = element as HTMLAudioElement & {
+      preservesPitch?: boolean
+      webkitPreservesPitch?: boolean
+      mozPreservesPitch?: boolean
+    }
+    media.preservesPitch = false
+    media.webkitPreservesPitch = false
+    media.mozPreservesPitch = false
     const voice: Voice = {
       element,
       active: false,
@@ -272,10 +292,9 @@ export class AudioSystem {
     this.fade = 1
     this.music[1 - this.active]?.pause()
   }
-  /** Each element plays at its own song's level, so a crossfade never jumps. */
-  private musicGain(audio: HTMLAudioElement) {
+  private musicGain() {
     const track = MUSIC_CONFIG.find(
-      (track) => track.path === audio.getAttribute('src')
+      (track) => track.path === this.state.currentTrack
     )
     return this.state.musicMuted || !this.state.isTabVisible
       ? 0
@@ -286,14 +305,13 @@ export class AudioSystem {
         )
   }
   private updateMusicVolume() {
-    const current = this.music[this.active]
-    const other = this.music[1 - this.active]
-    if (current)
-      current.volume =
-        this.musicGain(current) * (this.state.isCrossfading ? 1 - this.fade : 1)
-    if (other)
-      other.volume =
-        this.musicGain(other) * (this.state.isCrossfading ? this.fade : 0)
+    const gain = this.musicGain()
+    if (this.music[this.active])
+      this.music[this.active].volume =
+        gain * (this.state.isCrossfading ? 1 - this.fade : 1)
+    if (this.music[1 - this.active])
+      this.music[1 - this.active].volume =
+        gain * (this.state.isCrossfading ? this.fade : 0)
   }
   playMusic(context: MusicContext) {
     if (
@@ -335,8 +353,25 @@ export class AudioSystem {
   nextTrack() {
     if (!this.canPlayMusic()) return
     if (!this.queue.length) this.refillQueue()
+    if (!this.launchChosen) this.chooseLaunchTrack()
     const path = this.queue.shift()
     if (path) this.startTrack(path)
+  }
+  /**
+   * The first track of a launch is never the one the previous launch opened
+   * with. Decided at first playback, so the order of mount effects is moot.
+   */
+  private chooseLaunchTrack() {
+    if (!this.queue.length) return
+    this.launchChosen = true
+    try {
+      const previous = localStorage.getItem(LAUNCH_TRACK_KEY)
+      if (this.queue.length > 1 && this.queue[0] === previous)
+        this.queue.push(this.queue.shift()!)
+      localStorage.setItem(LAUNCH_TRACK_KEY, this.queue[0])
+    } catch {
+      // Private mode or blocked storage: the launch is merely random.
+    }
   }
   private startTrack(path: string) {
     this.cancelFade()
@@ -349,11 +384,18 @@ export class AudioSystem {
     this.pendingMusic = true
     incoming.src = path
     incoming.currentTime = 0
-    incoming.volume = wasPlaying ? 0 : this.musicGain(incoming)
+    incoming.volume = wasPlaying ? 0 : this.musicGain()
     void incoming
       .play()
       .then(() => {
-        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        // A play() that resolves after the page was hidden or muted must not
+        // leave music running in the background.
+        if (!this.canPlayMusic()) {
+          incoming.pause()
+          if (epoch === this.epoch) this.pendingMusic = false
+          return
+        }
+        if (epoch !== this.epoch) return
         this.pendingMusic = false
         this.state.isPlaying = true
         this.state.currentTrack = path
@@ -416,7 +458,12 @@ export class AudioSystem {
     void audio
       .play()
       .then(() => {
-        if (epoch !== this.epoch || !this.canPlayMusic()) return
+        if (!this.canPlayMusic()) {
+          audio.pause()
+          if (epoch === this.epoch) this.pendingMusic = false
+          return
+        }
+        if (epoch !== this.epoch) return
         this.pendingMusic = false
         this.state.isPlaying = true
         this.notify()
@@ -447,15 +494,25 @@ export class AudioSystem {
     this.appInactive = event.type === 'appinactive'
     this.onVisibility()
   }
+  private onPageHide = () => {
+    this.pageHidden = true
+    this.onVisibility()
+  }
+  private onPageShow = () => {
+    this.pageHidden = false
+    this.onVisibility()
+  }
   /** Another window or app in front leaves the page visible but not in use. */
   private onWindowFocus = (event: Event) => {
     this.windowBlurred = event.type === 'blur'
     this.onVisibility()
   }
+  /** A hidden page is silent; showing it again resumes, never replays effects. */
   private onVisibility = () => {
     const visible =
       document.visibilityState !== 'hidden' &&
       !this.appInactive &&
+      !this.pageHidden &&
       !this.windowBlurred
     if (visible === this.state.isTabVisible) return
     this.state.isTabVisible = visible

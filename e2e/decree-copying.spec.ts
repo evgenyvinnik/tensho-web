@@ -77,7 +77,11 @@ for (const [language, copy] of [
       // startNewRun queues its starting Decrees for a reveal over the shop.
       await clearReveals(page)
       const card = offerCard(page, offerInfo.id)
-      await expect(card).toContainText(copy.decrees.items[id].name)
+      // The card shows the art and price; its name is in the label.
+      const name = copy.decrees.items[id].name
+      await expect(card).toHaveAccessibleName(
+        new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      )
       await buyOffer(page, offerInfo.id)
       await expect(card).toHaveCount(0)
       // The bought Decree is revealed over the shop.

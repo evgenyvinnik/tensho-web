@@ -80,11 +80,12 @@ const readSave = (page, key) =>
 const act = async (locator, mobile) =>
   mobile ? locator.tap() : locator.click()
 
-// The live release now introduces starting Decrees and drawn bonuses. Complete
-// their real UI before manipulating the rack; never click through an overlay.
+// A run opens on starting Decrees and drawn bonuses, and a swift clear reveals
+// its Omen as the Tea House opens. Complete their real UI before going on;
+// never click through an overlay.
 async function settleReveals(page, mobile) {
   const reveals = page.locator(
-    '[data-wall-draw], [data-decree-reveal], [data-orb-reveal]'
+    '[data-wall-draw], [data-decree-reveal], [data-orb-reveal], [data-omen-reveal]'
   )
   for (let guard = 0; guard < 24; guard++) {
     const visible = await reveals
@@ -259,6 +260,7 @@ try {
         // the old durable save must still remain untouched until recovery.
         const advancedFromShop = new URL(page.url()).pathname.endsWith('/shop')
         if (advancedFromShop) {
+          await settleReveals(page, mobile)
           await act(page.locator('[data-shop-continue]'), mobile)
           await settleReveals(page, mobile)
         }
@@ -374,56 +376,26 @@ try {
         ).toBeVisible()
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-        // The live baseline predates Mouth/Eye/Ox pattern-ID histories. This
-        // Act-1 fixture has no lock or history; require those exact empty
-        // legacy values before admitting their documented migration.
-        const resumedSnapshot = structuredClone(durable.snapshot)
-        const mandate = resumedSnapshot.state.mandateEffectSystem
-        if (Object.hasOwn(mandate, 'firstYakuType')) {
-          assert.equal(mandate.firstYakuType, null)
-          assert.ok(!Object.hasOwn(mandate, 'lockedPatternId'))
-          delete mandate.firstYakuType
-          mandate.lockedPatternId = null
-        }
-        if (Object.hasOwn(mandate, 'scoredYakuIds')) {
-          assert.deepEqual(mandate.scoredYakuIds, [])
-          assert.ok(!Object.hasOwn(mandate, 'playedPatternIds'))
-          delete mandate.scoredYakuIds
-          mandate.playedPatternIds = []
-        }
-        if (Object.hasOwn(resumedSnapshot.state, 'yakuPlayCounts')) {
-          assert.deepEqual(resumedSnapshot.state.yakuPlayCounts, [])
-          assert.ok(!Object.hasOwn(resumedSnapshot.state, 'patternPlayCounts'))
-          delete resumedSnapshot.state.yakuPlayCounts
-          resumedSnapshot.state.patternPlayCounts = []
-        }
-        // Catalog text is refreshed on load. Admit only the two reviewed
-        // terminology changes; effects, ownership and runtime fields stay exact.
-        for (const decree of resumedSnapshot.state.decreeSystem.ownedDecrees) {
-          if (
-            decree.id === 'tanyao_dispensation' &&
-            decree.name === 'Tanyao Dispensation'
-          ) {
-            assert.equal(
-              decree.description,
-              'Terminal tiles (1s and 9s) are allowed in Tanyao hands.'
-            )
-            decree.name = 'Simples Dispensation'
-            decree.description =
-              'Terminal tiles (1s and 9s) are allowed in All Simples hands; Honors still are not.'
-          }
-          if (
-            decree.id === 'yakuman_succession' &&
-            decree.description ===
-              'While holding at least 2 Flowers, Honitsu, Chinitsu, Ryanpeikou, Junchan and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
-          ) {
-            decree.description =
-              'While holding at least 2 Flowers, Half Flush, Full Flush, Twice Pure Double Sequence, Pure Outside Hand and Seven Pairs ascend to Yakuman (×4 each). Mandate-lowered patterns cannot ascend. Copies do not stack.'
-          }
-        }
+        // Loading a save re-reads every saved item from the catalog, so an
+        // item's name and description follow the new release. Effects,
+        // ownership and runtime fields stay exact.
+        const withoutCatalogText = (value) =>
+          Array.isArray(value)
+            ? value.map(withoutCatalogText)
+            : value && typeof value === 'object'
+              ? Object.fromEntries(
+                  Object.entries(value)
+                    .filter(
+                      ([key]) =>
+                        typeof value.id !== 'string' ||
+                        (key !== 'name' && key !== 'description')
+                    )
+                    .map(([key, child]) => [key, withoutCatalogText(child)])
+                )
+              : value
         assert.deepEqual(
-          (await readSave(page, classicKey)).snapshot,
-          resumedSnapshot
+          withoutCatalogText((await readSave(page, classicKey)).snapshot),
+          withoutCatalogText(durable.snapshot)
         )
         await page.screenshot({
           path: resolve(artifacts, `${label}-resumed.png`),

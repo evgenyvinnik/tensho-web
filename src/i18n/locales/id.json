@@ -754,7 +754,15 @@
     "rankNumbersDesc": "Tampilkan 1–9 kecil di ubin angka dan huruf di Naga selagi kamu mempelajari gambarnya.",
     "keyboardShortcuts": "Pintasan keyboard",
     "keyboardShortcutsDesc": "Di meja, P memainkan tangan, R menarik ulang, A memilih semua ubin, dan Esc mengembalikannya. Tombol panah berpindah antar ubin.",
-    "unreadableSave": "Permainan tersimpan tidak dapat dibaca. Kamu bisa mengunduhnya sebagai file sebelum memulai Permainan Baru yang akan menggantikannya."
+    "unreadableSave": "Permainan tersimpan tidak dapat dibaca. Kamu bisa mengunduhnya sebagai file sebelum memulai Permainan Baru yang akan menggantikannya.",
+    "credits": {
+      "title": "Kredit",
+      "soundEffects": "Efek suara",
+      "interface": "Suara tombol dan menu",
+      "casino": "Suara ubin, chip, emas, dan paket kartu",
+      "modified": "Dipotong menjadi suara tunggal, dibersihkan, dan diseimbangkan volumenya untuk Tensho.",
+      "original": "Semua efek suara lainnya, termasuk koto, lonceng, dan taiko, adalah suara orisinal yang disintesis untuk Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Babak {{current}} dari {{total}}",
@@ -3112,6 +3120,10 @@
       "name": "Lurus lima",
       "explain": "Lima angka berurutan, jenis sama."
     },
+    "straight6": {
+      "name": "Lurus enam",
+      "explain": "Enam angka berurutan, jenis sama."
+    },
     "two_pairs": {
       "name": "Dua pasangan",
       "explain": "Dua pasangan berbeda dalam sekali main."
@@ -3122,7 +3134,7 @@
     },
     "two_sequences": {
       "name": "Dua urutan",
-      "explain": "Dua urutan dalam sekali main (enam ubin)."
+      "explain": "Dua urutan dalam sekali main. Lurus butuh satu jenis dan tiap angka sekali, jadi deret yang berganti jenis atau mengulang angka (2-3-3-4-4-5) dihitung sebagai dua urutan."
     },
     "two_triplets": {
       "name": "Dua triplet",
@@ -3181,7 +3193,7 @@
     "secretTitle": "Tangan rahasia",
     "secretFound": "Tangan rahasia ditemukan",
     "secretInGuide": "Kini ada di panduan ?.",
-    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2. Biasanya tiap ubin dihitung sekali, dan sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
+    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2, lurus enam +3. Jika ubin bisa dikelompokkan lebih dari satu cara, dipakai cara yang paling menguntungkan. Tiap ubin dihitung sekali; hanya Plum yang bangkit membuat dua urutan berbagi satu ubin, ditampilkan sebagai Urutan ×2. Sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",
@@ -3231,7 +3243,7 @@
     },
     "Ittsu": {
       "name": "Lurus",
-      "covers": "Lurus empat, Lurus lima, atau Lurus + Pasangan (angka berurutan dari satu jenis); juga Lurus 1–9: tangan lengkap yang memuat 1-2-3, 4-5-6, dan 7-8-9 dari satu jenis."
+      "covers": "Lurus empat, Lurus lima, Lurus enam, atau Lurus + Pasangan (angka berurutan dari satu jenis); juga Lurus 1–9: tangan lengkap yang memuat 1-2-3, 4-5-6, dan 7-8-9 dari satu jenis."
     },
     "Toitoi": {
       "name": "Set",

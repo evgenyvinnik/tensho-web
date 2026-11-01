@@ -216,9 +216,14 @@ for (const fixture of fixtures) {
       'aria-label',
       scoreOfTarget
     )
-    await expect(
-      header.getByRole('progressbar', { name: fixture.text.gameplay.score })
-    ).toHaveAttribute('aria-valuetext', scoreOfTarget)
+    const progress = header.getByRole('progressbar', {
+      name: fixture.text.gameplay.score,
+      includeHidden: true,
+    })
+    await expect(progress).toHaveAttribute('aria-valuetext', scoreOfTarget)
+    // Below 360px the redundant bar is hidden; the score line keeps the label.
+    if (fixture.width < 360) await expect(progress).toBeHidden()
+    else await expect(progress).toBeVisible()
     await expect.poll(() => overflowing('[data-hand-score]')).toEqual([])
     await expect.poll(() => overflowing('[data-run-header]')).toEqual([])
     await handScore.screenshot({ path: testInfo.outputPath('score-paid.png') })
@@ -226,10 +231,6 @@ for (const fixture of fixtures) {
   })
 
   test(`translated play controls fit ${size}`, async ({ page, isMobile }) => {
-    test.fail(
-      fixture.width === 320 && fixture.font === 20,
-      'Known bug: at 320px with a 20px default font, REDRAW (RECAMBIAR) overflows its button.'
-    )
     await pickLateScore(page, fixture, isMobile)
     const play = page.locator('[data-game-action="play"]')
     // One translated label is used at every size, not an English mobile override.

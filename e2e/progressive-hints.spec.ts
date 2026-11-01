@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { clearReveals, closeOmenReveal } from './helpers/table'
 
 for (const language of ['en', 'es', 'ru', 'th']) {
   test(`shop guidance is localized, optional and non-mutating (${language})`, async ({
@@ -46,6 +47,10 @@ for (const language of ['en', 'es', 'ru', 'th']) {
         throw new Error('Fixture save failed')
     })
     await expect(page).toHaveURL(new RegExp(`/${language}/shop$`))
+    // startNewRun queues its starting Decrees for a reveal over the shop, and
+    // the swift clear's Omen is revealed as the Tea House opens.
+    await clearReveals(page)
+    await closeOmenReveal(page)
     await expect(
       page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()

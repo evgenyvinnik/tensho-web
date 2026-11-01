@@ -25,6 +25,10 @@ import { Toggle } from '../ui/Toggle'
 import { useClassicPersistence } from '../../game/useClassicPersistence'
 import { IS_NATIVE_APP } from '../../native/nativeStorage'
 import { privacyPolicyUrl, usePrivacyChoices } from '../../native/privacy'
+import { SOUND_EFFECT_CREDITS } from '../../config/creditsDefinitions'
+
+const creditLink =
+  'underline decoration-[var(--color-metallic-gold)] underline-offset-2 hover:text-[var(--color-golden-yellow)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-golden-yellow)]'
 
 function downloadBackup(raw: string) {
   const url = URL.createObjectURL(new Blob([raw], { type: 'application/json' }))
@@ -131,7 +135,7 @@ export function SettingsScreen() {
           <h2 className="pavilion-section-heading">
             <ControlIcon name="language" size={36} /> {t('settings.language')}
           </h2>
-          <LanguageSelector className="w-full" />
+          <LanguageSelector fullWidth />
         </section>
 
         {/* Audio Section */}
@@ -395,6 +399,61 @@ export function SettingsScreen() {
           >
             {t('settings.resetToDefaults')}
           </Button>
+        </section>
+
+        {/* Credits: attribution for third-party audio */}
+        <section
+          className="pavilion-panel space-y-4 lg:col-span-2"
+          aria-labelledby="settings-credits-heading"
+        >
+          <h2
+            id="settings-credits-heading"
+            className="pavilion-section-heading"
+          >
+            <ControlIcon name="music" size={36} /> {t('settings.credits.title')}
+          </h2>
+          <h3 className="text-base font-semibold text-[var(--color-golden-yellow)]">
+            {t('settings.credits.soundEffects')}
+          </h3>
+          <ul className="space-y-3">
+            {SOUND_EFFECT_CREDITS.map((credit) => (
+              <li
+                key={credit.id}
+                className="text-sm leading-relaxed text-[var(--color-beige-white)]"
+              >
+                <p className="opacity-70">
+                  {t(`settings.credits.${credit.role}`)}
+                </p>
+                <p>
+                  <a
+                    href={credit.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`font-semibold ${creditLink}`}
+                  >
+                    {credit.title}
+                  </a>
+                  {' · '}
+                  {credit.author}
+                  {' · '}
+                  <a
+                    href={credit.license.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={creditLink}
+                  >
+                    {credit.license.name}
+                  </a>
+                </p>
+                {credit.modified && (
+                  <p className="opacity-70">{t('settings.credits.modified')}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm leading-relaxed text-[var(--color-beige-white)] opacity-70">
+            {t('settings.credits.original')}
+          </p>
         </section>
 
         {/* Version info */}

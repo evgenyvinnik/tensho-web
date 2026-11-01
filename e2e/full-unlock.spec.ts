@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
+import { TABLE_STYLE_DEFINITIONS } from '../src/config/tableStyleDefinitions'
 import { buyOffer, charterCard } from './helpers/shop'
 import { clearReveals } from './helpers/table'
 
@@ -78,7 +79,7 @@ for (const [language, copy] of [
       ...before,
       full: true,
       moneyTree: true,
-      tables: 8,
+      tables: TABLE_STYLE_DEFINITIONS.length,
     })
     await page.getByRole('status').scrollIntoViewIfNeeded()
     expect(
@@ -97,14 +98,16 @@ for (const [language, copy] of [
       ...before,
       full: true,
       moneyTree: true,
-      tables: 8,
+      tables: TABLE_STYLE_DEFINITIONS.length,
     })
 
     await page.goto(`/${language}/`)
     await page
       .getByRole('button', { name: copy.tableStyle.chooseTable, exact: true })
       .click()
-    await expect(page.locator('[data-table-style-card]')).toHaveCount(8)
+    await expect(page.locator('[data-table-style-card]')).toHaveCount(
+      TABLE_STYLE_DEFINITIONS.length
+    )
     for (const card of await page.locator('[data-table-style-card]').all())
       await expect(card).toBeEnabled()
     await page.locator('[data-table-style-card="dragons_den"]').click()

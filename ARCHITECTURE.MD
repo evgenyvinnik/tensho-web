@@ -345,10 +345,10 @@ Points = tile points + group bonuses + additive bonuses   (loose numbered tiles 
 Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per Dragon (4 grouped)
          + Mark/Edition +Mult, then Decrees in order (+N adds, ×N
          multiplies), then ×-layers (Glass, Polychrome, ×1.5 per held Steel)
-Pattern Mult = (groups − 1) + Triplet/4-Straight 1, Quad/5-Straight 2; Mahjong +4
+Pattern Mult = (groups − 1) + Triplet/4-Straight 1, Quad/5-Straight 2, 6-Straight 3; Mahjong +4
 ```
 
-Tile points: suited 5 (terminals 10), Winds 50 (100 grouped), Dragons 15. Group bonus: Pair 15, Sequence 30, Triplet 40, Straight 45 (four) / 60 (five), Quad 65. A play holds up to six tiles unless it is a complete Mahjong hand. See [docs/RULE_RESOLUTION.md](docs/RULE_RESOLUTION.md#player-feedback-rules-october-2026).
+Tile points: suited 5 (terminals 10), Winds 50 (100 grouped), Dragons 15. Group bonus: Pair 15, Sequence 30, Triplet 40, Straight 45 (four) / 60 (five) / 75 (six), Quad 65. A play holds up to six tiles unless it is a complete Mahjong hand. See [docs/RULE_RESOLUTION.md](docs/RULE_RESOLUTION.md#player-feedback-rules-october-2026).
 
 ### Round Structure
 

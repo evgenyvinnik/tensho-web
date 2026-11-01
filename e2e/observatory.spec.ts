@@ -145,6 +145,9 @@ for (const language of ['en', 'es'])
       await expect(explanation).toContainText(copy.observatory.description)
       const cost = dialog.locator('[data-observatory-cost]')
       await expect(cost).toHaveText(copy.observatory.holdingNote)
+      // A long Orb rule can push it below the fold of a phone's sheet; it
+      // must still be reachable there.
+      await cost.scrollIntoViewIfNeeded()
       await expect(cost).toBeInViewport()
       const portrait = explanation.locator('img')
       await expect(portrait).toHaveAttribute(

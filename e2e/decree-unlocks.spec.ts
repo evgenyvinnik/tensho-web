@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { selectCompleteHand } from './helpers/table'
 
 for (const language of ['en', 'es']) {
   test(`paid Yakuman unlocks survive reload without preview awards (${language})`, async ({
@@ -105,15 +106,13 @@ for (const language of ['en', 'es']) {
       }
       await page.reload()
       await saved()
-      // Use the player's two-step complete-hand declaration. Staging remains
-      // non-scoring; confirmation below is the only committed play.
-      const playButton = page.locator('[data-game-action="play"]')
-      if (isMobile) await playButton.tap()
-      else await playButton.click()
-      const staged = page.locator('[data-play-zone="staging"] [data-play-tile]')
-      await expect(staged).toHaveCount(ids.length)
+      // The player picks the hand's tiles onto the felt, then plays it.
+      // Picking remains non-scoring; Play hand below is the only committed play.
+      await selectCompleteHand(page, isMobile)
+      const picked = page.locator('[data-play-zone="felt"] [data-play-tile]')
+      await expect(picked).toHaveCount(ids.length)
       expect(
-        await staged.evaluateAll((nodes) =>
+        await picked.evaluateAll((nodes) =>
           nodes.map((node) => node.getAttribute('data-play-tile')).sort()
         )
       ).toEqual([...ids].sort())
