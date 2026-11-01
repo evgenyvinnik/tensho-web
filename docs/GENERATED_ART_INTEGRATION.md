@@ -1,7 +1,8 @@
 # Generated artwork integration
 
 The delivered art set (350 runtime images, then the Omens add-on's 23, for
-373) was prepared as patches against
+373; 365 since the tile finishes retired the 8 mark frames) was prepared as
+patches against
 `fc4239905a8030949416cccb591cfab0d237e7dc` and integrated into main after the
 player-feedback rework. On main:
 
@@ -18,7 +19,7 @@ player-feedback rework. On main:
   and on the round payout's "Omen earned" chip.
 - Seals and editions are drawn as these layers on every tile. Tile marks
   were frames too until the finished tile set replaced them (see Tile
-  finishes below); the mark frames remain the marks' item art.
+  finishes below).
 - Patch changes to components the rework retired (`retired-files.json`)
   were applied as delivered but are not rendered.
 
@@ -26,7 +27,7 @@ player-feedback rework. On main:
 
 - Exact-ID image lookup for all 164 active Decrees, all 13 catalog Orbs, 24 Fate Seals, 32 Charters, and 28 Mandates; already-existing portraits are reused
 - All 33 achievement badges and 19 Yaku medallions; medallion aliases preserve the live detector and upgrade-family identities
-- 8 enhancement frames, 4 seals and 4 edition layers, with measured alpha-bound registration, readable face/hint layering, and consistent rankless Stone presentation
+- 8 enhancement frames (since replaced by the tile finishes), 4 seals and 4 edition layers, with measured alpha-bound registration, readable face/hint layering, and consistent rankless Stone presentation
 - Sealed/open pack-family illustrations; pack price, size, choices, counters, bonuses and effect descriptions remain live UI text
 - Zero Unicode emoji in application sources and translations, including escaped string literals and dormant presentation fallbacks
 - PNG functional controls and shared raster artwork; localized labels, button semantics, keyboard behavior and effect values are retained
@@ -126,3 +127,9 @@ and the numerals are drawn alike in every finish, so the One of Characters
 numeral from `mult/manzu_01` was laid on the Bonus background in place of
 `bonus/manzu_02`'s Two. Replace it with an export from the Bonus PNG master
 when one is available.
+
+The eight mark frames (`generated/enhancements/*.webp`) are deleted, along
+with their manifest entries. A Mark's own picture (its icon in tile details
+and the Tea House, its Collection card and `getItemArt`) is now its finished
+Five of Dots, or the blank Stone: `generatedArtPaths.enhancements` points at
+those sprites.

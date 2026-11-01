@@ -1,13 +1,12 @@
 {
   "sourceCommit": "fc4239905a8030949416cccb591cfab0d237e7dc",
-  "generatedRuntimeImageCount": 373,
+  "generatedRuntimeImageCount": 365,
   "categoryCounts": {
     "achievements": 33,
     "charters": 25,
     "controls": 39,
     "decrees": 145,
     "editions": 4,
-    "enhancements": 8,
     "fateSeals": 23,
     "mandates": 23,
     "orbs": 13,
@@ -16,7 +15,7 @@
     "yaku": 19,
     "omens": 23
   },
-  "runtimeImageBytes": 3682902,
+  "runtimeImageBytes": 3608030,
   "retainedExisting": {
     "activeDecreePortraits": 19,
     "legacyRiichiDecreePortrait": 1,
