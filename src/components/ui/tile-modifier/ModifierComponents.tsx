@@ -21,7 +21,6 @@ import {
   getSealIcon,
   getEditionIcon,
 } from './constants'
-import { getTileImagePath } from '../../../utils/assets'
 import { getGeneratedArt } from '../../../utils/generatedArt'
 import { FRAME_REGISTRATION } from './frameRegistration'
 import { useId } from 'react'
@@ -204,35 +203,31 @@ export function ModifierBadge({
 }
 
 /**
- * The look of a special tile, drawn with its generated artwork. The layers
- * combine truthfully:
- *  - a mark (enhancement) frames the tile in its material — gilded gold,
- *    sapphire, ruby, jade, glass, brushed steel, granite;
- *  - an edition washes the frame — foil, holographic, polychrome, negative;
+ * The layers drawn over a special tile's face. A mark (enhancement) is not
+ * one of them: TileImage draws a marked tile from its finished artwork, the
+ * whole tile painted in the mark's material. Over the face:
+ *  - an edition washes the front face — foil, holographic, polychrome,
+ *    negative;
  *  - a seal is a wax stamp in its colour on the upper corner.
- * Rank and suit stay readable inside the frame (a Stone tile has none); the
- * tile's details list the exact combination.
+ * The tile's details list the exact combination.
  */
 export function ModifierOverlay({
   tile,
   className = '',
 }: ModifierOverlayProps) {
   const faceClipId = useId()
-  const enhancement = getGeneratedArt('enhancements', tile.enhancement)
-  const enhancementRegistration =
-    FRAME_REGISTRATION[`enhancement:${tile.enhancement}`]
   const editionRegistration = FRAME_REGISTRATION[`edition:${tile.edition}`]
   const edition = getGeneratedArt('editions', tile.edition)
   const seal = getGeneratedArt('seals', tile.seal)
   return (
     <>
-      {(enhancement || edition) && (
+      {edition && (
         <svg
           aria-hidden="true"
           data-tile-frame-plane
           viewBox="0 0 569 711"
           preserveAspectRatio="xMidYMid meet"
-          className="absolute inset-0 h-full w-full pointer-events-none"
+          className={`absolute inset-0 h-full w-full pointer-events-none ${className}`}
         >
           {/* Match the source tile's front face, not its full silhouette.
               SVG meet uses the same contain/centering as the base image, so
@@ -250,61 +245,15 @@ export function ModifierOverlay({
             viewBox="0 0 526 661"
           >
             <g clipPath={`url(#${faceClipId})`}>
-              {enhancement && (
-                <rect
-                  width="526"
-                  height="661"
-                  fill={
-                    tile.enhancement === EnhancementType.Stone
-                      ? '#57534e'
-                      : '#fffaf2'
-                  }
-                />
-              )}
-              {enhancement && tile.enhancement !== EnhancementType.Stone && (
-                // Shrink only the printed face into the ornate frame's opening.
-                // Cropping the source face excludes its baked sidewall/backing.
-                <svg
-                  data-tile-face-print
-                  x="20%"
-                  y="16%"
-                  width="60%"
-                  height="68%"
-                  viewBox="8 8 495 630"
-                  preserveAspectRatio="xMidYMid meet"
-                  overflow="hidden"
-                >
-                  <image
-                    href={getTileImagePath(tile.suit, tile.rank)}
-                    width="569"
-                    height="711"
-                  />
-                </svg>
-              )}
-              {enhancement && (
-                <image
-                  data-tile-art-layer="enhancement"
-                  className={className}
-                  href={enhancement}
-                  x={enhancementRegistration.left}
-                  y={enhancementRegistration.top}
-                  width={enhancementRegistration.width}
-                  height={enhancementRegistration.height}
-                  preserveAspectRatio="none"
-                />
-              )}
-              {edition && (
-                <image
-                  data-tile-art-layer="edition"
-                  href={edition}
-                  x={editionRegistration.left}
-                  y={editionRegistration.top}
-                  width={editionRegistration.width}
-                  height={editionRegistration.height}
-                  preserveAspectRatio="none"
-                  opacity={enhancement ? 0.6 : 1}
-                />
-              )}
+              <image
+                data-tile-art-layer="edition"
+                href={edition}
+                x={editionRegistration.left}
+                y={editionRegistration.top}
+                width={editionRegistration.width}
+                height={editionRegistration.height}
+                preserveAspectRatio="none"
+              />
             </g>
           </svg>
         </svg>

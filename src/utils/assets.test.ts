@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto'
 import { STARTER_DECREES } from '../systems/DecreeSystem'
 import { TABLE_STYLE_DEFINITIONS } from '../config/tableStyleDefinitions'
 import { DragonType, TileSuit, WindType } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 import {
   getCodexCategoryIllustration,
   getDecreeIllustration,
@@ -13,6 +14,7 @@ import {
   getMandateIllustration,
   illustrationAssets,
   getTileImagePath,
+  getTileFinishPath,
 } from './assets'
 import { SHOWDOWN_MANDATE_DEFINITIONS as SHOWDOWN_MANDATES } from '../config/mandateDefinitions'
 
@@ -55,6 +57,59 @@ it.each([WindType.East, WindType.South, WindType.West, WindType.North])(
     )
   }
 )
+
+const FACE_RANKS: Record<TileSuit, number> = {
+  [TileSuit.Manzu]: 9,
+  [TileSuit.Pinzu]: 9,
+  [TileSuit.Souzu]: 9,
+  [TileSuit.Wind]: 4,
+  [TileSuit.Dragon]: 3,
+  [TileSuit.Flower]: 4,
+  [TileSuit.Season]: 4,
+}
+
+it('ships finished artwork for every face in every symbol-bearing Mark', () => {
+  const marks = Object.values(EnhancementType).filter(
+    (mark) => mark !== EnhancementType.None && mark !== EnhancementType.Stone
+  )
+  const paths = new Set<string>()
+  for (const mark of marks) {
+    for (const [suit, ranks] of Object.entries(FACE_RANKS)) {
+      for (let rank = 1; rank <= ranks; rank++) {
+        paths.add(getTileFinishPath(suit as TileSuit, rank, mark)!)
+      }
+    }
+  }
+  expect(paths.size).toBe(7 * 42)
+  for (const path of paths) {
+    const webp = readFileSync(`public${path}`)
+    expect(webp.toString('ascii', 8, 12), path).toBe('WEBP')
+    expect(webp.length, path).toBeGreaterThan(10_000)
+  }
+})
+
+it('draws every Stone tile from one blank sprite and plain tiles from their face', () => {
+  expect(
+    getTileFinishPath(TileSuit.Dragon, DragonType.Red, EnhancementType.Stone)
+  ).toBe(getTileFinishPath(TileSuit.Manzu, 5, EnhancementType.Stone))
+  expect(
+    readFileSync(
+      `public${getTileFinishPath(TileSuit.Manzu, 5, EnhancementType.Stone)}`
+    ).toString('ascii', 8, 12)
+  ).toBe('WEBP')
+  expect(getTileFinishPath(TileSuit.Manzu, 5, EnhancementType.None)).toBeNull()
+})
+
+// The finishes are keyed by saved rank, unlike the base faces' file order.
+it.each([
+  [DragonType.White, 'dragon_01'],
+  [DragonType.Green, 'dragon_02'],
+  [DragonType.Red, 'dragon_03'],
+] as const)('keys Dragon rank %s finishes as %s', (rank, key) => {
+  expect(
+    getTileFinishPath(TileSuit.Dragon, rank, EnhancementType.Gold)
+  ).toMatch(new RegExp(`/tiles/gold/${key}\\.webp$`))
+})
 
 it('ships a compact transparent Transmutation seal with safe generic fallbacks', () => {
   const webp = readFileSync(

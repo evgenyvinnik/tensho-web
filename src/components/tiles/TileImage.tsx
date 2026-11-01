@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
-import { getTileImagePath, getTileBackPath } from '../../utils/assets'
+import { getTileImagePath, getTileFinishPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
 import { ModifierOverlay } from '../ui/TileModifierDisplay'
 import { useSettingsStore } from '../../stores/settingsStore'
@@ -97,8 +97,10 @@ export const TileImage: React.FC<TileImageProps> = ({
   const showRankNumbers = useSettingsStore((state) => state.showRankNumbers)
   // A Stone tile has no rank or suit: its face is the stone itself.
   const stoneFace = !faceDown && tile?.enhancement === EnhancementType.Stone
-  const enhancedFace =
-    !faceDown && !!tile && tile.enhancement !== EnhancementType.None
+  const finishArt =
+    !faceDown && tile
+      ? getTileFinishPath(tile.suit, tile.rank, tile.enhancement)
+      : null
   const indexHint =
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
@@ -242,14 +244,9 @@ export const TileImage: React.FC<TileImageProps> = ({
         <TileBack label={tileInfo.name} />
       ) : (
         <img
-          // The art kit's blank front retains the same sidewall and red base
-          // while enhanced tiles redraw only their cropped print inside the frame.
-          // Stone deliberately omits that print, hiding its original rank/suit.
-          src={
-            enhancedFace
-              ? getTileBackPath()
-              : getTileImagePath(tile.suit, tile.rank)
-          }
+          // A marked tile is drawn whole in its material, symbols included.
+          // Stone's sprite is blank, hiding its original rank/suit.
+          src={finishArt ?? getTileImagePath(tile.suit, tile.rank)}
           alt={
             stoneFace
               ? t('tileMarks.items.stone.name', 'Stone Mark')

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 for (const width of [390, 1280]) {
-  test(`tile frames follow the front face at ${width}px`, async ({
+  test(`edition frames follow the front face and Marks use finished art at ${width}px`, async ({
     page,
   }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 })
@@ -18,20 +18,7 @@ for (const width of [390, 1280]) {
     })
     for (const size of ['small', 'medium', 'xlarge']) {
       const row = page.locator(`[data-frame-size="${size}"]`)
-      for (const name of [
-        'foil',
-        'holographic',
-        'polychrome',
-        'negative',
-        'bonus',
-        'mult',
-        'wild',
-        'glass',
-        'steel',
-        'stone',
-        'gold',
-        'lucky',
-      ]) {
+      for (const name of ['foil', 'holographic', 'polychrome', 'negative']) {
         const tile = row.locator(`[data-frame-case="${name}"]`)
         const geometry = await tile.evaluate(async (el) => {
           const image = el.querySelector<HTMLImageElement>(
@@ -60,6 +47,37 @@ for (const width of [390, 1280]) {
         expect(geometry.height).toBeCloseTo(661, 1)
         expect(geometry.padding).toBe('0px')
         expect(geometry.clipRadius).toBe('60')
+      }
+      // A Mark is its finished tile artwork, with no frame laid over it.
+      for (const name of [
+        'bonus',
+        'mult',
+        'wild',
+        'glass',
+        'steel',
+        'stone',
+        'gold',
+        'lucky',
+      ]) {
+        const tile = row.locator(`[data-frame-case="${name}"]`)
+        const art = await tile.evaluate(async (el) => {
+          const image = el.querySelector<HTMLImageElement>(
+            '[data-tile-base-art]'
+          )!
+          await image.decode()
+          return {
+            src: new URL(image.src).pathname,
+            naturalWidth: image.naturalWidth,
+            naturalHeight: image.naturalHeight,
+          }
+        })
+        expect(art.src).toBe(
+          name === 'stone'
+            ? '/assets/tiles/stone.webp'
+            : `/assets/tiles/${name}/pinzu_05.webp`
+        )
+        expect(art).toMatchObject({ naturalWidth: 320, naturalHeight: 400 })
+        await expect(tile.locator('[data-tile-frame-plane]')).toHaveCount(0)
       }
       // A seal is intentionally outside the clipped face; base tiles have no frame.
       await expect(

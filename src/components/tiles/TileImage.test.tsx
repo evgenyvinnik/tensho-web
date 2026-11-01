@@ -157,20 +157,23 @@ it('keeps keyboard details and selection independent, including after a locale c
   expect(onClick).toHaveBeenCalledExactlyOnceWith(tile)
 })
 
-it('draws one enhancement frame and retains the printed tile identity', () => {
+it('draws a marked tile whole from its finished artwork', () => {
   const tile = new Tile(TileSuit.Pinzu, 9, 'gold-mark').withEnhancement(
     EnhancementType.Gold
   )
   showRankNumbers()
   const { container, rerender } = render(<TileImage tile={tile} />)
   expect(screen.getByRole('img')).toHaveAccessibleName(/9/)
-  expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
-  expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
-  expect(
-    container.querySelector('[data-tile-art-layer="enhancement"]')
-  ).toHaveAttribute('href', expect.stringMatching(/enhancements\/gold\.webp$/))
-  rerender(<TileImage tile={tile} faceDown />)
+  expect(container.querySelector('[data-tile-base-art]')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/gold\/pinzu_09\.webp$/)
+  )
+  // No frame is laid over the finished tile.
+  expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
   expect(container.querySelectorAll('[data-tile-art-layer]')).toHaveLength(0)
+  expect(container.querySelector('[data-tile-index]')).toHaveClass('z-20')
+  rerender(<TileImage tile={tile} faceDown />)
+  expect(container.querySelector('img[src*="/tiles/gold/"]')).toBeNull()
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
 })
 
@@ -184,8 +187,12 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   expect(screen.getByRole('img')).toHaveAccessibleName(
     i18n.t('tileMarks.items.stone.name')
   )
+  expect(container.querySelector('[data-tile-base-art]')).toHaveAttribute(
+    'src',
+    expect.stringMatching(/\/assets\/tiles\/stone\.webp$/)
+  )
   expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
-  expect(container.querySelector('[data-tile-face-print]')).toBeNull()
+  expect(container.querySelector('img[src*="dragon_03"]')).toBeNull()
   expect(container.querySelector('[data-tile-index]')).toBeNull()
   expect(screen.getByRole('tooltip')).toHaveTextContent(
     i18n.t('tileMarks.items.stone.description')
@@ -224,24 +231,17 @@ it.each([
   }
 )
 
-it('keeps enhancement base art full sized and selection/index outside the face clip', () => {
+it('keeps marked tile art full sized with selection and index around it', () => {
   const tile = new Tile(TileSuit.Pinzu, 5, 'layers', false, {
     enhancement: EnhancementType.Gold,
     edition: EditionType.Base,
     seal: SealType.None,
   })
   const { container } = render(<TileImage tile={tile} selected showIndex />)
-  expect(container.querySelector('[data-tile-base-art]')).not.toHaveAttribute(
-    'style'
-  )
-  const face = container.querySelector('[data-tile-front-face]')!
-  expect(face.querySelectorAll('[data-tile-art-layer]')).toHaveLength(1)
-  expect(face.querySelector('[data-tile-face-print]')).toHaveAttribute(
-    'viewBox',
-    '8 8 495 630'
-  )
-  expect(face.querySelector('[data-tile-index]')).toBeNull()
-  expect(face.querySelector('[data-tile-art-layer="seal"]')).toBeNull()
+  const art = container.querySelector('[data-tile-base-art]')!
+  expect(art).not.toHaveAttribute('style')
+  expect(art).toHaveClass('w-full', 'h-full', 'object-contain')
+  expect(container.querySelector('[data-tile-index]')).not.toBeNull()
   expect(container.firstChild).toHaveClass('ring-2')
 })
 

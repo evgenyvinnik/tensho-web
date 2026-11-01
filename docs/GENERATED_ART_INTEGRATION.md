@@ -16,7 +16,9 @@ player-feedback rework. On main:
   `docs/ART_PRODUCTION_MANIFEST.md`.
 - Omens are pictured in the Collection, in the table's pending-Omens list
   and on the round payout's "Omen earned" chip.
-- Tile marks, seals and editions are drawn as these frames on every tile.
+- Seals and editions are drawn as these layers on every tile. Tile marks
+  were frames too until the finished tile set replaced them (see Tile
+  finishes below); the mark frames remain the marks' item art.
 - Patch changes to components the rework retired (`retired-files.json`)
   were applied as delivered but are not rendered.
 
@@ -95,3 +97,32 @@ always share one label. It shows in the Tea House kind line
 (`shop.kinds.orbFamily`) and under the name in the Orb reveal. The motifs are
 decorative identifiers, not rule diagrams: the family's "works with" text
 (`upgradeFamilies.*.covers`) is the rule.
+
+## Tile finishes (2026-10-31)
+
+A marked tile is no longer the plain face shrunk inside a material frame. It
+is drawn whole from finished artwork: the face, bevel, sidewall and red back
+painted in the Mark's material, carrying the tile's own symbols. There is one
+sprite per face (9 Bamboo, 9 Dots, 9 Characters, 4 Winds, 3 Dragons, 4
+Flowers, 4 Seasons) in each of Bonus, Mult, Wild, Glass, Steel, Gold and
+Lucky, plus one blank Stone that hides the tile's rank and suit: 295 files in
+`public/assets/tiles/<mark>/<suit>_<rank>.webp` and `public/assets/tiles/stone.webp`.
+`getTileFinishPath` (`src/utils/assets.ts`) picks the sprite and `TileImage`
+draws it in place of the face, so seals, editions, rank hints, selection and
+the red-five dot sit on it as before. Keys use saved ranks: `dragon_01` is the
+White Dragon (the base faces' `Dragons (3).png`).
+
+The delivery is `Tensho_Game_Ready_512_WebP_Part_1.zip` and `_Part_2.zip`
+(410×512 WebP quality 90, derived from 1122×1402 PNG masters kept in the art
+library). Each runtime copy is resized to 320×400 (Lanczos) and saved as WebP
+quality 86 (`cwebp -m 6 -alpha_q 100`), about 13 MB for the set, enough for
+the largest 90×126 tile on a 3× screen. The finishes have their own 16 MiB
+precache budget in `scripts/verify-asset-delivery.mjs`, apart from the 40 MiB
+core payload.
+
+The delivered `bonus/manzu_01.webp` was empty (0 bytes). Its runtime copy was
+rebuilt from the delivered set: every Bonus face shares one lapis background
+and the numerals are drawn alike in every finish, so the One of Characters
+numeral from `mult/manzu_01` was laid on the Bonus background in place of
+`bonus/manzu_02`'s Two. Replace it with an export from the Bonus PNG master
+when one is available.
