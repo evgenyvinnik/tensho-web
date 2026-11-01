@@ -75,3 +75,29 @@ export const FRAME_REGISTRATION: Readonly<
     height: '108.3462%',
   },
 }
+
+/** Insets of a rectangle from the tile box's edges, in percent of that box. */
+export interface FrameWindow {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+
+/**
+ * The opening of each Mark frame: where its alpha crosses 50%, flood-filled
+ * from the centre of the delivered art and placed by FRAME_REGISTRATION
+ * above. The openings differ (Gold, Sapphire, Ruby and Lucky carry a heavy
+ * lower crest), so the tile face is fitted to each one rather than padded by
+ * one shared amount. Re-measure when a frame's art or registration changes.
+ */
+export const FRAME_WINDOW: Readonly<Record<string, FrameWindow>> = {
+  gold: { left: 17.9, top: 14.87, right: 17.79, bottom: 21.8 },
+  bonus: { left: 17.48, top: 15.66, right: 17.48, bottom: 20.02 },
+  mult: { left: 14.79, top: 13.28, right: 14.79, bottom: 20.03 },
+  wild: { left: 17.67, top: 16.1, right: 17.77, bottom: 16.41 },
+  glass: { left: 14.8, top: 15.21, right: 15.14, bottom: 14.52 },
+  steel: { left: 15.46, top: 11.7, right: 15.57, bottom: 15.54 },
+  stone: { left: 16.65, top: 14.04, right: 16.75, bottom: 14.39 },
+  lucky: { left: 13.31, top: 9.69, right: 13.31, bottom: 19.9 },
+}
