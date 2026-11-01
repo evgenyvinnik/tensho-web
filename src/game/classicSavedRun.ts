@@ -43,6 +43,9 @@ export function parseClassicSavedRun(raw: string): ClassicSavedRun {
   if (raw.length > MAX_CLASSIC_SAVE_LENGTH)
     throw new Error('Classic save is too large')
   const value: unknown = JSON.parse(raw)
+  // An older run is read as its upgrade to the current rules. The stored text
+  // is untouched until the next checkpoint writes the upgraded run.
+  let snapshot!: ClassicRunSnapshot
   object({
     format: choice([1]),
     runId: id,
@@ -50,16 +53,14 @@ export function parseClassicSavedRun(raw: string): ClassicSavedRun {
     revision: positive,
     createdAt: count,
     updatedAt: count,
-    snapshot: (snapshot) => {
-      parseClassicRunSnapshot(snapshot)
+    snapshot: (stored) => {
+      snapshot = parseClassicRunSnapshot(stored)
     },
   })(value, 'save')
   const record = value as ClassicSavedRun
   if (record.updatedAt < record.createdAt)
     throw new Error('Invalid Classic save timestamps')
-  // An older run is read as its upgrade to the current rules. The stored text
-  // is untouched until the next checkpoint writes the upgraded run.
-  return { ...record, snapshot: parseClassicRunSnapshot(record.snapshot) }
+  return { ...record, snapshot }
 }
 
 interface SaveOptions {
@@ -81,6 +82,8 @@ export class ClassicSaveRepository {
   private readonly token: () => string
   private readonly now: () => number
   private generation = 0
+  /** The record this repository last stored, exactly as written. */
+  private written: { raw: string; saved: ClassicSavedRun } | null = null
 
   constructor(options: SaveOptions = {}) {
     this.storage = options.storage ?? (() => window.localStorage)
@@ -100,6 +103,17 @@ export class ClassicSaveRepository {
   }
 
   read(): ClassicSaveRead {
+    return this.readRecord(null)
+  }
+
+  /**
+   * A checkpoint follows every tap. When the stored text is still exactly the
+   * record this repository wrote (and validated) last, its owner and revision
+   * are known without parsing and validating the whole run again.
+   */
+  private readRecord(
+    known: { raw: string; saved: ClassicSavedRun } | null
+  ): ClassicSaveRead {
     let raw: string | null
     try {
       raw = this.storage().getItem(CLASSIC_SAVE_KEY)
@@ -107,6 +121,7 @@ export class ClassicSaveRepository {
       return { kind: 'unavailable' }
     }
     if (raw === null) return { kind: 'empty', raw }
+    if (raw === known?.raw) return { kind: 'ready', raw, saved: known.saved }
     try {
       return { kind: 'ready', raw, saved: parseClassicSavedRun(raw) }
     } catch {
@@ -150,6 +165,7 @@ export class ClassicSaveRepository {
     // setItem is atomic for this key: quota/privacy failure leaves the previous
     // value intact. Never remove the previous record before trying this write.
     this.storage().setItem(CLASSIC_SAVE_KEY, raw)
+    this.written = { raw, saved }
     return { ok: true, raw, saved: structuredClone(saved) }
   }
 
@@ -241,7 +257,8 @@ export class ClassicSaveRepository {
     }
     const expected = { ...lease }
     return this.locked(() => {
-      const current = this.read()
+      // Only the stored owner and revision are read; the snapshot is replaced.
+      const current = this.readRecord(this.written)
       if (current.kind === 'unavailable')
         return { ok: false, reason: 'unavailable' }
       if (

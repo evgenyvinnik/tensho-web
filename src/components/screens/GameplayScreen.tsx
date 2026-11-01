@@ -33,7 +33,7 @@ import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
-import { useClassicPersistence } from '../../game/useClassicPersistence'
+import { initializeClassicPersistence } from '../../game/classicPersistenceApp'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { feltPalette } from '../../utils/feltPalette'
 import { DecreeCardCompact, DecreeSlotEmpty } from '../gameplay/DecreeBar'
@@ -100,7 +100,9 @@ export function GameplayScreen() {
   const { t } = useTranslation()
   const { navigateTo } = useAppNavigation()
   const game = useGameController()
-  const { service: persistence } = useClassicPersistence()
+  // The service only: every checkpoint (each tap) changes the save status,
+  // and ClassicSaveNotice shows it without re-rendering the whole table.
+  const persistence = initializeClassicPersistence()
   const showTileHints = useSettingsStore((state) => state.showTileHints)
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   // Omens change outside game events (a reward, a cancelled Script), so the

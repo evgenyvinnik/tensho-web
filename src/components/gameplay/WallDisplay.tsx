@@ -25,31 +25,6 @@ const SUITS = [
 export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
   const { t, i18n } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
-  const groups = useMemo(() => {
-    const counts = new Map<string, { key: string; tile: Tile; count: number }>()
-    for (const tile of wallTiles) {
-      // Red and ordinary fives have different names and values. Never label
-      // their combined count using whichever physical copy happened to be first.
-      const key = `${tile.suit}-${tile.rank}-${tile.isRed}`
-      const entry = counts.get(key)
-      if (entry) entry.count++
-      else counts.set(key, { key, tile, count: 1 })
-    }
-    return SUITS.map((suit) => {
-      const tiles = [...counts.values()]
-        .filter(({ tile }) => tile.suit === suit.suit)
-        .sort(
-          (a, b) =>
-            a.tile.rank - b.tile.rank ||
-            Number(a.tile.isRed) - Number(b.tile.isRed)
-        )
-      return {
-        ...suit,
-        tiles,
-        count: tiles.reduce((sum, tile) => sum + tile.count, 0),
-      }
-    }).filter(({ count }) => count > 0)
-  }, [wallTiles])
 
   return (
     <>
@@ -81,52 +56,89 @@ export function WallDisplay({ wallTiles, triggerRef }: WallDisplayProps) {
         onClose={() => setIsExpanded(false)}
         title={t('gameplay.tilesInWall')}
       >
-        <div data-wall-breakdown className="space-y-5">
-          <p className="text-center text-sm text-[var(--color-beige-white)]/80">
-            {t('collection.remaining', { count: wallTiles.length })}
-          </p>
-          {groups.map(({ suit, label, color, tiles, count }) => (
-            <section key={suit} data-wall-suit={suit}>
-              <h3
-                aria-label={`${t(label)}: ${count.toLocaleString(i18n.language)}`}
-                className={`mb-3 flex flex-wrap justify-between gap-2 text-sm font-semibold ${color}`}
-              >
-                <span>{t(label)}</span>
-                <span>{count.toLocaleString(i18n.language)}</span>
-              </h3>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(64px,1fr))] items-start gap-x-3 gap-y-4">
-                {tiles.map(({ key, tile, count }) => (
-                  <figure
-                    key={key}
-                    data-wall-tile={key}
-                    className="min-w-0 text-center"
-                  >
-                    <img
-                      src={getTileImagePath(tile.suit, tile.rank)}
-                      alt={tileName(tile, t)}
-                      width={44}
-                      height={62}
-                      className="mx-auto h-auto w-11 rounded"
-                    />
-                    <figcaption className="mt-1 break-words text-xs leading-relaxed">
-                      <span className="block text-[var(--color-beige-white)]">
-                        {tileName(tile, t)}
-                      </span>
-                      <span
-                        data-wall-count={count}
-                        className="block text-[var(--color-golden-yellow)]"
-                      >
-                        {t('collection.remaining', { count })}
-                      </span>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+        <WallBreakdown wallTiles={wallTiles} />
       </Popup>
     </>
+  )
+}
+
+/**
+ * The popup's contents, named and counted per kind. Its own component so the
+ * table, which re-renders on every tap, builds it only while it is open.
+ */
+function WallBreakdown({ wallTiles }: { wallTiles: Tile[] }) {
+  const { t, i18n } = useTranslation()
+  const groups = useMemo(() => {
+    const counts = new Map<string, { key: string; tile: Tile; count: number }>()
+    for (const tile of wallTiles) {
+      // Red and ordinary fives have different names and values. Never label
+      // their combined count using whichever physical copy happened to be first.
+      const key = `${tile.suit}-${tile.rank}-${tile.isRed}`
+      const entry = counts.get(key)
+      if (entry) entry.count++
+      else counts.set(key, { key, tile, count: 1 })
+    }
+    return SUITS.map((suit) => {
+      const tiles = [...counts.values()]
+        .filter(({ tile }) => tile.suit === suit.suit)
+        .sort(
+          (a, b) =>
+            a.tile.rank - b.tile.rank ||
+            Number(a.tile.isRed) - Number(b.tile.isRed)
+        )
+      return {
+        ...suit,
+        tiles,
+        count: tiles.reduce((sum, tile) => sum + tile.count, 0),
+      }
+    }).filter(({ count }) => count > 0)
+  }, [wallTiles])
+
+  return (
+    <div data-wall-breakdown className="space-y-5">
+      <p className="text-center text-sm text-[var(--color-beige-white)]/80">
+        {t('collection.remaining', { count: wallTiles.length })}
+      </p>
+      {groups.map(({ suit, label, color, tiles, count }) => (
+        <section key={suit} data-wall-suit={suit}>
+          <h3
+            aria-label={`${t(label)}: ${count.toLocaleString(i18n.language)}`}
+            className={`mb-3 flex flex-wrap justify-between gap-2 text-sm font-semibold ${color}`}
+          >
+            <span>{t(label)}</span>
+            <span>{count.toLocaleString(i18n.language)}</span>
+          </h3>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(64px,1fr))] items-start gap-x-3 gap-y-4">
+            {tiles.map(({ key, tile, count }) => (
+              <figure
+                key={key}
+                data-wall-tile={key}
+                className="min-w-0 text-center"
+              >
+                <img
+                  src={getTileImagePath(tile.suit, tile.rank)}
+                  alt={tileName(tile, t)}
+                  width={44}
+                  height={62}
+                  className="mx-auto h-auto w-11 rounded"
+                />
+                <figcaption className="mt-1 break-words text-xs leading-relaxed">
+                  <span className="block text-[var(--color-beige-white)]">
+                    {tileName(tile, t)}
+                  </span>
+                  <span
+                    data-wall-count={count}
+                    className="block text-[var(--color-golden-yellow)]"
+                  >
+                    {t('collection.remaining', { count })}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
   )
 }
 
