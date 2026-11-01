@@ -111,7 +111,10 @@ for (const language of [
     await expect(hand).toHaveCount(ids.length)
     expect(await order()).toEqual(shown)
     // The rack is back in its order, and no flight played, redrew or paid.
-    expect(JSON.parse(await raw()).snapshot).toEqual(before)
+    // The save is written asynchronously after the last tap, so wait for it.
+    await expect
+      .poll(async () => JSON.parse(await raw()).snapshot)
+      .toEqual(before)
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth
