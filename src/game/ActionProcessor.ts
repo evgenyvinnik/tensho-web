@@ -48,6 +48,14 @@ export interface BuyTurnAction {
 }
 
 /**
+ * Take the emergency Turn for a watched rewarded ad, when Gold is short
+ * (at most AD_TURNS_PER_ACT per Act). The caller confirms the ad was watched.
+ */
+export interface AdTurnAction {
+  type: 'adTurn'
+}
+
+/**
  * Use Fate Seal action
  */
 export interface UseSealAction {
@@ -79,6 +87,7 @@ export type PlayerAction =
   | PlayAction
   | RedrawAction
   | BuyTurnAction
+  | AdTurnAction
   | UseSealAction
   | UseOrbAction
   | UseScriptAction

@@ -131,6 +131,7 @@ import {
 } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
+  AD_TURNS_PER_ACT,
   EMERGENCY_TURN_FIRST_ACT,
   EMERGENCY_TURN_FIRST_STAKE,
   MAX_TACTICAL_PLAY_TILES,
@@ -249,6 +250,11 @@ export interface OrchestratorState {
    * price. Missing in older saves: none bought.
    */
   emergencyTurnsBoughtThisRound?: number
+  /**
+   * Turns taken for a watched rewarded ad in the current Act, with the Act
+   * they belong to. Missing in older saves: none taken.
+   */
+  adTurns?: { actNumber: number; count: number }
   /** Missing in legacy saves: unknown eligibility until the next round. */
   honorDiscardsThisRound?: number
   /**
@@ -1400,6 +1406,8 @@ export class GameOrchestrator {
         ? this.validatePlaySelection(action.tileIds)
         : action.type === 'buyTurn'
           ? this.validateEmergencyTurn()
+          : action.type === 'adTurn'
+            ? this.validateAdTurn()
           : action.type === 'useSeal' ||
             action.type === 'useScript' ||
             action.type === 'useOrb'
@@ -1490,6 +1498,9 @@ export class GameOrchestrator {
       case 'buyTurn':
         return this.executeBuyTurn(effects)
 
+      case 'adTurn':
+        return this.executeAdTurn(effects)
+
       case 'useSeal':
         return this.executeUseSeal(action.sealId, action.targets, effects)
 
@@ -1510,7 +1521,12 @@ export class GameOrchestrator {
    * on. `affordable` is false when the player is short of Gold, so the offer
    * can still be shown.
    */
-  getEmergencyTurnOffer(): { cost: number; affordable: boolean } | null {
+  getEmergencyTurnOffer(): {
+    cost: number
+    affordable: boolean
+    /** Short of Gold, the Turn may be taken for a rewarded ad instead. */
+    adAvailable: boolean
+  } | null {
     if (!this.state.isRunActive || this.state.phase !== 'gameplay') return null
     if (this.state.stake < EMERGENCY_TURN_FIRST_STAKE) return null
     if (this.state.currentAct < EMERGENCY_TURN_FIRST_ACT) return null
@@ -1520,7 +1536,56 @@ export class GameOrchestrator {
       this.state.currentAct,
       this.state.emergencyTurnsBoughtThisRound ?? 0
     )
-    return { cost, affordable: this.state.gold >= cost }
+    const affordable = this.state.gold >= cost
+    const adTurnsThisAct =
+      this.state.adTurns?.actNumber === this.state.currentAct
+        ? this.state.adTurns.count
+        : 0
+    return {
+      cost,
+      affordable,
+      adAvailable: !affordable && adTurnsThisAct < AD_TURNS_PER_ACT,
+    }
+  }
+
+  private validateAdTurn(): ValidationResult {
+    const offer = this.getEmergencyTurnOffer()
+    if (!offer?.adAvailable)
+      return {
+        isValid: false,
+        errors: [
+          `An extra Turn for an ad is available only when Gold is short, ${AD_TURNS_PER_ACT} per Act`,
+        ],
+      }
+    return { isValid: true, errors: [] }
+  }
+
+  /** One more Turn this round, for a rewarded ad the player watched. */
+  private executeAdTurn(effects: Effect[]): ActionResult {
+    const act = this.state.currentAct
+    this.state.handsRemaining += 1
+    this.state.handsAllowance += 1
+    this.state.adTurns = {
+      actNumber: act,
+      count:
+        (this.state.adTurns?.actNumber === act
+          ? this.state.adTurns.count
+          : 0) + 1,
+    }
+    effects.push({
+      type: 'round_state_changed',
+      description: 'Emergency Turn granted for a rewarded ad',
+      handsRemaining: this.state.handsRemaining,
+      discardsRemaining: this.state.discardsRemaining,
+      redrawsRemaining: this.state.redrawsRemaining,
+    })
+    eventBus.emit('goldChanged', {
+      previousGold: this.state.gold,
+      newGold: this.state.gold,
+      delta: 0,
+      reason: 'Emergency Turn (ad)',
+    })
+    return { success: true, effects }
   }
 
   private validateEmergencyTurn(): ValidationResult {

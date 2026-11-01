@@ -105,6 +105,23 @@ it('keeps the Red Stake withheld reward through save and load, and rejects a neg
   expect(() => parseClassicRunSnapshot(saved)).toThrow()
 })
 
+it('loads a Red Stake save from before the Boss target rule and reads the rule from the catalog', () => {
+  const saved = json(start(7, 2).captureRun())
+  const modifiers = saved.state.roundManager.stakeModifiers as unknown as Record<
+    string,
+    unknown
+  >
+  delete modifiers.bossTargetMultiplier
+  const parsed = parseClassicRunSnapshot(saved)
+  expect(parsed.state.roundManager.stakeModifiers.bossTargetMultiplier).toBe(
+    1.2
+  )
+  // Targets already generated for the saved Act are never rewritten.
+  expect(parsed.state.roundManager.currentAct).toEqual(
+    saved.state.roundManager.currentAct
+  )
+})
+
 it('saves emergency Turns bought this round, and loads saves from before them', () => {
   const game = start(7, 2)
   advanceToRound(game, 'Boss')
@@ -117,6 +134,12 @@ it('saves emergency Turns bought this round, and loads saves from before them', 
   const saved = check(game)
   expect(saved.state.emergencyTurnsBoughtThisRound).toBe(1)
   expect(saved.state.handsRemaining).toBe(2)
+  // An ad Turn is saved with its Act. (check() restored a fresh state.)
+  const restored = game.getState() as OrchestratorState
+  restored.handsRemaining = 1
+  restored.gold = 0
+  expect(game.processAction({ type: 'adTurn' }).success).toBe(true)
+  expect(check(game).state.adTurns).toEqual({ actNumber: 2, count: 1 })
   const legacy = json(saved)
   delete legacy.state.emergencyTurnsBoughtThisRound
   expect(() => parseClassicRunSnapshot(legacy)).not.toThrow()

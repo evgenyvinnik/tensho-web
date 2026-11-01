@@ -30,6 +30,7 @@ import {
   TEA_HOUSE_UPGRADED_CHARTERS,
 } from '../systems/TeaHouseSystem'
 import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
+import { calculateCombinedModifiers } from '../config/stakeDefinitions'
 import { TURNS_PER_ROUND } from './playRules'
 
 export const CURRENT_SNAPSHOT_VERSION = 3
@@ -255,6 +256,16 @@ function refreshContent(snapshot: Json): Json {
           rounds: mapArray(manager.currentAct.rounds, refreshRound),
         }
       manager.currentRound = refreshRound(manager.currentRound)
+      // Stake rules are catalog rules too: a run keeps its tier and reads the
+      // tier's current modifiers (targets already generated are unchanged).
+      if (
+        Number.isInteger(manager.stake) &&
+        (manager.stake as number) >= 1 &&
+        (manager.stake as number) <= 8
+      )
+        manager.stakeModifiers = calculateCombinedModifiers(
+          manager.stake as number
+        )
       state.roundManager = manager
     }
     if (isRecord(state.mandateEffectSystem)) {

@@ -3,6 +3,7 @@ import i18n, { changeLanguage } from './index'
 import { getStakeRules } from './stakeRules'
 import { RoundManager } from '../systems/RoundManager'
 import {
+  getActBossTargetMultiplier,
   getActScoreScaling,
   STAKE_SCALING_FULL_ACT,
 } from '../config/stakeDefinitions'
@@ -24,8 +25,11 @@ it.each([1, 2, 3, 4, 5, 6, 7, 8])(
       expect(text).toContain(`from Act ${STAKE_SCALING_FULL_ACT} on`)
     }
     expect(text.includes('Small Rounds')).toBe(modifiers.noSmallRoundReward)
+    expect(text.includes('Boss targets: 20% higher from Act 2')).toBe(
+      modifiers.bossTargetMultiplier !== 1
+    )
     expect(text.includes('Emergency Turns from Act 2')).toBe(tier >= 2)
-    if (tier >= 2) expect(text).toContain('10G in Act 2, 15G in Act 3')
+    if (tier >= 2) expect(text).toContain('20G in Act 2, 30G in Act 3')
     expect(text.includes('Turns each round')).toBe(modifiers.redrawPenalty > 0)
     expect(text.includes('Eternal')).toBe(modifiers.eternalChance > 0)
     expect(text.includes('Perishable')).toBe(modifiers.perishableChance > 0)
@@ -34,9 +38,17 @@ it.each([1, 2, 3, 4, 5, 6, 7, 8])(
     for (const act of [1, 3, STAKE_SCALING_FULL_ACT, 9]) {
       const base = new RoundManager(1, 7).startAct(act)
       const scaling = getActScoreScaling(modifiers.scoreScaling, act)
+      const boss = getActBossTargetMultiplier(
+        modifiers.bossTargetMultiplier,
+        act
+      )
       expect(
         new RoundManager(tier, 7).startAct(act).rounds.map((r) => r.scoreTarget)
-      ).toEqual(base.rounds.map((r) => Math.floor(r.scoreTarget * scaling)))
+      ).toEqual(
+        base.rounds.map((r, i) =>
+          Math.floor(r.scoreTarget * scaling * (i === 2 ? boss : 1))
+        )
+      )
     }
     expect(getActScoreScaling(modifiers.scoreScaling, 1)).toBe(1)
     expect(

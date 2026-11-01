@@ -712,7 +712,16 @@
     "emergencyTurn": {
       "buy": "手番+1",
       "label": "金{{cost}}で手番を1つ追加",
-      "short": "金が足りません：手番の追加には金{{cost}}が必要です"
+      "short": "金が足りません：手番の追加には金{{cost}}が必要です",
+      "watchAd": "広告を見る",
+      "watchAdLabel": "広告を見て手番を1つ追加",
+      "adPlaying": "広告を再生中…",
+      "adIncomplete": "広告が途中で閉じられたため、手番は追加されません。",
+      "adUnavailable": "現在、表示できる広告がありません。",
+      "simulatedAd": "広告（シミュレーション）",
+      "adCountdown": "あと{{seconds}}秒で報酬を受け取れます",
+      "adReady": "報酬を受け取れます",
+      "adClaim": "手番+1を受け取る"
     }
   },
   "rounds": {
@@ -1881,6 +1890,7 @@
     "rules": {
       "base": "基本難度：追加のペナルティはありません。",
       "noSmallRoundReward": "小ラウンドでは報酬の金を獲得できません。",
+      "bossTargets": "第{{act}}幕から、ボスの目標点が{{percent}}上がります。",
       "emergencyTurn": "第{{act}}幕から緊急手番：最後の手番で金を払って手番を1つ追加できます（第{{act}}幕は金{{cost}}、第{{nextAct}}幕は金{{nextCost}}と上がり、同じラウンドで追加するたびに2倍）。",
       "scoreScaling": "目標点は第1幕では白場と同じで、幕ごとに上がり、第{{act}}幕以降は白場の{{multiplier}}倍。卓の補正も適用されます。",
       "redrawPenalty": "ラウンドごとの手番：−{{amount}}。",

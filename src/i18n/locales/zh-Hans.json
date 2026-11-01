@@ -712,7 +712,16 @@
     "emergencyTurn": {
       "buy": "行动 +1",
       "label": "花费 {{cost}} 金币再购买一次行动",
-      "short": "金币不足：再购买一次行动需要 {{cost}} 金币"
+      "short": "金币不足：再购买一次行动需要 {{cost}} 金币",
+      "watchAd": "看广告",
+      "watchAdLabel": "观看广告再获得一次行动",
+      "adPlaying": "广告播放中…",
+      "adIncomplete": "广告提前关闭，未获得额外行动。",
+      "adUnavailable": "当前没有可播放的广告。",
+      "simulatedAd": "广告（模拟）",
+      "adCountdown": "{{seconds}} 秒后可领取奖励",
+      "adReady": "奖励已就绪",
+      "adClaim": "领取行动 +1"
     }
   },
   "rounds": {
@@ -1881,6 +1890,7 @@
     "rules": {
       "base": "基础难度：没有额外惩罚。",
       "noSmallRoundReward": "小局不再提供奖励金币。",
+      "bossTargets": "从第 {{act}} 幕起，首领局目标分提高 {{percent}}。",
       "emergencyTurn": "第 {{act}} 幕起可紧急加行动：最后一次行动时可花金币再买一次行动（第 {{act}} 幕 {{cost}} 金币，第 {{nextAct}} 幕 {{nextCost}} 金币，依此类推；同一局内每多买一次翻倍）。",
       "scoreScaling": "目标分数在第1幕与白场相同，之后每幕提高，自第{{act}}幕起为白场的{{multiplier}}倍，牌桌修正仍然生效。",
       "redrawPenalty": "每回合行动：−{{amount}}。",

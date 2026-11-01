@@ -34,8 +34,15 @@ export const EMERGENCY_TURN_FIRST_ACT = 2
  */
 export const EMERGENCY_TURN_FIRST_STAKE = 2
 
+/**
+ * When Gold is short, the emergency Turn can be earned by watching a
+ * rewarded ad instead (if ads are configured; see src/ads/rewardedAds.ts),
+ * this many times per Act.
+ */
+export const AD_TURNS_PER_ACT = 1
+
 /** Gold per Act for the first emergency Turn bought in a round. */
-export const EMERGENCY_TURN_COST_PER_ACT = 5
+export const EMERGENCY_TURN_COST_PER_ACT = 10
 
 /**
  * Price of the next emergency Turn: it grows with the Act, and doubles with

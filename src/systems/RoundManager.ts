@@ -14,6 +14,7 @@ import { NORMAL_RUN_ACTS, isShowdownAct } from '../config/runProgression'
 
 import {
   calculateCombinedModifiers,
+  getActBossTargetMultiplier,
   getActScoreScaling,
   type CombinedStakeModifiers,
 } from '../config/stakeDefinitions'
@@ -225,7 +226,9 @@ export class RoundManager {
         actNumber,
         3,
         'Boss',
-        Math.floor(baseTargets[2] * stakeMultiplier)
+        Math.floor(
+          baseTargets[2] * stakeMultiplier * this.getBossMultiplier(actNumber)
+        )
       ),
     ]
 
@@ -239,7 +242,8 @@ export class RoundManager {
       rounds[2].scoreTarget = Math.floor(
         baseTargets[0] *
           (rounds[2].bossMandate.effect.value as number) *
-          stakeMultiplier
+          stakeMultiplier *
+          this.getBossMultiplier(actNumber)
       )
     }
 
@@ -292,6 +296,14 @@ export class RoundManager {
     return (
       getActScoreScaling(this.stakeModifiers.scoreScaling, actNumber) *
       this.tableTargetMultiplier
+    )
+  }
+
+  /** The Stake's extra Boss target multiplier for an Act (Red Stake on). */
+  private getBossMultiplier(actNumber: number): number {
+    return getActBossTargetMultiplier(
+      this.stakeModifiers.bossTargetMultiplier ?? 1,
+      actNumber
     )
   }
 
@@ -364,10 +376,16 @@ export class RoundManager {
     bossRound.bossMandate = replacement
     const baseTargets = this.getScoreTargetsForAct(this.currentAct.actNumber)
     const stakeMultiplier = this.getTargetMultiplier(this.currentAct.actNumber)
-    bossRound.scoreTarget = Math.floor(baseTargets[2] * stakeMultiplier)
+    const bossMultiplier = this.getBossMultiplier(this.currentAct.actNumber)
+    bossRound.scoreTarget = Math.floor(
+      baseTargets[2] * stakeMultiplier * bossMultiplier
+    )
     if (replacement.effect.type === 'score_multiplier') {
       bossRound.scoreTarget = Math.floor(
-        baseTargets[0] * (replacement.effect.value as number) * stakeMultiplier
+        baseTargets[0] *
+          (replacement.effect.value as number) *
+          stakeMultiplier *
+          bossMultiplier
       )
     }
 
@@ -701,9 +719,13 @@ export class RoundManager {
     manager.bonusDiscards = state.bonusDiscards
     manager.usedTileIds = new Set(state.usedTileIds)
     manager.rngState = state.rngState ?? manager.rngState
-    // Restore modifiers or recalculate if not present
+    // Restore modifiers or recalculate if not present. Fields added since
+    // the save was written come from the Stake's current definition.
     if (state.stakeModifiers) {
-      manager.stakeModifiers = state.stakeModifiers
+      manager.stakeModifiers = {
+        ...calculateCombinedModifiers(state.stake),
+        ...state.stakeModifiers,
+      }
     }
     return manager
   }

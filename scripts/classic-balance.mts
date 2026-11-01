@@ -20,6 +20,8 @@
  *
  * --emergency-turns buys an extra Turn on the last Turn of a round when the
  * best visible play cannot reach the target and the Turn is affordable.
+ * --ad-turns also takes it for a rewarded ad when Gold is short (as if every
+ * offered ad were watched; at most AD_TURNS_PER_ACT per Act).
  */
 
 import { GameOrchestrator } from '../src/game/GameOrchestrator.ts'
@@ -64,7 +66,8 @@ if (
   )
 const RESOURCES = PLANS || CHASES || ARGS.includes('--resources')
 const CONSUMABLES = ARGS.includes('--consumables')
-const EMERGENCY_TURNS = ARGS.includes('--emergency-turns')
+const AD_TURNS = ARGS.includes('--ad-turns')
+const EMERGENCY_TURNS = ARGS.includes('--emergency-turns') || AD_TURNS
 const JSON_OUTPUT = ARGS.includes('--json')
 const BASE_POLICY = BATCH_PLANS
   ? 'resources-and-batch-hand-plan'
@@ -75,7 +78,7 @@ const BASE_POLICY = BATCH_PLANS
       : RESOURCES
         ? 'resources'
         : 'best-immediate'
-const POLICY = `${BASE_POLICY}${CONSUMABLES ? '+consumables' : ''}${EMERGENCY_TURNS ? '+emergency-turns' : ''}`
+const POLICY = `${BASE_POLICY}${CONSUMABLES ? '+consumables' : ''}${EMERGENCY_TURNS ? '+emergency-turns' : ''}${AD_TURNS ? '+ad-turns' : ''}`
 const value = (name: string, fallback: string) =>
   ARGS.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3) ??
   fallback
@@ -95,6 +98,7 @@ for (const arg of ARGS.filter((arg) => arg.startsWith('--'))) {
       '--plan-batches',
       '--consumables',
       '--emergency-turns',
+      '--ad-turns',
       '--json',
     ].includes(arg) &&
     !/^--(?:table|stake|seed)=.+$/.test(arg)
@@ -147,6 +151,8 @@ interface RunResult {
   /** Extra Turns bought with Gold, and the Gold they cost. */
   emergencyTurns: number
   emergencyGold: number
+  /** Extra Turns taken for a (simulated) watched rewarded ad. */
+  adTurns: number
   packsClaimed: number
   packsSkipped: number
   buildShopPurchases: number
@@ -185,6 +191,7 @@ function playRun(seed: number): RunResult {
   let goldSpent = 0
   let emergencyTurns = 0
   let emergencyGold = 0
+  let adTurns = 0
   let packsClaimed = 0
   let packsSkipped = 0
   let outcome = 'guardLimit'
@@ -313,6 +320,19 @@ function playRun(seed: number): RunResult {
       }
       emergencyTurns++
       emergencyGold += emergency.cost
+      continue
+    }
+    if (
+      AD_TURNS &&
+      emergency?.adAvailable &&
+      (advice?.best.score ?? 0) < state.targetScore - state.score
+    ) {
+      const result = orchestrator.processAction({ type: 'adTurn' })
+      if (!result.success) {
+        outcome = `invalidAction:adTurn:${result.errors?.join(',')}`
+        break
+      }
+      adTurns++
       continue
     }
     const resourceContext = {
@@ -455,6 +475,7 @@ function playRun(seed: number): RunResult {
     goldSpent,
     emergencyTurns,
     emergencyGold,
+    adTurns,
     packsClaimed,
     packsSkipped,
     buildShopPurchases,
@@ -592,6 +613,9 @@ const limitations = [
   EMERGENCY_TURNS
     ? 'Emergency Turns: buys one on the last Turn when the best visible play falls short of the target and it is affordable; no lookahead on whether the extra Turn will be enough.'
     : 'No emergency Turns bought.',
+  AD_TURNS
+    ? 'Ad Turns: every offered rewarded ad is treated as watched to the end; real players may decline or find no ad available.'
+    : 'No ad Turns taken.',
   CONSUMABLES
     ? 'Conservative consumable policy: permanent upgrades, public rewards and visible-target heuristics. Unpriced Script penalties/global sacrifices are held, not assumed harmless; no hypothetical effect execution or build synergy optimization.'
     : 'No consumable use. Unused inventory is reported, not treated as an implemented policy.',
@@ -637,7 +661,7 @@ if (JSON_OUTPUT) {
   )
   if (EMERGENCY_TURNS)
     console.log(
-      `  Extra Turns    ${results.reduce((sum, run) => sum + run.emergencyTurns, 0)} bought for ${results.reduce((sum, run) => sum + run.emergencyGold, 0)} gold`
+      `  Extra Turns    ${results.reduce((sum, run) => sum + run.emergencyTurns, 0)} bought for ${results.reduce((sum, run) => sum + run.emergencyGold, 0)} gold${AD_TURNS ? `; ${results.reduce((sum, run) => sum + run.adTurns, 0)} for ads` : ''}`
     )
   console.log(
     `  Blind hands    ${results.reduce((sum, run) => sum + run.blindHands, 0)} (position-only, no score preview)`

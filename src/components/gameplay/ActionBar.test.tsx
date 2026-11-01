@@ -272,5 +272,56 @@ describe('ActionBar', () => {
         })
       ).toHaveTextContent(i18n.t('gameplay.emergencyTurn.buy'))
     })
+
+    it('offers a ready rewarded ad in place of a price it cannot pay', () => {
+      const onWatchAd = vi.fn()
+      const { container } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: true, watching: false },
+        onWatchAd,
+      })
+      expect(container.querySelector('[data-emergency-turn]')).toBeNull()
+      const watch = screen.getByRole('button', {
+        name: 'Watch an ad for one more Turn',
+      })
+      expect(watch).toHaveTextContent('+1 Turn')
+      expect(watch).toHaveTextContent('Watch ad')
+      fireEvent.click(watch)
+      expect(onWatchAd).toHaveBeenCalledOnce()
+    })
+
+    it('keeps the Gold price when it can be paid, or when no ad is ready', () => {
+      const { container, unmount } = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: true },
+        adTurn: { available: true, watching: false },
+      })
+      expect(container.querySelector('[data-ad-turn]')).toBeNull()
+      expect(container.querySelector('[data-emergency-turn]')).toBeEnabled()
+      unmount()
+      const short = renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: false, watching: false },
+      })
+      expect(short.container.querySelector('[data-ad-turn]')).toBeNull()
+      expect(
+        short.container.querySelector('[data-emergency-turn]')
+      ).toBeDisabled()
+    })
+
+    it('shows the ad as playing, without a second tap', () => {
+      renderActionBar({
+        turnsLeft: 1,
+        emergencyTurn: { cost: 20, affordable: false },
+        adTurn: { available: false, watching: true },
+      })
+      const watch = screen.getByRole('button', {
+        name: 'Watch an ad for one more Turn',
+      })
+      expect(watch).toBeDisabled()
+      expect(watch).toHaveTextContent('Ad playing…')
+    })
   })
 })

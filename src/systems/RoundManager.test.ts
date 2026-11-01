@@ -6,7 +6,9 @@ import {
 } from './RoundManager'
 import {
   calculateCombinedModifiers,
+  getActBossTargetMultiplier,
   getActScoreScaling,
+  STAKE_BOSS_TARGET_FIRST_ACT,
   STAKE_SCALING_FULL_ACT,
 } from '../config/stakeDefinitions'
 import { NORMAL_RUN_ACTS, isShowdownAct } from '../config/runProgression'
@@ -23,7 +25,14 @@ describe('Approachable six-Act campaign and optional Endless', () => {
       300, 800, 2000, 5000, 10000, 18000, 30000, 45000,
     ])
     for (let act = 1; act <= 8; act++) {
-      expect(targets(2, act)).toEqual(targets(1, act))
+      // Red keeps White's Small and Large targets and raises only the Boss,
+      // by 20% from Act 2.
+      expect(targets(2, act).slice(0, 2)).toEqual(targets(1, act).slice(0, 2))
+      expect(targets(2, act)[2]).toBe(
+        act >= STAKE_BOSS_TARGET_FIRST_ACT
+          ? Math.floor(targets(1, act)[2] * 1.2)
+          : targets(1, act)[2]
+      )
       expect(targets(1, act).slice(0, 2)).toEqual([
         BASE_SCORE_TARGETS[act],
         BASE_SCORE_TARGETS[act] * 1.5,
@@ -105,9 +114,22 @@ function targets(stake: number, act: number, table = 1): number[] {
     .rounds.map((round) => round.scoreTarget)
 }
 
-/** White targets scaled the way RoundManager scales them for a Stake. */
-function scaled(act: number, multiplier: number): number[] {
-  return targets(1, act).map((target) => Math.floor(target * multiplier))
+/**
+ * White targets scaled the way RoundManager scales them for a Stake: every
+ * round by `multiplier`, and the Boss also by `boss` (Red Stake and above).
+ */
+function scaled(act: number, multiplier: number, boss = 1): number[] {
+  return targets(1, act).map((target, index) =>
+    Math.floor(target * multiplier * (index === 2 ? boss : 1))
+  )
+}
+
+/** The Boss target multiplier a Stake applies in an Act. */
+function bossFor(stake: number, act: number): number {
+  return getActBossTargetMultiplier(
+    calculateCombinedModifiers(stake).bossTargetMultiplier,
+    act
+  )
 }
 
 describe('Stake score ramp', () => {
@@ -145,7 +167,9 @@ describe('Stake score ramp', () => {
         expect(multiplier).toBeGreaterThanOrEqual(previous)
         previous = multiplier
         if (act >= STAKE_SCALING_FULL_ACT) expect(multiplier).toBe(scoreScaling)
-        expect(targets(stake, act)).toEqual(scaled(act, multiplier))
+        expect(targets(stake, act)).toEqual(
+          scaled(act, multiplier, bossFor(stake, act))
+        )
       }
     }
   )
@@ -165,7 +189,11 @@ describe('Stake score ramp', () => {
         const goldMandate = gold.rerollBossMandate()
         expect(goldMandate?.id).toBe(whiteMandate?.id)
         expect(gold.getCurrentAct()!.rounds[2].scoreTarget).toBe(
-          Math.floor(white.getCurrentAct()!.rounds[2].scoreTarget * multiplier)
+          Math.floor(
+            white.getCurrentAct()!.rounds[2].scoreTarget *
+              multiplier *
+              bossFor(8, act)
+          )
         )
       }
     }
@@ -175,7 +203,7 @@ describe('Stake score ramp', () => {
     expect(targets(8, 1, 1.25)).toEqual([375, 562, 750])
     const full = calculateCombinedModifiers(8).scoreScaling * 1.25
     expect(targets(8, STAKE_SCALING_FULL_ACT, 1.25)).toEqual(
-      scaled(STAKE_SCALING_FULL_ACT, full)
+      scaled(STAKE_SCALING_FULL_ACT, full, bossFor(8, STAKE_SCALING_FULL_ACT))
     )
   })
 })

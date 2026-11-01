@@ -455,8 +455,9 @@ describe('GameOrchestrator', () => {
       for (const stake of [2, 5, 8]) {
         lastTurnInAct(2, 999, stake)
         expect(game.getEmergencyTurnOffer(), `Stake ${stake}`).toEqual({
-          cost: 10,
+          cost: 20,
           affordable: true,
+          adAvailable: false,
         })
       }
     })
@@ -476,21 +477,22 @@ describe('GameOrchestrator', () => {
       expect(game.getAvailableActions()).not.toContain('buyTurn')
       state.handsRemaining = 1
       expect(game.getEmergencyTurnOffer()).toEqual({
-        cost: 10,
+        cost: 20,
         affordable: true,
+        adAvailable: false,
       })
       expect(game.getAvailableActions()).toContain('buyTurn')
     })
 
-    it('trades Gold for a Turn, then doubles the price within the round', () => {
+    it('trades 20 Gold for a Turn in Act 2, then doubles the price within the round', () => {
       const state = lastTurnInAct(2, 100)
       const allowance = state.handsAllowance
       const result = game.processAction({ type: 'buyTurn' })
       expect(result.success).toBe(true)
       expect(result.effects).toContainEqual(
-        expect.objectContaining({ type: 'gold_changed', delta: -10 })
+        expect.objectContaining({ type: 'gold_changed', delta: -20 })
       )
-      expect(state.gold).toBe(90)
+      expect(state.gold).toBe(80)
       expect(state.handsRemaining).toBe(2)
       expect(state.handsAllowance).toBe(allowance + 1)
       // Not the last Turn any more: REDRAW is legal again.
@@ -502,30 +504,31 @@ describe('GameOrchestrator', () => {
       ).toBe(true)
       expect(game.getEmergencyTurnOffer()).toBeNull()
       state.handsRemaining = 1
-      expect(game.getEmergencyTurnOffer()?.cost).toBe(20)
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(40)
     })
 
     it('is priced by Act and resets each round', () => {
       const state = lastTurnInAct(3, 500)
-      expect(game.getEmergencyTurnOffer()?.cost).toBe(15)
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(30)
       expect(game.processAction({ type: 'buyTurn' }).success).toBe(true)
       clearRound(game)
       game.exitShop()
       state.handsRemaining = 1
-      expect(game.getEmergencyTurnOffer()?.cost).toBe(15)
+      expect(game.getEmergencyTurnOffer()?.cost).toBe(30)
     })
 
     it('is shown but refused when Gold is short', () => {
-      const state = lastTurnInAct(2, 9)
+      const state = lastTurnInAct(2, 19)
       expect(game.getEmergencyTurnOffer()).toEqual({
-        cost: 10,
+        cost: 20,
         affordable: false,
+        adAvailable: true,
       })
       expect(game.getAvailableActions()).not.toContain('buyTurn')
       const result = game.processAction({ type: 'buyTurn' })
       expect(result.success).toBe(false)
-      expect(result.errors?.[0]).toContain('10 Gold')
-      expect(state.gold).toBe(9)
+      expect(result.errors?.[0]).toContain('20 Gold')
+      expect(state.gold).toBe(19)
       expect(state.handsRemaining).toBe(1)
     })
 
@@ -546,6 +549,49 @@ describe('GameOrchestrator', () => {
       game.processAction({ type: 'play', tileIds: ids })
       // The Needle's single Play ends the round however many Turns remain.
       expect(game.getState().phase).toBe('gameOver')
+    })
+  
+    it('grants the Turn for a watched ad when Gold is short, once per Act', () => {
+      const state = lastTurnInAct(2, 5)
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(true)
+      const result = game.processAction({ type: 'adTurn' })
+      expect(result.success).toBe(true)
+      expect(state.handsRemaining).toBe(2)
+      expect(state.gold).toBe(5)
+      // Gold purchases keep their own price ladder.
+      expect(state.emergencyTurnsBoughtThisRound).toBe(0)
+
+      // The next round of the same Act: no second ad Turn.
+      clearRound(game)
+      game.exitShop()
+      state.handsRemaining = 1
+      state.gold = 5
+      expect(game.getEmergencyTurnOffer()).toEqual({
+        cost: 20,
+        affordable: false,
+        adAvailable: false,
+      })
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      expect(state.handsRemaining).toBe(1)
+
+      // A new Act brings a new one.
+      advanceToRound(game, 'Boss')
+      advanceRound(game)
+      expect(state.currentAct).toBe(3)
+      state.handsRemaining = 1
+      state.gold = 5
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(true)
+    })
+
+    it('offers no ad Turn while Gold can pay, on White, or in Act 1', () => {
+      lastTurnInAct(2, 100)
+      expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(false)
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      lastTurnInAct(3, 0, 1)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
+      expect(game.processAction({ type: 'adTurn' }).success).toBe(false)
+      lastTurnInAct(1, 0)
+      expect(game.getEmergencyTurnOffer()).toBeNull()
     })
   })
 

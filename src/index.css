@@ -420,7 +420,8 @@ a {
 }
 
 .gameplay-action-controls > [data-game-action],
-.gameplay-action-controls > [data-emergency-turn] {
+.gameplay-action-controls > [data-emergency-turn],
+.gameplay-action-controls > [data-ad-turn] {
   grid-column: 3;
   min-width: 0;
   width: 100%;

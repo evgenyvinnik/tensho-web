@@ -63,7 +63,7 @@ test('on Red Stake the last Turn can be extended with Gold from Act 2', async ({
   await expect(page.locator('[data-emergency-turn]')).toHaveCount(0)
 
   await lastTurn(page, 2, 50)
-  const buy = page.getByRole('button', { name: label(10) })
+  const buy = page.getByRole('button', { name: label(20) })
   await expect(buy).toBeVisible()
   await expect(buy).toBeEnabled()
   await expect(buy).toContainText(en.gameplay.emergencyTurn.buy)
@@ -115,7 +115,7 @@ test('on Red Stake the last Turn can be extended with Gold from Act 2', async ({
         bought: state.emergencyTurnsBoughtThisRound,
       }
     })
-  ).toEqual({ gold: 40, bought: 1 })
+  ).toEqual({ gold: 30, bought: 1 })
 })
 
 test('a short purse still shows the price, disabled', async ({
@@ -127,8 +127,65 @@ test('a short purse still shows the price, disabled', async ({
   await openTable(page, '/en/play')
   await settleReveals(page)
   await lastTurn(page, 3, 4)
-  const buy = page.getByRole('button', { name: label(15) })
+  const buy = page.getByRole('button', { name: label(30) })
   await expect(buy).toBeVisible()
   await expect(buy).toBeDisabled()
   await expect(page.locator('[data-turns-left="1"]')).toBeVisible()
+  // Ads are off unless configured: no ad is offered in its place.
+  await expect(page.locator('[data-ad-turn]')).toHaveCount(0)
+})
+
+test('short of Gold, a watched rewarded ad grants the Turn once per Act', async ({
+  page,
+  isMobile,
+}, testInfo) => {
+  if (isMobile) await page.setViewportSize({ width: 320, height: 740 })
+  await chooseStake(page, 2)
+  // Development/test builds may use the simulated ad provider.
+  await page.addInitScript(() =>
+    localStorage.setItem('tensho-rewarded-ads', 'simulate')
+  )
+  await openTable(page, '/en/play')
+  await settleReveals(page)
+  await lastTurn(page, 2, 5)
+
+  const watch = page.getByRole('button', {
+    name: en.gameplay.emergencyTurn.watchAdLabel,
+  })
+  await expect(watch).toBeVisible()
+  await expect(watch).toContainText(en.gameplay.emergencyTurn.watchAd)
+  await expect(page.locator('[data-emergency-turn]')).toHaveCount(0)
+  await page.screenshot({ path: testInfo.outputPath('ad-turn-offer.png') })
+  if (isMobile) await watch.tap()
+  else await watch.click()
+
+  const ad = page.getByRole('dialog', {
+    name: en.gameplay.emergencyTurn.simulatedAd,
+  })
+  await expect(ad).toBeVisible()
+  const claim = ad.getByRole('button', {
+    name: en.gameplay.emergencyTurn.adClaim,
+  })
+  await expect(claim).toBeDisabled()
+  await expect(claim).toBeEnabled({ timeout: 6_000 })
+  await claim.click()
+  await expect(ad).toHaveCount(0)
+
+  await expect(page.locator('[data-turns-left="2"]')).toBeVisible()
+  await expect(page.getByRole('button', { name: en.menu.newRun })).toHaveCount(
+    0
+  )
+  expect(
+    await page.evaluate(async () => {
+      const path = '/src/game/GameOrchestrator.ts'
+      const { gameOrchestrator: game } = await import(path)
+      const state = game.getState()
+      return { gold: state.gold, adTurns: state.adTurns }
+    })
+  ).toEqual({ gold: 5, adTurns: { actNumber: 2, count: 1 } })
+
+  // The same Act's next last Turn offers no second ad, only the price.
+  await lastTurn(page, 2, 5)
+  await expect(page.getByRole('button', { name: label(20) })).toBeDisabled()
+  await expect(page.locator('[data-ad-turn]')).toHaveCount(0)
 })

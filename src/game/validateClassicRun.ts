@@ -240,6 +240,7 @@ const stateFields = {
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
   emergencyTurnsBoughtThisRound: optional(count),
+  adTurns: optional(object({ actNumber: positive, count })),
   honorDiscardsThisRound: optional(count),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),

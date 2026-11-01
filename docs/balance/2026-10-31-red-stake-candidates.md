@@ -1,5 +1,10 @@
 # Red Stake candidates: same-seed measurement
 
+**Update:** the owner chose a variant of the Boss option: Boss targets +20%
+from Act 2 (not Act 1). It shipped with the emergency Turn; see
+[the emergency Turn report](2026-10-31-emergency-turn.md) for the measured
+ladder.
+
 October 31, 2026. A player switched to Stake 2 and saw no change in play. This
 measures the current Stake ladder on a larger sample and compares five
 candidate Red Stake rules. **No balance change has shipped**; this report is

@@ -999,7 +999,16 @@
     "emergencyTurn": {
       "buy": "+1 turno",
       "label": "Compra un turno in più per {{cost}} oro",
-      "short": "Oro insufficiente: un turno in più costa {{cost}}"
+      "short": "Oro insufficiente: un turno in più costa {{cost}}",
+      "watchAd": "Guarda pubblicità",
+      "watchAdLabel": "Guarda una pubblicità per un turno in più",
+      "adPlaying": "Pubblicità in corso…",
+      "adIncomplete": "La pubblicità è stata chiusa prima: nessun turno extra.",
+      "adUnavailable": "Nessuna pubblicità disponibile al momento.",
+      "simulatedAd": "Pubblicità (simulata)",
+      "adCountdown": "La ricompensa sarà pronta tra {{seconds}} s",
+      "adReady": "Ricompensa pronta",
+      "adClaim": "Ottieni +1 turno"
     }
   },
   "rounds": {
@@ -2168,6 +2177,7 @@
     "rules": {
       "base": "Difficoltà base: nessuna penalità aggiuntiva.",
       "noSmallRoundReward": "I round piccoli non danno oro come ricompensa.",
+      "bossTargets": "Obiettivi del boss: più alti del {{percent}} dall’Atto {{act}}.",
       "emergencyTurn": "Turni di emergenza dall’Atto {{act}}: all’ultimo turno, compra un turno in più con l’oro ({{cost}} oro nell’Atto {{act}}, {{nextCost}} nell’Atto {{nextAct}} e così via; raddoppia per ogni turno comprato nello stesso round).",
       "scoreScaling": "Obiettivi di punteggio del livello: uguali al Bianco nell’Atto 1, poi crescono a ogni atto fino a ×{{multiplier}} rispetto al Bianco dall’Atto {{act}} in poi. Si applicano anche i modificatori del tavolo.",
       "redrawPenalty": "Turni per round: −{{amount}}.",

@@ -82,6 +82,7 @@ it('opens the Stake rules on tap, so a phone player can read them', () => {
   fireEvent.click(opener)
   const dialog = screen.getByRole('dialog', { name: 'Red Stake' })
   expect(dialog).toHaveTextContent('No reward gold from Small Rounds.')
+  expect(dialog).toHaveTextContent('Boss targets: 20% higher from Act 2.')
   expect(dialog).toHaveTextContent('Emergency Turns from Act 2')
   expect(dialog).toHaveTextContent(
     'Higher tiers include the earlier tiers’ rules.'
@@ -94,7 +95,7 @@ it('lists every cumulative rule at the top Stake and the base rule on White', ()
     screen.getByRole('button', { name: 'Gold Stake · Active rules' })
   )
   const dialog = screen.getByRole('dialog', { name: 'Gold Stake' })
-  expect(dialog.querySelectorAll('li')).toHaveLength(7)
+  expect(dialog.querySelectorAll('li')).toHaveLength(8)
   unmount()
   render(<StakeBadge stake={1} />)
   fireEvent.click(

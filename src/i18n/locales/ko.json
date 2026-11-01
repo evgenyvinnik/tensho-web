@@ -712,7 +712,16 @@
     "emergencyTurn": {
       "buy": "턴 +1",
       "label": "{{cost}}골드로 턴 하나 더 구매",
-      "short": "골드가 부족해요: 턴 추가에는 {{cost}}골드가 필요해요"
+      "short": "골드가 부족해요: 턴 추가에는 {{cost}}골드가 필요해요",
+      "watchAd": "광고 보기",
+      "watchAdLabel": "광고를 보고 턴 하나 더 받기",
+      "adPlaying": "광고 재생 중…",
+      "adIncomplete": "광고를 일찍 닫아서 추가 턴이 없습니다.",
+      "adUnavailable": "지금은 볼 수 있는 광고가 없습니다.",
+      "simulatedAd": "광고 (시뮬레이션)",
+      "adCountdown": "{{seconds}}초 후 보상을 받을 수 있습니다",
+      "adReady": "보상 준비 완료",
+      "adClaim": "턴 +1 받기"
     }
   },
   "rounds": {
@@ -1881,6 +1890,7 @@
     "rules": {
       "base": "기본 난도: 추가 불이익이 없습니다.",
       "noSmallRoundReward": "소형 라운드에서 보상 골드를 받지 못합니다.",
+      "bossTargets": "{{act}}막부터 보스 목표 점수가 {{percent}} 높아집니다.",
       "emergencyTurn": "{{act}}막부터 비상 턴: 마지막 턴에 골드로 턴을 하나 더 살 수 있습니다({{act}}막 {{cost}}골드, {{nextAct}}막 {{nextCost}}골드 순으로 오르며, 같은 라운드에서 살 때마다 두 배).",
       "scoreScaling": "목표 점수는 1막에서는 백색 단계와 같고, 막마다 올라 {{act}}막부터 백색 단계의 {{multiplier}}배가 됩니다. 테이블 보정도 적용됩니다.",
       "redrawPenalty": "라운드당 턴: −{{amount}}.",

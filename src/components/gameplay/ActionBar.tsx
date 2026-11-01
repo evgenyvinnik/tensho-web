@@ -55,6 +55,12 @@ export interface ActionBarProps {
   /** An extra Turn for sale on the last Turn (Act 2 on), or null. */
   emergencyTurn?: { cost: number; affordable: boolean } | null
   onBuyTurn?: () => void
+  /**
+   * Short of Gold, a rewarded ad that grants the Turn instead: offered only
+   * once an ad is ready.
+   */
+  adTurn?: { available: boolean; watching: boolean } | null
+  onWatchAd?: () => void
 }
 
 export function ActionBar({
@@ -72,6 +78,8 @@ export function ActionBar({
   willClear = false,
   emergencyTurn = null,
   onBuyTurn,
+  adTurn = null,
+  onWatchAd,
 }: ActionBarProps) {
   const { t, i18n } = useTranslation()
   const reasonId = useId()
@@ -83,6 +91,11 @@ export function ActionBar({
     selectedCount > 0 ? (!playAllowed ? playReason : undefined) : undefined
   // REDRAW's slot sells the emergency Turn only while REDRAW is unusable.
   const offer = freeRedraws > 0 ? null : emergencyTurn
+  // Short of Gold, a ready rewarded ad takes the price's place.
+  const adOffer =
+    offer && !offer.affordable && (adTurn?.available || adTurn?.watching)
+      ? adTurn
+      : null
 
   return (
     <div
@@ -131,7 +144,37 @@ export function ActionBar({
           </div>
         )}
 
-        {offer ? (
+        {adOffer ? (
+          <button
+            type="button"
+            data-ad-turn
+            onClick={onWatchAd}
+            disabled={adOffer.watching}
+            aria-label={t('gameplay.emergencyTurn.watchAdLabel')}
+            title={t('gameplay.emergencyTurn.watchAdLabel')}
+            className="flex !min-h-11 min-w-0 flex-1 flex-col items-center justify-center rounded-lg border-2 border-sky-300 bg-black/25 px-1 py-0.5 text-[13px] font-black uppercase leading-tight text-[var(--color-beige-white)] shadow-[0_0_14px_rgba(125,211,252,0.35)] hover:bg-[var(--color-forest-green)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-golden-yellow)] disabled:cursor-wait disabled:opacity-70 sm:px-2 sm:text-sm"
+          >
+            <span className="[overflow-wrap:anywhere]">
+              {t('gameplay.emergencyTurn.buy')}
+            </span>
+            <span className="text-[10px] font-black normal-case leading-none tracking-normal text-sky-200 [overflow-wrap:anywhere]">
+              {adOffer.watching ? (
+                t('gameplay.emergencyTurn.adPlaying')
+              ) : (
+                <span className="inline-flex items-center gap-1">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 10 10"
+                    className="h-2.5 w-2.5 fill-current"
+                  >
+                    <path d="M2 1 L9 5 L2 9 Z" />
+                  </svg>
+                  {t('gameplay.emergencyTurn.watchAd')}
+                </span>
+              )}
+            </span>
+          </button>
+        ) : offer ? (
           <>
             <button
               type="button"
