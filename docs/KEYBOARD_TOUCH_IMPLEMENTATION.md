@@ -78,9 +78,17 @@ and it stays above the 44px touch target, so it is unchanged.
   arrows, P, A, Esc with focus checked at each step), dialogs swallowing
   shortcuts, the setting turning them off, and touch (`manipulation`, taps
   leave focus alone, no key caps).
-- Existing browser specs for the action bar, rack, dialogs, Pavilion and
-  play/redraw journeys were rerun on the final code (results in the commit).
-  `beginner-guide.spec.ts` fails before and after this change: it looks for a
+- 17 existing browser specs (action bar, rack and felt, dialogs, tile
+  details, Pavilion, tutorials, play/redraw, progress reset) plus the new one,
+  on both projects: 175 passed, 69 failed, 4 skipped. None of the failures is
+  new. The same 68 in `tap-discard`, `quiet-inventory` and `tile-details` fail
+  identically on the parent commit `5aed06f`: they look for the removed
+  single-tile Discard, an old first-move hint, Table Loop test ids and old
+  `PlaySurface` tile names. `interaction` at 320×568 with a mouse fails 1 in 8
+  repeats on both commits: when tiles move, the board scrolls under the
+  resting pointer, which opens a Flower's hover details (Bamboo on this
+  branch, Winter on the parent). `app.spec.ts` passes in full.
+  `beginner-guide.spec.ts` fails on both commits: it looks for a
   `[data-open-beginner-guide]` button the table no longer has.
 - Not verified on physical iPhone or iPad hardware: double-tap zoom and
   sticky hover were checked in Chromium's touch emulation only.
