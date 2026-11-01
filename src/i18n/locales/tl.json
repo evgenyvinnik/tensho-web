@@ -823,7 +823,16 @@
     "visual": "Visual",
     "rankNumbers": "Numero sa tile",
     "rankNumbersDesc": "Magpakita ng maliit na 1–9 sa may-numerong tile at titik sa mga Dragon habang inaaral mo ang mga mukha.",
-    "unreadableSave": "Hindi mabasa ang naka-save na laro. Puwede mo itong i-download bago magsimula ng Bagong Laro na papalit dito."
+    "unreadableSave": "Hindi mabasa ang naka-save na laro. Puwede mo itong i-download bago magsimula ng Bagong Laro na papalit dito.",
+    "credits": {
+      "title": "Mga Kredito",
+      "soundEffects": "Mga sound effect",
+      "tiles": "Tunog ng mga tile",
+      "interface": "Tunog ng mga button at menu",
+      "casino": "Chips, ginto, at card pack",
+      "modified": "Hinati sa mga solong tunog, nilinis, at pinantay ang lakas para sa Tensho.",
+      "original": "Ang lahat ng iba pang sound effect, kasama ang koto, mga kampana, at taiko, ay orihinal na tunog na sinintesis para sa Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Yugto {{current}} sa {{total}}",

@@ -536,7 +536,16 @@
     "visual": "Visuel",
     "rankNumbers": "Nombres sur les tuiles",
     "rankNumbersDesc": "Affiche un petit 1–9 sur les tuiles numérotées et une lettre sur les Dragons, le temps d’apprendre les faces.",
-    "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera."
+    "unreadableSave": "Votre partie sauvegardée est illisible. Vous pouvez la télécharger avant de lancer une Nouvelle partie, qui la remplacera.",
+    "credits": {
+      "title": "Crédits",
+      "soundEffects": "Effets sonores",
+      "tiles": "Sons des tuiles",
+      "interface": "Sons des boutons et des menus",
+      "casino": "Jetons, or et paquets de cartes",
+      "modified": "Découpé en sons individuels, nettoyé et égalisé en volume pour Tensho.",
+      "original": "Tous les autres effets sonores, dont le koto, les cloches et le taiko, sont des sons originaux synthétisés pour Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Acte {{current}} sur {{total}}",

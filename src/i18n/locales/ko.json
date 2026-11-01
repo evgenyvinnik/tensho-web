@@ -536,7 +536,16 @@
     "visual": "화면",
     "rankNumbers": "패에 숫자 표시",
     "rankNumbersDesc": "패 그림을 익히는 동안 수패에 1~9, 삼원패에 글자를 작게 표시해요.",
-    "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요."
+    "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요.",
+    "credits": {
+      "title": "크레딧",
+      "soundEffects": "효과음",
+      "tiles": "패 소리",
+      "interface": "버튼 및 메뉴 소리",
+      "casino": "칩, 골드, 카드 팩",
+      "modified": "Tensho에 맞게 한 소리씩 잘라 내고 잡음을 정리한 뒤 음량을 맞췄습니다.",
+      "original": "고토, 방울, 다이코를 포함한 그 밖의 효과음은 모두 Tensho를 위해 합성한 오리지널 사운드입니다."
+    }
   },
   "gameplay": {
     "actProgress": "전체 {{total}}막 중 {{current}}막",

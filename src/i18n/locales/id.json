@@ -744,7 +744,16 @@
     "visual": "Visual",
     "rankNumbers": "Angka di ubin",
     "rankNumbersDesc": "Tampilkan 1–9 kecil di ubin angka dan huruf di Naga selagi kamu mempelajari gambarnya.",
-    "unreadableSave": "Permainan tersimpan tidak dapat dibaca. Kamu bisa mengunduhnya sebagai file sebelum memulai Permainan Baru yang akan menggantikannya."
+    "unreadableSave": "Permainan tersimpan tidak dapat dibaca. Kamu bisa mengunduhnya sebagai file sebelum memulai Permainan Baru yang akan menggantikannya.",
+    "credits": {
+      "title": "Kredit",
+      "soundEffects": "Efek suara",
+      "tiles": "Suara ubin",
+      "interface": "Suara tombol dan menu",
+      "casino": "Chip, emas, dan paket kartu",
+      "modified": "Dipotong menjadi suara tunggal, dibersihkan, dan diseimbangkan volumenya untuk Tensho.",
+      "original": "Semua efek suara lainnya, termasuk koto, lonceng, dan taiko, adalah suara orisinal yang disintesis untuk Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Babak {{current}} dari {{total}}",

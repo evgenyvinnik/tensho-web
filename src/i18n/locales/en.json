@@ -532,7 +532,16 @@
     "dangerZone": "Danger Zone",
     "rankNumbers": "Numbers on tiles",
     "rankNumbersDesc": "Show a small 1–9 on numbered tiles and a letter on Dragons, while you learn the tile faces.",
-    "unreadableSave": "Your saved run could not be read. You can download it as a file before starting a New Run, which replaces it."
+    "unreadableSave": "Your saved run could not be read. You can download it as a file before starting a New Run, which replaces it.",
+    "credits": {
+      "title": "Credits",
+      "soundEffects": "Sound effects",
+      "tiles": "Tile sounds",
+      "interface": "Button and menu sounds",
+      "casino": "Chips, gold and card packs",
+      "modified": "Cut into single sounds, cleaned up and level-matched for Tensho.",
+      "original": "All other sound effects, including the koto, bells and taiko, are original sounds synthesized for Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Act {{current}} of {{total}}",

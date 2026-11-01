@@ -823,7 +823,16 @@
     "visual": "Visivo",
     "rankNumbers": "Numeri sulle tessere",
     "rankNumbersDesc": "Mostra un piccolo 1–9 sulle tessere numerate e una lettera sui Draghi mentre impari le facce.",
-    "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà."
+    "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà.",
+    "credits": {
+      "title": "Crediti",
+      "soundEffects": "Effetti sonori",
+      "tiles": "Suoni delle tessere",
+      "interface": "Suoni di pulsanti e menu",
+      "casino": "Fiches, oro e pacchetti di carte",
+      "modified": "Suddiviso in singoli suoni, ripulito e livellato per Tensho.",
+      "original": "Tutti gli altri effetti sonori, inclusi koto, campane e taiko, sono suoni originali sintetizzati per Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Atto {{current}} di {{total}}",

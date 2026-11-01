@@ -11,6 +11,10 @@ ffmpeg -i <original> -map_metadata -1 -bitexact -ac 1 -ar 44100 \
 
 The generator reads them as mono 16-bit PCM at 44.1 kHz and fails on anything else.
 
+Players see these credits under **Settings → Credits**, rendered from
+`src/config/creditsDefinitions.ts`. A test fails if a folder here has no entry
+there, or if an entry's links are missing from this file.
+
 ## mahjong/
 
 | File | Original | Author | Licence |

@@ -11,7 +11,9 @@ Updated November 1, 2026. Audio is now connected to the live application, not ju
   - Kenney "Interface Sounds" and "Casino Audio" (CC0) for button clicks and ticks, gold and chips, and card-pack paper.
 - **Synthesis** for payoffs and refusals: Karplus-Strong koto in the *yo* pentatonic (D E G A B, *in* scale for losses), rin bells and glass, taiko, hyoshigi clappers, a felt thump under landing tiles, and a two-knock woodblock for illegal actions, so refusals never buzz.
 
-The four music tracks are unchanged; this work does not establish new licensing provenance for them.
+Every recording is credited in-game under **Settings → Credits** (title, author, licence, and the changes made where CC BY asks for them), in all thirteen languages. The entries come from `src/config/creditsDefinitions.ts`.
+
+The four music tracks are unchanged; this work does not establish new licensing provenance for them, so they are not yet listed in Credits.
 
 History: the first palette built every cue from pitched sine partials, so all seven tile sounds were near-identical ~800 Hz beeps and every button played a 620 Hz blip. A second, fully synthesized pass modelled tile clacks physically; the current pass replaces those with recordings of real tiles.
 

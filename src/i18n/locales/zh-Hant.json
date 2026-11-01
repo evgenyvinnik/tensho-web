@@ -536,7 +536,16 @@
     "visual": "顯示",
     "rankNumbers": "牌上顯示數字",
     "rankNumbersDesc": "在熟悉牌面之前，在數牌上顯示1–9，在三元牌上顯示字母。",
-    "unreadableSave": "無法讀取已儲存的進度。開始新的一局會取代它，你可以先下載為檔案。"
+    "unreadableSave": "無法讀取已儲存的進度。開始新的一局會取代它，你可以先下載為檔案。",
+    "credits": {
+      "title": "致謝",
+      "soundEffects": "音效",
+      "tiles": "牌的聲音",
+      "interface": "按鈕與選單音效",
+      "casino": "籌碼、金幣與卡包",
+      "modified": "已為 Tensho 切分成單個音效，並做了降噪與音量匹配。",
+      "original": "其餘所有音效（包括筝、鈴與太鼓）都是專為 Tensho 合成的原創聲音。"
+    }
   },
   "gameplay": {
     "actProgress": "第{{current}}幕，共{{total}}幕",
