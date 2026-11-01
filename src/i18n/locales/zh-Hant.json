@@ -544,6 +544,8 @@
     "visual": "顯示",
     "rankNumbers": "牌上顯示數字",
     "rankNumbersDesc": "在熟悉牌面之前，在數牌上顯示1–9，在三元牌上顯示字母。",
+    "keyboardShortcuts": "鍵盤快捷鍵",
+    "keyboardShortcutsDesc": "牌桌上按 P 出牌，R 重抽，A 選取全部牌，Esc 把牌放回。方向鍵可在牌之間移動。",
     "unreadableSave": "無法讀取已儲存的進度。開始新的一局會取代它，你可以先下載為檔案。"
   },
   "gameplay": {

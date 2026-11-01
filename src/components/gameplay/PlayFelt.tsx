@@ -9,7 +9,7 @@
  * @module components/gameplay/PlayFelt
  */
 
-import { useRef } from 'react'
+import { useRef, type MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
 import { AnimatedTile } from '../tiles/AnimatedTile'
@@ -20,6 +20,7 @@ import {
   recordTilePositions,
   useTileFlights,
 } from '../../animations/useTileFlights'
+import { moveTileFocus } from '../../gameplay/tileKeyboard'
 
 export interface PlayFeltProps {
   /** Selected tiles, in the order they were picked. */
@@ -27,7 +28,8 @@ export interface PlayFeltProps {
   faceDownIds?: ReadonlySet<string>
   lockedIds?: ReadonlySet<string>
   debuffedIds?: ReadonlySet<string>
-  onToggle: (tile: Tile) => void
+  /** The click is passed on so the rack can keep keyboard focus in place. */
+  onToggle: (tile: Tile, event: MouseEvent<HTMLButtonElement>) => void
   /** The rack's tile size, so a tile looks the same on either side. */
   size: TileSize
   disabled?: boolean
@@ -65,10 +67,11 @@ export function PlayFelt({
           aria-pressed={true}
           disabled={disabled}
           aria-label={tileName(tile, t, faceDownIds.has(tile.id))}
-          onClick={() => {
+          onClick={(event) => {
             recordTilePositions()
-            onToggle(tile)
+            onToggle(tile, event)
           }}
+          onKeyDown={moveTileFocus}
           className="relative flex shrink-0 items-end justify-center rounded drop-shadow-[0_6px_6px_rgba(0,0,0,0.45)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
           style={{
             width: Math.max(44, dimensions.width),

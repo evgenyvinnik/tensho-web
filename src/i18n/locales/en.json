@@ -540,6 +540,8 @@
     },
     "rankNumbers": "Numbers on tiles",
     "rankNumbersDesc": "Show a small 1–9 on numbered tiles and a letter on Dragons, while you learn the tile faces.",
+    "keyboardShortcuts": "Keyboard shortcuts",
+    "keyboardShortcutsDesc": "At the table, P plays your hand, R redraws, A selects every tile and Esc puts them back. The arrow keys move between tiles.",
     "unreadableSave": "Your saved run could not be read. You can download it as a file before starting a New Run, which replaces it."
   },
   "gameplay": {

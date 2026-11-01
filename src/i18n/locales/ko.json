@@ -544,6 +544,8 @@
     "visual": "화면",
     "rankNumbers": "패에 숫자 표시",
     "rankNumbersDesc": "패 그림을 익히는 동안 수패에 1~9, 삼원패에 글자를 작게 표시해요.",
+    "keyboardShortcuts": "키보드 단축키",
+    "keyboardShortcutsDesc": "테이블에서 P는 패 내기, R은 다시 뽑기, A는 모든 패 선택, Esc는 패를 되돌립니다. 화살표 키로 패 사이를 이동합니다.",
     "unreadableSave": "저장된 런을 읽을 수 없어요. 새 런을 시작하면 대체되니, 그 전에 파일로 내려받을 수 있어요."
   },
   "gameplay": {

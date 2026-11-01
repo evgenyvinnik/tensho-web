@@ -194,6 +194,25 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Two quick taps on neighbouring tiles, or on Play hand, are two taps, not a
+ * double-tap zoom (iOS Safari and its web views). Pinch zoom and scrolling
+ * still work. Base layer, so a component's touch-* utility still wins. */
+@layer base {
+  :where(
+    button,
+    [role='button'],
+    a,
+    input,
+    select,
+    textarea,
+    label,
+    summary,
+    .viewport-full
+  ) {
+    touch-action: manipulation;
+  }
+}
+
 /* ============================================================================
    Focus Styles
    ============================================================================ */
@@ -452,6 +471,53 @@ a {
 @container game-actions (min-width: 280px) {
   .gameplay-action-controls {
     display: flex;
+  }
+}
+
+/* Keyboard shortcut key caps: `data-shortcut="P"` on a control (see
+ * useTableShortcuts). Drawn by CSS, so the control's text and accessible name
+ * stay its label; the empty alt text keeps the cap out of the accessibility
+ * tree, which reads `aria-keyshortcuts` instead. Only with a mouse or
+ * trackpad, where a keyboard is likely. Corner caps (on a positioned control)
+ * also wait for a wide action bar so they never crowd a localized label. */
+[data-shortcut]::after {
+  content: attr(data-shortcut) / '';
+  display: none;
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  min-width: 1rem;
+  height: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+[data-shortcut][data-shortcut-inline]::after {
+  position: static;
+  margin-inline-start: 0.5rem;
+  vertical-align: middle;
+}
+
+@media (any-hover: hover) and (any-pointer: fine) {
+  [data-shortcut][data-shortcut-inline]::after {
+    display: inline-flex;
+  }
+
+  @container game-actions (min-width: 560px) {
+    [data-shortcut]:not([data-shortcut-inline])::after {
+      display: inline-flex;
+    }
   }
 }
 
@@ -1629,12 +1695,16 @@ a {
     drop-shadow(0 0 4px rgba(255, 213, 79, 0.24));
 }
 
-.group:not(:disabled):hover .game-illustration,
-button:not(:disabled):hover .game-illustration,
-[role='button']:hover .game-illustration {
-  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5))
-    drop-shadow(0 0 5px rgba(224, 165, 0, 0.3));
-  transform: translateY(-1px) scale(1.06);
+/* Hover only where a pointer can hover: on a touch screen :hover sticks to
+ * the last control tapped, which would stay lifted until the next tap. */
+@media (hover: hover) {
+  .group:not(:disabled):hover .game-illustration,
+  button:not(:disabled):hover .game-illustration,
+  [role='button']:hover .game-illustration {
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5))
+      drop-shadow(0 0 5px rgba(224, 165, 0, 0.3));
+    transform: translateY(-1px) scale(1.06);
+  }
 }
 
 button:active .game-illustration,
@@ -1699,9 +1769,11 @@ button:active .game-illustration,
     box-shadow 0.2s ease;
 }
 
-.btn-hover-subtle:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+@media (hover: hover) {
+  .btn-hover-subtle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .btn-hover-subtle:active {

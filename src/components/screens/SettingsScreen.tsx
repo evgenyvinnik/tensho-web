@@ -79,6 +79,7 @@ export function SettingsScreen() {
     reducedMotion,
     showTileHints,
     showRankNumbers,
+    keyboardShortcuts,
     setMusicVolume,
     setSfxVolume,
     toggleMusic,
@@ -87,6 +88,7 @@ export function SettingsScreen() {
     setReducedMotion,
     setShowTileHints,
     setShowRankNumbers,
+    setKeyboardShortcuts,
     resetSettings,
   } = useSettingsStore()
 
@@ -220,6 +222,12 @@ export function SettingsScreen() {
             description={t('settings.rankNumbersDesc')}
             checked={showRankNumbers}
             onChange={setShowRankNumbers}
+          />
+          <Toggle
+            label={t('settings.keyboardShortcuts')}
+            description={t('settings.keyboardShortcutsDesc')}
+            checked={keyboardShortcuts}
+            onChange={setKeyboardShortcuts}
           />
         </section>
 

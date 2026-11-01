@@ -29,6 +29,7 @@ import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../ui/Button'
 import { GoldIcon } from '../ui/GoldIcon'
+import { TABLE_SHORTCUTS } from '../../hooks/useTableShortcuts'
 
 export interface ActionBarProps {
   playButtonRef?: Ref<HTMLButtonElement>
@@ -61,6 +62,12 @@ export interface ActionBarProps {
    */
   adTurn?: { available: boolean; watching: boolean } | null
   onWatchAd?: () => void
+  /**
+   * The one-key shortcuts are on (see useTableShortcuts): Play hand and
+   * REDRAW announce theirs and, with a mouse or trackpad, show a key cap
+   * (`[data-shortcut]` in index.css, drawn by CSS so the label is unchanged).
+   */
+  shortcuts?: boolean
 }
 
 export function ActionBar({
@@ -80,6 +87,7 @@ export function ActionBar({
   onBuyTurn,
   adTurn = null,
   onWatchAd,
+  shortcuts = false,
 }: ActionBarProps) {
   const { t, i18n } = useTranslation()
   const reasonId = useId()
@@ -220,6 +228,8 @@ export function ActionBar({
             size="sm"
             onClick={onRedraw}
             disabled={!redrawAllowed}
+            aria-keyshortcuts={shortcuts ? TABLE_SHORTCUTS.redraw : undefined}
+            data-shortcut={shortcuts ? TABLE_SHORTCUTS.redraw : undefined}
             title={
               !redrawAllowed && selectedCount > 0 ? redrawReason : undefined
             }
@@ -251,6 +261,8 @@ export function ActionBar({
           onClick={onPlayHand}
           disabled={!playAllowed}
           aria-describedby={reason ? reasonId : undefined}
+          aria-keyshortcuts={shortcuts ? TABLE_SHORTCUTS.play : undefined}
+          data-shortcut={shortcuts ? TABLE_SHORTCUTS.play : undefined}
           // The main action: wider, taller and larger than REDRAW, whose
           // two-line labels stay within this height.
           className={`!min-h-14 min-w-0 flex-[1.6] !px-1 text-[15px] font-black uppercase leading-tight tracking-normal sm:flex-[1.4] sm:!px-6 sm:text-base sm:tracking-wide ${

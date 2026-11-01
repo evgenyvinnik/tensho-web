@@ -118,8 +118,10 @@
   border-color: #e0bf72;
   box-shadow: inset 0 1px #fff3;
 }
-.pavilion-tab:hover {
-  border-color: #e0bf72;
+@media (hover: hover) {
+  .pavilion-tab:hover {
+    border-color: #e0bf72;
+  }
 }
 .pavilion :is(button, a, input):focus-visible {
   outline: 2px solid #ffe3a3;
@@ -180,9 +182,11 @@
   border-radius: 14px;
   padding: 10px;
 }
-.pavilion-archive-card:hover {
-  border-color: #e8cc88;
-  box-shadow: 0 8px 20px #0004;
+@media (hover: hover) {
+  .pavilion-archive-card:hover {
+    border-color: #e8cc88;
+    box-shadow: 0 8px 20px #0004;
+  }
 }
 .pavilion-archive-card[data-known='false'] {
   background: var(--pavilion-surface);

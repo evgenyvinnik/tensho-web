@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { useState } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Tile, TileSuit } from '../../core/Tile'
 import { HINT_FADE_DELAY_MS, HINT_FADE_MS, HandRack } from './HandRack'
@@ -135,5 +136,76 @@ describe('HandRack and the felt', () => {
     )!
     expect(label.style.opacity).toBe('1')
     expect(label.style.transition).toBe('none')
+  })
+
+  describe('keyboard focus', () => {
+    /** A rack whose selection follows its own toggles, like the table's. */
+    function LiveRack() {
+      const [selected, setSelected] = useState<string[]>([])
+      return (
+        <HandRack
+          tiles={tiles}
+          selectedIds={new Set(selected)}
+          onToggle={(tile) =>
+            setSelected((ids) =>
+              ids.includes(tile.id)
+                ? ids.filter((id) => id !== tile.id)
+                : [...ids, tile.id]
+            )
+          }
+        />
+      )
+    }
+    const tile = (zone: 'hand' | 'felt', id: string) =>
+      document.querySelector<HTMLButtonElement>(
+        `[data-play-zone="${zone}"] [data-play-tile="${id}"]`
+      )!
+    const focused = () => {
+      const active = document.activeElement as HTMLElement
+      return `${active.closest('[data-play-zone]')?.getAttribute('data-play-zone')}:${active.dataset.playTile}`
+    }
+
+    it('keeps its place in the rack, then follows the last tile to the felt', () => {
+      render(<LiveRack />)
+      // Enter or Space on a button is a click with no pointer detail.
+      for (const [id, next] of [
+        ['m1', 'hand:m2'],
+        ['m2', 'hand:m3'],
+        ['m3', 'hand:m4'],
+        ['m4', 'hand:m5'],
+        ['m5', 'felt:m5'],
+      ]) {
+        tile('hand', id).focus()
+        fireEvent.click(tile('hand', id))
+        expect(focused()).toBe(next)
+      }
+      // Back from the felt: the neighbouring felt tile, then the rack.
+      fireEvent.click(tile('felt', 'm5'))
+      expect(focused()).toBe('felt:m4')
+      for (const id of ['m4', 'm3', 'm2']) fireEvent.click(tile('felt', id))
+      expect(focused()).toBe('felt:m1')
+      fireEvent.click(tile('felt', 'm1'))
+      expect(focused()).toBe('hand:m1')
+    })
+
+    it('moves between tiles with the arrow keys', () => {
+      render(<LiveRack />)
+      tile('hand', 'm2').focus()
+      fireEvent.keyDown(tile('hand', 'm2'), { key: 'ArrowRight' })
+      expect(focused()).toBe('hand:m3')
+      fireEvent.keyDown(tile('hand', 'm3'), { key: 'End' })
+      expect(focused()).toBe('hand:m5')
+      fireEvent.keyDown(tile('hand', 'm5'), { key: 'Home' })
+      expect(focused()).toBe('hand:m1')
+    })
+
+    it('leaves focus alone for a tap or mouse click', () => {
+      render(<LiveRack />)
+      const button = tile('hand', 'm2')
+      button.focus()
+      fireEvent.click(button, { detail: 1 })
+      expect(tile('felt', 'm2')).toBeTruthy()
+      expect(document.activeElement).toBe(document.body)
+    })
   })
 })
