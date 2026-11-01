@@ -9,10 +9,14 @@ import {
   MUSIC_CONFIG,
   TILE_SOUNDS,
   GAME_SOUNDS,
+  getMusicForContext,
 } from '../config/audioDefinitions'
 import { eventBus } from '../game/EventBus'
 import { useAudioLifecycle } from '../hooks/useAudioLifecycle'
 import { useSettingsStore } from '../stores/settingsStore'
+import { audioAssets } from '../utils/assets'
+
+const track = (name: string) => MUSIC_CONFIG.find((t) => t.name === name)!
 
 class MockAudio extends EventTarget {
   static all: MockAudio[] = []
@@ -102,10 +106,13 @@ describe('sound assets', () => {
       expect(peak, id).toBeLessThan(24000)
       expect(bytes.length / 48000, id).toBeLessThan(2.5)
     }
-    for (const track of MUSIC_CONFIG)
+    for (const track of MUSIC_CONFIG) {
       expect(
         readFileSync(resolve('public', track.path.replace(/^\//, ''))).length
       ).toBeGreaterThan(1000)
+      // The Now Playing toast names a song through its asset entry.
+      expect(Object.values(audioAssets), track.name).toContain(track.path)
+    }
   })
 })
 
@@ -198,7 +205,9 @@ describe('audio lifetime and effects', () => {
     Object.defineProperty(voice, 'currentTime', {
       configurable: true,
       get: () => 0,
-      set: () => { throw new DOMException('Media is not ready', 'InvalidStateError') },
+      set: () => {
+        throw new DOMException('Media is not ready', 'InvalidStateError')
+      },
     })
     expect(() => audio.play(TILE_SOUNDS.select)).not.toThrow()
     expect(() => audio.setSfxMuted(true)).not.toThrow()
@@ -239,10 +248,62 @@ describe('music and settings', () => {
     expect(MockAudio.all.slice(0, 2).every((a) => a.paused)).toBe(true)
   })
 
+  it('opens on a random song from the whole playlist', async () => {
+    const opened = new Set<string | null>()
+    for (const roll of [0, 0.3, 0.999]) {
+      vi.spyOn(Math, 'random').mockReturnValue(roll)
+      const fresh = new AudioSystem()
+      fresh.initialize()
+      fresh.playMusic('menu')
+      fresh.unlock()
+      await flush()
+      opened.add(fresh.getState().currentTrack)
+      fresh.destroy()
+    }
+    expect(opened.size).toBe(3)
+    expect(getMusicForContext('menu').length).toBeGreaterThanOrEqual(7)
+  })
+
+  it('keeps a song the next screen shares and switches when it does not', async () => {
+    audio.initialize()
+    audio.unlock()
+    audio.playTrack(track('Minamo').path)
+    await flush()
+    const element = MockAudio.all.find(
+      (a) => !a.paused && a.src.endsWith('.mp3')
+    )!
+    const plays = element.play.mock.calls.length
+    audio.playMusic('gameplay')
+    audio.playMusic('shop')
+    await flush()
+    expect(audio.getState()).toMatchObject({
+      currentTrack: track('Minamo').path,
+      isCrossfading: false,
+    })
+    expect(element.play).toHaveBeenCalledTimes(plays)
+    audio.playMusic('victory')
+    await flush()
+    expect(audio.getState().currentTrack).toBe(track('Lotus Pond').path)
+  })
+
+  it('fades each song at its own level', async () => {
+    audio.initialize()
+    audio.unlock()
+    audio.playTrack(track('Otogi 3').path)
+    await flush()
+    audio.playMusic('boss')
+    await flush()
+    advance(600)
+    const level = (name: string) =>
+      MockAudio.all.find((a) => a.src === track(name).path)!.volume
+    expect(level('Otogi 3')).toBeCloseTo(0.7 * 0.24 * 0.5)
+    expect(level('Dragon Dance')).toBeCloseTo(0.7 * 0.7 * 0.5)
+  })
+
   it('changes both fade volumes live and keeps both silent after mute', async () => {
     audio.initialize()
-    audio.playMusic('menu')
     audio.unlock()
+    audio.playTrack(track('Japanese Winter').path)
     await flush()
     audio.playMusic('boss')
     await flush()
@@ -314,6 +375,27 @@ describe('music and settings', () => {
     document.dispatchEvent(new Event('visibilitychange'))
     expect(audio.getState().isPlaying).toBe(false)
     document.dispatchEvent(new Event('appactive'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+  })
+
+  it('goes quiet while another window or app is in front of the page', async () => {
+    audio.initialize()
+    audio.playMusic('menu')
+    audio.unlock()
+    await flush()
+    window.dispatchEvent(new Event('blur'))
+    expect(MockAudio.all.every((a) => a.paused && a.muted)).toBe(true)
+    audio.play(TILE_SOUNDS.select)
+    expect(playedEffects()).toHaveLength(0)
+    window.dispatchEvent(new Event('focus'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+    expect(MockAudio.all.some((a) => a.muted)).toBe(false)
+    // A tap also proves the page is in use when no focus event arrives.
+    window.dispatchEvent(new Event('blur'))
+    expect(audio.getState().isPlaying).toBe(false)
+    audio.unlock()
     await flush()
     expect(audio.getState().isPlaying).toBe(true)
   })

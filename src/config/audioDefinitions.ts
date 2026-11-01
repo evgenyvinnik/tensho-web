@@ -277,6 +277,50 @@ export const MUSIC_CONFIG: MusicTrackConfig[] = [
     contexts: ['gameplay'],
     bpm: 110,
   },
+  // PeriTune, "Konohana" collection (peritune.itch.io/konohana), re-encoded
+  // at 128 kbps. Volumes match the RMS level of the four tracks above.
+  {
+    path: withBasePath('assets/music/Shizima2.mp3'),
+    name: 'Shizima 2',
+    volume: 0.32,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
+  {
+    path: withBasePath('assets/music/Otogi3.mp3'),
+    name: 'Otogi 3',
+    volume: 0.24,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
+  {
+    path: withBasePath('assets/music/Minamo.mp3'),
+    name: 'Minamo',
+    volume: 0.32,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
+  {
+    path: withBasePath('assets/music/Amenoshita3.mp3'),
+    name: 'Amenoshita 3',
+    volume: 0.26,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
+  {
+    path: withBasePath('assets/music/Otogi4.mp3'),
+    name: 'Otogi 4',
+    volume: 0.25,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
+  {
+    path: withBasePath('assets/music/Shizima4.mp3'),
+    name: 'Shizima 4',
+    volume: 0.3,
+    loop: true,
+    contexts: ['menu', 'gameplay', 'shop'],
+  },
 ]
 
 /**

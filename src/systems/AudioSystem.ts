@@ -16,6 +16,7 @@ import {
   type MusicContext,
 } from '../config/audioDefinitions'
 import { eventBus, type GameEvent } from '../game/EventBus'
+import { IS_NATIVE_APP } from '../native/nativeStorage'
 
 interface Voice {
   element: HTMLAudioElement
@@ -44,6 +45,7 @@ export class AudioSystem {
   }
   private unlocked = false
   private appInactive = false
+  private windowBlurred = false
   private musicWanted = false
   private music: HTMLAudioElement[] = []
   private active = 0
@@ -87,6 +89,11 @@ export class AudioSystem {
     document.addEventListener('visibilitychange', this.onVisibility)
     document.addEventListener('appinactive', this.onAppActivity)
     document.addEventListener('appactive', this.onAppActivity)
+    // The iOS app reports lock and background itself, through appinactive.
+    if (!IS_NATIVE_APP) {
+      window.addEventListener('blur', this.onWindowFocus)
+      window.addEventListener('focus', this.onWindowFocus)
+    }
     this.state.isInitialized = true
     for (const id of getPreloadSounds()) this.pool(id)
     this.connectEvents()
@@ -97,6 +104,11 @@ export class AudioSystem {
   unlock() {
     if (!this.state.isInitialized) return
     this.unlocked = true
+    // A tap or key press means the page is in use, even if no focus event came.
+    if (this.windowBlurred) {
+      this.windowBlurred = false
+      this.onVisibility()
+    }
     if (!this.state.musicMuted && !this.state.isPlaying && !this.pendingMusic)
       this.resumeMusic()
   }
@@ -121,7 +133,10 @@ export class AudioSystem {
     document.removeEventListener('visibilitychange', this.onVisibility)
     document.removeEventListener('appinactive', this.onAppActivity)
     document.removeEventListener('appactive', this.onAppActivity)
+    window.removeEventListener('blur', this.onWindowFocus)
+    window.removeEventListener('focus', this.onWindowFocus)
     this.appInactive = false
+    this.windowBlurred = false
     this.state.isInitialized = false
     this.notify()
   }
@@ -257,9 +272,10 @@ export class AudioSystem {
     this.fade = 1
     this.music[1 - this.active]?.pause()
   }
-  private musicGain() {
+  /** Each element plays at its own song's level, so a crossfade never jumps. */
+  private musicGain(audio: HTMLAudioElement) {
     const track = MUSIC_CONFIG.find(
-      (track) => track.path === this.state.currentTrack
+      (track) => track.path === audio.getAttribute('src')
     )
     return this.state.musicMuted || !this.state.isTabVisible
       ? 0
@@ -270,13 +286,14 @@ export class AudioSystem {
         )
   }
   private updateMusicVolume() {
-    const gain = this.musicGain()
-    if (this.music[this.active])
-      this.music[this.active].volume =
-        gain * (this.state.isCrossfading ? 1 - this.fade : 1)
-    if (this.music[1 - this.active])
-      this.music[1 - this.active].volume =
-        gain * (this.state.isCrossfading ? this.fade : 0)
+    const current = this.music[this.active]
+    const other = this.music[1 - this.active]
+    if (current)
+      current.volume =
+        this.musicGain(current) * (this.state.isCrossfading ? 1 - this.fade : 1)
+    if (other)
+      other.volume =
+        this.musicGain(other) * (this.state.isCrossfading ? this.fade : 0)
   }
   playMusic(context: MusicContext) {
     if (
@@ -285,14 +302,20 @@ export class AudioSystem {
     )
       return
     this.state.currentMusicContext = context
-    this.queue = this.shuffle(
-      getMusicForContext(context).map((track) => track.path)
-    )
+    const paths = getMusicForContext(context).map((track) => track.path)
     this.musicWanted = true
-    if (!this.queue.length) {
+    if (!paths.length) {
       this.stopMusic(false)
       return
     }
+    // A song that also belongs to the new screen plays on instead of restarting.
+    const current = this.state.currentTrack
+    if (current && !this.pendingMusic && paths.includes(current)) {
+      this.queue = this.shuffle(paths.filter((path) => path !== current))
+      if (!this.state.isPlaying) this.resumeMusic()
+      return
+    }
+    this.queue = this.shuffle(paths)
     if (this.canPlayMusic()) this.nextTrack()
   }
   playTrack(path: string) {
@@ -326,7 +349,7 @@ export class AudioSystem {
     this.pendingMusic = true
     incoming.src = path
     incoming.currentTime = 0
-    incoming.volume = wasPlaying ? 0 : this.musicGain()
+    incoming.volume = wasPlaying ? 0 : this.musicGain(incoming)
     void incoming
       .play()
       .then(() => {
@@ -424,8 +447,16 @@ export class AudioSystem {
     this.appInactive = event.type === 'appinactive'
     this.onVisibility()
   }
+  /** Another window or app in front leaves the page visible but not in use. */
+  private onWindowFocus = (event: Event) => {
+    this.windowBlurred = event.type === 'blur'
+    this.onVisibility()
+  }
   private onVisibility = () => {
-    const visible = document.visibilityState !== 'hidden' && !this.appInactive
+    const visible =
+      document.visibilityState !== 'hidden' &&
+      !this.appInactive &&
+      !this.windowBlurred
     if (visible === this.state.isTabVisible) return
     this.state.isTabVisible = visible
     this.setElementsMuted(!visible)
