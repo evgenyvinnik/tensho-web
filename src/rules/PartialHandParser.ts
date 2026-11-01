@@ -287,7 +287,10 @@ function solveSuit(
     if (outranks(candidate, best)) best = candidate
   }
 
-  if (counts[rank] >= 4) consider(MeldType.Quad, [rank, rank, rank, rank])
+  // Five or six of a kind is a Quad of that many tiles.
+  for (const size of [6, 5, 4])
+    if (counts[rank] >= size)
+      consider(MeldType.Quad, new Array<number>(size).fill(rank))
   if (counts[rank] >= 3) consider(MeldType.Triplet, [rank, rank, rank])
   if (counts[rank] >= 2) consider(MeldType.Pair, [rank, rank])
   if (isSuitedSuit(suit)) {
@@ -391,6 +394,8 @@ function enumerateSplits(
     [MeldType.Pair, 2],
     [MeldType.Triplet, 3],
     [MeldType.Quad, 4],
+    [MeldType.Quad, 5],
+    [MeldType.Quad, 6],
   ] as const) {
     if (same.length < size - 1) continue
     const members = [first, ...same.slice(0, size - 1)]

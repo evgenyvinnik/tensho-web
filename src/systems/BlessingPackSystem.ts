@@ -40,7 +40,13 @@ import {
 } from './CelestialOrbSystem'
 import { VoidScriptSystem, getVoidScriptsByRarity } from './VoidScriptSystem'
 import { ConsumableRarity } from './ConsumableSystem'
-import { Tile, TileSuit, type TileData } from '../core/Tile'
+import {
+  DragonType,
+  Tile,
+  TileSuit,
+  WindType,
+  type TileData,
+} from '../core/Tile'
 import { EditionType, EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
 import { tileModifierEntries } from '../core/tileModifierEntries'
@@ -487,11 +493,18 @@ export class BlessingPackSystem {
         ? available[Math.floor(runRandom.next('packs') * available.length)]
         : tiles[0]
 
-    const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
-    let tile = Tile.createNumbered(
-      suits[Math.floor(runRandom.next('packs') * suits.length)],
-      Math.floor(runRandom.next('packs') * 9) + 1
+    // Any of the 34 faces, Winds and Dragons too, as in the Tea House's tile
+    // slot. A Wild Mark only crosses suits, so it comes on a numbered tile.
+    const face = Math.floor(
+      runRandom.next('packs') * (selected.modifier === 'jade' ? 27 : 34)
     )
+    const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
+    let tile =
+      face < 27
+        ? Tile.createNumbered(suits[Math.floor(face / 9)], (face % 9) + 1)
+        : face < 31
+          ? Tile.createWind((face - 26) as WindType)
+          : Tile.createDragon((face - 30) as DragonType)
 
     switch (selected.modifier) {
       case 'bonus':

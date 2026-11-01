@@ -11,10 +11,12 @@ import { TileSuit } from '../../../core/Tile'
 import { MeldType } from '../../../core/Meld'
 import {
   DRAGON_TILE_POINTS,
-  STRAIGHT_5_POINTS,
+  FIVE_OF_A_KIND_POINTS,
+  SIX_OF_A_KIND_POINTS,
   STRUCTURE_POINTS_BY_TYPE,
   WIND_GROUP_POINTS,
   WIND_TILE_POINTS,
+  structurePointsFor,
 } from '../../../rules/ScoringEngine'
 import {
   DRAGON_GROUP_MULT,
@@ -22,6 +24,7 @@ import {
   GROUP_MULT,
   MAHJONG_PATTERN_MULT,
   TAUGHT_PATTERNS,
+  groupKindFor,
 } from '../../../rules/PlayPattern'
 import { ALL_YAKU, CHINITSU, TANYAO, TOITOI } from '../../../rules/YakuDetector'
 import { ROUND_TYPE_DEFINITIONS } from '../../../config/mandateDefinitions'
@@ -64,22 +67,25 @@ export function useTutorialSteps(): TutorialStep[] {
 
   return useMemo(() => {
     const bonus = (points: number) => `+${points}`
-    const groupRows = [
-      [MeldType.Pair, 'pair'],
-      [MeldType.Sequence, 'sequence'],
-      [MeldType.Triplet, 'triplet'],
-      [MeldType.Straight, 'straight4'],
-      [MeldType.Straight, 'straight5'],
-      [MeldType.Quad, 'quad'],
-    ].map(([type, pattern]) => [
-      <Highlight color="orange">{t(`patterns.${pattern}.name`)}</Highlight>,
-      t(`patterns.${pattern}.explain`),
-      bonus(
-        pattern === 'straight5'
-          ? STRAIGHT_5_POINTS
-          : STRUCTURE_POINTS_BY_TYPE[type as MeldType]
-      ),
-    ])
+    const groupRows = (
+      [
+        [MeldType.Pair, 2],
+        [MeldType.Sequence, 3],
+        [MeldType.Triplet, 3],
+        [MeldType.Straight, 4],
+        [MeldType.Straight, 5],
+        [MeldType.Quad, 4],
+        [MeldType.Quad, 5],
+        [MeldType.Quad, 6],
+      ] as const
+    ).map(([type, size]) => {
+      const pattern = groupKindFor(type, size)
+      return [
+        <Highlight color="orange">{t(`patterns.${pattern}.name`)}</Highlight>,
+        t(`patterns.${pattern}.explain`),
+        bonus(structurePointsFor(type, size)),
+      ]
+    })
     return [
       {
         id: 'welcome',
@@ -619,6 +625,14 @@ export function useTutorialSteps(): TutorialStep[] {
                   {t('codexReference.quadBonus', {
                     points: STRUCTURE_POINTS_BY_TYPE[MeldType.Quad],
                     mult: GROUP_MULT.quad,
+                  })}
+                </li>
+                <li>
+                  {t('codexReference.ofAKindBonus', {
+                    five: FIVE_OF_A_KIND_POINTS,
+                    fiveMult: GROUP_MULT.five_of_a_kind,
+                    six: SIX_OF_A_KIND_POINTS,
+                    sixMult: GROUP_MULT.six_of_a_kind,
                   })}
                 </li>
                 <li>

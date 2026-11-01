@@ -52,6 +52,7 @@
     "importantRules": "Règles importantes :",
     "quadMechanics": "Fonctionnement des carrés :",
     "quadBonus": "Ajoute +{{points}} points de groupe et +{{mult}} au Mult de la combinaison, avant les effets des tuiles.",
+    "ofAKindBonus": "Des exemplaires en plus d’une tuile forment de plus grands groupes : Cinq identiques ajoute +{{five}} points de groupe et +{{fiveMult}} au Mult de la combinaison, Six identiques +{{six}} et +{{sixMult}}.",
     "quadRefill": "Jouez un carré dans votre main sélectionnée. Le chevalet se remplit après la main jouée ; il n’existe pas d’action distincte pour déclarer un carré.",
     "winningFormula": "<melds>4 groupes</melds> + <pair>1 paire</pair> = <tiles>14 tuiles hors suppléments des carrés</tiles>",
     "winningExample": "Les quatre groupes peuvent être des séquences, des brelans ou des carrés. Chaque carré ajoute une tuile à la structure habituelle de 14 tuiles. Voici un exemple sans carré :",
@@ -3104,6 +3105,14 @@
       "name": "Carré",
       "explain": "Quatre tuiles identiques."
     },
+    "five_of_a_kind": {
+      "name": "Cinq identiques",
+      "explain": "Cinq tuiles identiques : une de plus que le mur n’en contient."
+    },
+    "six_of_a_kind": {
+      "name": "Six identiques",
+      "explain": "Six tuiles identiques : deux de plus que le mur n’en contient."
+    },
     "straight4": {
       "name": "Suite de quatre",
       "explain": "Quatre nombres qui se suivent, même famille."
@@ -3181,7 +3190,7 @@
     "secretTitle": "Mains secrètes",
     "secretFound": "Main secrète découverte",
     "secretInGuide": "Désormais dans le guide ?.",
-    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
+    "patternRule": "Chaque groupe après le premier ajoute +1 Mult. Les brelans et suites de quatre ajoutent +1 de plus, les carrés et suites de cinq +2, Cinq identiques +3 et Six identiques +4. Normalement, chaque tuile compte une fois, et un coup contient au plus 6 tuiles, sauf s’il s’agit d’une main de Mahjong complète.",
     "tilesTitle": "Les tuiles",
     "tilesHelp": "Les Caractères affichent les chiffres chinois 一 à 九 ; Cercles et Bambous montrent leur nombre (le 1 de Bambou est un oiseau). Vous pouvez afficher les nombres sur les tuiles dans les Réglages.",
     "honorsHelp": "Chaque Vent vaut {{wind}} points, {{windGroup}} dans un groupe. Chaque Dragon ajoute +{{dragon}} Mult, +{{dragonGroup}} dans un groupe.",

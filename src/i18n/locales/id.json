@@ -52,6 +52,7 @@
     "importantRules": "Aturan penting:",
     "quadMechanics": "Cara kerja kuartet:",
     "quadBonus": "Menambah +{{points}} poin grup dan +{{mult}} Mult pola, sebelum efek ubin diterapkan.",
+    "ofAKindBonus": "Salinan tambahan sebuah ubin membentuk grup yang lebih besar: Lima Kembar menambah +{{five}} poin grup dan +{{fiveMult}} Mult pola, Enam Kembar +{{six}} dan +{{sixMult}}.",
     "quadRefill": "Mainkan kuartet sebagai bagian dari tangan yang kamu pilih. Rak diisi kembali setelah tangan dimainkan; tidak ada aksi deklarasi kuartet terpisah.",
     "winningFormula": "<melds>4 Rangkaian</melds> + <pair>1 Pasangan</pair> = <tiles>14 Ubin sebelum tambahan kuartet</tiles>",
     "winningExample": "Keempat rangkaian bisa berupa urutan, triplet, atau kuartet. Setiap kuartet menambah satu ubin pada susunan biasa yang berisi 14 ubin. Berikut contoh tanpa kuartet:",
@@ -3104,6 +3105,14 @@
       "name": "Kuartet",
       "explain": "Empat ubin yang sama."
     },
+    "five_of_a_kind": {
+      "name": "Lima Kembar",
+      "explain": "Lima ubin yang sama: satu lebih banyak dari isi tembok."
+    },
+    "six_of_a_kind": {
+      "name": "Enam Kembar",
+      "explain": "Enam ubin yang sama: dua lebih banyak dari isi tembok."
+    },
     "straight4": {
       "name": "Lurus empat",
       "explain": "Empat angka berurutan, jenis sama."
@@ -3181,7 +3190,7 @@
     "secretTitle": "Tangan rahasia",
     "secretFound": "Tangan rahasia ditemukan",
     "secretInGuide": "Kini ada di panduan ?.",
-    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2. Biasanya tiap ubin dihitung sekali, dan sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
+    "patternRule": "Setiap kelompok setelah yang pertama menambah +1 Mult. Triplet dan lurus empat +1 lagi, kuartet dan lurus lima +2, Lima Kembar +3, Enam Kembar +4. Biasanya tiap ubin dihitung sekali, dan sekali main berisi maksimal 6 ubin kecuali tangan Mahjong lengkap.",
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",

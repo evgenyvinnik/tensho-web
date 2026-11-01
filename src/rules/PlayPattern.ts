@@ -3,12 +3,17 @@
  *
  * Tensho is not standard Mahjong. A play is read as the groups it contains —
  * a Pair, Two Pairs, a Sequence and a Pair, Two Sequences, a four- or
- * five-tile Straight, a Triplet, a Quad — and the pattern decides its bonus
- * Mult. One formula covers every pattern, so the guide can teach it in a line:
+ * five-tile Straight, a Triplet, a Quad, Five or Six of a Kind — and the
+ * pattern decides its bonus Mult. One formula covers every pattern, so the
+ * guide can teach it in a line:
  *
  *   Pattern Mult = (groups − 1) + Σ group bonus
  *   group bonus:  Pair 0 · Sequence 0 · Triplet 1 · 4-Straight 1
  *                 Quad 2 · 5-Straight 2 · Three Dragons 2 · Four Winds 2
+ *                 Five of a Kind 3 · Six of a Kind 4
+ *
+ * Five and Six of a Kind are Quads of five or six identical tiles. The Wall
+ * holds four of each, so they need bought or copied tiles, or Wild ones.
  *
  * Two groups are secret hands: Three Dragons (one White, one Green, one Red)
  * and Four Winds (one of each Wind). The guide leaves them out until the
@@ -36,6 +41,8 @@ export type PlayPatternId =
   | 'sequence'
   | 'triplet'
   | 'quad'
+  | 'five_of_a_kind'
+  | 'six_of_a_kind'
   | 'straight4'
   | 'straight5'
   | 'two_pairs'
@@ -61,6 +68,8 @@ const PATTERN_ID_SET: Record<PlayPatternId, true> = {
   sequence: true,
   triplet: true,
   quad: true,
+  five_of_a_kind: true,
+  six_of_a_kind: true,
   straight4: true,
   straight5: true,
   two_pairs: true,
@@ -88,12 +97,17 @@ export interface PlayPattern {
   groups: GroupKind[]
 }
 
-/** A group as the pattern sees it: straights are split by length, honors by suit. */
+/**
+ * A group as the pattern sees it: straights and quads are split by length,
+ * honors by suit.
+ */
 export type GroupKind =
   | 'pair'
   | 'sequence'
   | 'triplet'
   | 'quad'
+  | 'five_of_a_kind'
+  | 'six_of_a_kind'
   | 'straight4'
   | 'straight5'
   | 'three_dragons'
@@ -109,6 +123,8 @@ export const GROUP_MULT: Record<GroupKind, number> = {
   straight5: 2,
   three_dragons: 2,
   four_winds: 2,
+  five_of_a_kind: 3,
+  six_of_a_kind: 4,
 }
 
 /** Every group after the first adds this much Mult. */
@@ -130,7 +146,10 @@ export function groupKind(meld: Meld): GroupKind {
 /** The kind of a group of this type and size. */
 export function groupKindFor(type: MeldType, size: number): GroupKind {
   if (type === MeldType.Straight) return size >= 5 ? 'straight5' : 'straight4'
-  if (type === MeldType.Honors) return size >= 4 ? 'four_winds' : 'three_dragons'
+  if (type === MeldType.Honors)
+    return size >= 4 ? 'four_winds' : 'three_dragons'
+  if (type === MeldType.Quad && size >= 6) return 'six_of_a_kind'
+  if (type === MeldType.Quad && size === 5) return 'five_of_a_kind'
   return type
 }
 
@@ -146,6 +165,8 @@ export function isSecretPattern(id: PlayPatternId): id is SecretPatternId {
 const KIND_ORDER: GroupKind[] = [
   'four_winds',
   'three_dragons',
+  'six_of_a_kind',
+  'five_of_a_kind',
   'quad',
   'straight5',
   'straight4',
@@ -160,6 +181,8 @@ const NAMED: Record<string, PlayPatternId> = {
   sequence: 'sequence',
   triplet: 'triplet',
   quad: 'quad',
+  five_of_a_kind: 'five_of_a_kind',
+  six_of_a_kind: 'six_of_a_kind',
   straight4: 'straight4',
   straight5: 'straight5',
   'pair+pair': 'two_pairs',
@@ -209,5 +232,7 @@ export const TAUGHT_PATTERNS: readonly PlayPatternId[] = [
   'triplet_pair',
   'straight5',
   'quad',
+  'five_of_a_kind',
+  'six_of_a_kind',
   'mahjong',
 ]

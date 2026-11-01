@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
+import { EnhancementType } from '../core/TileModifier'
 import {
   classifyMahjong,
   classifyPlay,
@@ -34,6 +35,8 @@ const triplet = () => meld(MeldType.Triplet, M, [7, 7, 7])
 const quad = () => meld(MeldType.Quad, P, [9, 9, 9, 9])
 const straight4 = () => meld(MeldType.Straight, S, [3, 4, 5, 6])
 const straight5 = () => meld(MeldType.Straight, P, [4, 5, 6, 7, 8])
+const fiveOfAKind = () => meld(MeldType.Quad, S, [6, 6, 6, 6, 6])
+const sixOfAKind = () => meld(MeldType.Quad, M, [4, 4, 4, 4, 4, 4])
 
 /** Score a selection the way a play does: best split, then the engine. */
 function play(selection: Tile[]) {
@@ -55,6 +58,8 @@ describe('classifyPlay', () => {
     ['straight4', () => [straight4()], 1],
     ['quad', () => [quad()], 2],
     ['straight5', () => [straight5()], 2],
+    ['five_of_a_kind', () => [fiveOfAKind()], 3],
+    ['six_of_a_kind', () => [sixOfAKind()], 4],
     ['two_pairs', () => [pair(), pair()], 1],
     ['three_pairs', () => [pair(), pair(), pair()], 2],
     ['two_sequences', () => [sequence(), sequence()], 1],
@@ -102,6 +107,22 @@ describe('reading a play', () => {
     expect(play(tiles(M, [1, 2, 3, 4])).pattern.id).toBe('straight4')
   })
 
+  it('reads five or six identical tiles as one group, not smaller ones', () => {
+    expect(play(tiles(S, [6, 6, 6, 6, 6])).pattern.id).toBe('five_of_a_kind')
+    // Six of a Kind outscores Two Triplets and Three Pairs.
+    expect(play(tiles(M, [4, 4, 4, 4, 4, 4])).pattern.id).toBe('six_of_a_kind')
+    expect(play(tiles(TileSuit.Dragon, [3, 3, 3, 3, 3])).pattern.id).toBe(
+      'five_of_a_kind'
+    )
+  })
+
+  it('lets a Wild tile make the fifth of a kind', () => {
+    const wild = new Tile(M, 5, 'wild-5').withEnhancement(EnhancementType.Wild)
+    expect(play([wild, ...tiles(P, [5, 5, 5, 5])]).pattern.id).toBe(
+      'five_of_a_kind'
+    )
+  })
+
   it('counts every tile once', () => {
     const selection = tiles(P, [2, 3, 4, 6, 7, 8])
     const score = play(selection)
@@ -133,8 +154,12 @@ describe('reading a play', () => {
     const lone = play([...tiles(TileSuit.Dragon, [1]), ...tiles(P, [5, 5])])
     expect(lone.dragonMult).toBe(DRAGON_MULT)
     // The Dragon keeps its full points; only the numbered tiles are halved.
-    expect(lone.tilePoints).toBe(getTilePoints(new Tile(TileSuit.Dragon, 1, 'd')) + 10)
-    expect(play(tiles(TileSuit.Dragon, [1, 2])).dragonMult).toBe(2 * DRAGON_MULT)
+    expect(lone.tilePoints).toBe(
+      getTilePoints(new Tile(TileSuit.Dragon, 1, 'd')) + 10
+    )
+    expect(play(tiles(TileSuit.Dragon, [1, 2])).dragonMult).toBe(
+      2 * DRAGON_MULT
+    )
     const pair = play(tiles(TileSuit.Dragon, [3, 3]))
     expect(pair.pattern.id).toBe('pair')
     expect(pair.dragonMult).toBe(2 * DRAGON_GROUP_MULT)
@@ -157,9 +182,7 @@ describe('reading a play', () => {
     const selection = tiles(P, [5, 5, 5])
     const score = play(selection)
     expect(score.finalScore).toBe(
-      Math.floor(
-        score.basePoints * (1 + score.pattern.mult + score.dragonMult)
-      )
+      Math.floor(score.basePoints * (1 + score.pattern.mult + score.dragonMult))
     )
   })
 })

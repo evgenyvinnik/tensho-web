@@ -221,6 +221,7 @@ export const STRUCTURE_POINTS_BY_TYPE: Record<MeldType, number> = {
   [MeldType.Pair]: 15,
   [MeldType.Sequence]: 30,
   [MeldType.Triplet]: 40,
+  // Four of a kind; five and six are worth FIVE_/SIX_OF_A_KIND_POINTS.
   [MeldType.Quad]: 65,
   // A four-tile straight; a five-tile straight is worth STRAIGHT_5_POINTS.
   [MeldType.Straight]: 45,
@@ -234,10 +235,19 @@ export const STRAIGHT_5_POINTS = 60
 /** Structure points for Four Winds, the four-tile secret hand. */
 export const FOUR_WINDS_POINTS = 65
 
+/**
+ * Structure points for five and six identical tiles. The Wall holds four of
+ * each, so these need a bought or copied tile, or a Wild one.
+ */
+export const FIVE_OF_A_KIND_POINTS = 100
+export const SIX_OF_A_KIND_POINTS = 150
+
 /** Structure points for a group of this type and size. */
 export function structurePointsFor(type: MeldType, size: number): number {
   if (type === MeldType.Straight && size >= 5) return STRAIGHT_5_POINTS
   if (type === MeldType.Honors && size >= 4) return FOUR_WINDS_POINTS
+  if (type === MeldType.Quad && size >= 6) return SIX_OF_A_KIND_POINTS
+  if (type === MeldType.Quad && size === 5) return FIVE_OF_A_KIND_POINTS
   return STRUCTURE_POINTS_BY_TYPE[type]
 }
 

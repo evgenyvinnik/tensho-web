@@ -52,6 +52,7 @@
     "importantRules": "重要规则：",
     "quadMechanics": "杠子的机制：",
     "quadBonus": "在结算牌的效果之前，增加{{points}}组合分数和{{mult}}牌型倍率。",
+    "ofAKindBonus": "多出的同一种牌能组成更大的组合：五张同牌增加{{five}}组合分数和{{fiveMult}}牌型倍率，六张同牌增加{{six}}和{{sixMult}}。",
     "quadRefill": "将杠子作为所选牌的一部分打出。出牌后手牌会补满，不存在单独的宣杠行动。",
     "winningFormula": "<melds>4组面子</melds> + <pair>1组对子</pair> = <tiles>不含杠子时共14张牌</tiles>",
     "winningExample": "四组面子可以是顺子、刻子或杠子。每组杠子都会让通常的14张结构多出一张牌。以下是不含杠子的示例：",
@@ -3104,6 +3105,14 @@
       "name": "杠子",
       "explain": "四张相同的牌。"
     },
+    "five_of_a_kind": {
+      "name": "五张同牌",
+      "explain": "五张相同的牌：比牌山中的多一张。"
+    },
+    "six_of_a_kind": {
+      "name": "六张同牌",
+      "explain": "六张相同的牌：比牌山中的多两张。"
+    },
     "straight4": {
       "name": "四连顺",
       "explain": "同一花色的四个连续数字。"
@@ -3181,7 +3190,7 @@
     "secretTitle": "秘密牌型",
     "secretFound": "发现秘密牌型",
     "secretInGuide": "已加入“?”指南。",
-    "patternRule": "从第二组起，每多一组倍率+1。刻子和四连顺再+1，杠子和五连顺+2。通常每张牌只计一次；除完整和牌外，每次出牌最多6张。",
+    "patternRule": "从第二组起，每多一组倍率+1。刻子和四连顺再+1，杠子和五连顺+2，五张同牌+3，六张同牌+4。通常每张牌只计一次；除完整和牌外，每次出牌最多6张。",
     "tilesTitle": "牌的种类",
     "tilesHelp": "万子用汉字一到九表示，筒子和索子用数量表示（一索是一只鸟）。可在设置中打开牌上的数字。",
     "honorsHelp": "风牌每张{{wind}}分，在组合中{{windGroup}}分。每张三元牌倍率+{{dragon}}，在组合中+{{dragonGroup}}。",

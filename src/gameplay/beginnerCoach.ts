@@ -178,7 +178,8 @@ function enumerateGroups(tiles: Tile[], rules: PartialHandRules): Tile[][] {
     else buckets.set(tile.typeKey, [tile])
   }
   for (const bucket of buckets.values()) {
-    for (const size of [2, 3, 4]) {
+    // Up to six of a kind, the most a play holds.
+    for (const size of [2, 3, 4, 5, 6]) {
       if (bucket.length >= size) remember(bucket.slice(0, size))
     }
   }

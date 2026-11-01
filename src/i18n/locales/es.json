@@ -52,6 +52,7 @@
     "importantRules": "Reglas importantes:",
     "quadMechanics": "Cómo funcionan los cuartetos:",
     "quadBonus": "Añade +{{points}} puntos de grupo y +{{mult}} al Mult del patrón, antes de aplicar los efectos de las fichas.",
+    "ofAKindBonus": "Las copias extra de una ficha forman grupos mayores: Cinco iguales añade +{{five}} puntos de grupo y +{{fiveMult}} al Mult del patrón; Seis iguales, +{{six}} y +{{sixMult}}.",
     "quadRefill": "Juega un cuarteto como parte de tu mano seleccionada. El atril se rellena después de la jugada; no hay una acción aparte para declarar cuartetos.",
     "winningFormula": "<melds>4 grupos</melds> + <pair>1 par</pair> = <tiles>14 fichas sin contar las adicionales de los cuartetos</tiles>",
     "winningExample": "Los cuatro grupos pueden ser secuencias, tripletes o cuartetos. Cada cuarteto añade una ficha a la estructura habitual de 14 fichas. Este es un ejemplo sin cuartetos:",
@@ -3104,6 +3105,14 @@
       "name": "Cuarteto",
       "explain": "Cuatro fichas iguales."
     },
+    "five_of_a_kind": {
+      "name": "Cinco iguales",
+      "explain": "Cinco fichas iguales: una más de las que tiene el muro."
+    },
+    "six_of_a_kind": {
+      "name": "Seis iguales",
+      "explain": "Seis fichas iguales: dos más de las que tiene el muro."
+    },
     "straight4": {
       "name": "Escalera de cuatro",
       "explain": "Cuatro números seguidos del mismo palo."
@@ -3181,7 +3190,7 @@
     "secretTitle": "Manos secretas",
     "secretFound": "Mano secreta descubierta",
     "secretInGuide": "Ya aparece en la guía ?.",
-    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
+    "patternRule": "Cada grupo después del primero suma +1 Mult. Tripletes y escaleras de cuatro suman +1 más; cuartetos y escaleras de cinco, +2; cinco iguales, +3, y seis iguales, +4. Normalmente cada ficha cuenta una vez, y una jugada admite hasta 6 fichas salvo que sea una mano de Mahjong completa.",
     "tilesTitle": "Las fichas",
     "tilesHelp": "Los Caracteres muestran los números chinos 一 a 九; Círculos y Bambúes muestran su cantidad (el 1 de Bambú es un pájaro). Puedes activar los números en las fichas en Ajustes.",
     "honorsHelp": "Cada Viento vale {{wind}} puntos, {{windGroup}} dentro de un grupo. Cada Dragón suma +{{dragon}} Mult, +{{dragonGroup}} dentro de un grupo.",

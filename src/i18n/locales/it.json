@@ -52,6 +52,7 @@
     "importantRules": "Regole importanti:",
     "quadMechanics": "Come funzionano i poker:",
     "quadBonus": "Aggiunge +{{points}} punti di gruppo e +{{mult}} al Mult della combinazione, prima degli effetti delle tessere.",
+    "ofAKindBonus": "Le copie extra di una tessera formano gruppi più grandi: Cinque uguali aggiunge +{{five}} punti di gruppo e +{{fiveMult}} al Mult della combinazione, Sei uguali +{{six}} e +{{sixMult}}.",
     "quadRefill": "Gioca un poker come parte della mano selezionata. Il leggio si riempie dopo la giocata; non esiste un’azione separata per dichiarare un poker.",
     "winningFormula": "<melds>4 gruppi</melds> + <pair>1 coppia</pair> = <tiles>14 tessere senza le aggiunte dei poker</tiles>",
     "winningExample": "I quattro gruppi possono essere sequenze, tris o poker. Ogni poker aggiunge una tessera alla struttura abituale di 14 tessere. Ecco un esempio senza poker:",
@@ -3104,6 +3105,14 @@
       "name": "Poker",
       "explain": "Quattro tessere uguali."
     },
+    "five_of_a_kind": {
+      "name": "Cinque uguali",
+      "explain": "Cinque tessere uguali: una in più di quante ne ha il muro."
+    },
+    "six_of_a_kind": {
+      "name": "Sei uguali",
+      "explain": "Sei tessere uguali: due in più di quante ne ha il muro."
+    },
     "straight4": {
       "name": "Scala di quattro",
       "explain": "Quattro numeri consecutivi dello stesso seme."
@@ -3181,7 +3190,7 @@
     "secretTitle": "Mani segrete",
     "secretFound": "Mano segreta scoperta",
     "secretInGuide": "Ora è nella guida ?.",
-    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
+    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2, cinque uguali +3 e sei uguali +4. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",

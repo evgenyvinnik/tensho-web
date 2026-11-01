@@ -914,5 +914,7 @@ const PATTERN_FAMILIES: Partial<Record<PlayPatternId, YakuCategory>> = {
   two_triplets: 'Toitoi',
   triplet_sequence: 'Toitoi',
   quad: 'Toitoi',
+  five_of_a_kind: 'Toitoi',
+  six_of_a_kind: 'Toitoi',
   quad_pair: 'Toitoi',
 }

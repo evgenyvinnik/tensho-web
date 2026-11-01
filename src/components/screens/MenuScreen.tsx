@@ -6,7 +6,7 @@
  * Collection pavilions, each marked with its room's painted emblem.
  */
 
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSpring, animated, useSprings } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../ui/LanguageSelector'
@@ -15,6 +15,7 @@ import { SongNotification } from '../ui/SongNotification'
 import { TableStyleButton } from '../menu/TableStyleButton'
 import {
   backgroundAssets,
+  getTileFinishPath,
   getTileImagePath,
   preloadTileImages,
 } from '../../utils/assets'
@@ -27,6 +28,7 @@ import {
 import { ClassicResumeCard } from '../menu/ClassicResumeCard'
 import { FORMATTED_APP_VERSION } from '../../utils/version'
 import { TileSuit } from '../../core/Tile'
+import { EnhancementType } from '../../core/TileModifier'
 import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
 import { VolumeMutedIcon } from '../ui/Icons'
@@ -88,6 +90,30 @@ function generateFloatingTiles(count: number): FloatingTile[] {
   }
 
   return tiles
+}
+
+/** Faces a featured Dragon can wear: plain, or any Mark's finished artwork. */
+const DRAGON_FINISHES = Object.values(EnhancementType).filter(
+  // Stone is one blank sprite with no Dragon on it.
+  (finish) => finish !== EnhancementType.Stone
+)
+
+/**
+ * The three Dragons for the menu, each in a different finish drawn at random,
+ * so every visit shows a new set.
+ */
+function pickFeaturedDragons(): { src: string; label: string }[] {
+  const finishes = [...DRAGON_FINISHES]
+  for (let i = finishes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[finishes[i], finishes[j]] = [finishes[j], finishes[i]]
+  }
+  return ['White Dragon', 'Green Dragon', 'Red Dragon'].map((label, i) => ({
+    src:
+      getTileFinishPath(TileSuit.Dragon, i + 1, finishes[i]) ??
+      getTileImagePath(TileSuit.Dragon, i + 1),
+    label,
+  }))
 }
 
 // =============================================================================
@@ -160,14 +186,7 @@ interface FeaturedTilesProps {
  * Featured Tiles Display - shows rotating dragon tiles in the center
  */
 function FeaturedTiles({ show }: FeaturedTilesProps) {
-  const featuredTiles = useMemo(
-    () => [
-      { suit: TileSuit.Dragon, rank: 1, label: 'White Dragon' },
-      { suit: TileSuit.Dragon, rank: 2, label: 'Green Dragon' },
-      { suit: TileSuit.Dragon, rank: 3, label: 'Red Dragon' },
-    ],
-    []
-  )
+  const [featuredTiles] = useState(pickFeaturedDragons)
 
   const springs = useSprings(
     featuredTiles.length,
@@ -187,7 +206,6 @@ function FeaturedTiles({ show }: FeaturedTilesProps) {
     <div className="flex items-center gap-4 md:gap-8">
       {springs.map((spring, index) => {
         const tile = featuredTiles[index]
-        const imagePath = getTileImagePath(tile.suit, tile.rank)
 
         return (
           <AnimatedDiv
@@ -203,7 +221,7 @@ function FeaturedTiles({ show }: FeaturedTilesProps) {
             }}
           >
             <img
-              src={imagePath}
+              src={tile.src}
               alt={tile.label}
               className="w-20 h-28 md:w-28 md:h-36 object-contain"
               draggable={false}

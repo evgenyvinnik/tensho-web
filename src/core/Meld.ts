@@ -17,7 +17,7 @@ import { Tile, TileSuit } from './Tile'
 export enum MeldType {
   Sequence = 'sequence', // Shuntsu (順子)
   Triplet = 'triplet', // Koutsu (刻子)
-  Quad = 'quad', // Kantsu (槓子)
+  Quad = 'quad', // Kantsu (槓子); a play may hold five or six of a kind
   Pair = 'pair', // Toitsu (対子)
   Straight = 'straight', // 4–5 consecutive tiles of one suit (連)
   Honors = 'honors', // Every Dragon (三元) or every Wind (四喜), one of each

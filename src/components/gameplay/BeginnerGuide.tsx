@@ -81,6 +81,8 @@ const EXAMPLES: Record<PlayPatternId, Meld[]> = {
   ],
   straight5: [new Meld(MeldType.Straight, run(P, 4, 5))],
   quad: [new Meld(MeldType.Quad, same(P, 9, 4))],
+  five_of_a_kind: [new Meld(MeldType.Quad, same(S, 6, 5))],
+  six_of_a_kind: [new Meld(MeldType.Quad, same(M, 4, 6))],
   mahjong: [
     new Meld(MeldType.Sequence, run(M, 1, 3)),
     new Meld(MeldType.Sequence, run(M, 4, 3)),
@@ -130,10 +132,7 @@ function PatternRow({ id }: { id: PlayPatternId }) {
       <p className="mt-0.5 text-[13px] leading-snug text-[var(--color-beige-white)]/90">
         {t(`patterns.${id}.explain`)}
       </p>
-      <div
-        aria-hidden="true"
-        className="mt-1.5 flex flex-wrap items-end gap-2"
-      >
+      <div aria-hidden="true" className="mt-1.5 flex flex-wrap items-end gap-2">
         {groups.map((group, index) => (
           // A five-tile run wraps rather than overflow a 320px phone with
           // large text.
@@ -238,7 +237,10 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
       title={t('guide.title', 'How to play')}
       className="w-[min(94vw,640px)]"
     >
-      <div data-beginner-guide className="min-w-0 space-y-5 [overflow-wrap:anywhere]">
+      <div
+        data-beginner-guide
+        className="min-w-0 space-y-5 [overflow-wrap:anywhere]"
+      >
         <div className="flex items-center gap-3">
           <img
             data-guide-art
@@ -248,9 +250,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
             height={56}
             className="h-14 w-14 shrink-0 object-contain"
           />
-          <p className={body}>
-            {t('guide.intro')}
-          </p>
+          <p className={body}>{t('guide.intro')}</p>
         </div>
 
         <section>
@@ -289,9 +289,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
             </span>{' '}
             = {t('guide.score', 'Score')}
           </p>
-          <p className={`mt-2 ${body}`}>
-            {t('guide.scoreHelp')}
-          </p>
+          <p className={`mt-2 ${body}`}>{t('guide.scoreHelp')}</p>
         </section>
 
         <section>
@@ -301,9 +299,7 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
               <PatternRow key={id} id={id} />
             ))}
           </ul>
-          <p className={`mt-2 ${body}`}>
-            {t('guide.patternRule')}
-          </p>
+          <p className={`mt-2 ${body}`}>{t('guide.patternRule')}</p>
           {secrets.length > 0 && (
             <div data-guide-secrets>
               <h4 className={`${heading} mt-4`}>{t('guide.secretTitle')}</h4>
@@ -327,16 +323,19 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
                 data-guide-tile-family
                 className="flex max-w-full flex-col items-center gap-1"
               >
-                <TileImage tile={example} size="small" showTooltip={false} showIndex />
+                <TileImage
+                  tile={example}
+                  size="small"
+                  showTooltip={false}
+                  showIndex
+                />
                 <span className="text-center text-xs leading-tight text-[var(--color-beige-white)] [overflow-wrap:normal]">
                   {label}
                 </span>
               </div>
             ))}
           </div>
-          <p className={`mt-2 ${body}`}>
-            {t('guide.tilesHelp')}
-          </p>
+          <p className={`mt-2 ${body}`}>{t('guide.tilesHelp')}</p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-golden-yellow)]">
             {t('guide.honorsHelp', {
               wind: WIND_TILE_POINTS,
@@ -348,7 +347,9 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
         </section>
 
         <section>
-          <h3 className={heading}>{t('guide.specialTitle', 'Special tiles')}</h3>
+          <h3 className={heading}>
+            {t('guide.specialTitle', 'Special tiles')}
+          </h3>
           <p className={`mt-2 ${body}`}>{t('guide.specialHelp')}</p>
           {SPECIAL_LOOKS.map(({ title, kind, looks }) => (
             <div key={kind} data-guide-special-group={title}>

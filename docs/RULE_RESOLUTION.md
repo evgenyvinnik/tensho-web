@@ -114,6 +114,15 @@ after this profile has played it, and rack groups and the coach never point
 them out (only `parsePlay` reads them, not `parsePartialHand`). A complete
 Mahjong hand never contains one; Daisangen and Daisuushii remain its Yaku.
 
+**Five and Six of a Kind.** The Wall holds four of each tile, but bought tiles,
+copies and Wild tiles can put more in a play. Five identical tiles score +100
+group points with group bonus 3, six score +150 with group bonus 4 (the user's
+call, November 2026). They are Quads of five or six tiles, so rack groups, the
+coach and the guide show them, and they level Toitoi like a Quad. Tile Packs
+and the Tea House's tile slot draw any of the 34 faces, so Winds and Dragons can
+reach five or six too; a pack's Wild tile is always a numbered one, since Wild
+only crosses suits.
+
 **Mult.** `Mult = (Yaku or 1) + Orb levels + pattern + Dragons`.
 Decrees then work on that running Mult in order: "+N Mult" adds N and "×N Mult"
 multiplies. (Previously "+N Mult" was added to a separate factor that

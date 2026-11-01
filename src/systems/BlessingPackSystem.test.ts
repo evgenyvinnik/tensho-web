@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Tile, EnhancementType } from '../core/Tile'
+import { Tile, EnhancementType, TileSuit } from '../core/Tile'
 import { runRandom } from '../game/RunRandom'
 import { calculateModifierEffects } from '../core/TileModifier'
 import type { BlessingPack, PackType } from './types'
@@ -248,6 +248,22 @@ describe('BlessingPackSystem shop integration', () => {
       expect(content.data).toBeInstanceOf(Tile)
       expect((content.data as Tile).hasModifiers).toBe(true)
     }
+  })
+
+  it('deals Winds and Dragons in Tile Packs, Wild only on numbered tiles', () => {
+    const system = new BlessingPackSystem()
+    const tiles: Tile[] = []
+    for (let seed = 1; seed <= 200; seed++) {
+      runRandom.start(seed)
+      const [offering] = system.generateOfferingsForPacks([makePack('Tile')])
+      tiles.push(...offering.contents.map((content) => content.data as Tile))
+    }
+
+    expect(tiles.some((tile) => tile.suit === TileSuit.Wind)).toBe(true)
+    expect(tiles.some((tile) => tile.suit === TileSuit.Dragon)).toBe(true)
+    const wild = tiles.filter((tile) => tile.isWild)
+    expect(wild.length).toBeGreaterThan(0)
+    expect(wild.every((tile) => tile.isSuited)).toBe(true)
   })
 
   it('places the favored-yaku Orb in Celestial Packs for Star Chart', () => {

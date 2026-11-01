@@ -3,6 +3,8 @@ import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { CoachAdvice, CoachOption } from '../../gameplay/beginnerCoach'
 import type { Tile } from '../../core/Tile'
+import { MeldType } from '../../core/Meld'
+import { groupKindFor } from '../../rules/PlayPattern'
 import { Popup } from '../ui/Popup'
 import { TileImage } from '../tiles/TileImage'
 import { scoreNumber } from '../../utils/scoreNumber'
@@ -49,14 +51,22 @@ export function CoachPanel({
     },
   ]
   if (advice.shape) {
+    const { pattern, tileIds } = advice.shape
+    // Five or six of a kind is a Quad of more tiles: name it for its size.
+    const ofAKind =
+      pattern === MeldType.Quad && tileIds.length > 4
+        ? t(`patterns.${groupKindFor(pattern, tileIds.length)}.name`)
+        : null
     options.push({
       key: 'shape',
-      title: advice.shape.pattern
-        ? t(`melds.${advice.shape.pattern}`)
-        : t('gameplay.coach.shapeShort'),
-      shortTitle: advice.shape.pattern
-        ? t(`gameplay.coach.patternShort.${advice.shape.pattern}`)
-        : t('gameplay.coach.shapeShort'),
+      title:
+        ofAKind ??
+        (pattern ? t(`melds.${pattern}`) : t('gameplay.coach.shapeShort')),
+      shortTitle:
+        ofAKind ??
+        (pattern
+          ? t(`gameplay.coach.patternShort.${pattern}`)
+          : t('gameplay.coach.shapeShort')),
       detail: t('gameplay.coach.shapeCost', {
         difference: scoreNumber(
           Math.max(0, advice.best.score - advice.shape.score),

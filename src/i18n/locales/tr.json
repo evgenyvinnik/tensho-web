@@ -52,6 +52,7 @@
     "importantRules": "Önemli kurallar:",
     "quadMechanics": "Dörtlünün işleyişi:",
     "quadBonus": "Taş etkilerinden önce +{{points}} grup puanı ve +{{mult}} şekil Çarpanı ekler.",
+    "ofAKindBonus": "Bir taşın fazladan kopyaları daha büyük gruplar kurar: Beş Aynı +{{five}} grup puanı ve +{{fiveMult}} şekil Çarpanı, Altı Aynı +{{six}} ve +{{sixMult}} ekler.",
     "quadRefill": "Dörtlüyü seçtiğiniz elin bir parçası olarak oynayın. Oynadıktan sonra ıstaka yeniden doldurulur; dörtlü ilan etmek için ayrı bir eylem yoktur.",
     "winningFormula": "<melds>4 Grup</melds> + <pair>1 Çift</pair> = <tiles>Dörtlülerin ek taşları hariç 14 Taş</tiles>",
     "winningExample": "Dört grup; seri, üçlü veya dörtlü olabilir. Her dörtlü, normal 14 taşlık yapıya bir taş ekler. İşte dörtlü içermeyen bir örnek:",
@@ -3104,6 +3105,14 @@
       "name": "Dörtlü",
       "explain": "Dört aynı taş."
     },
+    "five_of_a_kind": {
+      "name": "Beş Aynı",
+      "explain": "Beş aynı taş: duvardakinden bir fazla."
+    },
+    "six_of_a_kind": {
+      "name": "Altı Aynı",
+      "explain": "Altı aynı taş: duvardakinden iki fazla."
+    },
     "straight4": {
       "name": "Dörtlü sıra",
       "explain": "Aynı türden art arda dört sayı."
@@ -3181,7 +3190,7 @@
     "secretTitle": "Gizli eller",
     "secretFound": "Gizli el bulundu",
     "secretInGuide": "Artık ? rehberinde.",
-    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
+    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, Beş Aynı +3, Altı Aynı +4 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",

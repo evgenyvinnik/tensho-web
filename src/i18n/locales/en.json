@@ -52,6 +52,7 @@
     "importantRules": "Important rules:",
     "quadMechanics": "Quad mechanics:",
     "quadBonus": "Adds +{{points}} group points and +{{mult}} pattern Mult, before tile effects.",
+    "ofAKindBonus": "Extra copies of a tile make bigger groups: Five of a Kind adds +{{five}} group points and +{{fiveMult}} pattern Mult, Six of a Kind +{{six}} and +{{sixMult}}.",
     "quadRefill": "Play a quad as part of your selected hand. The rack refills after the play; there is no separate quad declaration action.",
     "winningFormula": "<melds>4 Melds</melds> + <pair>1 Pair</pair> = <tiles>14 Tiles before quads</tiles>",
     "winningExample": "The four melds can be sequences, triplets or quads. Each quad adds one tile to the usual 14-tile structure. Here is an example without quads:",
@@ -3100,6 +3101,14 @@
       "name": "Quad",
       "explain": "Four identical tiles."
     },
+    "five_of_a_kind": {
+      "name": "Five of a Kind",
+      "explain": "Five identical tiles: one more than the wall holds."
+    },
+    "six_of_a_kind": {
+      "name": "Six of a Kind",
+      "explain": "Six identical tiles: two more than the wall holds."
+    },
     "straight4": {
       "name": "Straight of Four",
       "explain": "Four numbers in a row, same suit."
@@ -3177,7 +3186,7 @@
     "secretTitle": "Secret hands",
     "secretFound": "Secret hand found",
     "secretInGuide": "Now listed in the ? guide.",
-    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2. Normally each tile counts once, and a play holds up to 6 tiles unless it is a full Mahjong hand.",
+    "patternRule": "Every group after the first adds +1 Mult. Triplets and Straights of Four add +1 more, Quads and Straights of Five +2, Five of a Kind +3 and Six of a Kind +4. Normally each tile counts once, and a play holds up to 6 tiles unless it is a full Mahjong hand.",
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",

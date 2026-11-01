@@ -8,7 +8,11 @@
 import { describe, it, expect } from 'vitest'
 import { Tile, TileSuit, WindType, DragonType } from '../core/Tile'
 import { MeldType } from '../core/Meld'
-import { getMeldStructurePoints } from './ScoringEngine'
+import {
+  FIVE_OF_A_KIND_POINTS,
+  getMeldStructurePoints,
+  SIX_OF_A_KIND_POINTS,
+} from './ScoringEngine'
 import { EnhancementType } from '../core/TileModifier'
 import {
   parsePartialHand,
@@ -224,6 +228,31 @@ describe('parsePartialHand', () => {
 
     expect(parse.groups[0].type).toBe(MeldType.Quad)
     expect(parse.structurePoints).toBe(65)
+  })
+
+  it.each([
+    [5, FIVE_OF_A_KIND_POINTS],
+    [6, SIX_OF_A_KIND_POINTS],
+  ])('groups %i identical tiles as one Quad', (count, points) => {
+    const tiles = Array.from({ length: count }, (_, i) =>
+      suited(TileSuit.Souzu, 7, i)
+    )
+    for (const parse of [parsePartialHand(tiles), parsePlay(tiles)]) {
+      expect(parse.groups).toHaveLength(1)
+      expect(parse.groups[0].type).toBe(MeldType.Quad)
+      expect(parse.groups[0].tiles).toHaveLength(count)
+      expect(parse.structurePoints).toBe(points)
+      expect(parse.leftovers).toEqual([])
+    }
+  })
+
+  it('caps a group at six of a kind and leaves the seventh loose', () => {
+    const tiles = Array.from({ length: 7 }, (_, i) =>
+      suited(TileSuit.Pinzu, 2, i)
+    )
+    const parse = parsePartialHand(tiles)
+    expect(parse.groups.map((group) => group.tiles.length)).toEqual([6])
+    expect(parse.leftovers).toHaveLength(1)
   })
 
   it('reports structure points that agree with the scoring engine', () => {

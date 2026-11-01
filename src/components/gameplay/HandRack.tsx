@@ -25,11 +25,17 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tile } from '../../core/Tile'
+import { MeldType } from '../../core/Meld'
 import { AnimatedTile } from '../tiles/AnimatedTile'
 import { tileSizes, type TileSize } from '../../styles/theme'
 import { tileName } from '../../i18n/tileText'
 import type { PartialHandRules } from '../../rules/PartialHandParser'
-import { groupHand, type HandClusterKind } from '../../gameplay/handGroups'
+import {
+  groupHand,
+  type HandCluster,
+  type HandClusterKind,
+} from '../../gameplay/handGroups'
+import { groupKindFor } from '../../rules/PlayPattern'
 import { useHandTileSize } from '../../hooks/useHandTileSize'
 import { useNoLoneTile } from '../../hooks/useNoLoneTile'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -257,8 +263,14 @@ export function HandRack({
     )
   }
 
-  const groupLabel = (kind: HandClusterKind, count: number) =>
-    `${t(`melds.${kind}`, kind)}${count > 1 ? ` ×${count}` : ''}`
+  const groupLabel = ({ kind, tiles, groupCount }: HandCluster) => {
+    // Five or six of a kind is a Quad of more tiles: name it for its size.
+    const name =
+      kind === MeldType.Quad && tiles.length > 4
+        ? t(`patterns.${groupKindFor(kind, tiles.length)}.name`)
+        : t(`melds.${kind}`, kind)
+    return `${name}${groupCount > 1 ? ` ×${groupCount}` : ''}`
+  }
 
   return (
     <>
@@ -341,7 +353,7 @@ export function HandRack({
                             } as CSSProperties
                           }
                         >
-                          {groupLabel(cluster.kind, cluster.groupCount)}
+                          {groupLabel(cluster)}
                         </span>
                       </div>,
                     ]),

@@ -30,6 +30,7 @@ Final Score = (Base Points + Additive Bonuses) × Multiplicative Multipliers
   - Sequence: +30
   - Triplet: +40
   - Quad: +65
+  - Five of a Kind: +100, Six of a Kind: +150 (needs extra copies of a tile)
 - **Loose tiles:** In a tactical play, a tile that belongs to no group scores
   half its tile points. Complete hands are unaffected, because every tile in one
   already belongs to a meld or the pair.
@@ -677,7 +678,7 @@ Two Blessing Packs appear in each Tea House visit. Players open packs immediatel
 |------|----------|----------|-----|
 | **Arcana Pack** | 秘術袋 | Fate Seals (Tarot-style) | Immediate use |
 | **Celestial Pack** | 天球袋 | Celestial Orbs (upgrades) | Immediate use |
-| **Tile Pack** | 牌袋 | Tiles with modifiers | Added to Wall |
+| **Tile Pack** | 牌袋 | Special tiles of any face, Winds and Dragons included (Wild only on numbered tiles) | Added to Wall |
 | **Decree Pack** | 法令袋 | Decree cards | Added to slots |
 | **Void Pack** | 虚空袋 | Void Scripts | Immediate use |
 
