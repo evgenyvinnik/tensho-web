@@ -857,6 +857,9 @@
     "redrawSelected": "Seçili taşları yeniden çek",
     "redrawHint": "En fazla 3 seçili taşı geri verip yenisini çeker",
     "decreeDisabledByMandate": "Bu elde Kızıl Kalp tarafından devre dışı",
+    "hiddenDecreeTitle": "Gizli Ferman",
+    "faceDownDecree": "Yüzü kapalı Ferman",
+    "hiddenDecreeDescription": "Kehribar Palamut bu Fermanı gizler ve tur kazanılana kadar gücünü susturur.",
     "season": "Mevsim:",
     "endless": "Sonsuz",
     "wall": "Duvar:",
@@ -2048,7 +2051,7 @@
     "items": {
       "amber_acorn": {
         "name": "Kehribar Palamut",
-        "description": "Tüm Fermanlar karıştırılır ve yüzleri aşağı çevrilir"
+        "description": "Rastgele seçilen Fermanlarının yarısı gizlenir ve devre dışı kalır"
       },
       "verdant_leaf": {
         "name": "Yeşil Yaprak",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "Yeni taşlar kapalı",
     "fixed_draw_count": "Hep {{count}} çek",
     "honor_tiles_face_down": "Onur taşları kapalı",
-    "shuffle_decrees": "Fermanlar gizli",
+    "hide_half_decrees": "Fermanların yarısı kapalı",
     "debuff_until_sell": "Bir Ferman satana dek tüm taşlar 0",
     "disable_random_decree": "Her oyunda 1 Ferman kapalı",
     "lock_random_tile": "Her çekişte bir taş kilitlenir"

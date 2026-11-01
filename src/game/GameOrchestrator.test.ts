@@ -1256,28 +1256,21 @@ describe('GameOrchestrator', () => {
       expect(game.getState().decreeSystem.getOwnedDecrees()).toContain(decree)
     })
 
-    it('creates a deterministic hidden Decree order for Amber Acorn', () => {
+    it('hides a deterministic half of the Decrees for Amber Acorn', () => {
       enterBossWithMandate(game, AMBER_ACORN)
 
       const secondGame = new GameOrchestrator()
       secondGame.startNewRun(12345)
       enterBossWithMandate(secondGame, AMBER_ACORN)
 
-      const order = game.getState().mandateEffectSystem.getShuffledDecreeIds()
-      expect(game.getState().mandateEffectSystem.areDecreesShuffled()).toBe(
-        true
+      const owned = game.getState().decreeSystem.getOwnedDecrees()
+      const hidden = game.getState().mandateEffectSystem.getHiddenDecreeIds()
+      expect(hidden).toHaveLength(Math.ceil(owned.length / 2))
+      expect(hidden).toEqual(
+        secondGame.getState().mandateEffectSystem.getHiddenDecreeIds()
       )
-      expect(order).toEqual(
-        secondGame.getState().mandateEffectSystem.getShuffledDecreeIds()
-      )
-      expect(new Set(order)).toEqual(
-        new Set(
-          game
-            .getState()
-            .decreeSystem.getOwnedDecrees()
-            .map((decree) => decree.instanceId)
-        )
-      )
+      for (const id of hidden)
+        expect(owned.map((decree) => decree.instanceId)).toContain(id)
     })
   })
 
@@ -1504,38 +1497,41 @@ describe('GameOrchestrator', () => {
   })
 
   describe('round completion', () => {
-    it.each([6, 7, 8])('records an Act %i victory and can continue through the Tea House into Endless', (act) => {
-      game.startNewRun(12345)
-      const state = game.getState() as OrchestratorState
-      state.roundManager.startAct(act)
-      state.roundManager.skipRound()
-      state.roundManager.skipRound()
+    it.each([6, 7, 8])(
+      'records an Act %i victory and can continue through the Tea House into Endless',
+      (act) => {
+        game.startNewRun(12345)
+        const state = game.getState() as OrchestratorState
+        state.roundManager.startAct(act)
+        state.roundManager.skipRound()
+        state.roundManager.skipRound()
 
-      const bossRound = state.roundManager.getCurrentRound()!
-      state.currentAct = act
-      state.currentRound = 3
-      state.targetScore = bossRound.scoreTarget
-      state.score = bossRound.scoreTarget
-      state.runScore = bossRound.scoreTarget * 3
+        const bossRound = state.roundManager.getCurrentRound()!
+        state.currentAct = act
+        state.currentRound = 3
+        state.targetScore = bossRound.scoreTarget
+        state.score = bossRound.scoreTarget
+        state.runScore = bossRound.scoreTarget * 3
 
-      const completionHarness = game as unknown as {
-        handleRoundWin: (effects: Effect[]) => void
+        const completionHarness = game as unknown as {
+          handleRoundWin: (effects: Effect[]) => void
+        }
+        completionHarness.handleRoundWin([])
+
+        expect(state.hasWonRun).toBe(true)
+        expect(state.isRunActive).toBe(false)
+        expect(state.phase).toBe('gameOver')
+
+        expect(game.continueEndless()).toBe(true)
+        expect(state.phase).toBe('shop')
+        expect(state.isRunActive).toBe(true)
+
+        game.exitShop()
+        expect(state.currentAct).toBe(act + 1)
+        expect(state.currentRound).toBe(1)
+        expect(state.phase).toBe('gameplay')
       }
-      completionHarness.handleRoundWin([])
-
-      expect(state.hasWonRun).toBe(true)
-      expect(state.isRunActive).toBe(false)
-      expect(state.phase).toBe('gameOver')
-
-      expect(game.continueEndless()).toBe(true)
-      expect(state.phase).toBe('shop')
-      expect(state.isRunActive).toBe(true)
-
-      game.exitShop()
-      expect(state.currentAct).toBe(act + 1)
-      expect(state.currentRound).toBe(1)
-      expect(state.phase).toBe('gameplay')
-    })
+    )
 
     it('should end game when hands exhausted without meeting target', () => {
       game.startNewRun(12345)

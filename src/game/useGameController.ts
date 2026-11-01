@@ -52,8 +52,8 @@ export interface GameController {
   lockedTileIds: string[]
   debuffedTileIds: string[]
   disabledDecreeIds: string[]
-  decreesFaceDown: boolean
-  decreeDisplayOrderIds: string[]
+  /** Decrees Amber Acorn turned face-down (and disabled) this round. */
+  hiddenDecreeIds: string[]
   isRunActive: boolean
   phase: 'menu' | 'gameplay' | 'shop' | 'gameOver'
 
@@ -510,8 +510,7 @@ export function useGameController(
     lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
     debuffedTileIds: Array.from(state.debuffSystem.getDebuffedTileIds()),
     disabledDecreeIds: state.mandateEffectSystem.getDisabledDecreeIds(),
-    decreesFaceDown: state.mandateEffectSystem.areDecreesShuffled(),
-    decreeDisplayOrderIds: state.mandateEffectSystem.getShuffledDecreeIds(),
+    hiddenDecreeIds: state.mandateEffectSystem.getHiddenDecreeIds(),
     isRunActive: state.isRunActive,
     phase: state.phase,
 

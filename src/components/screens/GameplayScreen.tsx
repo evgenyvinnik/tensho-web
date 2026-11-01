@@ -141,9 +141,7 @@ export function GameplayScreen() {
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
   const [yakuReveals, setYakuReveals] = useState<YakuRevealState[]>([])
-  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(
-    null
-  )
+  const [secretReveal, setSecretReveal] = useState<SecretPatternId | null>(null)
   const clearSecretReveal = useCallback(() => setSecretReveal(null), [])
   const toastCounter = useRef(0)
   const playButtonRef = useRef<HTMLButtonElement>(null)
@@ -367,19 +365,8 @@ export function GameplayScreen() {
   }, [persistence, navigateTo])
 
   const ownedDecrees = game.state.decreeSystem.getOwnedDecrees()
-  const displayedDecrees = useMemo(() => {
-    if (!game.decreesFaceDown || game.decreeDisplayOrderIds.length === 0)
-      return ownedDecrees
-    const remaining = [...ownedDecrees]
-    const ordered = game.decreeDisplayOrderIds.flatMap((decreeId) => {
-      const index = remaining.findIndex(
-        (decree) => decreeKey(decree) === decreeId || decree.id === decreeId
-      )
-      return index === -1 ? [] : remaining.splice(index, 1)
-    })
-    return [...ordered, ...remaining]
-  }, [ownedDecrees, game.decreesFaceDown, game.decreeDisplayOrderIds])
   const disabledDecreeIds = new Set(game.disabledDecreeIds)
+  const hiddenDecreeIds = new Set(game.hiddenDecreeIds)
   const maxDecreeSlots = game.state.decreeSystem.getMaxSlots()
 
   const roundType: RoundType =
@@ -491,7 +478,7 @@ export function GameplayScreen() {
               data-tutorial="decrees"
               className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
             >
-              {displayedDecrees.map((decree, index) => (
+              {ownedDecrees.map((decree, index) => (
                 <DecreeCardCompact
                   key={decree.instanceId ?? `${decree.id}-${index}`}
                   decree={decree}
@@ -501,7 +488,7 @@ export function GameplayScreen() {
                     game.state.completeConcealedHandsPlayed
                   }
                   disabledDecreeIds={disabledDecreeIds}
-                  faceDown={game.decreesFaceDown}
+                  faceDown={isDecreeExcluded(decree, hiddenDecreeIds)}
                   disabledByMandate={isDecreeExcluded(
                     decree,
                     disabledDecreeIds
@@ -692,9 +679,7 @@ export function GameplayScreen() {
           setShowGuide(false)
         }}
       />
-      <DecreeReveal
-        paused={toast !== null || showGuide || wallDrawPending}
-      />
+      <DecreeReveal paused={toast !== null || showGuide || wallDrawPending} />
 
       <ConfirmPopup
         isOpen={showExitConfirm}

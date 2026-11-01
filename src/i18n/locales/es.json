@@ -570,6 +570,9 @@
     "redrawSelected": "Recambiar fichas seleccionadas",
     "redrawHint": "Devuelve hasta 3 fichas seleccionadas y roba reemplazos",
     "decreeDisabledByMandate": "Desactivado por Corazón Carmesí esta mano",
+    "hiddenDecreeTitle": "Decreto oculto",
+    "faceDownDecree": "Decreto boca abajo",
+    "hiddenDecreeDescription": "Bellota de Ámbar oculta este Decreto y anula su poder hasta que ganes la ronda.",
     "season": "Estación:",
     "endless": "Infinito",
     "wall": "Muro:",
@@ -1863,7 +1866,7 @@
       },
       "amber_acorn": {
         "name": "Bellota de Ámbar",
-        "description": "Todos los Decretos se barajan y quedan boca abajo"
+        "description": "La mitad de tus Decretos, elegidos al azar, quedan ocultos y desactivados"
       },
       "verdant_leaf": {
         "name": "Hoja Verdeante",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "Fichas nuevas boca abajo",
     "fixed_draw_count": "Siempre robas {{count}}",
     "honor_tiles_face_down": "Honores boca abajo",
-    "shuffle_decrees": "Decretos ocultos",
+    "hide_half_decrees": "Mitad de Decretos apagados",
     "debuff_until_sell": "Todas las fichas dan 0 hasta vender un decreto",
     "disable_random_decree": "1 decreto apagado por jugada",
     "lock_random_tile": "Una ficha se bloquea por robo"

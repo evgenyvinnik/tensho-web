@@ -570,6 +570,9 @@
     "redrawSelected": "선택한 패 다시 뽑기",
     "redrawHint": "선택한 패를 최대 3장 되돌리고 새로 뽑습니다",
     "decreeDisabledByMandate": "이번 손은 진홍의 심장으로 비활성",
+    "hiddenDecreeTitle": "숨겨진 법령",
+    "faceDownDecree": "뒷면 법령",
+    "hiddenDecreeDescription": "호박 도토리가 이 법령을 숨기고, 라운드에서 이길 때까지 그 힘을 봉인합니다.",
     "season": "계절:",
     "endless": "엔들리스",
     "wall": "벽:",
@@ -1863,7 +1866,7 @@
       },
       "amber_acorn": {
         "name": "호박 도토리",
-        "description": "모든 법령이 섞이고 뒷면이 됨"
+        "description": "무작위로 고른 법령 절반이 뒷면이 되고 비활성화됨"
       },
       "verdant_leaf": {
         "name": "푸른 잎",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "새 패는 뒷면",
     "fixed_draw_count": "항상 {{count}}장 뽑기",
     "honor_tiles_face_down": "자패는 뒷면",
-    "shuffle_decrees": "법령 숨김",
+    "hide_half_decrees": "법령 절반 꺼짐",
     "debuff_until_sell": "법령을 팔기 전까지 모든 패 0점",
     "disable_random_decree": "패 낼 때마다 법령 1개 꺼짐",
     "lock_random_tile": "뽑을 때마다 1장 고정"

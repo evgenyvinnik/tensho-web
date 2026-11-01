@@ -570,6 +570,9 @@
     "redrawSelected": "選択した牌を引き直す",
     "redrawHint": "選んだ牌を最大3枚戻して引き直します",
     "decreeDisabledByMandate": "この手は緋の心により無効",
+    "hiddenDecreeTitle": "伏せた法令",
+    "faceDownDecree": "伏せられた法令",
+    "hiddenDecreeDescription": "琥珀の実がこの法令を伏せ、ラウンドに勝つまでその力を封じている。",
     "season": "季節:",
     "endless": "エンドレス",
     "wall": "山:",
@@ -1863,7 +1866,7 @@
       },
       "amber_acorn": {
         "name": "琥珀の実",
-        "description": "すべての法令が伏せられ、順序が入れ替わる"
+        "description": "無作為に選ばれた法令の半分が伏せられ、無効になる"
       },
       "verdant_leaf": {
         "name": "翠の葉",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "新しい牌は伏せ牌",
     "fixed_draw_count": "常に{{count}}枚引く",
     "honor_tiles_face_down": "字牌は伏せ牌",
-    "shuffle_decrees": "法令が隠される",
+    "hide_half_decrees": "法令の半分が無効",
     "debuff_until_sell": "法令を売るまで全牌0点",
     "disable_random_decree": "打つたび法令1つ無効",
     "lock_random_tile": "引くたび1枚固定"

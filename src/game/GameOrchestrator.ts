@@ -723,11 +723,12 @@ export class GameOrchestrator {
     )
     this.state.decreeSystem.onRoundStart()
     this.state.consumableSystem.onRoundStart()
-    this.initializeRoundResources()
 
-    // Initialize the first round in a ready-to-play state.
+    // Initialize the first round in a ready-to-play state. The Mandate goes
+    // first so round resources can see the Decrees it disables.
     this.initializeWall(actualSeed)
     this.applyMandateDebuffs()
+    this.initializeRoundResources()
     this.drawStartingHand()
 
     this.publishWallComposition()
@@ -768,7 +769,10 @@ export class GameOrchestrator {
     const charterEffects = this.state.charterSystem.calculateEffects()
     const stakePenalty =
       this.state.roundManager.getStakeModifiers().redrawPenalty
-    const decreeRedrawDelta = this.state.decreeSystem.getAdditionalDiscards()
+    // Amber Acorn's hidden Decrees grant no Turns or redraws this round.
+    const hiddenDecrees = this.hiddenDecreeIds()
+    const decreeRedrawDelta =
+      this.state.decreeSystem.getAdditionalDiscards(hiddenDecrees)
     this.state.deadWallWritUsedThisRound = false
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
@@ -784,7 +788,7 @@ export class GameOrchestrator {
         charterEffects.redrawsPenalty -
         stakePenalty +
         Math.min(0, decreeRedrawDelta) +
-        this.state.decreeSystem.getAdditionalDraws()
+        this.state.decreeSystem.getAdditionalDraws(hiddenDecrees)
     )
     this.state.discardsRemaining = 0
     this.state.redrawsRemaining = Math.max(
@@ -871,9 +875,17 @@ export class GameOrchestrator {
         this.state.voidScriptSystem.getHandSizePenalty() +
         this.state.omenHandSizeBonus -
         this.state.mandateEffectSystem.getHandSizeReduction() +
-        this.state.decreeSystem.getHandSizeBonus() +
+        this.state.decreeSystem.getHandSizeBonus(this.hiddenDecreeIds()) +
         this.state.seasonSystem.getDrawBonus()
     )
+  }
+
+  /**
+   * Decrees Amber Acorn hid for the whole round. Round resources skip them;
+   * Crimson Heart's per-hand pick does not reach these.
+   */
+  private hiddenDecreeIds(): Set<string> {
+    return new Set(this.state.mandateEffectSystem.getHiddenDecreeIds())
   }
 
   private publishBuildProgress(): void {
@@ -4301,6 +4313,8 @@ export class GameOrchestrator {
     this.state.gold += netGoldChange
     // The last remaining round still earns this Decree's score and payout.
     this.state.decreeSystem.onRoundEnd()
+    // Hidden or disabled Decrees sit out the round's payout, then return.
+    this.state.mandateEffectSystem.releaseDecreeSuppression()
     // Age existing Omens first, so a newly earned one keeps its full duration.
     this.state.omenSystem.onRoundEnd()
     const swiftOmen =
@@ -4418,7 +4432,9 @@ export class GameOrchestrator {
         victory: true,
         score: this.state.runScore,
         decreesOwned: this.state.decreeSystem.getOwnedDecrees().length,
-        decreeIds: this.state.decreeSystem.getOwnedDecrees().map(decree => decree.id),
+        decreeIds: this.state.decreeSystem
+          .getOwnedDecrees()
+          .map((decree) => decree.id),
         act: this.state.currentAct,
         round: this.state.currentRound,
       })
@@ -4586,16 +4602,17 @@ export class GameOrchestrator {
       this.state.currentAct,
       this.state.currentRound
     )
-    this.initializeRoundResources()
 
     // Set act number for season corruption
     this.state.seasonSystem.setAct(this.state.currentAct)
 
-    // Reinitialize wall for new round
+    // Reinitialize wall for new round. The Mandate goes first so round
+    // resources can see the Decrees it disables.
     this.initializeWall(
       this.state.seed + this.state.currentAct * 100 + this.state.currentRound
     )
     this.applyMandateDebuffs()
+    this.initializeRoundResources()
     this.drawStartingHand()
 
     eventBus.emit('roundStart', {

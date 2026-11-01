@@ -1489,11 +1489,15 @@ export class DecreeSystem {
    * Extra plays per round. The legacy draw field/API name is kept for saves;
    * GameOrchestrator applies it to handsRemaining, never tile draws/redraws.
    */
-  getAdditionalDraws(): number {
+  getAdditionalDraws(excludedIds?: ReadonlySet<string>): number {
     let draws = 0
 
-    for (const decree of this.getActiveDecrees()) {
-      for (const effect of this.resolveEffects(decree, this.ownedDecrees)) {
+    for (const decree of this.getActiveDecrees(excludedIds)) {
+      for (const effect of this.resolveEffects(
+        decree,
+        this.ownedDecrees,
+        excludedIds
+      )) {
         if (effect.type === 'draw') {
           draws += effect.additionalDraws
         }
@@ -1504,21 +1508,28 @@ export class DecreeSystem {
   }
 
   /** Net hand-size change from Decrees, in tiles (may be negative). */
-  getHandSizeBonus(): number {
-    return this.sumRuleDelta('hand_size')
+  getHandSizeBonus(excludedIds?: ReadonlySet<string>): number {
+    return this.sumRuleDelta('hand_size', excludedIds)
   }
 
   /** Net change to discards per round from Decrees (may be negative). */
-  getAdditionalDiscards(): number {
-    return this.sumRuleDelta('discard_count')
+  getAdditionalDiscards(excludedIds?: ReadonlySet<string>): number {
+    return this.sumRuleDelta('discard_count', excludedIds)
   }
 
   /** Total `delta` carried by every active rule modification with this id. */
-  private sumRuleDelta(ruleId: string): number {
+  private sumRuleDelta(
+    ruleId: string,
+    excludedIds?: ReadonlySet<string>
+  ): number {
     let total = 0
 
-    for (const decree of this.getActiveDecrees()) {
-      for (const effect of this.resolveEffects(decree, this.ownedDecrees)) {
+    for (const decree of this.getActiveDecrees(excludedIds)) {
+      for (const effect of this.resolveEffects(
+        decree,
+        this.ownedDecrees,
+        excludedIds
+      )) {
         if (effect.type !== 'rule_modification' || effect.ruleId !== ruleId)
           continue
         const delta = effect.modification.delta

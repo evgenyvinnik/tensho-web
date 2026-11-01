@@ -857,6 +857,9 @@
     "redrawSelected": "I-redraw ang mga piniling tile",
     "redrawHint": "Ibalik ang hanggang 3 piniling tile at kumuha ng kapalit",
     "decreeDisabledByMandate": "Naka-disable ng Crimson Heart ngayong kamay",
+    "hiddenDecreeTitle": "Nakatagong Dekreto",
+    "faceDownDecree": "Nakataob na Dekreto",
+    "hiddenDecreeDescription": "Itinatago ng Bungang Akorn na Ambar ang Dekretong ito at pinapatay ang kapangyarihan nito hanggang manalo ka sa round.",
     "season": "Panahon:",
     "endless": "Walang Hanggan",
     "wall": "Wall:",
@@ -2048,7 +2051,7 @@
     "items": {
       "amber_acorn": {
         "name": "Bungang Akorn na Ambar",
-        "description": "Binabalasa at itinataob ang lahat ng Dekreto"
+        "description": "Kalahati ng iyong mga Dekreto, pinili nang random, ay nakatago at hindi gumagana"
       },
       "verdant_leaf": {
         "name": "Dahong Luntian",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "Nakataob ang bagong tile",
     "fixed_draw_count": "Laging kumuha ng {{count}}",
     "honor_tiles_face_down": "Nakataob ang Honors",
-    "shuffle_decrees": "Nakatago ang mga Dekreto",
+    "hide_half_decrees": "Kalahati ng Dekreto patay",
     "debuff_until_sell": "0 lahat ng tile hanggang magbenta ng Dekreto",
     "disable_random_decree": "1 Dekreto patay bawat laro",
     "lock_random_tile": "May tile na naka-lock bawat kuha"

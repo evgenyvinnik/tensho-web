@@ -570,6 +570,9 @@
     "redrawSelected": "Repiocher les tuiles sélectionnées",
     "redrawHint": "Rend jusqu'à 3 tuiles sélectionnées et en pioche autant",
     "decreeDisabledByMandate": "Désactivé par Cœur Cramoisi cette main",
+    "hiddenDecreeTitle": "Décret caché",
+    "faceDownDecree": "Décret face cachée",
+    "hiddenDecreeDescription": "Gland d'Ambre cache ce Décret et neutralise son pouvoir jusqu'à ce que la manche soit gagnée.",
     "season": "Saison :",
     "endless": "Infini",
     "wall": "Mur :",
@@ -1863,7 +1866,7 @@
       },
       "amber_acorn": {
         "name": "Gland d'Ambre",
-        "description": "Tous les Décrets sont mélangés et face cachée"
+        "description": "La moitié de vos Décrets, tirés au hasard, sont cachés et désactivés"
       },
       "verdant_leaf": {
         "name": "Feuille Verdoyante",
@@ -3199,7 +3202,7 @@
     "tiles_face_down_after_play": "Nouvelles tuiles face cachée",
     "fixed_draw_count": "Piochez toujours {{count}}",
     "honor_tiles_face_down": "Honneurs face cachée",
-    "shuffle_decrees": "Décrets cachés",
+    "hide_half_decrees": "Moitié des Décrets désactivés",
     "debuff_until_sell": "Toutes les tuiles valent 0 jusqu’à la vente d’un Décret",
     "disable_random_decree": "1 Décret désactivé par main",
     "lock_random_tile": "Une tuile se verrouille à chaque pioche"

@@ -373,7 +373,7 @@ discrepancies. This is not a claim that every legacy Omen is acquireable.
 
 | Mandate | Effect |
 |---------|--------|
-| **Amber Acorn** | All Decrees are shuffled and face-down |
+| **Amber Acorn** | Half your Decrees (random, rounded up) are face-down and disabled for the round, including their Turn, redraw and rack bonuses |
 | **Verdant Leaf** | All tiles debuffed until 1 Decree is sold |
 | **Violet Vessel** | Extra-extra large target (6× instead of 2×) |
 | **Crimson Heart** | One random Decree disabled every hand cycle |
