@@ -45,12 +45,12 @@ const englishDecrees = {
   },
   lucky_sixes: {
     name: 'Lucky Sixes',
-    description: '+6 Mult per played numbered 6. Stones do not count.',
+    description: '+6 Mult per played numbered 6. Stone tiles do not count.',
   },
   the_idol: {
     name: 'The Idol',
     description:
-      '×3 Mult when at least two played tiles all have the same printed suit and rank. Stones break the condition; Wild tiles keep their printed identity.',
+      '×3 Mult when at least two played tiles all have the same printed suit and rank. Stone tiles break the condition; Wild tiles keep their printed identity.',
   },
   stuntman: {
     name: 'Stuntman',

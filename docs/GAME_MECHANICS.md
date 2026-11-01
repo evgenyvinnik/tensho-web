@@ -237,7 +237,7 @@ Some Mandates cause tiles to be drawn face-down:
 | **The House** | The opening hand is face-down |
 | **The Wheel** | 1 in 7 tiles drawn is face-down |
 | **The Fish** | Replacement tiles drawn after playing are face-down |
-| **The Mark** | Honor tiles are face-down |
+| **The Veil** | Honor tiles are face-down |
 
 ### 5d. Locked Tiles (拘束牌)
 

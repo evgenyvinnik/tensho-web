@@ -174,6 +174,28 @@ it('draws its one modifier layer without replacing a normal face', () => {
   expect(screen.getByRole('img')).toHaveAccessibleName('Face-down tile')
 })
 
+it('fits a framed face to its frame and leaves a plain face whole', () => {
+  const plain = new Tile(TileSuit.Pinzu, 2, 'two-dots')
+  const { container, rerender } = render(<TileImage tile={plain} />)
+  expect(container.querySelector('[data-tile-face]')).toBeNull()
+  expect(screen.getByRole('img')).toHaveClass('w-full', 'h-full')
+
+  rerender(<TileImage tile={plain.withEnhancement(EnhancementType.Bonus)} />)
+  const panel = container.querySelector<HTMLElement>(
+    '[data-tile-face="framed"]'
+  )
+  expect(panel).not.toBeNull()
+  // The face shows in the frame's opening, cropped to the face itself: the
+  // raised side of the tile art never shows inside the frame.
+  expect(panel!.style.left).toMatch(/%$/)
+  expect(panel!.style.top).toMatch(/%$/)
+  const face = screen.getByRole('img')
+  expect(panel).toContainElement(face)
+  expect(face).toHaveAttribute('src', expect.stringMatching(/Dots \(2\)/))
+  expect(face.style.clipPath).toMatch(/^inset\(/)
+  expect(face.style.padding).toBe('')
+})
+
 it('shows Stone as rankless artwork and never leaks its original face or rank hint', () => {
   const tile = new Tile(TileSuit.Dragon, 3, 'stone', false, {
     enhancement: EnhancementType.Stone,
@@ -182,10 +204,15 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   })
   const { container } = render(<TileImage tile={tile} detailsVisible />)
   expect(screen.getByRole('img')).toHaveAccessibleName(
-    i18n.t('tileMarks.items.stone.name')
+    i18n.t('tileDetails.stoneName')
   )
   expect(container.querySelector('img[src*="Dragons"]')).toBeNull()
   expect(container.querySelector('[data-tile-index]')).toBeNull()
+  // The stone fills the frame's opening, not the frame's transparent corners.
+  expect(
+    container.querySelector<HTMLElement>('[data-tile-face="stone"]')!.style
+      .width
+  ).toMatch(/%$/)
   expect(screen.getByRole('tooltip')).toHaveTextContent(
     i18n.t('tileMarks.items.stone.description')
   )

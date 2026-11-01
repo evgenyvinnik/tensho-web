@@ -119,6 +119,10 @@ export function GameplayScreen() {
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const [showGuide, setShowGuide] = useState(() => !readGuideSeen())
   const wallDrawPending = useFloraRevealQueue((state) => state.queue.length > 0)
+  // Hand hints wait for the round's deal to land before they fade in.
+  const dealPending = useFloraRevealQueue((state) =>
+    state.queue.some((entry) => entry.kind === 'deal')
+  )
   const [actionError, setActionError] = useState<string | null>(null)
   const [targeting, setTargeting] = useState<VoidScript | null>(null)
   // A Seal the run makes here (a redrawn Purple tile) is used at once.
@@ -615,6 +619,7 @@ export function GameplayScreen() {
                 debuffedIds={debuffedTileIds}
                 onToggle={handleToggle}
                 groupRules={showTileHints ? game.partialHandRules : null}
+                hintsHeld={dealPending}
                 disabled={tableClosed}
                 rackHeader={
                   <>

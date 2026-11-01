@@ -644,7 +644,9 @@ export class VFXSystem {
 
     // Item purchased
     this.eventUnsubscribers.push(
-      eventBus.on('itemPurchased', () => {
+      eventBus.on('itemPurchased', ({ itemType }) => {
+        // A reroll animates the Tea House's cards instead of the screen.
+        if (itemType === 'Reroll') return;
         this.flash('purchase');
       })
     );

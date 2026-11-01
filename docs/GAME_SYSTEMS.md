@@ -345,7 +345,7 @@ For a full, expanded list of Decrees with triggers, rarity, and design notes, se
 | **Pure Suit Asceticism** | Scaling | Rare | Dominant suit tiles scale multiplicatively. |
 | **Closed-Hand Austerity** | Scaling | Rare | Concealed hands gain exponential scaling. |
 | **River Tax** | Entropy & Fate | Common | Each discard yields small gold. |
-| **Moonlit Seal** | Scaling | Uncommon | Honor tiles add a stacking multiplier. |
+| **Moonlit Emblem** | Scaling | Uncommon | Honor tiles add a stacking multiplier. |
 
 ---
 

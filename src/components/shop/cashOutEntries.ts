@@ -1,7 +1,8 @@
 /**
  * What one round's settlement pays, source by source: the toasts the Tea
  * House shows arriving. Derived from the engine's summary; nothing here
- * awards money.
+ * awards money. A swift clear's Omen itself is revealed centre stage before
+ * these (see OmenReveal); only Gold it paid at once arrives as a toast.
  *
  * @module components/shop/cashOutEntries
  */
@@ -20,12 +21,12 @@ export interface CashOutEntry {
     | 'bonus'
     | 'rentals'
     | 'omenGold'
-    | 'omen'
   label: string
-  /** Gold this toast carries; 0 for the Omen itself. */
+  /** Gold this toast carries. */
   amount: number
   /** Why the amount is not what the player expects, e.g. a Stake rule. */
   note?: string
+  /** The Omen that paid this Gold, for its artwork. */
   omenId?: string
 }
 
@@ -86,21 +87,14 @@ export function cashOutEntries(
     },
     {
       id: 'omenGold',
-      label: t('shop.payout.omen'),
+      label: summary.omenId
+        ? t('shop.payout.omenEarned', {
+            name: t(`omens.items.${summary.omenId}.name`),
+          })
+        : t('shop.payout.omen'),
       amount: summary.omenGold ?? 0,
+      omenId: summary.omenId ?? undefined,
     },
   ]
-  const entries = sources.filter(
-    (entry) => entry.id === 'clear' || entry.amount !== 0
-  )
-  if (summary.omenId)
-    entries.push({
-      id: 'omen',
-      label: t('shop.payout.omenEarned', {
-        name: t(`omens.items.${summary.omenId}.name`),
-      }),
-      amount: 0,
-      omenId: summary.omenId,
-    })
-  return entries
+  return sources.filter((entry) => entry.id === 'clear' || entry.amount !== 0)
 }

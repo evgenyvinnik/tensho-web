@@ -2,7 +2,8 @@
  * MenuScreen Component
  *
  * Main menu screen with Balatro-inspired design, CRT effects, and floating tiles.
- * Entry point for the game with Play, Tutorial, Settings, and Achievements options.
+ * Entry point for the game: New Run plus the Codex, Settings, Achievements and
+ * Collection pavilions, each marked with its room's painted emblem.
  */
 
 import { useState, useEffect, useMemo, useRef } from 'react'
@@ -30,7 +31,7 @@ import { useAppNavigation, ROUTES } from '../../router'
 import type { AudioTrack } from '../../utils/assets'
 import { VolumeMutedIcon } from '../ui/Icons'
 import { ControlIcon } from '../ui/ControlIcon'
-import { PavilionIcon } from '../ui/PavilionIcon'
+import { PavilionPageIcon } from '../ui/PavilionIcon'
 
 // Create animated components for React 19 compatibility
 const AnimatedDiv = animated('div')
@@ -230,6 +231,8 @@ interface NeonButtonProps {
   hero?: boolean
   /** A small tile shown beside the label (decorative). */
   emblem?: string
+  /** A decorative icon in front of the label, on the same line (size in em). */
+  icon?: React.ReactNode
 }
 
 /**
@@ -245,6 +248,7 @@ function NeonButton({
   disabled = false,
   hero = false,
   emblem,
+  icon,
 }: NeonButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
@@ -283,8 +287,8 @@ function NeonButton({
       onTouchEnd={() => setIsPressed(false)}
       className={`
         relative w-full font-ui font-bold disabled:cursor-wait disabled:opacity-50
-        ${hero ? 'rounded-xl px-4 py-4 text-xl sm:text-2xl' : compact ? 'rounded-lg px-4 py-2.5 text-sm sm:text-base' : 'rounded-lg px-6 py-3 text-lg md:text-xl'}
-        text-[var(--color-beige-white)] uppercase tracking-wider
+        ${hero ? 'rounded-xl px-4 py-4 text-xl sm:text-2xl' : compact ? '@container rounded-lg px-2 py-2.5 tracking-wide sm:px-3' : 'rounded-lg px-6 py-3 text-lg md:text-xl'}
+        text-[var(--color-beige-white)] uppercase ${compact ? '' : 'tracking-wider'}
         ${hero ? 'border-[3px]' : 'border-2'} transition-colors duration-200
         ${isPrimary ? 'border-[var(--color-golden-yellow)]' : 'border-[var(--color-metallic-gold)]'}
         ${isPrimary ? 'button-pulse' : ''}
@@ -304,7 +308,11 @@ function NeonButton({
             : `0 0 15px ${glowColor}, 0 0 30px rgba(0,0,0,0.3)`,
       }}
     >
-      <span className="relative z-10 flex items-center justify-center gap-3">
+      {/* Compact labels size to the button (11-14px), so the longest one,
+          with its icon, stays on one line in a two-column grid on phones. */}
+      <span
+        className={`relative z-10 flex items-center justify-center ${compact ? 'gap-1.5 text-[length:clamp(11px,9cqi,14px)] sm:gap-2' : 'gap-3'}`}
+      >
         {emblem && (
           <img
             src={emblem}
@@ -314,6 +322,7 @@ function NeonButton({
             className={`${hero ? 'h-14 w-10' : 'h-10 w-7'} shrink-0 -rotate-6 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.45)]`}
           />
         )}
+        {icon}
         <span className="neon-text-subtle min-w-0 leading-tight">
           {children}
         </span>
@@ -532,8 +541,8 @@ export function MenuScreen() {
                   variant="secondary"
                   delay={750}
                   show={showContent}
+                  icon={<PavilionPageIcon page="codex" size="2em" />}
                 >
-                  <PavilionIcon name="archive" size={32} />{' '}
                   {t('menu.codex', 'Codex')}
                 </NeonButton>
 
@@ -543,6 +552,7 @@ export function MenuScreen() {
                   variant="secondary"
                   delay={850}
                   show={showContent}
+                  icon={<PavilionPageIcon page="settings" size="2em" />}
                 >
                   {t('menu.settings')}
                 </NeonButton>
@@ -553,6 +563,7 @@ export function MenuScreen() {
                   variant="secondary"
                   delay={950}
                   show={showContent}
+                  icon={<PavilionPageIcon page="achievements" size="2em" />}
                 >
                   {t('menu.achievements', 'Achievements')}
                 </NeonButton>
@@ -563,6 +574,7 @@ export function MenuScreen() {
                   variant="secondary"
                   delay={1050}
                   show={showContent}
+                  icon={<PavilionPageIcon page="collection" size="2em" />}
                 >
                   {t('menu.collection', 'Collection')}
                 </NeonButton>

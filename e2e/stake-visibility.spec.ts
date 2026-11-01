@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { collectCashOut } from './helpers/shop'
-import { openTable, settleReveals } from './helpers/table'
+import { closeOmenReveal, openTable, settleReveals } from './helpers/table'
 import { chooseStake } from './helpers/stake'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 
@@ -73,6 +73,9 @@ test('a Red Stake Small round says why it paid no clear reward', async ({
   }
   await page.locator('[data-game-action="play"]').click()
   await expect(page).toHaveURL(/\/en\/shop$/)
+  // Clearing on the first Turn is a swift clear: its Omen is revealed first,
+  // and the pay follows it.
+  await closeOmenReveal(page)
 
   const seen = await collectCashOut(page, {
     screenshot: testInfo.outputPath('red-stake-cash-out.png'),

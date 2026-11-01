@@ -77,7 +77,7 @@ for (const lang of ['en', 'es', 'ru'])
     const consequence = {
       en: 'A tile locks each draw',
       es: 'Una ficha se bloquea por robo',
-      ru: 'Тайл блокируется при доборе',
+      ru: 'Кость блокируется при доборе',
     }[lang]!
     const control = page.locator('[data-mandate-details="cerulean_bell"]')
     // A phone opens the Bell's rule on tap; wider screens write it inline.
