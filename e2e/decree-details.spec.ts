@@ -1,7 +1,7 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
 import ru from '../src/i18n/locales/ru.json' with { type: 'json' }
-import { offerCard, openOffer } from './helpers/shop'
+import { offerCard, offerName, openOffer } from './helpers/shop'
 import { settleReveals } from './helpers/table'
 
 async function activate(locator: Locator, touch: boolean) {
@@ -154,12 +154,12 @@ for (const [language, copy] of [
     await page.emulateMedia({ reducedMotion: 'reduce' })
     const errors: string[] = []
     page.on('pageerror', (error) => errors.push(error.message))
-    await fixture(page, language, 'shop')
-    const offerId = (await page
-      .locator('[data-shop-offer]')
-      .filter({ hasText: copy.decrees.items['decree-half-suited'].name })
-      .first()
-      .getAttribute('data-shop-offer'))!
+    const shop = await fixture(page, language, 'shop')
+    const offerId = shop.shop.teaHouse.itemOfferings[0].id
+    // The card is art and price; its name is read out with it.
+    await expect(offerCard(page, offerId)).toHaveAccessibleName(
+      offerName(copy.decrees.items['decree-half-suited'].name)
+    )
     const rental = copy.decreeModifiers.rentalDescription.replace(
       '{{amount}}',
       '0'
@@ -282,8 +282,10 @@ test('open details reflow across translation, viewport and motion-preference cha
   await settleReveals(page, 2_000)
   const before = await saved(page)
   const scroll = page.locator('[data-decree-instance]').first()
-  // The Decree's own art; a debuffed scroll also carries a ban icon.
-  const art = scroll.locator('img[src*="/decrees/"]')
+  // The Decree's own Polychrome art; a debuffed scroll also carries a ban icon.
+  const art = scroll.locator(
+    'img[src$="/decree-editions/decree-half-suited/polychrome.webp"]'
+  )
   await activate(scroll, isMobile)
   const dialog = page.getByRole('dialog')
   await expect(dialog).toHaveCSS('opacity', '1')

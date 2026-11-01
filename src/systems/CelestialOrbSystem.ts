@@ -908,6 +908,7 @@ const PATTERN_FAMILIES: Partial<Record<PlayPatternId, YakuCategory>> = {
   two_sequences: 'Pinfu',
   straight4: 'Ittsu',
   straight5: 'Ittsu',
+  straight6: 'Ittsu',
   straight_pair: 'Ittsu',
   triplet: 'Toitoi',
   triplet_pair: 'Toitoi',

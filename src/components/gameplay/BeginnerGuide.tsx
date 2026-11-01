@@ -81,6 +81,7 @@ const EXAMPLES: Record<PlayPatternId, Meld[]> = {
   ],
   straight5: [new Meld(MeldType.Straight, run(P, 4, 5))],
   quad: [new Meld(MeldType.Quad, same(P, 9, 4))],
+  straight6: [new Meld(MeldType.Straight, run(M, 2, 6))],
   five_of_a_kind: [new Meld(MeldType.Quad, same(S, 6, 5))],
   six_of_a_kind: [new Meld(MeldType.Quad, same(M, 4, 6))],
   mahjong: [

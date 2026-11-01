@@ -74,6 +74,7 @@ export function useTutorialSteps(): TutorialStep[] {
         [MeldType.Triplet, 3],
         [MeldType.Straight, 4],
         [MeldType.Straight, 5],
+        [MeldType.Straight, 6],
         [MeldType.Quad, 4],
         [MeldType.Quad, 5],
         [MeldType.Quad, 6],

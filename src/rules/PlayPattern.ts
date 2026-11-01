@@ -2,15 +2,15 @@
  * Play patterns: Tensho's poker-style names for what a play scored.
  *
  * Tensho is not standard Mahjong. A play is read as the groups it contains —
- * a Pair, Two Pairs, a Sequence and a Pair, Two Sequences, a four- or
- * five-tile Straight, a Triplet, a Quad, Five or Six of a Kind — and the
+ * a Pair, Two Pairs, a Sequence and a Pair, Two Sequences, a four-, five- or
+ * six-tile Straight, a Triplet, a Quad, Five or Six of a Kind — and the
  * pattern decides its bonus Mult. One formula covers every pattern, so the
  * guide can teach it in a line:
  *
  *   Pattern Mult = (groups − 1) + Σ group bonus
  *   group bonus:  Pair 0 · Sequence 0 · Triplet 1 · 4-Straight 1
  *                 Quad 2 · 5-Straight 2 · Three Dragons 2 · Four Winds 2
- *                 Five of a Kind 3 · Six of a Kind 4
+ *                 6-Straight 3 · Five of a Kind 3 · Six of a Kind 4
  *
  * Five and Six of a Kind are Quads of five or six identical tiles. The Wall
  * holds four of each, so they need bought or copied tiles, or Wild ones.
@@ -45,6 +45,7 @@ export type PlayPatternId =
   | 'six_of_a_kind'
   | 'straight4'
   | 'straight5'
+  | 'straight6'
   | 'two_pairs'
   | 'three_pairs'
   | 'two_sequences'
@@ -72,6 +73,7 @@ const PATTERN_ID_SET: Record<PlayPatternId, true> = {
   six_of_a_kind: true,
   straight4: true,
   straight5: true,
+  straight6: true,
   two_pairs: true,
   three_pairs: true,
   two_sequences: true,
@@ -110,6 +112,7 @@ export type GroupKind =
   | 'six_of_a_kind'
   | 'straight4'
   | 'straight5'
+  | 'straight6'
   | 'three_dragons'
   | 'four_winds'
 
@@ -121,6 +124,7 @@ export const GROUP_MULT: Record<GroupKind, number> = {
   straight4: 1,
   quad: 2,
   straight5: 2,
+  straight6: 3,
   three_dragons: 2,
   four_winds: 2,
   five_of_a_kind: 3,
@@ -145,7 +149,8 @@ export function groupKind(meld: Meld): GroupKind {
 
 /** The kind of a group of this type and size. */
 export function groupKindFor(type: MeldType, size: number): GroupKind {
-  if (type === MeldType.Straight) return size >= 5 ? 'straight5' : 'straight4'
+  if (type === MeldType.Straight)
+    return size >= 6 ? 'straight6' : size >= 5 ? 'straight5' : 'straight4'
   if (type === MeldType.Honors)
     return size >= 4 ? 'four_winds' : 'three_dragons'
   if (type === MeldType.Quad && size >= 6) return 'six_of_a_kind'
@@ -167,6 +172,7 @@ const KIND_ORDER: GroupKind[] = [
   'three_dragons',
   'six_of_a_kind',
   'five_of_a_kind',
+  'straight6',
   'quad',
   'straight5',
   'straight4',
@@ -185,6 +191,7 @@ const NAMED: Record<string, PlayPatternId> = {
   six_of_a_kind: 'six_of_a_kind',
   straight4: 'straight4',
   straight5: 'straight5',
+  straight6: 'straight6',
   'pair+pair': 'two_pairs',
   'pair+pair+pair': 'three_pairs',
   'sequence+sequence': 'two_sequences',
@@ -232,6 +239,7 @@ export const TAUGHT_PATTERNS: readonly PlayPatternId[] = [
   'triplet_pair',
   'straight5',
   'quad',
+  'straight6',
   'five_of_a_kind',
   'six_of_a_kind',
   'mahjong',

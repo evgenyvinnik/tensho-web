@@ -152,8 +152,10 @@ export function RunHeader({
         </p>
       </div>
 
-      {/* Round progress and Gold, then help, exit and settings. */}
-      <div className="flex min-w-0 items-center gap-2 pl-1">
+      {/* Round progress and Gold, then help, exit and settings. Below 360px
+          the bar is dropped and the gaps close up (the 44px buttons carry
+          their own padding) so everything fits beside the ornamental corners. */}
+      <div className="flex min-w-0 items-center gap-0.5 pl-1 min-[360px]:gap-2">
         <div
           role="progressbar"
           aria-label={t('gameplay.score')}
@@ -164,7 +166,7 @@ export function RunHeader({
             score: scoreText.exact,
             target: targetText.exact,
           })}
-          className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-white/10 max-[359px]:invisible"
+          className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-white/10 max-[359px]:hidden"
         >
           <div
             className={`h-full rounded-full transition-[width] duration-500 ${

@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { buyOffer, itemOffers, offerCard, openOffer } from './helpers/shop'
-import { clearReveals, settleReveals } from './helpers/table'
+import { clearReveals, closeOmenReveal, settleReveals } from './helpers/table'
 
 for (const lang of ['en', 'es'])
   for (const purchases of [1, 2])
@@ -62,6 +62,8 @@ for (const lang of ['en', 'es'])
       await expect(page).toHaveURL(new RegExp(`/${lang}/shop$`))
       // startNewRun queues its starting Decrees for a reveal over the shop.
       await clearReveals(page)
+      // The fixture's play cleared the round with Turns to spare: an Omen.
+      await closeOmenReveal(page)
       const initial = await saved()
       for (const offer of initial.shop.teaHouse.itemOfferings.slice(
         0,
@@ -101,9 +103,7 @@ for (const lang of ['en', 'es'])
         before.shop.teaHouse.charterOffering
       )
       expect(after.shop.purchases).toBe(before.shop.purchases)
-      expect(after.shop.spent).toBe(
-        before.shop.spent + 5
-      )
+      expect(after.shop.spent).toBe(before.shop.spent + 5)
       for (const offer of initial.shop.teaHouse.itemOfferings)
         await expect(offerCard(page, offer.id)).toHaveCount(0)
       expect(
@@ -121,9 +121,7 @@ for (const lang of ['en', 'es'])
         .toBe(2)
       await expect(itemOffers(page)).toHaveCount(2)
       const twice = await saved()
-      expect(twice.state.gold).toBe(
-        after.state.gold - 6
-      )
+      expect(twice.state.gold).toBe(after.state.gold - 6)
       // Buy the first refilled item the engine allows.
       let bought = false
       for (const offer of twice.shop.teaHouse.itemOfferings) {
@@ -131,6 +129,26 @@ for (const lang of ['en', 'es'])
         const buy = details.locator(`[data-shop-buy="${offer.id}"]`)
         if (await buy.isEnabled()) {
           await activate(buy)
+          // A Seal is used as it is bought, on wall tiles the player picks.
+          if (
+            offer.itemType === 'FateSeal' &&
+            offer.item.effect.requiresSelection
+          ) {
+            const picker = page.locator(
+              `[data-seal-wall-dialog="${offer.item.id}"]`
+            )
+            const confirm = picker.locator('[data-seal-wall-confirm]')
+            await expect(picker).toBeVisible()
+            while (await confirm.isDisabled())
+              await activate(
+                picker
+                  .locator(
+                    '[data-seal-wall-tile][aria-pressed="false"]:not([disabled])'
+                  )
+                  .first()
+              )
+            await activate(confirm)
+          }
           bought = true
           break
         }

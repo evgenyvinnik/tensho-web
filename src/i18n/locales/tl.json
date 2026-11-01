@@ -867,7 +867,15 @@
     "rankNumbersDesc": "Magpakita ng maliit na 1–9 sa may-numerong tile at titik sa mga Dragon habang inaaral mo ang mga mukha.",
     "keyboardShortcuts": "Mga keyboard shortcut",
     "keyboardShortcutsDesc": "Sa mesa, P para laruin ang kamay, R para mag-redraw, A para piliin ang lahat ng tile at Esc para ibalik ang mga ito. Ang mga arrow key ay lumilipat sa pagitan ng mga tile.",
-    "unreadableSave": "Hindi mabasa ang naka-save na laro. Puwede mo itong i-download bago magsimula ng Bagong Laro na papalit dito."
+    "unreadableSave": "Hindi mabasa ang naka-save na laro. Puwede mo itong i-download bago magsimula ng Bagong Laro na papalit dito.",
+    "credits": {
+      "title": "Mga Kredito",
+      "soundEffects": "Mga sound effect",
+      "interface": "Tunog ng mga button at menu",
+      "casino": "Tunog ng mga tile, chips, ginto, at card pack",
+      "modified": "Hinati sa mga solong tunog, nilinis, at pinantay ang lakas para sa Tensho.",
+      "original": "Ang lahat ng iba pang sound effect, kasama ang koto, mga kampana, at taiko, ay orihinal na tunog na sinintesis para sa Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Akto {{current}} sa {{total}}",
@@ -3154,6 +3162,10 @@
       "name": "Straight na lima",
       "explain": "Limang sunod-sunod na numero, parehong suit."
     },
+    "straight6": {
+      "name": "Straight na anim",
+      "explain": "Anim na sunod-sunod na numero, parehong suit."
+    },
     "two_pairs": {
       "name": "Dalawang pares",
       "explain": "Dalawang magkaibang pares sa isang laro."
@@ -3164,7 +3176,7 @@
     },
     "two_sequences": {
       "name": "Dalawang sequence",
-      "explain": "Dalawang sequence sa isang laro (anim na tile)."
+      "explain": "Dalawang sequence sa isang laro. Kailangan ng straight ang iisang suit at isang beses lang bawat numero, kaya ang hanay na nagpapalit ng suit o umuulit ng numero (2-3-3-4-4-5) ay bilang na dalawang sequence."
     },
     "two_triplets": {
       "name": "Dalawang triplet",
@@ -3223,7 +3235,7 @@
     "secretTitle": "Mga lihim na kamay",
     "secretFound": "Natuklasan ang lihim na kamay",
     "secretInGuide": "Nasa ? gabay na ito ngayon.",
-    "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2, ang Limang Magkapareho ay +3 at ang Anim na Magkapareho ay +4. Karaniwang isang beses lang binibilang ang bawat tile, at hanggang 6 na tile ang isang laro maliban kung buong kamay ng Mahjong.",
+    "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2, ang straight na anim at ang Limang Magkapareho ay +3, at ang Anim na Magkapareho ay +4. Kapag may higit sa isang paraan ng pagpapangkat, ang pinakamataas na bayad ang binibilang. Isang beses lang binibilang ang bawat tile; tanging ang nagising na Plum ang nagpapahintulot sa dalawang sequence na magbahagi ng isa, na ipinapakita bilang Sequence ×2. Hanggang 6 na tile ang isang laro maliban kung buong kamay ng Mahjong.",
     "tilesTitle": "Mga tile",
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
     "honorsHelp": "Bawat Hangin ay {{wind}} puntos, {{windGroup}} sa loob ng grupo. Bawat Dragon ay +{{dragon}} Mult, +{{dragonGroup}} sa loob ng grupo.",
@@ -3273,7 +3285,7 @@
     },
     "Ittsu": {
       "name": "Mga Straight",
-      "covers": "Straight na apat, Straight na lima o Straight + Pares (magkakasunod na numero ng iisang suit), at Straight na 1–9: buong kamay na may 1-2-3, 4-5-6 at 7-8-9 ng iisang suit."
+      "covers": "Straight na apat, Straight na lima, Straight na anim o Straight + Pares (magkakasunod na numero ng iisang suit), at Straight na 1–9: buong kamay na may 1-2-3, 4-5-6 at 7-8-9 ng iisang suit."
     },
     "Toitoi": {
       "name": "Mga Set",

@@ -164,19 +164,26 @@ for (const [index, language] of languages.entries()) {
       await expect(firstOffer).toBeInViewport()
       await page.setViewportSize({ width: 320, height: 568 })
     }
-    expect(
-      await page.locator('[data-shop-build]').evaluate((node) =>
-        [...node.querySelectorAll<HTMLElement>('h2,[data-build-slots],button')]
-          .filter((child) => child.getBoundingClientRect().width > 0)
-          .filter(
-            (child) =>
-              (child.matches('h2,[data-build-slots]') &&
-                child.scrollWidth > child.clientWidth + 1) ||
-              child.getBoundingClientRect().right > innerWidth
-          )
-          .map((child) => child.textContent)
+    // Measured once the layout settles after the viewport change above.
+    await expect
+      .poll(() =>
+        page.locator('[data-shop-build]').evaluate((node) =>
+          [
+            ...node.querySelectorAll<HTMLElement>(
+              'h2,[data-build-slots],button'
+            ),
+          ]
+            .filter((child) => child.getBoundingClientRect().width > 0)
+            .filter(
+              (child) =>
+                (child.matches('h2,[data-build-slots]') &&
+                  child.scrollWidth > child.clientWidth + 1) ||
+                child.getBoundingClientRect().right > innerWidth
+            )
+            .map((child) => child.textContent)
+        )
       )
-    ).toEqual([])
+      .toEqual([])
     await info.attach('initial-geometry', {
       body: JSON.stringify(geometry),
       contentType: 'application/json',

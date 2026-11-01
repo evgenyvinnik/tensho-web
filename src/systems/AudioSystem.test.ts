@@ -2,17 +2,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { act, renderHook } from '@testing-library/react'
-import { AudioSystem, audioSystem } from './AudioSystem'
+import { AudioSystem, audioSystem, LAUNCH_TRACK_KEY } from './AudioSystem'
 import {
   ALL_SOUND_IDS,
   SOUND_EFFECT_CONFIG,
   MUSIC_CONFIG,
+  getMusicForContext,
   TILE_SOUNDS,
   GAME_SOUNDS,
+  SPECIAL_SOUNDS,
 } from '../config/audioDefinitions'
 import { eventBus } from '../game/EventBus'
 import { useAudioLifecycle } from '../hooks/useAudioLifecycle'
 import { useSettingsStore } from '../stores/settingsStore'
+import { audioAssets } from '../utils/assets'
+
+const track = (name: string) => MUSIC_CONFIG.find((t) => t.name === name)!
 
 class MockAudio extends EventTarget {
   static all: MockAudio[] = []
@@ -93,19 +98,26 @@ describe('sound assets', () => {
       expect(bytes.toString('ascii', 8, 12)).toBe('WAVE')
       expect(bytes.readUInt16LE(20)).toBe(1)
       expect(bytes.readUInt16LE(22)).toBe(1)
-      expect(bytes.readUInt32LE(24)).toBe(24000)
+      const rate = bytes.readUInt32LE(24)
+      expect(rate).toBe(32000)
       expect(bytes.readUInt32LE(40)).toBe(bytes.length - 44)
       let peak = 0
       for (let i = 44; i < bytes.length; i += 2)
         peak = Math.max(peak, Math.abs(bytes.readInt16LE(i)))
       expect(peak, id).toBeGreaterThan(1000)
       expect(peak, id).toBeLessThan(24000)
-      expect(bytes.length / 48000, id).toBeLessThan(2.5)
+      const seconds = (bytes.length - 44) / (rate * 2)
+      expect(seconds, id).toBeLessThan(2.5)
+      // Tile and interface cues are taps: short enough to never smear together.
+      if (/^(tile|ui)_/.test(id)) expect(seconds, id).toBeLessThan(0.25)
     }
-    for (const track of MUSIC_CONFIG)
+    for (const track of MUSIC_CONFIG) {
       expect(
         readFileSync(resolve('public', track.path.replace(/^\//, ''))).length
       ).toBeGreaterThan(1000)
+      // The Now Playing toast names a song through its asset entry.
+      expect(Object.values(audioAssets), track.name).toContain(track.path)
+    }
   })
 })
 
@@ -131,7 +143,7 @@ describe('audio lifetime and effects', () => {
     const voice = playedEffects()[0]
     audio.setSfxVolume(0.5)
     audio.setMasterVolume(0.4)
-    expect(voice.volume).toBeCloseTo(0.35 * 0.5 * 0.4)
+    expect(voice.volume).toBeCloseTo(0.5 * 0.5 * 0.4)
     audio.setSfxMuted(true)
     expect(voice.paused).toBe(true)
     advance(100)
@@ -179,6 +191,22 @@ describe('audio lifetime and effects', () => {
     ).toBe(true)
   })
 
+  it('varies tile pitch per play without time-stretching the click', () => {
+    audio.initialize()
+    audio.unlock()
+    audio.play(TILE_SOUNDS.select)
+    const voice = playedEffects()[0] as MockAudio & { preservesPitch?: boolean }
+    expect(voice.preservesPitch).toBe(false)
+    expect(voice.playbackRate).toBeGreaterThanOrEqual(0.94)
+    expect(voice.playbackRate).toBeLessThanOrEqual(1.06)
+    // Tonal payoffs stay in tune with the music.
+    audio.play(SPECIAL_SOUNDS.yakuScored)
+    const phrase = effects().find((a) =>
+      a.src.endsWith('/special_yaku_scored.wav')
+    )!
+    expect(phrase.playbackRate).toBe(1)
+  })
+
   it('rejects invalid volume/pitch without throwing or exceeding browser bounds', () => {
     audio.initialize()
     audio.unlock()
@@ -198,7 +226,9 @@ describe('audio lifetime and effects', () => {
     Object.defineProperty(voice, 'currentTime', {
       configurable: true,
       get: () => 0,
-      set: () => { throw new DOMException('Media is not ready', 'InvalidStateError') },
+      set: () => {
+        throw new DOMException('Media is not ready', 'InvalidStateError')
+      },
     })
     expect(() => audio.play(TILE_SOUNDS.select)).not.toThrow()
     expect(() => audio.setSfxMuted(true)).not.toThrow()
@@ -239,10 +269,33 @@ describe('music and settings', () => {
     expect(MockAudio.all.slice(0, 2).every((a) => a.paused)).toBe(true)
   })
 
+  it('keeps a song the next screen shares and switches when it does not', async () => {
+    audio.initialize()
+    audio.unlock()
+    audio.playTrack(track('Minamo').path)
+    await flush()
+    const element = MockAudio.all.find(
+      (a) => !a.paused && a.src.endsWith('.mp3')
+    )!
+    const plays = element.play.mock.calls.length
+    audio.playMusic('gameplay')
+    audio.playMusic('shop')
+    await flush()
+    expect(audio.getState()).toMatchObject({
+      currentTrack: track('Minamo').path,
+      isCrossfading: false,
+    })
+    expect(element.play).toHaveBeenCalledTimes(plays)
+    audio.playMusic('boss')
+    await flush()
+    expect(audio.getState().currentTrack).toBe(track('Dragon Dance').path)
+  })
+
   it('changes both fade volumes live and keeps both silent after mute', async () => {
     audio.initialize()
-    audio.playMusic('menu')
     audio.unlock()
+    // Not a Boss song, so the Boss playlist crossfades to a new one.
+    audio.playTrack(track('Japanese Winter').path)
     await flush()
     audio.playMusic('boss')
     await flush()
@@ -276,6 +329,19 @@ describe('music and settings', () => {
     await flush()
     expect(audio.getState().isPlaying).toBe(true)
     expect(playedEffects()[0].play).toHaveBeenCalledTimes(1)
+  })
+
+  it('pauses music on pagehide and resumes on pageshow', async () => {
+    audio.initialize()
+    audio.unlock()
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+    window.dispatchEvent(new Event('pagehide'))
+    expect(MockAudio.all.every((a) => a.paused)).toBe(true)
+    expect(audio.getState().isPlaying).toBe(false)
+    window.dispatchEvent(new Event('pageshow'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
   })
 
   it('mutes every element while hidden so none claims the lock-screen player', async () => {
@@ -318,9 +384,83 @@ describe('music and settings', () => {
     expect(audio.getState().isPlaying).toBe(true)
   })
 
+  it('goes quiet while another window or app is in front of the page', async () => {
+    audio.initialize()
+    audio.playMusic('menu')
+    audio.unlock()
+    await flush()
+    window.dispatchEvent(new Event('blur'))
+    expect(MockAudio.all.every((a) => a.paused && a.muted)).toBe(true)
+    audio.play(TILE_SOUNDS.select)
+    expect(playedEffects()).toHaveLength(0)
+    window.dispatchEvent(new Event('focus'))
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+    expect(MockAudio.all.some((a) => a.muted)).toBe(false)
+    // A tap also proves the page is in use when no focus event arrives.
+    window.dispatchEvent(new Event('blur'))
+    expect(audio.getState().isPlaying).toBe(false)
+    audio.unlock()
+    await flush()
+    expect(audio.getState().isPlaying).toBe(true)
+  })
+
+  it('pauses a play() that resolves after the page was hidden', async () => {
+    audio.initialize()
+    const [music] = MockAudio.all
+    let resolve!: () => void
+    music.play = vi.fn(() => {
+      music.paused = false
+      return new Promise<void>((done) => (resolve = done))
+    })
+    audio.unlock()
+    window.dispatchEvent(new Event('pagehide'))
+    // Some browsers start the element anyway when the pending play settles.
+    music.paused = false
+    resolve()
+    await flush()
+    expect(music.paused).toBe(true)
+    expect(audio.getState().isPlaying).toBe(false)
+  })
+
+  it('opens each launch on a different melody than the previous launch', async () => {
+    // The shared test setup stubs localStorage as a no-op; give it a memory.
+    const stored = new Map<string, string>()
+    vi.spyOn(localStorage, 'getItem').mockImplementation(
+      (key) => stored.get(key) ?? null
+    )
+    vi.spyOn(localStorage, 'setItem').mockImplementation((key, value) => {
+      stored.set(key, value)
+    })
+    const menu = getMusicForContext('menu').map((track) => track.path)
+    expect(menu.length).toBeGreaterThan(1)
+    for (let launch = 0; launch < 24; launch++) {
+      const previous = menu[launch % menu.length]
+      localStorage.setItem(LAUNCH_TRACK_KEY, previous)
+      // The router asks for menu music on mount (React may run that child
+      // effect before the audio owner initializes); the first tap unlocks.
+      const session = new AudioSystem()
+      if (launch % 2) {
+        session.playMusic('menu')
+        session.initialize()
+      } else {
+        session.initialize()
+        session.playMusic('menu')
+      }
+      session.unlock()
+      await flush()
+      const opened = session.getState().currentTrack
+      expect(opened).not.toBe(previous)
+      expect(menu).toContain(opened)
+      expect(localStorage.getItem(LAUNCH_TRACK_KEY)).toBe(opened)
+      session.destroy()
+    }
+  })
+
   it('cleans up a pending crossfade and can initialize again', async () => {
     audio.initialize()
     audio.unlock()
+    audio.playTrack(track('Japanese Winter').path)
     await flush()
     audio.playMusic('boss')
     await flush()

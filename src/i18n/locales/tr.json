@@ -867,7 +867,15 @@
     "rankNumbersDesc": "Taş yüzlerini öğrenirken sayılı taşlarda küçük 1–9 ve Ejderhalarda bir harf göster.",
     "keyboardShortcuts": "Klavye kısayolları",
     "keyboardShortcutsDesc": "Masada P elini oynar, R yeniden çeker, A tüm taşları seçer, Esc onları geri koyar. Ok tuşları taşlar arasında gezdirir.",
-    "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin."
+    "unreadableSave": "Kayıtlı oyunun okunamadı. Onun yerini alacak Yeni Oyun’a başlamadan önce dosya olarak indirebilirsin.",
+    "credits": {
+      "title": "Emeği Geçenler",
+      "soundEffects": "Ses efektleri",
+      "interface": "Düğme ve menü sesleri",
+      "casino": "Taş sesleri, fişler, altın ve kart paketleri",
+      "modified": "Tensho için tek tek seslere bölündü, temizlendi ve ses seviyesi eşitlendi.",
+      "original": "Koto, çanlar ve taiko dahil diğer tüm ses efektleri, Tensho için sentezlenmiş özgün seslerdir."
+    }
   },
   "gameplay": {
     "actProgress": "Perde {{current}} / {{total}}",
@@ -3154,6 +3162,10 @@
       "name": "Beşli sıra",
       "explain": "Aynı türden art arda beş sayı."
     },
+    "straight6": {
+      "name": "Altılı sıra",
+      "explain": "Aynı türden art arda altı sayı."
+    },
     "two_pairs": {
       "name": "İki çift",
       "explain": "Tek oyunda iki farklı çift."
@@ -3164,7 +3176,7 @@
     },
     "two_sequences": {
       "name": "İki seri",
-      "explain": "Tek oyunda iki seri (altı taş)."
+      "explain": "Tek oyunda iki seri. Sıra için tek tür ve her sayıdan bir taş gerekir; türü değişen ya da bir sayıyı tekrarlayan dizi (2-3-3-4-4-5) iki seri sayılır."
     },
     "two_triplets": {
       "name": "İki üçlü",
@@ -3223,7 +3235,7 @@
     "secretTitle": "Gizli eller",
     "secretFound": "Gizli el bulundu",
     "secretInGuide": "Artık ? rehberinde.",
-    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, Beş Aynı +3, Altı Aynı +4 ekler. Normalde her taş bir kez sayılır ve tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
+    "patternRule": "İlkinden sonraki her grup +1 Çarpan ekler. Üçlüler ve dörtlü sıralar +1 daha, dörtlüler ve beşli sıralar +2, altılı sıralar ve Beş Aynı +3, Altı Aynı +4 ekler. Taşlar birden çok şekilde gruplanabiliyorsa en çok kazandıran gruplama sayılır. Her taş bir kez sayılır; yalnızca uyanmış Erik Çiçeği iki serinin bir taşı paylaşmasına izin verir ve bu Seri ×2 olarak gösterilir. Tam bir Mahjong eli değilse bir oyunda en fazla 6 taş olur.",
     "tilesTitle": "Taşlar",
     "tilesHelp": "Karakterler 一’den 九’a Çince rakamlar gösterir; Daireler ve Bambular sayılarını gösterir (Bambu 1 bir kuştur). Taşlardaki sayıları Ayarlar’dan açabilirsin.",
     "honorsHelp": "Her Rüzgar {{wind}} puan, grupta {{windGroup}} puan değerindedir. Her Ejderha +{{dragon}} Çarpan, grupta +{{dragonGroup}} ekler.",
@@ -3273,7 +3285,7 @@
     },
     "Ittsu": {
       "name": "Sıralar",
-      "covers": "Dörtlü sıra, Beşli sıra veya Sıra + Çift (aynı türden ardışık sayılar) ve 1–9 Sırası: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
+      "covers": "Dörtlü sıra, Beşli sıra, Altılı sıra veya Sıra + Çift (aynı türden ardışık sayılar) ve 1–9 Sırası: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
     },
     "Toitoi": {
       "name": "Üçlü ve dörtlüler",

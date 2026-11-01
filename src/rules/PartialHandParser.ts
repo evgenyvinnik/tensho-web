@@ -26,6 +26,11 @@ import {
   structurePointsFor,
 } from './ScoringEngine'
 import {
+  sameFaceGroups,
+  sequencesThrough,
+  straightsThrough,
+} from './groupCandidates'
+import {
   classifyPlay,
   GROUP_MULT,
   groupKind,
@@ -59,6 +64,9 @@ interface GroupPlan {
 
 const MAX_RANK = 9
 
+/** A Straight runs four, five or six numbers: six is the most a play holds. */
+const STRAIGHT_LENGTHS = [4, 5, 6] as const
+
 /** Only a tile with a face can join a group. */
 function hasStructureFace(tile: Tile): boolean {
   return !tile.isBonus && !tile.isStone
@@ -68,9 +76,10 @@ function hasStructureFace(tile: Tile): boolean {
  * Find the decomposition of `tiles` that maximises structure points.
  *
  * Equal totals go to the groups that add more Mult by themselves: 2·3·4·5 + 5
- * reads as a Straight and a loose 5, not a Sequence and a Pair, and 1–6 as a
- * five-tile Straight, not two Sequences. A Pair adds nothing alone, so it is
- * never chosen over a stronger group that pays the same structure.
+ * reads as a Straight and a loose 5, not a Sequence and a Pair, and 1–7 as a
+ * six-tile Straight and a loose 7, not a four-tile Straight and a Sequence. A
+ * Pair adds nothing alone, so it is never chosen over a stronger group that
+ * pays the same structure.
  *
  * Melds never span suits, so each suit is solved independently and the results
  * are concatenated. A face-count memo is shared across overlap candidates so
@@ -105,7 +114,7 @@ function parseWithMemo(
       // physical copy bridged the two groups. Preserve the first canonical plan.
       const key = scoringTiles
         .filter((tile) => sharedIds.has(tile.id))
-        .map((tile) => tile.typeKey)
+        .map((tile) => tile.structureKey)
         .sort()
         .join('|')
       if (seen.has(key)) continue
@@ -127,12 +136,15 @@ function parseWithMemo(
     return best
   }
 
-  // Pool real tiles by suit and rank so chosen groups can reference them.
+  // Pool real tiles by the suit they are read in and their rank so chosen
+  // groups can reference them. A Wild tile is read in the suit that pays most.
+  const placement = placeWildTiles(scoringTiles, rules, memoBySuit)
+  const suitOf = (tile: Tile) => placement.get(tile.id) ?? tile.suit
   const pools = new Map<string, Tile[]>()
   const suits = new Set<TileSuit>()
   for (const tile of scoringTiles) {
-    suits.add(tile.suit)
-    const key = poolKey(tile.suit, tile.rank)
+    suits.add(suitOf(tile))
+    const key = poolKey(suitOf(tile), tile.rank)
     const pool = pools.get(key)
     if (pool) pool.push(tile)
     else pools.set(key, [tile])
@@ -142,11 +154,9 @@ function parseWithMemo(
   for (const suit of suits) {
     const counts = new Array<number>(MAX_RANK + 1).fill(0)
     for (const tile of scoringTiles) {
-      if (tile.suit === suit) counts[tile.rank] += 1
+      if (suitOf(tile) === suit) counts[tile.rank] += 1
     }
-    const memo = memoBySuit.get(suit) ?? new Map<string, SuitSolution>()
-    memoBySuit.set(suit, memo)
-    plans.push(...solveSuit(counts, suit, memo, rules).plan)
+    plans.push(...solveSuitWithMemo(counts, suit, memoBySuit, rules).plan)
   }
 
   // Materialise the plans into melds backed by the actual tile instances.
@@ -208,6 +218,110 @@ export function toPartialParsedHand(
     winningTile: fallbackTile,
     isConcealed: true,
   }
+}
+
+function solveSuitWithMemo(
+  counts: number[],
+  suit: TileSuit,
+  memoBySuit: Map<TileSuit, Map<string, SuitSolution>>,
+  rules: PartialHandRules
+): SuitSolution {
+  const memo = memoBySuit.get(suit) ?? new Map<string, SuitSolution>()
+  memoBySuit.set(suit, memo)
+  return solveSuit(counts, suit, memo, rules)
+}
+
+/** Beyond this many ways to seat the Wild tiles, keep the simple seating. */
+const MAX_WILD_PLACEMENTS = 1024
+
+/**
+ * Choose the suit each suited Wild tile is read in (by tile id).
+ *
+ * A Wild tile counts as every suit, so it may join a group of any suit. Only
+ * suits that hold a natural tile are worth trying: a group of Wild tiles alone
+ * fits in any of them, and adding tiles to a suit never lowers its best
+ * grouping. Wild tiles of one rank are interchangeable, so only how many go to
+ * each suit is searched. A rack with too many seatings keeps each Wild tile in
+ * its printed suit where that suit is present.
+ */
+function placeWildTiles(
+  tiles: readonly Tile[],
+  rules: PartialHandRules,
+  memoBySuit: Map<TileSuit, Map<string, SuitSolution>>
+): Map<string, TileSuit> {
+  const wilds = tiles.filter((tile) => tile.isWild && tile.isSuited)
+  const placement = new Map<string, TileSuit>()
+  if (wilds.length === 0) return placement
+  const naturals = tiles.filter((tile) => tile.isSuited && !tile.isWild)
+  const suits = [...new Set(naturals.map((tile) => tile.suit))]
+  if (suits.length === 0) suits.push(wilds[0].suit)
+
+  const byRank = new Map<number, Tile[]>()
+  for (const tile of wilds) {
+    const same = byRank.get(tile.rank)
+    if (same) same.push(tile)
+    else byRank.set(tile.rank, [tile])
+  }
+  const ranks = [...byRank.keys()]
+  // Every way to split `count` tiles across the suits, in suit order.
+  const splits = (count: number, slots: number): number[][] =>
+    slots === 1
+      ? [[count]]
+      : Array.from({ length: count + 1 }, (_, first) =>
+          splits(count - first, slots - 1).map((rest) => [first, ...rest])
+        ).flat()
+  const options = ranks.map((rank) =>
+    splits(byRank.get(rank)!.length, suits.length)
+  )
+  const total = options.reduce((product, list) => product * list.length, 1)
+
+  const seat = (choice: number[][]) => {
+    ranks.forEach((rank, r) => {
+      let next = 0
+      choice[r].forEach((count, s) => {
+        for (const tile of byRank.get(rank)!.slice(next, next + count))
+          placement.set(tile.id, suits[s])
+        next += count
+      })
+    })
+  }
+
+  if (total > MAX_WILD_PLACEMENTS) {
+    for (const tile of wilds)
+      placement.set(tile.id, suits.includes(tile.suit) ? tile.suit : suits[0])
+    return placement
+  }
+
+  const naturalCounts = suits.map((suit) => {
+    const counts = new Array<number>(MAX_RANK + 1).fill(0)
+    for (const tile of naturals) if (tile.suit === suit) counts[tile.rank] += 1
+    return counts
+  })
+  let best: { points: number; bonus: number; choice: number[][] } | null = null
+  const choice: number[][] = []
+  const visit = (r: number) => {
+    if (r === ranks.length) {
+      let points = 0
+      let bonus = 0
+      suits.forEach((suit, s) => {
+        const counts = [...naturalCounts[s]]
+        ranks.forEach((rank, i) => (counts[rank] += choice[i][s]))
+        const solved = solveSuitWithMemo(counts, suit, memoBySuit, rules)
+        points += solved.points
+        bonus += solved.bonus
+      })
+      if (!best || outranks({ points, bonus }, best))
+        best = { points, bonus, choice: choice.map((split) => [...split]) }
+      return
+    }
+    for (const split of options[r]) {
+      choice[r] = split
+      visit(r + 1)
+    }
+  }
+  visit(0)
+  seat(best!.choice)
+  return placement
 }
 
 function poolKey(suit: TileSuit, rank: number): string {
@@ -298,7 +412,7 @@ function solveSuit(
       if (counts[rank + a] > 0 && counts[rank + b] > 0)
         consider(MeldType.Sequence, [rank, rank + a, rank + b])
     // Straights are always consecutive; no Season or Flower widens them.
-    for (const length of [4, 5]) {
+    for (const length of STRAIGHT_LENGTHS) {
       const ranks = Array.from({ length }, (_, i) => rank + i)
       if (ranks.every((r) => r <= MAX_RANK && counts[r] > 0))
         consider(MeldType.Straight, ranks)
@@ -389,7 +503,8 @@ function enumerateSplits(
   const [first, ...rest] = tiles
   // Leave the first tile loose.
   enumerateSplits(rest, groups, rules, visit)
-  const same = rest.filter((tile) => tile.matches(first))
+  // Wild tiles count as every suit: they may join a face or a run of any suit.
+  const matching = rest.filter((tile) => first.matches(tile))
   for (const [type, size] of [
     [MeldType.Pair, 2],
     [MeldType.Triplet, 3],
@@ -397,14 +512,14 @@ function enumerateSplits(
     [MeldType.Quad, 5],
     [MeldType.Quad, 6],
   ] as const) {
-    if (same.length < size - 1) continue
-    const members = [first, ...same.slice(0, size - 1)]
-    enumerateSplits(
-      without(rest, members),
-      [...groups, new Meld(type, members, true)],
-      rules,
-      visit
-    )
+    if (matching.length < size - 1) break
+    for (const members of sameFaceGroups(first, matching, size))
+      enumerateSplits(
+        without(rest, members),
+        [...groups, new Meld(type, members, true)],
+        rules,
+        visit
+      )
   }
   // A secret hand: one of every Dragon, or one of every Wind.
   const honors = honorSetRanks(first.suit).map((rank) =>
@@ -421,35 +536,21 @@ function enumerateSplits(
     )
   }
   if (!isSuitedSuit(first.suit)) return
-  const at = (rank: number) =>
-    rest.find((tile) => tile.suit === first.suit && tile.rank === rank)
-  for (const [a, b] of sequenceOffsets(first.rank, rules)) {
-    const second = at(first.rank + a)
-    const third = at(first.rank + b)
-    if (!second || !third) continue
-    const members = [first, second, third]
+  for (const members of sequencesThrough(first, rest, rules))
     enumerateSplits(
       without(rest, members),
       [...groups, new Meld(MeldType.Sequence, members, true)],
       rules,
       visit
     )
-  }
-  for (const length of [4, 5]) {
-    const members = [first]
-    for (let i = 1; i < length; i++) {
-      const next = at(first.rank + i)
-      if (!next) break
-      members.push(next)
-    }
-    if (members.length !== length) continue
-    enumerateSplits(
-      without(rest, members),
-      [...groups, new Meld(MeldType.Straight, members, true)],
-      rules,
-      visit
-    )
-  }
+  for (const length of STRAIGHT_LENGTHS)
+    for (const members of straightsThrough(first, rest, length))
+      enumerateSplits(
+        without(rest, members),
+        [...groups, new Meld(MeldType.Straight, members, true)],
+        rules,
+        visit
+      )
 }
 
 function without(tiles: Tile[], removed: Tile[]): Tile[] {

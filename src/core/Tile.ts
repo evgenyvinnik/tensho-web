@@ -419,6 +419,45 @@ export class Tile implements TileData {
   }
 
   /**
+   * True when these suited tiles can all be read in one suit. A Wild tile
+   * counts as every suit, so only the tiles without a Wild Mark must agree.
+   * Honors, bonus tiles and Stones never qualify.
+   */
+  static shareSuit(tiles: readonly Tile[]): boolean {
+    let suit: TileSuit | undefined
+    for (const tile of tiles) {
+      if (!tile.isSuited || tile.isStone) return false
+      if (tile.isWild) continue
+      if (suit === undefined) suit = tile.suit
+      else if (tile.suit !== suit) return false
+    }
+    return true
+  }
+
+  /**
+   * True when these tiles all show one face: the same rank, and the same suit
+   * once Wild tiles count as every suit. Unlike pairwise `matches`, this holds
+   * for the whole group, so a Wild 5 cannot join a 5 of Dots to a 5 of Bamboo.
+   */
+  static shareFace(tiles: readonly Tile[]): boolean {
+    if (tiles.length === 0 || tiles.some((tile) => tile.isStone)) return false
+    const [first] = tiles
+    if (!tiles.every((tile) => tile.rank === first.rank)) return false
+    if (tiles.every((tile) => tile.isSuited)) return Tile.shareSuit(tiles)
+    return tiles.every((tile) => tile.suit === first.suit)
+  }
+
+  /**
+   * The suit a group of tiles is read in: the suit of its first tile without a
+   * Wild Mark, or the first tile's own suit when every tile is Wild.
+   */
+  static groupSuit(tiles: readonly Tile[]): TileSuit {
+    return (
+      tiles.find((tile) => tile.isSuited && !tile.isWild)?.suit ?? tiles[0].suit
+    )
+  }
+
+  /**
    * Returns true if this tile is exactly the same instance
    */
   equals(other: Tile): boolean {
@@ -430,6 +469,14 @@ export class Tile implements TileData {
    */
   get typeKey(): string {
     return `${this.suit}-${this.rank}`
+  }
+
+  /**
+   * Key shared by tiles that are interchangeable when building groups: the
+   * printed face, except that every suited Wild tile of one rank reads alike.
+   */
+  get structureKey(): string {
+    return this.isWild && this.isSuited ? `wild-${this.rank}` : this.typeKey
   }
 
   /**

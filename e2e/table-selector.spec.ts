@@ -74,7 +74,7 @@ for (const [language, copy] of [
     await expect(summary).toHaveText(copy.stakes.rulesTitle)
     await expect(dialog.locator('details')).not.toHaveAttribute('open')
     await summary.click()
-    await expect(dialog.locator('details li')).toHaveCount(6)
+    await expect(dialog.locator('details li')).toHaveCount(8)
     await expect(dialog.locator('details')).toContainText(
       new Intl.NumberFormat(language).format(1.95)
     )
@@ -140,13 +140,15 @@ for (const [language, copy] of [
     expect(await dragon.evaluate((el) => getComputedStyle(el).transform)).toBe(
       'matrix(1, 0, 0, 1, 0, 0)'
     )
-    await expect(dragon.locator('img')).not.toHaveClass(/scale-\[1\.045\]/)
+    await expect(dragon.locator('img[src*="/tables/"]')).not.toHaveClass(
+      /scale-\[1\.045\]/
+    )
     await page.keyboard.press('Escape')
     await page
-      .getByRole('button', { name: copy.menu.play, exact: true })
+      .getByRole('button', { name: copy.menu.newRun, exact: true })
       .click()
     await expect(
-      page.locator('[data-gameplay-table-identity]')
+      page.locator('[data-felt][data-table-style-id]')
     ).toHaveAttribute('data-table-style-id', 'dragons_den')
     expect(
       await page.evaluate(async () => {

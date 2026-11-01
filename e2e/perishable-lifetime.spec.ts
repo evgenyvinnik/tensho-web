@@ -1,6 +1,6 @@
 import { expect, test, type Page, type Locator } from '@playwright/test'
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
-import { offerCard, openOffer } from './helpers/shop'
+import { offerCard, offerName, openOffer } from './helpers/shop'
 import { selectTiles, settleReveals } from './helpers/table'
 
 async function activate(locator: Locator, touch: boolean) {
@@ -58,7 +58,7 @@ async function offer(page: Page, phoenix: boolean) {
     if (!(await service.saveNewRun(raw))) throw new Error('Fixture save failed')
   }, phoenix)
   await page.goto('/es/shop')
-  await saved(page)
+  return saved(page)
 }
 
 async function preparePlay(page: Page, phoenix: boolean) {
@@ -96,14 +96,14 @@ for (const phoenix of [false, true]) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       const errors: string[] = []
       page.on('pageerror', (error) => errors.push(error.message))
-      await offer(page, phoenix)
+      const shop = await offer(page, phoenix)
       const id = phoenix ? 'decree-phoenix' : 'decree-tax-collector'
-      const name = es.decrees.items[id].name
-      const card = page
-        .locator('[data-shop-offer]')
-        .filter({ hasText: name })
-        .first()
-      const offerId = (await card.getAttribute('data-shop-offer'))!
+      const offerId = shop.shop.teaHouse.itemOfferings[0].id
+      const card = offerCard(page, offerId)
+      // The card is art and price; its name is read out with it.
+      await expect(card).toHaveAccessibleName(
+        offerName(es.decrees.items[id].name)
+      )
       if (phoenix) {
         const image = card.locator('img[src$="decrees/phoenix.webp"]')
         await expect(image).toBeVisible()

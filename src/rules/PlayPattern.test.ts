@@ -35,6 +35,7 @@ const triplet = () => meld(MeldType.Triplet, M, [7, 7, 7])
 const quad = () => meld(MeldType.Quad, P, [9, 9, 9, 9])
 const straight4 = () => meld(MeldType.Straight, S, [3, 4, 5, 6])
 const straight5 = () => meld(MeldType.Straight, P, [4, 5, 6, 7, 8])
+const straight6 = () => meld(MeldType.Straight, M, [2, 3, 4, 5, 6, 7])
 const fiveOfAKind = () => meld(MeldType.Quad, S, [6, 6, 6, 6, 6])
 const sixOfAKind = () => meld(MeldType.Quad, M, [4, 4, 4, 4, 4, 4])
 
@@ -58,6 +59,7 @@ describe('classifyPlay', () => {
     ['straight4', () => [straight4()], 1],
     ['quad', () => [quad()], 2],
     ['straight5', () => [straight5()], 2],
+    ['straight6', () => [straight6()], 3],
     ['five_of_a_kind', () => [fiveOfAKind()], 3],
     ['six_of_a_kind', () => [sixOfAKind()], 4],
     ['two_pairs', () => [pair(), pair()], 1],
@@ -98,8 +100,23 @@ describe('reading a play', () => {
     // 2-3-4 + 4-4 (70 points × 2) beats 4-4-4 with two half-paid loose tiles
     // (59 × 2).
     expect(play(tiles(S, [2, 3, 4, 4, 4])).pattern.id).toBe('sequence_pair')
-    // 2-6 + a loose 7 (87 × 3) beats 2-3-4 + 5-6-7 (90 × 2).
-    expect(play(tiles(P, [2, 3, 4, 5, 6, 7])).pattern.id).toBe('straight5')
+    // 2-3-3-4-4-5 as 2-3-4 + 3-4-5 (90 × 2) beats the Straight 2-5 with a
+    // half-paid 3 and 4 (70 × 2).
+    expect(play(tiles(S, [2, 3, 3, 4, 4, 5])).pattern.id).toBe('two_sequences')
+  })
+
+  it('reads six in a row as one Straight of Six', () => {
+    // 2-7 (105 × 4) beats 2-6 + a loose 7 (87.5 × 3) and 2-3-4 + 5-6-7
+    // (90 × 2).
+    const run = play(tiles(P, [2, 3, 4, 5, 6, 7]))
+    expect(run.pattern.id).toBe('straight6')
+    expect(run.structurePoints).toBe(75)
+    expect(run.structure.halvedTiles).toBe(0)
+    expect(run.finalScore).toBe((30 + 75) * 4)
+    // A run that breaks suit is no Straight: 2-3-4 and 5-6-7 stay apart.
+    expect(
+      play([...tiles(P, [2, 3, 4]), ...tiles(S, [5, 6, 7])]).pattern.id
+    ).toBe('two_sequences')
   })
 
   it('prefers a five-tile Straight to two overlapping readings', () => {

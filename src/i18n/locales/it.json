@@ -867,7 +867,15 @@
     "rankNumbersDesc": "Mostra un piccolo 1–9 sulle tessere numerate e una lettera sui Draghi mentre impari le facce.",
     "keyboardShortcuts": "Scorciatoie da tastiera",
     "keyboardShortcutsDesc": "Al tavolo, P gioca la mano, R ripesca, A seleziona tutte le tessere ed Esc le rimette a posto. Le frecce spostano tra le tessere.",
-    "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà."
+    "unreadableSave": "Impossibile leggere la partita salvata. Puoi scaricarla come file prima di iniziare una Nuova partita, che la sostituirà.",
+    "credits": {
+      "title": "Crediti",
+      "soundEffects": "Effetti sonori",
+      "interface": "Suoni di pulsanti e menu",
+      "casino": "Suoni delle tessere, fiches, oro e pacchetti di carte",
+      "modified": "Suddiviso in singoli suoni, ripulito e livellato per Tensho.",
+      "original": "Tutti gli altri effetti sonori, inclusi koto, campane e taiko, sono suoni originali sintetizzati per Tensho."
+    }
   },
   "gameplay": {
     "actProgress": "Atto {{current}} di {{total}}",
@@ -3154,6 +3162,10 @@
       "name": "Scala di cinque",
       "explain": "Cinque numeri consecutivi dello stesso seme."
     },
+    "straight6": {
+      "name": "Scala di sei",
+      "explain": "Sei numeri consecutivi dello stesso seme."
+    },
     "two_pairs": {
       "name": "Doppia coppia",
       "explain": "Due coppie diverse in una giocata."
@@ -3164,7 +3176,7 @@
     },
     "two_sequences": {
       "name": "Due sequenze",
-      "explain": "Due sequenze in una giocata (sei tessere)."
+      "explain": "Due sequenze in una giocata. Una scala richiede un solo seme e ogni numero una volta, quindi una serie che cambia seme o ripete un numero (2-3-3-4-4-5) conta come due sequenze."
     },
     "two_triplets": {
       "name": "Due tris",
@@ -3223,7 +3235,7 @@
     "secretTitle": "Mani segrete",
     "secretFound": "Mano segreta scoperta",
     "secretInGuide": "Ora è nella guida ?.",
-    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2, cinque uguali +3 e sei uguali +4. Di norma ogni tessera conta una volta e una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
+    "patternRule": "Ogni gruppo dopo il primo aggiunge +1 Mult. Tris e scale di quattro aggiungono +1 in più, poker e scale di cinque +2, scale di sei e cinque uguali +3, sei uguali +4. Se le tessere si possono raggruppare in più modi, vale quello che rende di più. Ogni tessera conta una volta; solo un Prugno risvegliato permette a due sequenze di condividerne una, mostrate come Sequenza ×2. Una giocata contiene al massimo 6 tessere, salvo una mano di Mahjong completa.",
     "tilesTitle": "Le tessere",
     "tilesHelp": "I Caratteri mostrano i numeri cinesi da 一 a 九; Cerchi e Bambù mostrano la quantità (l’1 di Bambù è un uccello). Puoi attivare i numeri sulle tessere nelle Impostazioni.",
     "honorsHelp": "Ogni Vento vale {{wind}} punti, {{windGroup}} in un gruppo. Ogni Drago aggiunge +{{dragon}} Mult, +{{dragonGroup}} in un gruppo.",
@@ -3273,7 +3285,7 @@
     },
     "Ittsu": {
       "name": "Scale",
-      "covers": "Scala di quattro, Scala di cinque o Scala + Coppia (numeri consecutivi dello stesso seme), e Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme."
+      "covers": "Scala di quattro, Scala di cinque, Scala di sei o Scala + Coppia (numeri consecutivi dello stesso seme), e Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme."
     },
     "Toitoi": {
       "name": "Tris e poker",

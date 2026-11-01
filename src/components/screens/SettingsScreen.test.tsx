@@ -1,7 +1,8 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { SettingsScreen } from './SettingsScreen'
 import { offerPrivacyChoices } from '../../native/privacy'
+import { SOUND_EFFECT_CREDITS } from '../../config/creditsDefinitions'
 
 const build = vi.hoisted(() => ({ native: false }))
 
@@ -83,4 +84,21 @@ it('explains when the privacy options form cannot open', async () => {
       'Privacy Choices could not be opened. Check your connection and try again.'
     )
   ).toBeInTheDocument()
+})
+
+it('credits every third-party sound with its author, licence and changes', () => {
+  render(<SettingsScreen />)
+  const panel = screen.getByRole('region', { name: 'Credits' })
+  for (const credit of SOUND_EFFECT_CREDITS) {
+    const work = within(panel).getByRole('link', { name: credit.title })
+    expect(work).toHaveAttribute('href', credit.url)
+    expect(work).toHaveAttribute('target', '_blank')
+    expect(work).toHaveAttribute('rel', 'noopener noreferrer')
+    const item = work.closest('li')!
+    expect(item).toHaveTextContent(credit.author)
+    expect(
+      within(item).getByRole('link', { name: credit.license.name })
+    ).toHaveAttribute('href', credit.license.url)
+  }
+  expect(panel).toHaveTextContent('original sounds synthesized for Tensho')
 })

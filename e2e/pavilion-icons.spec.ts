@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import en from '../src/i18n/locales/en.json' with { type: 'json' }
 
 for (const width of [320, 1280]) {
   test(`title-screen pavilion buttons and table locks use matching art at ${width}px`, async ({
@@ -112,7 +113,12 @@ for (const width of [320, 1280]) {
           width < 1024 ? '.pavilion-codex-mobile' : '.pavilion-codex-sidebar'
         )
         await categories.getByRole('button', { name: /Strategy/ }).click()
-        await expect(shell.locator('[data-pavilion-symbol]')).toHaveCount(4)
+        // Strategy opens on a worked hand; its tips carry the painted symbols.
+        await shell
+          .getByRole('navigation', { name: en.codex.strategy })
+          .getByRole('button', { name: en.codexReference.titleTips })
+          .click()
+        await expect(shell.locator('[data-pavilion-symbol]')).toHaveCount(5)
         for (const image of await shell.locator('[data-pavilion-symbol]').all())
           await expect(image).not.toHaveAttribute('src', /generated\/controls/)
       }

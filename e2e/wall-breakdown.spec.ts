@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { settleReveals } from './helpers/table'
 
 for (const language of [
   'en',
@@ -36,6 +37,8 @@ for (const language of [
     await expect(
       page.locator('[data-classic-save-status="saved"]')
     ).toBeVisible()
+    // A new run opens on its starting Decrees' reveal.
+    await settleReveals(page, 2_000)
     const save = () =>
       page.evaluate(() => localStorage.getItem('tensho-classic-run-v1'))
     const before = await save()

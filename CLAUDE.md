@@ -229,20 +229,20 @@ Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per Dragon (4 grouped)
 Tile points: suited 5, terminals (1, 9) 10, Winds 50 (100 inside a group),
 Dragons 15.
 Group bonuses: Pair +15, Sequence +30, Triplet +40, Straight +45 (four) / +60
-(five), Quad +65, Five of a Kind +100, Six of a Kind +150.
+(five) / +75 (six), Quad +65, Five of a Kind +100, Six of a Kind +150.
 
 A play holds up to six tiles (`MAX_TACTICAL_PLAY_TILES`) unless it is a complete
 Mahjong hand. `parsePlay` splits it into the disjoint groups that pay the most,
 and `classifyPlay` (`src/rules/PlayPattern.ts`) names the pattern: Pattern Mult
-= (groups − 1) + Triplet/Straight-of-four 1, Quad/Straight-of-five 2, Five of a
-Kind 3, Six of a Kind 4; a complete Mahjong hand adds a flat +4. Five and Six of
-a Kind are `MeldType.Quad` groups of five or six tiles (the Wall holds four of
-each, so they need bought or copied tiles, or a Wild one). A numbered tile that
-belongs to no group scores half its tile points; Honors pay in full loose and
-double inside a group (`playedTilePoints` / `dragonMultFor`).
-`STRUCTURE_POINTS_BY_TYPE` in `ScoringEngine` is the single source for group
-values — `PartialHandParser` searches with them and the coach ranks with them,
-so do not copy the table.
+= (groups − 1) + Triplet/Straight-of-four 1, Quad/Straight-of-five 2,
+Straight-of-six 3, Five of a Kind 3, Six of a Kind 4; a complete Mahjong hand
+adds a flat +4. Five and Six of a Kind are `MeldType.Quad` groups of five or six
+tiles (the Wall holds four of each, so they need bought or copied tiles, or a
+Wild one). A numbered tile that belongs to no group scores half its tile points;
+Honors pay in full loose and double inside a group (`playedTilePoints` /
+`dragonMultFor`). `STRUCTURE_POINTS_BY_TYPE` in `ScoringEngine` is the single
+source for group values — `PartialHandParser` searches with them and the coach
+ranks with them, so do not copy the table.
 
 Secret hands: Three Dragons (one of each Dragon, +60) and Four Winds (one of
 each Wind, +65) are `MeldType.Honors` groups with group bonus 2. Only

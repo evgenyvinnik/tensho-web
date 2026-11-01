@@ -197,8 +197,12 @@ describe('parsePartialHand', () => {
     // A Sequence and a Pair pay 45, the same as the Straight of four.
     { ranks: [2, 3, 4, 5, 5], straight: [2, 3, 4, 5], loose: [5] },
     { ranks: [1, 1, 2, 3, 4], straight: [1, 2, 3, 4], loose: [1] },
-    // Two Sequences pay 60, the same as the five-tile Straight.
-    { ranks: [1, 2, 3, 4, 5, 6], straight: [1, 2, 3, 4, 5], loose: [6] },
+    // A four-tile Straight and a Sequence pay 75, the same as six in a row.
+    {
+      ranks: [1, 2, 3, 4, 5, 6, 7],
+      straight: [1, 2, 3, 4, 5, 6],
+      loose: [7],
+    },
   ])(
     'breaks a structure tie toward the Straight in $ranks',
     ({ ranks, straight, loose }) => {

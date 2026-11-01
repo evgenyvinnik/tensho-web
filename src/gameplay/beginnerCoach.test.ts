@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { MeldType } from '../core/Meld'
 import { Tile, TileSuit } from '../core/Tile'
 import { getTilePoints } from '../rules/ScoringEngine'
-import { parsePartialHand } from '../rules/PartialHandParser'
+import { parsePartialHand, parsePlay } from '../rules/PartialHandParser'
+import { classifyPlay } from '../rules/PlayPattern'
 import {
   buildCoachAdvice,
   findBeginnerSuggestion,
@@ -103,6 +104,37 @@ function scoreLike(tiles: Tile[]) {
 }
 
 describe('buildCoachAdvice', () => {
+  it('offers six in a row as one Straight of Six', () => {
+    // The spare 1 and 9 outscore the 7, so the best play keeps the whole run
+    // rather than a five-tile Straight padded with a terminal.
+    const run = [2, 3, 4, 5, 6, 7].map((rank) =>
+      tile(TileSuit.Manzu, rank, `run-${rank}`)
+    )
+    const tiles = [
+      ...run,
+      tile(TileSuit.Pinzu, 1, 'spare-1'),
+      tile(TileSuit.Souzu, 9, 'spare-9'),
+    ]
+    const advice = buildCoachAdvice({
+      tiles,
+      scoreSelection: (selection) => {
+        const chosen = tiles.filter((tile) => selection.includes(tile.id))
+        if (chosen.length !== selection.length || chosen.length > 6) return null
+        const parse = parsePlay(chosen)
+        const points =
+          chosen.reduce((sum, tile) => sum + getTilePoints(tile), 0) +
+          parse.structurePoints
+        return points * (1 + classifyPlay(parse.groups).mult)
+      },
+      remainingToTarget: 300,
+      handsRemaining: 4,
+    })
+
+    expect(new Set(advice!.best.tileIds)).toEqual(
+      new Set(run.map((tile) => tile.id))
+    )
+  })
+
   it('finds a higher-scoring play than the most instructive shape', () => {
     // The situation section 1.4 describes: a tidy sequence worth 35, next to a
     // loose-tile selection that pays far more.

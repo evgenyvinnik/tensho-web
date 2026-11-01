@@ -39,7 +39,7 @@ function physicalSequences(
 ): Meld[] {
   const suited = [
     ...new Map(
-      tiles.filter((t) => t.isSuited).map((t) => [t.typeKey, t])
+      tiles.filter((t) => t.isSuited).map((t) => [t.structureKey, t])
     ).values(),
   ].sort((a, b) => a.rank - b.rank || Tile.compare(a, b))
   const result: Meld[] = []
@@ -49,10 +49,8 @@ function physicalSequences(
         const a = suited[i],
           b = suited[j],
           c = suited[k]
-        if (
-          !rules.suitsMatchForSequences &&
-          (a.suit !== b.suit || a.suit !== c.suit)
-        )
+        // A Wild tile counts as every suit.
+        if (!rules.suitsMatchForSequences && !Tile.shareSuit([a, b, c]))
           continue
         if (
           sequenceOffsets(a.rank, rules).some(
@@ -72,25 +70,25 @@ export function* overlappingSequencePairs(
   const groups = physicalSequences(tiles, rules)
   const pools = new Map<string, Tile[]>()
   for (const tile of tiles) {
-    const pool = pools.get(tile.typeKey) ?? []
+    const pool = pools.get(tile.structureKey) ?? []
     pool.push(tile)
-    pools.set(tile.typeKey, pool)
+    pools.set(tile.structureKey, pool)
   }
   for (let i = 0; i < groups.length; i++)
     for (let j = i; j < groups.length; j++) {
       const a = groups[i],
         b = groups[j]
       for (const bridge of a.tiles.filter((tile) =>
-        b.tiles.some((other) => tile.typeKey === other.typeKey)
+        b.tiles.some((other) => tile.structureKey === other.structureKey)
       )) {
         const used = new Map<string, number>()
-        const shared = pools.get(bridge.typeKey)![0]
+        const shared = pools.get(bridge.structureKey)![0]
         const materialized = [a, b].map((group) =>
           group.tiles.map((face) => {
-            if (face.typeKey === bridge.typeKey) return shared
-            const count = used.get(face.typeKey) ?? 0
-            used.set(face.typeKey, count + 1)
-            return pools.get(face.typeKey)?.[count]
+            if (face.structureKey === bridge.structureKey) return shared
+            const count = used.get(face.structureKey) ?? 0
+            used.set(face.structureKey, count + 1)
+            return pools.get(face.structureKey)?.[count]
           })
         )
         if (materialized.some((group) => group.some((tile) => !tile))) continue
