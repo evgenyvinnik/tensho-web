@@ -23,6 +23,9 @@ import {
 import { TileSuit } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
 
+/** Orbs whose portrait is commissioned but not delivered yet. */
+const ORBS_AWAITING_ART = new Set(['moon_orb'])
+
 const manifest = JSON.parse(
   readFileSync('docs/generated-art-manifest.json', 'utf8')
 ) as {
@@ -111,7 +114,12 @@ it('covers active catalog identities while retaining existing artwork', () => {
       illustrationAssets.consumables.fateSeal
     )
   for (const item of getAllCelestialOrbs())
-    expect(getGeneratedArt('orbs', item.id), item.id).toBeDefined()
+    if (!ORBS_AWAITING_ART.has(item.id))
+      expect(getGeneratedArt('orbs', item.id), item.id).toBeDefined()
+  // An Orb waiting for its portrait really has none, so the list empties as
+  // art lands (see docs/ORB_ART_BRIEF.md).
+  for (const id of ORBS_AWAITING_ART)
+    expect(getGeneratedArt('orbs', id), id).toBeUndefined()
   const existingCharters = [
     'swift_hand',
     'full_palette',

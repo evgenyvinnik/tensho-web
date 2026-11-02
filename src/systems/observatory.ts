@@ -1,25 +1,17 @@
-import {
-  mapYakuIdToCategory,
-  type CelestialOrb,
-  type YakuCategory,
-} from './CelestialOrbSystem'
+import type { CelestialOrb, YakuCategory } from './CelestialOrbSystem'
 
 /**
- * Count each physical held Orb once, after Boss filtering and Yaku ascension.
- * A tactical play passes its pattern families as `playFamilies`.
+ * Observatory: each held, unused Orb whose family the play scored multiplies
+ * its Mult by `perOrb` (the Black Hole matches any scored family). Each
+ * physical Orb counts once, however many times its family paid.
  */
 export function observatoryMultiplier(
   orbs: readonly CelestialOrb[],
-  scoredYakuIds: readonly string[],
   perOrb: number,
-  playFamilies: readonly YakuCategory[] = []
+  scoredFamilies: Iterable<YakuCategory>
 ): number {
-  if (perOrb === 1 || scoredYakuIds.length + playFamilies.length === 0)
-    return 1
-  const families = new Set<YakuCategory | null>([
-    ...scoredYakuIds.map(mapYakuIdToCategory),
-    ...playFamilies,
-  ])
+  const families = new Set(scoredFamilies)
+  if (perOrb === 1 || families.size === 0) return 1
   const matching = orbs.filter(
     (orb) =>
       !orb.isUsed &&

@@ -26,7 +26,7 @@ it.each(['star_chart', 'omen_lens'] as const)(
     )
     const before = system.toState()
     vi.spyOn(runRandom, 'next').mockReturnValue(0.1)
-    system.applyPurchasedCharter(id, 'Tanyao')
+    system.applyPurchasedCharter(id, 'TwoSequences')
     const after = system.toState()
     for (const [i, pack] of after.currentOfferings.entries()) {
       if (pack.pack.type !== (id === 'star_chart' ? 'Celestial' : 'Arcana'))
@@ -54,17 +54,17 @@ it('does not replace an existing favored Orb or touch revealed choices', () => {
       choiceCount: 3,
       selectCount: 1,
     })),
-    { preferredYaku: 'Tanyao' }
+    { preferredYaku: 'TwoSequences' }
   )
   system.openPack('celestial-1')
   system.selectContent('celestial-1', 1)
   const before = system.toState(),
     random = runRandom.toState()
-  system.applyPurchasedCharter('star_chart', 'Tanyao')
+  system.applyPurchasedCharter('star_chart', 'TwoSequences')
   expect(system.toState()).toEqual(before)
   expect(runRandom.toState()).toEqual(random)
   // A different favored Yaku may change the unopened pack, not its revealed neighbor.
-  system.applyPurchasedCharter('star_chart', 'Toitoi')
+  system.applyPurchasedCharter('star_chart', 'Triplets')
   expect(system.toState().currentOfferings[1]).toEqual(
     before.currentOfferings[1]
   )

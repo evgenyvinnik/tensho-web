@@ -24,7 +24,7 @@ import {
   getVoidScriptIllustration,
   illustrationAssets,
 } from './assets'
-import { getGeneratedArt, getYakuIllustration } from './generatedArt'
+import { getGeneratedArt } from './generatedArt'
 import { getOmenIllustration } from './omenArt'
 import type {
   FlowerTile,
@@ -62,7 +62,20 @@ const CHARTER_PORTRAITS: Record<string, string> = {
   plentiful_stock: illustrationAssets.plentifulStockCharter,
 }
 
+/** The Orb that raises each family; a family is pictured by its Orb. */
 const UPGRADE_ORBS: Record<string, string> = {
+  ThreePairs: 'planet_x_orb',
+  Sequence: 'venus_orb',
+  SequencePair: 'moon_orb',
+  TwoSequences: 'mercury_orb',
+  Triplets: 'earth_orb',
+  FullHouse: 'jupiter_orb',
+  Straights: 'saturn_orb',
+  Quads: 'mars_orb',
+  Winds: 'eris_orb',
+  Dragons: 'uranus_orb',
+  MixedSuits: 'neptune_orb',
+  Loose: 'ceres_orb',
   All: 'black_hole_orb',
 }
 
@@ -126,13 +139,11 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
           }
     }
     case 'yakuUpgrades': {
-      // Pairs depicts two identical real tile faces, distinct from its Orb
-      // and from the separate Seven Pairs family.
+      // Pairs depicts two identical real tile faces; every other family is
+      // pictured by the Orb that raises it.
       if (id === 'Pairs')
         return { src: illustrationAssets.pairsUpgrade, hasOwnArt: true }
-      const src =
-        getYakuIllustration(id) ??
-        getGeneratedArt('orbs', UPGRADE_ORBS[id])
+      const src = getGeneratedArt('orbs', UPGRADE_ORBS[id])
       return src
         ? { src, hasOwnArt: true }
         : { src: illustrationAssets.yakuLedger, hasOwnArt: false }

@@ -4,7 +4,7 @@
  * One token per family with its level, counted from 0, under its label at the
  * right end of the build's line, across from the Decrees. Every family a run
  * can upgrade shows from the start, so a new player sees what Orbs level; on
- * a phone the nine sit in a three-by-three grid. A family that rises while
+ * a phone they sit in a three-column grid. A family that rises while
  * the shop is open (an Orb or a Seal of the Void just bought) flashes once;
  * opening a token only reads.
  *

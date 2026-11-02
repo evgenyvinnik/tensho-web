@@ -181,14 +181,18 @@ describe('The Arm', () => {
     const { state, play } = boss(THE_ARM)
     withLevels(state, [
       ['Pairs', 1],
-      ['Tanyao', 4],
-      ['Pinfu', 5],
+      ['MixedSuits', 4],
+      ['Loose', 3],
+      ['Sequence', 5],
     ])
-    // A pair of 5s levels Pairs and All Simples, not Sequences.
-    play(['five-0', 'five-1'])
+    // A pair of 9 Circles with a loose 9 Characters and a loose 5 Circles
+    // levels Pairs, Mixed Suits and Loose Tiles (twice), not Sequence.
+    play(['nine-0', 'nine-1', 'nine-2', 'five-0'])
     expect(state.celestialOrbSystem.getYakuLevel('Pairs')).toBe(1)
-    expect(state.celestialOrbSystem.getYakuLevel('Tanyao')).toBe(3)
-    expect(state.celestialOrbSystem.getYakuLevel('Pinfu')).toBe(5)
+    expect(state.celestialOrbSystem.getYakuLevel('MixedSuits')).toBe(3)
+    // A family that pays twice still loses one level.
+    expect(state.celestialOrbSystem.getYakuLevel('Loose')).toBe(2)
+    expect(state.celestialOrbSystem.getYakuLevel('Sequence')).toBe(5)
   })
 })
 

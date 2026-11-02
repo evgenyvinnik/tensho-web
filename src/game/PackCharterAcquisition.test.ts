@@ -7,7 +7,10 @@ import { useOmenStore } from '../stores/omenStore'
 import { BlessingPackSystem } from '../systems/BlessingPackSystem'
 import type { BlessingPack } from '../systems/types'
 import { BOSS_MANDATES } from '../systems/RoundManager'
-import { getCelestialOrbsByRarity } from '../systems/CelestialOrbSystem'
+import {
+  getCelestialOrbsByRarity,
+  UPGRADE_FAMILY_IDS,
+} from '../systems/CelestialOrbSystem'
 import { firstPackSealTargets } from '../gameplay/wallSeals'
 import {
   TEA_HOUSE_BASE_CHARTERS,
@@ -79,7 +82,7 @@ function setup(id: 'star_chart' | 'omen_lens') {
   return game
 }
 
-it('Star Chart immediately guarantees the most-used Yaku in unopened shelf packs, preserving the other choices', () => {
+it('Star Chart immediately guarantees the most-used family in unopened shelf packs, preserving the other choices', () => {
   const game = setup('star_chart')
   const offered = game.shop
     .toState()
@@ -90,7 +93,16 @@ it('Star Chart immediately guarantees the most-used Yaku in unopened shelf packs
     (o) => !offered.includes(o.id)
   )!
   expect(target).toBeTruthy()
-  game.getState().celestialOrbSystem.onYakuScored(target.effect.targetYaku)
+  // Every ordinary play records the families it scored (its pattern and tile
+  // families), so the setup's plays already favor some family. Make the
+  // target's family the most used.
+  const orbs = game.getState().celestialOrbSystem
+  const played = Math.max(
+    ...UPGRADE_FAMILY_IDS.map((family) => orbs.getYakuTriggerCount(family))
+  )
+  expect(played).toBeGreaterThan(0)
+  for (let i = 0; i <= played; i++) orbs.onYakuScored(target.effect.targetYaku)
+  expect(orbs.getOrbForMostPlayedYaku()?.id).toBe(target.id)
   const before = json(game.captureRun())
   const offer = game.shop.state.charterOffering!
   expect(game.shop.validatePurchase(offer.id).success).toBe(true)
@@ -213,7 +225,7 @@ it.each(['star_chart', 'omen_lens'] as const)(
   'replays %s reward outcomes from the checkpoint without shifting wall or shop randomness',
   (id) => {
     const game = setup(id)
-    game.getState().celestialOrbSystem.onYakuScored('Tanyao')
+    game.getState().celestialOrbSystem.onYakuScored('TwoSequences')
     const before = json(game.captureRun())
     const offerId = game.shop.state.charterOffering!.id
     expect(game.shop.purchase(offerId).success).toBe(true)

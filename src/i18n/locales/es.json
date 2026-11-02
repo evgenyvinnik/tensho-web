@@ -298,10 +298,7 @@
   "consumableUnlocks": {
     "seal_of_the_immortal": "Puntúa un Yakuman, una mano de máximo nivel como Tres Grandes Dragones.",
     "seal_of_the_void": "Puntúa los 20 tipos de Yaku en una sola partida.",
-    "planet_x_orb": "Puntúa Siete Pares.",
-    "ceres_orb": "Puntúa una Mano exterior: una mano completa con un 1, un 9, un Viento o un Dragón en cada grupo y en el par.",
-    "eris_orb": "Puntúa Trece huérfanos: uno de cada 1, 9, Viento y Dragón, más uno repetido.",
-    "black_hole_orb": "Descubre los otros 12 Orbes Celestes."
+    "black_hole_orb": "Descubre los otros 13 Orbes Celestes."
   },
   "decreeUnlocks": {
     "stage_master": "Llega al Acto 4.",
@@ -358,7 +355,8 @@
     "level": "Nivel {{level}} / {{max}}",
     "bonus": "+{{chips}} puntos base · +{{mult}} Mult",
     "triggers": "Veces puntuado: {{total}}",
-    "fromOrb": "Mejorado con {{orb}}"
+    "fromOrb": "Mejorado con {{orb}}",
+    "bonusLoose": "+{{chips}} puntos base por ficha suelta"
   },
   "progressiveHints": {
     "discard": {
@@ -1618,6 +1616,22 @@
     "catalystsIntro": "Ciertas ofertas directas de Decretos en la Casa de Té permiten pagar una Flor en lugar de Oro. Elige la Flor que posees y confirma; es opcional y nunca se sacrifica automáticamente.",
     "catalystsCost": "Perder la Flor también reduce los bonos de conjunto. La compra se bloquea si los espacios restantes no pueden contener tu colección. Al recogerla de nuevo recuperas su despertar durante esta partida. Sucesión Yakuman sigue necesitando dos Flores, así que pagar con una exige tener al menos tres antes."
   },
+  "codexUpgrades": {
+    "patternsTitle": "Familias de patrón",
+    "tilesTitle": "Familias de fichas",
+    "intro": "Un Orbe Celeste sube una familia de jugadas un nivel durante el resto de la partida, de 0 hasta {{max}}. Se usa en cuanto lo tomas.",
+    "stacking": "Cada jugada puntúa una familia de patrón, la que nombran sus grupos, más cada familia de fichas que muestren sus fichas. Cada familia que puntúa suma sus puntos base y su Mult una vez por nivel; Fichas sueltas paga una vez por cada ficha suelta. Esta es una Secuencia antes y después de un nivel de Secuencia:",
+    "exampleBefore": "{{pattern}}, nivel 0: {{points}} × {{mult}} = {{score}}",
+    "exampleAfter": "{{family}} nivel 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
+    "patternTip": "Las familias de patrón nunca se acumulan entre sí: una Secuencia + Par solo puntúa Secuencia + Par, no Secuencia ni Pares.",
+    "completeHands": "Una mano de Mahjong completa no puntúa ninguna familia de patrón, solo las familias de fichas que muestren sus fichas.",
+    "patternsIntro": "Una jugada puntúa la única familia de patrón que forman sus grupos. Cada ejemplo indica su patrón y todas las familias que puntúa.",
+    "tilesIntro": "Las familias de fichas se suman a la familia de patrón siempre que las fichas de la jugada las muestren.",
+    "perLevel": "Cada nivel: +{{chips}} puntos base · +{{mult}} Mult",
+    "perLevelLoose": "Cada nivel, por ficha suelta: +{{chips}} puntos base",
+    "scores": "Puntúa: {{families}}",
+    "times": "{{family}} ×{{count}}"
+  },
   "flora": {
     "mutations": {
       "locked": "Reúne los cuatro tipos de flores en una partida para desbloquear la refloración. Después, roba otra vez una flor que ya tengas para despertarla.",
@@ -2395,55 +2409,59 @@
     "items": {
       "pluto_orb": {
         "name": "Orbe de Plutón",
-        "description": "Sube la familia Pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Pares gana otros +10 puntos base y +1 Mult."
-      },
-      "mercury_orb": {
-        "name": "Orbe de Mercurio",
-        "description": "Sube la familia Todo simples 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Todo simples gana otros +15 puntos base y +1 Mult."
-      },
-      "uranus_orb": {
-        "name": "Orbe de Urano",
-        "description": "Sube la familia Honores 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Honores gana otros +20 puntos base y +1 Mult."
-      },
-      "venus_orb": {
-        "name": "Orbe de Venus",
-        "description": "Sube la familia Secuencias 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Secuencias gana otros +20 puntos base y +2 Mult."
-      },
-      "saturn_orb": {
-        "name": "Orbe de Saturno",
-        "description": "Sube la familia Escaleras 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Escaleras gana otros +30 puntos base y +3 Mult."
-      },
-      "jupiter_orb": {
-        "name": "Orbe de Júpiter",
-        "description": "Sube la familia Medio color 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Medio color gana otros +15 puntos base y +2 Mult."
-      },
-      "earth_orb": {
-        "name": "Orbe de la Tierra",
-        "description": "Sube la familia Grupos iguales 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Grupos iguales gana otros +25 puntos base y +2 Mult."
-      },
-      "mars_orb": {
-        "name": "Orbe de Marte",
-        "description": "Sube la familia Color puro 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Color puro gana otros +30 puntos base y +3 Mult."
-      },
-      "neptune_orb": {
-        "name": "Orbe de Neptuno",
-        "description": "Sube la familia Triple mixto 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Triple mixto gana otros +40 puntos base y +4 Mult."
+        "description": "Sube la familia Pares 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +10 puntos base y +1 Mult a cada jugada que puntúe Pares."
       },
       "planet_x_orb": {
         "name": "Orbe del Planeta X",
-        "description": "Sube la familia Siete pares 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Siete pares gana otros +35 puntos base y +3 Mult."
+        "description": "Sube la familia Tres pares 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +20 puntos base y +3 Mult a cada jugada que puntúe Tres pares."
       },
-      "ceres_orb": {
-        "name": "Orbe de Ceres",
-        "description": "Sube la familia Mano exterior 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Mano exterior gana otros +40 puntos base y +4 Mult."
+      "venus_orb": {
+        "name": "Orbe de Venus",
+        "description": "Sube la familia Secuencia 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +15 puntos base y +2 Mult a cada jugada que puntúe Secuencia."
+      },
+      "moon_orb": {
+        "name": "Orbe de la Luna",
+        "description": "Sube la familia Secuencia + Par 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +15 puntos base y +2 Mult a cada jugada que puntúe Secuencia + Par."
+      },
+      "mercury_orb": {
+        "name": "Orbe de Mercurio",
+        "description": "Sube la familia Dos secuencias 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +30 puntos base y +4 Mult a cada jugada que puntúe Dos secuencias."
+      },
+      "earth_orb": {
+        "name": "Orbe de la Tierra",
+        "description": "Sube la familia Tripletes 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +30 puntos base y +4 Mult a cada jugada que puntúe Tripletes."
+      },
+      "jupiter_orb": {
+        "name": "Orbe de Júpiter",
+        "description": "Sube la familia Full 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +30 puntos base y +5 Mult a cada jugada que puntúe Full."
+      },
+      "saturn_orb": {
+        "name": "Orbe de Saturno",
+        "description": "Sube la familia Escaleras 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +30 puntos base y +3 Mult a cada jugada que puntúe Escaleras."
+      },
+      "mars_orb": {
+        "name": "Orbe de Marte",
+        "description": "Sube la familia Cuartetos 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +50 puntos base y +5 Mult a cada jugada que puntúe Cuartetos."
       },
       "eris_orb": {
         "name": "Orbe de Eris",
-        "description": "Sube la familia Trece huérfanos 1 nivel durante esta partida (máximo 10). Cada jugada que puntúe Trece huérfanos gana otros +50 puntos base y +3 Mult."
+        "description": "Sube la familia Vientos 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +10 puntos base y +1 Mult a cada jugada que puntúe Vientos."
+      },
+      "uranus_orb": {
+        "name": "Orbe de Urano",
+        "description": "Sube la familia Dragones 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +10 puntos base y +1 Mult a cada jugada que puntúe Dragones."
+      },
+      "neptune_orb": {
+        "name": "Orbe de Neptuno",
+        "description": "Sube la familia Palos mezclados 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +10 puntos base y +0.5 Mult a cada jugada que puntúe Palos mezclados."
+      },
+      "ceres_orb": {
+        "name": "Orbe de Ceres",
+        "description": "Sube la familia Fichas sueltas 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +5 puntos base por cada ficha suelta de la jugada."
       },
       "black_hole_orb": {
         "name": "Orbe de Agujero Negro",
-        "description": "Sube 1 nivel las 12 familias de manos durante esta partida (máximo 10 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 10 se queda igual."
+        "description": "Sube 1 nivel las 13 familias de manos durante esta partida (hasta el nivel 9 cada una). Cada familia gana sus puntos base y Mult habituales; la que ya está en el nivel 9 se queda igual."
       }
     }
   },
@@ -3278,55 +3296,59 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Pares",
-      "covers": "Par, Doble par o Tres pares (un par son dos fichas idénticas). La mano Siete pares tiene su propia familia."
+      "covers": "Par o Doble par (un par son dos fichas idénticas). Tres pares tiene su propia familia."
     },
-    "Pinfu": {
-      "name": "Secuencias",
-      "covers": "Secuencia, Secuencia + Par o Dos secuencias (una secuencia son tres números seguidos de un palo), y Todo secuencias: una mano completa de cuatro secuencias más un par que no sea de Dragones ni de Viento del Este."
+    "ThreePairs": {
+      "name": "Tres pares",
+      "covers": "Tres pares en una jugada, como 2-2, 6-6 y 8-8."
     },
-    "Ittsu": {
+    "Sequence": {
+      "name": "Secuencia",
+      "covers": "Una sola Secuencia: tres números consecutivos de un palo, como 3-4-5."
+    },
+    "SequencePair": {
+      "name": "Secuencia + Par",
+      "covers": "Una Secuencia y un Par en una jugada, como 2-3-4 con un par de 9."
+    },
+    "TwoSequences": {
+      "name": "Dos secuencias",
+      "covers": "Dos secuencias en una jugada, como 1-2-3 y 7-8-9."
+    },
+    "Triplets": {
+      "name": "Tripletes",
+      "covers": "Triplete, Dos tripletes o Triplete + Secuencia (un triplete son tres fichas idénticas). Un Triplete con un Par es un Full."
+    },
+    "FullHouse": {
+      "name": "Full",
+      "covers": "Un Triplete y un Par en una jugada, como tres 8 con dos 2."
+    },
+    "Straights": {
       "name": "Escaleras",
-      "covers": "Escalera de cuatro, Escalera de cinco, Escalera de seis o Escalera + Par (números seguidos de un palo), y Escalera 1–9: una mano completa con 1-2-3, 4-5-6 y 7-8-9 de un mismo palo."
+      "covers": "Escalera de cuatro, de cinco o de seis, o Escalera + Par (cuatro o más números consecutivos de un palo)."
     },
-    "Toitoi": {
-      "name": "Grupos iguales",
-      "covers": "Triplete, Full, Dos tripletes, Triplete + Secuencia, Cuarteto o Cuarteto + Par (un triplete son tres fichas idénticas; un cuarteto, cuatro), y Todo tripletes: una mano completa de cuatro tripletes o cuartetos más un par."
+    "Quads": {
+      "name": "Cuartetos",
+      "covers": "Cuarteto, Cuarteto + Par, Cinco iguales o Seis iguales (cuatro o más fichas idénticas)."
     },
-    "Yakuhai": {
-      "name": "Honores",
-      "covers": "Cualquier jugada con un grupo formado solo por Vientos o Dragones, y Fichas de valor: una mano completa con un triplete o cuarteto de Dragones o de Viento del Este."
+    "Winds": {
+      "name": "Vientos",
+      "covers": "Cualquier jugada con al menos una ficha de Viento, en un grupo o suelta."
     },
-    "Tanyao": {
-      "name": "Todo simples",
-      "covers": "Cualquier jugada que forme un grupo usando solo fichas del 2 al 8, sin 1, 9, Vientos ni Dragones (las fichas de Piedra se ignoran), y Todo simples: una mano completa solo con fichas del 2 al 8."
+    "Dragons": {
+      "name": "Dragones",
+      "covers": "Cualquier jugada con al menos una ficha de Dragón, en un grupo o suelta."
     },
-    "Honitsu": {
-      "name": "Medio color",
-      "covers": "Medio color: una mano completa de un palo más Vientos o Dragones. Una jugada más corta de un solo palo no cuenta."
+    "MixedSuits": {
+      "name": "Palos mezclados",
+      "covers": "Cualquier jugada con fichas numeradas de dos o más palos: Caracteres, Círculos y Bambú."
     },
-    "Chinitsu": {
-      "name": "Color puro",
-      "covers": "Color puro: una mano completa de un solo palo, sin Vientos ni Dragones. Una jugada más corta de un solo palo no cuenta."
-    },
-    "Sanshoku": {
-      "name": "Triple mixto",
-      "covers": "Triple secuencia mixta: una mano completa con la misma secuencia en los tres palos, como 2-3-4 en Caracteres, Círculos y Bambúes."
-    },
-    "SevenPairs": {
-      "name": "Siete pares",
-      "covers": "Siete pares: una mano completa de exactamente siete pares distintos (14 fichas). Las jugadas más cortas de pares son de la familia Pares."
-    },
-    "Chanta": {
-      "name": "Mano exterior",
-      "covers": "Mano exterior: una mano completa con al menos una secuencia, en la que cada grupo y el par incluyen un 1, un 9, un Viento o un Dragón. La Mano exterior pura (igual, pero sin Vientos ni Dragones) también cuenta."
-    },
-    "Kokushi": {
-      "name": "Trece huérfanos",
-      "covers": "Trece huérfanos: una mano completa con uno de cada 1, 9, Viento y Dragón, más uno repetido."
+    "Loose": {
+      "name": "Fichas sueltas",
+      "covers": "Paga una vez por cada ficha suelta de la jugada: una ficha que no pertenece a ningún grupo."
     },
     "All": {
       "name": "Todas las familias",
-      "covers": "Las 12 familias de manos, incluidas Pares y Siete pares.",
+      "covers": "Las 13 familias de manos, tanto de patrón como de fichas.",
       "upgrade": "Todas las familias +1 nivel"
     },
     "levelChange": "{{family}}: nivel {{from}} → {{to}}",

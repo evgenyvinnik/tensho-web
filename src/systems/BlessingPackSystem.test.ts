@@ -105,6 +105,10 @@ describe('BlessingPackSystem shop integration', () => {
 
   it('keeps Star Chart preference based on catalog identity, not the choice key', () => {
     vi.spyOn(runRandom, 'next').mockReturnValue(0)
+    // Pluto (Pairs) is the first Common Orb, so the Common fill would pick it
+    // again unless the favored copy is recognised by its catalog id.
+    const common = getCelestialOrbsByRarity('Common')
+    expect(common[0].effect.targetYaku).toBe('Pairs')
     const [offer] = new BlessingPackSystem().generateOfferingsForPacks(
       [
         {
@@ -114,18 +118,18 @@ describe('BlessingPackSystem shop integration', () => {
           selectCount: 2,
         },
       ],
-      { preferredYaku: 'Tanyao' }
+      { preferredYaku: 'Pairs' }
     )
     expect(
       offer.contents.filter(
         (c) =>
           (c.data as { effect: { targetYaku: string } }).effect.targetYaku ===
-          'Tanyao'
+          'Pairs'
       )
     ).toHaveLength(1)
     expect(
       new Set(offer.contents.map((c) => (c.data as { id: string }).id)).size
-    ).toBe(getCelestialOrbsByRarity('Common').length)
+    ).toBe(Math.min(common.length, offer.contents.length))
   })
   it.each([EnhancementType.Bonus, EnhancementType.Gold])(
     'describes the actual %s enhancement instead of an independent pack rule',
@@ -270,7 +274,7 @@ describe('BlessingPackSystem shop integration', () => {
     const system = new BlessingPackSystem()
     const [offering] = system.generateOfferingsForPacks(
       [makePack('Celestial')],
-      { preferredYaku: 'Tanyao' }
+      { preferredYaku: 'TwoSequences' }
     )
 
     expect(
@@ -278,7 +282,7 @@ describe('BlessingPackSystem shop integration', () => {
         (content) =>
           content.type === 'CelestialOrb' &&
           (content.data as { effect: { targetYaku: string } }).effect
-            .targetYaku === 'Tanyao'
+            .targetYaku === 'TwoSequences'
       )
     ).toBe(true)
   })

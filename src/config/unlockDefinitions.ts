@@ -1044,14 +1044,6 @@ export const CONSUMABLE_UNLOCKS: UnlockDefinition[] = [
     type: 'yakuman_scored',
   },
   { id: 'seal_of_the_void', name: 'Seal of the Void', type: 'all_yaku_in_run' },
-  {
-    id: 'planet_x_orb',
-    name: 'Planet X',
-    type: 'yaku_scored',
-    value: 'seven_pairs',
-  },
-  { id: 'ceres_orb', name: 'Ceres', type: 'yaku_scored', value: 'chanta' },
-  { id: 'eris_orb', name: 'Eris', type: 'yaku_scored', value: 'kokushi' },
   { id: 'black_hole_orb', name: 'Black Hole', type: 'other_orbs_discovered' },
 ].map(({ id, name, type, ...condition }) => ({
   id: `unlock_${id}`,

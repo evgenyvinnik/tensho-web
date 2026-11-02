@@ -2,6 +2,7 @@ import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import {
   CelestialOrbSystem,
+  UPGRADE_FAMILY_IDS,
   getCelestialOrbByYaku,
 } from '../systems/CelestialOrbSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
@@ -26,16 +27,20 @@ it('includes every actual Black Hole upgrade without treating it as an extra sco
     game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success
   ).toBe(true)
   const upgrades = game.getYakuUpgradeState()
-  expect(upgrades).toHaveLength(12)
-  expect(
-    upgrades.every(
-      (row) =>
-        row.level === 2 &&
-        row.chips > 0 &&
-        row.mult > 0 &&
-        row.timesScored === 0
-    )
-  ).toBe(true)
+  expect(upgrades).toHaveLength(13)
+  for (const row of upgrades) {
+    const { chipsPerLevel, multPerLevel } = getCelestialOrbByYaku(
+      row.yaku
+    )!.effect
+    expect(row, row.yaku).toEqual({
+      yaku: row.yaku,
+      level: 2,
+      chips: chipsPerLevel,
+      mult: multPerLevel,
+      timesScored: 0,
+    })
+    expect(row.chips + row.mult, row.yaku).toBeGreaterThan(0)
+  }
   expect(upgrades.some((row) => row.yaku === 'All')).toBe(false)
 })
 
@@ -45,15 +50,23 @@ it('reports only actual upgrades, never held Orbs or free baseline bonuses', () 
   game.startNewRun(7)
   expect(game.getYakuUpgradeState()).toEqual([])
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
-    getCelestialOrbByYaku('SevenPairs')!
+    getCelestialOrbByYaku('ThreePairs')!
   )
   expect(game.addCelestialOrb(orb)).toBe(true)
   expect(game.getYakuUpgradeState()).toEqual([])
   expect(
     game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success
   ).toBe(true)
+  const { chipsPerLevel, multPerLevel } =
+    getCelestialOrbByYaku('ThreePairs')!.effect
   expect(game.getYakuUpgradeState()).toEqual([
-    { yaku: 'SevenPairs', level: 2, chips: 35, mult: 3, timesScored: 0 },
+    {
+      yaku: 'ThreePairs',
+      level: 2,
+      chips: chipsPerLevel,
+      mult: multPerLevel,
+      timesScored: 0,
+    },
   ])
   const snapshot = game.captureRun()
   const result = game.getYakuUpgradeState()
@@ -74,19 +87,16 @@ it('tracks real matching scores, preserves forecasts/saves, and resets with the 
   state.flowerSystem.clear()
   state.seasonSystem.clear()
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
-    getCelestialOrbByYaku('SevenPairs')!
+    getCelestialOrbByYaku('ThreePairs')!
   )
   expect(game.addCelestialOrb(orb)).toBe(true)
   expect(
     game.processAction({ type: 'useOrb', orbId: orb.instanceId }).success
   ).toBe(true)
-  state.handTiles = [1, 1, 4, 4, 7, 7]
-    .map((rank, i) => new Tile(TileSuit.Manzu, rank, `m-${i}`))
-    .concat(
-      [2, 2, 5, 5].map((rank, i) => new Tile(TileSuit.Pinzu, rank, `p-${i}`))
-    )
-    .concat([8, 8].map((rank, i) => new Tile(TileSuit.Souzu, rank, `s-${i}`)))
-    .concat([1, 1].map((rank, i) => new Tile(TileSuit.Wind, rank, `w-${i}`)))
+  // Three Pairs: Planet X's family.
+  state.handTiles = [1, 1, 4, 4, 7, 7].map(
+    (rank, i) => new Tile(TileSuit.Manzu, rank, `m-${i}`)
+  )
   state.faceDownTileIds.clear()
   state.selectedTileIds.clear()
   state.targetScore = 1e9
@@ -113,23 +123,12 @@ it('tracks real matching scores, preserves forecasts/saves, and resets with the 
   expect(restored.getYakuUpgradeState()).toEqual([])
 })
 
-it('lists the nine families any run can upgrade, and a secret family once upgraded', () => {
+it('lists all 13 families from the start, in catalog order', () => {
   const game = new GameOrchestrator()
   game.setConsumableUnlockResolver(() => true)
   game.startNewRun(7)
-  const standard = [
-    'Pairs',
-    'Tanyao',
-    'Yakuhai',
-    'Pinfu',
-    'Ittsu',
-    'Honitsu',
-    'Toitoi',
-    'Chinitsu',
-    'Sanshoku',
-  ]
   const fresh = game.getYakuFamilyState()
-  expect(fresh.map((row) => row.yaku)).toEqual(standard)
+  expect(fresh.map((row) => row.yaku)).toEqual([...UPGRADE_FAMILY_IDS])
   expect(
     fresh.every(
       (row) =>
@@ -139,7 +138,7 @@ it('lists the nine families any run can upgrade, and a secret family once upgrad
         row.timesScored === 0
     )
   ).toBe(true)
-  for (const yaku of ['Pinfu', 'SevenPairs'] as const) {
+  for (const yaku of ['Sequence', 'ThreePairs'] as const) {
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
       getCelestialOrbByYaku(yaku)!
     )
@@ -149,14 +148,17 @@ it('lists the nine families any run can upgrade, and a secret family once upgrad
     ).toBe(true)
   }
   const upgraded = game.getYakuFamilyState()
-  expect(upgraded.map((row) => row.yaku)).toEqual([...standard, 'SevenPairs'])
-  expect(upgraded.find((row) => row.yaku === 'Pinfu')).toEqual(
-    game.getYakuUpgradeState().find((row) => row.yaku === 'Pinfu')
-  )
-  expect(upgraded.find((row) => row.yaku === 'SevenPairs')).toMatchObject({
+  expect(upgraded.map((row) => row.yaku)).toEqual([...UPGRADE_FAMILY_IDS])
+  for (const yaku of ['Sequence', 'ThreePairs'] as const)
+    expect(upgraded.find((row) => row.yaku === yaku)).toEqual(
+      game.getYakuUpgradeState().find((row) => row.yaku === yaku)
+    )
+  const { chipsPerLevel, multPerLevel } =
+    getCelestialOrbByYaku('ThreePairs')!.effect
+  expect(upgraded.find((row) => row.yaku === 'ThreePairs')).toMatchObject({
     level: 2,
-    chips: 35,
-    mult: 3,
+    chips: chipsPerLevel,
+    mult: multPerLevel,
   })
   // Detached: changing the list changes nothing in the run.
   const snapshot = game.captureRun()

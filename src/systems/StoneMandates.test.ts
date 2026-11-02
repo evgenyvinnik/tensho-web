@@ -1,14 +1,13 @@
 /**
  * A Stone has no rank or suit, so nothing that reads a tile's face sees it:
  * suit and tile-kind Boss Mandates do not debuff it, The Veil does not hide it
- * as an Honor, it neither makes nor breaks the All Simples Orb family, and a
- * red 5 under a Stone Mark is no red five.
+ * as an Honor, it shows no suit to the Mixed Suits Orb family and is never a
+ * Loose tile, and a red 5 under a Stone Mark is no red five.
  */
 
 import { afterEach, describe, expect, it } from 'vitest'
 import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
-import { Meld, MeldType } from '../core/Meld'
 import {
   THE_HEAD,
   THE_MARK,
@@ -23,6 +22,8 @@ import {
 import { eventBus } from '../game/EventBus'
 import { runRandom } from '../game/RunRandom'
 import { useOmenStore } from '../stores/omenStore'
+import { parsePlay } from '../rules/PartialHandParser'
+import { classifyPlay } from '../rules/PlayPattern'
 import { playOrbCategories } from './CelestialOrbSystem'
 import { FATE_SEALS, FateSealSystem } from './FateSealSystem'
 import { MandateEffectSystem, isFaceDebuffTarget } from './MandateEffectSystem'
@@ -210,25 +211,35 @@ describe('the run applies Boss Mandates by what a tile shows', () => {
   })
 })
 
-describe('the All Simples Orb family reads no Stone rank', () => {
-  const pair = [pinzu(3, 'a'), pinzu(3, 'b')]
-  const groups = [new Meld(MeldType.Pair, pair)]
+describe('the tile Orb families read no Stone face', () => {
+  /** The families a play scores, read through the scorer's own parse. */
+  const families = (tiles: Tile[]) => {
+    const parse = parsePlay(tiles)
+    return playOrbCategories(classifyPlay(parse.groups).id, parse.groups, tiles)
+  }
+  const pair = () => [pinzu(3, 'a'), pinzu(3, 'b')]
 
-  it('a Stone terminal riding a simple pair keeps All Simples', () => {
-    expect(
-      playOrbCategories('pair', groups, [...pair, stone(manzu(1, 'c'))])
-    ).toContain('Tanyao')
+  it('a Stone Character riding a Circles pair shows no suit and is no loose tile', () => {
+    expect(families([...pair(), stone(manzu(1, 'c'))])).toEqual(['Pairs'])
   })
 
-  it('a bare terminal rider still breaks it', () => {
-    expect(
-      playOrbCategories('pair', groups, [...pair, manzu(1, 'c')])
-    ).not.toContain('Tanyao')
+  it('the bare Character rider makes Mixed Suits and pays Loose Tiles', () => {
+    expect(families([...pair(), manzu(1, 'c')])).toEqual([
+      'Pairs',
+      'MixedSuits',
+      'Loose',
+    ])
   })
 
-  it('Stones alone make no group, so no All Simples', () => {
-    const stones = [stone(pinzu(3, 'a')), stone(pinzu(3, 'b'))]
-    expect(playOrbCategories('pair', [], stones)).not.toContain('Tanyao')
+  it('a Stone Wind or Dragon shows no Honor family either', () => {
+    expect(families([...pair(), stone(wind('c')), stone(dragon('d'))])).toEqual(
+      ['Pairs']
+    )
+  })
+
+  it('Stones alone make no group, no suit and no loose tile', () => {
+    const stones = [stone(pinzu(3, 'a')), stone(manzu(3, 'b'))]
+    expect(families(stones)).toEqual([])
   })
 })
 

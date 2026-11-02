@@ -101,7 +101,7 @@ import {
   CELESTIAL_ORBS,
   CelestialOrbSystem,
   CelestialOrb,
-  mapYakuIdToCategory,
+  handOrbCategories,
   playOrbCategories,
   type YakuCategory,
 } from '../systems/CelestialOrbSystem'
@@ -3966,22 +3966,18 @@ export class GameOrchestrator {
       baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id)
     )
 
-    // A tactical play levels through its pattern's families instead of Yaku.
+    // Upgrade families: a tactical play scores its pattern family and its
+    // tile families; a complete hand only its tile families. Loose Tiles is
+    // listed once per loose tile, so it pays once per tile.
     const playFamilies = partialMelds
       ? playOrbCategories(baseBreakdown.pattern.id, partialMelds, scoredTiles)
-      : []
+      : handOrbCategories(scoredTiles)
+    const scoredFamilies = new Set(playFamilies)
     // The Arm: every family this play levels loses a level before it scores.
     // Payment spends the levels; a preview prices the drop without it.
     const levelDrop = this.state.mandateEffectSystem.getPlayLevelDrop()
     const droppedFamilies = new Set<YakuCategory>(
-      levelDrop > 0
-        ? [
-            ...baseBreakdown.detectedYaku.flatMap(
-              (yaku) => mapYakuIdToCategory(yaku.definition.id) ?? []
-            ),
-            ...playFamilies,
-          ]
-        : []
+      levelDrop > 0 ? scoredFamilies : []
     )
     if (!preview)
       for (const family of droppedFamilies)
@@ -3992,32 +3988,15 @@ export class GameOrchestrator {
         preview && droppedFamilies.has(category) ? levelDrop : 0
       )
 
-    // Apply celestial orb bonuses for each detected yaku
-    for (const detectedYaku of baseBreakdown.detectedYaku) {
-      const category = mapYakuIdToCategory(detectedYaku.definition.id)
-      if (category) {
-        const orbBonus = orbBonusFor(category)
-        celestialOrbMultBonus += orbBonus.mult
-        celestialOrbChipsBonus += orbBonus.chips
-
-        // Record the scored occurrence (previews never advance counters).
-        if (!preview) {
-          this.state.celestialOrbSystem.triggerYaku(category)
-        }
-      }
-
-      // Also check 'All' category (Black Hole Orb)
-      const allBonus = this.state.celestialOrbSystem.calculateYakuBonus('All')
-      celestialOrbMultBonus += allBonus.mult
-      celestialOrbChipsBonus += allBonus.chips
-    }
-
     for (const category of playFamilies) {
       const orbBonus = orbBonusFor(category)
       celestialOrbMultBonus += orbBonus.mult
       celestialOrbChipsBonus += orbBonus.chips
-      if (!preview) this.state.celestialOrbSystem.triggerYaku(category)
     }
+    // Record each scored family once (previews never advance counters).
+    if (!preview)
+      for (const category of scoredFamilies)
+        this.state.celestialOrbSystem.triggerYaku(category)
 
     // The play's own Mult: Yaku (or 1) + Orb levels + pattern + Dragons +
     // Mark/Edition "+N Mult". Decrees then work on this running Mult
@@ -4052,9 +4031,8 @@ export class GameOrchestrator {
     // rounding. The neutral pass never rerolls tiles or records scaling growth.
     const orbMultiplier = observatoryMultiplier(
       this.state.celestialOrbs,
-      baseBreakdown.detectedYaku.map((yaku) => yaku.definition.id),
       this.state.charterSystem.calculateEffects().orbMultiplier,
-      playFamilies
+      scoredFamilies
     )
     const settle = (decree: SystemScoreBreakdown) => {
       const finalAdditiveBonus =
@@ -5274,9 +5252,9 @@ export class GameOrchestrator {
   }
 
   /**
-   * Every family the Tea House lists, in catalog order: the nine whose Orbs
-   * any run can find, from level 1, and a secret family (its Orb earned on
-   * the profile) only once an upgrade has reached it. Detached like
+   * Every family the Tea House lists, in catalog order: each whose Orb any
+   * run can find, from level 1, and a family whose Orb is still locked on
+   * the profile only once an upgrade has reached it. Detached like
    * `getYakuUpgradeState`.
    */
   getYakuFamilyState() {

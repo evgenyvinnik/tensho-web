@@ -4,10 +4,7 @@ export type ConsumableUnlockResolver = (id: string) => boolean
 export const CONSUMABLE_UNLOCK_CONDITIONS: Record<string, string> = {
   seal_of_the_immortal: 'Score a Yakuman',
   seal_of_the_void: 'Score all 20 Yaku types in a single run',
-  planet_x_orb: 'Score Seven Pairs',
-  ceres_orb: 'Score an Outside Hand',
-  eris_orb: 'Score Thirteen Orphans',
-  black_hole_orb: 'Discover all 12 other Celestial Orbs',
+  black_hole_orb: 'Discover all 13 other Celestial Orbs',
 }
 
 // Kept lightweight for the profile/menu bundle; catalog parity is tested.
@@ -37,6 +34,7 @@ export const RUN_YAKU_IDS = [
 
 export const BLACK_HOLE_PREREQUISITES = [
   'pluto_orb',
+  'moon_orb',
   'mercury_orb',
   'uranus_orb',
   'venus_orb',
