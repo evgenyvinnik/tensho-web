@@ -2,6 +2,11 @@
 
 For the art agent regenerating Orb portraits. November 2026.
 
+> **Status (2026-11-02): delivered and integrated** as Orbs V5: Moon, Mercury,
+> Jupiter, Mars, Eris, Ceres and Planet X. Earth was not refreshed and keeps its
+> V4 portrait. See "Orbs V5" in `GENERATED_ART_INTEGRATION.md`. The rest of
+> this page is the original brief, kept for the next refresh.
+
 ## Why
 
 The upgrade families were rebuilt around simple, visible conditions (see

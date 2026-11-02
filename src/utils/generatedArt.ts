@@ -462,6 +462,7 @@ export const generatedArtPaths = {
     jupiter_orb: 'assets/illustrations/generated/orbs/jupiter_orb.webp',
     mars_orb: 'assets/illustrations/generated/orbs/mars_orb.webp',
     mercury_orb: 'assets/illustrations/generated/orbs/mercury_orb.webp',
+    moon_orb: 'assets/illustrations/generated/orbs/moon_orb.webp',
     neptune_orb: 'assets/illustrations/generated/orbs/neptune_orb.webp',
     planet_x_orb: 'assets/illustrations/generated/orbs/planet_x_orb.webp',
     pluto_orb: 'assets/illustrations/generated/orbs/pluto_orb.webp',
