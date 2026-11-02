@@ -1,7 +1,18 @@
 import { expect, test } from '@playwright/test'
 
+const EDITIONS = [
+  'bonus',
+  'mult',
+  'wild',
+  'glass',
+  'steel',
+  'stone',
+  'gold',
+  'lucky',
+] as const
+
 for (const width of [390, 1280]) {
-  test(`edition frames follow the front face and Marks use finished art at ${width}px`, async ({
+  test(`Editions use finished tile art, and a Lucky tile shows its round's roll at ${width}px`, async ({
     page,
   }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 })
@@ -16,76 +27,80 @@ for (const width of [390, 1280]) {
     await expect(page.locator('[data-frame-size]')).toHaveCount(3, {
       timeout: 20_000,
     })
+    const art = (selector: string) =>
+      page.locator(selector).evaluate(async (el) => {
+        const images = el.querySelectorAll<HTMLImageElement>('img')
+        const image = el.querySelector<HTMLImageElement>(
+          '[data-tile-base-art]'
+        )!
+        await image.decode()
+        return {
+          images: images.length,
+          src: new URL(image.src).pathname,
+          face: image.getAttribute('data-tile-face'),
+          naturalWidth: image.naturalWidth,
+          naturalHeight: image.naturalHeight,
+        }
+      })
     for (const size of ['small', 'medium', 'xlarge']) {
-      const row = page.locator(`[data-frame-size="${size}"]`)
-      for (const name of ['foil', 'holographic', 'polychrome', 'negative']) {
-        const tile = row.locator(`[data-frame-case="${name}"]`)
-        const geometry = await tile.evaluate(async (el) => {
-          const image = el.querySelector<HTMLImageElement>(
-            '[data-tile-base-art]'
-          )!
-          await image.decode()
-          const rect = image.getBoundingClientRect()
-          const scale = Math.min(rect.width / 569, rect.height / 711)
-          // Chromium's SVG bounding box ignores the clip, so it would include
-          // frame art that bleeds past the face; read the viewport transform.
-          const face = el
-            .querySelector<SVGSVGElement>('[data-tile-front-face]')!
-            .getScreenCTM()!
-          return {
-            left: face.e - (rect.left + (rect.width - 569 * scale) / 2),
-            top: face.f - (rect.top + (rect.height - 711 * scale) / 2),
-            width: (526 * face.a) / scale,
-            height: (661 * face.d) / scale,
-            padding: getComputedStyle(image).padding,
-            clipRadius: el.querySelector('clipPath rect')!.getAttribute('rx'),
-          }
+      const row = `[data-frame-size="${size}"]`
+      // A plain tile is its ordinary face sprite.
+      expect(await art(`${row} [data-frame-case="base"]`)).toMatchObject({
+        images: 1,
+        src: '/assets/Mahjong/file/png/tiles/Dots%20(5).png',
+        face: null,
+      })
+      // An Edition is the whole tile painted in its material: one finished
+      // artwork, with nothing laid over it outside a round.
+      for (const name of EDITIONS) {
+        const tile = `${row} [data-frame-case="${name}"]`
+        expect(await art(tile)).toEqual({
+          images: 1,
+          src:
+            name === 'stone'
+              ? '/assets/tiles/stone.webp'
+              : `/assets/tiles/${name}/pinzu_05.webp`,
+          face: name === 'stone' ? 'stone' : 'finished',
+          naturalWidth: 320,
+          naturalHeight: 400,
         })
-        expect(Math.abs(geometry.left)).toBeLessThan(0.1)
-        expect(Math.abs(geometry.top)).toBeLessThan(0.1)
-        expect(geometry.width).toBeCloseTo(526, 1)
-        expect(geometry.height).toBeCloseTo(661, 1)
-        expect(geometry.padding).toBe('0px')
-        expect(geometry.clipRadius).toBe('60')
+        await expect(page.locator(`${tile} [data-lucky-roll]`)).toHaveCount(0)
       }
-      // A Mark is its finished tile artwork, with no frame laid over it.
-      for (const name of [
-        'bonus',
-        'mult',
-        'wild',
-        'glass',
-        'steel',
-        'stone',
-        'gold',
-        'lucky',
-      ]) {
-        const tile = row.locator(`[data-frame-case="${name}"]`)
-        const art = await tile.evaluate(async (el) => {
-          const image = el.querySelector<HTMLImageElement>(
-            '[data-tile-base-art]'
-          )!
-          await image.decode()
-          return {
-            src: new URL(image.src).pathname,
-            naturalWidth: image.naturalWidth,
-            naturalHeight: image.naturalHeight,
-          }
-        })
-        expect(art.src).toBe(
-          name === 'stone'
-            ? '/assets/tiles/stone.webp'
-            : `/assets/tiles/${name}/pinzu_05.webp`
-        )
-        expect(art).toMatchObject({ naturalWidth: 320, naturalHeight: 400 })
-        await expect(tile.locator('[data-tile-frame-plane]')).toHaveCount(0)
+      // In a round, a Lucky tile adds this round's roll on its lower face,
+      // inside the tile. The smallest tiles have no room; details show it.
+      const lucky = page.locator(`${row} [data-frame-case="lucky-round"]`)
+      expect(await art(`${row} [data-frame-case="lucky-round"]`)).toMatchObject(
+        { images: 1, src: '/assets/tiles/lucky/pinzu_05.webp' }
+      )
+      const roll = lucky.locator('[data-lucky-roll]')
+      if (size === 'small') {
+        await expect(roll).toHaveCount(0)
+        continue
       }
-      // A seal is intentionally outside the clipped face; base tiles have no frame.
-      await expect(
-        row.locator('[data-frame-case="base"] [data-tile-frame-plane]')
-      ).toHaveCount(0)
-      await expect(
-        row.locator('[data-frame-case="seal"] [data-tile-art-layer="seal"]')
-      ).toBeVisible()
+      await expect(roll).toHaveAttribute('data-lucky-roll', '1.75:60')
+      await expect(roll).toHaveText('×1.75+60')
+      const bounds = await lucky.evaluate((el) => {
+        const rect = (node: Element) => {
+          const { left, right, top, bottom } = node.getBoundingClientRect()
+          return { left, right, top, bottom }
+        }
+        const badge = el.querySelector('[data-lucky-roll]')!
+        return {
+          // The tile's own box, which the badge is placed in.
+          tile: rect(el.querySelector('[data-tile-base-art]')!.parentElement!),
+          badge: rect(badge),
+          clipped: badge.scrollWidth > badge.clientWidth + 1,
+        }
+      })
+      const { tile, badge } = bounds
+      expect(
+        badge.left >= tile.left - 0.5 &&
+          badge.right <= tile.right + 0.5 &&
+          badge.top >= tile.top - 0.5 &&
+          badge.bottom <= tile.bottom + 0.5,
+        `${size} roll badge ${JSON.stringify(bounds)} stays on its tile`
+      ).toBe(true)
+      expect(bounds.clipped).toBe(false)
     }
     await expect(
       page.locator('[data-frame-case="selected"] [role="button"]')

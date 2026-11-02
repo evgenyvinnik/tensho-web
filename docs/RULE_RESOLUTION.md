@@ -84,8 +84,7 @@ Turns run out (or The Needle's play is spent) below it.
 **REDRAW.** Any number of selected, unlocked tiles go to the river (Discard
 Pool) and the rack refills under the round's draw rules. It counts once for
 Decay and for River Tax (+2 Gold per REDRAW), and per tile for "per tile
-redrawn" Decrees. Purple Seals still create a Fate Seal when redrawn. There is
-no separate single-tile discard.
+redrawn" Decrees. There is no separate single-tile discard.
 
 **No Skip.** Rounds cannot be skipped. A Small or Large round cleared with at
 least two Turns to spare (*swift clear*) earns the Omen skipping used to grant,
@@ -329,19 +328,31 @@ their old target for the current round, then adopt the new rule. The target and
 inactive states are explained in the illustrated hover/tap details.
 [Rules, implementation and evidence](DOPPELGANGER_IMPLEMENTATION.md).
 
-### Fate Seal lifetime and Negative tile ownership
+### Fate Seal lifetime
 
 Fate Seals permanently change selected physical tiles for this run, including
 future rounds and save/reload. New runs start fresh. Destruction removes the tile;
 Transmutation copies its face/modifiers but retains the target's ID. This selects
 deck-building investment over the hand-only draft; targeting/use limits remain.
 
-Every owned non-bonus Negative tile grants one Decree slot, counted once by physical
-ID in the persistent wall. Drawing, discarding, debuffing and Frostbite do not toggle
-capacity. Destruction or edition replacement removes the bonus; copying to another
-physical tile adds another. Negative Decrees and other slot sources remain separate.
-Losing capacity keeps existing Decrees and their normal rules; new acquisitions
-must fit the resulting capacity.
+Negative tiles no longer exist (tile Editions became Finishes on Decrees only;
+see *Tile Editions* below). Losing capacity keeps existing Decrees and their
+normal rules; new acquisitions must fit the resulting capacity.
+
+### Tile Editions
+
+A special tile carries one Edition (`EnhancementType`); Stamps and the tile
+Foil/Holographic/Polychrome/Negative Editions are retired (snapshot v4 turns a
+Gold Stamp into Gold, Blue into Steel, Purple into Glass and drops the rest).
+Bonus pays +30 Points per Act. Gold pays +3 Gold each time the tile scores,
+retriggers included; nothing is paid for Gold tiles left on the rack. Lucky
+pays its round's roll (×1.25–×2 Mult and +20–100 Points), drawn from the run's
+`modifiers` stream at round start (or right after the action that made the tile
+Lucky) and saved, so preview and payment match and a seed replays it. A played Glass tile
+makes one random Fate Seal and a played Steel tile one random Celestial Orb
+per play, however often it scores; then each has a 1 in 4 chance to break
+(shatter / rust away) after paying. Debuffed tiles do neither. Steel no longer
+pays anything for staying on the rack.
 
 This chooses the gameplay document's promised tile effect over the item table's
 old N/A entry. Capacity is derived on restore rather than serialized into base
@@ -480,12 +491,11 @@ bonuses, red-five chips, gold and the extra tile-multiplier product follow this
 rule; final score/gold settlement supplies rounding. Structure and Yaku identities
 are not retriggered. Copies and Echo Dimension combine before attenuation.
 
-Native Red Seal repeats the tile's face/red-five and modifier rewards, and is not
-a Decree penalty target. Native Glass/Polychrome multiplier products must reach
-the real paid score. Lucky and Glass resolve once per physical played tile;
-repeats reuse the resolved reward rather than rolling again. Glass is removed
-after its score, so shattering cannot make payment lower than its forecast.
-Preview uses guaranteed Lucky outcomes and never rolls or shatters.
+The Lucky ×Mult product must reach the real paid score. Glass and Steel resolve
+once per physical played tile; repeats reuse the resolved reward rather than
+rolling again. A broken tile is removed after its score, so breaking cannot make
+payment lower than its forecast. Preview shows the round's Lucky roll and never
+breaks a tile.
 
 Frostbite does not alter rule permissions, acquisition gates, slots/capacities,
 hand/discard budgets, rescue charges or costs. These are stable discrete run

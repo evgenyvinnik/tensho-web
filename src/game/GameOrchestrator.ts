@@ -26,7 +26,11 @@ import {
   getTileIdCounter,
   restoreTileIdCounter,
 } from '../core/Tile'
-import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
+import {
+  EnhancementType,
+  rollLucky,
+  type LuckyRoll,
+} from '../core/TileModifier'
 import { Hand, ParsedHand, WaitType } from '../core/Hand'
 import { Meld, MeldType } from '../core/Meld'
 import {
@@ -176,7 +180,6 @@ export interface RoundCashOutSummary {
   baseReward: number
   interest: number
   decreeGold: number
-  heldGoldMarkReward: number
   rentalCost: number
   netGoldChange: number
   goldBefore: number
@@ -266,6 +269,11 @@ export interface OrchestratorState {
   adTurns?: { actNumber: number; count: number }
   /** Missing in legacy saves: unknown eligibility until the next round. */
   honorDiscardsThisRound?: number
+  /**
+   * This round's roll per Lucky tile id, drawn when the round starts (and for
+   * a tile made Lucky later, right after that action). Missing in older saves.
+   */
+  luckyRolls?: Record<string, LuckyRoll>
   /**
    * Permanent score multiplier charged by a Decree that refused a loss
    * (Immortal Decree). 1 while no such rescue has happened.
@@ -412,6 +420,12 @@ const DEFAULT_ROUND_CONFIG: RoundConfig = {
  * the terminal the tile is promoted to; the id is preserved so retriggers,
  * debuffs, and modifier lookups still resolve.
  */
+/** Glass tiles a play shattered, for the achievement that counts them. */
+function shatteredCount(score: Pick<ScoreBreakdown, 'brokenTiles'>): number {
+  return score.brokenTiles.filter((broken) => broken.breaks === 'shattered')
+    .length
+}
+
 function promoteSimpleToTerminal(tile: Tile): Tile {
   if (!tile.isSimple) return tile
 
@@ -482,7 +496,7 @@ export class GameOrchestrator {
     if (this.state.phase === 'menu')
       throw new Error('There is no Classic run to save')
     return {
-      version: 3,
+      version: 4,
       state: captureClassicState(this.state),
       config: { ...this.config },
       shop: this.shop.toState(),
@@ -498,7 +512,7 @@ export class GameOrchestrator {
   /** Internal typed restore. Stage every subsystem before touching the live run. */
   restoreRun(saved: ClassicRunSnapshot): void {
     this.assertCheckpointBoundary()
-    if (saved.version !== 3) throw new Error('Unsupported Classic run snapshot')
+    if (saved.version !== 4) throw new Error('Unsupported Classic run snapshot')
     for (const counter of [
       saved.runtimeItemCounter,
       saved.tileIdCounter,
@@ -560,6 +574,8 @@ export class GameOrchestrator {
     restoreConsumableInstanceCounter(saved.consumableInstanceCounter)
     restoreMetaProgressionRunContext(meta)
     useOmenStore.setState(omens)
+    // A run saved before Lucky rolls were kept rolls its Lucky tiles now.
+    this.rollNewLuckyTiles()
     eventBus.emit('gameLoaded', {
       timestamp: Date.now(),
       ...(endlessContext ? { endlessContext } : {}),
@@ -819,6 +835,8 @@ export class GameOrchestrator {
     this.state.tilesRedrawnThisRound = 0
     this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
+    this.state.luckyRolls = {}
+    this.rollNewLuckyTiles(true)
 
     this.state.handsRemaining = Math.max(
       1,
@@ -1487,6 +1505,7 @@ export class GameOrchestrator {
       this.actionDepth--
     }
     if (result.success) {
+      this.rollNewLuckyTiles()
       this.publishBuildProgress()
       // Include a final play's destruction even if it ended the run.
       this.publishWallComposition()
@@ -2227,16 +2246,7 @@ export class GameOrchestrator {
       effects
     )
 
-    if (scoreResult.shatteredTiles.length > 0) {
-      this.destroyTiles(scoreResult.shatteredTiles, effects)
-    }
-
-    if (
-      this.state.score >= this.state.targetScore &&
-      selectedTiles.some((tile) => tile.modifiers.seal === SealType.Blue)
-    ) {
-      this.createRandomConsumable('CelestialOrb', effects)
-    }
+    this.applyPlayedEditionEffects(scoreResult, selectedTiles, effects)
 
     // Remove played tiles and add to discards
     for (const tileId of tileIds) {
@@ -2268,7 +2278,7 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: scoreResult.finalScore,
-      glassTilesBroken: scoreResult.shatteredTiles.length,
+      glassTilesBroken: shatteredCount(scoreResult),
       allPlayedTilesWild: selectedTiles.every((tile) => tile.isWild),
       windYakuScored: scoreResult.detectedYaku.filter(
         (yaku) => yaku.isApplicable && yaku.honorSource === 'wind'
@@ -2377,16 +2387,7 @@ export class GameOrchestrator {
     const tileIds = selectedTiles.map((tile) => tile.id)
     this.applyPlayedTileMandates(tileIds, scoreResult.pattern.id, [], effects)
 
-    if (scoreResult.shatteredTiles.length > 0) {
-      this.destroyTiles(scoreResult.shatteredTiles, effects)
-    }
-
-    if (
-      this.state.score >= this.state.targetScore &&
-      selectedTiles.some((tile) => tile.modifiers.seal === SealType.Blue)
-    ) {
-      this.createRandomConsumable('CelestialOrb', effects)
-    }
+    this.applyPlayedEditionEffects(scoreResult, selectedTiles, effects)
 
     // Remove played tiles and add to discards
     for (const tile of selectedTiles) {
@@ -2411,7 +2412,7 @@ export class GameOrchestrator {
     eventBus.emit('handPlayed', {
       tiles: tileIds,
       score: finalScore,
-      glassTilesBroken: scoreResult.shatteredTiles.length,
+      glassTilesBroken: shatteredCount(scoreResult),
       equation: scoreResult.equation,
       yakuIds: [],
       pattern: scoreResult.pattern.id,
@@ -2576,9 +2577,6 @@ export class GameOrchestrator {
       new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
     )
     this.changeGold(decreeGold, 'Redraw Decree effect', effects, 'decree')
-    for (const tile of removed)
-      if (tile.modifiers.seal === SealType.Purple)
-        this.createRandomConsumable('FateSeal', effects)
 
     effects.push({
       type: 'round_state_changed',
@@ -2871,6 +2869,7 @@ export class GameOrchestrator {
       // A tile seen through a Seal stays revealed for the rest of the hand.
       for (const id of targets) this.state.faceDownTileIds.delete(id)
     }
+    this.rollNewLuckyTiles()
     this.publishBuildProgress()
     return null
   }
@@ -3228,11 +3227,7 @@ export class GameOrchestrator {
         this.upgradeAllYaku()
         break
       case 'edition_applied':
-        if (tileIds.length > 0 && typeof result.value === 'string') {
-          this.transformTiles(tileIds, (tile) =>
-            tile.withEdition(result.value as EditionType)
-          )
-        } else if (typeof result.value === 'string') {
+        if (typeof result.value === 'string') {
           const edition = this.normalizeDecreeEdition(result.value)
           if (edition) this.applyRandomDecreeEdition(edition)
         }
@@ -3267,6 +3262,29 @@ export class GameOrchestrator {
             this.addCreatedTile(this.createVoidTile(script.effect.createType))
           }
           break
+        case 'enhancement_applied':
+          if (typeof result.value === 'string')
+            this.transformTiles(tileIds, (tile) =>
+              tile.withEnhancement(result.value as EnhancementType)
+            )
+          break
+        case 'edition_copied': {
+          // Déjà Vu: every other copy of the chosen face in the run's wall.
+          const source = this.findRunTile(tileIds[0])
+          if (source)
+            this.transformTiles(
+              this.state.wallTemplate
+                .filter(
+                  (tile) =>
+                    tile.id !== source.id &&
+                    tile.suit === source.suit &&
+                    tile.rank === source.rank
+                )
+                .map((tile) => tile.id),
+              (tile) => tile.withEnhancement(source.enhancement)
+            )
+          break
+        }
         case 'tile_duplicated': {
           const source = this.state.handTiles.find(
             (tile) => tile.id === tileIds[0]
@@ -3286,20 +3304,6 @@ export class GameOrchestrator {
           }
           break
         }
-        case 'seal_applied':
-          if (typeof result.value === 'string') {
-            this.transformTiles(tileIds, (tile) =>
-              tile.withSeal(result.value as SealType)
-            )
-          }
-          break
-        case 'edition_applied':
-          if (typeof result.value === 'string') {
-            this.transformTiles(tileIds, (tile) =>
-              tile.withEdition(result.value as EditionType)
-            )
-          }
-          break
         case 'edition_applied_decree':
           if (typeof result.value === 'string') {
             const edition = this.normalizeDecreeEdition(result.value)
@@ -3392,7 +3396,6 @@ export class GameOrchestrator {
     this.state.summerReserve = replace(this.state.summerReserve)
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
-    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     this.state.mandateEffectSystem.refreshFaceDebuffs([replacement])
   }
 
@@ -3410,6 +3413,55 @@ export class GameOrchestrator {
     }
   }
 
+  /**
+   * After a play: each played Glass tile makes a Fate Seal and each Steel tile
+   * a Celestial Orb, then the tiles their Edition broke leave the run.
+   */
+  private applyPlayedEditionEffects(
+    scoreResult: Pick<ScoreBreakdown, 'madeConsumables' | 'brokenTiles'>,
+    playedTiles: readonly Tile[],
+    effects: Effect[]
+  ): void {
+    for (const made of scoreResult.madeConsumables)
+      this.createRandomConsumable(
+        made.type === 'seal' ? 'FateSeal' : 'CelestialOrb',
+        effects
+      )
+    if (scoreResult.brokenTiles.length === 0) return
+    this.destroyTiles(
+      scoreResult.brokenTiles.map((broken) => broken.tileId),
+      effects
+    )
+    eventBus.emit('tilesBroken', {
+      tiles: scoreResult.brokenTiles.flatMap(({ tileId, breaks }) => {
+        const tile = playedTiles.find((played) => played.id === tileId)
+        return tile ? [{ tile, breaks }] : []
+      }),
+    })
+  }
+
+  /**
+   * Roll every Lucky tile of the run that has no roll this round, in wall
+   * order, from the run's stream. Called only at fixed points (round start,
+   * after an action, after a made Seal settles, on load), never by a preview,
+   * so a seed always replays the same rolls. Between rounds nothing rolls:
+   * the next round's start rolls every Lucky tile afresh.
+   */
+  private rollNewLuckyTiles(roundStart = false): void {
+    if (!roundStart && this.state.phase !== 'gameplay') return
+    const rolls = this.state.luckyRolls ?? {}
+    const unrolled = [...this.state.wallTemplate, ...this.state.handTiles]
+      .filter(
+        (tile) =>
+          tile.isLucky && !Object.prototype.hasOwnProperty.call(rolls, tile.id)
+      )
+      .map((tile) => tile.id)
+    if (unrolled.length === 0 && this.state.luckyRolls) return
+    const next = { ...rolls }
+    for (const id of new Set(unrolled)) next[id] = rollLucky()
+    this.state.luckyRolls = next
+  }
+
   private removeTileEverywhere(tileId: string): void {
     const wallIndex = this.state.wall.findIndex((tile) => tile.id === tileId)
     if (wallIndex !== -1) {
@@ -3423,7 +3475,6 @@ export class GameOrchestrator {
     this.state.wallTemplate = this.state.wallTemplate.filter(
       (tile) => tile.id !== tileId
     )
-    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     this.state.deadWall = this.state.deadWall.filter(
       (tile) => tile.id !== tileId
     )
@@ -3493,7 +3544,6 @@ export class GameOrchestrator {
   private addCreatedTile(tile: Tile): void {
     this.state.handTiles.push(tile)
     this.state.wallTemplate.push(tile)
-    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     this.state.handTiles.sort(Tile.compare)
   }
 
@@ -3647,7 +3697,7 @@ export class GameOrchestrator {
   }
 
   /**
-   * A Seal the run makes (a Purple tile, the Emperor, the Fool) is used as it
+   * A Seal the run makes (a Glass tile, the Emperor, the Fool) is used as it
    * is made, like one bought. One that needs no tiles works now; one that
    * takes tiles waits in `fateSeals` only until the player picks them on the
    * wall, which the table and the Tea House ask at once.
@@ -3799,7 +3849,7 @@ export class GameOrchestrator {
     // The Mouth: once the round's first play has set the hand type, any other
     // type scores nothing. The Eye: a hand type already played this round
     // scores nothing. Nothing in a blocked play triggers - no Decree, Orb,
-    // Mark, gold or Glass - and its tiles are read only to name the play.
+    // Edition, gold or Glass - and its tiles are read only to name the play.
     const patternId = partialMelds ? classifyPlay(partialMelds).id : 'mahjong'
     if (!this.state.mandateEffectSystem.allowsPlayPattern(patternId, preview)) {
       const named = calculateScore(
@@ -3812,7 +3862,8 @@ export class GameOrchestrator {
         ...named,
         detectedYaku: [],
         retriggeredTiles: [],
-        shatteredTiles: [],
+        brokenTiles: [],
+        madeConsumables: [],
         goldEarned: 0,
         finalScore: 0,
         blockedByMandate: true,
@@ -3909,9 +3960,8 @@ export class GameOrchestrator {
         scoredTiles,
         disabledDecreeIds
       ),
-      heldTiles: this.state.handTiles.filter(
-        (held) => !tiles.some((played) => played.id === held.id)
-      ),
+      act: this.state.currentAct,
+      luckyRolls: this.state.luckyRolls,
     })
 
     // Calculate base score
@@ -4034,7 +4084,7 @@ export class GameOrchestrator {
         this.state.celestialOrbSystem.triggerYaku(category)
 
     // The play's own Mult: Yaku (or 1) + Orb levels + pattern + Dragons +
-    // Mark/Edition "+N Mult". Decrees then work on this running Mult
+    // Edition "+N Mult". Decrees then work on this running Mult
     // in order, Balatro-style: a "+N Mult" Decree adds N to it and a "×N Mult"
     // Decree multiplies it.
     const seasonedYakuMultiplier =
@@ -4366,15 +4416,11 @@ export class GameOrchestrator {
           .orbLevels.filter(([, level]) => level > 1).length,
       }
     )
-    const heldGoldMarkReward =
-      this.state.handTiles.filter(
-        (tile) => tile.modifiers.enhancement === EnhancementType.Gold
-      ).length * 3
     const rentalCost = this.state.decreeSystem.calculateRentalCosts()
     // Philosopher's Stone doubles what the round pays in, before the costs it
     // charges out.
     const { decreeGold, amount: grossGold } = this.calculateGoldReward(
-      goldReward + interest + heldGoldMarkReward,
+      goldReward + interest,
       rawDecreeGold
     )
     const netGoldChange = grossGold - rentalCost
@@ -4409,7 +4455,6 @@ export class GameOrchestrator {
       baseReward: goldReward,
       interest,
       decreeGold,
-      heldGoldMarkReward,
       rentalCost,
       netGoldChange: netGoldChange + omenGold,
       goldBefore,
@@ -4559,7 +4604,6 @@ export class GameOrchestrator {
       baseReward: 0,
       interest: 0,
       decreeGold: 0,
-      heldGoldMarkReward: 0,
       rentalCost,
       netGoldChange: rentalCost > 0 ? -rentalCost : 0,
       goldBefore,
@@ -5135,7 +5179,6 @@ export class GameOrchestrator {
     if (!(tile instanceof Tile)) return false
     if (tile.isFlower && this.state.tableModifiers.flowersDisabled) return false
     this.state.wallTemplate.push(tile)
-    this.state.decreeSystem.syncWallSlots(this.state.wallTemplate)
     if (this.state.isRunActive) this.publishWallComposition()
     return true
   }

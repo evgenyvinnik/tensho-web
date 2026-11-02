@@ -67,6 +67,11 @@ it('round-trips every authoritative collection, modifier and internal subsystem 
     true
   ).withEnhancement(EnhancementType.Steel)
   state.handTiles[0] = tile
+  const lucky = new Tile(TileSuit.Souzu, 7, 'roundtrip-lucky').withEnhancement(
+    EnhancementType.Lucky
+  )
+  state.handTiles[1] = lucky
+  state.luckyRolls = { [lucky.id]: { multiplier: 1.75, points: 80 } }
   state.selectedTileIds.add(tile.id)
   state.faceDownTileIds.add(tile.id)
   state.summerReserve = [new Tile(TileSuit.Souzu, 3, 'reserved')]
@@ -95,7 +100,15 @@ it('round-trips every authoritative collection, modifier and internal subsystem 
   expect(json(game.captureRun())).toEqual(saved)
   expect(game.getState().lastHandScore).toBeUndefined()
   expect(game.getState().handTiles[0]).toBeInstanceOf(Tile)
-  expect(game.getState().handTiles[0].hasHeldEffect).toBe(true)
+  expect(game.getState().handTiles[0].modifiers).toEqual({
+    enhancement: EnhancementType.Steel,
+  })
+  expect(game.getState().handTiles[0].canShatter).toBe(true)
+  expect(game.getState().handTiles[1].isLucky).toBe(true)
+  // The round's Lucky roll survives the save instead of being re-rolled.
+  expect(game.getState().luckyRolls).toEqual({
+    [lucky.id]: { multiplier: 1.75, points: 80 },
+  })
   expect(game.getState().melds[0]).toBeInstanceOf(Meld)
   expect(game.getState().melds[0].typeKey).toBe('triplet-manzu-3')
   expect(game.getState().fateSealSystem.getLastUsedConsumable()).toEqual(

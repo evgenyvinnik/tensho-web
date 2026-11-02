@@ -364,7 +364,7 @@ export const CRIMSON_WALL: TableStyleDefinition = {
   displayName: 'Crimson Wall',
   japaneseName: '紅蓮の牌山',
   description:
-    'A crimson-and-gold table where every Dragon in your starting wall carries a Mult Mark. Powerful beginnings come at the cost of one Decree slot.',
+    'A crimson-and-gold table where every Dragon in your starting wall carries a Mult Edition. Powerful beginnings come at the cost of one Decree slot.',
   theme: 'Crimson',
   themeColor: '#B51F42',
   accentColor: '#D4AF37',
@@ -397,7 +397,7 @@ export const OBSIDIAN_WALL: TableStyleDefinition = {
   displayName: 'Obsidian Wall',
   japaneseName: '黒曜の牌山',
   description:
-    'An obsidian table edged in teal and silver, where every Wind in your starting wall carries a Bonus Mark. One fewer Decree slot rewards a focused strategy.',
+    'An obsidian table edged in teal and silver, where every Wind in your starting wall carries a Bonus Edition. One fewer Decree slot rewards a focused strategy.',
   theme: 'Obsidian',
   themeColor: '#258F91',
   accentColor: '#C3CCD5',
@@ -406,7 +406,8 @@ export const OBSIDIAN_WALL: TableStyleDefinition = {
     {
       type: 'starting_wind_bonus',
       value: 30,
-      description: 'All starting Winds have Bonus (+30 Points when scored)',
+      description:
+        'All starting Winds have Bonus (+30 Points per Act when scored)',
       isBenefit: true,
     },
     {

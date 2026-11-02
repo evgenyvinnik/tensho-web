@@ -1,14 +1,9 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import i18n, { loadLanguage } from '../../i18n'
-import {
-  Tile,
-  TileSuit,
-  EnhancementType,
-  SealType,
-  EditionType,
-} from '../../core/Tile'
+import { Tile, TileSuit, EnhancementType } from '../../core/Tile'
 import { TileImage } from './TileImage'
+import { TileRoundContext } from './TileRoundContext'
 import { useSettingsStore } from '../../stores/settingsStore'
 
 afterEach(async () => {
@@ -22,21 +17,22 @@ afterEach(async () => {
 const showRankNumbers = () =>
   act(() => useSettingsStore.getState().setShowRankNumbers(true))
 
-it.each([
-  [(t: Tile) => t.withEnhancement(EnhancementType.Bonus), 'tileMarks', 'bonus'],
-  [(t: Tile) => t.withSeal(SealType.Purple), 'archiveSeals', 'purple'],
-  [(t: Tile) => t.withEdition(EditionType.Foil), 'editions', 'foil'],
-] as const)(
-  'localizes the tile identity, rules and modifier explanation in Spanish (%#)',
-  async (modify, kind, id) => {
+it.each([EnhancementType.Bonus, EnhancementType.Glass, EnhancementType.Lucky])(
+  'localizes the tile identity, rules and %s Edition explanation in Spanish',
+  async (edition) => {
     await loadLanguage('es')
     await i18n.changeLanguage('es')
-    const tile = modify(new Tile(TileSuit.Souzu, 4, 'marked'))
+    const tile = new Tile(TileSuit.Souzu, 4, 'marked').withEnhancement(edition)
     render(<TileImage tile={tile} detailsVisible />)
     expect(screen.getByRole('img')).toHaveAccessibleName(/Bambú/)
     const tooltip = screen.getByRole('tooltip')
-    expect(tooltip).toHaveTextContent(i18n.t(`${kind}.items.${id}.description`))
+    expect(tooltip).toHaveTextContent(i18n.t(`tileMarks.items.${edition}.name`))
+    expect(tooltip).toHaveTextContent(
+      i18n.t(`tileMarks.items.${edition}.description`)
+    )
     expect(tooltip).not.toHaveTextContent('base points')
+    // Outside a round there is no current value to show.
+    expect(document.querySelector('[data-edition-current]')).toBeNull()
   }
 )
 
@@ -202,8 +198,6 @@ it('leaves a plain face whole and sizes a marked tile the same way', () => {
 it('shows Stone as rankless artwork and never leaks its original face or rank hint', () => {
   const tile = new Tile(TileSuit.Dragon, 3, 'stone', false, {
     enhancement: EnhancementType.Stone,
-    seal: SealType.None,
-    edition: EditionType.Base,
   })
   const { container } = render(<TileImage tile={tile} detailsVisible />)
   expect(screen.getByRole('img')).toHaveAccessibleName(
@@ -226,42 +220,105 @@ it('shows Stone as rankless artwork and never leaks its original face or rank hi
   expect(screen.getByRole('tooltip')).not.toHaveTextContent('Red Dragon')
 })
 
-it.each([
-  EditionType.Foil,
-  EditionType.Holographic,
-  EditionType.Polychrome,
-  EditionType.Negative,
-])(
-  'registers %s to the clipped front face rather than the tile silhouette',
-  (edition) => {
-    const { container } = render(
-      <TileImage
-        tile={new Tile(TileSuit.Pinzu, 5, 'edition').withEdition(edition)}
-      />
-    )
-    const plane = container.querySelector('[data-tile-frame-plane]')!
-    expect(plane).toHaveAttribute('viewBox', '0 0 569 711')
-    expect(plane).toHaveAttribute('preserveAspectRatio', 'xMidYMid meet')
-    expect(plane.querySelector('[data-tile-front-face]')).toHaveAttribute(
-      'width',
-      '526'
-    )
-    expect(plane.querySelector('[data-tile-front-face]')).toHaveAttribute(
-      'height',
-      '661'
-    )
-    expect(plane.querySelector('clipPath rect')).toHaveAttribute('rx', '60')
-    expect(
-      plane.querySelector('[data-tile-art-layer="edition"]')
-    ).not.toHaveClass('-inset-0.5')
+it('shows what a Bonus or Lucky Edition pays in the round being played', () => {
+  const lucky = new Tile(TileSuit.Pinzu, 5, 'lucky').withEnhancement(
+    EnhancementType.Lucky
+  )
+  const bonus = new Tile(TileSuit.Pinzu, 6, 'bonus').withEnhancement(
+    EnhancementType.Bonus
+  )
+  const round = {
+    act: 3,
+    luckyRolls: { [lucky.id]: { multiplier: 1.75, points: 60 } },
   }
-)
+  const { container, unmount } = render(
+    <TileRoundContext.Provider value={round}>
+      <TileImage tile={lucky} detailsVisible />
+    </TileRoundContext.Provider>
+  )
+  // The roll is drawn on the tile itself.
+  const badge = container.querySelector('[data-lucky-roll]')
+  expect(badge).toHaveAttribute('data-lucky-roll', '1.75:60')
+  expect(badge).toHaveAttribute('aria-hidden', 'true')
+  expect(badge).toHaveTextContent('×1.75')
+  expect(badge).toHaveTextContent('+60')
+  // No Edition frame is laid over the finished artwork.
+  expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
+  // The details are portaled out of the tile.
+  expect(
+    screen.getByRole('tooltip').querySelector('[data-edition-current]')
+  ).toHaveTextContent(
+    i18n.t('tileDetails.luckyThisRound', { multiplier: '1.75', points: '60' })
+  )
+  unmount()
+
+  const { container: bonusTable } = render(
+    <TileRoundContext.Provider value={round}>
+      <TileImage tile={bonus} detailsVisible />
+    </TileRoundContext.Provider>
+  )
+  expect(bonusTable.querySelector('[data-lucky-roll]')).toBeNull()
+  expect(
+    screen.getByRole('tooltip').querySelector('[data-edition-current]')
+  ).toHaveTextContent(
+    i18n.t('tileDetails.bonusThisAct', { act: '3', points: '90' })
+  )
+})
+
+it('draws no Lucky roll outside a round or for a tile without one', () => {
+  const lucky = new Tile(TileSuit.Pinzu, 5, 'lucky').withEnhancement(
+    EnhancementType.Lucky
+  )
+  const { container, rerender } = render(
+    <TileImage tile={lucky} detailsVisible />
+  )
+  expect(container.querySelector('[data-lucky-roll]')).toBeNull()
+  expect(screen.getByRole('tooltip')).toHaveTextContent(
+    i18n.t('tileMarks.items.lucky.description')
+  )
+  expect(document.querySelector('[data-edition-current]')).toBeNull()
+  rerender(
+    <TileRoundContext.Provider value={{ act: 1, luckyRolls: {} }}>
+      <TileImage tile={lucky} detailsVisible />
+    </TileRoundContext.Provider>
+  )
+  expect(container.querySelector('[data-lucky-roll]')).toBeNull()
+  expect(screen.getByRole('tooltip')).toHaveTextContent(
+    i18n.t('tileMarks.items.lucky.description')
+  )
+  expect(document.querySelector('[data-edition-current]')).toBeNull()
+  rerender(
+    <TileRoundContext.Provider
+      value={{ act: 1, luckyRolls: { lucky: { multiplier: 2, points: 100 } } }}
+    >
+      <TileImage tile={lucky} faceDown />
+    </TileRoundContext.Provider>
+  )
+  expect(container.querySelector('[data-lucky-roll]')).toBeNull()
+})
+
+it('leaves the roll off the smallest tiles but still names it in details', () => {
+  const lucky = new Tile(TileSuit.Pinzu, 5, 'lucky').withEnhancement(
+    EnhancementType.Lucky
+  )
+  const { container } = render(
+    <TileRoundContext.Provider
+      value={{ act: 1, luckyRolls: { lucky: { multiplier: 1.5, points: 40 } } }}
+    >
+      <TileImage tile={lucky} size="small" detailsVisible />
+    </TileRoundContext.Provider>
+  )
+  expect(container.querySelector('[data-lucky-roll]')).toBeNull()
+  expect(
+    document.querySelector('[data-tile-tooltip] [data-edition-current]')
+  ).toHaveTextContent(
+    i18n.t('tileDetails.luckyThisRound', { multiplier: '1.5', points: '40' })
+  )
+})
 
 it('keeps marked tile art full sized with selection and index around it', () => {
   const tile = new Tile(TileSuit.Pinzu, 5, 'layers', false, {
     enhancement: EnhancementType.Gold,
-    edition: EditionType.Base,
-    seal: SealType.None,
   })
   const { container } = render(<TileImage tile={tile} selected showIndex />)
   const art = container.querySelector('[data-tile-base-art]')!
@@ -269,16 +326,6 @@ it('keeps marked tile art full sized with selection and index around it', () => 
   expect(art).toHaveClass('w-full', 'h-full', 'object-contain')
   expect(container.querySelector('[data-tile-index]')).not.toBeNull()
   expect(container.firstChild).toHaveClass('ring-2')
-})
-
-it('does not clip the seal to the front face', () => {
-  const { container } = render(
-    <TileImage
-      tile={new Tile(TileSuit.Pinzu, 5, 'seal').withSeal(SealType.Red)}
-    />
-  )
-  expect(container.querySelector('[data-tile-art-layer="seal"]')).not.toBeNull()
-  expect(container.querySelector('[data-tile-frame-plane]')).toBeNull()
 })
 
 describe('touch long press', () => {
@@ -315,14 +362,16 @@ describe('touch long press', () => {
   }
 
   it('shows the name and modifiers without selecting, until the next touch', () => {
-    const tile = new Tile(TileSuit.Pinzu, 3, 'held').withSeal(SealType.Purple)
+    const tile = new Tile(TileSuit.Pinzu, 3, 'held').withEnhancement(
+      EnhancementType.Glass
+    )
     const { onSelect, face } = renderInButton(tile)
     press(face, 450)
     const tooltip = screen.getByRole('tooltip')
     expect(tooltip).toHaveTextContent(face.getAttribute('alt')!)
-    expect(tooltip).toHaveTextContent(i18n.t('archiveSeals.items.purple.name'))
+    expect(tooltip).toHaveTextContent(i18n.t('tileMarks.items.glass.name'))
     expect(tooltip).toHaveTextContent(
-      i18n.t('archiveSeals.items.purple.description')
+      i18n.t('tileMarks.items.glass.description')
     )
     // The touch that showed the details does not also select.
     expect(onSelect).not.toHaveBeenCalled()

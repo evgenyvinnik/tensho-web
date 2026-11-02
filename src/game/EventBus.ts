@@ -13,6 +13,8 @@
 
 import type { PlayPatternId, SecretPatternId } from '../rules/PlayPattern'
 import type { ScoreEquation } from '../rules/ScoreEquation'
+import type { Tile } from '../core/Tile'
+import type { TileBreak } from '../core/TileModifier'
 import type { ConsumableSource } from '../systems/ConsumableSystem'
 import type { RunMetaSnapshot } from './RunMetaContext'
 
@@ -105,10 +107,7 @@ export type GameEvent =
   | 'mandateDefeated'
 
   // Tile Modifier Events
-  | 'tileModified'
-  | 'tileShattered'
-  | 'markDecayed'
-  | 'consumableCreated'
+  | 'tilesBroken'
 
   // Error/Debug
   | 'error'
@@ -160,7 +159,7 @@ export interface GameEventData {
     tiles: string[]
     /** Physical Glass tiles broken in this paid play, excluding retriggers. */
     glassTilesBroken?: number
-    /** Every physical tile submitted in this paid play carried a Wild mark. */
+    /** Every physical tile submitted in this paid play carried a Wild Edition. */
     allPlayedTilesWild?: boolean
     /** Scored Wind Yakuhai occurrences; seat and round Wind can stack. */
     windYakuScored?: number
@@ -279,19 +278,9 @@ export interface GameEventData {
   mandateActivated: { mandateId: string; mandateName: string; effect: string }
   mandateDefeated: { mandateId: string }
 
-  // Tile Modifier Events
-  tileModified: {
-    tileId: string
-    modifierType: 'enhancement' | 'seal' | 'edition' | 'cleared'
-    value: string | null
-  }
-  tileShattered: { tileId: string; tileName: string }
-  markDecayed: {
-    tileId: string
-    markType: 'enhancement' | 'seal' | 'edition'
-    trigger: 'discard' | 'reshuffle'
-  }
-  consumableCreated: { type: 'orb' | 'seal'; source: string; tileId: string }
+  // Tile Edition Events
+  /** Played Glass tiles that shattered and Steel tiles that rusted away. */
+  tilesBroken: { tiles: { tile: Tile; breaks: TileBreak }[] }
 
   // Error/Debug
   error: { code: string; message: string; context?: Record<string, unknown> }

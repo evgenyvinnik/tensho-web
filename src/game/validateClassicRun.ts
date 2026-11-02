@@ -11,6 +11,7 @@ import type { ActiveOmenTag, OmenHistoryEntry } from '../stores/omenStore'
 import type { RoundState, ActState } from '../systems/types'
 import type { DebuffSource } from './DebuffSystem'
 import { MeldType } from '../core/Meld'
+import { LUCKY_MULTIPLIERS, LUCKY_POINTS } from '../core/TileModifier'
 import { PLAY_PATTERN_IDS } from '../rules/PlayPattern'
 import { FLOWER_MUTATIONS } from '../systems/FlowerSystem'
 import { calculateCombinedModifiers } from '../config/stakeDefinitions'
@@ -130,6 +131,15 @@ const debuffSource: Check = (v, p) => {
   choice(Object.keys(variants))(data.type, `${p}.type`)
   variants[data.type as DebuffSource['type']](v, p)
 }
+/** This round's Lucky rolls by tile id: only values a Lucky tile can roll. */
+const luckyRoll = object({
+  multiplier: choice([...LUCKY_MULTIPLIERS]),
+  points: choice([...LUCKY_POINTS]),
+})
+const luckyRolls: Check = (v, p) => {
+  for (const [tileId, roll] of Object.entries(record(v, p)))
+    luckyRoll(roll, `${p}.${tileId}`)
+}
 const roundSummary = schema<RoundCashOutSummary>({
   actNumber: positive,
   roundNumber,
@@ -139,7 +149,6 @@ const roundSummary = schema<RoundCashOutSummary>({
   baseReward: nonnegative,
   interest: nonnegative,
   decreeGold: finite,
-  heldGoldMarkReward: nonnegative,
   rentalCost: nonnegative,
   netGoldChange: finite,
   goldBefore: finite,
@@ -244,6 +253,7 @@ const stateFields = {
   emergencyTurnsBoughtThisRound: optional(count),
   adTurns: optional(object({ actNumber: positive, count })),
   honorDiscardsThisRound: optional(count),
+  luckyRolls: optional(luckyRolls),
   lossPreventionScorePenalty: nonnegative,
   lastHandScore: nullable(nonnegative),
   handsPlayedThisRun: count,

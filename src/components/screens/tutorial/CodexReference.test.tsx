@@ -11,6 +11,7 @@ import { ROUND_TYPE_DEFINITIONS } from '../../../config/mandateDefinitions'
 import { MAX_TACTICAL_PLAY_TILES } from '../../../game/playRules'
 import { MeldType } from '../../../core/Meld'
 import { TileSuit } from '../../../core/Tile'
+import { getAllEnhancements } from '../../../core/TileModifier'
 import { getTileImagePath } from '../../../utils/assets'
 import {
   DRAGON_GROUP_MULT,
@@ -171,7 +172,26 @@ it('keeps explanations aligned with shipped scoring and action rules', async () 
     expect(getByTestId('acts-rounds')).toHaveTextContent(
       `×${round.scoreMultiplier}`
     )
-  expect(getByTestId('hierarchy')).toHaveTextContent(en.guide.specialHelp)
+  const editions = getByTestId('editions')
+  expect(within(editions).getByRole('heading')).toHaveTextContent(
+    en.guide.specialTitle
+  )
+  expect(editions).toHaveTextContent(en.guide.specialHelp)
+  expect(
+    Array.from(editions.querySelectorAll('[data-guide-special]'), (row) =>
+      row.getAttribute('data-guide-special')
+    )
+  ).toEqual(getAllEnhancements().map((id) => `tileMarks.${id}`))
+  const editionText: Record<string, { name: string; description: string }> =
+    en.tileMarks.items
+  for (const id of getAllEnhancements()) {
+    const row = editions.querySelector(`[data-guide-special="tileMarks.${id}"]`)
+    expect(row).toHaveTextContent(editionText[id].name)
+    expect(row).toHaveTextContent(editionText[id].description)
+  }
+  // Decree Finishes are named apart from tile Editions.
+  expect(editions).toHaveTextContent(en.codexReference.finishes)
+  expect(getByTestId('hierarchy')).not.toHaveTextContent(en.guide.specialHelp)
   expect(getByTestId('decree-slots')).toHaveTextContent(en.codexEconomy.sale)
   expect(getByTestId('decree-rarities')).toHaveTextContent(
     en.codexReference.raritySources

@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit } from '../core/Tile'
-import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -9,6 +9,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { redFiveSystem } from '../systems/RedFiveSystem'
+import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 
 afterEach(() => {
   redFiveSystem.disable()
@@ -17,50 +18,49 @@ afterEach(() => {
   runRandom.reset()
 })
 
-it('keeps native red-five chips and Red Seal repeats while weakening extra copies', () => {
+it('keeps native red-five chips while weakening extra copies', () => {
   const f = fixture(2)
   redFiveSystem.enable()
-  f.state.handTiles[0] = new Tile(TileSuit.Souzu, 5, 'play-4', true).withSeal(
-    SealType.Red
-  )
+  f.state.handTiles[0] = new Tile(TileSuit.Souzu, 5, 'play-4', true)
   f.add()
   const result = f.pay()
-  expect(result.redFiveChips).toBe(125) // 100 native, 100 extra × one quarter
+  expect(result.redFiveChips).toBe(62.5) // 50 native, 50 extra × one quarter
 })
 
-it('repeats one resolved Lucky reward and keeps previews RNG-pure', () => {
+it('repeats one saved Lucky roll and never draws for it during scoring', () => {
   const f = fixture(1)
   f.add()
   f.state.handTiles[0] = f.state.handTiles[0].withEnhancement(
     EnhancementType.Lucky
   )
-  const random = vi.spyOn(runRandom, 'next').mockReturnValue(0.25) // gold branch
-  const forecast = f.game.previewScore(f.ids)!
-  expect(random).not.toHaveBeenCalled()
-  expect(forecast.goldEarned).toBe(0)
-  const gold = f.state.gold
-  expect(f.game.processAction({ type: 'play', tileIds: f.ids }).success).toBe(
-    true
-  )
-  expect(f.state.gold - gold).toBe(30)
+  f.state.luckyRolls = { 'play-4': { multiplier: 2, points: 40 } }
+  const random = vi.spyOn(runRandom, 'next')
+  const paid = f.pay()
+  // Echo Stone repeats the same roll, at half strength under one Frostbite.
+  expect(paid.modifierChips).toBe(40 + 40 * 0.5)
+  expect(paid.modifierMultiplier).toBe(2 + (2 * 2 - 2) * 0.5)
+  expect(paid.finalScore).toBe(Math.floor((15 + 5 * 0.5 + 30 + 60) * 3))
+  expect(paid.goldEarned).toBe(0)
   expect(
     random.mock.calls.filter(([stream]) => stream === 'modifiers')
-  ).toHaveLength(1)
+  ).toHaveLength(0)
 })
 
 it.each([
-  (tile: Tile) => tile.withEdition(EditionType.Polychrome),
-  (tile: Tile) => tile.withSeal(SealType.Gold),
+  (tile: Tile) => tile.withEnhancement(EnhancementType.Lucky),
+  (tile: Tile) => tile.withEnhancement(EnhancementType.Gold),
 ])('does not pay suppressed physical tile repeats', (modify) => {
   const f = fixture(1)
   f.add()
   f.state.handTiles[0] = modify(f.state.handTiles[0])
+  f.state.luckyRolls = { 'play-4': { multiplier: 2, points: 100 } }
   f.state.debuffSystem.debuffTile('play-4', {
     type: 'mandate',
     mandateId: 'test',
   })
   const result = f.pay()
   expect(result.tilePoints).toBe(10)
+  expect(result.modifierChips).toBe(0)
   expect(result.modifierMultiplier).toBe(1)
   expect(result.goldEarned).toBe(0)
 })
@@ -222,25 +222,29 @@ function fixture(frostbites = 0) {
 }
 
 it.each([0, 1, 2])(
-  'pays fractional face and Foil repeats with %s Frostbites',
+  'pays fractional face and Bonus Edition repeats with %s Frostbites',
   (count) => {
     const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0].withEdition(EditionType.Foil)
+    f.state.handTiles[0] = f.state.handTiles[0].withEnhancement(
+      EnhancementType.Bonus
+    )
     f.add()
     const paid = f.pay(),
       strength = 0.5 ** count
     expect(paid.tilePoints).toBe(15 + 5 * strength)
-    expect(paid.modifierChips).toBe(50 + 50 * strength)
+    expect(paid.modifierChips).toBe(30 + 30 * strength)
     expect(paid.structurePoints).toBe(30)
-    expect(paid.finalScore).toBe(Math.floor(95 + 55 * strength))
+    expect(paid.finalScore).toBe(Math.floor(75 + 35 * strength))
   }
 )
 
 it.each([0, 1, 2])(
-  'pays fractional Gold-Seal repeats with %s Frostbites',
+  'pays fractional Gold Edition repeats with %s Frostbites',
   (count) => {
     const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0].withSeal(SealType.Gold)
+    f.state.handTiles[0] = f.state.handTiles[0].withEnhancement(
+      EnhancementType.Gold
+    )
     f.add()
     const paid = f.pay(),
       strength = 0.5 ** count
@@ -249,27 +253,18 @@ it.each([0, 1, 2])(
   }
 )
 
-it.each([0, 1, 2])(
-  'keeps a native Red Seal repeat intact while scaling echo gain (%s)',
-  (count) => {
-    const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0].withSeal(SealType.Red)
-    f.add()
-    const paid = f.pay(),
-      strength = 0.5 ** count
-    // The Red Seal pays the face twice; Echo Stone repeats both, scaled.
-    expect(paid.tilePoints).toBe(20 + 10 * strength)
-    expect(paid.finalScore).toBe(Math.floor(50 + 10 * strength))
-  }
-)
+/** A Lucky roll whose ×1.5 is the play's native tile multiplier. */
+function luckyFirst(f: ReturnType<typeof fixture>) {
+  const [first] = f.state.handTiles
+  f.state.handTiles[0] = first.withEnhancement(EnhancementType.Lucky)
+  f.state.luckyRolls = { [first.id]: { multiplier: 1.5, points: 20 } }
+}
 
 it.each([0, 1, 2])(
-  'keeps native Polychrome intact while scaling echo gain (%s)',
+  'keeps a native Lucky multiplier intact while scaling echo gain (%s)',
   (count) => {
     const f = fixture(count)
-    f.state.handTiles[0] = f.state.handTiles[0].withEdition(
-      EditionType.Polychrome
-    )
+    luckyFirst(f)
     f.add()
     const paid = f.pay(),
       strength = 0.5 ** count
@@ -279,17 +274,18 @@ it.each([0, 1, 2])(
       native + (full - native) * strength
     )
     expect(paid.finalScore).toBe(
-      Math.floor((45 + 5 * strength) * (native + (full - native) * strength))
+      Math.floor(
+        (45 + 5 * strength + 20 + 20 * strength) *
+          (native + (full - native) * strength)
+      )
     )
   }
 )
 
 it('actually pays native tile multipliers without a retrigger Decree', () => {
   const f = fixture(2)
-  f.state.handTiles[0] = f.state.handTiles[0].withEdition(
-    EditionType.Polychrome
-  )
-  expect(f.pay().finalScore).toBe(Math.floor(45 * 1.5))
+  luckyFirst(f)
+  expect(f.pay().finalScore).toBe(Math.floor((45 + 20) * 1.5))
 })
 
 it.each([0, 2])(
@@ -305,9 +301,7 @@ it.each([0, 2])(
       ),
       ...[5, 5].map((rank, i) => new Tile(TileSuit.Pinzu, rank, `pair-${i}`)),
     ]
-    f.state.handTiles[0] = f.state.handTiles[0].withEdition(
-      EditionType.Polychrome
-    )
+    luckyFirst(f)
     const ids = f.state.handTiles.map((t) => t.id)
     f.add()
     const forecast = f.game.previewScore(ids)!
@@ -346,26 +340,43 @@ it('resolves copies and Echo Dimension before weakening the combined repeat rewa
 it('saves fractional forecasts exactly and restores full rewards when Frostbite clears', () => {
   const f = fixture(2)
   f.add()
-  f.state.handTiles[0] = f.state.handTiles[0].withEdition(EditionType.Foil)
+  f.state.handTiles[0] = f.state.handTiles[0].withEnhancement(
+    EnhancementType.Bonus
+  )
   const preview = f.game.previewScore(f.ids)
   const save = parseClassicRunSnapshot(json(f.game.captureRun()))
   f.game.restoreRun(save)
   expect(f.game.previewScore(f.ids)).toEqual(preview)
   f.game.getState().seasonSystem.clear()
-  expect(f.game.previewScore(f.ids)!.finalScore).toBe(150)
+  // Full repeat: 20 tile points + 30 sequence + 2 × the Bonus Edition's 30.
+  expect(f.game.previewScore(f.ids)!.finalScore).toBe(110)
 })
 
-it('pays Glass before shattering once, preserving the forecast even with repeated rewards', () => {
+it('makes one Fate Seal and shatters Glass once, preserving the forecast even with repeated rewards', () => {
   const f = fixture(1)
   f.state.handTiles[0] = f.state.handTiles[0].withEnhancement(
     EnhancementType.Glass
   )
   f.add()
-  const shattered: string[] = []
-  eventBus.on('tileShattered', (e) => shattered.push(e.tileId))
+  const broken: { id: string; breaks: string }[] = []
+  eventBus.on('tilesBroken', (e) =>
+    broken.push(...e.tiles.map(({ tile, breaks }) => ({ id: tile.id, breaks })))
+  )
+  // A made Seal that waits for its wall tiles, so it changes no Gold.
+  const made = vi
+    .spyOn(FateSealSystem, 'getRandomFateSeal')
+    .mockReturnValue(FATE_SEALS.seal_of_glass)
   vi.spyOn(runRandom, 'next').mockReturnValue(0)
   const result = f.pay()
-  expect(result.modifierMultiplier).toBe(3) // native ×2, plus half of the extra ×2 gain
-  expect(result.finalScore).toBe(142)
-  expect(shattered).toEqual(['play-4'])
+  // Glass adds no ×Mult now; Echo Stone repeats only the face, at half strength.
+  expect(result.modifierMultiplier).toBe(1)
+  expect(result.finalScore).toBe(Math.floor(45 + 5 * 0.5))
+  // The preview names what the play makes, but breaks nothing.
+  expect(result.madeConsumables).toEqual([{ type: 'seal', tileId: 'play-4' }])
+  expect(result.brokenTiles).toEqual([])
+  expect(made).toHaveBeenCalledTimes(1)
+  expect(f.state.fateSeals.map((seal) => seal.id)).toEqual(['seal_of_glass'])
+  expect(broken).toEqual([{ id: 'play-4', breaks: 'shattered' }])
+  // The shattered tile leaves the run instead of reaching the river.
+  expect(f.state.discards.map((tile) => tile.id)).toEqual(['play-5', 'play-6'])
 })

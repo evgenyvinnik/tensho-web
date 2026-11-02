@@ -310,8 +310,6 @@ export class ShopSession {
       state.decreeSystem.toState(),
       runRandom.fork()
     )
-    const wallTemplate = [...state.wallTemplate]
-    decrees.syncWallSlots(wallTemplate)
     const flowers = FlowerSystem.fromState(state.flowerSystem.toState())
     if (flowerId) {
       const slots = flowers.getBonusDecreeSlots()
@@ -335,8 +333,6 @@ export class ShopSession {
             (reward.data.isFlower && state.tableModifiers.flowersDisabled)
           )
             return false
-          wallTemplate.push(reward.data)
-          decrees.syncWallSlots(wallTemplate)
           break
       }
     }

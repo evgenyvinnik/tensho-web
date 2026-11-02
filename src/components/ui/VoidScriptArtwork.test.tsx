@@ -34,7 +34,7 @@ describe('VoidScriptArtwork', () => {
     render(<VoidScriptArtwork script={VOID_SCRIPTS.script_of_the_gold_seal} />)
 
     const artwork = screen.getByRole('img', {
-      name: /Script of the Gold Stamp/i,
+      name: /Script of Gilding/i,
     })
 
     fireEvent.focus(artwork)

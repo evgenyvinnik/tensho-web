@@ -23,16 +23,10 @@ import {
   type PlayPatternId,
 } from '../../rules/PlayPattern'
 import { useProgressionStore } from '../../stores/progressionStore'
-import {
-  DEFAULT_MODIFIERS,
-  EditionType,
-  EnhancementType,
-  SealType,
-  type TileModifiers,
-} from '../../core/TileModifier'
 import { illustrationAssets } from '../../utils/assets'
 import { Popup } from '../ui/Popup'
 import { TileImage } from '../tiles/TileImage'
+import { EditionList } from '../tiles/EditionList'
 import { TURNS_PER_ROUND, SWIFT_CLEAR_SPARE_TURNS } from '../../game/playRules'
 
 interface BeginnerGuideProps {
@@ -149,66 +143,6 @@ function PatternRow({ id }: { id: PlayPatternId }) {
           </span>
         ))}
       </div>
-    </li>
-  )
-}
-
-/**
- * Every look a tile can carry, each with the name and effect its own tile
- * details show. Phones have no hover, so this list is where they learn them.
- */
-const SPECIAL_LOOKS = [
-  {
-    title: 'marks',
-    kind: 'tileMarks',
-    looks: Object.values(EnhancementType)
-      .filter((id) => id !== EnhancementType.None)
-      .map((id) => ({ id, modifiers: { enhancement: id } })),
-  },
-  {
-    title: 'seals',
-    kind: 'archiveSeals',
-    looks: Object.values(SealType)
-      .filter((id) => id !== SealType.None)
-      .map((id) => ({ id, modifiers: { seal: id } })),
-  },
-  {
-    title: 'editions',
-    kind: 'editions',
-    looks: Object.values(EditionType)
-      .filter((id) => id !== EditionType.Base)
-      .map((id) => ({ id, modifiers: { edition: id } })),
-  },
-] as const
-
-function SpecialLook({
-  kind,
-  id,
-  modifiers,
-}: {
-  kind: (typeof SPECIAL_LOOKS)[number]['kind']
-  id: string
-  modifiers: Partial<TileModifiers>
-}) {
-  const { t } = useTranslation()
-  const example = new Tile(P, 5, `guide-${kind}-${id}`, false, {
-    ...DEFAULT_MODIFIERS,
-    ...modifiers,
-  })
-  return (
-    <li
-      data-guide-special={`${kind}.${id}`}
-      className="flex items-start gap-2.5 rounded-lg bg-black/20 p-2"
-    >
-      <span aria-hidden="true" className="shrink-0">
-        <TileImage tile={example} size="small" showTooltip={false} />
-      </span>
-      <span className="min-w-0 text-[13px] leading-snug text-[var(--color-beige-white)]/90">
-        <strong className="block text-sm text-[var(--color-golden-yellow)]">
-          {t(`${kind}.items.${id}.name`)}
-        </strong>
-        {t(`${kind}.items.${id}.description`)}
-      </span>
     </li>
   )
 }
@@ -348,22 +282,9 @@ export function BeginnerGuide({ isOpen, onClose }: BeginnerGuideProps) {
         </section>
 
         <section>
-          <h3 className={heading}>
-            {t('guide.specialTitle', 'Special tiles')}
-          </h3>
+          <h3 className={heading}>{t('guide.specialTitle', 'Editions')}</h3>
           <p className={`mt-2 ${body}`}>{t('guide.specialHelp')}</p>
-          {SPECIAL_LOOKS.map(({ title, kind, looks }) => (
-            <div key={kind} data-guide-special-group={title}>
-              <h4 className="mt-4 text-sm font-bold text-[var(--color-golden-yellow)]">
-                {t(`guide.${title}`)}
-              </h4>
-              <ul className="mt-1.5 grid gap-1.5 sm:grid-cols-2">
-                {looks.map((look) => (
-                  <SpecialLook key={look.id} kind={kind} {...look} />
-                ))}
-              </ul>
-            </div>
-          ))}
+          <EditionList className="mt-3" />
         </section>
 
         <div className="flex justify-center">

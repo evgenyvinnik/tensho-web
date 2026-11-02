@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createFullTileSet, TileSuit } from '../core/Tile'
-import { EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import {
   CRIMSON_WALL,
   OBSIDIAN_WALL,
@@ -108,32 +108,36 @@ describe('reward Wall catalog and starting enhancements', () => {
   )
 
   it.each(rewards)(
-    '$id uses scored-only existing enhancements and allows Seal replacement',
+    '$id uses existing scored Editions and allows Edition replacement',
     ({ id, suit, chips, mult }) => {
       const wall = applyTableStartingEnhancements(createFullTileSet(), id)
       const marked = wall.find((tile) => tile.suit === suit)!
       const modifiers = new TileModifierSystem()
       expect(
-        modifiers.scoreTilesWithModifiers([marked], 'played', { preview: true })
+        modifiers.scoreTilesWithModifiers([marked], { preview: true })
       ).toMatchObject({
         totalChips: chips,
         totalMult: mult,
+        totalMultiplier: 1,
+        totalGold: 0,
+        brokenTiles: [],
+        consumables: [],
       })
+      // A Bonus Edition grows with the Act; a Mult Edition does not.
       expect(
-        modifiers.scoreTilesWithModifiers([marked], 'held', { preview: true })
+        modifiers.scoreTilesWithModifiers([marked], { preview: true, act: 3 })
+      ).toMatchObject({ totalChips: chips * 3, totalMult: mult })
+      // A tile holds one Edition: a new one replaces the wall's.
+      const replaced = marked.withEnhancement(EnhancementType.Gold)
+      expect(replaced.id).toBe(marked.id)
+      expect(replaced.enhancement).toBe(EnhancementType.Gold)
+      expect(replaced.modifiers).toEqual({ enhancement: EnhancementType.Gold })
+      expect(
+        modifiers.scoreTilesWithModifiers([replaced], { preview: true })
       ).toMatchObject({
         totalChips: 0,
         totalMult: 0,
-      })
-      const sealed = marked.withSeal(SealType.Red)
-      expect(sealed.id).toBe(marked.id)
-      expect(sealed.enhancement).toBe(EnhancementType.None)
-      expect(sealed.seal).toBe(SealType.Red)
-      expect(
-        modifiers.scoreTilesWithModifiers([sealed], 'played', { preview: true })
-      ).toMatchObject({
-        totalChips: 0,
-        totalMult: 0,
+        totalGold: 3,
       })
     }
   )

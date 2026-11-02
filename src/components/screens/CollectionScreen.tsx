@@ -16,7 +16,6 @@ import {
   type ArchiveCategory,
   WALL_DEFINITIONS,
   TILE_MARK_DEFINITIONS,
-  SEAL_DEFINITIONS_ARCHIVE,
   EDITION_DEFINITIONS_ARCHIVE,
   PACK_VARIANT_DEFINITIONS,
 } from '../../config/archiveDefinitions'
@@ -122,18 +121,6 @@ function buildDisplayInfoMap(
           japaneseName: mark.japaneseName,
           description: itemText.description('tileMarks', mark),
           category: 'tileMarks',
-        })
-      }
-      break
-
-    case 'seals':
-      for (const seal of SEAL_DEFINITIONS_ARCHIVE) {
-        map.set(seal.id, {
-          id: seal.id,
-          name: itemText.name('archiveSeals', seal),
-          japaneseName: seal.japaneseName,
-          description: itemText.description('archiveSeals', seal),
-          category: 'seals',
         })
       }
       break

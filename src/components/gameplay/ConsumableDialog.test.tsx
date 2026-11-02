@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { expect, it, vi } from 'vitest'
 import i18n from '../../i18n'
 import { Tile, TileSuit } from '../../core/Tile'
-import { EnhancementType, SealType } from '../../core/TileModifier'
+import { EnhancementType } from '../../core/TileModifier'
 import { FateSealSystem, FATE_SEALS } from '../../systems/FateSealSystem'
 import { ConsumableDialog } from './ConsumableDialog'
 
@@ -44,13 +44,15 @@ it.each([false, true])(
   }
 )
 
-it('names the modifier a target would lose: a tile holds only one', () => {
+it('names the Edition a target would lose: a tile holds only one', () => {
   const seal = FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_stone)
   const plain = new Tile(TileSuit.Manzu, 3, 'plain')
   const lucky = new Tile(TileSuit.Manzu, 4, 'lucky').withEnhancement(
     EnhancementType.Lucky
   )
-  const hidden = new Tile(TileSuit.Manzu, 5, 'hidden').withSeal(SealType.Red)
+  const hidden = new Tile(TileSuit.Manzu, 5, 'hidden').withEnhancement(
+    EnhancementType.Gold
+  )
   render(
     <ConsumableDialog
       title="Items"
@@ -75,6 +77,6 @@ it('names the modifier a target would lose: a tile holds only one', () => {
   target('hidden')
   target('lucky')
   expect(hint()).toHaveTextContent(
-    i18n.t('consumableUse.replacesModifier', { names: 'Lucky Mark' })
+    i18n.t('consumableUse.replacesModifier', { names: 'Lucky Edition' })
   )
 })

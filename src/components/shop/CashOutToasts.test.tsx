@@ -14,11 +14,10 @@ const summary: RoundCashOutSummary = {
   baseReward: 4,
   interest: 2,
   decreeGold: 3,
-  heldGoldMarkReward: 3,
   rentalCost: 2,
-  netGoldChange: 10,
+  netGoldChange: 7,
   goldBefore: 10,
-  goldAfter: 20,
+  goldAfter: 17,
   nextRoundType: 'Boss',
   nextTarget: 2000000,
 }
@@ -75,15 +74,17 @@ it('pays every source into the purse in order and sums to the settled total', ()
   expect(
     container.querySelectorAll('[data-cash-out-coin="interest"]')
   ).toHaveLength(2)
-  act(() => vi.advanceTimersByTime(5 * 420))
+  act(() => vi.advanceTimersByTime(4 * 420))
   const total = values(container).reduce((sum, value) => sum + value, 0)
   expect(total).toBe(summary.netGoldChange)
+  // The named sources account for every coin: no adjustment toast.
+  expect(container.querySelector('[data-cash-out-toast="bonus"]')).toBeNull()
   expect(screen.getByText('Rentals')).toBeInTheDocument()
   expect(
     container.querySelector('[data-cash-out-toast="rentals"]')
   ).toHaveTextContent('-2G')
   act(() => vi.advanceTimersByTime(640))
-  expect(landed).toEqual([4, 2, 3, 3, -2])
+  expect(landed).toEqual([4, 2, 3, -2])
   expect(onDone).not.toHaveBeenCalled()
   act(() => vi.advanceTimersByTime(4000))
   expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(0)
@@ -99,7 +100,7 @@ it('shows everything at once without coins under reduced motion and still fades'
         ...summary,
         omenId: 'abundance_omen',
         omenGold: 5,
-        netGoldChange: 15,
+        netGoldChange: 12,
       }}
       top={64}
       onLanded={onLanded}
@@ -109,10 +110,10 @@ it('shows everything at once without coins under reduced motion and still fades'
   )
   act(() => vi.advanceTimersByTime(0))
   // The Omen itself is revealed centre stage first; only its Gold is a toast.
-  expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(6)
+  expect(container.querySelectorAll('[data-cash-out-toast]')).toHaveLength(5)
   expect(container.querySelectorAll('[data-cash-out-coin]')).toHaveLength(0)
-  expect(onLanded).toHaveBeenCalledTimes(6)
-  expect(values(container).reduce((sum, value) => sum + value, 0)).toBe(15)
+  expect(onLanded).toHaveBeenCalledTimes(5)
+  expect(values(container).reduce((sum, value) => sum + value, 0)).toBe(12)
   const omen = container.querySelector('[data-payout-omen="abundance_omen"]')!
   expect(omen).toHaveAttribute('data-cash-out-toast', 'omenGold')
   expect(omen).toHaveTextContent('Omen: Abundance Omen')
@@ -130,7 +131,6 @@ it('hides absent sources, keeps the clear, and explains multiplied rewards as an
       baseReward: 0,
       interest: 0,
       decreeGold: 0,
-      heldGoldMarkReward: 0,
       rentalCost: 7,
       netGoldChange: 1,
     },
@@ -153,7 +153,7 @@ it.each(SUPPORTED_LANGUAGES)('labels every source in %s', async (language) => {
   )
   act(() => vi.advanceTimersByTime(0))
   const text = container.textContent!
-  for (const key of ['interest', 'decrees', 'goldTiles', 'rentals'])
+  for (const key of ['interest', 'decrees', 'rentals'])
     expect(text).toContain(i18n.t(`shop.payout.${key}`))
   expect(text).toContain(i18n.t('shop.roundCleared'))
   expect(text).not.toContain('shop.')
@@ -168,7 +168,7 @@ it('explains a Red Stake Small round paying 0 on the clear toast, in every langu
     roundType: 'Small',
     baseReward: 0,
     stakeWithheldReward: 3,
-    netGoldChange: 6,
+    netGoldChange: 3,
   }
   for (const language of SUPPORTED_LANGUAGES) {
     await act(async () => {
@@ -185,7 +185,7 @@ it('explains a Red Stake Small round paying 0 on the clear toast, in every langu
     expect(note).toHaveTextContent('3G')
     expect(note.textContent).not.toContain('{{')
     // The note explains; it is not a payout and adds nothing to the sum.
-    expect(values(container).reduce((sum, value) => sum + value, 0)).toBe(6)
+    expect(values(container).reduce((sum, value) => sum + value, 0)).toBe(3)
     unmount()
   }
 })

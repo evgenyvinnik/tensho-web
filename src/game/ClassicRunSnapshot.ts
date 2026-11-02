@@ -45,10 +45,11 @@ export function captureOmenRunState(): OmenRunSnapshot {
 /** Complete internal snapshot; storage accepts it only through its validation boundary. */
 export interface ClassicRunSnapshot {
   /**
-   * v3: shared Turns budget and the current item catalog. v1/v2 are legacy
+   * v4: tiles carry only an Edition (Stamps and tile Editions retired).
+   * v3: shared Turns budget and the current item catalog. v1–v3 are legacy
    * input, upgraded by migrateClassicSnapshot before validation.
    */
-  version: 3
+  version: 4
   state: ClassicRunState
   config: ClassicRoundConfig
   shop: ShopSessionState

@@ -517,6 +517,8 @@ describe('untrusted save boundary', () => {
           'emergencyTurnsBoughtThisRound',
           'honorDiscardsThisRound',
           'patternPlayCounts',
+          // Lucky rolls are kept only since snapshot v4; a load rolls them.
+          'luckyRolls',
         ].includes(key)
       ) {
         expect(() => parseClassicRunSnapshot(damaged), key).not.toThrow()

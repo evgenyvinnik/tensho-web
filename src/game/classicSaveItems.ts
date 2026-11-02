@@ -1,6 +1,6 @@
 /** Rule-bearing items are checked against authored catalogs, never trusted as code/data from a save. */
 import { TileSuit, type TileData } from '../core/Tile'
-import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { LEGACY_AUSTERITY_EFFECT } from '../systems/austerity'
 import { FATE_SEALS } from '../systems/FateSealSystem'
@@ -58,7 +58,6 @@ export const flowerType = choice(Object.keys(FLOWER_BASE_EFFECTS))
 export const yakuCategory = choice(
   Object.values(CELESTIAL_ORBS).map((orb) => orb.effect.targetYaku)
 )
-export const edition = choice(Object.values(EditionType))
 export const tableStakeEdition = choice([
   'Foil',
   'Holographic',
@@ -73,8 +72,6 @@ const tileShape = schema<TileData>({
   isRed: bool,
   modifiers: object({
     enhancement: choice(Object.values(EnhancementType)),
-    seal: choice(Object.values(SealType)),
-    edition,
   }),
 })
 export const tile: Check = (v, p) => {

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
-import { DEFAULT_MODIFIERS, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { THE_FLINT, THE_MOUTH } from '../config/mandateDefinitions'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
@@ -46,11 +46,11 @@ function fixture() {
   state.seasonSystem.clear()
   state.faceDownTileIds.clear()
   state.targetScore = state.roundManager.getCurrentRound()!.scoreTarget = 1e9
-  const goldSeal = { ...DEFAULT_MODIFIERS, seal: SealType.Gold }
+  const goldEdition = { enhancement: EnhancementType.Gold }
   state.handTiles = [
     new Tile(TileSuit.Pinzu, 5, 'pair-0'),
     new Tile(TileSuit.Pinzu, 5, 'pair-1'),
-    new Tile(TileSuit.Souzu, 2, 'seq-0', false, goldSeal),
+    new Tile(TileSuit.Souzu, 2, 'seq-0', false, goldEdition),
     new Tile(TileSuit.Souzu, 3, 'seq-1'),
     new Tile(TileSuit.Souzu, 4, 'seq-2'),
     new Tile(TileSuit.Manzu, 7, 'pair-2'),
@@ -77,6 +77,8 @@ describe('The Mouth', () => {
     const sequence = game.previewScore(SEQUENCE)!
     expect(sequence.blockedByMandate).toBeUndefined()
     expect(sequence.finalScore).toBeGreaterThan(0)
+    // Unlocked, the sequence's Gold Edition would pay its +3 Gold.
+    expect(sequence.goldEarned).toBe(3)
     expect(game.previewScore(PAIR)!.finalScore).toBeGreaterThan(0)
     expect(state.mandateEffectSystem.getLockedPattern()).toBeNull()
 
@@ -106,7 +108,7 @@ describe('The Mouth', () => {
 
     expect(play(SEQUENCE).success).toBe(true)
     expect(state.score).toBe(score)
-    // The Gold Seal on the forbidden play pays nothing either.
+    // The Gold Edition on the forbidden play pays nothing either.
     expect(state.gold).toBe(gold)
     expect(state.handsRemaining).toBe(turns - 1)
     expect(state.handTiles.some((t) => SEQUENCE.includes(t.id))).toBe(false)

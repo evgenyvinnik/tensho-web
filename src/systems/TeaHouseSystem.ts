@@ -53,10 +53,7 @@ import {
   WindType,
   type TileData,
 } from '../core/Tile'
-import {
-  EditionType as TileEditionType,
-  EnhancementType,
-} from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import {
   BASE_CHARTERS as CANONICAL_BASE_CHARTERS,
   UPGRADED_CHARTERS as CANONICAL_UPGRADED_CHARTERS,
@@ -730,32 +727,20 @@ export class TeaHouseSystem {
       tile = Tile.createDragon((tileFace - 30) as DragonType)
     }
 
-    // Illusion Tiles gives each shop tile a chance to carry an edition or mark.
+    // Illusion Tiles gives each shop tile a chance to carry an Edition.
     if (this.tilesHaveEditions && this.random() < 0.5) {
-      if (this.random() < 0.5) {
-        const enhancements = [
-          EnhancementType.Bonus,
-          EnhancementType.Mult,
-          EnhancementType.Wild,
-          EnhancementType.Glass,
-          EnhancementType.Steel,
-          EnhancementType.Gold,
-          EnhancementType.Lucky,
-        ]
-        tile = tile.withEnhancement(
-          enhancements[Math.floor(this.random() * enhancements.length)]
-        )
-      } else {
-        const editions = [
-          TileEditionType.Foil,
-          TileEditionType.Holographic,
-          TileEditionType.Polychrome,
-          TileEditionType.Negative,
-        ]
-        tile = tile.withEdition(
-          editions[Math.floor(this.random() * editions.length)]
-        )
-      }
+      const enhancements = [
+        EnhancementType.Bonus,
+        EnhancementType.Mult,
+        EnhancementType.Wild,
+        EnhancementType.Glass,
+        EnhancementType.Steel,
+        EnhancementType.Gold,
+        EnhancementType.Lucky,
+      ]
+      tile = tile.withEnhancement(
+        enhancements[Math.floor(this.random() * enhancements.length)]
+      )
     }
 
     const { baseCost, finalCost, sellValue } =

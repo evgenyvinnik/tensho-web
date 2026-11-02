@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 // Deliberate saved-run fixtures, not evidence of organic balance or rarity.
 for (const operation of ['copy', 'destroy'] as const)
   for (const language of ['en', 'es'])
-    test(`permanent tile ${operation}, capacity and save (${language})`, async ({
+    test(`permanent tile ${operation} carries the Edition and saves (${language})`, async ({
       page,
       isMobile,
       baseURL,
@@ -55,10 +55,10 @@ for (const operation of ['copy', 'destroy'] as const)
             loaded('/src/game/GameOrchestrator.ts')
           )
           const { Tile, TileSuit } = await import(loaded('/src/core/Tile.ts'))
-          const { EditionType } = await import(
+          const { EnhancementType } = await import(
             loaded('/src/core/TileModifier.ts')
           )
-          const { ALL_DECREES, DecreeSystem } = await import(
+          const { DecreeSystem } = await import(
             loaded('/src/systems/DecreeSystem.ts')
           )
           const { FATE_SEALS, FateSealSystem } = await import(
@@ -82,8 +82,8 @@ for (const operation of ['copy', 'destroy'] as const)
             new Tile(TileSuit.Souzu, 4, 'play-a'),
             new Tile(TileSuit.Souzu, 4, 'play-b'),
             new Tile(TileSuit.Manzu, 5, 'copy-target'),
-            new Tile(TileSuit.Pinzu, 3, 'negative-source').withEdition(
-              EditionType.Negative
+            new Tile(TileSuit.Pinzu, 3, 'edition-source').withEnhancement(
+              EnhancementType.Gold
             ),
           ]
           state.wall = Array.from(
@@ -91,11 +91,6 @@ for (const operation of ['copy', 'destroy'] as const)
             (_, i) => new Tile(TileSuit.Manzu, (i % 9) + 1, `tail-${i}`)
           )
           state.wallTemplate = [...state.handTiles, ...state.wall]
-          state.decreeSystem.syncWallSlots(state.wallTemplate)
-          const decree = ALL_DECREES.find(
-            (d: { id: string }) => d.id === 'decree-wide-grip'
-          )
-          for (let i = 0; i < 6; i++) state.decreeSystem.acquireDecree(decree)
           const sealId =
             operation === 'copy' ? 'seal_of_transmutation' : 'seal_of_release'
           game.addFateSeal(
@@ -135,7 +130,7 @@ for (const operation of ['copy', 'destroy'] as const)
         ).toBe(512)
         await activate(dialog.locator('[data-seal-wall-tile="copy-target"]'))
       }
-      await activate(dialog.locator('[data-seal-wall-tile="negative-source"]'))
+      await activate(dialog.locator('[data-seal-wall-tile="edition-source"]'))
       expect(await saved()).toEqual(before)
       expect(
         await dialog.evaluate(
@@ -147,18 +142,31 @@ for (const operation of ['copy', 'destroy'] as const)
       await expect(dialog).toHaveCount(0)
       const changed = await saved()
       expect(changed.state.fateSeals).toHaveLength(0)
+      // The copy is the source tile, Edition included; a destroyed tile
+      // leaves the run with its Edition.
+      const gold = changed.state.wallTemplate.filter(
+        (t: { modifiers: { enhancement: string } }) =>
+          t.modifiers.enhancement === 'gold'
+      )
       expect(
-        changed.state.wallTemplate.filter(
-          (t: { modifiers: { edition: string } }) =>
-            t.modifiers.edition === 'negative'
+        gold.map((t: { id: string; suit: string; rank: number }) => [
+          t.id,
+          t.suit,
+          t.rank,
+        ])
+      ).toEqual(
+        operation === 'copy'
+          ? [
+              ['copy-target', 'pinzu', 3],
+              ['edition-source', 'pinzu', 3],
+            ]
+          : []
+      )
+      expect(
+        changed.state.wallTemplate.some(
+          (t: { id: string }) => t.id === 'edition-source'
         )
-      ).toHaveLength(operation === 'copy' ? 2 : 0)
-      expect(changed.state.decreeSystem.ownedDecrees).toHaveLength(6)
-      expect(changed.state.decreeSystem.maxSlots).toBe(5)
-      if (operation === 'destroy')
-        await expect(page.locator('[data-decree-capacity-notice]')).toHaveText(
-          copy.runOwnership.overCapacity
-        )
+      ).toBe(operation === 'copy')
       await page.reload()
       expect(await saved()).toEqual(changed)
       for (const id of ['play-a', 'play-b'])
@@ -167,18 +175,6 @@ for (const operation of ['copy', 'destroy'] as const)
         )
       await activate(page.locator('[data-game-action="play"]'))
       await expect(page).toHaveURL(/\/shop\/?$/)
-      await saved()
-      await expect(page.locator('[data-build-slots]')).toHaveText(
-        copy.shop.build.slots
-          .replace('{{used}}', '6')
-          .replace('{{max}}', operation === 'copy' ? '7' : '5')
-      )
-      if (operation === 'destroy')
-        await expect(page.locator('[data-decree-capacity-notice]')).toHaveText(
-          copy.runOwnership.overCapacity
-        )
-      await page.locator('[data-shop-build]').scrollIntoViewIfNeeded()
-      await page.screenshot({ path: info.outputPath('shop-capacity.png') })
       const shop = await saved()
       await page.reload()
       expect(await saved()).toEqual(shop)

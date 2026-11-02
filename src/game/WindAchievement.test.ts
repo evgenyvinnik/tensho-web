@@ -1,12 +1,11 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { NORMAL_RUN_ACTS } from '../config/runProgression'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
-import { SealType } from '../core/TileModifier'
 import { useAchievementStore } from '../stores/achievementStore'
 import { useArchiveStore } from '../stores/archiveStore'
 import { useProgressionStore } from '../stores/progressionStore'
 import { useStakeStore } from '../stores/stakeStore'
-import { DecreeSystem } from '../systems/DecreeSystem'
+import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import {
@@ -225,8 +224,13 @@ it('does not multiply Wind achievement credit through tile retriggers', () => {
   const game = start()
   const ids = windHand(game)
   const state = game.getState() as OrchestratorState
-  state.handTiles[0] = state.handTiles[0].withSeal(SealType.Red)
-  expect(game.previewScore(ids)!.retriggeredTiles).toContain(ids[0])
+  // Only Decrees retrigger tiles: Wind Echo scores every Wind twice.
+  expect(
+    state.decreeSystem.acquireDecree(
+      ALL_DECREES.find((decree) => decree.id === 'decree-wind-echo')!
+    )
+  ).not.toBeNull()
+  expect(game.previewScore(ids)!.retriggeredTiles).toEqual(ids.slice(0, 3))
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   expect(progress()).toBe(2)
 })

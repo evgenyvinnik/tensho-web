@@ -130,7 +130,7 @@ The game uses a dual-state pattern:
    - `decreeStore` — Active decrees
    - `floraStore` — Collected flowers and active seasons
    - `settingsStore`, `achievementStore`, `stakeStore` — Persisted user data
-   - Plus 10 more specialized stores for tile marks, charters, omens, packs, shop, consumables, progression, table style, and archive
+   - Plus more specialized stores for charters, omens, packs, shop, consumables, progression, table style, and archive
 
 The orchestrator is the source of truth for game logic; stores may reflect orchestrator state for UI binding.
 
@@ -173,7 +173,7 @@ const state = gameOrchestrator.getState()
 - `DecreeSystem` — Rule-bending modifiers (Joker equivalent)
 - `FlowerSystem` / `SeasonSystem` — Run-wide and round-scoped effects
 - `TeaHouseSystem` / `ShopGenerator` / `PricingCalculator` — Shop mechanics
-- `TileModifierSystem` — Enhancements, Seals, Editions on tiles
+- `TileModifierSystem` — scores tile Editions (Points, Mult, Lucky ×Mult, Gold, Glass/Steel makes and breaks)
 - `FateSealSystem` / `CelestialOrbSystem` / `VoidScriptSystem` — Consumables
 - `CharterSystem` / `BlessingPackSystem` / `OmenTagSystem` — Permanent upgrades and rewards
 - `TableStakeSystem` / `MandateEffectSystem` — Difficulty and boss restrictions
@@ -222,8 +222,8 @@ Strict mode with enhanced linting:
 Score  = Points × Mult
 Points = tile points + group bonuses + additive bonuses
 Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per Dragon (4 grouped)
-         + Mark/Edition +Mult, then Decrees in order (+N adds, ×N
-         multiplies), then ×-layers (Glass, Polychrome, ×1.5 per held Steel)
+         + Edition +Mult, then Decrees in order (+N adds, ×N
+         multiplies), then ×-layers (each Lucky tile's ×1.25–×2 roll)
 ```
 
 Tile points: suited 5, terminals (1, 9) 10, Winds 50 (100 inside a group),
@@ -291,14 +291,28 @@ Each Act has 3 rounds: Small (1.0×), Large (1.5×), Boss (2.0×). Boss rounds h
 | Spectral | Void Script |
 | Voucher | Imperial Charter |
 | Enhanced card | Special tile |
-| Enhancement | Mark |
-| Seal (on a card) | Stamp |
-| Edition | Edition |
+| Enhancement | Edition |
+| Edition (on a Joker) | Finish (on a Decree) |
 
-Player-facing text never says "enhanced", "enhancement" or "modifier" for tiles,
-and "Seal" alone means a Fate Seal. A special tile holds one Mark, Stamp or
-Edition; "Glass tile" / "Stone tile" is the short form for a tile with that Mark.
-In code, Marks are `EnhancementType` and Stamps are `SealType`.
+Player-facing text never says "enhanced", "enhancement", "modifier", "Mark" or
+"Stamp" for tiles, and "Seal" alone means a Fate Seal. A special tile holds one
+Edition; "Glass tile" / "Stone tile" is the short form for a tile with that
+Edition. In code, Editions are still `EnhancementType` (locale keys
+`tileMarks.*`), while a Decree's Foil/Holographic/Polychrome/Negative Finish is
+`DecreeEdition` (locale keys `editions.*`). Stamps and tile Editions were
+retired in snapshot v4 (`migrateClassicSnapshot.ts` folds old tiles).
+
+### Tile Editions
+
+Bonus +30 Points per Act; Mult +4 Mult; Wild counts as every suit; Stone +100
+Points, no rank or suit; Gold +3 Gold each time it scores; Lucky rolls ×1.25–×2
+Mult and +20–100 Points per round (rolled from the run's `modifiers` stream when
+the round starts, or right after the action that made a tile Lucky, and saved
+as `state.luckyRolls`; never rolled by a preview, so a seed replays them; the
+table shows them through `TileRoundContext`); Glass makes a random
+Fate Seal and Steel a random Celestial Orb when played, then each has a 1 in 4
+chance to break (shatter / rust away), announced by `TileBrokenToast` from the
+`tilesBroken` event.
 
 ## UI Design
 

@@ -35,8 +35,6 @@ export function getArchiveIllustration(
       return getTableStyleIllustration(id)
     case 'tileMarks':
       return getGeneratedArt('enhancements', id)
-    case 'seals':
-      return getGeneratedArt('seals', id)
     case 'editions':
       return getGeneratedArt('editions', id)
     case 'packs': {

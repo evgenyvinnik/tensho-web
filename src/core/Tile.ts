@@ -5,34 +5,25 @@
  * - 136 standard tiles (34 unique × 4 copies)
  * - 8 bonus tiles (4 Flowers + 4 Seasons)
  *
- * With modifier support (a tile holds one at a time):
- * - Enhancements (Marks): Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky
- * - Seals: Gold, Red, Blue, Purple
- * - Editions: Base, Foil, Holographic, Polychrome, Negative
+ * A special tile carries one Edition (`EnhancementType` in code): Bonus,
+ * Mult, Wild, Glass, Steel, Stone, Gold or Lucky.
  */
 
 import {
   TileModifiers,
   EnhancementType,
-  SealType,
-  EditionType,
   DEFAULT_MODIFIERS,
   hasModifiers as checkHasModifiers,
   calculateModifierChips,
   calculateModifierMult,
-  calculateModifierMultiplier,
-  getRetriggers,
   isWild as checkIsWild,
   alwaysScores as checkAlwaysScores,
   canShatter as checkCanShatter,
-  hasHeldEffect as checkHasHeldEffect,
   isLucky as checkIsLucky,
   formatModifiers,
   singleModifier,
   changeModifiers,
   ENHANCEMENT_DEFINITIONS,
-  SEAL_DEFINITIONS,
-  EDITION_DEFINITIONS,
 } from './TileModifier'
 
 export enum TileSuit {
@@ -77,7 +68,7 @@ export interface TileData {
   rank: number // 1-9 for suited, 1-4 for winds, 1-3 for dragons, 1-4 for flowers/seasons
   id: string // Unique identifier for this specific tile instance
   isRed: boolean // For red fives (aka-dora)
-  modifiers: TileModifiers // Enhancement, seal, and edition modifiers
+  modifiers: TileModifiers // The tile's Edition
 }
 
 /**
@@ -224,7 +215,7 @@ export class Tile implements TileData {
   // ===========================================================================
 
   /**
-   * Returns true if this tile has any modifiers (enhancement, seal, or edition)
+   * Returns true if this tile carries an Edition
    */
   get hasModifiers(): boolean {
     return checkHasModifiers(this.modifiers)
@@ -238,32 +229,25 @@ export class Tile implements TileData {
   }
 
   /**
-   * Returns true if this tile always scores (Stone mark)
+   * Returns true if this tile always scores (Stone Edition)
    */
   get alwaysScores(): boolean {
     return checkAlwaysScores(this.modifiers)
   }
 
   /**
-   * A Stone tile has no rank or suit: the mark covers its face, so it joins no
-   * group and pays only the mark's own points.
+   * A Stone tile has no rank or suit: the Edition covers its face, so it joins
+   * no group and pays only the Edition's own points.
    */
   get isStone(): boolean {
     return checkAlwaysScores(this.modifiers)
   }
 
   /**
-   * Returns true if this tile can shatter (Glass mark)
+   * Returns true if this tile can break after a play (Glass, Steel)
    */
   get canShatter(): boolean {
     return checkCanShatter(this.modifiers)
-  }
-
-  /**
-   * Returns true if this tile has a held effect (Steel mark)
-   */
-  get hasHeldEffect(): boolean {
-    return checkHasHeldEffect(this.modifiers)
   }
 
   /**
@@ -281,21 +265,7 @@ export class Tile implements TileData {
   }
 
   /**
-   * Get seal type
-   */
-  get seal(): SealType {
-    return this.modifiers.seal
-  }
-
-  /**
-   * Get edition type
-   */
-  get edition(): EditionType {
-    return this.modifiers.edition
-  }
-
-  /**
-   * Get chip bonus from modifiers
+   * Points from the tile's Edition (a Bonus Edition at its Act 1 value)
    */
   get modifierChips(): number {
     return calculateModifierChips(this.modifiers)
@@ -306,20 +276,6 @@ export class Tile implements TileData {
    */
   get modifierMult(): number {
     return calculateModifierMult(this.modifiers)
-  }
-
-  /**
-   * Get multiplicative mult from modifiers
-   */
-  get modifierMultiplier(): number {
-    return calculateModifierMultiplier(this.modifiers)
-  }
-
-  /**
-   * Get number of retriggers from seal
-   */
-  get retriggers(): number {
-    return getRetriggers(this.modifiers)
   }
 
   /**
@@ -336,48 +292,19 @@ export class Tile implements TileData {
     return ENHANCEMENT_DEFINITIONS[this.modifiers.enhancement]
   }
 
-  /**
-   * Get seal definition
-   */
-  get sealDef() {
-    return SEAL_DEFINITIONS[this.modifiers.seal]
-  }
-
-  /**
-   * Get edition definition
-   */
-  get editionDef() {
-    return EDITION_DEFINITIONS[this.modifiers.edition]
-  }
-
   // ===========================================================================
   // MODIFIER METHODS
   // ===========================================================================
 
   /**
-   * Create a new tile with a specific enhancement, replacing any modifier
+   * Create a new tile with a specific Edition, replacing any it had
    */
   withEnhancement(enhancement: EnhancementType): Tile {
     return this.withModifiers({ enhancement })
   }
 
   /**
-   * Create a new tile with a specific seal, replacing any modifier
-   */
-  withSeal(seal: SealType): Tile {
-    return this.withModifiers({ seal })
-  }
-
-  /**
-   * Create a new tile with a specific edition, replacing any modifier
-   */
-  withEdition(edition: EditionType): Tile {
-    return this.withModifiers({ edition })
-  }
-
-  /**
-   * Create a new tile with a modifier change. A tile holds one modifier, so
-   * setting one replaces the old; clearing one leaves the rest alone.
+   * Create a new tile with a modifier change
    */
   withModifiers(modifiers: Partial<TileModifiers>): Tile {
     return new Tile(
@@ -420,7 +347,7 @@ export class Tile implements TileData {
 
   /**
    * True when these suited tiles can all be read in one suit. A Wild tile
-   * counts as every suit, so only the tiles without a Wild Mark must agree.
+   * counts as every suit, so only the tiles without a Wild Edition must agree.
    * Honors, bonus tiles and Stones never qualify.
    */
   static shareSuit(tiles: readonly Tile[]): boolean {
@@ -449,7 +376,7 @@ export class Tile implements TileData {
 
   /**
    * The suit a group of tiles is read in: the suit of its first tile without a
-   * Wild Mark, or the first tile's own suit when every tile is Wild.
+   * Wild Edition, or the first tile's own suit when every tile is Wild.
    */
   static groupSuit(tiles: readonly Tile[]): TileSuit {
     return (
@@ -745,26 +672,16 @@ export function groupTilesBySuit(tiles: Tile[]): Map<TileSuit, Tile[]> {
 export type {
   TileModifiers,
   EnhancementDefinition,
-  SealDefinition,
-  EditionDefinition,
+  LuckyRoll,
 } from './TileModifier'
 
 // Value exports (enums, constants, functions)
 export {
   EnhancementType,
-  SealType,
-  EditionType,
   ENHANCEMENT_DEFINITIONS,
-  SEAL_DEFINITIONS,
-  EDITION_DEFINITIONS,
   DEFAULT_MODIFIERS,
   calculateModifierEffects,
-  rollLuckyEffect,
-  rollShatter,
+  rollLucky,
   getAllEnhancements,
-  getAllSeals,
-  getSpecialEditions,
   getRandomEnhancement,
-  getRandomSeal,
-  getRandomEdition,
 } from './TileModifier'

@@ -5,7 +5,7 @@ import { settleReveals } from './helpers/table'
 /**
  * What this exact Frostbite Echo play pays; the fixture's target is set to it.
  * Three faces (15) and their Sequence (30), plus the Echo's half-strength
- * repeat of the Gold-Sealed first tile (2.5).
+ * repeat of the first tile (2.5), which carries a Gold Edition.
  */
 const ECHO_SCORE = 47
 
@@ -62,7 +62,9 @@ for (const language of ['en', 'es'])
           loaded('/src/game/GameOrchestrator.ts')
         )
         const { Tile, TileSuit } = await import(loaded('/src/core/Tile.ts'))
-        const { SealType } = await import(loaded('/src/core/TileModifier.ts'))
+        const { EnhancementType } = await import(
+          loaded('/src/core/TileModifier.ts')
+        )
         const { ALL_DECREES, DecreeSystem } = await import(
           loaded('/src/systems/DecreeSystem.ts')
         )
@@ -87,7 +89,9 @@ for (const language of ['en', 'es'])
         state.handTiles = [4, 5, 6].map(
           (rank) => new Tile(TileSuit.Souzu, rank, `echo-${rank}`)
         )
-        state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+        state.handTiles[0] = state.handTiles[0].withEnhancement(
+          EnhancementType.Gold
+        )
         state.handTiles.push(
           ...[
             TileSuit.Manzu,
@@ -176,6 +180,8 @@ for (const language of ['en', 'es'])
     expect(paid.state.score - before.state.score).toBe(ECHO_SCORE)
     // Treasure Hunter's 5 gold, halved by Frostbite, settles as 2.5.
     expect(paid.state.lastRoundSummary.decreeGold).toBe(2.5)
+    // The Gold Edition pays 3 as it scores and 1.5 more on the Echo's
+    // half-strength repeat; the play's 4.5 Gold is paid rounded down.
     expect(
       paid.state.gold -
         before.state.gold -

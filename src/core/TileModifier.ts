@@ -1,435 +1,230 @@
 /**
- * Tile Modifier System for Tensho Mahjong Roguelike
+ * Tile Editions for Tensho Mahjong Roguelike
  *
- * Implements Balatro-style card modifiers adapted for Mahjong:
- * - Enhancements (Marks): Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky
- * - Seals (shown to players as Stamps): Gold, Red, Blue, Purple
- * - Editions: Base, Foil, Holographic, Polychrome, Negative
- *
- * Each tile holds at most ONE modifier: a Mark, a Seal or an Edition.
- * Player-facing text calls such a tile a "special tile" and the Seal a
- * "Stamp", so it never shares a name with the Fate Seal consumable.
- * Applying one replaces whatever the tile carried before.
+ * A special tile carries one Edition (Balatro's card enhancements, adapted):
+ * Bonus, Mult, Wild, Glass, Steel, Stone, Gold and Lucky. Player-facing text
+ * calls them Editions; in code they are still `EnhancementType`, and a Decree's
+ * own Foil/Holographic/Polychrome/Negative finish is a separate thing
+ * (`DecreeEdition`). Applying an Edition replaces whatever the tile carried.
  */
 
 import { runRandom } from '../game/RunRandom'
 
 // =============================================================================
-// ENHANCEMENT TYPES (Marks)
+// EDITION TYPES (EnhancementType)
 // =============================================================================
 
 /**
- * Enhancement types that can be applied to tiles
- * A tile holds one modifier, so a Mark replaces any Seal or Edition
+ * The Editions a tile can carry. A tile holds at most one.
  */
 export enum EnhancementType {
   None = 'none',
-  Bonus = 'bonus', // +30 Points when scored
+  Bonus = 'bonus', // +30 Points per Act when scored
   Mult = 'mult', // +4 Mult when scored
   Wild = 'wild', // Counts as every suit
-  Glass = 'glass', // ×2 Mult when scored, 1/4 chance to shatter
-  Steel = 'steel', // ×1.5 Mult while held in hand (not when played)
-  Stone = 'stone', // +100 Chips, always scores (no rank/suit)
-  Gold = 'gold', // ¥3 at end of round if in hand
-  Lucky = 'lucky', // 1/5 chance for +20 Mult, 1/15 chance for ¥20
+  Glass = 'glass', // Makes a Fate Seal when played, then 1 in 4 shatters
+  Steel = 'steel', // Makes a Celestial Orb when played, then 1 in 4 rusts
+  Stone = 'stone', // +100 Points, always scores (no rank/suit)
+  Gold = 'gold', // +3 Gold each time it scores
+  Lucky = 'lucky', // Rolls ×Mult and +Points at the start of each round
 }
 
+/** What a played tile makes before its Edition may break it. */
+export type CreatedConsumable = 'none' | 'orb' | 'seal'
+
+/** How an Edition can destroy its tile after the play. */
+export type TileBreak = 'shattered' | 'rusted'
+
 /**
- * Enhancement definition with effects
+ * Edition definition with effects
  */
 export interface EnhancementDefinition {
   type: EnhancementType
   name: string
   japaneseName: string
   description: string
+  /** Points when scored; the Bonus Edition pays this once per Act. */
   chipBonus: number
   multBonus: number
-  multMultiplier: number // Multiplicative mult (e.g., ×2 for Glass)
+  /** Gold each time the tile scores. */
   goldBonus: number
-  special: 'none' | 'wild' | 'shatter' | 'held' | 'always_scores' | 'lucky'
+  /** Made once when the tile is played. */
+  creates: CreatedConsumable
+  /** How the tile can break after it is played, and how likely that is. */
+  breaks: TileBreak | null
+  breakChance: number
+  special: 'none' | 'wild' | 'always_scores' | 'lucky' | 'per_act'
 }
 
+/** Share of plays after which a Glass tile shatters or a Steel tile rusts. */
+export const TILE_BREAK_CHANCE = 0.25
+
+/** A Bonus Edition pays this many Points per Act. */
+export const BONUS_POINTS_PER_ACT = 30
+
+const NO_EFFECT = {
+  chipBonus: 0,
+  multBonus: 0,
+  goldBonus: 0,
+  creates: 'none',
+  breaks: null,
+  breakChance: 0,
+  special: 'none',
+} as const
+
 /**
- * Enhancement definitions
+ * Edition definitions
  */
 export const ENHANCEMENT_DEFINITIONS: Record<
   EnhancementType,
   EnhancementDefinition
 > = {
   [EnhancementType.None]: {
+    ...NO_EFFECT,
     type: EnhancementType.None,
     name: 'None',
     japaneseName: '無',
-    description: 'No enhancement',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1,
-    goldBonus: 0,
-    special: 'none',
+    description: 'No Edition',
   },
   [EnhancementType.Bonus]: {
+    ...NO_EFFECT,
     type: EnhancementType.Bonus,
-    name: 'Bonus Mark',
+    name: 'Bonus Edition',
     japaneseName: '加点紋',
-    description: '+30 Points when this tile scores',
-    chipBonus: 30,
-    multBonus: 0,
-    multMultiplier: 1,
-    goldBonus: 0,
-    special: 'none',
+    description: '+30 Points per Act when this tile scores',
+    chipBonus: BONUS_POINTS_PER_ACT,
+    special: 'per_act',
   },
   [EnhancementType.Mult]: {
+    ...NO_EFFECT,
     type: EnhancementType.Mult,
-    name: 'Mult Mark',
+    name: 'Mult Edition',
     japaneseName: '倍率紋',
     description: '+4 Mult when this tile scores',
-    chipBonus: 0,
     multBonus: 4,
-    multMultiplier: 1,
-    goldBonus: 0,
-    special: 'none',
   },
   [EnhancementType.Wild]: {
+    ...NO_EFFECT,
     type: EnhancementType.Wild,
-    name: 'Wild Mark',
+    name: 'Wild Edition',
     japaneseName: '万能紋',
     description: 'Counts as every suit simultaneously',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1,
-    goldBonus: 0,
     special: 'wild',
   },
   [EnhancementType.Glass]: {
+    ...NO_EFFECT,
     type: EnhancementType.Glass,
-    name: 'Glass Mark',
+    name: 'Glass Edition',
     japaneseName: '硝子紋',
-    description: '×2 Mult when scored, 1/4 chance to shatter after',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 2,
-    goldBonus: 0,
-    special: 'shatter',
+    description:
+      'Creates a random Fate Seal when played, then has a 1 in 4 chance to shatter',
+    creates: 'seal',
+    breaks: 'shattered',
+    breakChance: TILE_BREAK_CHANCE,
   },
   [EnhancementType.Steel]: {
+    ...NO_EFFECT,
     type: EnhancementType.Steel,
-    name: 'Steel Mark',
+    name: 'Steel Edition',
     japaneseName: '鋼紋',
-    description: '×1.5 Mult while held in hand (not played)',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1.5,
-    goldBonus: 0,
-    special: 'held',
+    description:
+      'Creates a random Celestial Orb when played, then has a 1 in 4 chance to rust away',
+    creates: 'orb',
+    breaks: 'rusted',
+    breakChance: TILE_BREAK_CHANCE,
   },
   [EnhancementType.Stone]: {
+    ...NO_EFFECT,
     type: EnhancementType.Stone,
-    name: 'Stone Mark',
+    name: 'Stone Edition',
     japaneseName: '石紋',
     description: '+100 Points, always scores regardless of hand',
     // Double a Wind tile's 50: a Stone gives up grouping for a sure payout.
     chipBonus: 100,
-    multBonus: 0,
-    multMultiplier: 1,
-    goldBonus: 0,
     special: 'always_scores',
   },
   [EnhancementType.Gold]: {
+    ...NO_EFFECT,
     type: EnhancementType.Gold,
-    name: 'Gold Mark',
+    name: 'Gold Edition',
     japaneseName: '金紋',
-    description: 'Earn ¥3 at end of round if in hand',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1,
+    description: '+3 Gold each time this tile scores',
     goldBonus: 3,
-    special: 'none',
   },
   [EnhancementType.Lucky]: {
+    ...NO_EFFECT,
     type: EnhancementType.Lucky,
-    name: 'Lucky Mark',
+    name: 'Lucky Edition',
     japaneseName: '幸運紋',
-    description: '1/5 chance for +20 Mult, 1/15 chance for ¥20',
-    chipBonus: 0,
-    multBonus: 0, // Calculated randomly
-    multMultiplier: 1,
-    goldBonus: 0, // Calculated randomly
+    description:
+      'Each round rolls ×1.25 to ×2 Mult and +20 to +100 Points, paid when this tile scores',
     special: 'lucky',
   },
 }
 
 // =============================================================================
-// SEAL TYPES
+// TILE MODIFIER STATE
 // =============================================================================
 
 /**
- * Seal types that can be applied to tiles
- * A tile holds one modifier, so a Seal replaces any Mark or Edition
- */
-export enum SealType {
-  None = 'none',
-  Gold = 'gold', // Earn ¥3 when played
-  Red = 'red', // Retrigger this tile once
-  Blue = 'blue', // Create Celestial Orb if in winning hand
-  Purple = 'purple', // Create Fate Seal when discarded or redrawn
-}
-
-/**
- * Seal definition with effects
- */
-export interface SealDefinition {
-  type: SealType
-  name: string
-  japaneseName: string
-  description: string
-  goldOnPlay: number
-  retriggers: number
-  createsConsumable: 'none' | 'orb' | 'seal'
-  triggerOn: 'play' | 'discard' | 'discardOrRedraw' | 'win' | 'none'
-}
-
-/**
- * Seal definitions
- */
-export const SEAL_DEFINITIONS: Record<SealType, SealDefinition> = {
-  [SealType.None]: {
-    type: SealType.None,
-    name: 'None',
-    japaneseName: '無',
-    description: 'No Stamp',
-    goldOnPlay: 0,
-    retriggers: 0,
-    createsConsumable: 'none',
-    triggerOn: 'none',
-  },
-  [SealType.Gold]: {
-    type: SealType.Gold,
-    name: 'Gold Stamp',
-    japaneseName: '金封',
-    description: 'Earn ¥3 when this tile is played',
-    goldOnPlay: 3,
-    retriggers: 0,
-    createsConsumable: 'none',
-    triggerOn: 'play',
-  },
-  [SealType.Red]: {
-    type: SealType.Red,
-    name: 'Red Stamp',
-    japaneseName: '赤封',
-    description: 'Retrigger this tile once when scored',
-    goldOnPlay: 0,
-    retriggers: 1,
-    createsConsumable: 'none',
-    triggerOn: 'play',
-  },
-  [SealType.Blue]: {
-    type: SealType.Blue,
-    name: 'Blue Stamp',
-    japaneseName: '青封',
-    description:
-      'Creates a random Celestial Orb if in the play that clears the round',
-    goldOnPlay: 0,
-    retriggers: 0,
-    createsConsumable: 'orb',
-    triggerOn: 'win',
-  },
-  [SealType.Purple]: {
-    type: SealType.Purple,
-    name: 'Purple Stamp',
-    japaneseName: '紫封',
-    description: 'Creates a random Fate Seal when discarded or redrawn',
-    goldOnPlay: 0,
-    retriggers: 0,
-    createsConsumable: 'seal',
-    triggerOn: 'discardOrRedraw',
-  },
-}
-
-// =============================================================================
-// EDITION TYPES
-// =============================================================================
-
-/**
- * Edition types that affect visual appearance and scoring
- * A tile holds one modifier, so an Edition replaces any Mark or Seal
- */
-export enum EditionType {
-  Base = 'base',
-  Foil = 'foil', // +50 Points
-  Holographic = 'holographic', // +10 Mult
-  Polychrome = 'polychrome', // ×1.5 Mult
-  Negative = 'negative', // +1 Decree slot
-}
-
-/**
- * Edition definition with effects
- */
-export interface EditionDefinition {
-  type: EditionType
-  name: string
-  japaneseName: string
-  description: string
-  chipBonus: number
-  multBonus: number
-  multMultiplier: number
-  special: 'none' | 'decree_slot'
-  rarity: number // Higher = rarer (1-5)
-}
-
-/**
- * Edition definitions
- */
-export const EDITION_DEFINITIONS: Record<EditionType, EditionDefinition> = {
-  [EditionType.Base]: {
-    type: EditionType.Base,
-    name: 'Base',
-    japaneseName: '通常',
-    description: 'Standard tile',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1,
-    special: 'none',
-    rarity: 1,
-  },
-  [EditionType.Foil]: {
-    type: EditionType.Foil,
-    name: 'Foil',
-    japaneseName: '箔押',
-    description: '+50 Points',
-    chipBonus: 50,
-    multBonus: 0,
-    multMultiplier: 1,
-    special: 'none',
-    rarity: 2,
-  },
-  [EditionType.Holographic]: {
-    type: EditionType.Holographic,
-    name: 'Holographic',
-    japaneseName: '虹彩',
-    description: '+10 Mult',
-    chipBonus: 0,
-    multBonus: 10,
-    multMultiplier: 1,
-    special: 'none',
-    rarity: 3,
-  },
-  [EditionType.Polychrome]: {
-    type: EditionType.Polychrome,
-    name: 'Polychrome',
-    japaneseName: '多彩',
-    description: '×1.5 Mult',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1.5,
-    special: 'none',
-    rarity: 4,
-  },
-  [EditionType.Negative]: {
-    type: EditionType.Negative,
-    name: 'Negative',
-    japaneseName: '陰影',
-    description:
-      '+1 Decree slot while this physical Negative tile remains in your wall. Drawing or discarding keeps the slot; destruction or replacing its edition removes it.',
-    chipBonus: 0,
-    multBonus: 0,
-    multMultiplier: 1,
-    special: 'decree_slot',
-    rarity: 5,
-  },
-}
-
-// =============================================================================
-// TILE MODIFIER COMPOSITE
-// =============================================================================
-
-/**
- * Complete modifier state for a tile
+ * A tile's Edition. Older saves also carried a Stamp (`seal`) and a tile
+ * Edition (`edition`); `migrateClassicSnapshot` folds those into this.
  */
 export interface TileModifiers {
   enhancement: EnhancementType
-  seal: SealType
-  edition: EditionType
 }
 
 /**
- * Default (no modifiers) state
+ * Default (no Edition) state
  */
 export const DEFAULT_MODIFIERS: TileModifiers = {
   enhancement: EnhancementType.None,
-  seal: SealType.None,
-  edition: EditionType.Base,
 }
 
 /**
- * Check if tile has any modifiers
+ * Check if tile has an Edition
  */
 export function hasModifiers(modifiers: TileModifiers): boolean {
-  return (
-    modifiers.enhancement !== EnhancementType.None ||
-    modifiers.seal !== SealType.None ||
-    modifiers.edition !== EditionType.Base
-  )
+  return modifiers.enhancement !== EnhancementType.None
 }
 
-/**
- * Reduce modifiers to the one a tile may hold, keeping the rarest: Edition,
- * then Mark, then Seal. Only saves from before the rule carry more than one.
- */
+/** Keep only the fields a tile may hold. */
 export function singleModifier(modifiers: TileModifiers): TileModifiers {
-  const held =
-    Number(modifiers.edition !== EditionType.Base) +
-    Number(modifiers.enhancement !== EnhancementType.None) +
-    Number(modifiers.seal !== SealType.None)
-  if (held <= 1) return modifiers
-  if (modifiers.edition !== EditionType.Base)
-    return { ...DEFAULT_MODIFIERS, edition: modifiers.edition }
-  return { ...DEFAULT_MODIFIERS, enhancement: modifiers.enhancement }
+  return { enhancement: modifiers.enhancement ?? EnhancementType.None }
 }
 
-/**
- * Apply a change to a tile's modifiers. Setting a Mark, Seal or Edition
- * replaces whatever the tile carried; clearing one leaves the rest alone.
- */
+/** Apply a change to a tile's Edition. */
 export function changeModifiers(
   current: TileModifiers,
   change: Partial<TileModifiers>
 ): TileModifiers {
-  const added = { ...DEFAULT_MODIFIERS, ...change }
-  return singleModifier(hasModifiers(added) ? added : { ...current, ...change })
+  return singleModifier({ ...current, ...change })
+}
+
+/** Points a Bonus Edition pays in `act`. */
+export function bonusEditionPoints(act: number): number {
+  return BONUS_POINTS_PER_ACT * Math.max(1, Math.floor(act))
 }
 
 /**
- * Calculate total chip bonus from all modifiers
+ * Points an Edition adds when its tile scores. The Bonus Edition grows with
+ * the Act; outside a run (rewards, catalog) it shows its Act 1 value.
  */
-export function calculateModifierChips(modifiers: TileModifiers): number {
+export function calculateModifierChips(
+  modifiers: TileModifiers,
+  act = 1
+): number {
   const enhancement = ENHANCEMENT_DEFINITIONS[modifiers.enhancement]
-  const edition = EDITION_DEFINITIONS[modifiers.edition]
-  return enhancement.chipBonus + edition.chipBonus
+  return enhancement.special === 'per_act'
+    ? bonusEditionPoints(act)
+    : enhancement.chipBonus
 }
 
 /**
- * Calculate total additive mult bonus from all modifiers
+ * Additive Mult an Edition adds when its tile scores
  */
 export function calculateModifierMult(modifiers: TileModifiers): number {
-  const enhancement = ENHANCEMENT_DEFINITIONS[modifiers.enhancement]
-  const edition = EDITION_DEFINITIONS[modifiers.edition]
-  return enhancement.multBonus + edition.multBonus
-}
-
-/**
- * Calculate total multiplicative mult from all modifiers
- */
-export function calculateModifierMultiplier(modifiers: TileModifiers): number {
-  const enhancement = ENHANCEMENT_DEFINITIONS[modifiers.enhancement]
-  const edition = EDITION_DEFINITIONS[modifiers.edition]
-  return enhancement.multMultiplier * edition.multMultiplier
-}
-
-/**
- * Get number of retriggers from seal
- */
-export function getRetriggers(modifiers: TileModifiers): number {
-  return SEAL_DEFINITIONS[modifiers.seal].retriggers
+  return ENHANCEMENT_DEFINITIONS[modifiers.enhancement].multBonus
 }
 
 /**
@@ -447,51 +242,60 @@ export function alwaysScores(modifiers: TileModifiers): boolean {
 }
 
 /**
- * Check if tile can shatter (Glass)
+ * Check if tile can break after a play (Glass shatters, Steel rusts)
  */
 export function canShatter(modifiers: TileModifiers): boolean {
-  return modifiers.enhancement === EnhancementType.Glass
+  return ENHANCEMENT_DEFINITIONS[modifiers.enhancement].breaks !== null
 }
 
 /**
- * Check if tile has held effect (Steel)
- */
-export function hasHeldEffect(modifiers: TileModifiers): boolean {
-  return modifiers.enhancement === EnhancementType.Steel
-}
-
-/**
- * Check if tile has lucky effect
+ * Check if tile has the Lucky Edition
  */
 export function isLucky(modifiers: TileModifiers): boolean {
   return modifiers.enhancement === EnhancementType.Lucky
 }
 
-/**
- * Roll lucky effect and return bonus mult/gold
- */
-export function rollLuckyEffect(): { multBonus: number; goldBonus: number } {
-  const roll = runRandom.next('modifiers')
+// =============================================================================
+// LUCKY ROLLS
+// =============================================================================
 
-  // 1/5 chance for +20 Mult
-  if (roll < 0.2) {
-    return { multBonus: 20, goldBonus: 0 }
-  }
+/** What one Lucky tile pays this round. */
+export interface LuckyRoll {
+  multiplier: number
+  points: number
+}
 
-  // 1/15 chance for ¥20 (approximately 6.67%)
-  if (roll < 0.2 + 1 / 15) {
-    return { multBonus: 0, goldBonus: 20 }
-  }
+export const LUCKY_MULTIPLIERS = [1.25, 1.5, 1.75, 2] as const
+export const LUCKY_POINTS = [20, 30, 40, 50, 60, 70, 80, 90, 100] as const
 
-  return { multBonus: 0, goldBonus: 0 }
+/** The lowest roll, paid when a tile has none (catalog, rewards). */
+export const LUCKY_FLOOR: LuckyRoll = {
+  multiplier: LUCKY_MULTIPLIERS[0],
+  points: LUCKY_POINTS[0],
 }
 
 /**
- * Roll shatter chance for Glass tiles
- * @returns true if tile shatters
+ * One Lucky tile's roll for a round. The orchestrator rolls every Lucky tile
+ * from the run's stream when a round starts (and a tile made Lucky later right
+ * after the action that made it), then saves the rolls, so the table, the
+ * preview and the paid score read the same values and a seed replays them.
  */
-export function rollShatter(): boolean {
-  return runRandom.next('modifiers') < 0.25 // 1/4 chance
+export function rollLucky(
+  draw: () => number = () => runRandom.next('modifiers')
+): LuckyRoll {
+  return {
+    multiplier:
+      LUCKY_MULTIPLIERS[Math.floor(draw() * LUCKY_MULTIPLIERS.length)],
+    points: LUCKY_POINTS[Math.floor(draw() * LUCKY_POINTS.length)],
+  }
+}
+
+/**
+ * Roll whether a played Glass or Steel tile breaks
+ * @returns true if the tile breaks
+ */
+export function rollBreak(chance: number): boolean {
+  return chance > 0 && runRandom.next('modifiers') < chance
 }
 
 // =============================================================================
@@ -499,108 +303,54 @@ export function rollShatter(): boolean {
 // =============================================================================
 
 /**
- * Result of applying modifiers to scoring
+ * What a played tile's Edition does
  */
 export interface ModifierScoringResult {
   chipBonus: number
   multBonus: number
   multMultiplier: number
   goldBonus: number
-  retriggers: number
-  shattered: boolean
-  createdConsumable: 'none' | 'orb' | 'seal'
+  /** How the tile broke after the play, if it did. */
+  broke: TileBreak | null
+  createdConsumable: CreatedConsumable
+}
+
+/** The round a play belongs to, for Editions that read it. */
+export interface EditionRound {
+  /** The Act being played (Bonus Edition). */
+  act?: number
+  /** This round's roll per Lucky tile id (Lucky Edition). */
+  luckyRolls?: Readonly<Record<string, LuckyRoll>>
 }
 
 /**
- * Calculate scoring effects from modifiers
+ * The effects of a played tile's Edition.
  * @param modifiers The tile's modifiers
- * @param context 'played' | 'held' | 'discarded' | 'redrawn' | 'won'
- * @param options `deterministic` resolves chance-based effects (Lucky, Glass)
- *   to their guaranteed outcome. Used by score previews so the number shown
- *   before a play is the floor, never a roll the real play won't repeat.
- * @returns Scoring result with all bonuses
+ * @param tileId The tile, for its Lucky roll
+ * @param options `deterministic` never breaks a tile: score previews use it so
+ *   the number shown before a play never depends on a roll the real play makes.
  */
 export function calculateModifierEffects(
   modifiers: TileModifiers,
-  context: 'played' | 'held' | 'discarded' | 'redrawn' | 'won',
-  options: { deterministic?: boolean } = {}
+  tileId: string,
+  options: EditionRound & { deterministic?: boolean } = {}
 ): ModifierScoringResult {
-  const deterministic = options.deterministic ?? false
   const enhancement = ENHANCEMENT_DEFINITIONS[modifiers.enhancement]
-  const seal = SEAL_DEFINITIONS[modifiers.seal]
-  const edition = EDITION_DEFINITIONS[modifiers.edition]
-
-  let chipBonus = 0
-  let multBonus = 0
-  let multMultiplier = 1
-  let goldBonus = 0
-  let retriggers = 0
-  let shattered = false
-  let createdConsumable: 'none' | 'orb' | 'seal' = 'none'
-
-  // Apply enhancement effects based on context
-  if (context === 'played') {
-    // Enhancements that work when played/scored
-    if (enhancement.special !== 'held') {
-      chipBonus += enhancement.chipBonus
-      multBonus += enhancement.multBonus
-      multMultiplier *= enhancement.multMultiplier
-    }
-
-    // Lucky effect
-    if (enhancement.special === 'lucky' && !deterministic) {
-      const lucky = rollLuckyEffect()
-      multBonus += lucky.multBonus
-      goldBonus += lucky.goldBonus
-    }
-
-    // Shatter check for Glass
-    if (enhancement.special === 'shatter') {
-      shattered = deterministic ? false : rollShatter()
-    }
-
-    // Edition bonuses when played
-    chipBonus += edition.chipBonus
-    multBonus += edition.multBonus
-    multMultiplier *= edition.multMultiplier
-  }
-
-  // Steel effect only applies when held
-  if (context === 'held' && enhancement.special === 'held') {
-    multMultiplier *= enhancement.multMultiplier
-  }
-
-  // Gold Mark gold at end of round (counted in 'held' context)
-  if (context === 'held' && modifiers.enhancement === EnhancementType.Gold) {
-    goldBonus += enhancement.goldBonus
-  }
-
-  // Seal effects
-  if (seal.triggerOn === 'play' && context === 'played') {
-    goldBonus += seal.goldOnPlay
-    retriggers += seal.retriggers
-  }
-
-  if (
-    (seal.triggerOn === 'discard' && context === 'discarded') ||
-    (seal.triggerOn === 'discardOrRedraw' &&
-      (context === 'discarded' || context === 'redrawn'))
-  ) {
-    createdConsumable = seal.createsConsumable
-  }
-
-  if (seal.triggerOn === 'win' && context === 'won') {
-    createdConsumable = seal.createsConsumable
-  }
-
+  const lucky =
+    enhancement.special === 'lucky'
+      ? (options.luckyRolls?.[tileId] ?? LUCKY_FLOOR)
+      : null
   return {
-    chipBonus,
-    multBonus,
-    multMultiplier,
-    goldBonus,
-    retriggers,
-    shattered,
-    createdConsumable,
+    chipBonus:
+      calculateModifierChips(modifiers, options.act) + (lucky?.points ?? 0),
+    multBonus: enhancement.multBonus,
+    multMultiplier: lucky?.multiplier ?? 1,
+    goldBonus: enhancement.goldBonus,
+    broke:
+      !options.deterministic && rollBreak(enhancement.breakChance)
+        ? enhancement.breaks
+        : null,
+    createdConsumable: enhancement.creates,
   }
 }
 
@@ -609,7 +359,7 @@ export function calculateModifierEffects(
 // =============================================================================
 
 /**
- * Get all enhancement types (excluding None)
+ * Get all Edition types (excluding None)
  */
 export function getAllEnhancements(): EnhancementType[] {
   return Object.values(EnhancementType).filter(
@@ -618,21 +368,7 @@ export function getAllEnhancements(): EnhancementType[] {
 }
 
 /**
- * Get all seal types (excluding None)
- */
-export function getAllSeals(): SealType[] {
-  return Object.values(SealType).filter((s) => s !== SealType.None)
-}
-
-/**
- * Get all edition types (excluding Base)
- */
-export function getSpecialEditions(): EditionType[] {
-  return Object.values(EditionType).filter((e) => e !== EditionType.Base)
-}
-
-/**
- * Get random enhancement
+ * Get random Edition
  */
 export function getRandomEnhancement(): EnhancementType {
   const enhancements = getAllEnhancements()
@@ -642,49 +378,10 @@ export function getRandomEnhancement(): EnhancementType {
 }
 
 /**
- * Get random seal
- */
-export function getRandomSeal(): SealType {
-  const seals = getAllSeals()
-  return seals[Math.floor(runRandom.next('modifiers') * seals.length)]
-}
-
-/**
- * Get random edition based on rarity weights
- */
-export function getRandomEdition(): EditionType {
-  const editions = getSpecialEditions()
-  const weights = editions.map((e) => 1 / EDITION_DEFINITIONS[e].rarity)
-  const totalWeight = weights.reduce((sum, w) => sum + w, 0)
-
-  let roll = runRandom.next('modifiers') * totalWeight
-  for (let i = 0; i < editions.length; i++) {
-    roll -= weights[i]
-    if (roll <= 0) {
-      return editions[i]
-    }
-  }
-
-  return EditionType.Foil // Fallback
-}
-
-/**
  * Create modifier display string
  */
 export function formatModifiers(modifiers: TileModifiers): string {
-  const parts: string[] = []
-
-  if (modifiers.edition !== EditionType.Base) {
-    parts.push(EDITION_DEFINITIONS[modifiers.edition].name)
-  }
-
-  if (modifiers.enhancement !== EnhancementType.None) {
-    parts.push(ENHANCEMENT_DEFINITIONS[modifiers.enhancement].name)
-  }
-
-  if (modifiers.seal !== SealType.None) {
-    parts.push(SEAL_DEFINITIONS[modifiers.seal].name)
-  }
-
-  return parts.length > 0 ? parts.join(' ') : 'Base'
+  return modifiers.enhancement === EnhancementType.None
+    ? 'Base'
+    : ENHANCEMENT_DEFINITIONS[modifiers.enhancement].name
 }

@@ -58,7 +58,7 @@ export function canBecomeHonor(
 /**
  * Turn a tile into one named honor, whatever it was. Unlike a suit conversion
  * nothing cycles: the result is always this Wind or Dragon. The tile keeps its
- * id and its Mark, Stamp or Edition; an honor is never a red five.
+ * id and its Edition; an honor is never a red five.
  */
 export function convertTileToHonor(
   tile: Tile,

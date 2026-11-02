@@ -1,7 +1,7 @@
 /**
  * MadeSealPrompt: a Seal the run makes is used the moment it is made.
  *
- * A Purple tile redrawn at the table, the Seal of the Emperor or the Seal of
+ * A Glass tile played at the table, the Seal of the Emperor or the Seal of
  * the Fool can make a Fate Seal. One that needs no tiles has already worked
  * in the engine by the time this hears of it, and is announced. One that
  * takes tiles waits only for the player's choice: the wall picker opens at

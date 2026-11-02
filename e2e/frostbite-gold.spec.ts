@@ -25,7 +25,7 @@ for (const [language, copy] of [
         eventPath = '/src/game/EventBus.ts'
       const { gameOrchestrator: game } = await import(gamePath)
       const { Tile, TileSuit } = await import(tilePath)
-      const { EnhancementType, SealType } = await import(modifiersPath)
+      const { EnhancementType } = await import(modifiersPath)
       const { ALL_DECREES } = await import(decreesPath)
       const { eventBus } = await import(eventPath)
       game.startNewRun(7)
@@ -45,7 +45,11 @@ for (const [language, copy] of [
           (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `hand-${i}`)
         ),
       ]
-      state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+      // The played Gold Edition pays as it scores; the one left in the rack
+      // pays nothing at the round's end.
+      state.handTiles[0] = state.handTiles[0].withEnhancement(
+        EnhancementType.Gold
+      )
       state.handTiles[13] = state.handTiles[13].withEnhancement(
         EnhancementType.Gold
       )
@@ -67,6 +71,8 @@ for (const [language, copy] of [
       })
       return game.previewScore(['gold-4', 'gold-5', 'gold-6']).goldEarned
     })
+    // 3 Gold from the played Gold Edition (a tile reward Frostbite leaves
+    // whole), × the Philosopher's Stone at half strength (×1.5), rounded down.
     expect(previewGold).toBe(4)
     // The new run's Decrees and the fixture's Winter are revealed first.
     await settleReveals(page, 2_000)
@@ -87,7 +93,7 @@ for (const [language, copy] of [
     })
     expect(
       [...seen.values()].reduce((sum, toast) => sum + (toast.value ?? 0), 0)
-    ).toBe(9)
+    ).toBe(5)
     expect(seen.get('rentals')).toMatchObject({ value: -3, fits: true })
     expect(seen.get('bonus')!.text).toContain(copy.shop.payout.bonus)
     expect(seen.get('decrees')!.text).toContain(
@@ -103,20 +109,22 @@ for (const [language, copy] of [
         seasons: game.getState().seasonSystem.getSeasonStack(),
       }
     })
+    // (3 clear + 2 interest + half of Coin Collector's 1) × 1.5, rounded
+    // down, less the 3 Rental: the Gold Edition left in the rack adds nothing.
     expect(snapshot).toMatchObject({
-      gold: 23,
+      gold: 19,
       summary: {
         goldBefore: 14,
-        goldAfter: 23,
+        goldAfter: 19,
         baseReward: 3,
         interest: 2,
         decreeGold: 0.5,
-        heldGoldMarkReward: 3,
         rentalCost: 3,
-        netGoldChange: 9,
+        netGoldChange: 5,
       },
       seasons: [],
     })
+    expect(snapshot.summary).not.toHaveProperty('heldGoldMarkReward')
     const offer = await page.evaluate(async () => {
       const path = '/src/game/GameOrchestrator.ts'
       const { gameOrchestrator: game } = await import(path)
@@ -138,7 +146,7 @@ for (const [language, copy] of [
         summary: game.getState().lastRoundSummary,
       }
     })
-    expect(after.gold).toBe(23 - offer.finalCost)
+    expect(after.gold).toBe(19 - offer.finalCost)
     expect(after.summary).toEqual(snapshot.summary)
     await page
       .getByRole('button', { name: copy.shop.ui.nextRound, exact: true })

@@ -123,13 +123,14 @@
     "biggerHandComplete": "Jika ubin barunya 1 dan 4 {{circles}}, keempat belas ubin membentuk empat urutan dan satu pasangan. Pilih keempat belasnya lalu mainkan: tangan yang sudah jadi tidak mencetak skor dengan sendirinya.",
     "biggerHandWarning": "Tarikan ubin itu acak, dan mengejar tangan besar bisa membuatmu kalah di ronde ini. Bandingkan skor yang bisa kamu buat sekarang dengan sisa Giliranmu.",
     "congratulations": "<strong>Selamat!</strong> Kini kamu memahami dasar-dasar Tensho.",
-    "farewell": "Semoga ubin berpihak padamu dalam perjalananmu menuju langit!"
+    "farewell": "Semoga ubin berpihak padamu dalam perjalananmu menuju langit!",
+    "finishes": "Dekrit bisa membawa Lapisan sebagai gantinya: Foil (+50 Poin), Holografik (+10 Mult), Polikrom (×1,5 Mult), atau Negatif (+1 slot Dekrit)."
   },
   "codexEconomy": {
     "payout": "Hadiah dasar menuntaskan ronde adalah 3 Emas untuk Kecil, 5 untuk Besar, dan 10 untuk Bos, bukan berdasarkan skor di atas target. Taruhan dapat meniadakan hadiah Kecil; Dekret dan Pertanda dapat mengubah pembayaran akhir.",
     "interest": "Bunga dihitung dari Emas sebelum pembayaran ronde: 1 per 5, dengan batas awal 5. Piagam dan Pertanda dapat menaikkan batas; beberapa Pertanda memblokir bunga. Kekalahan tidak membayar bunga.",
     "sale": "Lihat tombol Jual pada Dekret untuk nilai sebenarnya. Dekret yang dibayar dengan Bunga atau diperoleh gratis dapat bernilai jual 0 Emas; Dekret Abadi tidak bisa dijual. Menjual menghapus efeknya dan mengosongkan slot yang dipakai.",
-    "prices": "Gunakan harga yang ditampilkan pada tiap penawaran dan biaya pengacakan saat ini. Diskon, Edisi, Piagam, dan efek lain dapat mengubah harga. Pengacakan tidak mengisi ulang Piagam yang sudah dibeli atau penawaran gratis Peramal Kartu."
+    "prices": "Gunakan harga yang ditampilkan pada tiap penawaran dan biaya pengacakan saat ini. Diskon, Lapisan, Piagam, dan efek lain dapat mengubah harga. Pengacakan tidak mengisi ulang Piagam yang sudah dibeli atau penawaran gratis Peramal Kartu."
   },
   "achievements": {
     "firstSteps": {
@@ -461,7 +462,7 @@
     "waiting": "Menunggu Dekrit lain.",
     "missing": "Target dihapus; pilih lagi ronde berikutnya.",
     "inactive": "Penyalin atau targetnya tidak aktif.",
-    "rules": "Target tetap selama ronde ini. Menyalin efek dan biaya, bukan Edisi atau rantai salinan. Menghapus atau menonaktifkan target tidak mengundi ulang."
+    "rules": "Target tetap selama ronde ini. Menyalin efek dan biaya, bukan Lapisan atau rantai salinan. Menghapus atau menonaktifkan target tidak mengundi ulang."
   },
   "screenDownload": {
     "title": "Layar ini tidak dapat diunduh",
@@ -475,7 +476,6 @@
   },
   "runOwnership": {
     "fateSeal": "Perubahan ubin bertahan sepanjang permainan ini, termasuk ronde berikutnya. Permainan baru dimulai dari awal.",
-    "negativeTile": "+1 slot Dekrit selama ubin Negatif fisik ini tetap ada di dindingmu. Menariknya atau mengirimnya ke sungai tidak menghapus slot; menghancurkannya atau mengganti Edisinya menghapus slot.",
     "overCapacity": "Kapasitas berkurang: Dekrit yang dimiliki tetap disimpan. Kosongkan tempat sebelum mendapat yang baru."
   },
   "yakuUpgrades": {
@@ -546,36 +546,36 @@
   "tileMarks": {
     "items": {
       "bonus": {
-        "name": "Tanda Bonus",
-        "description": "+30 Poin saat ubin ini mencetak skor."
+        "name": "Edisi Bonus",
+        "description": "+30 Poin per Babak saat ubin ini mencetak skor."
       },
       "mult": {
-        "name": "Tanda Mult",
+        "name": "Edisi Mult",
         "description": "+4 Mult saat ubin ini mencetak skor."
       },
       "wild": {
-        "name": "Tanda Liar",
+        "name": "Edisi Liar",
         "description": "Dihitung sebagai jenis apa pun, termasuk untuk Yaku"
       },
       "glass": {
-        "name": "Tanda Kaca",
-        "description": "Rapuh tapi kuat. ×2 Mult saat mencetak skor; peluang 1 dari 4 untuk pecah"
+        "name": "Edisi Kaca",
+        "description": "Membuat Segel Takdir acak saat dimainkan, lalu berpeluang 1 dari 4 untuk pecah (ubin dihancurkan)"
       },
       "steel": {
-        "name": "Tanda Baja",
-        "description": "×1,5 Mult selama tetap di rakmu dan tidak dimainkan"
+        "name": "Edisi Baja",
+        "description": "Membuat Orb Langit acak saat dimainkan, lalu berpeluang 1 dari 4 untuk berkarat hingga hancur (ubin dihancurkan)"
       },
       "stone": {
-        "name": "Tanda Batu",
+        "name": "Edisi Batu",
         "description": "+100 Poin. Ubin ini tidak punya angka maupun jenis, jadi tidak pernah masuk grup, tetapi selalu mencetak skor penuh."
       },
       "gold": {
-        "name": "Tanda Emas",
-        "description": "+3 Emas jika masih ada di rakmu saat ronde berakhir"
+        "name": "Edisi Emas",
+        "description": "+3 Emas setiap kali ubin ini mencetak skor"
       },
       "lucky": {
-        "name": "Tanda Keberuntungan",
-        "description": "Saat mencetak skor: peluang 1 dari 5 untuk +20 Mult, peluang 1 dari 15 untuk +20 Emas"
+        "name": "Edisi Keberuntungan",
+        "description": "Di awal setiap ronde mengundi ×1,25 hingga ×2 Mult dan +20 hingga +100 Poin, diberikan saat ubin ini mencetak skor"
       }
     }
   },
@@ -599,27 +599,7 @@
       },
       "negative": {
         "name": "Negatif",
-        "description": "+1 slot Dekrit per Dekrit Negatif yang dimiliki atau ubin Negatif fisik di dinding permainan ini."
-      }
-    }
-  },
-  "archiveSeals": {
-    "items": {
-      "gold": {
-        "name": "Cap Emas",
-        "description": "+3 Emas setiap kali ubin ini mencetak skor"
-      },
-      "red": {
-        "name": "Cap Merah",
-        "description": "Ubin ini dihitung dua kali"
-      },
-      "blue": {
-        "name": "Cap Biru",
-        "description": "Membuat Orb Langit acak jika ubin ini ikut dalam kali main yang menuntaskan ronde."
-      },
-      "purple": {
-        "name": "Cap Ungu",
-        "description": "Membuat Segel Takdir acak saat ubin ini ditarik ulang."
+        "description": "+1 slot Dekrit per Dekrit Negatif yang dimiliki."
       }
     }
   },
@@ -649,7 +629,7 @@
     "targets": "Ubin target",
     "count": "Target: {{selected}} / {{required}}",
     "copyOrder": "Ubin 1 menjadi salinan ubin 2. Pilih ubin yang ingin diubah terlebih dahulu.",
-    "replacesModifier": "Menggantikan {{names}}: satu ubin khusus hanya memiliki satu Tanda, Cap, atau Edisi.",
+    "replacesModifier": "Menggantikan {{names}}: satu ubin khusus hanya memiliki satu Edisi.",
     "cost": "Harga Kehampaan",
     "failed": "Item ini tidak dapat digunakan.",
     "unavailable": "Item ini tidak dapat digunakan sekarang.",
@@ -1029,7 +1009,6 @@
     "payout": {
       "interest": "Bunga",
       "decrees": "Dekrit",
-      "goldTiles": "Ubin Emas",
       "bonus": "Penyesuaian hadiah",
       "rentals": "Sewa",
       "omenEarned": "Pertanda: {{name}}",
@@ -1084,7 +1063,7 @@
       "what": "Rumah Teh adalah toko di antara ronde.",
       "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, Orb dan Segel Takdir langsung bekerja (Segel Takdir menanyakan ubin dinding mana yang diubah), Naskah dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
       "interest": "Emas yang kamu simpan berbunga: +1 untuk setiap 5 emas saat ronde berakhir, maksimal +{{cap}}.",
-      "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekrit, ubin Emas, dan sewa yang ditagih.",
+      "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekrit, dan sewa yang ditagih.",
       "build": "Susunanmu menampilkan Dekrit milikmu di samping peningkatan yaku: buka gulungan untuk membaca aturan atau menjualnya, atau peningkatan untuk melihat levelnya. Setiap pembelian lewat tombol Beli masing-masing."
     },
     "sealUsed": "{{name}} dipakai",
@@ -1944,7 +1923,9 @@
     "bonusTile": "Ubin bonus yang dikumpulkan otomatis",
     "flowerScope": "Efek dasar bunga berlangsung sepanjang permainan. Bonus koleksi dan penekanan dapat mengubahnya. Lihat Bunga / Musim untuk efek aktif.",
     "stage": "Siapkan {{tile}}",
-    "return": "Kembalikan {{tile}} ke tangan"
+    "return": "Kembalikan {{tile}} ke tangan",
+    "bonusThisAct": "Babak {{act}}: +{{points}} Poin",
+    "luckyThisRound": "Ronde ini: ×{{multiplier}} Mult dan +{{points}} Poin"
   },
   "tiles": {
     "manzu": "Karakter",
@@ -1960,10 +1941,6 @@
     "green": "Naga Hijau",
     "red": "Naga Merah",
     "modifiers": "Ubin khusus:",
-    "tileModifiers": "Ubin khusus",
-    "enhancement": "Tanda",
-    "stamp": "Cap",
-    "edition": "Edisi",
     "debuffed": "Ubin dilemahkan",
     "lockedMustPlay": "Ubin terkunci: harus dimainkan",
     "tileRow": "Baris ubin",
@@ -1984,7 +1961,7 @@
     "shortfall": "Kekurangan poin",
     "remainingGold": "Emas tersisa",
     "rentalPaid": "Sewa dikenakan",
-    "defeatIncome": "Saat kalah, Sewa tetap dibayar; hadiah ronde, bunga, pendapatan Dekrit, dan pendapatan ubin Emas yang disimpan tidak diberikan.",
+    "defeatIncome": "Saat kalah, Sewa tetap dibayar; hadiah ronde, bunga, dan pendapatan Dekrit tidak diberikan.",
     "endlessComplete": "Pendakian Tanpa Akhir Selesai",
     "victorySubtitle": "Duel Babak {{act}} telah kamu menangkan. Kemenanganmu sudah tercatat.",
     "endlessSubtitle": "Kemenanganmu tetap berlaku, meski pendakian ini telah berakhir.",
@@ -2465,16 +2442,12 @@
         "description": "Segel Takdir, Orb Langit, dan Naskah Kehampaan sekali pakai."
       },
       "tileMarks": {
-        "name": "Tanda Ubin",
-        "description": "Tanda yang mengubah cara ubin mencetak skor atau bekerja."
-      },
-      "seals": {
-        "name": "Cap",
-        "description": "Cap lilin yang memberi ubin efek tambahan."
+        "name": "Edisi",
+        "description": "Ubin khusus: setiap Edisi mengubah cara ubinnya mencetak skor atau bekerja."
       },
       "editions": {
-        "name": "Edisi",
-        "description": "Lapisan berkilau yang menambahkan efek pada ubin atau Dekrit."
+        "name": "Lapisan",
+        "description": "Lapisan berkilau yang menambahkan efek pada Dekrit."
       },
       "packs": {
         "name": "Paket Berkah",
@@ -2537,7 +2510,7 @@
       },
       "sharp_edge": {
         "name": "Tepi Tajam",
-        "description": "Edisi muncul dua kali lebih sering"
+        "description": "Lapisan Dekrit muncul dua kali lebih sering"
       },
       "reroll_surplus": {
         "name": "Surplus Pengocokan",
@@ -2601,7 +2574,7 @@
       },
       "radiant_edge": {
         "name": "Tepi Berkilau",
-        "description": "Edisi muncul empat kali lebih sering"
+        "description": "Lapisan Dekrit muncul empat kali lebih sering"
       },
       "reroll_abundance": {
         "name": "Kelimpahan Pengocokan",
@@ -2788,11 +2761,11 @@
       },
       "polychrome_omen": {
         "name": "Pertanda Polikrom",
-        "description": "Menambahkan Edisi Polikrom pada satu Dekrit acak yang dimiliki."
+        "description": "Menambahkan Lapisan Polikrom pada satu Dekrit acak yang dimiliki."
       },
       "foil_omen": {
         "name": "Pertanda Foil",
-        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Foil."
+        "description": "Dekrit berikutnya yang dibeli mendapat Lapisan Foil."
       },
       "interest_omen": {
         "name": "Pertanda Bunga",
@@ -2812,7 +2785,7 @@
       },
       "negative_omen": {
         "name": "Pertanda Negatif",
-        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Negatif (+1 slot)."
+        "description": "Dekrit berikutnya yang dibeli mendapat Lapisan Negatif (+1 slot)."
       },
       "austerity_omen": {
         "name": "Pertanda Penghematan",
@@ -2820,7 +2793,7 @@
       },
       "holographic_omen": {
         "name": "Pertanda Holografik",
-        "description": "Dekrit berikutnya yang dibeli mendapat Edisi Holografik."
+        "description": "Dekrit berikutnya yang dibeli mendapat Lapisan Holografik."
       }
     }
   },
@@ -2828,35 +2801,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Segel Sang Alkemis",
-        "description": "Menambahkan Tanda Keberuntungan (peluang +20 Mult atau +20 Emas saat mencetak skor) ke 2 ubin pilihanmu"
+        "description": "Menambahkan Edisi Keberuntungan ke 2 ubin pilihanmu (tiap ronde mengundi ×1,25 hingga ×2 Mult dan +20 hingga +100 Poin, diberikan saat mencetak skor)"
       },
       "seal_of_the_empress": {
         "name": "Segel Sang Permaisuri",
-        "description": "Menambahkan Tanda Mult (+4 Mult saat mencetak skor) ke 2 ubin pilihanmu"
+        "description": "Menambahkan Edisi Mult (+4 Mult saat mencetak skor) ke 2 ubin pilihanmu"
       },
       "seal_of_the_sage": {
         "name": "Segel Sang Bijak",
-        "description": "Menambahkan Tanda Bonus (+30 Poin saat mencetak skor) ke 2 ubin pilihanmu"
+        "description": "Menambahkan Edisi Bonus (+30 Poin per Babak saat mencetak skor) ke 2 ubin pilihanmu"
       },
       "seal_of_harmony": {
         "name": "Segel Keselarasan",
-        "description": "Menambahkan Tanda Liar ke 1 ubin pilihanmu (dihitung sebagai semua jenis)"
+        "description": "Menambahkan Edisi Liar ke 1 ubin pilihanmu (dihitung sebagai semua jenis)"
       },
       "seal_of_fortitude": {
         "name": "Segel Keteguhan",
-        "description": "Menambahkan Tanda Baja ke 1 ubin pilihanmu (×1,5 Mult selama tetap di rakmu)"
+        "description": "Menambahkan Edisi Baja ke 1 ubin pilihanmu (membuat Orb Langit saat dimainkan, lalu berpeluang 1 dari 4 untuk berkarat hingga hancur)"
       },
       "seal_of_glass": {
         "name": "Segel Kaca",
-        "description": "Menambahkan Tanda Kaca ke 1 ubin pilihanmu (×2 Mult saat mencetak skor, tetapi bisa pecah)"
+        "description": "Menambahkan Edisi Kaca ke 1 ubin pilihanmu (membuat Segel Takdir saat dimainkan, lalu berpeluang 1 dari 4 untuk pecah)"
       },
       "seal_of_wealth": {
         "name": "Segel Kekayaan",
-        "description": "Menambahkan Tanda Emas ke 1 ubin pilihanmu (+3 Emas jika ada di rakmu saat ronde berakhir)"
+        "description": "Menambahkan Edisi Emas ke 1 ubin pilihanmu (+3 Emas setiap kali mencetak skor)"
       },
       "seal_of_stone": {
         "name": "Segel Batu",
-        "description": "Menambahkan Tanda Batu ke 1 ubin pilihanmu (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
+        "description": "Menambahkan Edisi Batu ke 1 ubin pilihanmu (+100 Poin; tanpa angka maupun jenis, tidak pernah masuk grup, selalu mencetak skor penuh)"
       },
       "seal_of_manzu": {
         "name": "Segel Karakter",
@@ -2944,7 +2917,7 @@
       },
       "seal_of_fortune": {
         "name": "Segel Peruntungan",
-        "description": "Peluang 1 dari 4 memberi Edisi Foil, Holografik, atau Polikrom pada Dekrit acak"
+        "description": "Peluang 1 dari 4 memberi Lapisan Foil, Holografik, atau Polikrom pada Dekrit acak"
       },
       "seal_of_the_immortal": {
         "name": "Segel Sang Abadi",
@@ -2960,15 +2933,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Naskah Pertalian",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 3 Angin atau Naga acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 3 Angin atau Naga acak, masing-masing dengan Edisi Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_the_grave": {
         "name": "Naskah Kubur",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 2 ubin 1 atau 9 acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 2 ubin 1 atau 9 acak, masing-masing dengan Edisi Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_incantation": {
         "name": "Naskah Mantra",
-        "description": "Menghancurkan 1 ubin acak dan menambahkan 4 ubin 2–8 acak, masing-masing dengan Tanda Bonus, Mult, atau Keberuntungan acak"
+        "description": "Menghancurkan 1 ubin acak dan menambahkan 4 ubin 2–8 acak, masing-masing dengan Edisi Bonus, Mult, atau Keberuntungan acak"
       },
       "script_of_immolation": {
         "name": "Naskah Pembakaran",
@@ -2978,29 +2951,9 @@
         "name": "Naskah Makhluk Gaib",
         "description": "Membuat 2 salinan dari 1 ubin rak pilihanmu"
       },
-      "script_of_the_gold_seal": {
-        "name": "Naskah Cap Emas",
-        "description": "Menambahkan Cap Emas ke 1 ubin pilihanmu (+3 Emas saat ubin itu mencetak skor)"
-      },
-      "script_of_deja_vu": {
-        "name": "Naskah Déjà Vu",
-        "description": "Menambahkan Cap Merah ke 1 ubin pilihanmu (ubin itu dihitung dua kali)"
-      },
-      "script_of_the_trance": {
-        "name": "Naskah Kesurupan",
-        "description": "Menambahkan Cap Biru ke 1 ubin pilihanmu (membuat Orb Langit jika ubin itu ikut dalam kali main yang menuntaskan ronde)"
-      },
-      "script_of_the_medium": {
-        "name": "Naskah Perantara",
-        "description": "Menambahkan Cap Ungu ke 1 ubin terpilih (membuat Segel Takdir saat ditarik ulang)"
-      },
-      "script_of_aura": {
-        "name": "Naskah Aura",
-        "description": "Memberi 1 ubin pilihanmu Edisi acak: Foil, Holografik, atau Polikrom"
-      },
       "script_of_ectoplasm": {
         "name": "Naskah Ektoplasma",
-        "description": "Menambahkan Edisi Negatif ke Dekrit acak (+1 slot Dekrit)"
+        "description": "Menambahkan Lapisan Negatif ke Dekrit acak (+1 slot Dekrit)"
       },
       "script_of_the_wraith": {
         "name": "Naskah Arwah",
@@ -3012,7 +2965,7 @@
       },
       "script_of_the_hex": {
         "name": "Naskah Kutukan",
-        "description": "Memberi Edisi Polikrom pada Dekrit acak dan menghancurkan semua Dekrit lain"
+        "description": "Memberi Lapisan Polikrom pada Dekrit acak dan menghancurkan semua Dekrit lain"
       },
       "script_of_the_sigil": {
         "name": "Naskah Sigil",
@@ -3041,6 +2994,26 @@
       "script_of_silence": {
         "name": "Naskah Kesunyian",
         "description": "Tangan lengkapmu berikutnya boleh berisi satu grup yang tidak cocok"
+      },
+      "script_of_the_gold_seal": {
+        "name": "Naskah Penyepuhan",
+        "description": "Memberi Edisi Emas ke hingga 3 ubin pilihanmu (+3 Emas setiap kali salah satunya mencetak skor)"
+      },
+      "script_of_deja_vu": {
+        "name": "Naskah Déjà Vu",
+        "description": "Menyalin Edisi dari 1 ubin pilihanmu ke setiap salinan lain ubin itu di dindingmu"
+      },
+      "script_of_the_trance": {
+        "name": "Naskah Kesurupan",
+        "description": "Memberi Edisi Baja ke 2 ubin pilihanmu (masing-masing membuat Orb Langit saat dimainkan, lalu bisa berkarat hingga hancur)"
+      },
+      "script_of_the_medium": {
+        "name": "Naskah Perantara",
+        "description": "Memberi Edisi Kaca ke 2 ubin pilihanmu (masing-masing membuat Segel Takdir saat dimainkan, lalu bisa pecah)"
+      },
+      "script_of_aura": {
+        "name": "Naskah Aura",
+        "description": "Memberi masing-masing hingga 3 ubin pilihanmu Edisi acak: Bonus, Mult, Liar, Kaca, Baja, Emas, atau Keberuntungan"
       }
     }
   },
@@ -3052,7 +3025,7 @@
         "description": "Pernis merah kirmizi dan naga emas mendukung strategi berpusat pada Naga, dengan ruang lebih sedikit untuk Dekrit.",
         "unlock": "Menang pada Tingkat Merah atau lebih tinggi",
         "modifiers": {
-          "0": "Ubin Naga awal memiliki Tanda Mult (+4 Mult saat mencetak skor)",
+          "0": "Ubin Naga awal memiliki Edisi Mult (+4 Mult saat mencetak skor)",
           "1": "Slot Dekrit awal −1"
         }
       },
@@ -3062,7 +3035,7 @@
         "description": "Batu gelap dan ukiran angin perak menguntungkan strategi berpusat pada Angin, dengan ruang lebih sedikit untuk Dekrit.",
         "unlock": "Menang pada Tingkat Hitam atau lebih tinggi",
         "modifiers": {
-          "0": "Ubin Angin awal memiliki Tanda Bonus (+30 Poin saat mencetak skor)",
+          "0": "Ubin Angin awal memiliki Edisi Bonus (+30 Poin per Babak saat mencetak skor)",
           "1": "Slot Dekrit awal −1"
         }
       },
@@ -3258,11 +3231,8 @@
     "tilesTitle": "Ubin",
     "tilesHelp": "Karakter memakai angka Tionghoa 一 sampai 九; Lingkaran dan Bambu menunjukkan jumlahnya (Bambu 1 adalah burung). Angka pada ubin bisa dinyalakan di Pengaturan.",
     "honorsHelp": "Setiap Angin bernilai {{wind}} poin, {{windGroup}} dalam kelompok. Setiap Naga menambah +{{dragon}} Mult, +{{dragonGroup}} dalam kelompok.",
-    "specialTitle": "Ubin khusus",
-    "specialHelp": "Ubin khusus membawa satu efek tambahan: Tanda (bingkai berwarna dengan permata), Cap (cap lilin), atau Edisi (kilau).",
-    "marks": "Tanda",
-    "seals": "Cap",
-    "editions": "Edisi",
+    "specialTitle": "Edisi",
+    "specialHelp": "Ubin khusus membawa satu Edisi yang dilukis pada ubin sebagai bahannya. Edisi mengubah cara ubin mencetak skor atau apa yang terjadi saat kamu memainkannya, dan Edisi baru menggantikan yang lama.",
     "close": "Ayo main"
   },
   "mandateConsequence": {
@@ -3395,5 +3365,9 @@
     },
     "tradeoff": "Imbalannya",
     "rule": "Selesaikan ronde Kecil atau Besar dengan sisa {{spare}} Giliran atau lebih untuk mendapat Pertanda. Ronde Bos tidak memberinya."
+  },
+  "tileBroken": {
+    "shattered": "{{tile}} pecah",
+    "rusted": "{{tile}} berkarat hingga hancur"
   }
 }

@@ -25,7 +25,7 @@ function finishRound(game: GameOrchestrator) {
   }
 }
 
-describe('version 3 saves', () => {
+describe('version 4 saves', () => {
   it.each([3, 11, 27])(
     'round-trips a run in play and in the Tea House (seed %i)',
     (seed) => {
@@ -37,7 +37,7 @@ describe('version 3 saves', () => {
       finishRound(game)
       expect(game.getState().handsPlayedThisRun).toBeGreaterThan(playsBefore)
       const after = JSON.parse(JSON.stringify(game.captureRun()))
-      expect(after.version).toBe(3)
+      expect(after.version).toBe(4)
       expect(() => parseClassicRunSnapshot(after)).not.toThrow()
     }
   )

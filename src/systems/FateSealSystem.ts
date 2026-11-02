@@ -14,7 +14,8 @@
  */
 
 import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
-import { EnhancementType, SealType, EditionType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
+import type { DecreeEdition } from './types'
 import {
   isConsumableAvailable,
   type ConsumableUnlockResolver,
@@ -50,8 +51,7 @@ export type FateSealEffectType =
   | 'destroy_tiles' // Remove tiles from hand/deck
   | 'copy_tile' // Duplicate a tile
   | 'transform_tile' // Change one tile into another
-  | 'apply_seal' // Add a seal to a tile
-  | 'apply_edition' // Add edition to decree/tile
+  | 'apply_edition' // Add a Finish (DecreeEdition) to a decree
   | 'sell_value_bonus' // Get gold from decree sell values
 
 /**
@@ -62,8 +62,6 @@ export interface FateSealEffect {
   description: string
   tileCount?: number // Number of tiles affected
   enhancement?: EnhancementType
-  sealType?: SealType
-  editionType?: EditionType
   targetSuit?: TileSuit
   targetRank?: number // With targetSuit: the exact tile a transform makes
   goldAmount?: number
@@ -105,14 +103,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of the Alchemist',
     japaneseName: '錬金術師の印',
     description:
-      'Adds a Lucky Mark (a chance of +20 Mult or +20 Gold when scored) to 2 tiles you choose',
+      'Adds a Lucky Edition to 2 tiles you choose (each round it rolls ×1.25 to ×2 Mult and +20 to +100 Points, paid when it scores)',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
     sellValue: 1,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Lucky Mark to 2 tiles',
+      description: 'Apply Lucky Edition to 2 tiles',
       tileCount: 2,
       enhancement: EnhancementType.Lucky,
       requiresSelection: true,
@@ -126,14 +124,15 @@ export const FATE_SEALS: Record<
     type: 'FateSeal',
     name: 'Seal of the Empress',
     japaneseName: '女帝の印',
-    description: 'Adds a Mult Mark (+4 Mult when scored) to 2 tiles you choose',
+    description:
+      'Adds a Mult Edition (+4 Mult when scored) to 2 tiles you choose',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
     sellValue: 1,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Mult Mark to 2 tiles',
+      description: 'Apply Mult Edition to 2 tiles',
       tileCount: 2,
       enhancement: EnhancementType.Mult,
       requiresSelection: true,
@@ -148,14 +147,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of the Sage',
     japaneseName: '賢者の印',
     description:
-      'Adds a Bonus Mark (+30 Points when scored) to 2 tiles you choose',
+      'Adds a Bonus Edition (+30 Points per Act when scored) to 2 tiles you choose',
     rarity: 'Common',
     edition: 'Base',
     cost: 3,
     sellValue: 1,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Bonus Mark to 2 tiles',
+      description: 'Apply Bonus Edition to 2 tiles',
       tileCount: 2,
       enhancement: EnhancementType.Bonus,
       requiresSelection: true,
@@ -170,14 +169,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Harmony',
     japaneseName: '和の印',
     description:
-      'Adds a Wild Mark to 1 tile you choose (it counts as every suit)',
+      'Adds a Wild Edition to 1 tile you choose (it counts as every suit)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'convert_to_wild',
-      description: 'Apply Wild Mark to 1 tile',
+      description: 'Apply Wild Edition to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Wild,
       requiresSelection: true,
@@ -192,14 +191,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Fortitude',
     japaneseName: '剛の印',
     description:
-      'Adds a Steel Mark to 1 tile you choose (×1.5 Mult while it stays on your rack)',
+      'Adds a Steel Edition to 1 tile you choose (creates a Celestial Orb when played, then has a 1 in 4 chance to rust away)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Steel Mark to 1 tile',
+      description: 'Apply Steel Edition to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Steel,
       requiresSelection: true,
@@ -214,14 +213,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Glass',
     japaneseName: '硝子の印',
     description:
-      'Adds a Glass Mark to 1 tile you choose (×2 Mult when scored, but it may shatter)',
+      'Adds a Glass Edition to 1 tile you choose (creates a Fate Seal when played, then has a 1 in 4 chance to shatter)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Glass Mark to 1 tile',
+      description: 'Apply Glass Edition to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Glass,
       requiresSelection: true,
@@ -236,14 +235,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Wealth',
     japaneseName: '富の印',
     description:
-      'Adds a Gold Mark to 1 tile you choose (+3 Gold if it is on your rack when the round ends)',
+      'Adds a Gold Edition to 1 tile you choose (+3 Gold each time it scores)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Gold Mark to 1 tile',
+      description: 'Apply Gold Edition to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Gold,
       requiresSelection: true,
@@ -258,14 +257,14 @@ export const FATE_SEALS: Record<
     name: 'Seal of Stone',
     japaneseName: '石の印',
     description:
-      'Adds a Stone Mark to 1 tile you choose (+100 Points; no number or suit, never joins a group, always scores in full)',
+      'Adds a Stone Edition to 1 tile you choose (+100 Points; no number or suit, never joins a group, always scores in full)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
       type: 'enhance_tiles',
-      description: 'Apply Stone Mark to 1 tile',
+      description: 'Apply Stone Edition to 1 tile',
       tileCount: 1,
       enhancement: EnhancementType.Stone,
       requiresSelection: true,
@@ -746,7 +745,7 @@ export const FATE_SEALS: Record<
     name: 'Seal of Fortune',
     japaneseName: '運命の印',
     description:
-      '1 in 4 chance to give a random Decree a Foil, Holographic or Polychrome Edition',
+      '1 in 4 chance to give a random Decree a Foil, Holographic or Polychrome Finish',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
@@ -1076,14 +1075,14 @@ export class FateSealSystem {
 
     effects.push({
       type: 'enhancement_applied',
-      description: `Applied ${enhancement} Mark to ${affectedTileIds.length} tile(s)`,
+      description: `Applied ${enhancement} Edition to ${affectedTileIds.length} tile(s)`,
       value: enhancement,
       affectedTiles: affectedTileIds,
     })
 
     return {
       success: true,
-      message: `${seal.name}: Enhanced ${affectedTileIds.length} tile(s) with ${enhancement} Mark`,
+      message: `${seal.name}: Enhanced ${affectedTileIds.length} tile(s) with ${enhancement} Edition`,
       effects,
     }
   }
@@ -1509,11 +1508,7 @@ export class FateSealSystem {
     }
 
     // Choose random edition
-    const editions: EditionType[] = [
-      EditionType.Foil,
-      EditionType.Holographic,
-      EditionType.Polychrome,
-    ]
+    const editions: DecreeEdition[] = ['Foil', 'Holographic', 'Polychrome']
     const edition =
       editions[Math.floor(runRandom.next('consumables') * editions.length)]
 

@@ -13,7 +13,7 @@ import {
 } from '../systems/CelestialOrbSystem'
 import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VOID_SCRIPTS } from '../systems/VoidScriptSystem'
-import { EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { Tile, TileSuit } from '../core/Tile'
 import { useOmenStore } from '../stores/omenStore'
 import {
@@ -964,7 +964,39 @@ describe('GameOrchestrator', () => {
       expect(game.getFateSeals()).toHaveLength(0)
     })
 
-    it('applies tile seals and Void Script economy penalties', () => {
+    it('copies a chosen tile with its Edition through Script of the Cryptid', () => {
+      const state = game.getState() as OrchestratorState
+      const target = state.handTiles[0].withEnhancement(EnhancementType.Gold)
+      state.handTiles[0] = target
+      state.wallTemplate = state.wallTemplate.map((tile) =>
+        tile.id === target.id ? target : tile
+      )
+      const cryptid = VoidScriptSystem.createVoidScriptInstance(
+        VOID_SCRIPTS.script_of_the_cryptid
+      )
+      game.addVoidScript(cryptid)
+      const idsBefore = new Set(state.wallTemplate.map((tile) => tile.id))
+
+      expect(
+        game.processAction({
+          type: 'useScript',
+          scriptId: cryptid.instanceId,
+          targets: [target.id],
+        }).success
+      ).toBe(true)
+      const copies = game
+        .getState()
+        .wallTemplate.filter((tile) => !idsBefore.has(tile.id))
+      expect(copies).toHaveLength(2)
+      for (const copy of copies)
+        expect(copy).toMatchObject({
+          suit: target.suit,
+          rank: target.rank,
+          modifiers: { enhancement: EnhancementType.Gold },
+        })
+    })
+
+    it('applies tile Editions and Void Script economy penalties', () => {
       const goldSealScript = VoidScriptSystem.createVoidScriptInstance(
         VOID_SCRIPTS.script_of_the_gold_seal
       )
@@ -979,8 +1011,9 @@ describe('GameOrchestrator', () => {
         }).success
       ).toBe(true)
       expect(
-        game.getHandTiles().find((tile) => tile.id === targetId)?.modifiers.seal
-      ).toBe(SealType.Gold)
+        game.getHandTiles().find((tile) => tile.id === targetId)?.modifiers
+          .enhancement
+      ).toBe(EnhancementType.Gold)
 
       const penaltyGame = new GameOrchestrator()
       penaltyGame.startNewRun(12345)

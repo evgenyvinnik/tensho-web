@@ -4,6 +4,10 @@ Updated September 9, 2026. This closes concrete resource-cycling gaps against
 [Game mechanics, section 3](GAME_MECHANICS.md#3-discards-and-hand-management-河管理).
 It does not establish balance, enjoyment, or completion of the broader project.
 
+> **Update (snapshot v4):** Purple Stamps ("Purple Seal" below) were retired with
+> the other Stamps; a redraw no longer creates a Fate Seal. A played Glass tile
+> now makes one instead. The Purple notes below are historical.
+
 ## Corrected behavior
 
 Previously, a redraw placed removed tiles into the discard pool despite the

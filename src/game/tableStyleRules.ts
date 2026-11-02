@@ -39,7 +39,7 @@ export function resolveTableRules(requestedId: string): {
 
 /**
  * Apply once when constructing the initial permanent wall, before assignment
- * to wallTemplate and shuffling. These are ordinary, replaceable tile Marks,
+ * to wallTemplate and shuffling. These are ordinary, replaceable tile Editions,
  * not passive scoring bonuses. Never reapply on reshuffle, restore, or additions.
  * Tile identity and input tiles are preserved; enhanced tiles are new instances.
  */

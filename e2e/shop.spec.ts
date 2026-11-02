@@ -333,10 +333,10 @@ test('Tile Pack rules identify the real modified tiles and a Spanish phone can c
   await expect(choices).toHaveCount(2)
   await expect(choices.nth(0)).toContainText('Común')
   await expect(choices.nth(0)).toHaveAccessibleName(
-    '4 de Bambúes · Marca de Bonificación'
+    '4 de Bambúes · Edición de Bonificación'
   )
   await expect(choices.nth(1)).toHaveAccessibleName(
-    '5 de Bambúes · Marca de Oro'
+    '5 de Bambúes · Edición de Oro'
   )
   await expect(choices.nth(0)).toHaveAccessibleDescription(
     es.tileMarks.items.bonus.description
@@ -422,7 +422,6 @@ for (const [lang, bonus] of [
         baseReward: 4,
         interest: 2,
         decreeGold: 3,
-        heldGoldMarkReward: 3,
         rentalCost: 2,
         netGoldChange: 1234567890,
         goldBefore: 9876543210,
@@ -464,11 +463,11 @@ for (const [lang, bonus] of [
         [...seen.values()].reduce((sum, toast) => sum + (toast.value ?? 0), 0)
       ).toBe(1234567890)
       expect([...seen.keys()].sort()).toEqual(
-        ['bonus', 'clear', 'decrees', 'goldTiles', 'interest', 'rentals'].sort()
+        ['bonus', 'clear', 'decrees', 'interest', 'rentals'].sort()
       )
       expect(seen.get('bonus')!.text).toContain(
         new Intl.NumberFormat(lang, { signDisplay: 'always' }).format(
-          1234567880
+          1234567883
         )
       )
       expect([...seen.values()].every((toast) => toast.fits)).toBe(true)

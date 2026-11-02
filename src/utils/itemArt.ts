@@ -79,12 +79,6 @@ const UPGRADE_ORBS: Record<string, string> = {
   All: 'black_hole_orb',
 }
 
-const TILE_LAYERS: Record<string, 'enhancements' | 'seals' | 'editions'> = {
-  mark: 'enhancements',
-  seal: 'seals',
-  edition: 'editions',
-}
-
 export interface ItemArt {
   src: string
   /** False when the image is the family's shared artwork. */
@@ -153,9 +147,8 @@ export function getItemArt(kind: ItemArtKind, id: string): ItemArt {
         ? { src: getPackIllustration(id as PackType), hasOwnArt: true }
         : { src: illustrationAssets.packs.Arcana, hasOwnArt: false }
     case 'tileMarks': {
-      // `gold` or `mark-gold` is a mark; `seal-red` and `edition-foil` too.
-      const [layer, value] = id.includes('-') ? id.split('-', 2) : ['mark', id]
-      const src = getGeneratedArt(TILE_LAYERS[layer] ?? 'enhancements', value)
+      // A tile Edition (`gold`, or the older `mark-gold`).
+      const src = getGeneratedArt('enhancements', id.replace(/^mark-/, ''))
       return src
         ? { src, hasOwnArt: true }
         : { src: illustrationAssets.tableTools, hasOwnArt: false }

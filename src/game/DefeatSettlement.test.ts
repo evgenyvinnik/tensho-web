@@ -57,7 +57,6 @@ it.each(['Rental', 'Expired Rental', 'Eternal Rental'])(
       baseReward: 0,
       interest: 0,
       decreeGold: 0,
-      heldGoldMarkReward: 0,
       rentalCost: 3,
       netGoldChange: -3,
       goldBefore: 1,
@@ -75,7 +74,7 @@ it.each(['Rental', 'Expired Rental', 'Eternal Rental'])(
   }
 )
 
-it('pays no interest, round-end Decree or held Gold income on defeat', () => {
+it('pays no interest, round-end Decree income or Gold for a held Gold tile on defeat', () => {
   const { game, state, action } = fixture()
   state.gold = 25
   state.decreeSystem.acquireDecree(
@@ -92,12 +91,13 @@ it('pays no interest, round-end Decree or held Gold income on defeat', () => {
     baseReward: 0,
     interest: 0,
     decreeGold: 0,
-    heldGoldMarkReward: 0,
     rentalCost: 0,
     netGoldChange: 0,
     goldBefore: 25,
     goldAfter: 25,
   })
+  // A Gold Edition pays only when its tile scores; the rack pays nothing.
+  expect(state.lastRoundSummary).not.toHaveProperty('heldGoldMarkReward')
 })
 
 it('charges a Rental held for the failed boss round before destruction', () => {

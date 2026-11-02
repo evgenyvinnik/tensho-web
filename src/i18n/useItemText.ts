@@ -26,7 +26,6 @@ export type ItemKind =
   | 'archiveCategories'
   | 'walls'
   | 'tileMarks'
-  | 'archiveSeals'
   | 'editions'
   | 'packs'
   | 'tableStyles'

@@ -12,23 +12,23 @@
  *   Straight of 4: +45, Straight of 5: +60, Straight of 6: +75,
  *   Three Dragons: +60, Four Winds: +65 (the secret hands)
  * - A numbered tile in a tactical play that belongs to no group scores half
- * - A Stone tile has no face: it joins no group and scores only its Stone Mark
+ * - A Stone tile has no face: it joins no group and scores only its Stone Edition
  *
  * Mult starts at 1 (or the Yaku multiplier of a complete hand) and adds:
  * - the play pattern's Mult (see PlayPattern.ts)
  * - +2 for every Dragon that scores, +4 for one inside a group
- * - every scored Mark or Edition "+N Mult" (Mult Mark +4, Holo +10, Lucky +20)
+ * - every scored Edition's "+N Mult" (Mult Edition +4)
  *
- * Tile modifiers also add:
- * - points from Marks and Editions (Bonus: +30, Stone: +100, Foil: +50)
- * - ×Mult layers (Glass ×2, Polychrome ×1.5, ×1.5 per Steel Mark held in rack)
- * - Seal effects (Gold: ¥3, Red: retrigger, etc.)
+ * Tile Editions also add:
+ * - points (Bonus: +30 per Act, Stone: +100, Lucky: its round's roll)
+ * - a ×Mult layer (Lucky: its round's ×1.25–×2)
+ * - Gold (Gold: +3 each time it scores)
  *
  * Red fives (aka-dora) add:
  * - +50 bonus chips per red five when enabled
  */
 
-import { Tile, TileSuit, WindType } from '../core/Tile'
+import { Tile, TileSuit, WindType, type LuckyRoll } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { ParsedHand } from '../core/Hand'
 import {
@@ -37,7 +37,11 @@ import {
   detectYaku,
   calculateYakuMultiplier,
 } from './YakuDetector'
-import { tileModifierSystem } from '../systems/TileModifierSystem'
+import {
+  tileModifierSystem,
+  type BrokenTile,
+  type MadeConsumable,
+} from '../systems/TileModifierSystem'
 import { redFiveSystem, countRedFives } from '../systems/RedFiveSystem'
 import type { ScoreEquation } from './ScoreEquation'
 import {
@@ -94,8 +98,10 @@ export interface ScoreBreakdown {
   // Retrigger info
   retriggeredTiles: string[]
 
-  // Shattered tiles (Glass)
-  shatteredTiles: string[]
+  // Tiles their Edition broke (Glass shatters, Steel rusts), and what played
+  // Glass and Steel tiles made
+  brokenTiles: BrokenTile[]
+  madeConsumables: MadeConsumable[]
 
   // Gold earned from modifiers
   goldEarned: number
@@ -140,8 +146,10 @@ export interface ScoringContext {
   extraRetriggers?: ReadonlyMap<string, number>
   /** Share of Decree repeat rewards retained; never scales native tile effects. */
   retriggerStrength?: number
-  /** Rack tiles left out of this play; each held Steel Mark multiplies it. */
-  heldTiles?: Tile[]
+  /** The Act being played: a Bonus Edition pays more each Act. */
+  act?: number
+  /** This round's roll per Lucky tile id. */
+  luckyRolls?: Readonly<Record<string, LuckyRoll>>
 }
 
 /**
@@ -167,7 +175,7 @@ export const UNGROUPED_TILE_SHARE = 0.5
  * Get points for a single tile based on its type
  */
 export function getTilePoints(tile: Tile): number {
-  // A Stone has no face; its Stone Mark chips are its whole value.
+  // A Stone has no face; its Stone Edition chips are its whole value.
   if (tile.isStone) return 0
   if (tile.suit === TileSuit.Wind) return WIND_TILE_POINTS
   if (tile.isHonor) return DRAGON_TILE_POINTS
@@ -315,13 +323,9 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   // scoring list rather than only repeating modifier bonuses.
   const strength = context.retriggerStrength ?? 1
   const triggerCountFor = (tile: Tile): number =>
-    (1 + tile.retriggers) *
-    (1 + Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0))
+    1 + Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0)
   const triggeredTiles = scoringTiles.flatMap((tile) =>
     new Array<Tile>(triggerCountFor(tile)).fill(tile)
-  )
-  const nativeTriggeredTiles = scoringTiles.flatMap((tile) =>
-    new Array<Tile>(1 + tile.retriggers).fill(tile)
   )
 
   // A tactical selection pays full price only for the tiles it actually
@@ -351,7 +355,6 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     (sum, tile) =>
       sum +
       playedTilePoints(tile, isGrouped(tile)) *
-        (1 + tile.retriggers) *
         (1 +
           Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
     0
@@ -364,43 +367,36 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     : calculateStructurePoints(context.parsedHand)
   const basePoints = tilePoints + structurePoints
 
-  // 2. Calculate modifier bonuses from played tiles
+  // 2. Calculate Edition bonuses from played tiles
   const modifierResult = tileModifierSystem.scoreTilesWithModifiers(
     scoringTiles,
-    'played',
     {
       preview: context.previewMode,
       extraRetriggers: context.extraRetriggers,
       retriggerStrength: strength,
+      act: context.act,
+      luckyRolls: context.luckyRolls,
     }
   )
-  // Tiles kept in the rack pay only their held ×Mult (Steel). A held Gold
-  // Mark's coins belong to the end of the round, not to every play.
-  const heldMultiplier = tileModifierSystem.scoreTilesWithModifiers(
-    (context.heldTiles ?? []).filter(
-      (tile) => !context.debuffedTileIds?.has(tile.id)
-    ),
-    'held',
-    { preview: context.previewMode }
-  ).totalMultiplier
   const modifierChips = modifierResult.totalChips
   const modifierMult = modifierResult.totalMult
-  const modifierMultiplier = modifierResult.totalMultiplier * heldMultiplier
+  const modifierMultiplier = modifierResult.totalMultiplier
   const goldEarned = modifierResult.totalGold
-  const shatteredTiles = [...new Set(modifierResult.shatteredTileIds)]
+  const brokenTiles = modifierResult.brokenTiles
+  const madeConsumables = modifierResult.consumables
 
   // 3. Calculate red five bonus chips
   const redFiveCount = countRedFives(triggeredTiles)
-  const nativeRedFiveChips = redFiveSystem.calculateBonus(nativeTriggeredTiles)
+  const nativeRedFiveChips = redFiveSystem.calculateBonus(scoringTiles)
   const redFiveChips =
     nativeRedFiveChips +
     (redFiveSystem.calculateBonus(triggeredTiles) - nativeRedFiveChips) *
       strength
 
-  // Track retriggered tiles (Red Seal and Decree retriggers)
+  // Track tiles Decrees retriggered
   const retriggeredTiles: string[] = []
   for (const tile of scoringTiles) {
-    if (tile.retriggers > 0 || triggerCountFor(tile) > 1) {
+    if (triggerCountFor(tile) > 1) {
       retriggeredTiles.push(tile.id)
     }
   }
@@ -439,7 +435,6 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     (sum, tile) =>
       sum +
       dragonMultFor(tile, isGrouped(tile)) *
-        (1 + tile.retriggers) *
         (1 +
           Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
     0
@@ -453,7 +448,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
 
   // 7. Calculate final score
   // Formula: Final Score = (Base Points + Additive Bonuses) x Multiplicative Multipliers
-  // A Mark or Edition's "+N Mult" joins the play's Mult, like a Dragon's.
+  // An Edition's "+N Mult" joins the play's Mult, like a Dragon's.
   const subtotal = basePoints + additiveBonus
   const finalScore = Math.floor(
     subtotal *
@@ -489,7 +484,8 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
     dragonMult,
     additiveBonus,
     retriggeredTiles,
-    shatteredTiles,
+    brokenTiles,
+    madeConsumables,
     goldEarned,
     subtotal,
     finalScore,
@@ -517,7 +513,8 @@ export function createScoringContext(
     previewMode?: boolean
     extraRetriggers?: ReadonlyMap<string, number>
     retriggerStrength?: number
-    heldTiles?: Tile[]
+    act?: number
+    luckyRolls?: Readonly<Record<string, LuckyRoll>>
   } = {}
 ): ScoringContext {
   return {
@@ -537,7 +534,8 @@ export function createScoringContext(
     previewMode: options.previewMode,
     extraRetriggers: options.extraRetriggers,
     retriggerStrength: options.retriggerStrength,
-    heldTiles: options.heldTiles,
+    act: options.act,
+    luckyRolls: options.luckyRolls,
   }
 }
 
@@ -614,8 +612,8 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
     lines.push(`Retriggered Tiles: ${breakdown.retriggeredTiles.length}`)
   }
 
-  if (breakdown.shatteredTiles.length > 0) {
-    lines.push(`Shattered Tiles: ${breakdown.shatteredTiles.length}`)
+  if (breakdown.brokenTiles.length > 0) {
+    lines.push(`Broken Tiles: ${breakdown.brokenTiles.length}`)
   }
 
   if (breakdown.goldEarned > 0) {
@@ -624,7 +622,7 @@ export function formatScoreBreakdown(breakdown: ScoreBreakdown): string {
 
   if (
     breakdown.retriggeredTiles.length > 0 ||
-    breakdown.shatteredTiles.length > 0 ||
+    breakdown.brokenTiles.length > 0 ||
     breakdown.goldEarned > 0
   ) {
     lines.push('')

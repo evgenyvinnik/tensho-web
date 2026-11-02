@@ -15,12 +15,7 @@ export function tileRewardText(tile: Tile, t: TFunction) {
     ].join(' · '),
     description: entries
       .map((entry) =>
-        t(
-          entry.kind === 'editions' && entry.id === 'negative'
-            ? 'runOwnership.negativeTile'
-            : `${entry.kind}.items.${entry.id}.description`,
-          entry.description
-        )
+        t(`${entry.kind}.items.${entry.id}.description`, entry.description)
       )
       .join(' '),
   }

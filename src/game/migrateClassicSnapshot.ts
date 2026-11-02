@@ -13,6 +13,12 @@
  * discards become free redraws, and the retired Riichi pledge is dropped.
  * Earned scores are never rewritten.
  *
+ * Version 4 retires Stamps and tile Editions: a tile keeps only its Edition
+ * (`enhancement`). A Stamp whose effect moved to an Edition becomes it (Gold
+ * Stamp → Gold, Blue → Steel, Purple → Glass); the rest are dropped, as is the
+ * end-of-round Gold tile payout. The Void Scripts that laid them keep their ids
+ * and take their new effects from the catalog like any other saved item.
+ *
  * Pure: returns a new value and never touches storage. Unknown future
  * versions are returned unchanged so validation rejects them.
  */
@@ -34,7 +40,7 @@ import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
 import { calculateCombinedModifiers } from '../config/stakeDefinitions'
 import { TURNS_PER_ROUND } from './playRules'
 
-export const CURRENT_SNAPSHOT_VERSION = 3
+export const CURRENT_SNAPSHOT_VERSION = 4
 
 type Json = Record<string, unknown>
 
@@ -402,14 +408,55 @@ function convertToTurns(snapshot: Json): Json {
   }
 }
 
+/** Stamps whose effect an Edition now carries. */
+const STAMP_EDITIONS: Readonly<Record<string, string>> = {
+  gold: 'gold',
+  blue: 'steel',
+  purple: 'glass',
+}
+
+/** A pre-v4 tile modifier record reduced to the tile's one Edition. */
+function foldTileModifiers(modifiers: Json): Json {
+  const { seal, ...rest } = modifiers
+  delete rest.edition
+  const enhancement =
+    typeof rest.enhancement === 'string' && rest.enhancement !== 'none'
+      ? rest.enhancement
+      : typeof seal === 'string'
+        ? (STAMP_EDITIONS[seal] ?? 'none')
+        : 'none'
+  return { ...rest, enhancement }
+}
+
+/** Version 4: fold every saved tile's Stamp and Edition into its Edition. */
+function retireStampsAndTileEditions(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(retireStampsAndTileEditions)
+  if (!isRecord(value)) return value
+  const entries = Object.entries(value)
+    .filter(([key]) => key !== 'heldGoldMarkReward')
+    .map(([key, item]) => [
+      key,
+      key === 'modifiers' &&
+      isRecord(item) &&
+      'enhancement' in item &&
+      ('seal' in item || 'edition' in item)
+        ? foldTileModifiers(item)
+        : retireStampsAndTileEditions(item),
+    ])
+  return Object.fromEntries(entries)
+}
+
 /** Upgrade any supported saved run to the current version and catalog. */
 export function upgradeClassicRunSnapshot(value: unknown): unknown {
   if (!isRecord(value)) return value
   const version = value.version
-  if (version !== 1 && version !== 2 && version !== CURRENT_SNAPSHOT_VERSION)
+  if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
     return value
+  const turns = version === 1 || version === 2 ? convertToTurns(value) : value
   const upgraded = refreshContent(
-    version === CURRENT_SNAPSHOT_VERSION ? value : convertToTurns(value)
+    version === CURRENT_SNAPSHOT_VERSION
+      ? turns
+      : (retireStampsAndTileEditions(turns) as Json)
   )
   // Version 1 saves predate the earned Bamboo/Summer flag.
   if (version === 1 && isRecord(upgraded.state))

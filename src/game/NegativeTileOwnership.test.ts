@@ -1,9 +1,19 @@
+/**
+ * Owned tiles and the items that change them for the rest of a run. Negative
+ * tiles (and their Decree slots) are gone; what the run owns is the wall
+ * template, and Fate Seals, Scripts, packs and breaking Editions change it
+ * for good.
+ */
+
 import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { Tile, TileSuit } from '../core/Tile'
-import { EditionType, EnhancementType } from '../core/TileModifier'
-import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
+import {
+  EnhancementType,
+  LUCKY_MULTIPLIERS,
+  LUCKY_POINTS,
+} from '../core/TileModifier'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import { parseClassicRunSnapshot } from './validateClassicRun'
 import { VOID_SCRIPTS, VoidScriptSystem } from '../systems/VoidScriptSystem'
@@ -13,38 +23,18 @@ afterEach(() => {
   eventBus.clear()
   vi.restoreAllMocks()
 })
-const ordinary = ALL_DECREES.find((d) => d.id === 'decree-wide-grip')!
 
-it('does not turn bonus Flowers or Seasons into Negative capacity', () => {
-  const decrees = new DecreeSystem()
-  decrees.syncWallSlots([
-    new Tile(TileSuit.Flower, 1, 'flower').withEdition(EditionType.Negative),
-    new Tile(TileSuit.Season, 1, 'season').withEdition(EditionType.Negative),
-  ])
-  expect(decrees.getMaxSlots()).toBe(5)
-})
-
-it('keeps ownership capacity under Frostbite and scoring suppression', () => {
-  const { game, state, negative } = fixture()
-  state.seasonSystem.forceSetSeason('Winter', true)
-  state.debuffSystem.debuffTile(negative.id, {
-    type: 'mandate',
-    mandateId: 'test',
-  })
-  game.restoreRun(game.captureRun())
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(6)
-})
+const json = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 
 function fixture() {
   const game = new GameOrchestrator()
   game.startNewRun(7)
   const state = game.getState() as OrchestratorState
-  state.decreeSystem = new DecreeSystem()
-  const negative = new Tile(TileSuit.Manzu, 4, 'owned-negative').withEdition(
-    EditionType.Negative
+  const owned = new Tile(TileSuit.Manzu, 4, 'owned-gold').withEnhancement(
+    EnhancementType.Gold
   )
-  expect(game.addTileToWall(negative)).toBe(true)
-  return { game, state, negative }
+  expect(game.addTileToWall(owned)).toBe(true)
+  return { game, state, owned }
 }
 
 function useSeal(game: GameOrchestrator, id: string, targets: string[]) {
@@ -56,188 +46,117 @@ function useSeal(game: GameOrchestrator, id: string, targets: string[]) {
   ).toBe(true)
 }
 
-it('grants a slot from wall ownership, not a draw or scoring trigger', () => {
-  const { game, state, negative } = fixture()
-  expect(state.decreeSystem.getMaxSlots()).toBe(6)
-  expect(state.handTiles.some((t) => t.id === negative.id)).toBe(false)
-  for (let i = 0; i < 6; i++) expect(game.addDecree(ordinary)).toBe(true)
-  expect(game.addDecree(ordinary)).toBe(false)
-  state.handTiles[0] = negative
-  expect(
-    game.processAction({ type: 'redraw', tileIds: [negative.id] }).success
-  ).toBe(true)
-  expect(state.decreeSystem.getMaxSlots()).toBe(6)
-})
-
-it('restores derived capacity without baking it into base slots or accumulating on reload', () => {
-  const { game, state } = fixture()
-  expect(state.decreeSystem.toState().maxSlots).toBe(5)
-  const saved = game.captureRun()
-  const parsed = parseClassicRunSnapshot(JSON.parse(JSON.stringify(saved)))
-  expect(parsed.version).toBe(3)
-  for (let i = 0; i < 3; i++) {
-    game.restoreRun(JSON.parse(JSON.stringify(saved)))
-    expect(game.getState().decreeSystem.getMaxSlots()).toBe(6)
-    expect(game.captureRun()).toEqual(saved)
-  }
-})
-
-it('reconciles old saves whose Negative tiles never granted their slot', () => {
-  const { game } = fixture()
-  const old = game.captureRun()
-  old.state.decreeSystem.maxSlots = 5
-  game.restoreRun(old)
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(6)
-  game.startNewRun(7)
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(5)
-})
-
-it('counts physical ownership once even if a malformed legacy wall repeats an ID', () => {
-  const { game, negative } = fixture()
-  const saved = game.captureRun()
-  saved.state.wallTemplate.push(
-    saved.state.wallTemplate.find((t) => t.id === negative.id)!
-  )
-  game.restoreRun(saved)
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(6)
-})
-
-it('copies Negative permanently with Transmutation, then preserves both slots across a reshuffle', () => {
-  const { game, state, negative } = fixture()
+it('copies an Edition permanently with Transmutation, then keeps it across a reshuffle', () => {
+  const { game, state, owned } = fixture()
   const target = state.handTiles[0]
-  state.handTiles[1] = negative
-  useSeal(game, 'seal_of_transmutation', [target.id, negative.id])
-  expect(state.wallTemplate.find((t) => t.id === target.id)?.edition).toBe(
-    EditionType.Negative
-  )
-  expect(state.decreeSystem.getMaxSlots()).toBe(7)
+  state.handTiles[1] = owned
+  useSeal(game, 'seal_of_transmutation', [target.id, owned.id])
+  expect(state.wallTemplate.find((t) => t.id === target.id)).toMatchObject({
+    suit: TileSuit.Manzu,
+    rank: 4,
+    modifiers: { enhancement: EnhancementType.Gold },
+  })
   state.phase = 'shop'
   state.lastCompletedRoundType = 'Small'
   expect(game.shop.open()).toBe(true)
   game.exitShop()
   expect(state.phase).toBe('gameplay')
-  // A newly drawn Flower may also add capacity; the two tile slots stay separate.
-  expect(
-    state.decreeSystem.getMaxSlots() - state.decreeSystem.toState().maxSlots
-  ).toBe(2)
-  expect(state.wall.find((t) => t.id === target.id)?.edition).toBe(
-    EditionType.Negative
+  for (const id of [target.id, owned.id])
+    expect(state.wall.find((t) => t.id === id)?.enhancement).toBe(
+      EnhancementType.Gold
+    )
+})
+
+it('Release permanently destroys an owned tile, without restoring it on reload', () => {
+  const { game, state, owned } = fixture()
+  state.handTiles[0] = owned
+  useSeal(game, 'seal_of_release', [owned.id])
+  expect(state.wallTemplate.some((t) => t.id === owned.id)).toBe(false)
+  game.restoreRun(parseClassicRunSnapshot(json(game.captureRun())))
+  expect(game.getState().wallTemplate.some((t) => t.id === owned.id)).toBe(
+    false
   )
 })
 
-it('removes the capacity of an overwritten Negative tile without deleting an owned Decree', () => {
-  const { game, state, negative } = fixture()
-  for (let i = 0; i < 6; i++) expect(game.addDecree(ordinary)).toBe(true)
-  state.handTiles[0] = negative
-  useSeal(game, 'seal_of_transmutation', [negative.id, state.handTiles[1].id])
-  expect(state.decreeSystem.getMaxSlots()).toBe(5)
-  expect(state.decreeSystem.getOwnedDecrees()).toHaveLength(6)
-  expect(state.decreeSystem.getAvailableSlots()).toBe(0)
-  expect(game.addDecree(ordinary)).toBe(false)
-  // A Negative Decree offsets itself, but cannot erase an existing slot deficit.
-  expect(game.addDecree({ ...ordinary, edition: 'Negative' })).toBe(false)
-})
-
-it('Release permanently destroys a Negative tile and its slot, without restoring it on reload', () => {
-  const { game, state, negative } = fixture()
-  state.handTiles[0] = negative
-  useSeal(game, 'seal_of_release', [negative.id])
-  expect(state.wallTemplate.some((t) => t.id === negative.id)).toBe(false)
-  expect(state.decreeSystem.getMaxSlots()).toBe(5)
-  game.restoreRun(game.captureRun())
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(5)
-})
-
-it('stacks with Negative Decrees and separately removable Flower capacity', () => {
+it('grants an actual Tile Pack reward once across a reload', () => {
   const { game, state } = fixture()
-  expect(game.addDecree({ ...ordinary, edition: 'Negative' })).toBe(true)
-  state.decreeSystem.addSlot()
-  expect(state.decreeSystem.getMaxSlots()).toBe(8)
-  state.decreeSystem.removeSlots()
-  expect(state.decreeSystem.getMaxSlots()).toBe(7)
-})
-
-it('shop preflight recognizes an owned Negative tile at an otherwise full rack', () => {
-  const { game, state } = fixture()
-  for (let i = 0; i < 5; i++) expect(game.addDecree(ordinary)).toBe(true)
-  state.phase = 'shop'
-  state.gold = 100
-  expect(game.shop.open()).toBe(true)
-  const offer = game.shop.state.itemOfferings[0]
-  offer.itemType = 'Decree'
-  offer.item = ordinary
-  offer.finalCost = 4
-  expect(game.shop.validatePurchase(offer.id).success).toBe(true)
-  expect(game.shop.purchase(offer.id).success).toBe(true)
-  expect(state.gold).toBe(96)
-  expect(state.decreeSystem.getOwnedDecrees()).toHaveLength(6)
-})
-
-it('grants an actual Tile Pack reward once, and enables the next Decree purchase', () => {
-  const { game, state } = fixture()
-  for (let i = 0; i < 6; i++) expect(game.addDecree(ordinary)).toBe(true)
   state.phase = 'shop'
   state.gold = 100
   expect(game.shop.open()).toBe(true)
   const offer = game.shop.state.packOfferings[0]
   const pack = game.shop.packOfferings.find((p) => p.pack.id === offer.item.id)!
-  const tile = new Tile(TileSuit.Pinzu, 3, 'pack-negative').withEdition(
-    EditionType.Negative
+  const tile = new Tile(TileSuit.Pinzu, 3, 'pack-gold').withEnhancement(
+    EnhancementType.Gold
   )
   pack.contents = [
     {
       id: tile.id,
       type: 'Tile',
-      name: 'Negative tile',
+      name: 'Gold tile',
       description: '',
-      rarity: 'rare',
+      rarity: 'uncommon',
       data: tile,
     },
   ]
   pack.maxSelections = 1
   expect(game.shop.purchase(offer.id).success).toBe(true)
   const paid = state.gold
-  game.restoreRun(
-    parseClassicRunSnapshot(JSON.parse(JSON.stringify(game.captureRun())))
-  )
+  game.restoreRun(parseClassicRunSnapshot(json(game.captureRun())))
   expect(game.shop.confirmPack([0]).success).toBe(true)
-  expect(game.getState().decreeSystem.getMaxSlots()).toBe(7)
+  const granted = game.getState().wallTemplate.filter((t) => t.id === tile.id)
+  expect(granted).toHaveLength(1)
+  expect(granted[0].modifiers).toEqual({ enhancement: EnhancementType.Gold })
   expect(game.getState().gold).toBe(paid)
   expect(game.shop.confirmPack([0]).success).toBe(false)
-  expect(game.addDecree(ordinary)).toBe(true)
+  expect(
+    game.getState().wallTemplate.filter((t) => t.id === tile.id)
+  ).toHaveLength(1)
 })
 
-it('Script of Aura removes a tile slot when replacing its Negative edition', () => {
-  const { game, state, negative } = fixture()
-  state.handTiles[0] = negative
+it('Script of Aura replaces an owned tile’s Edition, and a new Lucky tile gets its round roll', () => {
+  const { game, state, owned } = fixture()
+  state.handTiles[0] = owned
   const script = VoidScriptSystem.createVoidScriptInstance(
     VOID_SCRIPTS.script_of_aura
   )
   expect(game.addVoidScript(script)).toBe(true)
+  // Aura's last random Edition is Lucky (it never gives Stone).
+  const real = runRandom.next.bind(runRandom)
+  vi.spyOn(runRandom, 'next').mockImplementation((stream) =>
+    stream === 'consumables' ? 0.999 : real(stream)
+  )
+  expect(state.luckyRolls?.[owned.id]).toBeUndefined()
   expect(
     game.processAction({
       type: 'useScript',
       scriptId: script.instanceId,
-      targets: [negative.id],
+      targets: [owned.id],
     }).success
   ).toBe(true)
-  expect(state.decreeSystem.getMaxSlots()).toBe(5)
-  expect(
-    state.wallTemplate.find((t) => t.id === negative.id)?.edition
-  ).not.toBe(EditionType.Negative)
+  for (const tiles of [state.handTiles, state.wallTemplate])
+    expect(tiles.find((t) => t.id === owned.id)?.modifiers).toEqual({
+      enhancement: EnhancementType.Lucky,
+    })
+  const roll = state.luckyRolls?.[owned.id]
+  expect(LUCKY_MULTIPLIERS).toContain(roll?.multiplier)
+  expect(LUCKY_POINTS).toContain(roll?.points)
 })
 
-it('Glass destruction removes its physical Negative tile and capacity after paying the play', () => {
-  const { game, state, negative } = fixture()
-  const glass = negative.withEnhancement(EnhancementType.Glass)
+it('a shattered Glass tile leaves the owned wall after paying the play, and stays gone after a save', () => {
+  const { game, state, owned } = fixture()
+  const glass = owned.withEnhancement(EnhancementType.Glass)
   state.handTiles = [glass, new Tile(TileSuit.Manzu, 4, 'glass-pair')]
   state.wallTemplate = [
     glass,
     state.handTiles[1],
-    ...state.wallTemplate.filter((t) => t.id !== negative.id),
+    ...state.wallTemplate.filter((t) => t.id !== owned.id),
   ]
   state.targetScore = 100000
   state.roundManager.getCurrentRound()!.scoreTarget = 100000
+  // Every break roll hits; the made Fate Seal waits for its wall tiles.
+  vi.spyOn(FateSealSystem, 'getRandomFateSeal').mockReturnValue(
+    FATE_SEALS.seal_of_glass
+  )
   vi.spyOn(runRandom, 'next').mockReturnValue(0)
   expect(
     game.processAction({
@@ -246,9 +165,12 @@ it('Glass destruction removes its physical Negative tile and capacity after payi
     }).success
   ).toBe(true)
   expect(state.score).toBeGreaterThan(0)
-  expect(state.wallTemplate.some((t) => t.id === negative.id)).toBe(false)
-  expect(state.decreeSystem.getMaxSlots()).toBe(
-    state.decreeSystem.toState().maxSlots
+  expect(state.fateSeals.map((seal) => seal.id)).toEqual(['seal_of_glass'])
+  expect(state.wallTemplate.some((t) => t.id === owned.id)).toBe(false)
+  expect(state.wallTemplate.some((t) => t.id === 'glass-pair')).toBe(true)
+  game.restoreRun(parseClassicRunSnapshot(json(game.captureRun())))
+  expect(game.getState().wallTemplate.some((t) => t.id === owned.id)).toBe(
+    false
   )
 })
 
@@ -276,9 +198,7 @@ it.each([
       t.id.startsWith('permanent-')
     )
     expect(changed).not.toEqual(tiles)
-    game.restoreRun(
-      parseClassicRunSnapshot(JSON.parse(JSON.stringify(game.captureRun())))
-    )
+    game.restoreRun(parseClassicRunSnapshot(json(game.captureRun())))
     const restored = game.getState() as OrchestratorState
     expect(
       restored.wallTemplate.filter((t) => t.id.startsWith('permanent-'))

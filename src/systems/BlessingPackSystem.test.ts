@@ -150,17 +150,21 @@ describe('BlessingPackSystem shop integration', () => {
       expect(content).toBeDefined()
       const tile = content.data as Tile
       expect(content.description).toBe(tile.enhancementDef.description)
-      const played = calculateModifierEffects(tile.modifiers, 'played', {
-        deterministic: true,
-      })
-      const held = calculateModifierEffects(tile.modifiers, 'held', {
-        deterministic: true,
-      })
+      const scored = (act: number) =>
+        calculateModifierEffects(tile.modifiers, tile.id, {
+          act,
+          deterministic: true,
+        })
       if (enhancement === EnhancementType.Bonus) {
-        expect(played.chipBonus).toBe(30)
+        // +30 Points per Act, paid when the tile scores
+        expect(scored(1).chipBonus).toBe(30)
+        expect(scored(3).chipBonus).toBe(90)
+        expect(scored(1).goldBonus).toBe(0)
       } else {
-        expect(played.goldBonus).toBe(0)
-        expect(held.goldBonus).toBe(3)
+        // +3 Gold each time the tile scores, in every Act
+        expect(scored(1).goldBonus).toBe(3)
+        expect(scored(3).goldBonus).toBe(3)
+        expect(scored(1).chipBonus).toBe(0)
       }
     }
   )

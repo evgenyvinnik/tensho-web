@@ -75,7 +75,8 @@ it.each(SUPPORTED_LANGUAGES)(
       })
       expect(name).toBe(copy.editions.items[edition].name)
       expect(fortune).toContain(name)
-      expect(aura).toContain(name)
+      // Aura now lays tile Editions on chosen tiles, never a Decree Finish.
+      expect(aura).not.toContain(name)
     }
     expect(hex).toContain(copy.editions.items.polychrome.name)
     if (language === 'zh-Hans' || language === 'zh-Hant') {

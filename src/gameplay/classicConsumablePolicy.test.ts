@@ -4,7 +4,7 @@ import {
   type ConsumablePolicyContext,
 } from '../../scripts/lib/classic-consumable-policy'
 import { Tile, TileSuit } from '../core/Tile'
-import { EnhancementType, EditionType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import {
   CELESTIAL_ORBS,
@@ -109,12 +109,12 @@ describe('read-only conservative consumable policy', () => {
   })
 
   it.each(['seal_of_fortitude', 'seal_of_wealth'])(
-    'puts held-effect %s outside the scoring selection',
+    'puts %s in the scoring selection: its Edition pays when played',
     (id) => {
       const result = chooseClassicConsumableAction(
         context({ items: [seal(id)] })
       )
-      expect(result.choice?.action).toMatchObject({ targets: ['t3'] })
+      expect(result.choice?.action).toMatchObject({ targets: ['t0'] })
     }
   )
 
@@ -133,25 +133,69 @@ describe('read-only conservative consumable policy', () => {
   })
 
   it.each([
-    ['script_of_the_gold_seal', 't0'],
-    ['script_of_deja_vu', 't0'],
-    ['script_of_the_trance', 't3'],
-    ['script_of_the_medium', 't3'],
-  ])(
-    'targets the appropriate scored/held pool for %s without replacing a seal',
-    (id, target) => {
-      const c = context({ items: [script(id)] })
+    ['script_of_the_gold_seal', ['t0', 't1', 't2']],
+    ['script_of_the_trance', ['t0', 't1']],
+    ['script_of_the_medium', ['t0', 't1']],
+  ] as const)(
+    'puts %s Editions on the scoring selection without replacing an Edition',
+    (id, targets) => {
+      // Its penalty is not priced: only a protected Script is used.
+      expect(
+        chooseClassicConsumableAction(context({ items: [script(id)] })).held[0]
+          .reason
+      ).toBe('script-penalty-not-priced')
+      const c = context({ items: [script(id)], scriptDownsideProtected: true })
       expect(chooseClassicConsumableAction(c).choice?.action).toMatchObject({
-        targets: [target],
+        type: 'useScript',
+        targets,
       })
-      c.visibleTiles = c.visibleTiles.map((t) => t.withSeal(SealType.Red))
+      c.visibleTiles = c.visibleTiles.map((t) =>
+        t.withEnhancement(EnhancementType.Bonus)
+      )
       expect(chooseClassicConsumableAction(c).choice).toBeNull()
     }
   )
 
-  it('does not reroll existing tile editions with Aura', () => {
+  it('gilds with an empty purse, since Gilding only costs the Gold held', () => {
+    const result = chooseClassicConsumableAction(
+      context({ items: [script('script_of_the_gold_seal')], gold: 0 })
+    )
+    expect(result.choice?.action).toMatchObject({
+      type: 'useScript',
+      targets: ['t0', 't1', 't2'],
+    })
+  })
+
+  it('copies only a visible, non-Stone Edition with Deja Vu', () => {
+    const c = context({
+      items: [script('script_of_deja_vu')],
+      scriptDownsideProtected: true,
+    })
+    const plain = chooseClassicConsumableAction(c)
+    expect(plain.choice).toBeNull()
+    expect(plain.held[0].reason).toBe('no-suitable-visible-targets')
+    c.visibleTiles = c.visibleTiles.map((t, i) =>
+      i === 1
+        ? t.withEnhancement(EnhancementType.Mult)
+        : i === 4
+          ? t.withEnhancement(EnhancementType.Stone)
+          : t
+    )
+    expect(chooseClassicConsumableAction(c).choice?.action).toMatchObject({
+      type: 'useScript',
+      targets: ['t1'],
+    })
+  })
+
+  it('does not reroll existing tile Editions with Aura', () => {
     const c = context({ items: [script('script_of_aura')] })
-    c.visibleTiles = c.visibleTiles.map((t) => t.withEdition(EditionType.Foil))
+    expect(chooseClassicConsumableAction(c).choice?.action).toMatchObject({
+      type: 'useScript',
+      targets: ['t0', 't1', 't2'],
+    })
+    c.visibleTiles = c.visibleTiles.map((t) =>
+      t.withEnhancement(EnhancementType.Lucky)
+    )
     expect(chooseClassicConsumableAction(c).choice).toBeNull()
   })
 

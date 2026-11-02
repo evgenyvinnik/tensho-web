@@ -2,9 +2,6 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it } from 'vitest'
 import i18n, { loadLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { Tile, TileSuit } from '../../core/Tile'
-import { EditionType } from '../../core/TileModifier'
-import { tileDetails } from '../../i18n/tileText'
-import { tileRewardText } from '../../i18n/tileRewardText'
 import { FATE_SEALS, FateSealSystem } from '../../systems/FateSealSystem'
 import { ConsumableDialog } from './ConsumableDialog'
 import { DecreeCapacityNotice } from './DecreeCapacityNotice'
@@ -19,21 +16,7 @@ it.each(SUPPORTED_LANGUAGES)(
   async (language) => {
     await loadLanguage(language)
     await i18n.changeLanguage(language)
-    const tile = new Tile(TileSuit.Pinzu, 3, 'negative').withEdition(
-      EditionType.Negative
-    )
-    const rule = i18n.getResource(
-      language,
-      'translation',
-      'runOwnership.negativeTile'
-    )
-    expect(rule).toBeTruthy()
-    expect(tileDetails(tile, i18n.t, language).modifiers[0].description).toBe(
-      rule
-    )
-    expect(tileRewardText(tile, i18n.t).description).toBe(rule)
-    expect(tileDetails(tile, i18n.t, language, true).modifiers).toEqual([])
-
+    const tile = new Tile(TileSuit.Pinzu, 3, 'plain')
     const item = FateSealSystem.createFateSealInstance(
       FATE_SEALS.seal_of_transmutation
     )

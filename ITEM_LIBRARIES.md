@@ -11,28 +11,28 @@
 | Seal | Japanese | Effect | Mahjong Twist |
 |------|----------|--------|---------------|
 | **Seal of the Fool** | 愚者の印 | Creates the last Fate Seal or Celestial Orb used this run (never a Fool); a copied Seal is used at once | Mirrors The Fool |
-| **Seal of the Alchemist** | 錬金術師の印 | Adds a Lucky Mark to 2 selected tiles | Tiles shimmer with fortune |
+| **Seal of the Alchemist** | 錬金術師の印 | Adds a Lucky Edition to 2 selected tiles (rolls ×1.25–×2 Mult and +20–100 Points each round) | Tiles shimmer with fortune |
 | **Seal of the Oracle** | 巫女の印 | Creates up to 2 random Celestial Orbs (if room) | Commune with stars |
-| **Seal of the Empress** | 女帝の印 | Adds a Mult Mark (+4 Mult when scored) to 2 tiles you choose | Imperial blessing |
+| **Seal of the Empress** | 女帝の印 | Adds a Mult Edition (+4 Mult when scored) to 2 tiles you choose | Imperial blessing |
 | **Seal of the Emperor** | 皇帝の印 | Creates 2 random Fate Seals, each used at once (never an Emperor or a Fool) | Royal decree |
-| **Seal of the Sage** | 賢者の印 | Adds a Bonus Mark to 2 selected tiles | Ancient wisdom |
-| **Seal of Harmony** | 和の印 | Adds a Wild Mark to 1 selected tile (counts as every suit) | Balance of elements |
-| **Seal of Fortitude** | 剛の印 | Adds a Steel Mark to 1 selected tile (×1.5 Mult while held) | Unbreakable resolve |
-| **Seal of Glass** | 硝子の印 | Adds a Glass Mark to 1 selected tile (×2 Mult, may shatter) | Beautiful but fragile |
+| **Seal of the Sage** | 賢者の印 | Adds a Bonus Edition (+30 Points per Act) to 2 selected tiles | Ancient wisdom |
+| **Seal of Harmony** | 和の印 | Adds a Wild Edition to 1 selected tile (counts as every suit) | Balance of elements |
+| **Seal of Fortitude** | 剛の印 | Adds a Steel Edition to 1 selected tile (Celestial Orb when played, may rust away) | Unbreakable resolve |
+| **Seal of Glass** | 硝子の印 | Adds a Glass Edition to 1 selected tile (Fate Seal when played, may shatter) | Beautiful but fragile |
 | **Seal of the Hermit** | 隠者の印 | Doubles gold (max +¥20) | Wisdom through solitude |
-| **Seal of Fortune** | 運命の印 | 1 in 4 chance to add a Foil, Holographic or Polychrome Edition to a random Decree | Wheel of fate spins |
+| **Seal of Fortune** | 運命の印 | 1 in 4 chance to add a Foil, Holographic or Polychrome Finish to a random Decree | Wheel of fate spins |
 | **Seal of Strength** | 力の印 | Increases rank of up to 2 tiles by 1 (max 9) | Growth through struggle |
 | **Seal of Descent** | 降下の印 | Lowers the number on 1 or 2 tiles by 1 (never below 1, no wrap) | Humility before the wall |
 | **Seal of Release** | 解放の印 | Destroys up to 2 selected tiles permanently | Let go of the past |
 | **Seal of Transmutation** | 変容の印 | Select 2 tiles, left becomes copy of right | Death and rebirth |
 | **Seal of Balance** | 均衡の印 | Gives total sell value of all Decrees (max ¥50) | Equilibrium restored |
-| **Seal of Wealth** | 富の印 | Adds a Gold Mark to 1 selected tile (¥3 if held at round end) | Prosperity granted |
-| **Seal of Stone** | 石の印 | Adds a Stone Mark to 1 selected tile (+100 Points, always scores) | Immutable foundation |
+| **Seal of Wealth** | 富の印 | Adds a Gold Edition to 1 selected tile (+3 Gold each time it scores) | Prosperity granted |
+| **Seal of Stone** | 石の印 | Adds a Stone Edition to 1 selected tile (+100 Points, always scores) | Immutable foundation |
 | **Seal of Characters** | 萬子の印 | Converts up to 3 tiles to Characters | Way of Characters |
 | **Seal of Circles** | 筒子の印 | Converts up to 3 tiles to Circles | Way of Circles |
 | **Seal of Bamboo** | 索子の印 | Converts up to 3 tiles to Bamboo | Way of Bamboo |
 | **Seal of Judgment** | 審判の印 | Creates a random Decree (if room) | Court decides |
-| **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps the tile's Mark, Stamp or Edition, removes red-five status |
+| **Seal of Unity** | 統一の印 | Converts up to 3 suited tiles to Winds: ranks 1/5/9 → East, 2/6 → South, 3/7 → West, 4/8 → North | Path of honors; keeps the tile's Edition, removes red-five status |
 | **Seal of the Red Dragon** | 中の印 | Turns 1 tile you choose into a Red Dragon (Rare, ¥5) | Chun takes the field |
 | **Seal of the Green Dragon** | 發の印 | Turns 1 tile you choose into a Green Dragon (Rare, ¥5) | Hatsu takes the field |
 | **Seal of the White Dragon** | 白の印 | Turns 1 tile you choose into a White Dragon (Rare, ¥5) | Haku takes the field |
@@ -41,8 +41,8 @@
 | **Seal of the West Wind** | 西の印 | Turns 1 tile you choose into a West Wind (Rare, ¥5) | The west wind rises |
 | **Seal of the North Wind** | 北の印 | Turns 1 tile you choose into a North Wind (Rare, ¥5) | The north wind rises |
 
-Physical suit/rank transformations retain a tile's Mark, Stamp or Edition. Red-five (aka-dora) status is retained only while the tile remains a
-suited five; it is not the Red Stamp retrigger. Creating an ordinary
+Physical suit/rank transformations retain a tile's Edition. Red-five (aka-dora) status is retained only while the tile remains a
+suited five. Creating an ordinary
 five through a rank change does not make it red. This applies to Strength,
 Descent and Ouija rank changes as well as Unity's conversion to Winds.
 
@@ -115,21 +115,21 @@ retired family's levels move to the family its Orb raises now
 
 | Script | Japanese | Effect | Penalty |
 |--------|----------|--------|---------|
-| **Script of Kinship** | 眷属の書 | Destroys 1 random tile, then adds 3 random Honor tiles (Winds/Dragons), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
-| **Script of the Grave** | 墓場の書 | Destroys 1 random tile, then adds 2 random Terminal tiles (1s and 9s), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
-| **Script of Incantation** | 呪文の書 | Destroys 1 random tile, then adds 4 random numbered tiles (2–8), each with a random Bonus, Mult or Lucky Mark | Lose a tile |
-| **Script of the Gold Stamp** | 金封蝋の書 | Adds a Gold Stamp to 1 selected tile | None (rare find) |
-| **Script of Aura** | 光輪の書 | Adds a Foil, Holographic or Polychrome Edition to 1 selected tile | None (rare) |
+| **Script of Kinship** | 眷属の書 | Destroys 1 random tile, then adds 3 random Honor tiles (Winds/Dragons), each with a random Bonus, Mult or Lucky Edition | Lose a tile |
+| **Script of the Grave** | 墓場の書 | Destroys 1 random tile, then adds 2 random Terminal tiles (1s and 9s), each with a random Bonus, Mult or Lucky Edition | Lose a tile |
+| **Script of Incantation** | 呪文の書 | Destroys 1 random tile, then adds 4 random numbered tiles (2–8), each with a random Bonus, Mult or Lucky Edition | Lose a tile |
 | **Script of the Wraith** | 亡霊の書 | Creates a random Rare Decree | Gold set to ¥0 |
 | **Script of the Sigil** | 印形の書 | Converts ALL tiles in hand to a single random suit | Massive commitment |
 | **Script of the Ouija** | 降霊の書 | Converts ALL tiles in hand to a single random rank | −1 Hand Size permanently |
-| **Script of Ectoplasm** | 霊質の書 | Adds a Negative Edition to a random Decree (+1 Decree slot) | −1 Hand Size permanently |
+| **Script of Ectoplasm** | 霊質の書 | Adds a Negative Finish to a random Decree (+1 Decree slot) | −1 Hand Size permanently |
+| **Script of Gilding** | 鍍金の書 | Gives a Gold Edition to up to 3 tiles you choose | Gold set to ¥0 |
+| **Script of Déjà Vu** | 既視感の書 | Copies the Edition of 1 tile you choose onto every other copy of that tile in the wall | Lose a random tile |
+| **Script of the Trance** | 恍惚の書 | Gives a Steel Edition to 2 tiles you choose (Celestial Orbs when played) | Next play scores half |
+| **Script of the Medium** | 霊媒の書 | Gives a Glass Edition to 2 tiles you choose (Fate Seals when played) | Locks a random tile in the Dead Pool |
+| **Script of Aura** | 光輪の書 | Gives up to 3 tiles you choose a random Edition each (never Stone) | None (rare) |
 | **Script of Immolation** | 焚焼の書 | Destroys 5 random tiles from hand | Gain ¥20 |
 | **Script of the Ankh** | 命の書 | Copy a random Decree, destroy all other Decrees | High risk |
-| **Script of Déjà Vu** | 既視感の書 | Adds a Red Stamp to 1 selected tile (retrigger) | None |
-| **Script of the Hex** | 呪詛の書 | Adds a Polychrome Edition to a random Decree, destroys all others | Nuclear option |
-| **Script of the Trance** | 恍惚の書 | Adds a Blue Stamp to 1 selected tile (creates a Celestial Orb if it is in the play that clears the round) | None |
-| **Script of the Medium** | 霊媒の書 | Adds a Purple Stamp to 1 selected tile (creates a Fate Seal when redrawn) | None |
+| **Script of the Hex** | 呪詛の書 | Adds a Polychrome Finish to a random Decree, destroys all others | Nuclear option |
 | **Script of the Cryptid** | 異形の書 | Create 2 copies of 1 selected tile in hand | Duplicates in deck |
 | **Script of the Soul** | 魂の書 | Creates a Legendary (Heavenly Ordinance) Decree | Secret, 0.3% chance |
 | **Script of the Singularity** | 特異点の書 | Upgrade every Yaku by 1 level | Secret, 0.3% chance |
@@ -142,7 +142,7 @@ retired family's levels move to the family its Orb raises now
 |--------------|------|--------|------------------|----------------|------------------|
 | **Overstock Edict** | ¥10 | +1 shop slot (to 3) | **Surplus Decree** | +1 more shop slot (to 4) | Spend ¥2500 total |
 | **Discount Seal** | ¥10 | All shop items 25% off | **Liquidation Order** | All shop items 50% off | Redeem 10 Charters in one run |
-| **Refinement Edict** | ¥10 | Foil/Holo/Prismatic appear 2× more | **Radiance Decree** | Appear 4× more | Have 5 enhanced Decrees |
+| **Refinement Edict** | ¥10 | Decree Finishes (Foil/Holo/Prismatic) appear 2× more | **Radiance Decree** | Appear 4× more | Have 5 enhanced Decrees |
 | **Reroll Subsidy** | ¥10 | Rerolls cost ¥2 less | **Reroll Grant** | Cost ¥2 less again | Reroll shop 100 times total |
 | **Crystal Sphere** | ¥10 | Arcana Packs offer +1 choice | **Omen Globe** | Void Scripts may appear in Fate Seal packs | Use 25 Fate Seals from packs |
 | **Star Chart** | ¥10 | Celestial Packs always contain Orb for most-played Yaku | **Observatory License** | Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play; Black Hole matches any scored Yaku | Use 25 Orbs from packs |
@@ -152,68 +152,71 @@ retired family's levels move to the family its Orb raises now
 | **Orb Merchant** | ¥10 | Celestial Orbs appear 2× more in shop | **Orb Tycoon** | Appear 4× more | Buy 50 Orbs from shop |
 | **Seed Fund** | ¥10 | Interest cap raised to ¥10 | **Money Tree** | Interest cap raised to ¥20 | Max interest 10 rounds in a row |
 | **Blank Scroll** | ¥10 | Does nothing? | **Antimatter Seal** | +1 Decree slot | Redeem Blank 10 times total |
-| **Tile Bazaar** | ¥10 | Special tiles can be purchased from shop | **Illusion Market** | Shop tiles may have Marks/Editions | Buy 20 tiles from shop |
+| **Tile Bazaar** | ¥10 | Special tiles can be purchased from shop | **Illusion Market** | Shop tiles may come with Editions | Buy 20 tiles from shop |
 | **Hieroglyph Tablet** | ¥10 | −1 Ante, −1 hand each round | **Petroglyph Tablet** | −1 Ante again, −1 discard each round | Reach Ante 12 |
 | **Court Reroll** | ¥10 | Reroll Boss Mandate 1×/Ante (¥10) | **Full Retcon** | Reroll unlimited times | Discover 25 Mandates |
 | **Expanded Hand** | ¥10 | +1 hand size | **Master Grip** | +1 hand size again | Reduce hand to 5 tiles |
 
 ---
 
-## 🎨 A5) Complete Special Tile Library (Marks, Stamps, Editions)
+## 🎨 A5) Complete Special Tile Library (Editions) and Decree Finishes
 
-A tile that carries an extra effect is a **special tile**. It holds **one**
-effect: a Mark, a Stamp or an Edition. Applying a new one replaces whatever the
-tile carried (a Lucky tile given a Stone Mark is just a Stone tile). Saves from
-before this rule keep the rarest: Edition, then Mark, then Stamp.
+A tile that carries an extra effect is a **special tile**. It holds **one
+Edition**; applying a new one replaces the old (a Lucky tile given a Stone
+Edition is just a Stone tile).
 
 Player-facing text uses these words only: "special tile" for the umbrella
-(never "enhanced" or "modifier"), "Mark", "Stamp" and "Edition" for the three
-kinds, and "Glass tile" / "Stone tile" as the short form for a tile with that
-Mark. "Seal" means only the Fate Seal consumable. In code, Marks are
-`EnhancementType` and Stamps are `SealType`.
+(never "enhanced", "modifier", "Mark" or "Stamp"), "Edition" for what a tile
+carries, "Finish" for a Decree's Foil/Holographic/Polychrome/Negative, and
+"Glass tile" / "Stone tile" as the short form for a tile with that Edition.
+"Seal" means only the Fate Seal consumable. In code, Editions are
+`EnhancementType` (locale keys `tileMarks.*`) and Finishes are `DecreeEdition`
+(locale keys `editions.*`).
 
-### Marks
+Stamps and the tile Foil/Holographic/Polychrome/Negative Editions were retired
+in snapshot v4: a saved Gold Stamp becomes a Gold Edition, a Blue Stamp a Steel
+Edition, a Purple Stamp a Glass Edition, and the rest are dropped. The five Void
+Scripts that laid them (Gold Stamp, Déjà Vu, Trance, Medium, Aura) keep their
+art and now work with Editions (see A3).
 
-| Mark | Japanese | Effect |
+### Editions
+
+| Edition | Japanese | Effect |
 |------|----------|--------|
-| **Bonus Mark** | 加点紋 | +30 Points when scored |
-| **Mult Mark** | 倍率紋 | +4 Mult when scored |
-| **Wild Mark** | 万能紋 | Counts as every suit simultaneously |
-| **Glass Mark** | 硝子紋 | ×2 Mult when scored; 1/4 chance to shatter after |
-| **Steel Mark** | 鋼紋 | ×1.5 Mult while held in hand (not played) |
-| **Stone Mark** | 石紋 | +100 Points, always scores, no rank/suit |
-| **Gold Mark** | 金紋 | ¥3 if held at end of round |
-| **Lucky Mark** | 幸運紋 | 1/5 chance for +20 Mult; 1/15 chance for ¥20 |
+| **Bonus Edition** | 加点紋 | +30 Points per Act when scored (Act 3: +90) |
+| **Mult Edition** | 倍率紋 | +4 Mult when scored |
+| **Wild Edition** | 万能紋 | Counts as every suit simultaneously |
+| **Glass Edition** | 硝子紋 | Creates a random Fate Seal when played, then 1 in 4 chance to shatter (destroyed) |
+| **Steel Edition** | 鋼紋 | Creates a random Celestial Orb when played, then 1 in 4 chance to rust away (destroyed) |
+| **Stone Edition** | 石紋 | +100 Points, always scores, no rank/suit |
+| **Gold Edition** | 金紋 | +3 Gold each time it scores (retriggers included) |
+| **Lucky Edition** | 幸運紋 | Each round rolls ×1.25–×2 Mult and +20–100 Points, paid when it scores; the roll shows on the tile |
 
-### Stamps (replace a Mark or Edition)
+Glass and Steel make their item once per play, however often the tile scores,
+and break only after paying, announced by a toast. A debuffed tile neither
+makes nor breaks. Lucky tiles roll from the run's seeded stream when the round
+starts (a tile made Lucky later rolls right after that action); the roll is
+saved, so the preview and the paid score always agree and a seed replays it.
 
-| Stamp | Japanese | Effect |
-|------|----------|--------|
-| **Gold Stamp** | 金封 | Earn ¥3 when played and scores |
-| **Red Stamp** | 赤封 | Retrigger this tile 1 time |
-| **Blue Stamp** | 青封 | Creates a Celestial Orb if in the play that clears the round |
-| **Purple Stamp** | 紫封 | Creates a Fate Seal when redrawn |
+### Finishes (Decrees only)
 
-### Editions (one per tile or Decree, rarest)
-
-| Edition | Japanese | Effect on Tile | Effect on Decree |
-|---------|----------|----------------|------------------|
-| **Base** | 通常 | No effect | No effect |
-| **Foil** | 箔押し | +50 Points | +50 Points |
-| **Holographic** | 光沢 | +10 Mult | +10 Mult |
-| **Polychrome** | 虹彩 | ×1.5 Mult | ×1.5 Mult |
-| **Negative** | 負極 | +1 Decree slot while this physical tile remains in the run wall | +1 Decree slot while owned |
+| Finish | Japanese | Effect on Decree |
+|---------|----------|------------------|
+| **Base** | 通常 | No effect |
+| **Foil** | 箔押し | +50 Points |
+| **Holographic** | 光沢 | +10 Mult |
+| **Polychrome** | 虹彩 | ×1.5 Mult |
+| **Negative** | 負極 | +1 Decree slot while owned |
 
 Fate Seal tile changes persist for the current run, including future rounds and
 save/reload. New runs start fresh. A Seal is never held: one bought in the Tea
 House or chosen from an Arcana Pack is used at once, the player picking its
 targets from every tile of the run's wall (Flowers and Seasons excluded), and
-Seals that take no tiles act immediately. A Seal the run makes (a redrawn Purple
+Seals that take no tiles act immediately. A Seal the run makes (a played Glass
 tile, the Emperor, the Fool) is used the same way as it is made, at the table or
 in the Tea House: one that takes tiles opens the wall picker at once, with no
-cancel, and only a Seal that can work then is made. Negative tile capacity follows ownership, not
-draws or scoring; destruction or Edition replacement removes its slot without
-deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
+cancel, and only a Seal that can work then is made. See
+[resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEMENTATION.md).
 
 ### Stickers (Decrees only, from higher Stakes)
 
@@ -330,7 +333,7 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 | Flowers | Decrees | +10% Decree effect per Flower |
 | Seasons | Decrees | Seasons temporarily override Decree effects |
 | Celestial Orbs | Yaku | Permanent +Mult/+Chips per level |
-| Tile Marks | Scoring | Multiplicative with Yaku multipliers |
+| Tile Editions | Scoring | Multiplicative with Yaku multipliers |
 | Omen Tags | Shop | Modify next shop generation |
 | Mandates | Round | Define score targets and penalties |
 | Charters | Run | Permanent slot/economy modifications |

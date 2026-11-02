@@ -25,7 +25,7 @@ for (const [language, copy] of [
       const eventPath = '/src/game/EventBus.ts'
       const { gameOrchestrator: game } = await import(gamePath)
       const { Tile, TileSuit } = await import(tilePath)
-      const { EditionType } = await import(modifierPath)
+      const { EnhancementType } = await import(modifierPath)
       const { ALL_DECREES } = await import(decreePath)
       const { eventBus } = await import(eventPath)
       game.startNewRun(7)
@@ -45,7 +45,9 @@ for (const [language, copy] of [
           (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `hand-${i}`)
         ),
       ]
-      state.handTiles[0] = state.handTiles[0].withEdition(EditionType.Foil)
+      state.handTiles[0] = state.handTiles[0].withEnhancement(
+        EnhancementType.Bonus
+      )
       state.wall = Array.from(
         { length: 40 },
         (_, i) => new Tile(TileSuit.Manzu, (i % 9) + 1, `wall-${i}`)
@@ -69,12 +71,13 @@ for (const [language, copy] of [
     })
     // The fixture's new run and Season would be revealed over the table.
     await clearReveals(page)
-    // 45 shape/tile base + 50 tile Foil + half of (20 Decree + 50 Decree Foil).
+    // 45 shape/tile base + 30 Act-1 Bonus Edition + half of (20 Decree + 50
+    // Decree Foil Finish), × (1 + half of 2 Decree Mult).
     expect(forecast).toEqual({
-      points: 130,
+      points: 110,
       multiplier: 2,
       adjustment: 0,
-      total: 260,
+      total: 220,
     })
     for (const rank of [4, 5, 6]) {
       const tile = page.locator(
@@ -83,7 +86,7 @@ for (const [language, copy] of [
       if (isMobile) await tile.tap()
       else await tile.click()
     }
-    await expect(handScoreTotal(page, 'preview')).toHaveText('260')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('220')
     // Frostbite explains itself on its own rail token.
     const flora = page.locator('[data-flora-season]')
     await expect(flora).toHaveAttribute(
@@ -115,12 +118,12 @@ for (const [language, copy] of [
     const runScore = page.locator(
       '[data-run-header] [data-tutorial="current-score"]'
     )
-    await expect(handScoreTotal(page, 'last')).toHaveText('260')
-    await expect(panel.locator('[data-hand-score-points]')).toHaveText('130')
+    await expect(handScoreTotal(page, 'last')).toHaveText('220')
+    await expect(panel.locator('[data-hand-score-points]')).toHaveText('110')
     await expect(panel.locator('[data-hand-score-mult]')).toHaveText(
       (2).toLocaleString(language)
     )
-    await expect(runScore).toHaveText('260')
+    await expect(runScore).toHaveText('220')
     await panel.scrollIntoViewIfNeeded()
     await page.screenshot({ path: testInfo.outputPath('frostbite-paid.png') })
     const stacked = await page.evaluate(async () => {
@@ -131,7 +134,7 @@ for (const [language, copy] of [
       const eventPath = '/src/game/EventBus.ts'
       const { gameOrchestrator: game } = await import(gamePath)
       const { Tile, TileSuit } = await import(tilePath)
-      const { EditionType } = await import(modifierPath)
+      const { EnhancementType } = await import(modifierPath)
       const { SeasonSystem } = await import(seasonPath)
       const { eventBus } = await import(eventPath)
       const state = game.getState()
@@ -144,7 +147,9 @@ for (const [language, copy] of [
           (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `next-${i}`)
         ),
       ]
-      state.handTiles[0] = state.handTiles[0].withEdition(EditionType.Foil)
+      state.handTiles[0] = state.handTiles[0].withEnhancement(
+        EnhancementType.Bonus
+      )
       const saved = state.seasonSystem.toState()
       state.seasonSystem = SeasonSystem.fromState({
         ...saved,
@@ -161,11 +166,12 @@ for (const [language, copy] of [
     })
     // The second Frostbite would be revealed over the table.
     await clearReveals(page)
+    // Two Frostbites quarter the Decrees; the Bonus Edition still pays 30.
     expect(stacked).toEqual({
-      points: 112.5,
+      points: 92.5,
       multiplier: 1.5,
       adjustment: 0,
-      total: 168,
+      total: 138,
     })
     for (const rank of [4, 5, 6]) {
       const tile = page.locator(
@@ -174,17 +180,17 @@ for (const [language, copy] of [
       if (isMobile) await tile.tap()
       else await tile.click()
     }
-    await expect(handScoreTotal(page, 'preview')).toHaveText('168')
+    await expect(handScoreTotal(page, 'preview')).toHaveText('138')
     if (isMobile) await play.tap()
     else await play.click()
-    await expect(handScoreTotal(page, 'last')).toHaveText('168')
+    await expect(handScoreTotal(page, 'last')).toHaveText('138')
     await expect(panel.locator('[data-hand-score-points]')).toHaveText(
-      (112.5).toLocaleString(language)
+      (92.5).toLocaleString(language)
     )
     await expect(panel.locator('[data-hand-score-mult]')).toHaveText(
       (1.5).toLocaleString(language)
     )
-    await expect(runScore).toHaveText('428')
+    await expect(runScore).toHaveText('358')
     await panel.scrollIntoViewIfNeeded()
     await page.screenshot({
       path: testInfo.outputPath('stacked-frostbite-paid.png'),

@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit, FlowerType, SeasonType } from '../core/Tile'
-import { EnhancementType, EditionType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { Meld, MeldType } from '../core/Meld'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -50,7 +50,7 @@ function fixture() {
   state.summerReserve = []
   state.discards = [
     new Tile(TileSuit.Souzu, 1, 'older'),
-    new Tile(TileSuit.Souzu, 3, 'newer').withEdition(EditionType.Foil),
+    new Tile(TileSuit.Souzu, 3, 'newer').withEnhancement(EnhancementType.Bonus),
     new Tile(TileSuit.Manzu, 3, 'wrong-suit'),
     new Tile(TileSuit.Souzu, 9, 'wrong-rank'),
   ]
@@ -112,6 +112,7 @@ it('recovers the newest matching physical tile after payment and refill, keeping
   expect(state.handsRemaining).toBe(before.state.handsRemaining - 1)
   expect(state.handTiles).toHaveLength(15)
   expect(state.handTiles.find((t) => t.id === 'newer')).toBe(gift)
+  expect(gift.enhancement).toBe(EnhancementType.Bonus)
   expect(held(state)).not.toContain('older')
   expect(physical(state)).toEqual(identities)
   expect(draws).toHaveBeenCalledTimes(3)
@@ -221,7 +222,7 @@ it('does not multiply recoveries for duplicate Autumns or Plum', () => {
 })
 
 it.each(['win', 'loss'] as const)(
-  'does not recover after final %s or affect held-Gold settlement',
+  'does not recover after final %s, leaving a Gold tile in the river',
   (ending) => {
     const { game, state } = fixture()
     state.discards[1] = state.discards[1].withEnhancement(EnhancementType.Gold)

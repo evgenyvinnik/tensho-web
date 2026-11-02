@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Tile } from '../core/Tile'
+import { EnhancementType, Tile } from '../core/Tile'
 import { ALL_DECREES } from './DecreeSystem'
 import {
   TeaHouseSystem,
@@ -86,7 +86,8 @@ describe('TeaHouseSystem visit modifiers', () => {
   })
 
   it('generates purchasable wall tiles with Illusion modifiers', () => {
-    const rolls = [0.99, 0, 0, 0, 0]
+    // Per tile slot: item type (Tile), face, the Illusion chance, its Edition.
+    const rolls = [0.99, 0, 0, 0]
     let rollIndex = 0
     const teaHouse = new TeaHouseSystem(
       1,
@@ -102,6 +103,12 @@ describe('TeaHouseSystem visit modifiers', () => {
     expect(tiles).toHaveLength(2)
     expect(tiles.every((offering) => offering.item instanceof Tile)).toBe(true)
     expect(tiles.every((offering) => (offering.item as Tile).hasModifiers)).toBe(true)
+    expect(
+      tiles.map((offering) => (offering.item as Tile).modifiers)
+    ).toEqual([
+      { enhancement: EnhancementType.Bonus },
+      { enhancement: EnhancementType.Bonus },
+    ])
   })
 
   it('guarantees Omen items, applies visit discounts, and grants free rerolls', () => {

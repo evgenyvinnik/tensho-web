@@ -5,11 +5,7 @@ import {
   convertSuitedTile,
   convertTileToHonor,
 } from '../../src/core/tileTransformations'
-import {
-  EnhancementType,
-  EditionType,
-  SealType,
-} from '../../src/core/TileModifier'
+import { EnhancementType } from '../../src/core/TileModifier'
 import type { PlayerAction } from '../../src/game/ActionProcessor'
 import type { CoachAdvice } from '../../src/gameplay/beginnerCoach'
 import { consumableTargetRange } from '../../src/gameplay/consumableTargeting'
@@ -84,12 +80,9 @@ function targetPlan(
     const effect = item.effect
     if (effect.type === 'enhance_tiles' || effect.type === 'convert_to_wild') {
       const mark = effect.enhancement
-      const pool =
-        mark === EnhancementType.Steel || mark === EnhancementType.Gold
-          ? held
-          : mark === EnhancementType.Stone
-            ? held
-            : scored
+      // Every Edition pays when its tile is played; a Stone goes on a tile
+      // the coach would leave on the rack, since it never joins a group.
+      const pool = mark === EnhancementType.Stone ? held : scored
       const ranked = byConnection(pool)
       if (mark === EnhancementType.Stone) ranked.reverse()
       return targets(
@@ -152,21 +145,21 @@ function targetPlan(
     }
     return 'destructive-effect-not-priced'
   }
-  if (item.effect.type === 'apply_seal_to_tile') {
-    const seal = item.effect.sealType
-    const pool =
-      seal === SealType.Blue || seal === SealType.Purple ? held : scored
-    return targets(
-      byConnection(pool).filter((t) => t.modifiers.seal === SealType.None),
-      'add-seal'
-    )
-  }
-  if (item.effect.type === 'apply_edition')
+  if (item.effect.type === 'apply_tile_edition')
     return targets(
       byConnection(scored).filter(
-        (t) => t.modifiers.edition === EditionType.Base
+        (t) => t.modifiers.enhancement === EnhancementType.None
       ),
       'add-edition'
+    )
+  if (item.effect.type === 'copy_tile_edition')
+    return targets(
+      byConnection(tiles).filter(
+        (t) =>
+          t.modifiers.enhancement !== EnhancementType.None &&
+          t.modifiers.enhancement !== EnhancementType.Stone
+      ),
+      'copy-edition'
     )
   if (item.effect.type === 'duplicate_tile')
     return targets(byConnection(scored), 'duplicate-scoring-tile')

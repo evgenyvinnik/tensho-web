@@ -13,14 +13,7 @@ import type { RoundCashOutSummary } from '../../game/GameOrchestrator'
 import { STAKE_NAME_KEYS } from '../../i18n/stakeRules'
 
 export interface CashOutEntry {
-  id:
-    | 'clear'
-    | 'interest'
-    | 'decrees'
-    | 'goldTiles'
-    | 'bonus'
-    | 'rentals'
-    | 'omenGold'
+  id: 'clear' | 'interest' | 'decrees' | 'bonus' | 'rentals' | 'omenGold'
   label: string
   /** Gold this toast carries. */
   amount: number
@@ -48,7 +41,6 @@ export function cashOutEntries(
     summary.baseReward -
     summary.interest -
     summary.decreeGold -
-    summary.heldGoldMarkReward -
     (summary.omenGold ?? 0)
   const sources: CashOutEntry[] = [
     {
@@ -73,11 +65,6 @@ export function cashOutEntries(
       id: 'decrees',
       label: t('shop.payout.decrees'),
       amount: summary.decreeGold,
-    },
-    {
-      id: 'goldTiles',
-      label: t('shop.payout.goldTiles'),
-      amount: summary.heldGoldMarkReward,
     },
     { id: 'bonus', label: t('shop.payout.bonus'), amount: bonus },
     {

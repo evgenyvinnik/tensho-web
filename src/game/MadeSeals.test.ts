@@ -3,12 +3,22 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
-import { EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 
 function fixture() {
   const game = new GameOrchestrator()
   game.startNewRun(7)
   return { game, state: game.getState() as OrchestratorState }
+}
+
+/** Play a Glass tile beside another rack tile: the Glass makes a Fate Seal. */
+function playGlass(game: GameOrchestrator, state: OrchestratorState) {
+  const glass = state.handTiles[0].withEnhancement(EnhancementType.Glass)
+  state.handTiles[0] = glass
+  return game.processAction({
+    type: 'play',
+    tileIds: [glass.id, state.handTiles[1].id],
+  })
 }
 
 /** Make the next random Seals these, in order. */
@@ -37,12 +47,8 @@ describe('a Seal the run makes is used as it is made', () => {
     const { game, state } = fixture()
     const used = sealsUsed()
     state.gold = 10
-    const purple = state.handTiles[0].withSeal(SealType.Purple)
-    state.handTiles[0] = purple
     nextSeals('seal_of_the_hermit')
-    expect(
-      game.processAction({ type: 'redraw', tileIds: [purple.id] }).success
-    ).toBe(true)
+    expect(playGlass(game, state).success).toBe(true)
     expect(state.fateSeals).toEqual([])
     expect(state.gold).toBe(20)
     expect(used).toEqual([
@@ -52,10 +58,8 @@ describe('a Seal the run makes is used as it is made', () => {
 
   it('waits only for its wall tiles when it takes them', () => {
     const { game, state } = fixture()
-    const purple = state.handTiles[0].withSeal(SealType.Purple)
-    state.handTiles[0] = purple
     nextSeals('seal_of_glass')
-    game.processAction({ type: 'redraw', tileIds: [purple.id] })
+    expect(playGlass(game, state).success).toBe(true)
     expect(state.fateSeals.map((seal) => seal.id)).toEqual(['seal_of_glass'])
 
     const [seal] = state.fateSeals

@@ -47,7 +47,7 @@ import {
   WindType,
   type TileData,
 } from '../core/Tile'
-import { EditionType, EnhancementType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { runRandom } from '../game/RunRandom'
 import { tileModifierEntries } from '../core/tileModifierEntries'
 import type { DecreeUnlockResolver } from '../config/decreeUnlocks'
@@ -494,9 +494,10 @@ export class BlessingPackSystem {
         : tiles[0]
 
     // Any of the 34 faces, Winds and Dragons too, as in the Tea House's tile
-    // slot. A Wild Mark only crosses suits, so it comes on a numbered tile.
+    // slot. A Wild Edition only crosses suits, so it comes on a numbered tile.
     const face = Math.floor(
-      runRandom.next('packs') * (selected.modifier === 'jade' ? 27 : 34)
+      runRandom.next('packs') *
+        (selected.modifier === EnhancementType.Wild ? 27 : 34)
     )
     const suits = [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu] as const
     let tile =
@@ -506,32 +507,7 @@ export class BlessingPackSystem {
           ? Tile.createWind((face - 26) as WindType)
           : Tile.createDragon((face - 30) as DragonType)
 
-    switch (selected.modifier) {
-      case 'bonus':
-        tile = tile.withEnhancement(EnhancementType.Bonus)
-        break
-      case 'mult':
-        tile = tile.withEnhancement(EnhancementType.Mult)
-        break
-      case 'gold':
-        tile = tile.withEnhancement(EnhancementType.Gold)
-        break
-      case 'jade':
-        tile = tile.withEnhancement(EnhancementType.Wild)
-        break
-      case 'foil':
-        tile = tile.withEdition(EditionType.Foil)
-        break
-      case 'holographic':
-        tile = tile.withEdition(EditionType.Holographic)
-        break
-      case 'polychrome':
-        tile = tile.withEdition(EditionType.Polychrome)
-        break
-      case 'negative':
-        tile = tile.withEdition(EditionType.Negative)
-        break
-    }
+    tile = tile.withEnhancement(selected.modifier)
 
     return {
       id: selected.id,
@@ -549,30 +525,31 @@ export class BlessingPackSystem {
   }
 
   /**
-   * Choose a modifier recipe. Display rules come from the resulting Tile.
+   * Choose an Edition recipe. Display rules come from the resulting Tile.
+   * Glass and Steel make Seals and Orbs, so they are the rarest.
    */
   private getModifiedTilesByRarity(
     rarity: keyof ContentRarityWeights
-  ): { id: string; modifier: string }[] {
+  ): { id: string; modifier: EnhancementType }[] {
     const tiles: Record<
       keyof ContentRarityWeights,
-      { id: string; modifier: string }[]
+      { id: string; modifier: EnhancementType }[]
     > = {
       common: [
-        { id: 'bonus_tile', modifier: 'bonus' },
-        { id: 'lucky_tile', modifier: 'gold' },
+        { id: 'bonus_tile', modifier: EnhancementType.Bonus },
+        { id: 'mult_tile', modifier: EnhancementType.Mult },
       ],
       uncommon: [
-        { id: 'mult_tile', modifier: 'mult' },
-        { id: 'wild_tile', modifier: 'jade' },
+        { id: 'gold_tile', modifier: EnhancementType.Gold },
+        { id: 'wild_tile', modifier: EnhancementType.Wild },
       ],
       rare: [
-        { id: 'foil_tile', modifier: 'foil' },
-        { id: 'holographic_tile', modifier: 'holographic' },
+        { id: 'lucky_tile', modifier: EnhancementType.Lucky },
+        { id: 'stone_tile', modifier: EnhancementType.Stone },
       ],
       legendary: [
-        { id: 'polychrome_tile', modifier: 'polychrome' },
-        { id: 'negative_tile', modifier: 'negative' },
+        { id: 'glass_tile', modifier: EnhancementType.Glass },
+        { id: 'steel_tile', modifier: EnhancementType.Steel },
       ],
     }
 

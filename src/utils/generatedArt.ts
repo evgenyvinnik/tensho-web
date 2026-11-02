@@ -543,7 +543,7 @@ export const generatedArtPaths = {
     yaku_toitoi: 'assets/illustrations/generated/yaku/yaku_toitoi.webp',
     yaku_yakuhai: 'assets/illustrations/generated/yaku/yaku_yakuhai.webp',
   },
-  // A Mark is pictured as a finished tile in its material: the Five of Dots,
+  // An Edition is pictured as a finished tile in its material: the Five of Dots,
   // or the blank Stone.
   enhancements: {
     bonus: 'assets/tiles/bonus/pinzu_05.webp',
@@ -554,12 +554,6 @@ export const generatedArtPaths = {
     steel: 'assets/tiles/steel/pinzu_05.webp',
     stone: 'assets/tiles/stone.webp',
     wild: 'assets/tiles/wild/pinzu_05.webp',
-  },
-  seals: {
-    blue: 'assets/illustrations/generated/seals/blue.webp',
-    gold: 'assets/illustrations/generated/seals/gold.webp',
-    purple: 'assets/illustrations/generated/seals/purple.webp',
-    red: 'assets/illustrations/generated/seals/red.webp',
   },
   editions: {
     foil: 'assets/illustrations/generated/editions/foil.webp',

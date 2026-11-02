@@ -111,36 +111,52 @@ for (const [language, copy] of [
   ['ru', ru],
   ['th', th],
 ] as const) {
-  test(`stacked modifier rules remain fully readable in the tile popup (${language})`, async ({
+  test(`an Edition's rule and this round's roll remain fully readable in the tile popup (${language})`, async ({
     page,
     isMobile,
   }, testInfo) => {
     await openShortTable(page, language)
     const tile = rackTiles(page).first()
     const id = await tile.getAttribute('data-play-tile')
-    // Presentation-only fixture: a Purple Stamp on the first rack tile.
+    // Presentation-only fixture: a Lucky Edition on the first rack tile, with
+    // this round's roll known.
     await page.evaluate(async (id) => {
       const gamePath = '/src/game/GameOrchestrator.ts'
       const modifiersPath = '/src/core/TileModifier.ts'
       const eventPath = '/src/game/EventBus.ts'
       const { gameOrchestrator: game } = await import(gamePath)
-      const { SealType } = await import(modifiersPath)
+      const { EnhancementType } = await import(modifiersPath)
       const { eventBus } = await import(eventPath)
       const state = game.getState()
       const index = state.handTiles.findIndex(
         (tile: { id: string }) => tile.id === id
       )
-      state.handTiles[index] = state.handTiles[index].withSeal(SealType.Purple)
+      state.handTiles[index] = state.handTiles[index].withEnhancement(
+        EnhancementType.Lucky
+      )
+      state.luckyRolls = {
+        ...state.luckyRolls,
+        [id]: { multiplier: 1.75, points: 90 },
+      }
       eventBus.emit('tileDrawn', {
         tileId: id,
         tilesRemaining: state.wall.length - state.drawIndex,
       })
     }, id)
+    // The rack tile shows the roll on its face.
+    await expect(tile.locator('[data-lucky-roll]')).toHaveAttribute(
+      'data-lucky-roll',
+      '1.75:90'
+    )
     await showDetails(page, tile, isMobile)
     const tooltip = page.getByRole('tooltip')
     await expect(tooltip).toBeVisible()
-    await expect(tooltip).toContainText(
-      copy.archiveSeals.items.purple.description
+    await expect(tooltip).toContainText(copy.tileMarks.items.lucky.name)
+    await expect(tooltip).toContainText(copy.tileMarks.items.lucky.description)
+    await expect(tooltip.locator('[data-edition-current]')).toHaveText(
+      copy.tileDetails.luckyThisRound
+        .replace('{{multiplier}}', (1.75).toLocaleString(language))
+        .replace('{{points}}', (90).toLocaleString(language))
     )
     const bounds = await tooltip.evaluate((node) => ({
       width: node.clientWidth,
@@ -151,7 +167,7 @@ for (const [language, copy] of [
     expect(bounds.contentWidth).toBeLessThanOrEqual(bounds.width)
     expect(bounds.contentHeight).toBeLessThanOrEqual(bounds.height)
     await page.screenshot({
-      path: testInfo.outputPath(`${language}-modified-details.png`),
+      path: testInfo.outputPath(`${language}-edition-details.png`),
     })
     await page.keyboard.press('Escape')
     await expect(tooltip).toHaveCount(0)

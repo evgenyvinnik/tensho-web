@@ -8,7 +8,7 @@ import {
   suitConversionRank,
   UNITY_WIND_CONVERSIONS,
 } from './tileTransformations'
-import { EditionType, EnhancementType, SealType } from './TileModifier'
+import { EnhancementType } from './TileModifier'
 
 describe('physical suit transformations', () => {
   it('keeps rank conversions valid without creating red fives or losing modifiers', () => {
@@ -20,14 +20,14 @@ describe('physical suit transformations', () => {
             sourceRank,
             'physical-rank',
             sourceRank === 5
-          ).withSeal(SealType.Red)
+          ).withEnhancement(EnhancementType.Gold)
           const result = convertSuitedTileRank(tile, rank)
           expect(result).toMatchObject({
             rank,
             suit,
             id: tile.id,
             isRed: sourceRank === 5 && rank === 5,
-            modifiers: tile.modifiers,
+            modifiers: { enhancement: EnhancementType.Gold },
           })
           expect(tile.rank).toBe(sourceRank)
           if (sourceRank === rank) expect(result).toBe(tile)
@@ -67,7 +67,7 @@ describe('physical suit transformations', () => {
             rank,
             'physical-tile',
             rank === 5
-          ).withEdition(EditionType.Foil)
+          ).withEnhancement(EnhancementType.Glass)
           const before = JSON.stringify(source)
           const result = convertSuitedTile(source, targetSuit)
           const maxRank =
@@ -79,7 +79,9 @@ describe('physical suit transformations', () => {
           expect(result.rank).toBe(((rank - 1) % maxRank) + 1)
           expect(result.suit).toBe(targetSuit)
           expect(result.id).toBe(source.id)
-          expect(result.modifiers).toEqual(source.modifiers)
+          expect(result.modifiers).toEqual({
+            enhancement: EnhancementType.Glass,
+          })
           expect(result.isRed).toBe(maxRank === 9 && rank === 5)
           expect(JSON.stringify(source)).toBe(before)
         }
@@ -123,9 +125,12 @@ describe('honor transformations', () => {
   it('makes the named honor from every numbered rank, never a cycled one', () => {
     for (const suit of [TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu])
       for (let rank = 1; rank <= 9; rank++) {
-        const tile = new Tile(suit, rank, 'to-honor', rank === 5).withEdition(
-          EditionType.Foil
-        )
+        const tile = new Tile(
+          suit,
+          rank,
+          'to-honor',
+          rank === 5
+        ).withEnhancement(EnhancementType.Lucky)
         expect(
           convertTileToHonor(tile, TileSuit.Dragon, DragonType.Red)
         ).toMatchObject({
@@ -133,7 +138,7 @@ describe('honor transformations', () => {
           rank: 3,
           id: tile.id,
           isRed: false,
-          modifiers: tile.modifiers,
+          modifiers: { enhancement: EnhancementType.Lucky },
         })
         expect(
           convertTileToHonor(tile, TileSuit.Wind, WindType.North)

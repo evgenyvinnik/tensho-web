@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
-import { EditionType, EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import en from '../i18n/locales/en.json'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import { getFateSealIllustration } from '../utils/assets'
@@ -104,26 +104,14 @@ function refuse(game: GameOrchestrator, id: string, targets: string[]) {
   expect(state.fateSealSystem.getLastUsedConsumable()).toBeNull()
 }
 
-const MODIFIED: [string, (tile: Tile) => Tile][] = [
-  ...Object.values(EnhancementType)
-    .filter((e) => e !== EnhancementType.None && e !== EnhancementType.Stone)
-    .map((e): [string, (tile: Tile) => Tile] => [
-      `${e} Mark`,
-      (tile) => tile.withEnhancement(e),
-    ]),
-  ...Object.values(SealType)
-    .filter((s) => s !== SealType.None)
-    .map((s): [string, (tile: Tile) => Tile] => [
-      `${s} Stamp`,
-      (tile) => tile.withSeal(s),
-    ]),
-  ...Object.values(EditionType)
-    .filter((e) => e !== EditionType.Base)
-    .map((e): [string, (tile: Tile) => Tile] => [
-      `${e} Edition`,
-      (tile) => tile.withEdition(e),
-    ]),
-]
+const MODIFIED: [string, (tile: Tile) => Tile][] = Object.values(
+  EnhancementType
+)
+  .filter((e) => e !== EnhancementType.None && e !== EnhancementType.Stone)
+  .map((e): [string, (tile: Tile) => Tile] => [
+    `${e} Edition`,
+    (tile) => tile.withEnhancement(e),
+  ])
 
 afterEach(() => {
   eventBus.clear()
@@ -207,7 +195,7 @@ describe('honor Seals', () => {
     const tile = place(TileSuit.Pinzu, 5, {
       red: true,
       onRack: true,
-      modify: (t) => t.withSeal(SealType.Gold),
+      modify: (t) => t.withEnhancement(EnhancementType.Gold),
     })
     lay(game, 'seal_of_red_dragon', [tile.id])
     const expected = {
@@ -448,13 +436,13 @@ describe('presentation', () => {
 })
 
 // Keep the modifier fixture honest: every listed tile carries exactly one.
-it('lists each non-Stone Mark, Stamp and Edition once', () => {
-  const kinds = MODIFIED.map(([, modify]) => {
-    const { enhancement, seal, edition } = modify(
-      new Tile(TileSuit.Manzu, 5, 'probe')
-    ).modifiers
-    return `${enhancement}/${seal}/${edition}`
-  })
-  expect(new Set(kinds).size).toBe(MODIFIED.length)
-  expect(MODIFIED).toHaveLength(7 + 4 + 4)
+it('lists each non-Stone Edition once', () => {
+  const kinds = MODIFIED.map(
+    ([, modify]) => modify(new Tile(TileSuit.Manzu, 5, 'probe')).modifiers
+  )
+  expect(kinds.every((modifiers) => Object.keys(modifiers).length === 1)).toBe(
+    true
+  )
+  expect(new Set(kinds.map((m) => m.enhancement)).size).toBe(MODIFIED.length)
+  expect(MODIFIED).toHaveLength(7)
 })

@@ -3,7 +3,7 @@ import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus, type GameEventData } from './EventBus'
 import { runRandom } from './RunRandom'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
-import { EditionType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -104,23 +104,25 @@ it.each([false, true])(
   }
 )
 
-it('halves a Decree Foil edition but preserves a tile Foil edition', () => {
+it('halves a Decree Foil finish but preserves a tile Bonus Edition', () => {
   const { game, state, ids } = fixture()
-  state.handTiles[0] = state.handTiles[0].withEdition(EditionType.Foil)
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Bonus)
   const base = game.previewScore(ids)!
-  expect(base.additiveBonus).toBe(50)
+  expect(base.additiveBonus).toBe(30)
   acquire(state, 'decree-half-suited')
   state.decreeSystem.applyEdition('decree-half-suited', 'Foil')
   state.seasonSystem.forceSetSeason('Winter', true)
   const score = pay(game, ids)
-  expect(score.additiveBonus).toBe(50 + (20 + 50) / 2)
-  expect(score.finalScore).toBe(130)
+  expect(score.additiveBonus).toBe(30 + (20 + 50) / 2)
+  // 4-5-6 Bamboo: 15 tile points + 30 for the sequence, at Mult 1.
+  expect(score.finalScore).toBe(45 + 30 + 35)
 })
 
 it('does not halve tile bonuses without a contributing Decree', () => {
   const { game, state, ids } = fixture()
-  state.handTiles[0] = state.handTiles[0].withEdition(EditionType.Foil)
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Bonus)
   const base = game.previewScore(ids)!
+  expect(base.additiveBonus).toBe(30)
   state.seasonSystem.forceSetSeason('Winter', true)
   expect(pay(game, ids).finalScore).toBe(base.finalScore)
 })

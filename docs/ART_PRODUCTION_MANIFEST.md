@@ -271,15 +271,15 @@ Prompt: *a dark slate Void Script tablet with violet-glowing inlay depicting [a 
 | `script_of_incantation` | Script of Incantation | Destroy 1 random tile, add 4 random Enhanced Number tiles | delivered |
 | `script_of_immolation` | Script of Immolation | Destroys 5 random tiles from hand. Gain 20 gold. | delivered |
 | `script_of_the_cryptid` | Script of the Cryptid | Create 2 copies of 1 selected tile in hand | delivered |
-| `script_of_the_gold_seal` | Script of the Gold Seal | Add Gold Seal to 1 selected tile | delivered |
-| `script_of_deja_vu` | Script of Deja Vu | Add Red Seal to 1 selected tile (retrigger) | delivered |
-| `script_of_the_trance` | Script of the Trance | Add Blue Seal to 1 tile (creates Orb for final hand) | delivered |
-| `script_of_the_medium` | Script of the Medium | Add a Purple Seal to 1 tile (creates a Fate Seal when redrawn) | delivered |
-| `script_of_aura` | Script of Aura | Add Foil/Holo/Prismatic to 1 selected tile | delivered |
-| `script_of_ectoplasm` | Script of Ectoplasm | Add Negative to a random Decree (+1 Decree slot) | delivered |
+| `script_of_the_gold_seal` | Script of Gilding | Gold Edition on up to 3 chosen tiles (art: gold wax seal) | delivered |
+| `script_of_deja_vu` | Script of Deja Vu | Copy a tile's Edition onto every copy of that tile | delivered |
+| `script_of_the_trance` | Script of the Trance | Steel Edition on 2 tiles (Orbs when played) | delivered |
+| `script_of_the_medium` | Script of the Medium | Glass Edition on 2 tiles (Fate Seals when played) | delivered |
+| `script_of_aura` | Script of Aura | Random Edition on up to 3 tiles | delivered |
+| `script_of_ectoplasm` | Script of Ectoplasm | Add a Negative Finish to a random Decree (+1 Decree slot) | delivered |
 | `script_of_the_wraith` | Script of the Wraith | Creates a random Rare Decree | delivered |
 | `script_of_the_ankh` | Script of the Ankh | Copy a random Decree, destroy all other Decrees | delivered |
-| `script_of_the_hex` | Script of the Hex | Add Prismatic to random Decree, destroy all others | delivered |
+| `script_of_the_hex` | Script of the Hex | Add a Polychrome Finish to a random Decree, destroy all others | delivered |
 | `script_of_the_sigil` | Script of the Sigil | Converts ALL tiles in hand to a single random suit | delivered |
 | `script_of_the_ouija` | Script of the Ouija | Converts ALL tiles in hand to a single random rank | delivered |
 | `script_of_the_soul` | Script of the Soul | Creates a Legendary (Heavenly Ordinance) Decree | delivered |

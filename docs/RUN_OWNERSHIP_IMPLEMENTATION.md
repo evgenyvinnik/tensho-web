@@ -1,5 +1,11 @@
 # Run ownership: Fate Seals and Negative tiles
 
+> **Update (snapshot v4):** Negative tiles were retired with the other tile
+> Editions (only Decrees keep a Negative *Finish*). The Fate Seal lifetime rules
+> below still hold; the Negative-tile sections are historical. Saved runs drop
+> the tile's Negative Edition, and a run left over capacity keeps its Decrees
+> (`runOwnership.overCapacity`).
+
 ## Rule decision — October 8, 2026 UTC
 
 Under the user's delegated authority, Fate Seal changes to selected physical

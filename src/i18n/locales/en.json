@@ -123,13 +123,14 @@
     "biggerHandComplete": "If the new tiles are 1 and 4 of {{circles}}, the fourteen tiles make four sequences and a pair. Select all fourteen and play them: a finished hand does not score by itself.",
     "biggerHandWarning": "Draws are random, and chasing a big hand can cost the round. Compare the score you can make now with the Turns you have left.",
     "congratulations": "<strong>Congratulations!</strong> You now understand the fundamentals of Tensho.",
-    "farewell": "May the tiles favor you on your heavenly ascent!"
+    "farewell": "May the tiles favor you on your heavenly ascent!",
+    "finishes": "Decrees can carry a Finish instead: Foil (+50 Points), Holographic (+10 Mult), Polychrome (×1.5 Mult) or Negative (+1 Decree slot)."
   },
   "codexEconomy": {
     "payout": "Base clear rewards are 3 Gold for Small, 5 for Large and 10 for Boss rounds, not based on excess score. Stakes can remove the Small reward; Decrees and Omens can change the final payout.",
     "interest": "Interest uses Gold held before the clear payout: 1 per 5, capped at 5 by default. Charters and Omens can raise the cap; some Omens block interest. Defeat pays no interest.",
     "sale": "Inspect a Decree’s Sell button for its actual value. Flower-paid and free reward Decrees can sell for 0 Gold; Eternal Decrees cannot be sold. Selling removes its effects and frees the slot it used.",
-    "prices": "Use each offer’s displayed price and the current Reroll cost. Discounts, Editions, Charters and other effects can change prices. Rerolls do not refresh purchased Charters or the free Cartomancer offer."
+    "prices": "Use each offer’s displayed price and the current Reroll cost. Discounts, Finishes, Charters and other effects can change prices. Rerolls do not refresh purchased Charters or the free Cartomancer offer."
   },
   "achievements": {
     "title": "Heavenly Accolades",
@@ -333,7 +334,7 @@
     "waiting": "Waiting for another Decree.",
     "missing": "Target removed; choose again next round.",
     "inactive": "The copier or its target is inactive.",
-    "rules": "The target stays fixed this round. Copies effects and costs, not Editions or copy chains. Removing or disabling the target does not reroll it."
+    "rules": "The target stays fixed this round. Copies effects and costs, not Finishes or copy chains. Removing or disabling the target does not reroll it."
   },
   "screenDownload": {
     "title": "This screen couldn’t download",
@@ -347,7 +348,6 @@
   },
   "runOwnership": {
     "fateSeal": "Tile changes last for this run, including future rounds. A new run starts fresh.",
-    "negativeTile": "+1 Decree slot while this physical Negative tile remains in your wall. Drawing it or sending it to the river keeps the slot; destruction or replacing its Edition removes it.",
     "overCapacity": "Capacity reduced: you keep your owned Decrees. Make room before acquiring more."
   },
   "yakuUpgrades": {
@@ -441,7 +441,7 @@
     "targets": "Tile targets",
     "count": "Targets: {{selected}} / {{required}}",
     "copyOrder": "Tile 1 becomes a copy of tile 2. Choose the tile to change first.",
-    "replacesModifier": "Replaces {{names}}: a special tile holds one Mark, Stamp or Edition.",
+    "replacesModifier": "Replaces {{names}}: a special tile holds one Edition.",
     "cost": "Void cost",
     "failed": "This item could not be used.",
     "unavailable": "This item can’t be used right now.",
@@ -817,7 +817,6 @@
     "payout": {
       "interest": "Interest",
       "decrees": "Decrees",
-      "goldTiles": "Gold tiles",
       "bonus": "Reward adjustment",
       "rentals": "Rentals",
       "omenEarned": "Omen: {{name}}",
@@ -872,7 +871,7 @@
       "what": "The Tea House is the shop between rounds.",
       "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, Orbs and Fate Seals work at once (a Fate Seal asks which wall tiles to change), Scripts are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
       "interest": "Gold you keep earns interest: +1 Gold for every 5 you hold when a round ends, up to +{{cap}}.",
-      "cashOut": "Your round's pay lands in the purse as you arrive, one toast per source: the clear itself, interest, Decrees, Gold tiles and any rentals charged.",
+      "cashOut": "Your round's pay lands in the purse as you arrive, one toast per source: the clear itself, interest, Decrees and any rentals charged.",
       "build": "Your build shows the Decrees you own beside your Yaku upgrades: open a scroll to read its rules or sell it, or an upgrade to see its level. Every purchase happens with its own Buy button."
     },
     "sealUsed": "{{name}} used",
@@ -1732,7 +1731,9 @@
     "bonusTile": "Automatically collected bonus tile",
     "flowerScope": "Base Flower effect; lasts for the run. Collection bonuses and suppression can change it. See Flowers / Seasons for active effects.",
     "stage": "Stage {{tile}}",
-    "return": "Return {{tile}} to hand"
+    "return": "Return {{tile}} to hand",
+    "bonusThisAct": "Act {{act}}: +{{points}} Points",
+    "luckyThisRound": "This round: ×{{multiplier}} Mult and +{{points}} Points"
   },
   "tiles": {
     "manzu": "Characters",
@@ -1748,10 +1749,6 @@
     "green": "Green Dragon",
     "red": "Red Dragon",
     "modifiers": "Special tile:",
-    "tileModifiers": "Special tile",
-    "enhancement": "Mark",
-    "stamp": "Stamp",
-    "edition": "Edition",
     "debuffed": "Debuffed tile",
     "lockedMustPlay": "Locked tile: must be played",
     "tileRow": "Tile row",
@@ -1772,7 +1769,7 @@
     "shortfall": "Points short",
     "remainingGold": "Gold remaining",
     "rentalPaid": "Rental charged",
-    "defeatIncome": "On defeat, Rental is charged; round rewards, interest, Decree income and held Gold tile income are not paid.",
+    "defeatIncome": "On defeat, Rental is charged; round rewards, interest and Decree income are not paid.",
     "endlessComplete": "Endless Ascent Complete",
     "victorySubtitle": "The Act {{act}} Showdown is yours. Your run is secured.",
     "endlessSubtitle": "Your victory stands—even though this ascent has ended.",
@@ -2233,7 +2230,7 @@
       },
       "sharp_edge": {
         "name": "Sharp Edge",
-        "description": "Editions appear twice as often"
+        "description": "Decree Finishes appear twice as often"
       },
       "reroll_surplus": {
         "name": "Reroll Surplus",
@@ -2297,7 +2294,7 @@
       },
       "radiant_edge": {
         "name": "Radiant Edge",
-        "description": "Editions appear four times as often"
+        "description": "Decree Finishes appear four times as often"
       },
       "reroll_abundance": {
         "name": "Reroll Abundance",
@@ -2424,11 +2421,11 @@
       },
       "polychrome_omen": {
         "name": "Polychrome Omen",
-        "description": "Adds a Polychrome Edition to a random owned Decree."
+        "description": "Adds a Polychrome Finish to a random owned Decree."
       },
       "foil_omen": {
         "name": "Foil Omen",
-        "description": "Next purchased Decree gains a Foil Edition."
+        "description": "Next purchased Decree gains a Foil Finish."
       },
       "interest_omen": {
         "name": "Interest Omen",
@@ -2448,7 +2445,7 @@
       },
       "negative_omen": {
         "name": "Negative Omen",
-        "description": "Next purchased Decree gains a Negative Edition (+1 slot)."
+        "description": "Next purchased Decree gains a Negative Finish (+1 slot)."
       },
       "austerity_omen": {
         "name": "Austerity Omen",
@@ -2456,7 +2453,7 @@
       },
       "holographic_omen": {
         "name": "Holographic Omen",
-        "description": "Next purchased Decree gains a Holographic Edition."
+        "description": "Next purchased Decree gains a Holographic Finish."
       }
     }
   },
@@ -2464,35 +2461,35 @@
     "items": {
       "seal_of_the_alchemist": {
         "name": "Seal of the Alchemist",
-        "description": "Adds a Lucky Mark (a chance of +20 Mult or +20 Gold when scored) to 2 tiles you choose"
+        "description": "Adds a Lucky Edition to 2 tiles you choose (each round it rolls ×1.25 to ×2 Mult and +20 to +100 Points, paid when it scores)"
       },
       "seal_of_the_empress": {
         "name": "Seal of the Empress",
-        "description": "Adds a Mult Mark (+4 Mult when scored) to 2 tiles you choose"
+        "description": "Adds a Mult Edition (+4 Mult when scored) to 2 tiles you choose"
       },
       "seal_of_the_sage": {
         "name": "Seal of the Sage",
-        "description": "Adds a Bonus Mark (+30 Points when scored) to 2 tiles you choose"
+        "description": "Adds a Bonus Edition (+30 Points per Act when scored) to 2 tiles you choose"
       },
       "seal_of_harmony": {
         "name": "Seal of Harmony",
-        "description": "Adds a Wild Mark to 1 tile you choose (it counts as every suit)"
+        "description": "Adds a Wild Edition to 1 tile you choose (it counts as every suit)"
       },
       "seal_of_fortitude": {
         "name": "Seal of Fortitude",
-        "description": "Adds a Steel Mark to 1 tile you choose (×1.5 Mult while it stays on your rack)"
+        "description": "Adds a Steel Edition to 1 tile you choose (creates a Celestial Orb when played, then has a 1 in 4 chance to rust away)"
       },
       "seal_of_glass": {
         "name": "Seal of Glass",
-        "description": "Adds a Glass Mark to 1 tile you choose (×2 Mult when scored, but it may shatter)"
+        "description": "Adds a Glass Edition to 1 tile you choose (creates a Fate Seal when played, then has a 1 in 4 chance to shatter)"
       },
       "seal_of_wealth": {
         "name": "Seal of Wealth",
-        "description": "Adds a Gold Mark to 1 tile you choose (+3 Gold if it is on your rack when the round ends)"
+        "description": "Adds a Gold Edition to 1 tile you choose (+3 Gold each time it scores)"
       },
       "seal_of_stone": {
         "name": "Seal of Stone",
-        "description": "Adds a Stone Mark to 1 tile you choose (+100 Points; no number or suit, never joins a group, always scores in full)"
+        "description": "Adds a Stone Edition to 1 tile you choose (+100 Points; no number or suit, never joins a group, always scores in full)"
       },
       "seal_of_manzu": {
         "name": "Seal of Characters",
@@ -2580,7 +2577,7 @@
       },
       "seal_of_fortune": {
         "name": "Seal of Fortune",
-        "description": "1 in 4 chance to give a random Decree a Foil, Holographic or Polychrome Edition"
+        "description": "1 in 4 chance to give a random Decree a Foil, Holographic or Polychrome Finish"
       },
       "seal_of_the_immortal": {
         "name": "Seal of the Immortal",
@@ -2656,15 +2653,15 @@
     "items": {
       "script_of_kinship": {
         "name": "Script of Kinship",
-        "description": "Destroys 1 random tile and adds 3 random Winds or Dragons, each with a random Bonus, Mult or Lucky Mark"
+        "description": "Destroys 1 random tile and adds 3 random Winds or Dragons, each with a random Bonus, Mult or Lucky Edition"
       },
       "script_of_the_grave": {
         "name": "Script of the Grave",
-        "description": "Destroys 1 random tile and adds 2 random 1s or 9s, each with a random Bonus, Mult or Lucky Mark"
+        "description": "Destroys 1 random tile and adds 2 random 1s or 9s, each with a random Bonus, Mult or Lucky Edition"
       },
       "script_of_incantation": {
         "name": "Script of Incantation",
-        "description": "Destroys 1 random tile and adds 4 random 2–8 tiles, each with a random Bonus, Mult or Lucky Mark"
+        "description": "Destroys 1 random tile and adds 4 random 2–8 tiles, each with a random Bonus, Mult or Lucky Edition"
       },
       "script_of_immolation": {
         "name": "Script of Immolation",
@@ -2674,29 +2671,9 @@
         "name": "Script of the Cryptid",
         "description": "Creates 2 copies of 1 rack tile you choose"
       },
-      "script_of_the_gold_seal": {
-        "name": "Script of the Gold Stamp",
-        "description": "Adds a Gold Stamp to 1 tile you choose (+3 Gold when it scores)"
-      },
-      "script_of_deja_vu": {
-        "name": "Script of Deja Vu",
-        "description": "Adds a Red Stamp to 1 tile you choose (it scores twice)"
-      },
-      "script_of_the_trance": {
-        "name": "Script of the Trance",
-        "description": "Adds a Blue Stamp to 1 tile you choose (creates a Celestial Orb if the tile is in the play that clears the round)"
-      },
-      "script_of_the_medium": {
-        "name": "Script of the Medium",
-        "description": "Adds a Purple Stamp to 1 selected tile (creates a Fate Seal when redrawn)"
-      },
-      "script_of_aura": {
-        "name": "Script of Aura",
-        "description": "Gives 1 tile you choose a random Edition: Foil, Holographic or Polychrome"
-      },
       "script_of_ectoplasm": {
         "name": "Script of Ectoplasm",
-        "description": "Adds a Negative Edition to a random Decree (+1 Decree slot)"
+        "description": "Adds a Negative Finish to a random Decree (+1 Decree slot)"
       },
       "script_of_the_wraith": {
         "name": "Script of the Wraith",
@@ -2708,7 +2685,7 @@
       },
       "script_of_the_hex": {
         "name": "Script of the Hex",
-        "description": "Gives a random Decree the Polychrome Edition and destroys all other Decrees"
+        "description": "Gives a random Decree the Polychrome Finish and destroys all other Decrees"
       },
       "script_of_the_sigil": {
         "name": "Script of the Sigil",
@@ -2737,6 +2714,26 @@
       "script_of_silence": {
         "name": "Script of Silence",
         "description": "Your next complete hand may include one group that does not fit"
+      },
+      "script_of_the_gold_seal": {
+        "name": "Script of Gilding",
+        "description": "Gives a Gold Edition to up to 3 tiles you choose (+3 Gold each time one scores)"
+      },
+      "script_of_deja_vu": {
+        "name": "Script of Deja Vu",
+        "description": "Copies the Edition of 1 tile you choose onto every other copy of that tile in your wall"
+      },
+      "script_of_the_trance": {
+        "name": "Script of the Trance",
+        "description": "Gives a Steel Edition to 2 tiles you choose (each creates a Celestial Orb when played, then may rust away)"
+      },
+      "script_of_the_medium": {
+        "name": "Script of the Medium",
+        "description": "Gives a Glass Edition to 2 tiles you choose (each creates a Fate Seal when played, then may shatter)"
+      },
+      "script_of_aura": {
+        "name": "Script of Aura",
+        "description": "Gives up to 3 tiles you choose a random Edition each: Bonus, Mult, Wild, Glass, Steel, Gold or Lucky"
       }
     }
   },
@@ -2807,16 +2804,12 @@
         "description": "Single-use items: Fate Seals, Celestial Orbs, Void Scripts"
       },
       "tileMarks": {
-        "name": "Tile Marks",
-        "description": "Marks that change how a tile scores or behaves"
-      },
-      "seals": {
-        "name": "Stamps",
-        "description": "Wax stamps that give a tile an extra effect"
+        "name": "Editions",
+        "description": "Special tiles: each Edition changes how its tile scores or behaves"
       },
       "editions": {
-        "name": "Editions",
-        "description": "Shimmering finishes that add an effect to a tile or Decree"
+        "name": "Finishes",
+        "description": "Shimmering finishes that add an effect to a Decree"
       },
       "packs": {
         "name": "Blessing Packs",
@@ -2899,56 +2892,36 @@
   "tileMarks": {
     "items": {
       "bonus": {
-        "name": "Bonus Mark",
-        "description": "Tile scores extra points. +30 Points when scored"
+        "name": "Bonus Edition",
+        "description": "+30 Points per Act when this tile scores"
       },
       "mult": {
-        "name": "Mult Mark",
-        "description": "Tile adds multiplier. +4 Mult when scored"
+        "name": "Mult Edition",
+        "description": "+4 Mult when this tile scores"
       },
       "wild": {
-        "name": "Wild Mark",
+        "name": "Wild Edition",
         "description": "Counts as any suit, including for Yaku"
       },
       "glass": {
-        "name": "Glass Mark",
-        "description": "Fragile but powerful. ×2 Mult when scored; 1 in 4 chance to shatter"
+        "name": "Glass Edition",
+        "description": "Creates a random Fate Seal when played, then has a 1 in 4 chance to shatter (the tile is destroyed)"
       },
       "steel": {
-        "name": "Steel Mark",
-        "description": "×1.5 Mult while it stays on your rack instead of being played"
+        "name": "Steel Edition",
+        "description": "Creates a random Celestial Orb when played, then has a 1 in 4 chance to rust away (the tile is destroyed)"
       },
       "stone": {
-        "name": "Stone Mark",
+        "name": "Stone Edition",
         "description": "+100 Points. The tile has no rank or suit, so it never joins a group, but it always scores in full."
       },
       "gold": {
-        "name": "Gold Mark",
-        "description": "+3 Gold if it is still on your rack when the round ends"
-      },
-      "lucky": {
-        "name": "Lucky Mark",
-        "description": "When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold"
-      }
-    }
-  },
-  "archiveSeals": {
-    "items": {
-      "gold": {
-        "name": "Gold Stamp",
+        "name": "Gold Edition",
         "description": "+3 Gold each time this tile scores"
       },
-      "red": {
-        "name": "Red Stamp",
-        "description": "This tile scores twice"
-      },
-      "blue": {
-        "name": "Blue Stamp",
-        "description": "Creates a random Celestial Orb when this tile is in the play that clears the round."
-      },
-      "purple": {
-        "name": "Purple Stamp",
-        "description": "Creates a random Fate Seal when this tile is redrawn."
+      "lucky": {
+        "name": "Lucky Edition",
+        "description": "At the start of each round it rolls ×1.25 to ×2 Mult and +20 to +100 Points, paid when this tile scores"
       }
     }
   },
@@ -2972,7 +2945,7 @@
       },
       "negative": {
         "name": "Negative",
-        "description": "+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall."
+        "description": "+1 Decree slot per owned Negative Decree."
       }
     }
   },
@@ -3048,7 +3021,7 @@
         "description": "Crimson lacquer and golden dragons favor a Dragon-led strategy, with less room for Decrees.",
         "unlock": "Win on Red Stake or higher",
         "modifiers": {
-          "0": "Starting Dragons have Mult Marks (+4 Mult when scored)",
+          "0": "Starting Dragons have Mult Editions (+4 Mult when scored)",
           "1": "−1 starting Decree slot"
         }
       },
@@ -3058,7 +3031,7 @@
         "description": "Dark stone and silver wind carvings reward a Wind-led strategy, with less room for Decrees.",
         "unlock": "Win on Black Stake or higher",
         "modifiers": {
-          "0": "Starting Winds have Bonus Marks (+30 Points when scored)",
+          "0": "Starting Winds have Bonus Editions (+30 Points per Act when scored)",
           "1": "−1 starting Decree slot"
         }
       },
@@ -3254,11 +3227,8 @@
     "tilesTitle": "The tiles",
     "tilesHelp": "Characters show Chinese numbers 一 to 九; Circles and Bamboo show their count (the 1 of Bamboo is a bird). You can turn numbers on the tiles on in Settings.",
     "honorsHelp": "Winds are worth {{wind}} points each, {{windGroup}} in a group. Each Dragon adds +{{dragon}} Mult, +{{dragonGroup}} in a group.",
-    "specialTitle": "Special tiles",
-    "specialHelp": "A special tile carries one extra effect: a Mark (coloured frame with a gem), a Stamp (wax stamp) or an Edition (shimmer).",
-    "marks": "Marks",
-    "seals": "Stamps",
-    "editions": "Editions",
+    "specialTitle": "Editions",
+    "specialHelp": "A special tile carries one Edition, painted on the tile as its material. It changes how the tile scores or what happens when you play it, and a new Edition replaces the old one.",
     "close": "Let’s play"
   },
   "mandateConsequence": {
@@ -3391,5 +3361,9 @@
     },
     "tradeoff": "Trade-off",
     "rule": "Clear a Small or Large round with {{spare}} or more Turns to spare to earn an Omen. Boss rounds give none."
+  },
+  "tileBroken": {
+    "shattered": "{{tile}} shattered",
+    "rusted": "{{tile}} rusted away"
   }
 }

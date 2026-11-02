@@ -6,7 +6,7 @@ import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { parseClassicRunSnapshot } from './validateClassicRun'
-import { EnhancementType, EditionType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 
 afterEach(() => {
@@ -114,14 +114,16 @@ it('uses native tile multipliers before qualification and disables both copies u
     ['decree-blueprint', 'decree-supernova'],
     45
   )
-  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Glass)
-  expect(game.previewScore(tileIds)!.finalScore).toBe(562)
+  // A Lucky tile's ×2 roll is native: (45 + 20) × 2 = 130, over twice 45.
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Lucky)
+  state.luckyRolls = { 'threshold-2': { multiplier: 2, points: 20 } }
+  expect(game.previewScore(tileIds)!.finalScore).toBe(812) // 130 × 2.5 × 2.5
   const source = state.decreeSystem.getOwnedDecree('decree-supernova')!
   state.mandateEffectSystem = MandateEffectSystem.fromJSON({
     ...state.mandateEffectSystem.toJSON(),
     disabledDecreeIds: [source.instanceId!],
   })
-  expect(game.previewScore(tileIds)!.finalScore).toBe(90)
+  expect(game.previewScore(tileIds)!.finalScore).toBe(130)
 })
 
 it('weakens the qualified bonus under Frostbite without weakening the qualification score twice', () => {
@@ -136,18 +138,27 @@ it('weakens the qualified bonus under Frostbite without weakening the qualificat
   expect(state.score).toBe(122)
 })
 
-it('rolls Lucky only once when the outcome changes threshold qualification', () => {
-  const { game, state, tileIds } = fixture(['decree-supernova'], 30)
-  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Lucky)
-  const random = vi.spyOn(runRandom, 'next').mockReturnValue(0.1)
-  expect(game.previewScore(tileIds)!.finalScore).toBe(45)
-  expect(random).not.toHaveBeenCalled()
-  expect(game.processAction({ type: 'play', tileIds }).success).toBe(true)
-  expect(state.score).toBe(2362) // 45 × (1 + 20 Lucky Mult) × 2.5
-  expect(
-    random.mock.calls.filter(([stream]) => stream === 'modifiers')
-  ).toHaveLength(1)
-})
+it.each([
+  [{ multiplier: 1.25, points: 20 }, 81], // (45 + 20) × 1.25, short of 200
+  [{ multiplier: 2, points: 100 }, 725], // (45 + 100) × 2 = 290, then × 2.5
+] as const)(
+  'reads the round’s Lucky roll %o without drawing when it decides threshold qualification',
+  (roll, expected) => {
+    const { game, state, tileIds } = fixture(['decree-supernova'], 100)
+    state.handTiles[0] = state.handTiles[0].withEnhancement(
+      EnhancementType.Lucky
+    )
+    state.luckyRolls = { 'threshold-2': { ...roll } }
+    const random = vi.spyOn(runRandom, 'next')
+    expect(game.previewScore(tileIds)!.finalScore).toBe(expected)
+    expect(random).not.toHaveBeenCalled()
+    expect(game.processAction({ type: 'play', tileIds }).success).toBe(true)
+    expect(state.score).toBe(expected)
+    expect(
+      random.mock.calls.filter(([stream]) => stream === 'modifiers')
+    ).toHaveLength(0)
+  }
+)
 
 it('normal bonuses can earn a threshold, but neither conditional bonus can bootstrap the other', () => {
   const { game, state, tileIds } = fixture(
@@ -155,6 +166,6 @@ it('normal bonuses can earn a threshold, but neither conditional bonus can boots
     50
   )
   expect(game.previewScore(tileIds)!.finalScore).toBe(45)
-  state.handTiles[0] = state.handTiles[0].withEdition(EditionType.Polychrome)
-  expect(game.previewScore(tileIds)!.finalScore).toBe(202) // 67 baseline: first clear, not double
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Bonus)
+  expect(game.previewScore(tileIds)!.finalScore).toBe(225) // 75 baseline: first clear, not double
 })

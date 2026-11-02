@@ -1,15 +1,14 @@
 /**
- * A tile holds one modifier: a Mark, a Seal or an Edition. Laying a new one
- * replaces whatever the tile carried.
+ * A tile holds one Edition. Laying a new one replaces whatever the tile
+ * carried.
  */
 
 import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import {
   DEFAULT_MODIFIERS,
-  EditionType,
   EnhancementType,
-  SealType,
+  type TileModifiers,
 } from '../core/TileModifier'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
@@ -29,44 +28,42 @@ const only = (modifiers: Partial<typeof DEFAULT_MODIFIERS>) => ({
   ...modifiers,
 })
 
-it('replaces a Mark, Seal or Edition instead of stacking it', () => {
+it('replaces an Edition instead of stacking it', () => {
   const lucky = plain().withEnhancement(EnhancementType.Lucky)
-  expect(lucky.withEnhancement(EnhancementType.Stone).modifiers).toEqual(
-    only({ enhancement: EnhancementType.Stone })
-  )
-  const sealed = lucky.withSeal(SealType.Red)
-  expect(sealed.modifiers).toEqual(only({ seal: SealType.Red }))
-  expect(sealed.isLucky).toBe(false)
-  expect(sealed.withEdition(EditionType.Foil).modifiers).toEqual(
-    only({ edition: EditionType.Foil })
+  const stone = lucky.withEnhancement(EnhancementType.Stone)
+  expect(stone.modifiers).toEqual(only({ enhancement: EnhancementType.Stone }))
+  expect(stone.isLucky).toBe(false)
+  const gold = stone.withEnhancement(EnhancementType.Gold)
+  expect(gold.modifiers).toEqual(only({ enhancement: EnhancementType.Gold }))
+  expect(gold.isStone).toBe(false)
+})
+
+it('clearing the Edition leaves a plain tile; an empty change keeps it', () => {
+  const gold = plain().withEnhancement(EnhancementType.Gold)
+  expect(gold.withModifiers({}).enhancement).toBe(EnhancementType.Gold)
+  expect(gold.withEnhancement(EnhancementType.None).hasModifiers).toBe(false)
+  expect(gold.withEnhancement(EnhancementType.None).modifiers).toEqual(
+    DEFAULT_MODIFIERS
   )
 })
 
-it('clearing a slot the tile does not use keeps its modifier', () => {
-  const sealed = plain().withSeal(SealType.Purple)
-  expect(sealed.withEnhancement(EnhancementType.None).seal).toBe(
-    SealType.Purple
-  )
-  expect(sealed.withSeal(SealType.None).hasModifiers).toBe(false)
-})
-
-it('keeps one modifier from a save made before the rule, rarest first', () => {
-  const stacked = (modifiers: typeof DEFAULT_MODIFIERS) =>
-    new Tile(TileSuit.Pinzu, 5, 'saved', false, modifiers).modifiers
+it('keeps only the Edition from a tile saved with a Stamp or tile Edition', () => {
+  const saved = (modifiers: Record<string, string>) =>
+    new Tile(
+      TileSuit.Pinzu,
+      5,
+      'saved',
+      false,
+      modifiers as unknown as TileModifiers
+    ).modifiers
   expect(
-    stacked({
+    saved({
       enhancement: EnhancementType.Lucky,
-      seal: SealType.Red,
-      edition: EditionType.Negative,
+      seal: 'red',
+      edition: 'negative',
     })
-  ).toEqual(only({ edition: EditionType.Negative }))
-  expect(
-    stacked({
-      enhancement: EnhancementType.Stone,
-      seal: SealType.Gold,
-      edition: EditionType.Base,
-    })
-  ).toEqual(only({ enhancement: EnhancementType.Stone }))
+  ).toEqual(only({ enhancement: EnhancementType.Lucky }))
+  expect(saved({ seal: 'gold', edition: 'base' })).toEqual(DEFAULT_MODIFIERS)
 })
 
 function withTarget(tile: Tile) {
@@ -97,12 +94,15 @@ it('a Fate Seal swaps a Lucky tile to Stone, not Lucky and Stone', () => {
   expect(game.getState().wallTemplate[0].modifiers).toEqual(hand.modifiers)
 })
 
-it('a Void Script Seal lifts a Stone Mark off the tile', () => {
+it('a Void Script Edition lifts a Stone Edition off the tile', () => {
   const game = withTarget(plain().withEnhancement(EnhancementType.Stone))
   const script = VoidScriptSystem.createVoidScriptInstance(
     VOID_SCRIPTS.script_of_the_gold_seal
   )
   expect(game.addVoidScript(script)).toBe(true)
+  expect(
+    replacesTileModifier(script.effect, game.getState().handTiles[0])
+  ).toBe(true)
 
   const result = game.processAction({
     type: 'useScript',
@@ -111,8 +111,9 @@ it('a Void Script Seal lifts a Stone Mark off the tile', () => {
   })
   expect(result.success).toBe(true)
   const [hand] = game.getState().handTiles
-  expect(hand.modifiers).toEqual(only({ seal: SealType.Gold }))
+  expect(hand.modifiers).toEqual(only({ enhancement: EnhancementType.Gold }))
   expect(hand.isStone).toBe(false)
+  expect(game.getState().wallTemplate[0].modifiers).toEqual(hand.modifiers)
 })
 
 it('only warns when the item would change what the tile carries', () => {
@@ -121,18 +122,20 @@ it('only warns when the item would change what the tile carries', () => {
   expect(
     replacesTileModifier(lucky, plain().withEnhancement(EnhancementType.Lucky))
   ).toBe(false)
-  expect(replacesTileModifier(lucky, plain().withSeal(SealType.Blue))).toBe(
-    true
-  )
-  const aura = VOID_SCRIPTS.script_of_aura.effect
   expect(
-    replacesTileModifier(aura, plain().withEdition(EditionType.Foil))
+    replacesTileModifier(lucky, plain().withEnhancement(EnhancementType.Steel))
   ).toBe(true)
-  // Changing a suit leaves the modifier alone.
+  // A random Edition may replace any the tile carries.
+  const aura = VOID_SCRIPTS.script_of_aura.effect
+  expect(replacesTileModifier(aura, plain())).toBe(false)
+  expect(
+    replacesTileModifier(aura, plain().withEnhancement(EnhancementType.Bonus))
+  ).toBe(true)
+  // Changing a suit leaves the Edition alone.
   expect(
     replacesTileModifier(
       FATE_SEALS.seal_of_manzu.effect,
-      plain().withSeal(SealType.Red)
+      plain().withEnhancement(EnhancementType.Gold)
     )
   ).toBe(false)
 })

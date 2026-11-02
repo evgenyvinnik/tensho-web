@@ -13,7 +13,6 @@ const summary: RoundCashOutSummary = {
   baseReward: 0,
   interest: 0,
   decreeGold: 0,
-  heldGoldMarkReward: 0,
   rentalCost: 3,
   netGoldChange: -3,
   goldBefore: 1,

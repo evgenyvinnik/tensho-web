@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import { Tile, TileSuit } from '../core/Tile'
-import { SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { runRandom } from './RunRandom'
 import { Meld } from '../core/Meld'
 
@@ -75,9 +75,12 @@ describe('Unity creates valid physical Honor tiles', () => {
       game.startNewRun(7)
       const state = game.getState() as OrchestratorState
       const id = state.handTiles[0].id
-      const source = new Tile(TileSuit.Manzu, rank, id, rank === 5).withSeal(
-        SealType.Red
-      )
+      const source = new Tile(
+        TileSuit.Manzu,
+        rank,
+        id,
+        rank === 5
+      ).withEnhancement(EnhancementType.Gold)
       state.handTiles[0] = source
       state.wallTemplate = state.wallTemplate.map((t) =>
         t.id === id ? source : t
@@ -104,7 +107,7 @@ describe('Unity creates valid physical Honor tiles', () => {
           rank: expectedRank,
           isRed: false,
         })
-        expect(tile?.modifiers).toEqual(source.modifiers)
+        expect(tile?.modifiers).toEqual({ enhancement: EnhancementType.Gold })
       }
       expect(game.getFateSeals()).toHaveLength(0)
       expect(random).not.toHaveBeenCalled()

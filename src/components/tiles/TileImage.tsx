@@ -17,7 +17,8 @@ import { Tile } from '../../core/Tile'
 import { tileDetails, tileIndexHint } from '../../i18n/tileText'
 import { getTileImagePath, getTileFinishPath } from '../../utils/assets'
 import { tileSizes } from '../../styles/theme'
-import { ModifierOverlay } from '../ui/TileModifierDisplay'
+import { ModifierOverlay } from '../ui/tile-modifier/ModifierComponents'
+import { useTileRound } from './TileRoundContext'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { EnhancementType } from '../../core/TileModifier'
 import { TileBack } from './TileBack'
@@ -120,7 +121,8 @@ export const TileImage: React.FC<TileImageProps> = ({
     (showIndex ?? showRankNumbers) && !stoneFace
       ? tileIndexHint(tile, t, faceDown)
       : null
-  const tileInfo = tileDetails(tile, t, i18n.language, faceDown)
+  const round = useTileRound()
+  const tileInfo = tileDetails(tile, t, i18n.language, faceDown, round)
 
   const handleClick = () => {
     if (!disabled && tile && onClick) {
@@ -357,10 +359,17 @@ export const TileImage: React.FC<TileImageProps> = ({
       {highlighted && !selected && (
         <div className="absolute inset-0 bg-vibrant-orange opacity-10 rounded pointer-events-none animate-pulse" />
       )}
-      {/* Modifier overlay (enhancement, seal, edition indicators) */}
-      {tile && !faceDown && tile.hasModifiers && (
-        <ModifierOverlay tile={tile} />
-      )}
+      {/* A Lucky tile's roll for the round. The smallest tiles (the wall
+          picker) have no room for it; their details still show it. */}
+      {tile &&
+        !faceDown &&
+        tile.hasModifiers &&
+        dimensions.width >= tileSizes.compact.width && (
+          <ModifierOverlay
+            tile={tile}
+            fontSize={Math.max(8, Math.round(dimensions.width * 0.18))}
+          />
+        )}
       {/* Tooltip popup */}
       {tooltipOpen &&
         tile &&
@@ -407,6 +416,14 @@ export const TileImage: React.FC<TileImageProps> = ({
                     >
                       <span className="font-semibold">{entry.name}:</span>{' '}
                       {entry.description}
+                      {entry.current && (
+                        <span
+                          data-edition-current
+                          className="mt-0.5 block font-semibold text-golden-yellow"
+                        >
+                          {entry.current}
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>

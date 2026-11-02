@@ -79,7 +79,7 @@ const englishWalls = {
       'Crimson lacquer and golden dragons favor a Dragon-led strategy, with less room for Decrees.',
     unlock: 'Win on Red Stake or higher',
     modifiers: {
-      '0': 'Starting Dragons have Mult Marks (+4 Mult when scored)',
+      '0': 'Starting Dragons have Mult Editions (+4 Mult when scored)',
       '1': '−1 starting Decree slot',
     },
   },
@@ -90,7 +90,7 @@ const englishWalls = {
       'Dark stone and silver wind carvings reward a Wind-led strategy, with less room for Decrees.',
     unlock: 'Win on Black Stake or higher',
     modifiers: {
-      '0': 'Starting Winds have Bonus Marks (+30 Points when scored)',
+      '0': 'Starting Winds have Bonus Editions (+30 Points per Act when scored)',
       '1': '−1 starting Decree slot',
     },
   },

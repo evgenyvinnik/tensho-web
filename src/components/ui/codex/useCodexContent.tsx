@@ -6,6 +6,7 @@
 
 import { useTranslation } from 'react-i18next'
 import { TileSuit } from '../../../core/Tile'
+import { getAllEnhancements } from '../../../core/TileModifier'
 import { NORMAL_RUN_ACTS } from '../../../config/runProgression'
 import { BASE_SCORE_TARGETS } from '../../../systems/RoundManager'
 import { CodexCategory, TileGroup, InfoBox, DataTable } from './CodexComponents'
@@ -13,6 +14,9 @@ import {
   FloraCodex,
   FLORA_CODEX_SECTIONS,
 } from '../../screens/tutorial/FloraCodex'
+
+/** Every tile Edition, in catalog order. */
+const TILE_EDITIONS = getAllEnhancements()
 
 /**
  * Build codex categories and content
@@ -773,52 +777,29 @@ export function useCodexContent(): CodexCategory[] {
         },
         {
           id: 'marks',
-          title: t('codex.items.marks.title', 'Special tiles'),
+          title: t('codex.items.marks.title', 'Editions'),
           content: (
             <div className="space-y-4">
               <p>
                 {t(
                   'codex.items.marks.p1',
-                  'A special tile carries one Mark, Stamp or Edition:'
+                  'A special tile carries one Edition, painted on the tile as its material. Adding a new one replaces the old one.'
                 )}
               </p>
               <DataTable
                 headers={[
-                  t('codex.type', 'Type'),
-                  t('codex.examples', 'Examples'),
+                  t('codex.items.marks.edition', 'Edition'),
                   t('codex.effect', 'Effect'),
                 ]}
-                rows={[
-                  [
-                    t('codex.items.marks.enhancement', 'Marks'),
-                    t(
-                      'codex.items.marks.enhancementEx',
-                      'Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky'
-                    ),
-                    t(
-                      'codex.items.marks.enhancementEf',
-                      'Stat bonuses when scored'
-                    ),
-                  ],
-                  [
-                    t('codex.items.marks.seal', 'Stamps'),
-                    t('codex.items.marks.sealEx', 'Gold, Red, Blue, Purple'),
-                    t('codex.items.marks.sealEf', 'Special triggers'),
-                  ],
-                  [
-                    t('codex.items.marks.edition', 'Editions'),
-                    t(
-                      'codex.items.marks.editionEx',
-                      'Foil, Holographic, Polychrome, Negative'
-                    ),
-                    t('codex.items.marks.editionEf', 'Rare powerful bonuses'),
-                  ],
-                ]}
+                rows={TILE_EDITIONS.map((id) => [
+                  t(`tileMarks.items.${id}.name`),
+                  t(`tileMarks.items.${id}.description`),
+                ])}
               />
               <InfoBox variant="tip">
                 {t(
-                  'codex.items.marks.stacking',
-                  'A special tile holds only one of these. Adding a new one replaces the old one.'
+                  'codex.items.marks.finishes',
+                  'Decrees carry Finishes instead: Foil (+50 Points), Holographic (+10 Mult), Polychrome (×1.5 Mult) or Negative (+1 Decree slot).'
                 )}
               </InfoBox>
             </div>

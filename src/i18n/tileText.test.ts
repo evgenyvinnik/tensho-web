@@ -2,13 +2,7 @@ import { expect, it } from 'vitest'
 import { createInstance } from 'i18next'
 import en from './locales/en.json'
 import es from './locales/es.json'
-import {
-  Tile,
-  TileSuit,
-  EnhancementType,
-  SealType,
-  EditionType,
-} from '../core/Tile'
+import { Tile, TileSuit, EnhancementType } from '../core/Tile'
 import {
   DRAGON_TILE_POINTS,
   getTilePoints,
@@ -130,32 +124,72 @@ it('reports base Flower rules and tells players where active scaling is shown', 
   })
 })
 
-it('provides localized text for every catalog modifier without unconditional payout totals', async () => {
+it('provides localized text for every catalog Edition without unconditional payout totals', async () => {
   const t = await translator('es')
-  for (const enhancement of Object.values(EnhancementType))
-    for (const seal of Object.values(SealType))
-      for (const edition of Object.values(EditionType)) {
-        const tile = new Tile(TileSuit.Pinzu, 3, 'modified', false, {
-          enhancement,
-          seal,
-          edition,
-        })
-        const details = tileDetails(tile, t, 'es')
-        for (const entry of details.modifiers) {
-          expect(entry.name).toBe(t(`${entry.kind}.items.${entry.id}.name`))
-          expect(entry.description).toBe(
-            t(
-              entry.kind === 'editions' && entry.id === 'negative'
-                ? 'runOwnership.negativeTile'
-                : `${entry.kind}.items.${entry.id}.description`
-            )
-          )
-        }
-        expect(tileDetails(tile, t, 'es', true)).toEqual({
-          name: t('tileDetails.faceDown'),
-          description: '',
-          points: '',
-          modifiers: [],
-        })
-      }
+  for (const enhancement of Object.values(EnhancementType)) {
+    const tile = new Tile(TileSuit.Pinzu, 3, 'modified', false, {
+      enhancement,
+    })
+    const details = tileDetails(tile, t, 'es')
+    expect(details.modifiers).toHaveLength(
+      enhancement === EnhancementType.None ? 0 : 1
+    )
+    for (const entry of details.modifiers) {
+      expect(entry.kind).toBe('tileMarks')
+      expect(entry.id).toBe(enhancement)
+      expect(entry.name).toBe(t(`tileMarks.items.${enhancement}.name`))
+      expect(entry.description).toBe(
+        t(`tileMarks.items.${enhancement}.description`)
+      )
+      // Outside a round the details state rules, never a current payout.
+      expect(entry.current).toBeUndefined()
+    }
+    expect(tileDetails(tile, t, 'es', true)).toEqual({
+      name: t('tileDetails.faceDown'),
+      description: '',
+      points: '',
+      modifiers: [],
+    })
+  }
+})
+
+it('adds what a Bonus or Lucky Edition pays in the round, in the locale’s numbers', async () => {
+  const t = await translator('es')
+  const round = {
+    act: 2,
+    luckyRolls: { modified: { multiplier: 1.5, points: 40 } },
+  }
+  const current = (enhancement: EnhancementType, id = 'modified') =>
+    tileDetails(
+      new Tile(TileSuit.Pinzu, 3, id, false, { enhancement }),
+      t,
+      'es',
+      false,
+      round
+    ).modifiers[0]?.current
+  expect(current(EnhancementType.Bonus)).toBe(
+    t('tileDetails.bonusThisAct', { act: '2', points: '60' })
+  )
+  expect(current(EnhancementType.Lucky)).toBe(
+    t('tileDetails.luckyThisRound', { multiplier: '1,5', points: '40' })
+  )
+  // A Lucky tile without a roll this round has nothing to show yet.
+  expect(current(EnhancementType.Lucky, 'unrolled')).toBeUndefined()
+  for (const enhancement of [
+    EnhancementType.Mult,
+    EnhancementType.Gold,
+    EnhancementType.Glass,
+  ])
+    expect(current(enhancement)).toBeUndefined()
+  expect(
+    tileDetails(
+      new Tile(TileSuit.Pinzu, 3, 'modified', false, {
+        enhancement: EnhancementType.Lucky,
+      }),
+      t,
+      'es',
+      true,
+      round
+    ).modifiers
+  ).toEqual([])
 })

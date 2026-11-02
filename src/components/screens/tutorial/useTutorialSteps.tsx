@@ -48,6 +48,7 @@ import {
 import { PavilionIcon } from '../../ui/PavilionIcon'
 import { FloraCodex, FLORA_CODEX_SECTIONS } from './FloraCodex'
 import { EconomyCodex, ECONOMY_CODEX_SECTIONS } from './EconomyCodex'
+import { EditionList } from '../../tiles/EditionList'
 import {
   YakuUpgradeCodex,
   YAKU_UPGRADE_CODEX_SECTIONS,
@@ -992,6 +993,18 @@ export function useTutorialSteps(): TutorialStep[] {
         ),
       },
       {
+        id: 'editions',
+        category: 'Scoring',
+        title: t('guide.specialTitle'),
+        content: (
+          <div className="space-y-3">
+            <p>{t('guide.specialHelp')}</p>
+            <EditionList />
+            <InfoBox type="info">{t('codexReference.finishes')}</InfoBox>
+          </div>
+        ),
+      },
+      {
         id: 'yaku-intro',
         category: 'Scoring',
         title: t('codexReference.titleYakuIntro'),
@@ -1381,7 +1394,6 @@ export function useTutorialSteps(): TutorialStep[] {
               <div className="text-gray-400">{t('codexReference.grammar')}</div>
             </div>
             <p className="text-sm">{t('codexReference.hierarchyOverride')}</p>
-            <InfoBox type="info">{t('guide.specialHelp')}</InfoBox>
           </div>
         ),
       },

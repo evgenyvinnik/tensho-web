@@ -73,7 +73,7 @@ export const DEFAULT_RED_FIVE_CONFIG: RedFiveConfig = {
 
 /**
  * Check if a tile is a red five. A Stone covers its face: it has no rank, so a
- * red 5 under a Stone Mark pays only the mark.
+ * red 5 under a Stone Edition pays only the Edition.
  */
 export function isRedFive(tile: Tile): boolean {
   return (

@@ -37,7 +37,6 @@ import {
   ARCHIVE_CATEGORIES,
   LEGACY_WALL_DEFINITIONS,
   TILE_MARK_DEFINITIONS,
-  SEAL_DEFINITIONS_ARCHIVE,
   EDITION_DEFINITIONS_ARCHIVE,
   PACK_VARIANT_DEFINITIONS,
 } from '../config/archiveDefinitions'
@@ -397,11 +396,7 @@ it('provides tile identity, teaching and action copy in all locales without losi
         english.match(/{{\w+}}/g)?.sort() ?? []
       )
     }
-    for (const namespace of [
-      'tileMarks',
-      'archiveSeals',
-      'editions',
-    ] as const) {
+    for (const namespace of ['tileMarks', 'editions'] as const) {
       const catalog = locale[namespace] as {
         items: Record<string, { name: string; description: string }>
       }
@@ -577,18 +572,31 @@ it('localizes every shop navigation and Charter presentation label with matching
   }
 })
 
-it('provides Purple Stamp names and current trigger descriptions in every locale', () => {
-  for (const [lang, locale] of Object.entries(LOCALES)) {
-    const archive = locale.archiveSeals as {
-      items: { purple: { name: string; description: string } }
-    }
-    expect(archive.items.purple.name.trim().length, lang).toBeGreaterThan(0)
-    expect(
-      archive.items.purple.description.trim().length,
-      lang
-    ).toBeGreaterThan(0)
-  }
-  expect(en.archiveSeals.items.purple.description).toContain('redrawn')
+it('drops the retired Stamp, tile-Edition and held-Gold copy from every locale', () => {
+  const retired = [
+    'archiveSeals',
+    'archiveCategories.items.seals',
+    'guide.marks',
+    'guide.seals',
+    'guide.editions',
+    'tiles.enhancement',
+    'tiles.stamp',
+    'tiles.edition',
+    'tiles.tileModifiers',
+    'runOwnership.negativeTile',
+    'shop.payout.goldTiles',
+  ]
+  for (const [lang, locale] of Object.entries(LOCALES))
+    for (const path of retired)
+      expect(
+        path
+          .split('.')
+          .reduce<unknown>(
+            (node, key) => (node as Record<string, unknown> | undefined)?.[key],
+            locale
+          ),
+        `${lang}: ${path}`
+      ).toBeUndefined()
 })
 
 it('provides the complete consumable picker language contract in every locale', () => {
@@ -666,7 +674,6 @@ const LIBRARIES: Record<string, string[]> = {
   // Historical records retain their old names; playable tables use tableStyles.
   walls: LEGACY_WALL_DEFINITIONS.map((w) => w.id),
   tileMarks: TILE_MARK_DEFINITIONS.map((m) => m.id),
-  archiveSeals: SEAL_DEFINITIONS_ARCHIVE.map((s) => s.id),
   editions: EDITION_DEFINITIONS_ARCHIVE.map((e) => e.id),
   packs: PACK_VARIANT_DEFINITIONS.map((p) => p.id),
   tableStyles: TABLE_STYLE_DEFINITIONS.map((t) => t.id),

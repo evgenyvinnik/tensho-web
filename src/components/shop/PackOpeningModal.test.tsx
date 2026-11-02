@@ -1,13 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import i18n from 'i18next'
-import {
-  Tile,
-  TileSuit,
-  EnhancementType,
-  EditionType,
-  SealType,
-} from '../../core/Tile'
+import { Tile, TileSuit, EnhancementType } from '../../core/Tile'
 import { changeLanguage } from '../../i18n'
 import es from '../../i18n/locales/es.json'
 import { tileRewardText } from '../../i18n/tileRewardText'
@@ -174,13 +168,14 @@ it.each([EnhancementType.Bonus, EnhancementType.Gold] as const)(
   }
 )
 
-it('names the one modifier and handles plain and Honor reward tiles', () => {
+it('names the one Edition and handles plain and Honor reward tiles', () => {
   const four = () => Tile.createNumbered(TileSuit.Souzu, 4)
-  for (const [tile, name, rule] of [
-    [four().withEnhancement(EnhancementType.Bonus), 'Bonus Mark', '+30'],
-    [four().withSeal(SealType.Gold), 'Gold Stamp', '+3'],
-    [four().withEdition(EditionType.Foil), 'Foil', '+50'],
+  for (const [edition, name, rule] of [
+    [EnhancementType.Bonus, 'Bonus Edition', '+30 Points per Act'],
+    [EnhancementType.Gold, 'Gold Edition', '+3 Gold'],
+    [EnhancementType.Glass, 'Glass Edition', 'Fate Seal'],
   ] as const) {
+    const tile = four().withEnhancement(edition)
     const text = tileRewardText(tile, i18n.t.bind(i18n))
     expect(text.name).toBe(`4 of Bamboo · ${name}`)
     expect(text.description).toContain(rule)

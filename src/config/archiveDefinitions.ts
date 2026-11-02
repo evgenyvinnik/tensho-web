@@ -22,9 +22,8 @@ export type ArchiveCategory =
   | 'walls' // 山録 - Deck variants
   | 'charters' // 皇勅録 - Imperial Charters (base + upgraded)
   | 'consumables' // 消耗品録 - Fate Seals, Celestial Orbs, Void Scripts
-  | 'tileMarks' // 牌印録 - Enhancement types
-  | 'seals' // 封印録 - Gold, Red, Blue, Purple seals
-  | 'editions' // 版録 - Base, Foil, Holo, Poly, Negative
+  | 'tileMarks' // 牌印録 - tile Editions (EnhancementType)
+  | 'editions' // 版録 - Decree Finishes: Base, Foil, Holo, Poly, Negative
   | 'packs' // 祝福袋録 - Blessing Pack variants
   | 'omens' // 兆符録 - Skip reward markers
   | 'mandates' // 局法録 - Round restrictions
@@ -87,25 +86,18 @@ export const ARCHIVE_CATEGORIES: Record<
   },
   tileMarks: {
     id: 'tileMarks',
-    name: 'Tile Marks',
+    name: 'Editions',
     japaneseName: '牌紋録',
-    description: 'Marks that change how a tile scores or behaves',
-    expectedCount: 8, // Enhancement types
+    description:
+      'Special tiles: each Edition changes how its tile scores or behaves',
+    expectedCount: 8, // Edition types
     icon: 'sparkle',
-  },
-  seals: {
-    id: 'seals',
-    name: 'Stamps',
-    japaneseName: '封蝋録',
-    description: 'Wax stamps that give a tile an extra effect',
-    expectedCount: 4, // Gold, Red, Blue, Purple
-    icon: 'seal',
   },
   editions: {
     id: 'editions',
-    name: 'Editions',
+    name: 'Finishes',
     japaneseName: '版録',
-    description: 'Shimmering finishes that add an effect to a tile or Decree',
+    description: 'Shimmering finishes that add an effect to a Decree',
     expectedCount: 5, // Base, Foil, Holo, Poly, Negative
     icon: 'shine',
   },
@@ -190,16 +182,6 @@ export const PRE_DISCOVERED_ITEMS: PreDiscoveredSet[] = [
       'stone',
       'gold',
       'lucky',
-    ],
-  },
-  {
-    category: 'seals',
-    itemIds: [
-      // All seals are discovered from the start
-      'gold',
-      'red',
-      'blue',
-      'purple',
     ],
   },
   {
@@ -377,7 +359,7 @@ export const LEGACY_WALL_DEFINITIONS: WallDefinition[] = [
 // =============================================================================
 
 /**
- * Tile enhancement/mark definitions
+ * Tile Edition definitions (EnhancementType)
  */
 export interface TileMarkDefinition {
   id: string
@@ -388,49 +370,49 @@ export interface TileMarkDefinition {
 }
 
 /**
- * All tile mark types
+ * All tile Editions
  */
 export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   {
     id: 'bonus',
-    name: 'Bonus Mark',
+    name: 'Bonus Edition',
     japaneseName: '加点紋',
-    description: 'Tile scores extra points',
-    effect: '+30 Points when scored',
+    description: '+30 Points per Act when this tile scores',
+    effect: '+30 Points per Act when scored',
   },
   {
     id: 'mult',
-    name: 'Mult Mark',
+    name: 'Mult Edition',
     japaneseName: '倍率紋',
-    description: 'Tile adds multiplier',
+    description: '+4 Mult when this tile scores',
     effect: '+4 Mult when scored',
   },
   {
     id: 'wild',
-    name: 'Wild Mark',
+    name: 'Wild Edition',
     japaneseName: '万能紋',
     description: 'Counts as any suit, including for Yaku',
     effect: 'Counts as any suit for yaku',
   },
   {
     id: 'glass',
-    name: 'Glass Mark',
+    name: 'Glass Edition',
     japaneseName: '硝子紋',
     description:
-      'Fragile but powerful. ×2 Mult when scored; 1 in 4 chance to shatter',
-    effect: 'x2 Mult when scored, 25% chance to shatter',
+      'Creates a random Fate Seal when played, then has a 1 in 4 chance to shatter',
+    effect: 'Fate Seal when played, 25% chance to shatter',
   },
   {
     id: 'steel',
-    name: 'Steel Mark',
+    name: 'Steel Edition',
     japaneseName: '鋼紋',
     description:
-      '×1.5 Mult while it stays on your rack instead of being played',
-    effect: 'x1.5 Mult while held in hand',
+      'Creates a random Celestial Orb when played, then has a 1 in 4 chance to rust away',
+    effect: 'Celestial Orb when played, 25% chance to rust away',
   },
   {
     id: 'stone',
-    name: 'Stone Mark',
+    name: 'Stone Edition',
     japaneseName: '石紋',
     description: 'No rank or suit',
     effect:
@@ -438,73 +420,18 @@ export const TILE_MARK_DEFINITIONS: TileMarkDefinition[] = [
   },
   {
     id: 'gold',
-    name: 'Gold Mark',
+    name: 'Gold Edition',
     japaneseName: '金紋',
-    description: '+3 Gold if it is still on your rack when the round ends',
-    effect: '+3 Gold when held at round end',
+    description: '+3 Gold each time this tile scores',
+    effect: '+3 Gold each time it scores',
   },
   {
     id: 'lucky',
-    name: 'Lucky Mark',
+    name: 'Lucky Edition',
     japaneseName: '幸運紋',
     description:
-      'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',
-    effect:
-      'When scored: 1 in 5 chance for +20 Mult, 1 in 15 chance for +20 Gold',
-  },
-]
-
-// =============================================================================
-// SEAL DEFINITIONS
-// =============================================================================
-
-/**
- * Tile seal definitions
- */
-export interface SealDefinition {
-  id: string
-  name: string
-  japaneseName: string
-  description: string
-  effect: string
-  color: string
-}
-
-/**
- * All seal types
- */
-export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
-  {
-    id: 'gold',
-    name: 'Gold Stamp',
-    japaneseName: '金封',
-    description: '+3 Gold each time this tile scores',
-    effect: '+3 Gold when scored in hand',
-    color: '#FFD700',
-  },
-  {
-    id: 'red',
-    name: 'Red Stamp',
-    japaneseName: '赤封',
-    description: 'This tile scores twice',
-    effect: 'Retriggers once when scored',
-    color: '#FF4444',
-  },
-  {
-    id: 'blue',
-    name: 'Blue Stamp',
-    japaneseName: '青封',
-    description: 'Creates a random Celestial Orb',
-    effect: 'When this tile is in the play that clears the round',
-    color: '#4444FF',
-  },
-  {
-    id: 'purple',
-    name: 'Purple Stamp',
-    japaneseName: '紫封',
-    description: 'Creates Fate Seal on discard or redraw',
-    effect: 'Creates a random Fate Seal when discarded or redrawn',
-    color: '#8844FF',
+      'Each round rolls ×1.25 to ×2 Mult and +20 to +100 Points, paid when this tile scores',
+    effect: 'Rolled each round: ×1.25–×2 Mult and +20–+100 Points',
   },
 ]
 
@@ -513,7 +440,7 @@ export const SEAL_DEFINITIONS_ARCHIVE: SealDefinition[] = [
 // =============================================================================
 
 /**
- * Edition type definitions
+ * Decree Finish definitions (DecreeEdition; the catalog key is still `editions`)
  */
 export interface EditionDefinition {
   id: string
@@ -565,8 +492,7 @@ export const EDITION_DEFINITIONS_ARCHIVE: EditionDefinition[] = [
     name: 'Negative',
     japaneseName: '陰影',
     description: 'Inverted colors, transcendent',
-    effect:
-      '+1 Decree slot per owned Negative Decree or physical Negative tile in your run wall',
+    effect: '+1 Decree slot per owned Negative Decree',
     visualStyle: 'inverted',
   },
 ]

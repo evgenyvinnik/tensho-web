@@ -4,6 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 import { afterEach, expect, it } from 'vitest'
 import { SUPPORTED_LANGUAGES } from '../../../router/routeManifest'
 import en from '../../../i18n/locales/en.json'
+import { getAllEnhancements } from '../../../core/TileModifier'
 import { useTutorialSteps } from './useTutorialSteps'
 import { CodexCategoryHero } from './TutorialComponents'
 
@@ -61,8 +62,20 @@ it.each(SUPPORTED_LANGUAGES)(
     )
     expect(getAllByRole('heading', { level: 2 }).length).toBeGreaterThan(40)
     expect(container.textContent).not.toMatch(
-      /(?:codexReference|codexUpgrades|codexFlora|codexEconomy|upgradeFamilies|patterns|tutorial|flora\.details)\.|{{|<\/?(?:strong|melds|pair|tiles)>/
+      /(?:codexReference|codexUpgrades|codexFlora|codexEconomy|upgradeFamilies|patterns|tutorial|flora\.details|tileMarks|guide)\.|{{|<\/?(?:strong|melds|pair|tiles)>/
     )
+    // The Editions step lists every Edition in this language.
+    expect(
+      getByRole('heading', { level: 2, name: copy.guide.specialTitle })
+    ).toBeInTheDocument()
+    const editions = container.querySelectorAll(
+      '[data-guide-special-group="editions"] [data-guide-special]'
+    )
+    expect(editions).toHaveLength(getAllEnhancements().length)
+    for (const [index, id] of getAllEnhancements().entries())
+      expect(editions[index]).toHaveTextContent(
+        copy.tileMarks.items[id].description
+      )
     expect(container.querySelectorAll('img').length).toBeGreaterThan(30)
     expect(
       getByRole('img', {

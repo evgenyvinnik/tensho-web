@@ -63,7 +63,7 @@ export enum KnownDebuffSource {
  *
  * Debuffed Tile behavior:
  * - Does NOT contribute base points
- * - Does NOT trigger Tile Mark effects
+ * - Does NOT trigger tile Edition effects
  * - Does NOT activate "On Scored" effects
  * - CAN still form valid melds
  * - CAN still trigger hand-based Decree effects
@@ -344,10 +344,10 @@ export class DebuffSystem {
   }
 
   /**
-   * Check if a tile should trigger Tile Mark effects
+   * Check if a tile should trigger tile Edition effects
    * Debuffed tiles do not trigger these effects
    * @param tileId The ID of the tile
-   * @returns true if the tile can trigger mark effects
+   * @returns true if the tile can trigger Edition effects
    */
   canTriggerTileMarkEffects(tileId: string): boolean {
     return !this.isTileDebuffed(tileId)

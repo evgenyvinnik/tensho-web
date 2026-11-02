@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next'
 import { Tile, TileSuit, EnhancementType } from '../core/Tile'
+import { bonusEditionPoints, type EditionRound } from '../core/TileModifier'
 import { tileModifierEntries } from '../core/tileModifierEntries'
 import { getTilePoints, WIND_GROUP_POINTS } from '../rules/ScoringEngine'
 import { DRAGON_GROUP_MULT, DRAGON_MULT } from '../rules/PlayPattern'
@@ -54,12 +55,42 @@ export function tileName(
   })
 }
 
-/** Catalog rules, not a forecast of this tile's current modified payout. */
+/**
+ * What a Bonus or Lucky Edition pays in the round being played, or nothing
+ * outside a round.
+ */
+function currentEditionValue(
+  tile: Tile,
+  t: TFunction,
+  language: string,
+  round?: Required<EditionRound> | null
+): string | undefined {
+  if (!round) return undefined
+  if (tile.enhancement === EnhancementType.Bonus)
+    return t('tileDetails.bonusThisAct', {
+      act: round.act.toLocaleString(language),
+      points: bonusEditionPoints(round.act).toLocaleString(language),
+    })
+  const roll = round.luckyRolls[tile.id]
+  if (tile.enhancement === EnhancementType.Lucky && roll) {
+    return t('tileDetails.luckyThisRound', {
+      multiplier: roll.multiplier.toLocaleString(language),
+      points: roll.points.toLocaleString(language),
+    })
+  }
+  return undefined
+}
+
+/**
+ * Catalog rules, plus what a Bonus or Lucky Edition pays this round when a
+ * round is given; not a forecast of the tile's whole payout.
+ */
 export function tileDetails(
   tile: Tile | null | undefined,
   t: TFunction,
   language: string,
-  faceDown = false
+  faceDown = false,
+  round?: Required<EditionRound> | null
 ) {
   const name = tileName(tile, t, faceDown)
   if (!tile || faceDown)
@@ -114,11 +145,10 @@ export function tileDetails(
       ...entry,
       name: t(`${entry.kind}.items.${entry.id}.name`, entry.name),
       description: t(
-        entry.kind === 'editions' && entry.id === 'negative'
-          ? 'runOwnership.negativeTile'
-          : `${entry.kind}.items.${entry.id}.description`,
+        `${entry.kind}.items.${entry.id}.description`,
         entry.description
       ),
+      current: currentEditionValue(tile, t, language, round),
     })),
   }
 }

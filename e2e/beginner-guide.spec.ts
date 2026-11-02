@@ -60,6 +60,32 @@ for (const fixture of [
       await expect(row).toContainText(copy.patterns[id].name)
       await expect(row).toContainText(`+${points}`)
     }
+    // Special tiles are taught as one list of Editions, each named and
+    // explained in the player's language.
+    const specials = guide.locator('[data-guide-special-group]')
+    await expect(specials).toHaveCount(1)
+    await expect(specials).toHaveAttribute(
+      'data-guide-special-group',
+      'editions'
+    )
+    const editions = [
+      'bonus',
+      'mult',
+      'wild',
+      'glass',
+      'steel',
+      'stone',
+      'gold',
+      'lucky',
+    ]
+    await expect(specials.locator('[data-guide-special]')).toHaveCount(
+      editions.length
+    )
+    for (const id of editions) {
+      const row = specials.locator(`[data-guide-special="tileMarks.${id}"]`)
+      await expect(row).toContainText(copy.tileMarks.items[id].name)
+      await expect(row).toContainText(copy.tileMarks.items[id].description)
+    }
     // One scrolling surface: all teaching content, including the final action,
     // is reachable without a nested scroll box or horizontally clipped labels.
     expect(
@@ -77,8 +103,7 @@ for (const fixture of [
         )
       })
     ).toBe(true)
-    // Text never clips; a Stamp's badge may overhang its own tile, but
-    // nothing crosses the guide's edges.
+    // Text never clips, and nothing crosses the guide's edges.
     expect(
       await guide.evaluate((node) => {
         const r = node.getBoundingClientRect()

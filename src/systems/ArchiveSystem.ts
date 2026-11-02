@@ -17,7 +17,6 @@ import {
   LEGACY_WALL_DEFINITIONS,
   isActiveArchiveItem,
   TILE_MARK_DEFINITIONS,
-  SEAL_DEFINITIONS_ARCHIVE,
   EDITION_DEFINITIONS_ARCHIVE,
   PACK_VARIANT_DEFINITIONS,
 } from '../config/archiveDefinitions'
@@ -219,21 +218,7 @@ export class ArchiveSystem {
       })
     }
 
-    // Initialize Seals
-    for (const seal of SEAL_DEFINITIONS_ARCHIVE) {
-      const key = createArchiveKey('seals', seal.id)
-      this.entries.set(key, {
-        key,
-        itemId: seal.id,
-        category: 'seals',
-        discoveredAt: preDiscovered.has(key) ? 0 : null,
-        timesUsed: 0,
-        timesWonWith: 0,
-        isUnlocked: true,
-      })
-    }
-
-    // Initialize Editions
+    // Initialize Decree Finishes
     for (const edition of EDITION_DEFINITIONS_ARCHIVE) {
       const key = createArchiveKey('editions', edition.id)
       this.entries.set(key, {
@@ -558,7 +543,10 @@ export class ArchiveSystem {
       }
     }
 
-    system.discoveryHistory = [...state.discoveryHistory]
+    // Retired items (Stamps) leave the history with their entries.
+    system.discoveryHistory = state.discoveryHistory.filter((event) =>
+      system.entries.has(event.key)
+    )
 
     return system
   }

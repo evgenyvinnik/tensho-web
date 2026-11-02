@@ -83,7 +83,7 @@ src/
 │   ├── Meld.ts              # Meld representations (sequence, triplet, quad)
 │   ├── Wall.ts              # Wall management with dead wall
 │   ├── DeadPool.ts          # Discard management
-│   ├── TileModifier.ts      # Tile mark types (Enhancement, Seal, Edition)
+│   ├── TileModifier.ts      # Tile Editions (EnhancementType), Lucky rolls
 │   └── types.ts             # Core enums: TileSuit, DragonType, WindType
 │
 ├── rules/                   # Game rules and scoring
@@ -109,7 +109,7 @@ src/
 │   ├── OmenTagSystem.ts     # Skip rewards (23 omens)
 │   ├── TableStakeSystem.ts  # 8-tier difficulty system
 │   ├── MandateEffectSystem.ts # Boss mandate restrictions
-│   ├── TileModifierSystem.ts # Tile mark application
+│   ├── TileModifierSystem.ts # Tile Edition scoring
 │   ├── StickerSystem.ts     # Eternal, Perishable, Rental
 │   ├── ConsumableSystem.ts  # Consumable management
 │   ├── TableStyleSystem.ts  # Deck variants (8 styles)
@@ -343,8 +343,8 @@ See [GAME_MECHANICS.md](docs/GAME_MECHANICS.md) for complete glossary.
 Score = Points × Mult
 Points = tile points + group bonuses + additive bonuses   (loose numbered tiles score half)
 Mult   = (Yaku or 1) + Orb levels + pattern Mult + 2 per Dragon (4 grouped)
-         + Mark/Edition +Mult, then Decrees in order (+N adds, ×N
-         multiplies), then ×-layers (Glass, Polychrome, ×1.5 per held Steel)
+         + Edition +Mult, then Decrees in order (+N adds, ×N
+         multiplies), then ×-layers (each Lucky tile's ×1.25–×2 roll)
 Pattern Mult = (groups − 1) + Triplet/4-Straight 1, Quad/5-Straight 2, 6-Straight 3; Mahjong +4
 ```
 

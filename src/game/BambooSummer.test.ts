@@ -261,7 +261,7 @@ it('loads legacy saves without granting protection, and rejects malformed flags/
   delete old.state.bambooSummerProtection
   // Reading an old save upgrades it to the current rules first.
   const upgraded = parseClassicRunSnapshot(old)
-  expect(upgraded.version).toBe(3)
+  expect(upgraded.version).toBe(4)
   expect(upgraded.state.bambooSummerProtection ?? false).toBe(false)
   game.restoreRun(upgraded)
   expect(game.getState().bambooSummerProtection).toBe(false)

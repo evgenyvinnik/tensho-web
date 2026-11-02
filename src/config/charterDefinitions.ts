@@ -18,7 +18,7 @@
 export type CharterEffectType =
   | 'shop_slots' // +X shop item slots
   | 'discount' // X% off all shop items
-  | 'edition_frequency' // Editions appear X times more often
+  | 'edition_frequency' // Decree Finishes appear X times more often
   | 'reroll_discount' // Rerolls cost X Gold less
   | 'arcana_choices' // +X choices in Arcana Packs
   | 'void_in_arcana' // Void Scripts may appear in Arcana Packs
@@ -136,19 +136,19 @@ export const DISCOUNT_SALE: CharterDefinition = {
 }
 
 /**
- * Sharp Edge - Editions appear 2x more often
+ * Sharp Edge - Decree Finishes appear 2x more often
  */
 export const SHARP_EDGE: CharterDefinition = {
   id: 'sharp_edge',
   name: 'Sharp Edge',
   japaneseName: '鋭刃',
-  description: 'Editions appear twice as often',
+  description: 'Decree Finishes appear twice as often',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'edition_frequency',
       value: 2,
-      description: 'Editions appear twice as often',
+      description: 'Decree Finishes appear twice as often',
     },
   ],
   upgradeId: 'radiant_edge',
@@ -478,19 +478,19 @@ export const LIQUIDATION_SALE: CharterDefinition = {
 }
 
 /**
- * Radiant Edge - Editions appear 4x more often
+ * Radiant Edge - Decree Finishes appear 4x more often
  */
 export const RADIANT_EDGE: CharterDefinition = {
   id: 'radiant_edge',
   name: 'Radiant Edge',
   japaneseName: '輝刃',
-  description: 'Editions appear four times as often',
+  description: 'Decree Finishes appear four times as often',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'edition_frequency',
       value: 2, // Additional 2x (total 4x with base)
-      description: 'Editions appear twice as often again',
+      description: 'Decree Finishes appear twice as often again',
     },
   ],
   baseId: 'sharp_edge',
@@ -734,13 +734,13 @@ export const ILLUSION_TILES: CharterDefinition = {
   id: 'illusion_tiles',
   name: 'Illusion Tiles',
   japaneseName: '幻牌',
-  description: 'Tiles in the Tea House may come with editions',
+  description: 'Tiles in the Tea House may come with Editions',
   cost: CHARTER_COST,
   effects: [
     {
       type: 'tile_editions',
       value: true,
-      description: 'Tiles in the shop may have editions or marks',
+      description: 'Tiles in the shop may come with Editions',
     },
   ],
   baseId: 'tile_trading',

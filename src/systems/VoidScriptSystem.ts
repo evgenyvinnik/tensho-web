@@ -16,7 +16,8 @@
  */
 
 import { Tile, TileSuit } from '../core/Tile'
-import { EditionType, SealType } from '../core/TileModifier'
+import type { DecreeEdition } from './types'
+import { EnhancementType } from '../core/TileModifier'
 import {
   BaseConsumable,
   ConsumableRarity,
@@ -38,8 +39,9 @@ import { validateConsumableTargetCount } from '../gameplay/consumableTargeting'
  */
 export type VoidScriptEffectType =
   | 'destroy_and_create' // Destroy tiles to create enhanced ones
-  | 'apply_seal_to_tile' // Add a seal to a tile
-  | 'apply_edition' // Add edition to tile or decree
+  | 'apply_edition' // Add a Finish (DecreeEdition) to a decree
+  | 'apply_tile_edition' // Give chosen tiles an Edition (or a random one each)
+  | 'copy_tile_edition' // Copy a tile's Edition onto every copy of its face
   | 'create_rare_decree' // Create a rare decree with penalty
   | 'suit_conversion' // Convert all tiles to one suit
   | 'rank_conversion' // Convert all tiles to one rank
@@ -73,12 +75,14 @@ export interface VoidScriptEffect {
   destroyCount?: number
   createCount?: number
   createType?: 'face' | 'terminal' | 'number' | 'enhanced'
-  sealType?: SealType
-  editionType?: EditionType
+  editionType?: DecreeEdition
+  /** The tile Edition laid; absent on `apply_tile_edition` means random. */
+  enhancement?: EnhancementType
   goldAmount?: number
   // Target specification
   requiresSelection?: boolean
   selectionCount?: number
+  minimumSelectionCount?: number
 }
 
 /**
@@ -100,6 +104,17 @@ export interface VoidScript extends BaseConsumable {
   mahjongTwist: string // Thematic description
 }
 
+/** What Script of Aura can give: every Edition but Stone. */
+const RANDOM_TILE_EDITIONS = [
+  EnhancementType.Bonus,
+  EnhancementType.Mult,
+  EnhancementType.Wild,
+  EnhancementType.Glass,
+  EnhancementType.Steel,
+  EnhancementType.Gold,
+  EnhancementType.Lucky,
+] as const
+
 // =============================================================================
 // VOID SCRIPT DEFINITIONS
 // =============================================================================
@@ -120,7 +135,7 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of Kinship',
     japaneseName: '眷属の書',
     description:
-      'Destroys 1 random tile and adds 3 random Winds or Dragons, each with a random Bonus, Mult or Lucky Mark',
+      'Destroys 1 random tile and adds 3 random Winds or Dragons, each with a random Bonus, Mult or Lucky Edition',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
@@ -145,7 +160,7 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Grave',
     japaneseName: '墓場の書',
     description:
-      'Destroys 1 random tile and adds 2 random 1s or 9s, each with a random Bonus, Mult or Lucky Mark',
+      'Destroys 1 random tile and adds 2 random 1s or 9s, each with a random Bonus, Mult or Lucky Edition',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
@@ -170,7 +185,7 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of Incantation',
     japaneseName: '呪文の書',
     description:
-      'Destroys 1 random tile and adds 4 random 2–8 tiles, each with a random Bonus, Mult or Lucky Mark',
+      'Destroys 1 random tile and adds 4 random 2–8 tiles, each with a random Bonus, Mult or Lucky Edition',
     rarity: 'Common',
     edition: 'Base',
     cost: 4,
@@ -237,31 +252,32 @@ export const VOID_SCRIPTS: Record<
   },
 
   // ---------------------------------------------------------------------------
-  // Seal Application Scripts
+  // Edition Scripts
   // ---------------------------------------------------------------------------
   script_of_the_gold_seal: {
     id: 'script_of_the_gold_seal',
     type: 'VoidScript',
-    name: 'Script of the Gold Stamp',
-    japaneseName: '金封蝋の書',
+    name: 'Script of Gilding',
+    japaneseName: '鍍金の書',
     description:
-      'Adds a Gold Stamp to 1 tile you choose (+3 Gold when it scores)',
+      'Gives a Gold Edition to up to 3 tiles you choose (+3 Gold each time one scores)',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
-      type: 'apply_seal_to_tile',
-      description: 'Apply Gold Stamp',
-      sealType: SealType.Gold,
+      type: 'apply_tile_edition',
+      description: 'Apply Gold Edition to up to 3 tiles',
+      enhancement: EnhancementType.Gold,
       requiresSelection: true,
-      selectionCount: 1,
+      selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     penalty: {
-      type: 'none',
-      description: 'Rare find',
+      type: 'lose_gold',
+      description: 'Gold set to 0',
     },
-    mahjongTwist: 'Golden fortune descends',
+    mahjongTwist: 'Spend the purse to gild the wall',
   },
 
   script_of_deja_vu: {
@@ -269,21 +285,21 @@ export const VOID_SCRIPTS: Record<
     type: 'VoidScript',
     name: 'Script of Deja Vu',
     japaneseName: '既視感の書',
-    description: 'Adds a Red Stamp to 1 tile you choose (it scores twice)',
-    rarity: 'Uncommon',
+    description:
+      'Copies the Edition of 1 tile you choose onto every other copy of that tile in your wall',
+    rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
-      type: 'apply_seal_to_tile',
-      description: 'Apply Red Stamp (retrigger)',
-      sealType: SealType.Red,
+      type: 'copy_tile_edition',
+      description: 'Copy an Edition onto every copy of the tile',
       requiresSelection: true,
       selectionCount: 1,
     },
     penalty: {
-      type: 'none',
-      description: 'Time loops',
+      type: 'lose_tile',
+      description: 'Destroy 1 random tile',
     },
     mahjongTwist: 'This has happened before',
   },
@@ -294,21 +310,21 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Trance',
     japaneseName: '恍惚の書',
     description:
-      'Adds a Blue Stamp to 1 tile you choose (creates a Celestial Orb if the tile is in the play that clears the round)',
+      'Gives a Steel Edition to 2 tiles you choose (each creates a Celestial Orb when played, then may rust away)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
-      type: 'apply_seal_to_tile',
-      description: 'Apply Blue Stamp',
-      sealType: SealType.Blue,
+      type: 'apply_tile_edition',
+      description: 'Apply Steel Edition to 2 tiles',
+      enhancement: EnhancementType.Steel,
       requiresSelection: true,
-      selectionCount: 1,
+      selectionCount: 2,
     },
     penalty: {
-      type: 'none',
-      description: 'Cosmic alignment',
+      type: 'halve_base_score',
+      description: 'Halve the score of your next play',
     },
     mahjongTwist: 'Stars whisper secrets',
   },
@@ -319,44 +335,42 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Medium',
     japaneseName: '霊媒の書',
     description:
-      'Adds a Purple Stamp to 1 selected tile (creates a Fate Seal when redrawn)',
+      'Gives a Glass Edition to 2 tiles you choose (each creates a Fate Seal when played, then may shatter)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
-      type: 'apply_seal_to_tile',
-      description: 'Apply Purple Stamp',
-      sealType: SealType.Purple,
+      type: 'apply_tile_edition',
+      description: 'Apply Glass Edition to 2 tiles',
+      enhancement: EnhancementType.Glass,
       requiresSelection: true,
-      selectionCount: 1,
+      selectionCount: 2,
     },
     penalty: {
-      type: 'none',
-      description: 'Spirits guide',
+      type: 'lock_tile',
+      description: 'Lock a random tile in Dead Pool',
     },
     mahjongTwist: 'Channel the other side',
   },
 
-  // ---------------------------------------------------------------------------
-  // Edition Scripts
-  // ---------------------------------------------------------------------------
   script_of_aura: {
     id: 'script_of_aura',
     type: 'VoidScript',
     name: 'Script of Aura',
     japaneseName: '光輪の書',
     description:
-      'Gives 1 tile you choose a random Edition: Foil, Holographic or Polychrome',
+      'Gives up to 3 tiles you choose a random Edition each: Bonus, Mult, Wild, Glass, Steel, Gold or Lucky',
     rarity: 'Uncommon',
     edition: 'Base',
     cost: 4,
     sellValue: 2,
     effect: {
-      type: 'apply_edition',
-      description: 'Apply a random Foil, Holographic or Polychrome Edition',
+      type: 'apply_tile_edition',
+      description: 'Apply a random Edition to up to 3 tiles',
       requiresSelection: true,
-      selectionCount: 1,
+      selectionCount: 3,
+      minimumSelectionCount: 1,
     },
     penalty: {
       type: 'none',
@@ -365,12 +379,15 @@ export const VOID_SCRIPTS: Record<
     mahjongTwist: 'Light bends around the chosen',
   },
 
+  // ---------------------------------------------------------------------------
+  // Finish Scripts
+  // ---------------------------------------------------------------------------
   script_of_ectoplasm: {
     id: 'script_of_ectoplasm',
     type: 'VoidScript',
     name: 'Script of Ectoplasm',
     japaneseName: '霊質の書',
-    description: 'Adds a Negative Edition to a random Decree (+1 Decree slot)',
+    description: 'Adds a Negative Finish to a random Decree (+1 Decree slot)',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
@@ -438,7 +455,7 @@ export const VOID_SCRIPTS: Record<
     name: 'Script of the Hex',
     japaneseName: '呪詛の書',
     description:
-      'Gives a random Decree the Polychrome Edition and destroys all other Decrees',
+      'Gives a random Decree the Polychrome Finish and destroys all other Decrees',
     rarity: 'Rare',
     edition: 'Base',
     cost: 4,
@@ -446,7 +463,7 @@ export const VOID_SCRIPTS: Record<
     effect: {
       type: 'apply_edition',
       description: 'Add Polychrome Edition to Decree',
-      editionType: EditionType.Polychrome,
+      editionType: 'Polychrome',
     },
     penalty: {
       type: 'destroy_decrees',
@@ -676,16 +693,8 @@ export class VoidScriptSystem {
         break
       }
 
-      case 'apply_seal_to_tile': {
-        const sealResult = this.handleApplySeal(script, context)
-        effects.push(...sealResult.effects)
-        message = sealResult.message
-        success = sealResult.success
-        break
-      }
-
       case 'apply_edition': {
-        const editionResult = this.handleApplyEdition(script, context)
+        const editionResult = this.handleApplyEdition(script)
         effects.push(...editionResult.effects)
         message = editionResult.message
         success = editionResult.success
@@ -756,6 +765,22 @@ export class VoidScriptSystem {
         break
       }
 
+      case 'apply_tile_edition': {
+        const editionResult = this.handleApplyTileEdition(script, context)
+        effects.push(...editionResult.effects)
+        message = editionResult.message
+        success = editionResult.success
+        break
+      }
+
+      case 'copy_tile_edition': {
+        const copyResult = this.handleCopyTileEdition(script, context)
+        effects.push(...copyResult.effects)
+        message = copyResult.message
+        success = copyResult.success
+        break
+      }
+
       case 'duplicate_tile': {
         const dupResult = this.handleDuplicateTile(script, context)
         effects.push(...dupResult.effects)
@@ -788,6 +813,11 @@ export class VoidScriptSystem {
     if (countError) return countError
     const type = script.effect.type
     if (
+      type === 'copy_tile_edition' &&
+      context.selectedTiles?.[0]?.enhancement === EnhancementType.None
+    )
+      return 'Choose a tile that has an Edition'
+    if (
       (type === 'create_rare_decree' || type === 'create_legendary') &&
       (context.getAvailableDecreeSlots?.() ?? 0) <= 0
     )
@@ -795,18 +825,11 @@ export class VoidScriptSystem {
     if (
       (type === 'add_negative_edition' ||
         type === 'copy_decree' ||
-        (type === 'apply_edition' && this.isDecreeEdition(script))) &&
+        type === 'apply_edition') &&
       (context.getDecreeCount?.() ?? 0) === 0
     )
       return 'No Decrees to modify'
     return null
-  }
-
-  private isDecreeEdition(script: VoidScript): boolean {
-    return (
-      script.id === 'script_of_the_hex' ||
-      script.effect.description.includes('Decree')
-    )
   }
 
   /** Apply a penalty. */
@@ -938,94 +961,23 @@ export class VoidScriptSystem {
   }
 
   /**
-   * Handle apply seal effect
+   * Handle apply edition effect: a Finish on a random Decree
    */
-  private handleApplySeal(
-    script: VoidScript,
-    context: VoidScriptContext
-  ): ConsumableUseResult {
-    const selectedTiles = context.selectedTiles || []
-    const sealType = script.effect.sealType
-
-    if (selectedTiles.length === 0) {
-      return {
-        success: false,
-        message: 'No tile selected',
-        effects: [],
-      }
-    }
-
-    if (!sealType) {
-      return {
-        success: false,
-        message: 'No seal type specified',
-        effects: [],
-      }
-    }
-
-    return {
-      success: true,
-      message: `${script.name}: Applied ${sealType} Seal`,
-      effects: [
-        {
-          type: 'seal_applied',
-          description: `Applied ${sealType} Seal`,
-          value: sealType,
-          affectedTiles: [selectedTiles[0].id],
-        },
-      ],
-    }
-  }
-
-  /**
-   * Handle apply edition effect
-   */
-  private handleApplyEdition(
-    script: VoidScript,
-    context: VoidScriptContext
-  ): ConsumableUseResult {
-    // If specific edition, use it; otherwise random
-    const editions: EditionType[] = [
-      EditionType.Foil,
-      EditionType.Holographic,
-      EditionType.Polychrome,
-    ]
+  private handleApplyEdition(script: VoidScript): ConsumableUseResult {
+    // If specific Finish, use it; otherwise random
+    const editions: DecreeEdition[] = ['Foil', 'Holographic', 'Polychrome']
     const edition =
       script.effect.editionType ||
       editions[Math.floor(runRandom.next('consumables') * editions.length)]
 
-    if (this.isDecreeEdition(script)) {
-      return {
-        success: true,
-        message: `${script.name}: Applied ${edition} edition to Decree`,
-        effects: [
-          {
-            type: 'edition_applied_decree',
-            description: `Applied ${edition} edition to Decree`,
-            value: edition,
-          },
-        ],
-      }
-    }
-
-    const selectedTiles = context.selectedTiles || []
-    if (selectedTiles.length === 0) {
-      return {
-        success: false,
-        message: 'No tile selected',
-        effects: [],
-      }
-    }
-
     return {
       success: true,
-      message: `${script.name}: Applied ${edition} edition to tile`,
+      message: `${script.name}: Applied ${edition} edition to Decree`,
       effects: [
         {
-          type: 'edition_applied',
-          description: `Applied ${edition} edition`,
+          type: 'edition_applied_decree',
+          description: `Applied ${edition} edition to Decree`,
           value: edition,
-          affectedTiles: [selectedTiles[0].id],
         },
       ],
     }
@@ -1245,6 +1197,71 @@ export class VoidScriptSystem {
   /**
    * Handle duplicate tile effect
    */
+  /**
+   * Handle apply tile edition: the script's Edition on every chosen tile, or a
+   * random one for each (never Stone, which would erase the tile's face)
+   */
+  private handleApplyTileEdition(
+    script: VoidScript,
+    context: VoidScriptContext
+  ): ConsumableUseResult {
+    const selectedTiles = context.selectedTiles || []
+    if (selectedTiles.length === 0) {
+      return { success: false, message: 'No tile selected', effects: [] }
+    }
+    const fixed = script.effect.enhancement
+    const effects: ConsumableEffectResult[] = selectedTiles.map((tile) => {
+      const enhancement =
+        fixed ??
+        RANDOM_TILE_EDITIONS[
+          Math.floor(
+            runRandom.next('consumables') * RANDOM_TILE_EDITIONS.length
+          )
+        ]
+      return {
+        type: 'enhancement_applied',
+        description: `Applied ${enhancement} Edition`,
+        value: enhancement,
+        affectedTiles: [tile.id],
+      }
+    })
+    return {
+      success: true,
+      message: `${script.name}: Gave ${selectedTiles.length} tile(s) an Edition`,
+      effects,
+    }
+  }
+
+  /**
+   * Handle copy tile edition: the chosen tile's Edition goes onto every other
+   * physical copy of its face in the run's wall
+   */
+  private handleCopyTileEdition(
+    script: VoidScript,
+    context: VoidScriptContext
+  ): ConsumableUseResult {
+    const source = context.selectedTiles?.[0]
+    if (!source || source.enhancement === EnhancementType.None) {
+      return {
+        success: false,
+        message: 'Choose a tile that has an Edition',
+        effects: [],
+      }
+    }
+    return {
+      success: true,
+      message: `${script.name}: Copied ${source.enhancement} onto every ${source.toString()}`,
+      effects: [
+        {
+          type: 'edition_copied',
+          description: `Copied ${source.enhancement} Edition`,
+          value: source.enhancement,
+          affectedTiles: [source.id],
+        },
+      ],
+    }
+  }
+
   private handleDuplicateTile(
     script: VoidScript,
     context: VoidScriptContext

@@ -22,7 +22,6 @@ import {
   Sticker,
 } from './types'
 import { DragonType, Tile, TileSuit } from '../core/Tile'
-import { EditionType } from '../core/TileModifier'
 import { countScoringHonors } from './flowerMutationScoring'
 import { MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
@@ -672,8 +671,6 @@ export const ALL_DECREES: Decree[] = [
 export class DecreeSystem {
   private ownedDecrees: OwnedDecree[] = []
   private maxSlots: number = 5
-  // Derived from persistent tile ownership, never serialized into base capacity.
-  private wallSlotBonus: number = 0
   private currentRound: number = 0
   private nextInstanceId: number = 1
 
@@ -715,18 +712,7 @@ export class DecreeSystem {
   }
 
   getMaxSlots(): number {
-    return this.maxSlots + this.wallSlotBonus
-  }
-
-  /** Drawing/discarding/debuffing does not change ownership or this capacity. */
-  syncWallSlots(wallTemplate: readonly Tile[]): void {
-    this.wallSlotBonus = new Set(
-      wallTemplate
-        .filter(
-          (tile) => !tile.isBonus && tile.edition === EditionType.Negative
-        )
-        .map((tile) => tile.id)
-    ).size
+    return this.maxSlots
   }
 
   /**

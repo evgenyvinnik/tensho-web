@@ -1,7 +1,7 @@
 import { afterEach, expect, it } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit } from '../core/Tile'
-import { EnhancementType, SealType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
@@ -69,7 +69,7 @@ it.each([
 ])('settles scored-tile gold and preview with %i Frostbites', (count, paid) => {
   const { game, state, add, ids } = setup(count)
   add('decree-philosophers-stone')
-  state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Gold)
   expect(game.previewScore(ids)!.goldEarned).toBe(paid)
   expect(game.previewScore(ids)!.goldEarned).toBe(paid)
   expect(state.gold).toBe(10)
@@ -79,7 +79,7 @@ it.each([
 
 it('does not cut ordinary tile or Fate Seal rewards without a Decree multiplier', () => {
   const { game, state, ids } = setup(2)
-  state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Gold)
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   expect(state.gold).toBe(13)
   const seal = FateSealSystem.createFateSealInstance(
@@ -132,7 +132,9 @@ it.each([
       ...[6, 6, 6].map((n, i) => new Tile(TileSuit.Manzu, n, `triplet-${i}`)),
       ...[5, 5].map((n, i) => new Tile(TileSuit.Pinzu, n, `pair-${i}`)),
     ]
-    state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+    state.handTiles[0] = state.handTiles[0].withEnhancement(
+      EnhancementType.Gold
+    )
     const ids = state.handTiles.map((tile) => tile.id)
     expect(game.previewScore(ids)!.goldEarned).toBe(paid)
     expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
@@ -195,11 +197,14 @@ it('aggregates fractional Decree rewards before whole-gold settlement', () => {
   expect(state.gold).toBe(13) // floor((2 + 2) × .5 × 1.5), not two separately floored rewards.
 })
 
+// Philosopher's Stone (×2, weakened by each Frostbite) on 3 base + 2 interest
+// + the Decree Gold, less the 3 Rental: (5 + 4) × 2 − 3 = 15 at 0 Frostbites.
+// A Gold tile held in the rack pays nothing at round end.
 it.each([
-  [0, 4, 21],
-  [1, 2, 12],
-  [2, 1, 8],
-  [3, 0.5, 6],
+  [0, 4, 15],
+  [1, 2, 7], // floor((5 + 2) × 1.5) − 3
+  [2, 1, 4], // floor((5 + 1) × 1.25) − 3
+  [3, 0.5, 3], // floor((5 + 0.5) × 1.125) − 3
 ])(
   'pays ordinary round rewards in full and settles Decree bonuses at %i Frostbites',
   (count, decreeGold, net) => {
@@ -219,12 +224,12 @@ it.each([
       baseReward: 3,
       interest: 2,
       decreeGold,
-      heldGoldMarkReward: 3,
       rentalCost: 3,
       netGoldChange: net,
       goldBefore: 10,
       goldAfter: 10 + net,
     })
+    expect(state.lastRoundSummary).not.toHaveProperty('heldGoldMarkReward')
     expect(state.gold).toBe(10 + net)
     expect(state.seasonSystem.getSeasonStack()).toHaveLength(0)
   }
@@ -247,7 +252,7 @@ it('does not pay disabled Decrees or apply a disabled gold multiplier', () => {
     game.processAction({ type: 'redraw', tileIds: ['hand-0'] }).success
   ).toBe(true)
   expect(state.gold).toBe(10)
-  state.handTiles[0] = state.handTiles[0].withSeal(SealType.Gold)
+  state.handTiles[0] = state.handTiles[0].withEnhancement(EnhancementType.Gold)
   // Locate the actually modified tile after the REDRAW's sort/refill.
   const tileId = state.handTiles[0].id
   const selection = [tileId, ids.find((id) => id !== tileId)!]

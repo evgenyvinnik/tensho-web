@@ -548,269 +548,6 @@ a {
 }
 
 /*
- * Special tiles. Whole-tile treatments sized in % of the tile, so they read
- * at the rack's 44px tiles as well as in detail panels.
- */
-.tile-mark,
-.tile-edition {
-  position: absolute;
-  inset: 0;
-  border-radius: 0.375rem;
-  pointer-events: none;
-}
-
-.tile-mark {
-  --mark: #fcd34d;
-  --mark-deep: #92400e;
-  box-shadow:
-    inset 0 0 0 2px var(--mark),
-    inset 0 0 0 4px var(--mark-deep),
-    0 0 10px 1px color-mix(in srgb, var(--mark) 70%, transparent);
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--mark) 38%, transparent) 0%,
-    transparent 30%,
-    transparent 70%,
-    color-mix(in srgb, var(--mark) 38%, transparent) 100%
-  );
-}
-
-.tile-mark-gem {
-  position: absolute;
-  left: 50%;
-  top: -14%;
-  width: 40%;
-  aspect-ratio: 1;
-  transform: translateX(-50%);
-  padding: 7%;
-  border-radius: 9999px;
-  color: #fff;
-  background: radial-gradient(
-    circle at 35% 30%,
-    color-mix(in srgb, var(--mark) 60%, white),
-    var(--mark-deep) 75%
-  );
-  border: 1px solid color-mix(in srgb, var(--mark) 50%, black);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.tile-mark--gold {
-  --mark: #f6c945;
-  --mark-deep: #8a5a00;
-  background:
-    linear-gradient(
-      115deg,
-      transparent 35%,
-      rgba(255, 244, 190, 0.55) 48%,
-      transparent 60%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(255, 215, 0, 0.45) 0%,
-      transparent 32%,
-      transparent 68%,
-      rgba(255, 215, 0, 0.45) 100%
-    );
-  background-size:
-    260% 100%,
-    100% 100%;
-  animation: tile-sheen 3.2s ease-in-out infinite;
-}
-
-.tile-mark--bonus {
-  --mark: #60a5fa;
-  --mark-deep: #1e3a8a;
-}
-
-.tile-mark--mult {
-  --mark: #f87171;
-  --mark-deep: #7f1d1d;
-}
-
-.tile-mark--lucky {
-  --mark: #34d399;
-  --mark-deep: #065f46;
-}
-
-.tile-mark--steel {
-  --mark: #cbd5e1;
-  --mark-deep: #334155;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.22) 0 2px,
-    rgba(100, 116, 139, 0.18) 2px 4px
-  );
-}
-
-.tile-mark--glass {
-  --mark: #a5f3fc;
-  --mark-deep: #0e7490;
-  background:
-    linear-gradient(
-      125deg,
-      rgba(255, 255, 255, 0.55) 0 12%,
-      transparent 12% 55%,
-      rgba(255, 255, 255, 0.35) 55% 60%,
-      transparent 60%
-    ),
-    rgba(165, 243, 252, 0.22);
-}
-
-.tile-mark--stone {
-  --mark: #a8a29e;
-  --mark-deep: #44403c;
-  background:
-    radial-gradient(
-      circle at 20% 30%,
-      rgba(68, 64, 60, 0.35) 0 6%,
-      transparent 7%
-    ),
-    radial-gradient(
-      circle at 70% 60%,
-      rgba(68, 64, 60, 0.3) 0 8%,
-      transparent 9%
-    ),
-    radial-gradient(
-      circle at 40% 80%,
-      rgba(255, 255, 255, 0.25) 0 5%,
-      transparent 6%
-    ),
-    rgba(120, 113, 108, 0.42);
-}
-
-.tile-mark--wild {
-  --mark: #e879f9;
-  --mark-deep: #6b21a8;
-  box-shadow: 0 0 12px 2px rgba(232, 121, 249, 0.6);
-}
-
-.tile-mark--wild::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 3px;
-  border-radius: inherit;
-  background: conic-gradient(
-    #f87171,
-    #fbbf24,
-    #34d399,
-    #60a5fa,
-    #a78bfa,
-    #f472b6,
-    #f87171
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: tile-hue 4s linear infinite;
-}
-
-.tile-seal {
-  position: absolute;
-  right: -10%;
-  bottom: -6%;
-  width: 46%;
-  aspect-ratio: 1;
-  padding: 9%;
-  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%;
-  color: rgba(255, 255, 255, 0.92);
-  box-shadow:
-    inset 0 -2px 3px rgba(0, 0, 0, 0.35),
-    inset 0 2px 2px rgba(255, 255, 255, 0.35),
-    0 2px 4px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-}
-
-.tile-seal--gold {
-  background: radial-gradient(circle at 35% 30%, #fde68a, #b45309 80%);
-}
-
-.tile-seal--red {
-  background: radial-gradient(circle at 35% 30%, #fca5a5, #991b1b 80%);
-}
-
-.tile-seal--blue {
-  background: radial-gradient(circle at 35% 30%, #bfdbfe, #1d4ed8 80%);
-}
-
-.tile-seal--purple {
-  background: radial-gradient(circle at 35% 30%, #e9d5ff, #6b21a8 80%);
-}
-
-.tile-edition--foil {
-  background: linear-gradient(
-    120deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.65) 45%,
-    rgba(203, 213, 225, 0.4) 52%,
-    transparent 65%
-  );
-  background-size: 250% 100%;
-  mix-blend-mode: screen;
-  animation: tile-sheen 2.6s ease-in-out infinite;
-}
-
-.tile-edition--holographic {
-  background: repeating-linear-gradient(
-    115deg,
-    rgba(244, 114, 182, 0.45) 0 8%,
-    rgba(96, 165, 250, 0.45) 8% 16%,
-    rgba(52, 211, 153, 0.45) 16% 24%,
-    rgba(251, 191, 36, 0.45) 24% 32%
-  );
-  mix-blend-mode: color-dodge;
-  opacity: 0.75;
-}
-
-.tile-edition--polychrome {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 0, 128, 0.4),
-    rgba(0, 255, 255, 0.4),
-    rgba(255, 255, 0, 0.4)
-  );
-  mix-blend-mode: color;
-  animation: tile-hue 5s linear infinite;
-}
-
-.tile-edition--negative {
-  background: white;
-  mix-blend-mode: difference;
-  opacity: 0.88;
-}
-
-@keyframes tile-sheen {
-  0%,
-  100% {
-    background-position:
-      100% 0,
-      0 0;
-  }
-  50% {
-    background-position:
-      0% 0,
-      0 0;
-  }
-}
-
-@keyframes tile-hue {
-  to {
-    filter: hue-rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tile-mark--gold,
-  .tile-mark--wild::before,
-  .tile-edition--foil,
-  .tile-edition--polychrome {
-    animation: none;
-  }
-}
-
-/*
  * The Tea House build on a phone: owned Decrees and Yaku upgrades as two
  * three-column grids. Side by side, divided, while the panel fits both at a
  * 44px tap target, with the upgrades growing to 52px as room allows; stacked
@@ -1459,6 +1196,24 @@ a {
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* A Lucky tile's roll for the round: ×Mult over +Points, lower right. */
+.lucky-roll {
+  position: absolute;
+  right: 4%;
+  bottom: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0.1em 0.25em;
+  border-radius: 0.35em;
+  background: rgba(4, 72, 52, 0.86);
+  color: #ecfdf5;
+  font-weight: 800;
+  line-height: 1.05;
   white-space: nowrap;
   pointer-events: none;
 }

@@ -1,11 +1,7 @@
-/** Generated raster controls and tile-modifier art. Functional labels remain live. */
+/** Generated raster controls. Functional labels remain live. */
 import type { FC } from 'react'
 import { ControlIcon } from './ControlIcon'
-import {
-  getGeneratedArt,
-  type ControlArtId,
-  type GeneratedArtCategory,
-} from '../../utils/generatedArt'
+import { type ControlArtId } from '../../utils/generatedArt'
 
 export interface IconProps {
   className?: string
@@ -24,20 +20,6 @@ function control(name: ControlArtId): FC<IconProps> {
             ? { width: undefined, height: undefined }
             : undefined
         }
-      />
-    )
-  }
-}
-function modifier(category: GeneratedArtCategory, id: string): FC<IconProps> {
-  return function GeneratedModifier({ className = 'w-6 h-6', size }) {
-    return (
-      <img
-        src={getGeneratedArt(category, id)}
-        alt=""
-        aria-hidden="true"
-        draggable={false}
-        className={`object-contain ${className}`}
-        style={{ width: size, height: size }}
       />
     )
   }
@@ -83,22 +65,6 @@ export const MinusIcon: FC<IconProps> = ({ className = 'w-6 h-6', size }) => (
     −
   </span>
 )
-export const EnhancementBonusIcon = modifier('enhancements', 'bonus')
-export const EnhancementMultIcon = modifier('enhancements', 'mult')
-export const EnhancementWildIcon = modifier('enhancements', 'wild')
-export const EnhancementGlassIcon = modifier('enhancements', 'glass')
-export const EnhancementSteelIcon = modifier('enhancements', 'steel')
-export const EnhancementStoneIcon = modifier('enhancements', 'stone')
-export const EnhancementGoldIcon = modifier('enhancements', 'gold')
-export const EnhancementLuckyIcon = modifier('enhancements', 'lucky')
-export const SealGoldIcon = modifier('seals', 'gold')
-export const SealRedIcon = modifier('seals', 'red')
-export const SealBlueIcon = modifier('seals', 'blue')
-export const SealPurpleIcon = modifier('seals', 'purple')
-export const EditionFoilIcon = modifier('editions', 'foil')
-export const EditionHoloIcon = modifier('editions', 'holographic')
-export const EditionPolyIcon = modifier('editions', 'polychrome')
-export const EditionNegativeIcon = modifier('editions', 'negative')
 
 export default {
   VolumeOnIcon,
@@ -118,23 +84,4 @@ export default {
   CheckIcon,
   PlusIcon,
   MinusIcon,
-  // Enhancement Icons
-  EnhancementBonusIcon,
-  EnhancementMultIcon,
-  EnhancementWildIcon,
-  EnhancementGlassIcon,
-  EnhancementSteelIcon,
-  EnhancementStoneIcon,
-  EnhancementGoldIcon,
-  EnhancementLuckyIcon,
-  // Seal Icons
-  SealGoldIcon,
-  SealRedIcon,
-  SealBlueIcon,
-  SealPurpleIcon,
-  // Edition Icons
-  EditionFoilIcon,
-  EditionHoloIcon,
-  EditionPolyIcon,
-  EditionNegativeIcon,
 }

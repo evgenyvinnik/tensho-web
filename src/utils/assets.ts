@@ -35,8 +35,8 @@ export function getTileImagePath(suit: TileSuit, rank: number): string {
 }
 
 /**
- * Finished artwork for a tile carrying a Mark. Each sprite paints the face,
- * bevel and red back in the Mark's material with the tile's own symbols, so
+ * Finished artwork for a tile carrying an Edition. Each sprite paints the face,
+ * bevel and red back in the Edition's material with the tile's own symbols, so
  * it replaces the plain face rather than framing it. Stone is one blank
  * sprite: it has no rank or suit. Unmarked tiles return null.
  */

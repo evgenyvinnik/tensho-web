@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit } from '../core/Tile'
-import { EditionType } from '../core/TileModifier'
+import { EnhancementType } from '../core/TileModifier'
 import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
 import { VoidScriptSystem, VOID_SCRIPTS } from '../systems/VoidScriptSystem'
 import { runRandom } from './RunRandom'
@@ -16,9 +16,12 @@ function fixture(suit = TileSuit.Manzu, rank = 5, red = true) {
   const game = new GameOrchestrator()
   game.startNewRun(7)
   const state = game.getState() as OrchestratorState
-  const source = new Tile(suit, rank, state.handTiles[0].id, red).withEdition(
-    EditionType.Foil
-  )
+  const source = new Tile(
+    suit,
+    rank,
+    state.handTiles[0].id,
+    red
+  ).withEnhancement(EnhancementType.Bonus)
   for (const key of ['handTiles', 'wallTemplate', 'wall'] as const)
     state[key] = state[key].map((tile) =>
       tile.id === source.id ? source : tile
@@ -40,7 +43,7 @@ function strengthen(game: GameOrchestrator, ids: string[]) {
 
 describe('physical rank changes preserve valid red-five identity', () => {
   it.each([TileSuit.Manzu, TileSuit.Pinzu, TileSuit.Souzu])(
-    'Strength changes a red five of %s into an ordinary six, retaining all modifiers',
+    'Strength changes a red five of %s into an ordinary six, retaining its Edition',
     (suit) => {
       const { game, state, source } = fixture(suit)
       const random = vi.spyOn(runRandom, 'next')
@@ -51,7 +54,7 @@ describe('physical rank changes preserve valid red-five identity', () => {
           suit,
           rank: 6,
           isRed: false,
-          modifiers: source.modifiers,
+          modifiers: { enhancement: EnhancementType.Bonus },
         })
       expect(game.getFateSeals()).toHaveLength(0)
       expect(random).not.toHaveBeenCalled()
@@ -112,7 +115,7 @@ describe('physical rank changes preserve valid red-five identity', () => {
         expect(tiles.find((t) => t.id === source.id)).toMatchObject({
           rank,
           isRed: rank === 5,
-          modifiers: source.modifiers,
+          modifiers: { enhancement: EnhancementType.Bonus },
           id: source.id,
         })
       expect(game.getHandTiles().find((t) => t.id === plain.id)).toMatchObject({

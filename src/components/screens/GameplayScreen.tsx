@@ -30,6 +30,7 @@ import { useGameController, useGameEvent } from '../../game/useGameController'
 import { TablePattern } from '../ui/TablePattern'
 import { ConfirmPopup } from '../ui/Popup'
 import { Tile } from '../../core/Tile'
+import { TileRoundContext } from '../tiles/TileRoundContext'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
 import { DecreeCapacityNotice } from '../gameplay/DecreeCapacityNotice'
@@ -41,6 +42,8 @@ import { decreeKey, isDecreeExcluded } from '../../systems/decreeIdentity'
 import { ConsumableDialog } from '../gameplay/ConsumableDialog'
 import { MadeSealPrompt, type UsedSeal } from '../shop/MadeSealPrompt'
 import { SealUsedToast } from '../shop/SealUsedToast'
+import { TileBrokenToast } from '../gameplay/TileBrokenToast'
+import type { GameEventData } from '../../game/EventBus'
 import { useHeaderHeight } from '../../hooks/useHeaderHeight'
 import { getTableStyleIllustration } from '../../utils/assets'
 import {
@@ -143,7 +146,7 @@ export function GameplayScreen() {
   )
   const [actionError, setActionError] = useState<string | null>(null)
   const [targeting, setTargeting] = useState<VoidScript | null>(null)
-  // A Seal the run makes here (a redrawn Purple tile) is used at once.
+  // A Seal the run makes here (a played Glass tile) is used at once.
   const [sealUsed, setSealUsed] = useState<{
     key: number
     used: UsedSeal[]
@@ -155,6 +158,12 @@ export function GameplayScreen() {
     }))
   }, [])
   const handleSealToastDone = useCallback(() => setSealUsed(null), [])
+  // Glass tiles a play shattered and Steel tiles that rusted away.
+  const [tilesBroken, setTilesBroken] = useState<{
+    key: number
+    tiles: GameEventData['tilesBroken']['tiles']
+  } | null>(null)
+  const handleBrokenToastDone = useCallback(() => setTilesBroken(null), [])
   const headerHeight = useHeaderHeight('[data-run-header]')
   const [toast, setToast] = useState<PlayToastData | null>(null)
   const [lastPlay, setLastPlay] = useState<HandScoreValue | null>(null)
@@ -220,6 +229,15 @@ export function GameplayScreen() {
     useCallback(() => setLastPlay(null), [])
   )
   useGameEvent(
+    'tilesBroken',
+    useCallback(({ tiles }) => {
+      setTilesBroken((shown) => ({
+        key: Date.now(),
+        tiles: [...(shown?.tiles ?? []), ...tiles],
+      }))
+    }, [])
+  )
+  useGameEvent(
     'yakumanScored',
     useCallback((data) => {
       setYakuReveals((reveals) => [
@@ -236,6 +254,13 @@ export function GameplayScreen() {
   useGameEvent(
     'secretPatternDiscovered',
     useCallback(({ pattern }) => setSecretReveal(pattern), [])
+  )
+
+  // Bonus and Lucky Editions show what they pay in this round.
+  const luckyRolls = game.state.luckyRolls
+  const tileRound = useMemo(
+    () => ({ act: game.currentAct, luckyRolls: luckyRolls ?? {} }),
+    [game.currentAct, luckyRolls]
   )
 
   const selectedIds = game.selectedTileIds
@@ -475,341 +500,353 @@ export function GameplayScreen() {
   }
 
   return (
-    <TablePattern
-      showOrnaments={true}
-      animated={false}
-      patternScale={1}
-      artwork={getTableStyleIllustration(currentTableStyle.id)}
-      artworkOpacity={0.68}
-      className="viewport-full"
-      colors={felt}
-    >
-      <div
-        data-felt={currentTableStyle.feltColor}
-        data-table-style-id={currentTableStyle.id}
-        className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl"
-        style={
-          {
-            '--color-dark-forest': felt.surface,
-            '--color-forest-green': felt.surfaceRaised,
-          } as CSSProperties
-        }
+    <TileRoundContext.Provider value={tileRound}>
+      <TablePattern
+        showOrnaments={true}
+        animated={false}
+        patternScale={1}
+        artwork={getTableStyleIllustration(currentTableStyle.id)}
+        artworkOpacity={0.68}
+        className="viewport-full"
+        colors={felt}
       >
-        <RunHeader
-          gold={game.gold}
-          stake={game.state.stake}
-          currentAct={game.currentAct}
-          hasEnteredEndless={game.hasEnteredEndless}
-          roundType={roundType}
-          score={game.score}
-          target={game.targetScore}
-          mandate={
-            bossMandate
-              ? {
-                  id: bossMandate.id,
-                  effect: bossMandate.effect as MandateDefinition['effect'],
-                  name: itemText.name('mandates', bossMandate),
-                  description: itemText.description('mandates', bossMandate),
-                  lockedPattern:
-                    game.state.mandateEffectSystem.getLockedPattern(),
-                }
-              : undefined
-          }
-          reroll={
-            upcomingMandate
-              ? {
-                  upcomingName: itemText.name('mandates', upcomingMandate),
-                  allowed: game.canRerollBossMandate(),
-                  onReroll: () => {
-                    const result = game.rerollBossMandate()
-                    setActionError(
-                      result.success ? null : (result.errors?.[0] ?? null)
-                    )
-                  },
-                }
-              : undefined
-          }
-          onHelp={() => setShowGuide(true)}
-          onExit={() => setShowExitConfirm(true)}
-          onSettings={() => navigateTo(ROUTES.SETTINGS)}
-          status={<ClassicSaveNotice inline />}
-        />
-
-        <ClassicSaveNotice errorsOnly />
-
-        {/* The board scrolls on short screens; the rack and actions stay. */}
         <div
-          data-gameplay-scroll
-          className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
+          data-felt={currentTableStyle.feltColor}
+          data-table-style-id={currentTableStyle.id}
+          className="mx-auto flex h-full min-h-0 w-full max-w-[1280px] flex-col overflow-hidden border-x border-white/5 bg-black/5 shadow-2xl"
+          style={
+            {
+              '--color-dark-forest': felt.surface,
+              '--color-forest-green': felt.surfaceRaised,
+            } as CSSProperties
+          }
         >
-          <div className="gameplay-collection grid shrink-0 grid-cols-1 items-center gap-1 px-1 pt-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-3">
-            {/* Decrees */}
-            <div
-              data-tutorial="decrees"
-              className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
-            >
-              {ownedDecrees.map((decree, index) => (
-                <DecreeCardCompact
-                  key={decree.instanceId ?? `${decree.id}-${index}`}
-                  decree={decree}
-                  ownedDecrees={ownedDecrees}
-                  yakuHistory={game.state}
-                  completeConcealedHandsPlayed={
-                    game.state.completeConcealedHandsPlayed
+          <RunHeader
+            gold={game.gold}
+            stake={game.state.stake}
+            currentAct={game.currentAct}
+            hasEnteredEndless={game.hasEnteredEndless}
+            roundType={roundType}
+            score={game.score}
+            target={game.targetScore}
+            mandate={
+              bossMandate
+                ? {
+                    id: bossMandate.id,
+                    effect: bossMandate.effect as MandateDefinition['effect'],
+                    name: itemText.name('mandates', bossMandate),
+                    description: itemText.description('mandates', bossMandate),
+                    lockedPattern:
+                      game.state.mandateEffectSystem.getLockedPattern(),
                   }
-                  disabledDecreeIds={disabledDecreeIds}
-                  faceDown={isDecreeExcluded(decree, hiddenDecreeIds)}
-                  disabledByMandate={isDecreeExcluded(
-                    decree,
-                    disabledDecreeIds
-                  )}
-                  onSell={() => {
-                    const result = game.sellDecree(decreeKey(decree))
-                    setActionError(
-                      result.success ? null : (result.errors?.[0] ?? null)
-                    )
-                  }}
-                  action={
-                    decree.effect.type === 'rule_modification' &&
-                    decree.effect.ruleId === 'dead_wall_draw'
-                      ? deadWallAction
-                      : undefined
-                  }
-                />
-              ))}
-              {Array.from({
-                length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
-              }).map((_, i) => (
-                <DecreeSlotEmpty key={`empty-${i}`} />
-              ))}
-            </div>
-
-            {/* The hand score sits between Decrees and the collection. */}
-            <div className="flex flex-col items-center gap-1 px-2">
-              <HandScorePreview
-                preview={preview}
-                hidden={previewHidden}
-                lastPlay={lastPlay}
-                fire={
-                  toast
-                    ? { intensity: toast.intensity, burst: toast.id }
-                    : undefined
-                }
-                reducedMotion={reducedMotion}
-              />
-            </div>
-
-            {/* Flowers, Seasons, Omens and held consumables; upgrades are in the Tea House. */}
-            <div className="gameplay-collection-items -mx-1 min-w-0 lg:mx-0">
-              <CollectibleRail
-                flora={game.flora}
-                celestialOrbs={game.celestialOrbs}
-                voidScripts={game.voidScripts}
-                levelOf={(family) =>
-                  game.state.celestialOrbSystem.getYakuLevel(family)
-                }
-                validateUse={game.validateConsumableAction}
-                onUse={game.processAction}
-                onChooseTargets={setTargeting}
-                scriptDownsideProtected={scriptDownsideProtected}
-                observatoryActive={game.state.charterSystem.hasCharter(
-                  'observatory'
-                )}
-                omenSystem={game.state.omenSystem}
-              />
-            </div>
-          </div>
-
-          <DecreeCapacityNotice
-            owned={ownedDecrees.length}
-            slots={maxDecreeSlots}
-          />
-          {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
-            <p className="mx-4 mb-1 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
-              {t('mandateConsequence.debuff_until_sell')}
-            </p>
-          )}
-
-          {/* Fills the free table so the felt can sit in its middle. */}
-          <div
-            data-gameplay-surface
-            className="relative flex min-w-0 flex-[1_0_auto] flex-col"
-          >
-            <PlayToast
-              toast={toast}
-              onDone={finishCelebration}
-              reducedMotion={reducedMotion}
-            />
-            {(yakuReveals.length > 0 || secretReveal) && (
-              <div className="pointer-events-none absolute inset-x-0 top-14 z-40 flex flex-col items-center gap-2">
-                {/* Below the play's toast, which keeps its score in view. */}
-                {secretReveal && (
-                  <div className="mt-8">
-                    <SecretPatternReveal
-                      pattern={secretReveal}
-                      onDone={clearSecretReveal}
-                      reducedMotion={reducedMotion}
-                    />
-                  </div>
-                )}
-                {yakuReveals.map((yaku) => (
-                  <YakuReveal
-                    key={yaku.id}
-                    japaneseName={yaku.japaneseName}
-                    multiplier={yaku.multiplier}
-                    tier={yaku.tier}
-                    onComplete={() =>
-                      setYakuReveals((reveals) =>
-                        reveals.filter((r) => r.id !== yaku.id)
+                : undefined
+            }
+            reroll={
+              upcomingMandate
+                ? {
+                    upcomingName: itemText.name('mandates', upcomingMandate),
+                    allowed: game.canRerollBossMandate(),
+                    onReroll: () => {
+                      const result = game.rerollBossMandate()
+                      setActionError(
+                        result.success ? null : (result.errors?.[0] ?? null)
                       )
+                    },
+                  }
+                : undefined
+            }
+            onHelp={() => setShowGuide(true)}
+            onExit={() => setShowExitConfirm(true)}
+            onSettings={() => navigateTo(ROUTES.SETTINGS)}
+            status={<ClassicSaveNotice inline />}
+          />
+
+          <ClassicSaveNotice errorsOnly />
+
+          {/* The board scrolls on short screens; the rack and actions stay. */}
+          <div
+            data-gameplay-scroll
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
+          >
+            <div className="gameplay-collection grid shrink-0 grid-cols-1 items-center gap-1 px-1 pt-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-3">
+              {/* Decrees */}
+              <div
+                data-tutorial="decrees"
+                className="scroll-rail flex min-w-0 items-center justify-center gap-1.5 overflow-x-auto px-1 py-1 lg:justify-start"
+              >
+                {ownedDecrees.map((decree, index) => (
+                  <DecreeCardCompact
+                    key={decree.instanceId ?? `${decree.id}-${index}`}
+                    decree={decree}
+                    ownedDecrees={ownedDecrees}
+                    yakuHistory={game.state}
+                    completeConcealedHandsPlayed={
+                      game.state.completeConcealedHandsPlayed
+                    }
+                    disabledDecreeIds={disabledDecreeIds}
+                    faceDown={isDecreeExcluded(decree, hiddenDecreeIds)}
+                    disabledByMandate={isDecreeExcluded(
+                      decree,
+                      disabledDecreeIds
+                    )}
+                    onSell={() => {
+                      const result = game.sellDecree(decreeKey(decree))
+                      setActionError(
+                        result.success ? null : (result.errors?.[0] ?? null)
+                      )
+                    }}
+                    action={
+                      decree.effect.type === 'rule_modification' &&
+                      decree.effect.ruleId === 'dead_wall_draw'
+                        ? deadWallAction
+                        : undefined
                     }
                   />
                 ))}
+                {Array.from({
+                  length: Math.max(0, maxDecreeSlots - ownedDecrees.length),
+                }).map((_, i) => (
+                  <DecreeSlotEmpty key={`empty-${i}`} />
+                ))}
               </div>
+
+              {/* The hand score sits between Decrees and the collection. */}
+              <div className="flex flex-col items-center gap-1 px-2">
+                <HandScorePreview
+                  preview={preview}
+                  hidden={previewHidden}
+                  lastPlay={lastPlay}
+                  fire={
+                    toast
+                      ? { intensity: toast.intensity, burst: toast.id }
+                      : undefined
+                  }
+                  reducedMotion={reducedMotion}
+                />
+              </div>
+
+              {/* Flowers, Seasons, Omens and held consumables; upgrades are in the Tea House. */}
+              <div className="gameplay-collection-items -mx-1 min-w-0 lg:mx-0">
+                <CollectibleRail
+                  flora={game.flora}
+                  celestialOrbs={game.celestialOrbs}
+                  voidScripts={game.voidScripts}
+                  levelOf={(family) =>
+                    game.state.celestialOrbSystem.getYakuLevel(family)
+                  }
+                  validateUse={game.validateConsumableAction}
+                  onUse={game.processAction}
+                  onChooseTargets={setTargeting}
+                  scriptDownsideProtected={scriptDownsideProtected}
+                  observatoryActive={game.state.charterSystem.hasCharter(
+                    'observatory'
+                  )}
+                  omenSystem={game.state.omenSystem}
+                />
+              </div>
+            </div>
+
+            <DecreeCapacityNotice
+              owned={ownedDecrees.length}
+              slots={maxDecreeSlots}
+            />
+            {game.state.mandateEffectSystem.areAllTilesDebuffed() && (
+              <p className="mx-4 mb-1 rounded border border-emerald-300/60 bg-emerald-950/80 px-3 py-1.5 text-center text-xs font-semibold text-emerald-100">
+                {t('mandateConsequence.debuff_until_sell')}
+              </p>
             )}
-            <div className="flex flex-1 flex-col px-1 pb-1">
-              <HandRack
-                tiles={game.handTiles}
-                selectedIds={selectedSet}
-                faceDownIds={faceDownTileIds}
-                lockedIds={lockedTileIds}
-                debuffedIds={debuffedTileIds}
-                onToggle={handleToggle}
-                groupRules={showTileHints ? game.partialHandRules : null}
-                hintsHeld={dealPending}
-                disabled={tableClosed}
-                rackHeader={
-                  <>
-                    {redrawableIds.length > 1 && !tableClosed && (
-                      <div className="flex justify-end px-1 pb-1">
-                        <button
-                          type="button"
-                          data-select-all
-                          onClick={toggleSelectAll}
-                          aria-keyshortcuts={
-                            keyboardShortcuts
-                              ? TABLE_SHORTCUTS.selectAll
-                              : undefined
-                          }
-                          data-shortcut={
-                            keyboardShortcuts
-                              ? TABLE_SHORTCUTS.selectAll
-                              : undefined
-                          }
-                          data-shortcut-inline
-                          className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-                        >
-                          {allPicked
-                            ? t('gameplay.clearAll', 'Clear all')
-                            : t('gameplay.selectAll', 'Select all')}
-                        </button>
-                      </div>
-                    )}
-                    {actionError && (
-                      <p
-                        role="alert"
-                        className="mx-3 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-1.5 text-center text-sm text-red-100"
-                      >
-                        {actionError}
-                      </p>
-                    )}
-                  </>
-                }
+
+            {/* Fills the free table so the felt can sit in its middle. */}
+            <div
+              data-gameplay-surface
+              className="relative flex min-w-0 flex-[1_0_auto] flex-col"
+            >
+              <PlayToast
+                toast={toast}
+                onDone={finishCelebration}
+                reducedMotion={reducedMotion}
               />
+              {(yakuReveals.length > 0 || secretReveal) && (
+                <div className="pointer-events-none absolute inset-x-0 top-14 z-40 flex flex-col items-center gap-2">
+                  {/* Below the play's toast, which keeps its score in view. */}
+                  {secretReveal && (
+                    <div className="mt-8">
+                      <SecretPatternReveal
+                        pattern={secretReveal}
+                        onDone={clearSecretReveal}
+                        reducedMotion={reducedMotion}
+                      />
+                    </div>
+                  )}
+                  {yakuReveals.map((yaku) => (
+                    <YakuReveal
+                      key={yaku.id}
+                      japaneseName={yaku.japaneseName}
+                      multiplier={yaku.multiplier}
+                      tier={yaku.tier}
+                      onComplete={() =>
+                        setYakuReveals((reveals) =>
+                          reveals.filter((r) => r.id !== yaku.id)
+                        )
+                      }
+                    />
+                  ))}
+                </div>
+              )}
+              <div className="flex flex-1 flex-col px-1 pb-1">
+                <HandRack
+                  tiles={game.handTiles}
+                  selectedIds={selectedSet}
+                  faceDownIds={faceDownTileIds}
+                  lockedIds={lockedTileIds}
+                  debuffedIds={debuffedTileIds}
+                  onToggle={handleToggle}
+                  groupRules={showTileHints ? game.partialHandRules : null}
+                  hintsHeld={dealPending}
+                  disabled={tableClosed}
+                  rackHeader={
+                    <>
+                      {redrawableIds.length > 1 && !tableClosed && (
+                        <div className="flex justify-end px-1 pb-1">
+                          <button
+                            type="button"
+                            data-select-all
+                            onClick={toggleSelectAll}
+                            aria-keyshortcuts={
+                              keyboardShortcuts
+                                ? TABLE_SHORTCUTS.selectAll
+                                : undefined
+                            }
+                            data-shortcut={
+                              keyboardShortcuts
+                                ? TABLE_SHORTCUTS.selectAll
+                                : undefined
+                            }
+                            data-shortcut-inline
+                            className="min-h-11 min-w-11 rounded-full border border-white/25 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-beige-white)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+                          >
+                            {allPicked
+                              ? t('gameplay.clearAll', 'Clear all')
+                              : t('gameplay.selectAll', 'Select all')}
+                          </button>
+                        </div>
+                      )}
+                      {actionError && (
+                        <p
+                          role="alert"
+                          className="mx-3 my-1 rounded-lg border border-red-400/60 bg-red-950/70 px-3 py-1.5 text-center text-sm text-red-100"
+                        >
+                          {actionError}
+                        </p>
+                      )}
+                    </>
+                  }
+                />
+              </div>
             </div>
           </div>
+
+          <ActionBar
+            playButtonRef={playButtonRef}
+            wall={
+              <div data-tutorial="wall" className="shrink-0">
+                <WallDisplay
+                  wallTiles={game.wallTiles}
+                  triggerRef={wallTriggerRef}
+                />
+              </div>
+            }
+            turnsLeft={game.handsRemaining}
+            freeRedraws={game.redrawsRemaining}
+            selectedCount={selectedIds.length}
+            playAllowed={playAllowed && !tableClosed}
+            redrawAllowed={redrawAllowed && !tableClosed}
+            playReason={playReason}
+            redrawReason={redrawReason}
+            onRedraw={handleRedraw}
+            onPlayHand={handlePlayHand}
+            shortcuts={keyboardShortcuts}
+            emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
+            onBuyTurn={handleBuyTurn}
+            adTurn={tableClosed ? null : rewardedAd}
+            onWatchAd={handleWatchAd}
+            willClear={
+              preview !== null &&
+              preview.total >= Math.max(0, game.targetScore - game.score)
+            }
+          />
         </div>
 
-        <ActionBar
-          playButtonRef={playButtonRef}
-          wall={
-            <div data-tutorial="wall" className="shrink-0">
-              <WallDisplay
-                wallTiles={game.wallTiles}
-                triggerRef={wallTriggerRef}
-              />
-            </div>
+        {/* One thing at a time: the deal, then the guide, then Decrees. */}
+        <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
+        <SimulatedAdOverlay />
+        <BeginnerGuide
+          isOpen={showGuide && !wallDrawPending}
+          onClose={() => {
+            markGuideSeen()
+            setShowGuide(false)
+          }}
+        />
+        <DecreeReveal paused={toast !== null || showGuide || wallDrawPending} />
+
+        <ConfirmPopup
+          isOpen={showExitConfirm}
+          onClose={() => setShowExitConfirm(false)}
+          onConfirm={handleExitGame}
+          title={t('classicSave.leaveTitle')}
+          message={t('classicSave.leaveBody')}
+          confirmText={t('classicSave.saveLeave')}
+          cancelText={t('common.cancel', 'Cancel')}
+        />
+
+        <MadeSealPrompt
+          seals={game.fateSeals}
+          wall={game.state.wallTemplate}
+          paused={
+            toast !== null || showGuide || wallDrawPending || targeting !== null
           }
-          turnsLeft={game.handsRemaining}
-          freeRedraws={game.redrawsRemaining}
-          selectedCount={selectedIds.length}
-          playAllowed={playAllowed && !tableClosed}
-          redrawAllowed={redrawAllowed && !tableClosed}
-          playReason={playReason}
-          redrawReason={redrawReason}
-          onRedraw={handleRedraw}
-          onPlayHand={handlePlayHand}
-          shortcuts={keyboardShortcuts}
-          emergencyTurn={tableClosed ? null : game.emergencyTurnOffer}
-          onBuyTurn={handleBuyTurn}
-          adTurn={tableClosed ? null : rewardedAd}
-          onWatchAd={handleWatchAd}
-          willClear={
-            preview !== null &&
-            preview.total >= Math.max(0, game.targetScore - game.score)
-          }
+          settle={game.settleHeldFateSeal}
+          onUsed={announceSeals}
         />
-      </div>
+        {tilesBroken && (
+          <TileBrokenToast
+            key={tilesBroken.key}
+            tiles={tilesBroken.tiles}
+            top={headerHeight + 8}
+            onDone={handleBrokenToastDone}
+          />
+        )}
+        {sealUsed && (
+          <SealUsedToast
+            key={sealUsed.key}
+            seals={sealUsed.used.map((entry) => entry.seal)}
+            changes={sealUsed.used.flatMap((entry) => entry.changes)}
+            top={headerHeight + 8}
+            onDone={handleSealToastDone}
+          />
+        )}
 
-      {/* One thing at a time: the deal, then the guide, then Decrees. */}
-      <WallDraw flora={game.flora} paused={toast !== null || tableClosed} />
-      <SimulatedAdOverlay />
-      <BeginnerGuide
-        isOpen={showGuide && !wallDrawPending}
-        onClose={() => {
-          markGuideSeen()
-          setShowGuide(false)
-        }}
-      />
-      <DecreeReveal paused={toast !== null || showGuide || wallDrawPending} />
-
-      <ConfirmPopup
-        isOpen={showExitConfirm}
-        onClose={() => setShowExitConfirm(false)}
-        onConfirm={handleExitGame}
-        title={t('classicSave.leaveTitle')}
-        message={t('classicSave.leaveBody')}
-        confirmText={t('classicSave.saveLeave')}
-        cancelText={t('common.cancel', 'Cancel')}
-      />
-
-      <MadeSealPrompt
-        seals={game.fateSeals}
-        wall={game.state.wallTemplate}
-        paused={
-          toast !== null || showGuide || wallDrawPending || targeting !== null
-        }
-        settle={game.settleHeldFateSeal}
-        onUsed={announceSeals}
-      />
-      {sealUsed && (
-        <SealUsedToast
-          key={sealUsed.key}
-          seals={sealUsed.used.map((entry) => entry.seal)}
-          changes={sealUsed.used.flatMap((entry) => entry.changes)}
-          top={headerHeight + 8}
-          onDone={handleSealToastDone}
-        />
-      )}
-
-      {targeting && (
-        <ConsumableDialog
-          key={targeting.instanceId}
-          title={itemText.name('scripts', targeting)}
-          items={[targeting]}
-          initialItemId={targeting.instanceId}
-          tiles={game.handTiles}
-          concealedIds={faceDownTileIds}
-          scriptDownsideProtected={scriptDownsideProtected}
-          observatoryActive={game.state.charterSystem.hasCharter('observatory')}
-          canUse={game.canPerformAction}
-          validateUse={game.validateConsumableAction}
-          onUse={game.processAction}
-          onClose={() => setTargeting(null)}
-          fallbackFocusRef={wallTriggerRef}
-        />
-      )}
-    </TablePattern>
+        {targeting && (
+          <ConsumableDialog
+            key={targeting.instanceId}
+            title={itemText.name('scripts', targeting)}
+            items={[targeting]}
+            initialItemId={targeting.instanceId}
+            tiles={game.handTiles}
+            concealedIds={faceDownTileIds}
+            scriptDownsideProtected={scriptDownsideProtected}
+            observatoryActive={game.state.charterSystem.hasCharter(
+              'observatory'
+            )}
+            canUse={game.canPerformAction}
+            validateUse={game.validateConsumableAction}
+            onUse={game.processAction}
+            onClose={() => setTargeting(null)}
+            fallbackFocusRef={wallTriggerRef}
+          />
+        )}
+      </TablePattern>
+    </TileRoundContext.Provider>
   )
 }
 

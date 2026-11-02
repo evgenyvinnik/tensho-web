@@ -91,7 +91,7 @@ Run `bun run sloc` to calculate source lines of code.
 
 | Category | Count |
 |----------|-------|
-| Zustand Stores | 18 |
+| Zustand Stores | 17 |
 | Game Systems | 25 |
 | React Components | 184 |
 | Unit Test Files | 265 (3,818 tests passing) |
@@ -103,6 +103,7 @@ Run `bun run sloc` to calculate source lines of code.
 | System | Items |
 |--------|-------|
 | Fate Seals | 24 |
+| Tile Editions | 8 (Bonus, Mult, Wild, Glass, Steel, Stone, Gold, Lucky) |
 | Celestial Orbs | 13 |
 | Void Scripts | 21 |
 | Imperial Charters | 32 |
@@ -115,6 +116,7 @@ Run `bun run sloc` to calculate source lines of code.
 ## Features
 
 - **Classic Runs** — The supported mode; the experimental Table Loop route is retired. Challenge Runs remain deferred.
+- **Tile Editions** — Special tiles carry one Edition: Glass and Steel make Fate Seals and Celestial Orbs when played but may shatter or rust away, Lucky rolls new bonuses every round, Bonus grows each Act, Gold pays as it scores. Decrees carry Finishes (Foil, Holographic, Polychrome, Negative) instead
 - **Achievement Rewards** — Earn nine illustrated Decrees and two distinct Wall variants through permanent progression
 - **Tutorial System** — Dismissible contextual guidance that never blocks gameplay
 - **Drag & Drop** — Intuitive tile arrangement with touch support
@@ -154,7 +156,7 @@ Run `bun run sloc` to calculate source lines of code.
 - [Imperial Charter artwork](docs/CHARTER_ART.md) — Generated scroll asset, exact prompt, provenance, and responsive card integration
 - [Consumable-aware progression comparison](docs/CLASSIC_CONSUMABLE_BALANCE.md) — Real item use, conservative target/cost decisions, 400 matched-seed rows, and the remaining full-hand/Yaku gap
 - [Classic balance comparison](docs/CLASSIC_BALANCE_AUDIT.md) — Resource-aware and one-away policies, 600 stored simulation rows, reproducible commands, and interpretation limits
-- [Redraw and discard rules](docs/RESOURCE_CYCLING_IMPLEMENTATION.md) — Returned-tile circulation, bonus replacement legality, Purple Seal rewards, and desktop/mobile controls
+- [Redraw and discard rules](docs/RESOURCE_CYCLING_IMPLEMENTATION.md) — Returned-tile circulation, bonus replacement legality and desktop/mobile controls
 - [Coordinated progress reset](docs/PROGRESS_RESET_IMPLEMENTATION.md) — Explicit all-store/run reset, preserved preferences, storage failure recovery, and reload verification
 - [Confirmation dialogs and exit lifecycle](docs/DIALOG_IMPLEMENTATION.md) — Native modality, safe keyboard focus, localized small-screen layout, and the hidden-new-run exit fix
 

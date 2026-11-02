@@ -1,7 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit, FlowerType, SeasonType } from '../core/Tile'
-import { calculateModifierEffects, SealType } from '../core/TileModifier'
+import {
+  calculateModifierEffects,
+  EnhancementType,
+} from '../core/TileModifier'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { RIVER_TAX } from '../systems/DecreeSystem'
 import {
@@ -9,7 +12,11 @@ import {
   THE_HOOK,
   THE_WATER,
 } from '../config/mandateDefinitions'
-import { FateSealSystem, FATE_SEALS } from '../systems/FateSealSystem'
+import { FateSealSystem } from '../systems/FateSealSystem'
+import {
+  CelestialOrbSystem,
+  CELESTIAL_ORBS,
+} from '../systems/CelestialOrbSystem'
 import { runRandom } from './RunRandom'
 import { eventBus } from './EventBus'
 import type { PlayerAction } from './ActionProcessor'
@@ -259,38 +266,60 @@ describe('Classic REDRAW resources', () => {
     ).toBe(true)
   })
 
-  it('creates a Purple Seal reward on every redraw', () => {
+  it('makes no Seal or Orb when a Glass or Steel tile is redrawn, only when one is played', () => {
     const { game, state } = fixture()
     expect(state.decreeSystem.acquireDecree(RIVER_TAX)).not.toBeNull()
-    const purple = state.handTiles[0].withSeal(SealType.Purple)
-    state.handTiles[0] = purple
+    const madeSeals = vi.spyOn(FateSealSystem, 'getRandomFateSeal')
+    const madeOrbs = vi.spyOn(CelestialOrbSystem, 'getRandomCelestialOrb')
+    const glass = state.handTiles[0].withEnhancement(EnhancementType.Glass)
+    const steel = state.handTiles[1].withEnhancement(EnhancementType.Steel)
+    state.handTiles[0] = glass
+    state.handTiles[1] = steel
     const gold = state.gold
+    const made = (tile: Tile) =>
+      calculateModifierEffects(tile.modifiers, tile.id, {
+        deterministic: true,
+      }).createdConsumable
+    expect(made(glass)).toBe('seal')
+    expect(made(steel)).toBe('orb')
     expect(
-      calculateModifierEffects(purple.modifiers, 'redrawn').createdConsumable
-    ).toBe('seal')
-    expect(
-      calculateModifierEffects(purple.modifiers, 'discarded').createdConsumable
-    ).toBe('seal')
-    expect(
-      game.processAction({ type: 'redraw', tileIds: [purple.id] }).success
+      game.processAction({ type: 'redraw', tileIds: [glass.id] }).success
     ).toBe(true)
-    expect(state.fateSeals).toHaveLength(1)
-    expect(state.gold).toBe(gold + 2)
-    for (let i = 0; i < 5; i++)
-      game.addFateSeal(
-        FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_empress)
-      )
-    const held = state.fateSeals.length
-    const other = state.handTiles[0].withSeal(SealType.Purple)
-    state.handTiles[0] = other
     expect(
-      game.processAction({ type: 'redraw', tileIds: [other.id] }).success
+      game.processAction({ type: 'redraw', tileIds: [steel.id] }).success
     ).toBe(true)
-    // Consumables have no inventory cap, so every Purple Seal pays out.
-    expect(state.fateSeals).toHaveLength(held + 1)
-    expect(state.discards).toEqual(expect.arrayContaining([purple, other]))
-    expect(state.wall.slice(state.drawIndex)).not.toContain(purple)
+    expect(madeSeals).not.toHaveBeenCalled()
+    expect(madeOrbs).not.toHaveBeenCalled()
+    expect(state.fateSeals).toEqual([])
+    expect(state.celestialOrbs).toEqual([])
+    // Redrawn tiles reach the river whole: neither shatters nor rusts.
+    expect(state.discards).toEqual(expect.arrayContaining([glass, steel]))
+    expect(state.wall.slice(state.drawIndex)).not.toContain(glass)
     expect(state.gold).toBe(gold + 4)
+
+    // Consumables have no inventory cap, so a played Steel tile always makes
+    // its Orb.
+    for (let i = 0; i < 5; i++)
+      expect(
+        game.addCelestialOrb(
+          CelestialOrbSystem.createCelestialOrbInstance(
+            CELESTIAL_ORBS.pluto_orb
+          ),
+          'pack_open'
+        )
+      ).toBe(true)
+    const held = state.celestialOrbs.length
+    const played = state.handTiles[0].withEnhancement(EnhancementType.Steel)
+    state.handTiles[0] = played
+    expect(
+      game.processAction({
+        type: 'play',
+        tileIds: [played.id, state.handTiles[1].id],
+      }).success
+    ).toBe(true)
+    expect(madeSeals).not.toHaveBeenCalled()
+    expect(madeOrbs).toHaveBeenCalledTimes(1)
+    expect(state.celestialOrbs).toHaveLength(held + 1)
   })
 
   it.each([CERULEAN_BELL, THE_HOOK])(

@@ -111,7 +111,6 @@ export function restoreClassicState(
     fateSealSystem.setLastUsedConsumable(copy.fateSealSystem.lastUsedConsumable)
   const wallTemplate = tiles(copy.wallTemplate)
   const decreeSystem = DecreeSystem.fromState(copy.decreeSystem)
-  decreeSystem.syncWallSlots(wallTemplate)
   return {
     ...copy,
     bambooSummerProtection: copy.bambooSummerProtection ?? false,
