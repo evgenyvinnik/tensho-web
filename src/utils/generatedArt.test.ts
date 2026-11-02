@@ -23,9 +23,6 @@ import {
 import { TileSuit } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
 
-/** Orbs whose portrait is commissioned but not delivered yet. */
-const ORBS_AWAITING_ART = new Set(['moon_orb'])
-
 const manifest = JSON.parse(
   readFileSync('docs/generated-art-manifest.json', 'utf8')
 ) as {
@@ -39,10 +36,10 @@ const manifest = JSON.parse(
 }
 
 it('keeps every generated runtime image decodable, bounded and linked to its original hash', () => {
-  expect(manifest.assets).toHaveLength(373)
+  expect(manifest.assets).toHaveLength(374)
   expect(
     new Set(manifest.assets.map(({ category, id }) => `${category}:${id}`)).size
-  ).toBe(373)
+  ).toBe(374)
   for (const item of manifest.assets) {
     const bytes = readFileSync(`public/${item.path}`)
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(
@@ -114,12 +111,7 @@ it('covers active catalog identities while retaining existing artwork', () => {
       illustrationAssets.consumables.fateSeal
     )
   for (const item of getAllCelestialOrbs())
-    if (!ORBS_AWAITING_ART.has(item.id))
-      expect(getGeneratedArt('orbs', item.id), item.id).toBeDefined()
-  // An Orb waiting for its portrait really has none, so the list empties as
-  // art lands (see docs/ORB_ART_BRIEF.md).
-  for (const id of ORBS_AWAITING_ART)
-    expect(getGeneratedArt('orbs', id), id).toBeUndefined()
+    expect(getGeneratedArt('orbs', item.id), item.id).toBeDefined()
   const existingCharters = [
     'swift_hand',
     'full_palette',

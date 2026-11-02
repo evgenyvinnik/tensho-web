@@ -118,15 +118,19 @@ for (const language of ['en', 'es']) {
       ).toEqual([...ids].sort())
       expect((await profile()).stats.currentRunYakumanScored).toBe(play)
       expect((await profile()).stats.yakuScored.kokushi ?? 0).toBe(play)
-      expect(Boolean((await profile()).unlocks.unlock_eris_orb)).toBe(play > 0)
+      expect(
+        Boolean((await profile()).unlocks.unlock_seal_of_the_immortal)
+      ).toBe(play > 0)
       await page.locator('[data-game-action="play"]').click()
       await expect
         .poll(async () => (await profile()).stats.currentRunYakumanScored)
         .toBe(play + 1)
       const earned = await profile()
       expect(earned.unlocks.unlock_heavenly_ordinance).toBeTruthy()
-      expect(earned.unlocks.unlock_eris_orb).toBeTruthy()
       expect(earned.unlocks.unlock_seal_of_the_immortal).toBeTruthy()
+      // Thirteen Orphans no longer earns Eris: every Orb but the Black Hole is
+      // in the pool from the start, so there is no Eris unlock to record.
+      expect(earned.unlocks.unlock_eris_orb).toBeUndefined()
       expect(earned.stats.yakuScored.kokushi).toBe(play + 1)
       expect(earned.stats.currentRunYakuIds).toContain('kokushi')
       expect(earned.unlocks.unlock_seal_of_the_void).toBeUndefined()
@@ -135,7 +139,7 @@ for (const language of ['en', 'es']) {
       await page.reload()
       await saved()
       expect((await profile()).stats.currentRunYakumanScored).toBe(play + 1)
-      expect((await profile()).unlocks.unlock_eris_orb).toBeTruthy()
+      expect((await profile()).unlocks.unlock_seal_of_the_immortal).toBeTruthy()
       expect((await profile()).stats.yakuScored.kokushi).toBe(play + 1)
     }
   })

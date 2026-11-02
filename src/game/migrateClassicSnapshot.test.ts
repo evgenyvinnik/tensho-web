@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator } from './GameOrchestrator'
 import {
@@ -9,6 +10,7 @@ import { TURNS_PER_ROUND } from './playRules'
 import { runRandom } from './RunRandom'
 import { useOmenStore } from '../stores/omenStore'
 import { PACK_SIZE_DEFINITIONS } from '../config/packDefinitions'
+import { UPGRADE_FAMILY_IDS } from '../systems/CelestialOrbSystem'
 
 afterEach(() => {
   useOmenStore.getState().clearForNewRun()
@@ -101,6 +103,69 @@ describe('upgradeClassicRunSnapshot', () => {
       ['Pairs', 2],
     ])
   })
+
+  it('moves every retired Yaku family to the family its Orb raises now', () => {
+    const saved = current() as unknown as Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+    saved.state.celestialOrbSystem.orbLevels = [
+      ['Pairs', 1],
+      ['Tanyao', 2],
+      ['Yakuhai', 3],
+      ['Pinfu', 4],
+      ['Ittsu', 1],
+      ['Honitsu', 1],
+      ['Toitoi', 1],
+      ['Chinitsu', 1],
+      ['Sanshoku', 1],
+      ['SevenPairs', 5],
+      ['Chanta', 1],
+      ['Kokushi', 2],
+    ]
+    saved.state.celestialOrbSystem.yakuTriggerCounts = [
+      ['Pinfu', 7],
+      ['Riichi', 1],
+    ]
+    const upgraded = upgradeClassicRunSnapshot(saved) as Snapshot
+    const levels = new Map(upgraded.state.celestialOrbSystem.orbLevels)
+    expect(levels.get('TwoSequences')).toBe(2)
+    expect(levels.get('Dragons')).toBe(3)
+    expect(levels.get('Sequence')).toBe(4)
+    expect(levels.get('ThreePairs')).toBe(5)
+    expect(levels.get('Winds')).toBe(2)
+    expect(upgraded.state.celestialOrbSystem.yakuTriggerCounts).toEqual([
+      ['Sequence', 7],
+      ['Pairs', 1],
+    ])
+    // The run loads, and the one family the old save never had starts fresh.
+    const game = new GameOrchestrator()
+    game.restoreRun(parseClassicRunSnapshot(upgraded))
+    const orbs = game.getState().celestialOrbSystem
+    expect(orbs.getYakuLevel('ThreePairs')).toBe(5)
+    expect(orbs.getYakuLevel('SequencePair')).toBe(1)
+    expect([...orbs.getAllYakuLevels().keys()].sort()).toEqual(
+      [...UPGRADE_FAMILY_IDS].sort()
+    )
+  })
+
+  it('leaves an unknown family for the validator to reject', () => {
+    const saved = current() as unknown as Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+    saved.state.celestialOrbSystem.orbLevels = [['NotAFamily', 2]]
+    const upgraded = upgradeClassicRunSnapshot(saved)
+    expect(() => parseClassicRunSnapshot(upgraded)).toThrow()
+  })
+
+  it.each(['complete', 'echo', 'mutations', 'quad'])(
+    'loads the recorded %s replay saved before the family rework',
+    (name) => {
+      const record = JSON.parse(
+        readFileSync(`e2e/fixtures/interactions/${name}.json`, 'utf8')
+      )
+      const upgraded = parseClassicRunSnapshot(
+        upgradeClassicRunSnapshot(record.snapshot)
+      )
+      for (const [family] of upgraded.state.celestialOrbSystem.orbLevels)
+        expect(UPGRADE_FAMILY_IDS as readonly string[]).toContain(family)
+    }
+  )
 
   it('drops the retired Seal and Script round limits from any saved run', () => {
     const retired = {

@@ -95,7 +95,10 @@ for (const language of ['en', 'es'])
           state.roundManager.getCurrentRound().scoreTarget = 1e9
           const ids = state.handTiles.map((t: { id: string }) => t.id)
           const base = game.previewScore(ids).finalScore
-          for (const id of ['saturn_orb', 'mercury_orb']) {
+          // A complete hand scores only its tile families: numbered tiles from
+          // three suits make it Mixed Suits (Neptune). Its sequences score no
+          // pattern family, so the held Mercury (Two Sequences) does not match.
+          for (const id of ['neptune_orb', 'mercury_orb']) {
             if (
               !game.addCelestialOrb(
                 CelestialOrbSystem.createCelestialOrbInstance(
@@ -182,7 +185,7 @@ for (const language of ['en', 'es'])
         ).toEqual(['mercury_orb'])
         expect(
           used.state.celestialOrbSystem.orbLevels.find(
-            (x: [string, number]) => x[0] === 'Ittsu'
+            (x: [string, number]) => x[0] === 'MixedSuits'
           )[1]
         ).toBe(2)
         expect(used.state.handsRemaining).toBe(before.state.handsRemaining)

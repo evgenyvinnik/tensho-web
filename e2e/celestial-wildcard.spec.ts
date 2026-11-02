@@ -112,15 +112,25 @@ for (const language of ['en', 'es'])
         state.targetScore = 1e9
         state.roundManager.getCurrentRound().scoreTarget = 1e9
         const ids = state.handTiles.map((t: { id: string }) => t.id)
-        const category =
-          shape === 'ordinary'
-            ? 'Chinitsu'
-            : shape === 'pairs' || shape === 'clemency'
-              ? 'SevenPairs'
-              : 'Kokushi'
+        // A complete hand scores only the tile families of the hand it
+        // declares, with the Wildcard's stand-in in place of its own face.
+        const families: Record<string, { family: string; scored: string[] }> = {
+          // The Manzu 5 stands in for a circle, so the hand is one suit: it
+          // shows no tile family and a Mixed Suits Orb leaves it unpaid.
+          ordinary: { family: 'MixedSuits', scored: [] },
+          // The East stands in for the White Dragon's pair: no Wind shows.
+          pairs: { family: 'Dragons', scored: ['Dragons', 'MixedSuits'] },
+          orphans: {
+            family: 'Winds',
+            scored: ['Winds', 'Dragons', 'MixedSuits'],
+          },
+          // Here the East keeps its face, so the hand shows a Wind.
+          clemency: { family: 'Winds', scored: ['Winds', 'MixedSuits'] },
+        }
+        const { family, scored } = families[shape]
         const base = game.previewScore(ids).finalScore
         const orb = CelestialOrbSystem.createCelestialOrbInstance(
-          getCelestialOrbByYaku(category)
+          getCelestialOrbByYaku(family)
         )
         // This journey tests the effect of an already-earned Orb, not its gate.
         game.setConsumableUnlockResolver(() => true)
@@ -130,11 +140,12 @@ for (const language of ['en', 'es'])
         )
           throw new Error('Orb use failed')
         const score = game.previewScore(ids).finalScore
-        if (score <= base) throw new Error('Orb did not boost forecast')
+        if (scored.includes(family) ? score <= base : score !== base)
+          throw new Error('Orb forecast does not follow the scored families')
         game.restoreRun(game.captureRun())
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')
-        return { score, category }
+        return { score, scored }
       }, shape)
       // startNewRun queues its starting Decrees for a reveal over the table.
       await clearReveals(page)
@@ -214,10 +225,11 @@ for (const language of ['en', 'es'])
         after.state.discards.filter((t: { id: string }) => ids.includes(t.id))
       ).toEqual(before.state.handTiles)
       expect(after.state.wallTemplate).toEqual(before.state.wallTemplate)
-      expect(after.state.celestialOrbSystem.yakuTriggerCounts).toContainEqual([
-        expected.category,
-        1,
-      ])
+      expect(
+        after.state.celestialOrbSystem.yakuTriggerCounts.filter(
+          ([, count]: [string, number]) => count > 0
+        )
+      ).toEqual(expected.scored.map((family: string) => [family, 1]))
       await testInfo.attach('after-play', {
         body: await page.evaluate(
           () => localStorage.getItem('tensho-classic-run-v1')!

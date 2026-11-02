@@ -13,6 +13,53 @@ import { resolve, extname, sep } from 'node:path'
 import { chromium, expect } from '@playwright/test'
 import { illustrationCopies } from './lib/illustration-delivery.mjs'
 
+/**
+ * Mirror DECREE_RUNTIME and CONSUMABLE_RUNTIME in
+ * src/game/migrateClassicSnapshot.ts: the fields of a saved Decree or
+ * consumable that survive loading; every other field is re-read from the
+ * catalog of the release doing the loading.
+ */
+const DECREE_RUNTIME = new Set([
+  'edition',
+  'sticker',
+  'stickers',
+  'isDebuffed',
+  'sellValue',
+  'instanceId',
+  'randomCopyTargetId',
+  'acquiredRound',
+  'roundsActive',
+  'scalingValue',
+])
+const CONSUMABLE_RUNTIME = new Set([
+  'instanceId',
+  'isUsed',
+  'edition',
+  'sellValue',
+  'source',
+  'currentLevel',
+])
+const CONSUMABLE_TYPES = new Set(['FateSeal', 'CelestialOrb', 'VoidScript'])
+
+/**
+ * Mirrors RETIRED_FAMILIES in src/systems/CelestialOrbSystem.ts: Orb upgrade
+ * families renamed since the baseline release, keyed to their current name.
+ */
+const RETIRED_FAMILIES = {
+  Riichi: 'Pairs',
+  Tanyao: 'TwoSequences',
+  Yakuhai: 'Dragons',
+  Pinfu: 'Sequence',
+  Ittsu: 'Straights',
+  Honitsu: 'FullHouse',
+  Toitoi: 'Triplets',
+  Chinitsu: 'Quads',
+  Sanshoku: 'MixedSuits',
+  SevenPairs: 'ThreePairs',
+  Chanta: 'Loose',
+  Kokushi: 'Winds',
+}
+
 const [before, after, artifacts] = process.argv
   .slice(2)
   .map((path) => resolve(path))
@@ -376,26 +423,70 @@ try {
         ).toBeVisible()
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-        // Loading a save re-reads every saved item from the catalog, so an
-        // item's name and description follow the new release. Effects,
-        // ownership and runtime fields stay exact.
+        // Loading a save re-reads every saved item from the catalog, so a
+        // Decree's or consumable's catalog fields (name, rules, rarity, price)
+        // follow the new release; only its runtime fields must stay exact.
+        // Other items keep everything but their name and description.
+        const catalogItemKeys = (value) =>
+          typeof value.instanceId === 'string' &&
+          typeof value.category === 'string' &&
+          'rarity' in value
+            ? DECREE_RUNTIME
+            : CONSUMABLE_TYPES.has(value.type)
+              ? CONSUMABLE_RUNTIME
+              : null
         const withoutCatalogText = (value) =>
           Array.isArray(value)
             ? value.map(withoutCatalogText)
             : value && typeof value === 'object'
               ? Object.fromEntries(
                   Object.entries(value)
-                    .filter(
-                      ([key]) =>
-                        typeof value.id !== 'string' ||
-                        (key !== 'name' && key !== 'description')
-                    )
+                    .filter(([key]) => {
+                      if (typeof value.id !== 'string') return true
+                      const runtime = catalogItemKeys(value)
+                      if (runtime)
+                        return (
+                          key === 'id' || key === 'type' || runtime.has(key)
+                        )
+                      return key !== 'name' && key !== 'description'
+                    })
                     .map(([key, child]) => [key, withoutCatalogText(child)])
                 )
               : value
+        // Upgrade families renamed by a release move to the family the same
+        // Orb raises now (RETIRED_FAMILIES in CelestialOrbSystem.ts); a family
+        // the old save never had starts at level 1 with nothing scored.
+        const resumed = (await readSave(page, classicKey)).snapshot
+        const families = (snapshot, key) => {
+          const result = new Map()
+          for (const [name, value] of snapshot.state.celestialOrbSystem[key])
+            result.set(RETIRED_FAMILIES[name] ?? name, value)
+          return result
+        }
+        for (const [key, fresh] of [
+          ['orbLevels', 1],
+          ['yakuTriggerCounts', 0],
+        ]) {
+          const before = families(durable.snapshot, key)
+          const after = families(resumed, key)
+          for (const [family, value] of after)
+            assert.equal(value, before.get(family) ?? fresh, `${key} ${family}`)
+          for (const family of before.keys()) assert.ok(after.has(family))
+        }
+        const withoutFamilies = (snapshot) => ({
+          ...snapshot,
+          state: {
+            ...snapshot.state,
+            celestialOrbSystem: {
+              ...snapshot.state.celestialOrbSystem,
+              orbLevels: undefined,
+              yakuTriggerCounts: undefined,
+            },
+          },
+        })
         assert.deepEqual(
-          withoutCatalogText((await readSave(page, classicKey)).snapshot),
-          withoutCatalogText(durable.snapshot)
+          withoutCatalogText(withoutFamilies(resumed)),
+          withoutCatalogText(withoutFamilies(durable.snapshot))
         )
         await page.screenshot({
           path: resolve(artifacts, `${label}-resumed.png`),

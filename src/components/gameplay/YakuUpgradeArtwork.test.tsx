@@ -5,9 +5,6 @@ import { getItemArt } from '../../utils/itemArt'
 import { illustrationAssets } from '../../utils/assets'
 import { YakuUpgradeArtwork } from './YakuUpgradeArtwork'
 
-/** Orbs whose portrait is commissioned but not delivered yet. */
-const ORBS_AWAITING_ART = new Set(['moon_orb'])
-
 describe('Yaku upgrade artwork', () => {
   it.each(Object.values(CELESTIAL_ORBS))(
     'shows the family illustration for $name without tile overlays',
@@ -30,13 +27,11 @@ describe('Yaku upgrade artwork', () => {
       expect(art.querySelector('[data-upgrade-pattern-caption]')).toBeNull()
       const src = art.querySelector('img')?.getAttribute('src')
       // Pairs keeps its own two-tile picture; every other family is pictured
-      // by the Orb that raises it, and one still awaiting its portrait shows
-      // the shared family artwork until it lands.
+      // by the Orb that raises it, never by the shared family artwork.
       if (family === 'Pairs')
         expect(src).not.toBe(getItemArt('orbs', orb.id).src)
-      else if (ORBS_AWAITING_ART.has(orb.id))
-        expect(src).toBe(illustrationAssets.yakuLedger)
       else expect(src).toBe(getItemArt('orbs', orb.id).src)
+      expect(src).not.toBe(illustrationAssets.yakuLedger)
     }
   )
 

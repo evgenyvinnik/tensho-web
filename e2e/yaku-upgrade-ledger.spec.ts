@@ -39,7 +39,7 @@ for (const language of ['en', 'es', 'ru'])
       }
       await page.goto(`/${language}/play`)
       await saved()
-      await page.evaluate(async (kind) => {
+      const bonus = await page.evaluate(async (kind) => {
         const gamePath = '/src/game/GameOrchestrator.ts',
           tilePath = '/src/core/Tile.ts',
           orbPath = '/src/systems/CelestialOrbSystem.ts',
@@ -76,14 +76,19 @@ for (const language of ['en', 'es', 'ru'])
         )
         state.targetScore = 1
         state.roundManager.getCurrentRound().scoreTarget = 1
+        // Planet X raises Three Pairs; the Black Hole raises every family.
         const orb = CelestialOrbSystem.createCelestialOrbInstance(
-          getCelestialOrbByYaku(kind === 'all' ? 'All' : 'SevenPairs')
+          getCelestialOrbByYaku(kind === 'all' ? 'All' : 'ThreePairs')
         )
         // Controlled already-earned item fixture; earning is tested separately.
         game.setConsumableUnlockResolver(() => true)
         if (!game.addCelestialOrb(orb)) throw new Error('Orb grant failed')
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')
+        // One level above the baseline earns one level's worth of the bonus.
+        const { chipsPerLevel, multPerLevel } =
+          getCelestialOrbByYaku('ThreePairs').effect
+        return { chips: chipsPerLevel, mult: multPerLevel }
       }, kind)
       // startNewRun queues its starting Decrees for a reveal over the table.
       await clearReveals(page)
@@ -109,26 +114,31 @@ for (const language of ['en', 'es', 'ru'])
       expect(used.state.celestialOrbs).toHaveLength(0)
       expect(
         used.state.celestialOrbSystem.orbLevels.find(
-          (x: [string, number]) => x[0] === 'SevenPairs'
+          (x: [string, number]) => x[0] === 'ThreePairs'
         )[1]
       ).toBe(2)
       await expect(upgradeTokens).toHaveCount(0)
-      const pairPanel = page
+      const familyPanel = page
         .getByRole('dialog')
-        .filter({ hasText: copy.upgradeFamilies.SevenPairs.covers })
+        .filter({ hasText: copy.upgradeFamilies.ThreePairs.covers })
       await page.screenshot({ path: testInfo.outputPath('ledger-play.png') })
       await page.reload()
       await settleReveals(page, 2_000)
       expect(await saved()).toEqual(used)
       await expect(upgradeTokens).toHaveCount(0)
-      // Pick the whole Seven Pairs hand onto the felt.
-      for (const tile of used.state.handTiles)
+      // Pick the three pairs of characters (1-1, 4-4, 7-7) onto the felt: an
+      // ordinary play whose pattern family, Three Pairs, the Orb raised.
+      const threePairs = used.state.handTiles.filter((tile: { id: string }) =>
+        tile.id.startsWith('Manzu-')
+      )
+      expect(threePairs).toHaveLength(6)
+      for (const tile of threePairs)
         await activate(
           page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
         )
       await expect(
         page.locator('[data-play-zone="felt"] [data-play-tile]')
-      ).toHaveCount(14)
+      ).toHaveCount(6)
       const forecast = await handScoreTotal(page, 'preview').getAttribute(
         'title'
       )
@@ -144,17 +154,17 @@ for (const language of ['en', 'es', 'ru'])
       ).toBe(forecast)
       // The Tea House lists the upgrades inline in the build panel: one
       // token per family with its level counted from 0, no popup and no
-      // empty-state prose. The nine families any run can find always show;
-      // the secret Seven Pairs family joins them once upgraded.
+      // empty-state prose. All 13 families show from the start; none is
+      // secret.
       await expect(page.getByTestId('yaku-upgrades-trigger')).toHaveCount(0)
       const row = page.locator('[data-shop-build] [data-yaku-upgrades]')
       await expect(row).toBeVisible()
       await expect(row).toHaveAccessibleName(copy.yakuUpgrades.title)
-      const families = kind === 'all' ? 12 : 10
+      const families = 13
       const shopTokens = row.locator('[data-yaku-upgrade]')
       await expect(shopTokens).toHaveCount(families)
       await expect(row.locator('[data-yaku-upgrade-level="0"]')).toHaveCount(
-        kind === 'all' ? 0 : 9
+        kind === 'all' ? 0 : families - 1
       )
       const portraits = row.locator('[data-upgrade-art] img')
       await expect(portraits).toHaveCount(families)
@@ -168,31 +178,33 @@ for (const language of ['en', 'es', 'ru'])
         )
         return images.map((image) => image.getAttribute('src')!)
       })
+      // Each family is pictured by the Orb that raises it (Pairs keeps its own
+      // two-tile picture), so no two tokens share a portrait.
       expect(new Set(imageSources).size).toBe(imageSources.length)
       for (const source of imageSources)
-        expect(source).toMatch(/\/(?:generated\/yaku|upgrades)\/[^/]+\.webp$/)
+        expect(source).toMatch(/\/(?:generated\/orbs|upgrades)\/[^/]+\.webp$/)
       await expect(row.locator('[data-upgrade-art] svg')).toHaveCount(0)
-      const shopPair = row.locator('[data-yaku-upgrade="SevenPairs"]')
-      await expect(shopPair).toHaveAccessibleName(
+      const shopFamily = row.locator('[data-yaku-upgrade="ThreePairs"]')
+      await expect(shopFamily).toHaveAccessibleName(
         copy.upgradeFamilies.tokenLabel
-          .replace('{{family}}', copy.upgradeFamilies.SevenPairs.name)
+          .replace('{{family}}', copy.upgradeFamilies.ThreePairs.name)
           .replace('{{level}}', (1).toLocaleString(language))
       )
-      await activate(shopPair)
-      await expect(pairPanel).toContainText(
+      await activate(shopFamily)
+      await expect(familyPanel).toContainText(
         copy.yakuUpgrades.bonus
-          .replace('{{chips}}', '35')
-          .replace('{{mult}}', '3')
+          .replace('{{chips}}', bonus.chips.toLocaleString(language))
+          .replace('{{mult}}', bonus.mult.toLocaleString(language))
       )
-      await expect(pairPanel).toContainText(
+      await expect(familyPanel).toContainText(
         copy.yakuUpgrades.triggers.replace('{{total}}', '1')
       )
       expect(
-        await pairPanel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
+        await familyPanel.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)
       ).toBe(true)
       await page.screenshot({ path: testInfo.outputPath('ledger-shop.png') })
       await page.keyboard.press('Escape')
-      await expect(pairPanel).toHaveCount(0)
+      await expect(familyPanel).toHaveCount(0)
       await page.mouse.move(1, 1)
       await expect(page.locator('[data-cash-out-toasts]')).toHaveCount(0)
       await page.locator('[data-shop-build]').screenshot({

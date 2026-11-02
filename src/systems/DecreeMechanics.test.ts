@@ -933,7 +933,7 @@ describe('loss prevention Decrees', () => {
     // A starting Decree could clear the round and leave nothing to rescue.
     const decrees = orchestrator.getState().decreeSystem
     for (const owned of decrees.getOwnedDecrees())
-      decrees.removeDecree(owned.instanceId)
+      decrees.removeDecree(owned.instanceId ?? owned.id)
     orchestrator.addDecree(decreeById('decree-immortal-decree'))
 
     let guard = 0
