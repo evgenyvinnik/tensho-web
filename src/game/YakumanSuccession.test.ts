@@ -246,7 +246,7 @@ it('offers the distinct mythic item only with sufficient Flowers and preflights 
   expect(f.state.decreeSystem.getOwnedDecrees()[0].sellValue).toBe(0)
 })
 
-it('records ascended Seven Pairs only in its original Orb family after payment', () => {
+it('records an ascended Seven Pairs only in the tile families its tiles show, after payment', () => {
   const f = fixture('seven_pairs')
   f.add()
   const orbs = f.state.celestialOrbSystem
@@ -254,8 +254,10 @@ it('records ascended Seven Pairs only in its original Orb family after payment',
   f.game.previewScore(f.ids)
   expect(orbs.toState()).toEqual(before)
   f.pay()
-  expect(orbs.getYakuTriggerCount('SevenPairs')).toBe(1)
-  expect(orbs.getYakuTriggerCount('Kokushi')).toBe(0)
+  // Three suits, no Honors: a complete hand scores Mixed Suits and nothing
+  // else, whatever its Yaku ascends to.
+  for (const [family, count] of orbs.toState().yakuTriggerCounts)
+    expect(count, family).toBe(family === 'MixedSuits' ? 1 : 0)
   expect(orbs.getYakuTriggerCount('All')).toBe(0)
   const saved = parseClassicRunSnapshot(json(f.game.captureRun()))
   f.game.restoreRun(saved)

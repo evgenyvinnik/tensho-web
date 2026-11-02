@@ -66,10 +66,12 @@ function LevelRow({
           })}
         </p>
         <p className="text-xs text-emerald-200">
-          {t('yakuUpgrades.bonus', {
-            chips: number(chips),
-            mult: number(mult),
-          })}
+          {t(
+            change.yaku === 'Loose'
+              ? 'yakuUpgrades.bonusLoose'
+              : 'yakuUpgrades.bonus',
+            { chips: number(chips), mult: number(mult) }
+          )}
         </p>
       </div>
       <span

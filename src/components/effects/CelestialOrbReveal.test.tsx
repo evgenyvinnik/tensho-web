@@ -8,6 +8,7 @@ import {
 import { eventBus } from '../../game/EventBus'
 import { changeLanguage } from '../../i18n'
 import { useSettingsStore } from '../../stores/settingsStore'
+import { CELESTIAL_ORBS } from '../../systems/CelestialOrbSystem'
 
 afterEach(async () => {
   eventBus.clear()
@@ -22,25 +23,25 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
   const uninstall = installOrbRevealQueue()
   try {
     eventBus.emit('celestialOrbUsed', {
-      orbId: 'pluto_orb',
-      yakuCategory: 'SevenPairs',
+      orbId: 'planet_x_orb',
+      yakuCategory: 'ThreePairs',
       newLevel: 2,
       source: 'generated',
-      levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      levels: [{ yaku: 'ThreePairs', from: 1, to: 2 }],
       onAcquire: false,
     })
     // A bought Orb from an older save, used from the rail at the table.
     eventBus.emit('celestialOrbUsed', {
-      orbId: 'pluto_orb',
-      yakuCategory: 'SevenPairs',
+      orbId: 'planet_x_orb',
+      yakuCategory: 'ThreePairs',
       newLevel: 2,
       source: 'purchase',
-      levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      levels: [{ yaku: 'ThreePairs', from: 1, to: 2 }],
       onAcquire: false,
     })
     eventBus.emit('celestialOrbUsed', {
-      orbId: 'pluto_orb',
-      yakuCategory: 'SevenPairs',
+      orbId: 'planet_x_orb',
+      yakuCategory: 'ThreePairs',
       newLevel: 2,
       source: 'purchase',
       levels: [],
@@ -48,11 +49,11 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
     })
     expect(useOrbRevealQueue.getState().queue).toEqual([])
     eventBus.emit('celestialOrbUsed', {
-      orbId: 'pluto_orb',
-      yakuCategory: 'SevenPairs',
+      orbId: 'planet_x_orb',
+      yakuCategory: 'ThreePairs',
       newLevel: 2,
       source: 'purchase',
-      levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+      levels: [{ yaku: 'ThreePairs', from: 1, to: 2 }],
       onAcquire: true,
     })
     eventBus.emit('celestialOrbUsed', {
@@ -63,12 +64,12 @@ it('queues only Tea House uses that changed a level, and forgets them on load', 
       onAcquire: true,
       levels: [
         { yaku: 'Pairs', from: 1, to: 2 },
-        { yaku: 'Tanyao', from: 3, to: 4 },
+        { yaku: 'TwoSequences', from: 3, to: 4 },
       ],
     })
     const queue = useOrbRevealQueue.getState().queue
     expect(queue.map((entry) => entry.orb.id)).toEqual([
-      'pluto_orb',
+      'planet_x_orb',
       'black_hole_orb',
     ])
     eventBus.emit('gameLoaded', {
@@ -85,29 +86,32 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
   const uninstall = installOrbRevealQueue()
   try {
     eventBus.emit('celestialOrbUsed', {
-      orbId: 'pluto_orb',
-      yakuCategory: 'SevenPairs',
+      orbId: 'planet_x_orb',
+      yakuCategory: 'ThreePairs',
       newLevel: 3,
       source: 'purchase',
-      levels: [{ yaku: 'SevenPairs', from: 2, to: 3 }],
+      levels: [{ yaku: 'ThreePairs', from: 2, to: 3 }],
       onAcquire: true,
     })
     render(<CelestialOrbReveal />)
     const dialog = screen.getByRole('dialog', {
-      name: 'Pluto Orb used: Yaku upgraded',
+      name: 'Planet X Orb used: Yaku upgraded',
     })
-    expect(dialog).toHaveAttribute('data-orb-reveal', 'pluto_orb')
+    expect(dialog).toHaveAttribute('data-orb-reveal', 'planet_x_orb')
     // The planet names the Orb; the family it raises is the subtitle.
     expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
-      'Pairs'
+      'Three Pairs'
     )
     expect(dialog).toHaveTextContent('Celestial Orb used')
-    const row = dialog.querySelector('[data-orb-reveal-level="SevenPairs"]')!
+    const row = dialog.querySelector('[data-orb-reveal-level="ThreePairs"]')!
     // The engine's level 3 is the family's second upgrade: players count
     // upgrades from 0.
     expect(row).toHaveAttribute('data-orb-reveal-to', '3')
-    expect(row).toHaveTextContent('Seven Pairs: level 1 → 2')
-    expect(row).toHaveTextContent('+70 base points · +6 Mult')
+    expect(row).toHaveTextContent('Three Pairs: level 1 → 2')
+    const { chipsPerLevel, multPerLevel } = CELESTIAL_ORBS.planet_x_orb.effect
+    expect(row).toHaveTextContent(
+      `+${chipsPerLevel * 2} base points · +${multPerLevel * 2} Mult`
+    )
     expect(dialog).not.toHaveTextContent('Every family')
     fireEvent.click(screen.getByRole('button', { name: 'Got it' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -136,24 +140,15 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
         },
         levels: [
           { yaku: 'Pairs', from: 1, to: 2 },
-          { yaku: 'Tanyao', from: 1, to: 2 },
-          { yaku: 'Kokushi', from: 9, to: 10 },
+          { yaku: 'TwoSequences', from: 1, to: 2 },
+          { yaku: 'Winds', from: 9, to: 10 },
+          { yaku: 'Loose', from: 1, to: 2 },
         ],
       },
       {
         key: 2,
-        orb: {
-          id: 'pluto_orb',
-          name: 'Pluto Orb',
-          description: '',
-          effect: {
-            targetYaku: 'SevenPairs',
-            multPerLevel: 3,
-            chipsPerLevel: 35,
-            description: '',
-          },
-        },
-        levels: [{ yaku: 'SevenPairs', from: 1, to: 2 }],
+        orb: CELESTIAL_ORBS.planet_x_orb,
+        levels: [{ yaku: 'ThreePairs', from: 1, to: 2 }],
       },
     ],
   })
@@ -162,10 +157,17 @@ it('lists every family Black Hole raised and counts the reveals still waiting', 
   expect(dialog.querySelector('[data-orb-reveal-family]')?.textContent).toBe(
     'Every family +1 level'
   )
-  expect(dialog.querySelectorAll('[data-orb-reveal-level]')).toHaveLength(3)
+  expect(dialog.querySelectorAll('[data-orb-reveal-level]')).toHaveLength(4)
+  // Loose Tiles pays base points for each loose tile, and no Mult.
+  const loose = dialog.querySelector('[data-orb-reveal-level="Loose"]')!
+  expect(loose).toHaveTextContent('Loose Tiles: level 0 → 1')
+  expect(loose).toHaveTextContent(
+    `+${CELESTIAL_ORBS.ceres_orb.effect.chipsPerLevel} base points per loose tile`
+  )
+  expect(loose).not.toHaveTextContent('Mult')
   fireEvent.click(screen.getByRole('button', { name: 'Next (1 more)' }))
   expect(screen.getByRole('dialog')).toHaveAttribute(
     'data-orb-reveal',
-    'pluto_orb'
+    'planet_x_orb'
   )
 })

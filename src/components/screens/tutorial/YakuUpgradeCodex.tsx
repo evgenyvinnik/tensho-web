@@ -3,9 +3,9 @@
  * level pays, and example plays for every family, drawn as tiles.
  *
  * Read-only: it never touches the active run. Numbers come from the Orb
- * catalog and the scoring constants, and each ordinary example is read by the
- * real play parser, so the pattern and families it names are the ones a real
- * play would score.
+ * catalog and the scoring constants, and each example is read by the real
+ * play parser, so the pattern and families it names are the ones a real play
+ * would score.
  *
  * @module components/screens/tutorial/YakuUpgradeCodex
  */
@@ -25,8 +25,8 @@ import { SHOWN_MAX_UPGRADE_LEVEL } from '../../gameplay/yakuUpgradeLevel'
 import { getItemArt } from '../../../utils/itemArt'
 import { Formula, InfoBox, TileGroups } from './TutorialComponents'
 import {
-  COMPLETE_HAND_UPGRADE_FAMILIES,
-  PLAY_UPGRADE_FAMILIES,
+  PATTERN_UPGRADE_FAMILIES,
+  TILE_UPGRADE_FAMILIES,
   UPGRADE_FAMILY_EXAMPLES,
   exampleTiles,
   readUpgradeExample,
@@ -36,19 +36,19 @@ import {
 
 export const YAKU_UPGRADE_CODEX_SECTIONS = [
   ['yaku-upgrades', 'yakuUpgrades.title', 'intro'],
-  ['upgrade-families-plays', 'codexUpgrades.playsTitle', 'plays'],
-  ['upgrade-families-hands', 'codexUpgrades.handsTitle', 'hands'],
+  ['upgrade-families-patterns', 'codexUpgrades.patternsTitle', 'patterns'],
+  ['upgrade-families-tiles', 'codexUpgrades.tilesTitle', 'tiles'],
 ] as const
 type Section = (typeof YAKU_UPGRADE_CODEX_SECTIONS)[number][2]
 
-/** The worked example: one Sequence, before and after one Venus level. */
-const WORKED_EXAMPLE: UpgradeExample = UPGRADE_FAMILY_EXAMPLES.Pinfu[0]
+/** The worked example: one Sequence, before and after one Sequence level. */
+const WORKED_EXAMPLE: UpgradeExample = UPGRADE_FAMILY_EXAMPLES.Sequence[0]
 
 function Example({ example }: { example: UpgradeExample }) {
   const { t } = useTranslation()
   const familyName = (family: YakuCategory) =>
     t(`upgradeFamilies.${family}.name`)
-  const reading = example.complete ? null : readUpgradeExample(example)
+  const reading = readUpgradeExample(example)
   return (
     <figure
       data-codex-upgrade-example
@@ -57,17 +57,22 @@ function Example({ example }: { example: UpgradeExample }) {
       <TileGroups groups={example.groups} />
       <figcaption className="text-center text-xs leading-snug">
         <span className="font-semibold text-[var(--color-golden-yellow)]">
-          {reading
-            ? t(`patterns.${reading.pattern}.name`)
-            : t('codexUpgrades.completeHand')}
+          {t(`patterns.${reading.pattern}.name`)}
         </span>
-        {reading && (
-          <span className="block text-[var(--color-beige-white)]/80">
-            {t('codexUpgrades.scores', {
-              families: reading.families.map(familyName).join(' · '),
-            })}
-          </span>
-        )}
+        <span className="block text-[var(--color-beige-white)]/80">
+          {t('codexUpgrades.scores', {
+            families: reading.families
+              .map(({ family, times }) =>
+                times > 1
+                  ? t('codexUpgrades.times', {
+                      family: familyName(family),
+                      count: times,
+                    })
+                  : familyName(family)
+              )
+              .join(' · '),
+          })}
+        </span>
       </figcaption>
     </figure>
   )
@@ -76,9 +81,6 @@ function Example({ example }: { example: UpgradeExample }) {
 function FamilyCard({ family }: { family: UpgradeFamily }) {
   const { t } = useTranslation()
   const orb = getCelestialOrbByYaku(family)!
-  const secret = (COMPLETE_HAND_UPGRADE_FAMILIES as readonly string[]).includes(
-    family
-  )
   return (
     <article
       data-codex-upgrade-family={family}
@@ -104,10 +106,15 @@ function FamilyCard({ family }: { family: UpgradeFamily }) {
       </div>
       <div className="space-y-3 text-sm leading-relaxed">
         <p className="font-semibold text-emerald-200">
-          {t('codexUpgrades.perLevel', {
-            chips: orb.effect.chipsPerLevel,
-            mult: orb.effect.multPerLevel,
-          })}
+          {t(
+            family === 'Loose'
+              ? 'codexUpgrades.perLevelLoose'
+              : 'codexUpgrades.perLevel',
+            {
+              chips: orb.effect.chipsPerLevel,
+              mult: orb.effect.multPerLevel,
+            }
+          )}
         </p>
         <p>{t(`upgradeFamilies.${family}.covers`)}</p>
         <div className="grid min-w-0 grid-cols-1 gap-2">
@@ -115,11 +122,6 @@ function FamilyCard({ family }: { family: UpgradeFamily }) {
             <Example key={index} example={example} />
           ))}
         </div>
-        {secret && (
-          <p className="text-xs text-[var(--color-metallic-gold)]">
-            {t('collection.unlock')} {t(`consumableUnlocks.${orb.id}`)}
-          </p>
-        )}
       </div>
     </article>
   )
@@ -129,7 +131,7 @@ export function YakuUpgradeCodex({ section }: { section: Section }) {
   const { t } = useTranslation()
 
   if (section === 'intro') {
-    const venus = getCelestialOrbByYaku('Pinfu')!.effect
+    const sequence = getCelestialOrbByYaku('Sequence')!.effect
     const points =
       calculateTilePoints(exampleTiles(WORKED_EXAMPLE)) +
       STRUCTURE_POINTS_BY_TYPE[MeldType.Sequence]
@@ -150,31 +152,32 @@ export function YakuUpgradeCodex({ section }: { section: Section }) {
           </span>
           <span className="block text-base text-emerald-200">
             {t('codexUpgrades.exampleAfter', {
-              family: t('upgradeFamilies.Pinfu.name'),
+              family: t('upgradeFamilies.Sequence.name'),
               points,
-              chips: venus.chipsPerLevel,
+              chips: sequence.chipsPerLevel,
               mult,
-              bonusMult: venus.multPerLevel,
+              bonusMult: sequence.multPerLevel,
               score:
-                (points + venus.chipsPerLevel) * (mult + venus.multPerLevel),
+                (points + sequence.chipsPerLevel) *
+                (mult + sequence.multPerLevel),
             })}
           </span>
         </Formula>
+        <InfoBox type="tip">{t('codexUpgrades.patternTip')}</InfoBox>
         <p>{t('codexUpgrades.completeHands')}</p>
-        <InfoBox type="tip">{t('codexUpgrades.secretTip')}</InfoBox>
       </div>
     )
   }
 
   const families =
-    section === 'plays' ? PLAY_UPGRADE_FAMILIES : COMPLETE_HAND_UPGRADE_FAMILIES
+    section === 'patterns' ? PATTERN_UPGRADE_FAMILIES : TILE_UPGRADE_FAMILIES
   return (
     <div data-codex-upgrades={section} className="space-y-4">
       <p>
         {t(
-          section === 'plays'
-            ? 'codexUpgrades.playsIntro'
-            : 'codexUpgrades.handsIntro'
+          section === 'patterns'
+            ? 'codexUpgrades.patternsIntro'
+            : 'codexUpgrades.tilesIntro'
         )}
       </p>
       <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-2">

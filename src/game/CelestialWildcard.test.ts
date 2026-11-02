@@ -223,21 +223,26 @@ it('never discloses hidden tile interpretations, unknown tiles or duplicate sele
   expect(game.inspectCompleteHand(ids)).not.toBeNull()
 })
 
+const ittsu = () => [
+  ...numbered(TileSuit.Souzu, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'straight'),
+  ...numbered(TileSuit.Manzu, [6, 6, 6], 'triplet'),
+  ...numbered(TileSuit.Pinzu, [5, 5], 'pair'),
+]
+
+// A complete hand scores only its tile families, so pattern families are
+// recorded by an ordinary play of part of the deal.
 it.each([
-  ['SevenPairs', pairs],
-  ['Kokushi', orphans],
-  [
-    'Ittsu',
-    () => [
-      ...numbered(TileSuit.Souzu, [1, 2, 3, 4, 5, 6, 7, 8, 9], 'straight'),
-      ...numbered(TileSuit.Manzu, [6, 6, 6], 'triplet'),
-      ...numbered(TileSuit.Pinzu, [5, 5], 'pair'),
-    ],
-  ],
+  // Three pairs of characters: 1-1, 4-4, 7-7.
+  ['ThreePairs', pairs, (ids: string[]) => ids.slice(0, 6)],
+  // The whole Thirteen Orphans, completed by the Wildcard, shows Winds.
+  ['Winds', orphans, (ids: string[]) => ids],
+  // Six bamboos in a row: 1 to 6.
+  ['Straights', ittsu, (ids: string[]) => ids.slice(0, 6)],
 ] as const)(
-  'applies a used %s Orb and records the actual special hand for Star Chart',
-  (category, makeTiles) => {
-    const { game, state, ids } = fixture(makeTiles())
+  'applies a used %s Orb and records the family actually scored for Star Chart',
+  (category, makeTiles, pick) => {
+    const { game, state, ids: dealt } = fixture(makeTiles())
+    const ids = pick(dealt)
     game.setConsumableUnlockResolver(() => true) // Already-earned Orb effect.
     const base = game.previewScore(ids)!
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
@@ -263,5 +268,25 @@ it.each([
       [category, 1]
     )
     expect(state.celestialOrbSystem.getOrbForMostPlayedYaku()?.id).toBe(orb.id)
+  }
+)
+
+it.each([
+  // Seven Pairs through the Wildcard: the East plays as the White Dragon's
+  // pair, so the scored hand shows a Dragon and no Wind.
+  ['seven pairs', pairs, ['Dragons', 'MixedSuits']],
+  ['pure straight', ittsu, ['MixedSuits']],
+] as const)(
+  'records only the tile families of a complete %s, never a pattern family',
+  (_name, makeTiles, families) => {
+    const { game, state, ids } = fixture(makeTiles())
+    expect(game.inspectCompleteHand(ids)).not.toBeNull()
+    expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
+      true
+    )
+    const recorded = state.celestialOrbSystem
+      .toState()
+      .yakuTriggerCounts.filter(([, count]) => count > 0)
+    expect(recorded).toEqual(families.map((family) => [family, 1]))
   }
 )

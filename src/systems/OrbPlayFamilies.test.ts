@@ -1,6 +1,7 @@
 /**
- * Which upgrade families an ordinary (tactical) play scores. Every play is
- * read by the real parser and classifier, as the orchestrator reads it.
+ * Which upgrade families a play scores: one pattern family for an ordinary
+ * play, plus the tile families its tiles show. Every play is read by the real
+ * parser and classifier, as the orchestrator reads it.
  */
 
 import { describe, expect, it } from 'vitest'
@@ -8,7 +9,12 @@ import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
 import { parsePlay } from '../rules/PartialHandParser'
 import { classifyPlay } from '../rules/PlayPattern'
-import { playOrbCategories, type YakuCategory } from './CelestialOrbSystem'
+import {
+  CelestialOrbSystem,
+  handOrbCategories,
+  playOrbCategories,
+  type YakuCategory,
+} from './CelestialOrbSystem'
 
 const SUIT = { m: TileSuit.Manzu, p: TileSuit.Pinzu, s: TileSuit.Souzu }
 const WIND = { E: WindType.East, S: WindType.South }
@@ -19,8 +25,8 @@ let counter = 0
  * `'234m 55p'` reads as tiles; `E`/`S` are Winds, `R`/`G` Dragons. A trailing
  * `*` makes a run's last tile Wild, a trailing `#` makes it a Stone.
  */
-function play(spec: string) {
-  const tiles = spec.split(' ').flatMap((part) => {
+function tilesOf(spec: string) {
+  return spec.split(' ').flatMap((part) => {
     const mark = part.endsWith('*')
       ? EnhancementType.Wild
       : part.endsWith('#')
@@ -43,6 +49,10 @@ function play(spec: string) {
     if (mark) made[made.length - 1] = made.at(-1)!.withEnhancement(mark)
     return made
   })
+}
+
+function play(spec: string) {
+  const tiles = tilesOf(spec)
   const parse = parsePlay(tiles)
   return playOrbCategories(classifyPlay(parse.groups).id, parse.groups, tiles)
 }
@@ -50,62 +60,95 @@ function play(spec: string) {
 const families = (spec: string, expected: YakuCategory[]) =>
   expect(play(spec).sort()).toEqual([...expected].sort())
 
-describe('Full Flush on a tactical play', () => {
-  it('two groups of one suit', () => {
-    families('123m 789m', ['Pinfu', 'Chinitsu'])
-    families('555p 345p', ['Toitoi', 'Tanyao', 'Chinitsu'])
-    families('33s 77s', ['Pairs', 'Tanyao', 'Chinitsu'])
+describe('pattern families: one per play', () => {
+  it.each([
+    ['55m', 'Pairs'],
+    ['33m 77m', 'Pairs'],
+    ['22s 66s 88s', 'ThreePairs'],
+    ['345p', 'Sequence'],
+    ['234s 99s', 'SequencePair'],
+    ['123m 789m', 'TwoSequences'],
+    ['777p', 'Triplets'],
+    ['111m 999m', 'Triplets'],
+    ['111m 345m', 'Triplets'],
+    ['888s 22s', 'FullHouse'],
+    ['3456s', 'Straights'],
+    ['234567m', 'Straights'],
+    ['1234m 99m', 'Straights'],
+    ['5555p', 'Quads'],
+    ['9999m 11m', 'Quads'],
+  ] as const)('%s scores %s and nothing else', (spec, family) => {
+    families(spec, [family])
   })
 
-  it('needs two groups: one long Straight is not a flush', () => {
-    families('234567m', ['Ittsu', 'Tanyao'])
-    families('345m', ['Pinfu', 'Tanyao'])
+  it('a combined pattern does not also score its parts', () => {
+    expect(play('234s 99s')).not.toContain('Pairs')
+    expect(play('234s 99s')).not.toContain('Sequence')
+    expect(play('888s 22s')).not.toContain('Triplets')
+    expect(play('22s 66s 88s')).not.toContain('Pairs')
   })
 
-  it('a second suit or any Honor breaks it', () => {
-    families('123m 789p', ['Pinfu'])
-    families('33m 77m E', ['Pairs'])
-  })
-
-  it('a Wild tile counts as the suit; a Stone is ignored', () => {
-    families('123m 78m 9p*', ['Pinfu', 'Chinitsu'])
-    families('33s 77s 5p#', ['Pairs', 'Tanyao', 'Chinitsu'])
-  })
-})
-
-describe('Half Flush on a tactical play', () => {
-  it('one suit plus a group of Winds or Dragons', () => {
-    families('345m RR', ['Pinfu', 'Yakuhai', 'Honitsu'])
-    families('EEE 55m', ['Toitoi', 'Yakuhai', 'Honitsu'])
-  })
-
-  it('needs a numbered group in one suit', () => {
-    families('EEE RR', ['Toitoi', 'Yakuhai'])
-    families('RRR EE 5m', ['Toitoi', 'Yakuhai'])
-    families('345m 5p RR', ['Pinfu', 'Yakuhai'])
-  })
-
-  it('a loose Honor is not enough', () => {
-    families('33m 77m E', ['Pairs'])
+  it('a play of only loose tiles has no pattern family', () => {
+    families('1m 5m 9m', ['Loose', 'Loose', 'Loose'])
   })
 })
 
-describe('Mixed Triple on a tactical play', () => {
-  it('groups of the same numbers in different suits', () => {
-    families('234m 234p', ['Pinfu', 'Tanyao', 'Sanshoku'])
-    families('777m 777s', ['Toitoi', 'Tanyao', 'Sanshoku'])
-    families('55s 555p', ['Toitoi', 'Tanyao', 'Sanshoku'])
-    families('55m 55p 55s', ['Pairs', 'Tanyao', 'Sanshoku'])
-    families('99m 99p', ['Pairs', 'Sanshoku'])
+describe('tile families stack on the pattern', () => {
+  it('Winds and Dragons count grouped or loose', () => {
+    families('EEE 55m', ['FullHouse', 'Winds'])
+    families('345m E', ['Sequence', 'Winds', 'Loose'])
+    families('RRR', ['Triplets', 'Dragons'])
+    families('77m R E', ['Pairs', 'Dragons', 'Winds', 'Loose', 'Loose'])
   })
 
-  it('needs the same numbers in different suits', () => {
-    families('234m 345p', ['Pinfu', 'Tanyao'])
-    families('555m 345p', ['Toitoi', 'Tanyao'])
-    families('55m 66p', ['Pairs', 'Tanyao'])
+  it('Mixed Suits needs numbered tiles from two or more suits', () => {
+    families('234m 678p', ['TwoSequences', 'MixedSuits'])
+    families('55m 55p 55s', ['ThreePairs', 'MixedSuits'])
+    families('123m 789m', ['TwoSequences'])
+    families('55m RR', ['Pairs', 'Dragons'])
   })
 
-  it('Honors have no numbers to match', () => {
-    families('EE SS', ['Pairs', 'Yakuhai'])
+  it('a Wild tile counts as every suit; a Stone shows no suit', () => {
+    families('123m 78m 9p*', ['TwoSequences'])
+    families('33s 77s 5p#', ['Pairs'])
+  })
+
+  it('Loose Tiles pays once per loose tile, never for a Stone', () => {
+    families('345m 9m 1m', ['Sequence', 'Loose', 'Loose'])
+    families('345m 9p', ['Sequence', 'MixedSuits', 'Loose'])
+    families('55m 9m#', ['Pairs'])
+  })
+})
+
+describe('complete hands', () => {
+  it('score only the tile families their tiles show', () => {
+    expect(handOrbCategories(tilesOf('123m 456p 789s EEE 55m')).sort()).toEqual(
+      ['MixedSuits', 'Winds'].sort()
+    )
+    expect(handOrbCategories(tilesOf('123m 456m 789m 111m 55m'))).toEqual([])
+  })
+})
+
+describe('saved levels from before the family rework', () => {
+  it('move to the family their Orb raises now', () => {
+    const system = CelestialOrbSystem.fromState({
+      orbLevels: [
+        ['Pinfu', 4],
+        ['Tanyao', 2],
+        ['Yakuhai', 3],
+        ['Riichi', 2],
+        ['Kokushi', 5],
+      ],
+      yakuTriggerCounts: [['Pinfu', 7]],
+      activeOrbs: [],
+    })
+    expect(system.getYakuLevel('Sequence')).toBe(4)
+    expect(system.getYakuLevel('TwoSequences')).toBe(2)
+    expect(system.getYakuLevel('Dragons')).toBe(3)
+    expect(system.getYakuLevel('Pairs')).toBe(2)
+    expect(system.getYakuLevel('Winds')).toBe(5)
+    expect(system.getYakuLevel('Quads')).toBe(1)
+    expect(system.getYakuTriggerCount('Sequence')).toBe(7)
+    expect([...system.getAllYakuLevels().keys()]).toHaveLength(13)
   })
 })

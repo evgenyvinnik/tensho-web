@@ -13,6 +13,9 @@ import {
   getStickerArt,
 } from './itemArt'
 
+/** Orbs whose portrait is commissioned but not delivered yet. */
+const ORBS_AWAITING_ART = new Set(['moon_orb'])
+
 /** A transparent square WebP of the given edge, small enough for the cache. */
 function expectTransparentSquare(path: string, edge: number, maxBytes: number) {
   const bytes = readFileSync(`public${path}`)
@@ -76,29 +79,44 @@ describe('Season, Flower, sticker and result artwork', () => {
     }
   )
 
-  it('uses a dedicated Pairs badge, not Pluto or Seven Pairs', () => {
+  it('uses a dedicated Pairs badge, not Pluto or Three Pairs', () => {
     const pair = getItemArt('yakuUpgrades', 'Pairs')
     expect(pair).toEqual({
       src: illustrationAssets.pairsUpgrade,
       hasOwnArt: true,
     })
     expect(pair.src).not.toBe(getItemArt('orbs', 'pluto_orb').src)
-    expect(pair.src).not.toBe(getItemArt('yakuUpgrades', 'SevenPairs').src)
+    expect(pair.src).not.toBe(getItemArt('yakuUpgrades', 'ThreePairs').src)
     expect(readFileSync(`public${pair.src}`).length).toBeLessThan(30_000)
   })
 
-  it('ships a unique transparent illustration for all 12 earned upgrade families', () => {
-    const families = Object.values(CELESTIAL_ORBS)
-      .map((orb) => orb.effect.targetYaku)
-      .filter((family) => family !== 'All')
-    expect(families).toHaveLength(12)
+  it('pictures each of the 13 upgrade families by its own Orb, Pairs by its badge', () => {
+    const orbs = Object.values(CELESTIAL_ORBS).filter(
+      (orb) => orb.effect.targetYaku !== 'All'
+    )
+    expect(orbs).toHaveLength(13)
     const sources = new Set<string>()
     const hashes = new Set<string>()
-    for (const family of families) {
+    for (const orb of orbs) {
+      const family = orb.effect.targetYaku
       const art = getItemArt('yakuUpgrades', family)
+      // An Orb still awaiting its portrait leaves its family on the shared
+      // family artwork; it joins the unique set once its art lands.
+      if (ORBS_AWAITING_ART.has(orb.id)) {
+        expect(art, family).toEqual({
+          src: illustrationAssets.yakuLedger,
+          hasOwnArt: false,
+        })
+        expect(getItemArt('orbs', orb.id), orb.id).toEqual({
+          src: illustrationAssets.consumables.celestialOrb,
+          hasOwnArt: false,
+        })
+        continue
+      }
       expect(art.hasOwnArt, family).toBe(true)
-      expect(art.src, family).not.toBe(illustrationAssets.yakuLedger)
-      expectTransparentSquare(art.src, family === 'Pairs' ? 256 : 128, 30_000)
+      if (family !== 'Pairs')
+        expect(art.src, family).toBe(getItemArt('orbs', orb.id).src)
+      expectTransparentSquare(art.src, 256, 30_000)
       sources.add(art.src)
       hashes.add(
         createHash('sha256')
@@ -106,8 +124,9 @@ describe('Season, Flower, sticker and result artwork', () => {
           .digest('hex')
       )
     }
-    expect(sources.size).toBe(12)
-    expect(hashes.size).toBe(12)
+    const pictured = orbs.length - ORBS_AWAITING_ART.size
+    expect(sources.size).toBe(pictured)
+    expect(hashes.size).toBe(pictured)
   })
 
   it('ships three different compact ending scenes', () => {

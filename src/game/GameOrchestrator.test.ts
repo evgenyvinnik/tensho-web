@@ -550,7 +550,7 @@ describe('GameOrchestrator', () => {
       // The Needle's single Play ends the round however many Turns remain.
       expect(game.getState().phase).toBe('gameOver')
     })
-  
+
     it('grants the Turn for a watched ad when Gold is short, once per Act', () => {
       const state = lastTurnInAct(2, 5)
       expect(game.getEmergencyTurnOffer()?.adAvailable).toBe(true)
@@ -734,7 +734,7 @@ describe('GameOrchestrator', () => {
 
     it('starts yaku without free Celestial Orb bonuses', () => {
       expect(
-        game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')
+        game.getState().celestialOrbSystem.calculateYakuBonus('TwoSequences')
       ).toEqual({
         mult: 0,
         chips: 0,
@@ -753,13 +753,16 @@ describe('GameOrchestrator', () => {
       })
 
       expect(result.success).toBe(true)
-      expect(game.getState().celestialOrbSystem.getYakuLevel('Tanyao')).toBe(2)
-      expect(game.getCelestialOrbs()).toHaveLength(0)
       expect(
-        game.getState().celestialOrbSystem.calculateYakuBonus('Tanyao')
+        game.getState().celestialOrbSystem.getYakuLevel('TwoSequences')
+      ).toBe(2)
+      expect(game.getCelestialOrbs()).toHaveLength(0)
+      const { chipsPerLevel, multPerLevel } = CELESTIAL_ORBS.mercury_orb.effect
+      expect(
+        game.getState().celestialOrbSystem.calculateYakuBonus('TwoSequences')
       ).toEqual({
-        mult: 1,
-        chips: 15,
+        mult: multPerLevel,
+        chips: chipsPerLevel,
       })
     })
 
@@ -781,14 +784,15 @@ describe('GameOrchestrator', () => {
           expect(
             targetGame.addCelestialOrb(
               CelestialOrbSystem.createCelestialOrbInstance(
-                CELESTIAL_ORBS.mars_orb
+                CELESTIAL_ORBS.mercury_orb
               )
             )
           ).toBe(true)
         }
 
+        // Two Sequences: Mercury's family.
         const tiles = createDecreeFixtureHand([
-          [TileSuit.Manzu, [1, 1, 1, 2, 3, 4, 4, 5, 6, 7, 8, 9, 5, 5]],
+          [TileSuit.Manzu, [1, 2, 3, 7, 8, 9]],
         ])
         replaceHand(targetGame, tiles)
         return getScoreEffect(

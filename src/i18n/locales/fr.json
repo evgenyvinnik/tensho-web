@@ -298,10 +298,7 @@
   "consumableUnlocks": {
     "seal_of_the_immortal": "Marquez un Yakuman, une main du plus haut niveau comme Trois Grands Dragons.",
     "seal_of_the_void": "Marquez les 20 types de Yaku en une seule partie.",
-    "planet_x_orb": "Marquez Sept Paires.",
-    "ceres_orb": "Marquez une Main Extérieure : une main complète avec un 1, un 9, un Vent ou un Dragon dans chaque groupe et la paire.",
-    "eris_orb": "Marquez Treize Orphelins : un exemplaire de chaque 1, 9, Vent et Dragon, plus un doublon.",
-    "black_hole_orb": "Découvrez les 12 autres Orbes Célestes."
+    "black_hole_orb": "Découvrez les 13 autres Orbes Célestes."
   },
   "decreeUnlocks": {
     "stage_master": "Atteignez l’Acte 4.",
@@ -358,7 +355,8 @@
     "level": "Niveau {{level}} / {{max}}",
     "bonus": "+{{chips}} points de base · +{{mult}} Mult",
     "triggers": "Occurrences marquées : {{total}}",
-    "fromOrb": "Amélioré par {{orb}}"
+    "fromOrb": "Amélioré par {{orb}}",
+    "bonusLoose": "+{{chips}} points de base par tuile isolée"
   },
   "progressiveHints": {
     "discard": {
@@ -1618,19 +1616,20 @@
     "catalystsCost": "Perdre la Fleur réduit aussi ses bonus de collection. L’achat est bloqué si les emplacements restants ne suffisent pas. La recueillir à nouveau restaure son éveil pour cette partie. Succession Yakuman exige toujours deux Fleurs : en sacrifier une nécessite donc d’en détenir au moins trois avant l’achat."
   },
   "codexUpgrades": {
-    "playsTitle": "Familles des coups ordinaires",
-    "handsTitle": "Familles des mains complètes",
-    "intro": "Un Orbe Céleste monte une famille de mains d’un niveau pour le reste de la partie, de 0 jusqu’à {{max}}. Il est utilisé dès que vous le prenez.",
-    "stacking": "Chaque coup qui marque une famille ajoute les points de base et le Mult de cette famille une fois par niveau. Un même coup peut marquer plusieurs familles à la fois, et chacune rapporte. Voici une Séquence avant et après un niveau de « Séquences » :",
+    "patternsTitle": "Familles de combinaison",
+    "tilesTitle": "Familles de tuiles",
+    "intro": "Un Orbe Céleste monte une famille de coups d’un niveau pour le reste de la partie, de 0 jusqu’à {{max}}. Il est utilisé dès que vous le prenez.",
+    "stacking": "Chaque coup marque une famille de combinaison, désignée par ses groupes, plus chaque famille de tuiles que montrent ses tuiles. Chaque famille marquée ajoute ses points de base et son Mult une fois par niveau ; « Tuiles isolées » rapporte une fois pour chaque tuile isolée. Voici une Séquence avant et après un niveau de « Séquence » :",
     "exampleBefore": "{{pattern}}, niveau 0 : {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} niveau 1 : ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "completeHands": "Les coups ordinaires marquent les familles par leurs groupes et leurs tuiles. Une main de Mahjong complète les marque plutôt par ses Yaku : une main complète uniquement de tuiles 2–8 marque « Tout simples », une main contenant une Suite 1–9 marque « Suites », et ainsi de suite.",
-    "secretTip": "« Sept paires », « Main extérieure » et « Treize orphelins » ne sont marquées que par des mains complètes. Leurs Orbes sont secrets : marquez la main une fois et son Orbe pourra apparaître en boutique.",
-    "playsIntro": "Chaque exemple indique la combinaison du coup et toutes les familles qu’il marque.",
-    "handsIntro": "Ces familles exigent une main complète de 14 tuiles ; elles ne rapportent donc que si vous visez une telle main.",
+    "patternTip": "Les familles de combinaison ne se cumulent jamais entre elles : une Séquence + Paire marque seulement « Séquence + Paire », ni « Séquence » ni « Paires ».",
+    "completeHands": "Une main de Mahjong complète ne marque aucune famille de combinaison, seulement les familles de tuiles que montrent ses tuiles.",
+    "patternsIntro": "Un coup marque la seule famille de combinaison que forment ses groupes. Chaque exemple indique sa combinaison et toutes les familles qu’il marque.",
+    "tilesIntro": "Les familles de tuiles s’ajoutent à la famille de combinaison dès que les tuiles du coup les montrent.",
     "perLevel": "Chaque niveau : +{{chips}} points de base · +{{mult}} Mult",
+    "perLevelLoose": "Chaque niveau, par tuile isolée : +{{chips}} points de base",
     "scores": "Marque : {{families}}",
-    "completeHand": "Main complète"
+    "times": "{{family}} ×{{count}}"
   },
   "flora": {
     "mutations": {
@@ -2411,53 +2410,57 @@
         "name": "Orbe de Pluton",
         "description": "Monte la famille « Paires » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +10 points de base et +1 Mult à chaque coup qui marque « Paires »."
       },
-      "mercury_orb": {
-        "name": "Orbe de Mercure",
-        "description": "Monte la famille « Tout simples » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +15 points de base et +1 Mult à chaque coup qui marque « Tout simples »."
-      },
-      "uranus_orb": {
-        "name": "Orbe d'Uranus",
-        "description": "Monte la famille « Honneurs » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +20 points de base et +1 Mult à chaque coup qui marque « Honneurs »."
+      "planet_x_orb": {
+        "name": "Orbe de la Planète X",
+        "description": "Monte la famille « Trois paires » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +20 points de base et +3 Mult à chaque coup qui marque « Trois paires »."
       },
       "venus_orb": {
         "name": "Orbe de Vénus",
-        "description": "Monte la famille « Séquences » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +20 points de base et +2 Mult à chaque coup qui marque « Séquences »."
+        "description": "Monte la famille « Séquence » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +15 points de base et +2 Mult à chaque coup qui marque « Séquence »."
+      },
+      "moon_orb": {
+        "name": "Orbe de la Lune",
+        "description": "Monte la famille « Séquence + Paire » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +15 points de base et +2 Mult à chaque coup qui marque « Séquence + Paire »."
+      },
+      "mercury_orb": {
+        "name": "Orbe de Mercure",
+        "description": "Monte la famille « Deux séquences » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +30 points de base et +4 Mult à chaque coup qui marque « Deux séquences »."
+      },
+      "earth_orb": {
+        "name": "Orbe de la Terre",
+        "description": "Monte la famille « Brelans » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +30 points de base et +4 Mult à chaque coup qui marque « Brelans »."
+      },
+      "jupiter_orb": {
+        "name": "Orbe de Jupiter",
+        "description": "Monte la famille « Full » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +30 points de base et +5 Mult à chaque coup qui marque « Full »."
       },
       "saturn_orb": {
         "name": "Orbe de Saturne",
         "description": "Monte la famille « Suites » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +30 points de base et +3 Mult à chaque coup qui marque « Suites »."
       },
-      "jupiter_orb": {
-        "name": "Orbe de Jupiter",
-        "description": "Monte la famille « Semi-couleur » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +15 points de base et +3 Mult à chaque coup qui marque « Semi-couleur »."
-      },
-      "earth_orb": {
-        "name": "Orbe de la Terre",
-        "description": "Monte la famille « Brelans et carrés » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +25 points de base et +2 Mult à chaque coup qui marque « Brelans et carrés »."
-      },
       "mars_orb": {
         "name": "Orbe de Mars",
-        "description": "Monte la famille « Couleur pure » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +20 points de base et +2 Mult à chaque coup qui marque « Couleur pure »."
-      },
-      "neptune_orb": {
-        "name": "Orbe de Neptune",
-        "description": "Monte la famille « Triple mixte » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +40 points de base et +6 Mult à chaque coup qui marque « Triple mixte »."
-      },
-      "planet_x_orb": {
-        "name": "Orbe de la Planète X",
-        "description": "Monte la famille « Sept paires » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +35 points de base et +3 Mult à chaque main complète qui marque « Sept paires »."
-      },
-      "ceres_orb": {
-        "name": "Orbe de Cérès",
-        "description": "Monte la famille « Main extérieure » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +40 points de base et +4 Mult à chaque main complète qui marque « Main extérieure »."
+        "description": "Monte la famille « Carrés » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +50 points de base et +5 Mult à chaque coup qui marque « Carrés »."
       },
       "eris_orb": {
         "name": "Orbe d'Éris",
-        "description": "Monte la famille « Treize orphelins » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +50 points de base et +3 Mult à chaque main complète qui marque « Treize orphelins »."
+        "description": "Monte la famille « Vents » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +10 points de base et +1 Mult à chaque coup qui marque « Vents »."
+      },
+      "uranus_orb": {
+        "name": "Orbe d'Uranus",
+        "description": "Monte la famille « Dragons » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +10 points de base et +1 Mult à chaque coup qui marque « Dragons »."
+      },
+      "neptune_orb": {
+        "name": "Orbe de Neptune",
+        "description": "Monte la famille « Familles mêlées » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +10 points de base et +0.5 Mult à chaque coup qui marque « Familles mêlées »."
+      },
+      "ceres_orb": {
+        "name": "Orbe de Cérès",
+        "description": "Monte la famille « Tuiles isolées » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +5 points de base pour chaque tuile isolée du coup."
       },
       "black_hole_orb": {
         "name": "Orbe du Trou Noir",
-        "description": "Monte les 12 familles de mains de 1 niveau pour cette partie (jusqu’au niveau 9 chacune). Chaque famille reçoit ses points de base et son Mult habituels ; une famille déjà au niveau 9 y reste."
+        "description": "Monte les 13 familles de mains de 1 niveau pour cette partie (jusqu’au niveau 9 chacune). Chaque famille reçoit ses points de base et son Mult habituels ; une famille déjà au niveau 9 y reste."
       }
     }
   },
@@ -3292,55 +3295,59 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Paires",
-      "covers": "Paire, Double paire ou Trois paires (une paire, ce sont deux tuiles identiques). La main Sept paires a sa propre famille."
+      "covers": "Paire ou Double paire (une paire, ce sont deux tuiles identiques). Trois paires a sa propre famille."
     },
-    "Pinfu": {
-      "name": "Séquences",
-      "covers": "Séquence, Séquence + Paire ou Deux séquences (une séquence, ce sont trois nombres consécutifs d’une même famille), et Tout Séquences : une main complète de quatre séquences et d’une paire qui n’est ni de Dragons ni de Vent d’Est."
+    "ThreePairs": {
+      "name": "Trois paires",
+      "covers": "Trois paires en un coup, par exemple 2-2, 6-6 et 8-8."
     },
-    "Ittsu": {
+    "Sequence": {
+      "name": "Séquence",
+      "covers": "Une seule Séquence : trois nombres consécutifs d’une même famille, par exemple 3-4-5."
+    },
+    "SequencePair": {
+      "name": "Séquence + Paire",
+      "covers": "Une Séquence et une Paire en un coup, par exemple 2-3-4 avec une paire de 9."
+    },
+    "TwoSequences": {
+      "name": "Deux séquences",
+      "covers": "Deux séquences en un coup, par exemple 1-2-3 et 7-8-9."
+    },
+    "Triplets": {
+      "name": "Brelans",
+      "covers": "Brelan, Deux brelans ou Brelan + Séquence (un brelan, ce sont trois tuiles identiques). Un Brelan avec une Paire est un Full."
+    },
+    "FullHouse": {
+      "name": "Full",
+      "covers": "Un Brelan et une Paire en un coup, par exemple trois 8 avec deux 2."
+    },
+    "Straights": {
       "name": "Suites",
-      "covers": "Suite de quatre, Suite de cinq, Suite de six ou Suite + Paire (nombres consécutifs d’une même famille), et Suite 1–9 : une main complète contenant 1-2-3, 4-5-6 et 7-8-9 d’une même famille."
+      "covers": "Suite de quatre, de cinq ou de six, ou Suite + Paire (quatre nombres consécutifs ou plus d’une même famille)."
     },
-    "Toitoi": {
-      "name": "Brelans et carrés",
-      "covers": "Brelan, Full, Deux brelans, Brelan + Séquence, Carré ou Carré + Paire (un brelan, ce sont trois tuiles identiques ; un carré, quatre), et Tout Brelans : une main complète de quatre brelans ou carrés et d’une paire."
+    "Quads": {
+      "name": "Carrés",
+      "covers": "Carré, Carré + Paire, Cinq identiques ou Six identiques (quatre tuiles identiques ou plus)."
     },
-    "Yakuhai": {
-      "name": "Honneurs",
-      "covers": "Tout coup avec un groupe composé uniquement de Vents ou de Dragons, et Tuiles de Valeur : une main complète avec un brelan ou un carré de Dragons ou de Vent d’Est."
+    "Winds": {
+      "name": "Vents",
+      "covers": "Tout coup contenant au moins une tuile de Vent, dans un groupe ou isolée."
     },
-    "Tanyao": {
-      "name": "Tout simples",
-      "covers": "Tout coup qui forme un groupe avec uniquement des tuiles de 2 à 8, sans 1, 9, Vents ni Dragons (les tuiles de Pierre sont ignorées), et Tout Simples : une main complète uniquement de tuiles de 2 à 8."
+    "Dragons": {
+      "name": "Dragons",
+      "covers": "Tout coup contenant au moins une tuile de Dragon, dans un groupe ou isolée."
     },
-    "Honitsu": {
-      "name": "Semi-couleur",
-      "covers": "Semi-Couleur : un coup avec un groupe d’une seule famille et un groupe de Vents ou de Dragons, sans autre famille, par exemple 3-4-5 de Caractères avec une paire de Dragons Rouges. Une main complète d’une seule famille plus des Vents ou des Dragons compte aussi."
+    "MixedSuits": {
+      "name": "Familles mêlées",
+      "covers": "Tout coup contenant des tuiles numérotées d’au moins deux familles : Caractères, Cercles et Bambous."
     },
-    "Chinitsu": {
-      "name": "Couleur pure",
-      "covers": "Couleur Pure : un coup de deux groupes ou plus, tous d’une même famille, sans Vents ni Dragons, par exemple 1-2-3 et 7-8-9 de Caractères. Une main complète d’une seule famille compte aussi."
-    },
-    "Sanshoku": {
-      "name": "Triple mixte",
-      "covers": "Triple Mixte : deux groupes de familles différentes formés des mêmes nombres, par exemple 2-3-4 de Caractères et 2-3-4 de Cercles, ou une paire de 5 à côté d’un brelan de 5. Une main complète avec la même séquence dans les trois familles compte aussi."
-    },
-    "SevenPairs": {
-      "name": "Sept paires",
-      "covers": "Sept Paires : une main complète d’exactement sept paires différentes (14 tuiles). Les coups plus courts faits de paires relèvent de la famille Paires."
-    },
-    "Chanta": {
-      "name": "Main extérieure",
-      "covers": "Main Extérieure : une main complète avec au moins une séquence, dont chaque groupe et la paire contiennent un 1, un 9, un Vent ou un Dragon. Une Main Extérieure Pure (la même, mais sans Vents ni Dragons) compte aussi."
-    },
-    "Kokushi": {
-      "name": "Treize orphelins",
-      "covers": "Treize Orphelins : une main complète avec un exemplaire de chaque 1, 9, Vent et Dragon, plus un doublon."
+    "Loose": {
+      "name": "Tuiles isolées",
+      "covers": "Rapporte une fois pour chaque tuile isolée du coup : une tuile qui n’appartient à aucun groupe."
     },
     "All": {
       "name": "Toutes les familles",
-      "covers": "Les 12 familles de mains, Paires et Sept paires comprises.",
+      "covers": "Les 13 familles de mains, de combinaison comme de tuiles.",
       "upgrade": "Toutes les familles +1 niveau"
     },
     "levelChange": "{{family}} : niveau {{from}} → {{to}}",

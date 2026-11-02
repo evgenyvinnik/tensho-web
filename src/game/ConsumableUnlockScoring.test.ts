@@ -22,7 +22,9 @@ it.each([
   { yaku: 'seven_pairs', orb: 'planet_x_orb', ascended: true },
   { yaku: 'chanta', orb: 'ceres_orb', ascended: false },
 ])(
-  'earns $orb only after a paid $yaku hand (ascended=$ascended)',
+  // Planet X and Ceres were once earned by these hands; they are offered from
+  // the start now, and a paid hand still counts toward the gated consumables.
+  'records a paid $yaku hand (ascended=$ascended) without gating $orb',
   ({ yaku, orb, ascended }) => {
     useProgressionStore.getState().resetProgression()
     initializeMetaProgressionBridge()
@@ -67,7 +69,8 @@ it.each([
           y.definition.id === yaku && (y.definition.tier === 4) === ascended
       )
     ).toBe(true)
-    expect(game.isConsumableUnlocked(orb)).toBe(false)
+    expect(game.isConsumableUnlocked(orb)).toBe(true)
+    expect(game.isConsumableUnlocked('seal_of_the_immortal')).toBe(false)
     expect(
       useProgressionStore.getState().stats.yakuScored[yaku]
     ).toBeUndefined()
@@ -75,6 +78,10 @@ it.each([
       true
     )
     expect(game.isConsumableUnlocked(orb)).toBe(true)
+    // Only a paid Yakuman earns the Immortal seal; the other gates stay shut.
+    expect(game.isConsumableUnlocked('seal_of_the_immortal')).toBe(ascended)
+    expect(game.isConsumableUnlocked('seal_of_the_void')).toBe(false)
+    expect(game.isConsumableUnlocked('black_hole_orb')).toBe(false)
     expect(useProgressionStore.getState().stats.yakuScored[yaku]).toBe(1)
     expect(useProgressionStore.getState().stats.currentRunYakuIds).toContain(
       yaku

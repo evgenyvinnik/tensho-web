@@ -298,10 +298,7 @@
   "consumableUnlocks": {
     "seal_of_the_immortal": "Score a Yakuman, a top-tier hand such as Big Three Dragons.",
     "seal_of_the_void": "Score all 20 Yaku types in a single run.",
-    "planet_x_orb": "Score Seven Pairs.",
-    "ceres_orb": "Score an Outside Hand: a complete hand with a 1, 9, Wind or Dragon in every group and the pair.",
-    "eris_orb": "Score Thirteen Orphans: one of every 1, 9, Wind and Dragon, plus one duplicate.",
-    "black_hole_orb": "Discover all 12 other Celestial Orbs."
+    "black_hole_orb": "Discover all 13 other Celestial Orbs."
   },
   "decreeUnlocks": {
     "stage_master": "Reach Act 4.",
@@ -358,7 +355,8 @@
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} base points · +{{mult}} Mult",
     "triggers": "Times scored: {{total}}",
-    "fromOrb": "Upgraded by {{orb}}"
+    "fromOrb": "Upgraded by {{orb}}",
+    "bonusLoose": "+{{chips}} base points per loose tile"
   },
   "progressiveHints": {
     "discard": {
@@ -1614,19 +1612,20 @@
     "catalystsCost": "Losing the Flower also reduces its set bonuses. The purchase is blocked if your remaining slots cannot hold the build. Recollecting it restores its earned awakening for this run. Yakuman Succession still needs two held Flowers, so paying with one requires at least three beforehand."
   },
   "codexUpgrades": {
-    "playsTitle": "Families for ordinary plays",
-    "handsTitle": "Families for complete hands",
+    "patternsTitle": "Pattern families",
+    "tilesTitle": "Tile families",
     "intro": "A Celestial Orb raises one family of plays by a level for the rest of the run, from 0 up to {{max}}. It is used the moment you take it.",
-    "stacking": "Every play that scores a family adds that family's base points and Mult once per level. One play can score several families at once, and each one pays. Here is a Sequence before and after one level of Sequences:",
+    "stacking": "Every play scores one pattern family, named by its groups, plus every tile family its tiles show. Each family it scores adds that family's base points and Mult once per level; Loose Tiles pays once for every loose tile. Here is a Sequence before and after one level of Sequence:",
     "exampleBefore": "{{pattern}}, level 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} level 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "completeHands": "Ordinary plays score families by their groups and tiles. A complete Mahjong hand scores them through its Yaku instead: a complete hand of only 2–8 tiles scores All Simples, one holding a 1–9 Straight scores Straights, and so on.",
-    "secretTip": "Seven Pairs, Outside Hand and Thirteen Orphans are scored only by complete hands. Their Orbs are secret: score the hand once and its Orb can appear in the shop.",
-    "playsIntro": "Each example names the play's pattern and every family it scores.",
-    "handsIntro": "These families need a complete hand of 14 tiles, so they pay off only when you build toward one.",
+    "patternTip": "Pattern families never stack with each other: a Sequence + Pair raises only Sequence + Pair, not Sequence or Pairs.",
+    "completeHands": "A complete Mahjong hand scores no pattern family, only the tile families its tiles show.",
+    "patternsIntro": "A play scores the one pattern family its groups make. Each example names its pattern and every family it scores.",
+    "tilesIntro": "Tile families stack on top of the pattern family whenever the play's tiles show them.",
     "perLevel": "Each level: +{{chips}} base points · +{{mult}} Mult",
+    "perLevelLoose": "Each level, per loose tile: +{{chips}} base points",
     "scores": "Scores: {{families}}",
-    "completeHand": "Complete hand"
+    "times": "{{family}} ×{{count}}"
   },
   "flora": {
     "mutations": {
@@ -2598,53 +2597,57 @@
         "name": "Pluto Orb",
         "description": "Raises Pairs by 1 level for this run (up to level 9). Each level adds +10 base points and +1 Mult to every play that scores Pairs."
       },
-      "mercury_orb": {
-        "name": "Mercury Orb",
-        "description": "Raises All Simples by 1 level for this run (up to level 9). Each level adds +15 base points and +1 Mult to every play that scores All Simples."
-      },
-      "uranus_orb": {
-        "name": "Uranus Orb",
-        "description": "Raises Honors by 1 level for this run (up to level 9). Each level adds +20 base points and +1 Mult to every play that scores Honors."
+      "planet_x_orb": {
+        "name": "Planet X Orb",
+        "description": "Raises Three Pairs by 1 level for this run (up to level 9). Each level adds +20 base points and +3 Mult to every play that scores Three Pairs."
       },
       "venus_orb": {
         "name": "Venus Orb",
-        "description": "Raises Sequences by 1 level for this run (up to level 9). Each level adds +20 base points and +2 Mult to every play that scores Sequences."
+        "description": "Raises Sequence by 1 level for this run (up to level 9). Each level adds +15 base points and +2 Mult to every play that scores Sequence."
+      },
+      "moon_orb": {
+        "name": "Moon Orb",
+        "description": "Raises Sequence + Pair by 1 level for this run (up to level 9). Each level adds +15 base points and +2 Mult to every play that scores Sequence + Pair."
+      },
+      "mercury_orb": {
+        "name": "Mercury Orb",
+        "description": "Raises Two Sequences by 1 level for this run (up to level 9). Each level adds +30 base points and +4 Mult to every play that scores Two Sequences."
+      },
+      "earth_orb": {
+        "name": "Earth Orb",
+        "description": "Raises Triplets by 1 level for this run (up to level 9). Each level adds +30 base points and +4 Mult to every play that scores Triplets."
+      },
+      "jupiter_orb": {
+        "name": "Jupiter Orb",
+        "description": "Raises Full House by 1 level for this run (up to level 9). Each level adds +30 base points and +5 Mult to every play that scores Full House."
       },
       "saturn_orb": {
         "name": "Saturn Orb",
         "description": "Raises Straights by 1 level for this run (up to level 9). Each level adds +30 base points and +3 Mult to every play that scores Straights."
       },
-      "jupiter_orb": {
-        "name": "Jupiter Orb",
-        "description": "Raises Half Flush by 1 level for this run (up to level 9). Each level adds +15 base points and +3 Mult to every play that scores Half Flush."
-      },
-      "earth_orb": {
-        "name": "Earth Orb",
-        "description": "Raises Sets by 1 level for this run (up to level 9). Each level adds +25 base points and +2 Mult to every play that scores Sets."
-      },
       "mars_orb": {
         "name": "Mars Orb",
-        "description": "Raises Full Flush by 1 level for this run (up to level 9). Each level adds +20 base points and +2 Mult to every play that scores Full Flush."
-      },
-      "neptune_orb": {
-        "name": "Neptune Orb",
-        "description": "Raises Mixed Triple by 1 level for this run (up to level 9). Each level adds +40 base points and +6 Mult to every play that scores Mixed Triple."
-      },
-      "planet_x_orb": {
-        "name": "Planet X Orb",
-        "description": "Raises Seven Pairs by 1 level for this run (up to level 9). Each level adds +35 base points and +3 Mult to every complete hand that scores Seven Pairs."
-      },
-      "ceres_orb": {
-        "name": "Ceres Orb",
-        "description": "Raises Outside Hand by 1 level for this run (up to level 9). Each level adds +40 base points and +4 Mult to every complete hand that scores Outside Hand."
+        "description": "Raises Quads by 1 level for this run (up to level 9). Each level adds +50 base points and +5 Mult to every play that scores Quads."
       },
       "eris_orb": {
         "name": "Eris Orb",
-        "description": "Raises Thirteen Orphans by 1 level for this run (up to level 9). Each level adds +50 base points and +3 Mult to every complete hand that scores Thirteen Orphans."
+        "description": "Raises Winds by 1 level for this run (up to level 9). Each level adds +10 base points and +1 Mult to every play that scores Winds."
+      },
+      "uranus_orb": {
+        "name": "Uranus Orb",
+        "description": "Raises Dragons by 1 level for this run (up to level 9). Each level adds +10 base points and +1 Mult to every play that scores Dragons."
+      },
+      "neptune_orb": {
+        "name": "Neptune Orb",
+        "description": "Raises Mixed Suits by 1 level for this run (up to level 9). Each level adds +10 base points and +0.5 Mult to every play that scores Mixed Suits."
+      },
+      "ceres_orb": {
+        "name": "Ceres Orb",
+        "description": "Raises Loose Tiles by 1 level for this run (up to level 9). Each level adds +5 base points for every loose tile in a play."
       },
       "black_hole_orb": {
         "name": "Black Hole Orb",
-        "description": "Raises all 12 hand families by 1 level for this run (up to level 9 each). Each family gains its usual base points and Mult; one already at level 9 stays there."
+        "description": "Raises all 13 hand families by 1 level for this run (up to level 9 each). Each family gains its usual base points and Mult; one already at level 9 stays there."
       }
     }
   },
@@ -3288,55 +3291,59 @@
   "upgradeFamilies": {
     "Pairs": {
       "name": "Pairs",
-      "covers": "Pair, Two Pairs or Three Pairs (a pair is two identical tiles). The Seven Pairs hand has its own family."
+      "covers": "Pair or Two Pairs (a pair is two identical tiles). Three Pairs has its own family."
     },
-    "Pinfu": {
-      "name": "Sequences",
-      "covers": "Sequence, Sequence + Pair or Two Sequences (a sequence is three consecutive numbers of one suit), and All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind."
+    "ThreePairs": {
+      "name": "Three Pairs",
+      "covers": "Three Pairs in one play, such as 2-2, 6-6 and 8-8."
     },
-    "Ittsu": {
+    "Sequence": {
+      "name": "Sequence",
+      "covers": "A single Sequence: three consecutive numbers of one suit, such as 3-4-5."
+    },
+    "SequencePair": {
+      "name": "Sequence + Pair",
+      "covers": "A Sequence and a Pair in one play, such as 2-3-4 with a pair of 9s."
+    },
+    "TwoSequences": {
+      "name": "Two Sequences",
+      "covers": "Two Sequences in one play, such as 1-2-3 and 7-8-9."
+    },
+    "Triplets": {
+      "name": "Triplets",
+      "covers": "Triplet, Two Triplets or Triplet + Sequence (a triplet is three identical tiles). A Triplet with a Pair is a Full House."
+    },
+    "FullHouse": {
+      "name": "Full House",
+      "covers": "A Triplet and a Pair in one play, such as three 8s with two 2s."
+    },
+    "Straights": {
       "name": "Straights",
-      "covers": "Straight of Four, Straight of Five, Straight of Six or Straight + Pair (consecutive numbers of one suit), and a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit."
+      "covers": "Straight of Four, Five or Six, or Straight + Pair (four or more consecutive numbers of one suit)."
     },
-    "Toitoi": {
-      "name": "Sets",
-      "covers": "Triplet, Full House, Two Triplets, Triplet + Sequence, Quad or Quad + Pair (a triplet is three identical tiles, a quad four), and All Triplets: a complete hand of four triplets or quads plus a pair."
+    "Quads": {
+      "name": "Quads",
+      "covers": "Quad, Quad + Pair, or Five or Six of a Kind (four or more identical tiles)."
     },
-    "Yakuhai": {
-      "name": "Honors",
-      "covers": "Any play with a group made only of Winds or Dragons, and Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind."
+    "Winds": {
+      "name": "Winds",
+      "covers": "Any play with at least one Wind tile, in a group or loose."
     },
-    "Tanyao": {
-      "name": "All Simples",
-      "covers": "Any play that forms a group and uses only 2–8 tiles, with no 1s, 9s, Winds or Dragons (Stone tiles are ignored), and All Simples: a complete hand of only 2–8 tiles."
+    "Dragons": {
+      "name": "Dragons",
+      "covers": "Any play with at least one Dragon tile, in a group or loose."
     },
-    "Honitsu": {
-      "name": "Half Flush",
-      "covers": "Half Flush: a play with a group of one suit and a group of Winds or Dragons, and no other suit, such as 3-4-5 of Characters with a pair of Red Dragons. A complete hand of one suit plus Winds or Dragons also counts."
+    "MixedSuits": {
+      "name": "Mixed Suits",
+      "covers": "Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo."
     },
-    "Chinitsu": {
-      "name": "Full Flush",
-      "covers": "Full Flush: a play of two or more groups all in one suit, with no Winds or Dragons, such as 1-2-3 and 7-8-9 of Characters. A complete hand of one suit only also counts."
-    },
-    "Sanshoku": {
-      "name": "Mixed Triple",
-      "covers": "Mixed Triple: two groups in different suits made of the same numbers, such as 2-3-4 of Characters and 2-3-4 of Circles, or a pair of 5s beside a triplet of 5s. A complete hand with the same sequence in all three suits also counts."
-    },
-    "SevenPairs": {
-      "name": "Seven Pairs",
-      "covers": "Seven Pairs: a complete hand of exactly seven different pairs (14 tiles). Shorter plays of pairs belong to the Pairs family."
-    },
-    "Chanta": {
-      "name": "Outside Hand",
-      "covers": "Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons) also counts."
-    },
-    "Kokushi": {
-      "name": "Thirteen Orphans",
-      "covers": "Thirteen Orphans: a complete hand with one of every 1, 9, Wind and Dragon, plus one duplicate of any of them."
+    "Loose": {
+      "name": "Loose Tiles",
+      "covers": "Pays once for every loose tile in a play: a tile that belongs to no group."
     },
     "All": {
       "name": "Every family",
-      "covers": "All 12 hand families, Pairs and Seven Pairs included.",
+      "covers": "All 13 hand families, pattern and tile families alike.",
       "upgrade": "Every family +1 level"
     },
     "levelChange": "{{family}}: level {{from}} → {{to}}",

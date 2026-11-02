@@ -72,10 +72,12 @@ export function YakuUpgradeToken({
             })}
           </p>
           <p className="text-emerald-200">
-            {t('yakuUpgrades.bonus', {
-              chips: number(upgrade.chips),
-              mult: number(upgrade.mult),
-            })}
+            {t(
+              upgrade.yaku === 'Loose'
+                ? 'yakuUpgrades.bonusLoose'
+                : 'yakuUpgrades.bonus',
+              { chips: number(upgrade.chips), mult: number(upgrade.mult) }
+            )}
           </p>
           <p className="text-xs opacity-80">
             {t(`upgradeFamilies.${upgrade.yaku}.covers`)}

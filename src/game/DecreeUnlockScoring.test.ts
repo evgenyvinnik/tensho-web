@@ -59,9 +59,9 @@ it('counts paid natural Yakuman, not previews, across profile hydration and run 
         .detectedYaku.some((y) => y.definition.id === 'kokushi')
     ).toBe(true)
     game.previewScore(ids)
-    expect(useProgressionStore.getState().isItemUnlocked('eris_orb')).toBe(
-      play > 0
-    )
+    expect(
+      useProgressionStore.getState().isItemUnlocked('seal_of_the_immortal')
+    ).toBe(play > 0)
     expect(useProgressionStore.getState().stats.yakuScored.kokushi ?? 0).toBe(
       play
     )
@@ -75,7 +75,6 @@ it('counts paid natural Yakuman, not previews, across profile hydration and run 
       play + 1
     )
     expect(game.isDecreeUnlocked('decree-heavenly-ordinance')).toBe(true)
-    expect(useProgressionStore.getState().isItemUnlocked('eris_orb')).toBe(true)
     expect(
       useProgressionStore.getState().isItemUnlocked('seal_of_the_immortal')
     ).toBe(true)

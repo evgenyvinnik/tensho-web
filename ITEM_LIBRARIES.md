@@ -66,42 +66,51 @@ honor.
 Each Orb is named after its celestial body; the upgrade family it raises is
 its subtitle, with the same label as that family's upgrade. Each is painted as
 that body in its own colours, carved with the family's tile motif in ivory
-relief, on a small jade-and-gold mount.
+relief, on a small jade-and-gold mount (art brief: `docs/ORB_ART_BRIEF.md`).
 Using one raises the family by 1 level for the run. Players read levels from
 0 to 9 (the engine stores 1–10, with 1 as the unupgraded baseline); each level
-adds the bonus below to every play that scores the family. One play can score
-several families, and each pays. "Works with" lists what scores each family
-(`upgradeFamilies.*.covers`; `playOrbCategories` for ordinary plays). The Codex
-shows two tile examples per family (`yakuUpgradeExamples.ts`).
+adds the bonus below every time the family pays (`playOrbCategories`).
 
-| Orb | Family | Bonus per Level | Works with |
-|-----|--------|-----------------|------------|
-| **Pluto Orb** (冥王星) | Pairs | +10 base points, +1 Mult | Pair, Two Pairs, Three Pairs (not Seven Pairs) |
-| **Mercury Orb** (水星) | All Simples | +15 base points, +1 Mult | Any play forming a group from 2–8 tiles only; All Simples hand |
-| **Uranus Orb** (天王星) | Honors | +20 base points, +1 Mult | Any play with a Wind or Dragon group; Value Tiles hand |
-| **Venus Orb** (金星) | Sequences | +20 base points, +2 Mult | Sequence, Sequence + Pair, Two Sequences; All Sequences hand |
-| **Saturn Orb** (土星) | Straights | +30 base points, +3 Mult | Straights of Four, Five and Six, Straight + Pair; 1–9 Straight hand |
-| **Jupiter Orb** (木星) | Half Flush | +15 base points, +3 Mult | A group of one suit plus a Wind or Dragon group, no other suit; Half Flush hand |
-| **Earth Orb** (地球) | Sets | +25 base points, +2 Mult | Any Triplet or Quad pattern; All Triplets hand |
-| **Mars Orb** (火星) | Full Flush | +20 base points, +2 Mult | Two or more groups all in one suit, no Honors; Full Flush hand |
-| **Neptune Orb** (海王星) | Mixed Triple | +40 base points, +6 Mult | Two groups in different suits with the same numbers (234m 234p, 55s 555p); Mixed Triple Sequence hand |
+A play scores **one pattern family**, the one its groups make, plus **every
+tile family** its tiles show. A Sequence + Pair raises only Sequence + Pair,
+never Sequence or Pairs as well. A complete Mahjong hand scores only tile
+families. The Codex shows tile examples for every family
+(`yakuUpgradeExamples.ts`).
 
-### Secret Celestial Orbs
+### Pattern families (one per play)
 
-| Orb | Family | Bonus per Level | Works with | Unlock Condition |
-|-----|--------|-----------------|------------|------------------|
-| **Planet X Orb** (惑星X) | Seven Pairs | +35 base points, +3 Mult | Seven Pairs hand | Play Seven Pairs |
-| **Ceres Orb** (ケレス) | Outside Hand | +40 base points, +4 Mult | Outside Hand and Pure Outside Hand | Score an Outside Hand |
-| **Eris Orb** (エリス) | Thirteen Orphans | +50 base points, +3 Mult | Thirteen Orphans hand | Score Thirteen Orphans |
+| Orb | Family | Rarity, cost | Bonus per level | Works with |
+|-----|--------|--------------|-----------------|------------|
+| **Pluto Orb** (冥王星) | Pairs | Common, 3 Gold | +10 base points, +1 Mult | Pair or Two Pairs (a pair is two identical tiles). Three Pairs has its own family. |
+| **Planet X Orb** (惑星X) | Three Pairs | Uncommon, 4 Gold | +20 base points, +3 Mult | Three Pairs in one play, such as 2-2, 6-6 and 8-8. |
+| **Venus Orb** (金星) | Sequence | Common, 3 Gold | +15 base points, +2 Mult | A single Sequence: three consecutive numbers of one suit, such as 3-4-5. |
+| **Moon Orb** (月) | Sequence + Pair | Common, 3 Gold | +15 base points, +2 Mult | A Sequence and a Pair in one play, such as 2-3-4 with a pair of 9s. |
+| **Mercury Orb** (水星) | Two Sequences | Uncommon, 4 Gold | +30 base points, +4 Mult | Two Sequences in one play, such as 1-2-3 and 7-8-9. |
+| **Earth Orb** (地球) | Triplets | Uncommon, 4 Gold | +30 base points, +4 Mult | Triplet, Two Triplets or Triplet + Sequence (a triplet is three identical tiles). A Triplet with a Pair is a Full House. |
+| **Jupiter Orb** (木星) | Full House | Uncommon, 4 Gold | +30 base points, +5 Mult | A Triplet and a Pair in one play, such as three 8s with two 2s. |
+| **Saturn Orb** (土星) | Straights | Uncommon, 4 Gold | +30 base points, +3 Mult | Straight of Four, Five or Six, or Straight + Pair (four or more consecutive numbers of one suit). |
+| **Mars Orb** (火星) | Quads | Rare, 5 Gold | +50 base points, +5 Mult | Quad, Quad + Pair, or Five or Six of a Kind (four or more identical tiles). |
+
+### Tile families (stack on the pattern family)
+
+| Orb | Family | Rarity, cost | Bonus per level | Works with |
+|-----|--------|--------------|-----------------|------------|
+| **Eris Orb** (エリス) | Winds | Common, 3 Gold | +10 base points, +1 Mult | Any play with at least one Wind tile, in a group or loose. |
+| **Uranus Orb** (天王星) | Dragons | Common, 3 Gold | +10 base points, +1 Mult | Any play with at least one Dragon tile, in a group or loose. |
+| **Neptune Orb** (海王星) | Mixed Suits | Common, 3 Gold | +10 base points, +0.5 Mult | Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo. |
+| **Ceres Orb** (ケレス) | Loose Tiles | Uncommon, 4 Gold | +5 base points per loose tile | Pays once for every loose tile in a play: a tile that belongs to no group. |
 
 ### Mythic Orb
 
 | Orb | Family | Effect | Unlock |
 |-----|--------|--------|--------|
-| **Black Hole Orb** (ブラックホール) | Every family | Raises all 12 families by 1 level (each capped at level 9) | Discover all 12 orbs |
+| **Black Hole Orb** (ブラックホール) | Every family | Raises all 13 families by 1 level (each capped at level 9) | Discover all 13 other Orbs |
+
+Saved runs from before the November 2026 family rework keep their levels: each
+retired family's levels move to the family its Orb raises now
+(`RETIRED_FAMILIES` in `CelestialOrbSystem.ts`).
 
 ---
-
 ## 👻 A3) Complete Void Script Library (虚無書)
 
 | Script | Japanese | Effect | Penalty |

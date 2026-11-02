@@ -2,6 +2,8 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import {
   BLACK_HOLE_PREREQUISITES,
   CONSUMABLE_UNLOCK_CONDITIONS,
+  getConsumableUnlockCondition,
+  isConsumableAvailable,
   RUN_YAKU_IDS,
 } from '../config/consumableUnlocks'
 import { CONSUMABLE_UNLOCKS } from '../config/unlockDefinitions'
@@ -46,8 +48,12 @@ const profile = () => useProgressionStore.getState()
 const score = (id: string) =>
   profile().processEvent({ type: 'yaku_scored', itemId: id })
 
-it('uses exactly the live scoring catalog and the twelve other Orbs', () => {
+/** Orbs that were once earned by scoring a Yaku and are offered from the start now. */
+const FORMERLY_SECRET_ORBS = ['planet_x_orb', 'ceres_orb', 'eris_orb'] as const
+
+it('uses exactly the live scoring catalog and the thirteen other Orbs', () => {
   expect([...RUN_YAKU_IDS].sort()).toEqual(ALL_YAKU.map((y) => y.id).sort())
+  expect(BLACK_HOLE_PREREQUISITES).toHaveLength(13)
   expect([...BLACK_HOLE_PREREQUISITES].sort()).toEqual(
     Object.keys(CELESTIAL_ORBS)
       .filter((id) => id !== 'black_hole_orb')
@@ -81,51 +87,93 @@ it.each(['Arcana', 'Celestial'] as const)(
   }
 )
 
-it('gates rare Orbs in ordinary random generation without making the pool empty', () => {
+it('keeps the formerly secret Orbs in ordinary random generation and Black Hole out of it', () => {
   vi.spyOn(runRandom, 'next').mockReturnValue(0.999999)
-  const otherIds = Object.keys(CELESTIAL_ORBS).filter(
-    (id) => !['planet_x_orb', 'ceres_orb'].includes(id)
+  // Planet X, Ceres and Eris need no unlock any more: each is drawn while the
+  // profile has earned nothing.
+  for (const orb of FORMERLY_SECRET_ORBS) {
+    const otherIds = Object.keys(CELESTIAL_ORBS).filter((id) => id !== orb)
+    expect(
+      CelestialOrbSystem.getRandomCelestialOrb(otherIds, () => false)?.id
+    ).toBe(orb)
+  }
+  // The one gated Orb is Legendary and never drawn here, earned or not.
+  const allButBlackHole = Object.keys(CELESTIAL_ORBS).filter(
+    (id) => id !== 'black_hole_orb'
   )
-  expect(CelestialOrbSystem.getRandomCelestialOrb(otherIds)).toBeNull()
+  expect(CelestialOrbSystem.getRandomCelestialOrb(allButBlackHole)).toBeNull()
   expect(
-    CelestialOrbSystem.getRandomCelestialOrb(otherIds, () => true)?.id
-  ).toBe('ceres_orb')
+    CelestialOrbSystem.getRandomCelestialOrb(allButBlackHole, () => true)
+  ).toBeNull()
   expect(CelestialOrbSystem.getRandomCelestialOrb()).not.toBeNull()
 })
 
+const starChartPack: BlessingPack = {
+  id: 'star-chart',
+  type: 'Celestial',
+  size: 'Normal',
+  cost: 4,
+  choiceCount: 3,
+  selectCount: 1,
+}
+const packOrbIds = (s: BlessingPackSystem) =>
+  s.getCurrentOfferings()[0].contents.map((c) => (c.data as { id: string }).id)
+
 it('does not let Star Chart bypass a locked preferred family, including after a pack restore', () => {
+  // Black Hole's 'All' is the only family whose Orb is still gated.
   const unlocked = new Set<string>()
   const resolver = (id: string) => unlocked.has(id)
   const system = new BlessingPackSystem(undefined, resolver)
-  const pack: BlessingPack = {
-    id: 'star-chart',
-    type: 'Celestial',
-    size: 'Normal',
-    cost: 4,
-    choiceCount: 3,
-    selectCount: 1,
-  }
-  system.generateOfferingsForPacks([pack], { preferredYaku: 'SevenPairs' })
-  const ids = (s: BlessingPackSystem) =>
-    s
-      .getCurrentOfferings()[0]
-      .contents.map((c) => (c.data as { id: string }).id)
-  expect(ids(system)).not.toContain('planet_x_orb')
+  system.generateOfferingsForPacks([starChartPack], { preferredYaku: 'All' })
+  expect(packOrbIds(system)).not.toContain('black_hole_orb')
   const restored = BlessingPackSystem.fromState(
     system.toState(),
     undefined,
     resolver
   )
   const before = restored.toState()
-  restored.applyPurchasedCharter('star_chart', 'SevenPairs')
+  restored.applyPurchasedCharter('star_chart', 'All')
   expect(restored.toState()).toEqual(before)
-  unlocked.add('planet_x_orb')
-  restored.applyPurchasedCharter('star_chart', 'SevenPairs')
-  expect(ids(restored)[0]).toBe('planet_x_orb')
+  unlocked.add('black_hole_orb')
+  restored.applyPurchasedCharter('star_chart', 'All')
+  expect(packOrbIds(restored)[0]).toBe('black_hole_orb')
 })
 
+it.each([
+  ['ThreePairs', 'planet_x_orb'],
+  ['Loose', 'ceres_orb'],
+  ['Winds', 'eris_orb'],
+] as const)(
+  'lets Star Chart favor %s with no unlock, including after a pack restore',
+  (family, orb) => {
+    // Every roll picks the first Commons, none of which is the favored Orb.
+    vi.spyOn(runRandom, 'next').mockReturnValue(0)
+    const resolver = () => false
+    const system = new BlessingPackSystem(undefined, resolver)
+    system.generateOfferingsForPacks([starChartPack], {
+      preferredYaku: family,
+    })
+    expect(packOrbIds(system)[0]).toBe(orb)
+    // Bought after the shelf was stocked, Star Chart still places it.
+    const stocked = new BlessingPackSystem(undefined, resolver)
+    stocked.generateOfferingsForPacks([starChartPack])
+    expect(packOrbIds(stocked)).not.toContain(orb)
+    const restored = BlessingPackSystem.fromState(
+      stocked.toState(),
+      undefined,
+      resolver
+    )
+    restored.applyPurchasedCharter('star_chart', family)
+    expect(packOrbIds(restored)[0]).toBe(orb)
+    expect(packOrbIds(restored).slice(1)).toEqual(packOrbIds(stocked).slice(1))
+  }
+)
+
 it('keeps live shop resolvers after reset/restore and rejects stale direct stock without payment', () => {
-  const setters = vi.spyOn(TeaHouseSystem.prototype, 'setConsumableUnlockResolver')
+  const setters = vi.spyOn(
+    TeaHouseSystem.prototype,
+    'setConsumableUnlockResolver'
+  )
   const game = new GameOrchestrator()
   const unlocked = new Set<string>()
   game.setConsumableUnlockResolver((id) => unlocked.has(id))
@@ -147,7 +195,7 @@ it('keeps live shop resolvers after reset/restore and rejects stale direct stock
     )
     const offer = game.shop.state.itemOfferings[0]
     const orb = CelestialOrbSystem.createCelestialOrbInstance(
-      CELESTIAL_ORBS.ceres_orb
+      CELESTIAL_ORBS.black_hole_orb
     )
     Object.assign(offer, {
       itemType: 'CelestialOrb',
@@ -168,10 +216,12 @@ it('keeps live shop resolvers after reset/restore and rejects stale direct stock
   expect(setters.mock.calls.length).toBeGreaterThanOrEqual(5)
   for (const [resolver] of setters.mock.calls) {
     expect(resolver).toBeTypeOf('function')
-    expect(resolver?.('eris_orb')).toBe(false)
-    unlocked.add('eris_orb')
-    expect(resolver?.('eris_orb')).toBe(true)
+    expect(resolver?.('seal_of_the_immortal')).toBe(false)
+    unlocked.add('seal_of_the_immortal')
+    expect(resolver?.('seal_of_the_immortal')).toBe(true)
     unlocked.clear()
+    // A formerly secret Orb needs no unlock at all.
+    expect(resolver?.('eris_orb')).toBe(true)
   }
 })
 
@@ -179,13 +229,20 @@ it.each([
   ['seven_pairs', 'planet_x_orb'],
   ['chanta', 'ceres_orb'],
   ['kokushi', 'eris_orb'],
-])('earns %s without unlocking unrelated patterns', (yaku, orb) => {
-  expect(profile().isItemUnlocked(orb)).toBe(false)
-  score(yaku)
-  expect(profile().isItemUnlocked(orb)).toBe(true)
-  expect(profile().isItemUnlocked('black_hole_orb')).toBe(false)
-  expect(profile().isItemUnlocked('seal_of_the_void')).toBe(false)
-})
+])(
+  "offers %s's former reward %s from the start, and scoring it unlocks nothing gated",
+  (yaku, orb) => {
+    expect(getConsumableUnlockCondition(orb)).toBeUndefined()
+    expect(CONSUMABLE_UNLOCKS.some((u) => u.unlocksId === orb)).toBe(false)
+    expect(isConsumableAvailable(orb)).toBe(true)
+    score(yaku)
+    expect(profile().stats.yakuScored[yaku]).toBe(1)
+    expect(isConsumableAvailable(orb, profile().isItemUnlocked)).toBe(true)
+    // A (non-Yakuman) score earns none of the gated consumables.
+    for (const id of Object.keys(CONSUMABLE_UNLOCK_CONDITIONS))
+      expect(profile().isItemUnlocked(id)).toBe(false)
+  }
+)
 
 it('requires unique canonical Yaku in one run, persists progress, and resets only the current run', () => {
   const all = RUN_YAKU_IDS.length
@@ -220,14 +277,17 @@ it('does not fabricate past run achievements from old lifetime stats', () => {
   delete saved.currentRunYakuIds
   delete saved.maxYakuTypesInRun
   saved.yakuScored = Object.fromEntries(RUN_YAKU_IDS.map((id) => [id, 9]))
+  saved.yakumanScored = 1
   profile().updateStats(metaProgressionSystem.deserializeStats(saved))
   synchronizePersistedMetaState()
-  expect(profile().isItemUnlocked('eris_orb')).toBe(true)
+  // A proven lifetime milestone still unlocks; a per-run one is not invented.
+  expect(profile().isItemUnlocked('seal_of_the_immortal')).toBe(true)
+  expect(profile().stats.yakuScored.kokushi).toBe(9)
   expect(profile().isItemUnlocked('seal_of_the_void')).toBe(false)
   expect(profile().stats.currentRunYakuIds).toEqual([])
 })
 
-it('requires all twelve known other Orbs, not Black Hole itself or unknown IDs', () => {
+it('requires all thirteen known other Orbs, Moon included, not Black Hole itself or unknown IDs', () => {
   const acquire = (itemId: string) =>
     profile().processEvent({
       type: 'consumable_acquired',
@@ -235,11 +295,12 @@ it('requires all twelve known other Orbs, not Black Hole itself or unknown IDs',
       source: 'generated',
       itemId,
     })
-  BLACK_HOLE_PREREQUISITES.slice(0, 11).forEach(acquire)
+  expect(BLACK_HOLE_PREREQUISITES).toContain('moon_orb')
+  BLACK_HOLE_PREREQUISITES.filter((id) => id !== 'moon_orb').forEach(acquire)
   acquire('not_an_orb')
   acquire('another_unknown')
   expect(profile().isItemUnlocked('black_hole_orb')).toBe(false)
-  acquire('eris_orb')
+  acquire('moon_orb')
   expect(profile().isItemUnlocked('black_hole_orb')).toBe(true)
   expect(profile().stats.celestialOrbsDiscovered.has('black_hole_orb')).toBe(
     false
@@ -248,16 +309,18 @@ it('requires all twelve known other Orbs, not Black Hole itself or unknown IDs',
 
 it('preserves real historical acquisitions, rejects Archive-only eligibility, and supports Full Unlock', () => {
   useArchiveStore.getState().unlockAll()
+  // A Black Hole held in an older release, without the thirteen others.
   profile().updateStats({
-    celestialOrbsDiscovered: new Set(['ceres_orb']),
+    celestialOrbsDiscovered: new Set(['black_hole_orb']),
     yakumanScored: 1,
   })
   synchronizePersistedMetaState()
-  expect(profile().isItemUnlocked('ceres_orb')).toBe(true)
+  expect(profile().isItemUnlocked('black_hole_orb')).toBe(true)
   expect(profile().isItemUnlocked('seal_of_the_immortal')).toBe(true)
-  expect(profile().isItemUnlocked('eris_orb')).toBe(false)
+  expect(profile().isItemUnlocked('seal_of_the_void')).toBe(false)
   expect(
-    useArchiveStore.getState().getEntry('consumables', 'eris_orb')?.isUnlocked
+    useArchiveStore.getState().getEntry('consumables', 'seal_of_the_void')
+      ?.isUnlocked
   ).toBe(false)
   profile().enableFullUnlock()
   synchronizePersistedMetaState()
@@ -270,7 +333,7 @@ it('blocks unearned direct grants but preserves owned items and legitimate Fool 
   const game = new GameOrchestrator()
   game.startNewRun(7)
   const orb = CelestialOrbSystem.createCelestialOrbInstance(
-    CELESTIAL_ORBS.ceres_orb
+    CELESTIAL_ORBS.black_hole_orb
   )
   const seal = FateSealSystem.createFateSealInstance(
     FATE_SEALS.seal_of_the_void
@@ -286,9 +349,13 @@ it('blocks unearned direct grants but preserves owned items and legitimate Fool 
   const state = game.getState() as OrchestratorState
   state.celestialOrbs = []
   state.fateSealSystem.setLastUsedConsumable(orb)
-  const fool = FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_the_fool)
+  const fool = FateSealSystem.createFateSealInstance(
+    FATE_SEALS.seal_of_the_fool
+  )
   expect(game.addFateSeal(fool)).toBe(true)
-  expect(game.processAction({ type: 'useSeal', sealId: fool.instanceId }).success).toBe(true)
+  expect(
+    game.processAction({ type: 'useSeal', sealId: fool.instanceId }).success
+  ).toBe(true)
   expect(game.getCelestialOrbs().map((o) => o.id)).toEqual([orb.id])
 })
 
@@ -337,9 +404,9 @@ it('rejects unpaid legacy packs without charging and honors already-paid choices
   game.restoreRun(parseClassicRunSnapshot(paid))
   initializeMetaProgressionBridge()
   expect(game.shop.confirmPack([0]).success).toBe(true)
-  // The paid choice is used the moment it is claimed: every family rose.
+  // The paid choice is used the moment it is claimed: all 13 families rose.
   expect(game.getCelestialOrbs()).toEqual([])
-  expect(game.getYakuUpgradeState()).toHaveLength(12)
+  expect(game.getYakuUpgradeState()).toHaveLength(13)
   expect(profile().isItemUnlocked(orb.id)).toBe(true)
   const claimed = game.captureRun()
   expect(game.shop.confirmPack([0]).success).toBe(false)

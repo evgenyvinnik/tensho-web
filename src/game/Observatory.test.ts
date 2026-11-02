@@ -55,10 +55,13 @@ function fixture(orbs: string[] = [], observatory = true) {
   const ids = state.handTiles.map((t) => t.id)
   return { game, state, ids }
 }
+// The fixture's complete hand (1-9 Characters, three 5 Bamboo, two 6 Circles)
+// scores only its tile families: Mixed Suits, Neptune's family.
 it.each([
   [['mercury_orb'], 1],
-  [['saturn_orb'], 1.5],
-  [['saturn_orb', 'saturn_orb', 'mercury_orb'], 2.25],
+  [['saturn_orb'], 1],
+  [['neptune_orb'], 1.5],
+  [['neptune_orb', 'neptune_orb', 'mercury_orb'], 2.25],
   [['black_hole_orb'], 1.5],
 ] as const)('only rewards matching held Orbs: %j', (orbs, factor) => {
   const base = fixture([], false)
@@ -81,12 +84,10 @@ it('rewards a tactical play only through its own pattern family; Black Hole matc
   const plain = fixture([], false)
   const sequence = (f: ReturnType<typeof fixture>) =>
     f.game.previewScore(f.ids.slice(0, 3))!.finalScore
-  // A Sequence levels the Pinfu family: Saturn (Ittsu) is unrelated.
+  // A Sequence levels the Sequence family: Saturn (Straights) is unrelated.
   expect(sequence(fixture(['saturn_orb']))).toBe(sequence(plain))
   expect(sequence(fixture(['venus_orb']))).toBeGreaterThan(sequence(plain))
-  expect(sequence(fixture(['black_hole_orb']))).toBeGreaterThan(
-    sequence(plain)
-  )
+  expect(sequence(fixture(['black_hole_orb']))).toBeGreaterThan(sequence(plain))
 })
 
 it('pays no Orb bonus on a Boss-blocked hand, including Black Hole', () => {
@@ -102,8 +103,8 @@ it('pays no Orb bonus on a Boss-blocked hand, including Black Hole', () => {
   expect(blocked.finalScore).toBe(0)
 })
 it('consuming a matching Orb removes its held bonus but preserves the earned family upgrade', () => {
-  const { game, ids } = fixture(['saturn_orb'])
-  const ordinary = fixture(['saturn_orb'], false)
+  const { game, ids } = fixture(['neptune_orb'])
+  const ordinary = fixture(['neptune_orb'], false)
   for (const target of [game, ordinary.game]) {
     expect(
       target.processAction({
@@ -111,7 +112,9 @@ it('consuming a matching Orb removes its held bonus but preserves the earned fam
         orbId: target.getCelestialOrbs()[0].instanceId,
       }).success
     ).toBe(true)
-    expect(target.getState().celestialOrbSystem.getYakuLevel('Ittsu')).toBe(2)
+    expect(
+      target.getState().celestialOrbSystem.getYakuLevel('MixedSuits')
+    ).toBe(2)
     expect(target.getCelestialOrbs()).toHaveLength(0)
   }
   expect(game.previewScore(ids)!.finalScore).toBe(
@@ -120,7 +123,7 @@ it('consuming a matching Orb removes its held bonus but preserves the earned fam
 })
 it('Frostbite does not halve a Charter bonus and lack of Observatory gives no held bonus', () => {
   const base = fixture([], false)
-  const held = fixture(['saturn_orb'], false)
+  const held = fixture(['neptune_orb'], false)
   expect(held.game.previewScore(held.ids)!.finalScore).toBe(
     base.game.previewScore(base.ids)!.finalScore
   )

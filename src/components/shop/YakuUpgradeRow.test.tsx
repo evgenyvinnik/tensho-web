@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { YakuUpgradeRow } from './YakuUpgradeRow'
 import { changeLanguage } from '../../i18n'
 import type { YakuUpgrade } from '../gameplay/YakuUpgradeToken'
+import { CELESTIAL_ORBS } from '../../systems/CelestialOrbSystem'
 
 const family = (yaku: YakuUpgrade['yaku'], level: number): YakuUpgrade => ({
   yaku,
@@ -12,11 +13,13 @@ const family = (yaku: YakuUpgrade['yaku'], level: number): YakuUpgrade => ({
   timesScored: 0,
 })
 
-const pairs = (level: number): YakuUpgrade => ({
-  yaku: 'SevenPairs',
+const { chipsPerLevel, multPerLevel } = CELESTIAL_ORBS.planet_x_orb.effect
+
+const threePairs = (level: number): YakuUpgrade => ({
+  yaku: 'ThreePairs',
   level,
-  chips: 35 * (level - 1),
-  mult: 3 * (level - 1),
+  chips: chipsPerLevel * (level - 1),
+  mult: multPerLevel * (level - 1),
   timesScored: 1,
 })
 
@@ -34,38 +37,40 @@ it('renders nothing for an empty list', () => {
 })
 
 it('shows each upgrade inline with its level and opens its details on tap', () => {
-  const { container } = render(<YakuUpgradeRow upgrades={[pairs(2)]} />)
+  const { container } = render(<YakuUpgradeRow upgrades={[threePairs(2)]} />)
   expect(screen.getByRole('group', { name: 'Yaku upgrades' })).toBeVisible()
   // One Orb used: the family's first upgrade, counted from 0.
   const token = screen.getByRole('button', {
-    name: 'Seven Pairs upgrade, level 1',
+    name: 'Three Pairs upgrade, level 1',
   })
-  expect(token).toHaveAttribute('data-yaku-upgrade', 'SevenPairs')
+  expect(token).toHaveAttribute('data-yaku-upgrade', 'ThreePairs')
   expect(token).toHaveAttribute('data-yaku-upgrade-level', '1')
   expect(token).not.toHaveClass('grayscale')
   expect(container.querySelector('[data-yaku-upgrade-flash]')).toBeNull()
   fireEvent.click(token, { detail: 1 })
   const panel = screen.getByRole('dialog', {
-    name: 'Seven Pairs upgrade, level 1',
+    name: 'Three Pairs upgrade, level 1',
   })
   expect(panel).toHaveTextContent('Level 1 / 9')
-  expect(panel).toHaveTextContent('+35 base points · +3 Mult')
+  expect(panel).toHaveTextContent(
+    `+${chipsPerLevel} base points · +${multPerLevel} Mult`
+  )
   expect(panel).toHaveTextContent('Times scored: 1')
   expect(panel).toHaveTextContent('Upgraded by Planet X Orb')
 })
 
 it('flashes a family that rises while the shop is open, never one already there', () => {
   const { container, rerender } = render(
-    <YakuUpgradeRow upgrades={[pairs(3)]} />
+    <YakuUpgradeRow upgrades={[threePairs(3)]} />
   )
   expect(container.querySelector('[data-yaku-upgrade-flash]')).toBeNull()
-  rerender(<YakuUpgradeRow upgrades={[pairs(4)]} />)
+  rerender(<YakuUpgradeRow upgrades={[threePairs(4)]} />)
   const flashed = container.querySelector('[data-yaku-upgrade-flash]')!
   expect(
-    flashed.querySelector('[data-yaku-upgrade="SevenPairs"]')
+    flashed.querySelector('[data-yaku-upgrade="ThreePairs"]')
   ).not.toBeNull()
   expect(
-    screen.getByRole('button', { name: 'Seven Pairs upgrade, level 3' })
+    screen.getByRole('button', { name: 'Three Pairs upgrade, level 3' })
   ).toBeVisible()
   act(() => vi.advanceTimersByTime(1000))
   expect(container.querySelector('[data-yaku-upgrade-flash]')).toBeNull()
@@ -73,7 +78,7 @@ it('flashes a family that rises while the shop is open, never one already there'
 
 it('shows a family no Orb has reached at level 0, dimmed, beside upgraded ones', () => {
   const { container } = render(
-    <YakuUpgradeRow upgrades={[family('Pairs', 1), pairs(2)]} />
+    <YakuUpgradeRow upgrades={[family('Pairs', 1), threePairs(2)]} />
   )
   const grid = container.querySelector('[data-yaku-upgrade-grid]')!
   expect(grid.querySelectorAll('[data-yaku-upgrade]')).toHaveLength(2)
@@ -86,4 +91,23 @@ it('shows a family no Orb has reached at level 0, dimmed, beside upgraded ones',
   expect(panel).toHaveTextContent('Level 0 / 9')
   expect(panel).toHaveTextContent('+0 base points · +0 Mult')
   expect(panel).toHaveTextContent('Upgraded by Pluto Orb')
+})
+
+it('gives Loose Tiles its bonus per loose tile, with no Mult', () => {
+  const chips = CELESTIAL_ORBS.ceres_orb.effect.chipsPerLevel
+  render(
+    <YakuUpgradeRow
+      upgrades={[{ ...family('Loose', 2), chips, timesScored: 3 }]}
+    />
+  )
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Loose Tiles upgrade, level 1' }),
+    { detail: 1 }
+  )
+  const panel = screen.getByRole('dialog', {
+    name: 'Loose Tiles upgrade, level 1',
+  })
+  expect(panel).toHaveTextContent(`+${chips} base points per loose tile`)
+  expect(panel).not.toHaveTextContent('Mult')
+  expect(panel).toHaveTextContent('Upgraded by Ceres Orb')
 })

@@ -119,11 +119,15 @@ it('raises every family for Black Hole and announces each level it changed', () 
   const used = listen('celestialOrbUsed')
   expect(game.shop.purchase(offer.id)).toEqual({ success: true })
   expect(used).toHaveLength(1)
-  expect(used[0].levels).toHaveLength(12)
+  expect(used[0].levels).toHaveLength(13)
   expect(used[0].levels).toContainEqual({ yaku: 'Pairs', from: 2, to: 3 })
-  expect(used[0].levels).toContainEqual({ yaku: 'Tanyao', from: 1, to: 2 })
+  expect(used[0].levels).toContainEqual({
+    yaku: 'TwoSequences',
+    from: 1,
+    to: 2,
+  })
   expect(state.celestialOrbs).toEqual([])
-  expect(game.getYakuUpgradeState()).toHaveLength(12)
+  expect(game.getYakuUpgradeState()).toHaveLength(13)
 })
 
 it('uses pack-chosen Orbs at once and needs a free level for each copy chosen', () => {
