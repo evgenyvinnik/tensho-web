@@ -64,6 +64,7 @@ export function RackRow({
               key={tile.id}
               type="button"
               data-testid={`rack-tile-${tile.id}`}
+              data-own-sound
               aria-pressed={isSelected}
               aria-label={tileName(tile, t)}
               aria-describedby={

@@ -195,6 +195,7 @@ function sample(ctx, t, name, options = {}) {
     fadeOut = 0.012,
     gate = 0,
     highpass = 60,
+    lowpass = 0,
   } = options
   const clip = source(name)
   const first = Math.round(from * RATE)
@@ -223,6 +224,8 @@ function sample(ctx, t, name, options = {}) {
     Math.floor((end - start - 1) / rate)
   )
   const filter = biquad('highpass', highpass, 0.707)
+  // Optional low-pass: felt swallows the bright click of a hard landing.
+  const soften = lowpass > 0 ? biquad('lowpass', lowpass, 0.707) : (x) => x
   const fadeIn = Math.round(0.0005 * RATE)
   const fadeLength = Math.max(1, Math.round(fadeOut * RATE))
   for (let k = 0; k < length; k++) {
@@ -237,7 +240,7 @@ function sample(ctx, t, name, options = {}) {
         : 1
     const shape =
       Math.min(1, (k + 1) / fadeIn) * Math.min(1, (length - k) / fadeLength)
-    data[offset + k] += gain * expand * shape * filter(value)
+    data[offset + k] += gain * expand * shape * soften(filter(value))
   }
 }
 
@@ -536,14 +539,21 @@ const arpeggio = (ctx, t, notes, spacing, options = {}) =>
 
 const RECIPES = {
   // --- Tiles: slowed chip clacks, felt thump under set-downs -----------------
-  tile_select: [0.12, -19, (c) => tile(c, 0, 'chips-collide-1', 0.82)],
-  tile_deselect: [
-    0.14,
-    -21,
+  // The most frequent sound in the game: a tap flies a tile onto the felt.
+  // Kept soft, dark and well under everything else so it never grates.
+  tile_select: [
+    0.12,
+    -26,
     (c) => {
-      tile(c, 0, 'chip-lay-1', 0.78)
-      thump(c, 0, { gain: 0.2 })
+      thump(c, 0, { frequency: 210, gain: 0.7 })
+      tile(c, 0, 'chip-lay-1', 0.72, { lowpass: 2600, gain: 0.8 })
     },
+  ],
+  // Flying back to the rack: lighter and quieter still.
+  tile_deselect: [
+    0.1,
+    -28,
+    (c) => tile(c, 0, 'chips-collide-1', 0.9, { lowpass: 3400, gain: 0.8 }),
   ],
   tile_draw: [0.14, -20, (c) => tile(c, 0, 'chips-stack-2', 0.8)],
   tile_discard: [

@@ -473,6 +473,30 @@ describe('music and settings', () => {
     expect(audio.getState().isPlaying).toBe(true)
   })
 
+  it('lets tiles play their own sound instead of doubling it with a UI click', () => {
+    useSettingsStore.setState({
+      musicEnabled: false,
+      sfxEnabled: true,
+      sfxVolume: 0.8,
+    })
+    renderHook(useAudioLifecycle)
+    act(() => {
+      document.dispatchEvent(new Event('pointerdown'))
+    })
+    const uiClicks = () =>
+      playedEffects().filter((a) => a.src.endsWith('/ui_button_click.wav'))
+    const tile = document.createElement('button')
+    tile.setAttribute('data-own-sound', '')
+    const plain = document.createElement('button')
+    document.body.append(tile, plain)
+    act(() => tile.click())
+    expect(uiClicks()).toHaveLength(0)
+    act(() => plain.click())
+    expect(uiClicks()).toHaveLength(1)
+    tile.remove()
+    plain.remove()
+  })
+
   it('connects persisted preferences before any gesture and reacts to settings', async () => {
     useSettingsStore.setState({
       musicEnabled: false,

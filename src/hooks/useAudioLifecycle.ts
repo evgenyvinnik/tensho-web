@@ -23,10 +23,12 @@ export function useAudioLifecycle() {
     const click = (event: MouseEvent) => {
       const button =
         event.target instanceof Element ? event.target.closest('button') : null
+      // Tiles play their own sound; a UI click on top doubled every tap.
       if (
         button &&
         !button.disabled &&
-        button.getAttribute('aria-disabled') !== 'true'
+        button.getAttribute('aria-disabled') !== 'true' &&
+        !button.hasAttribute('data-own-sound')
       )
         UISFX.click()
     }
