@@ -37,10 +37,17 @@ for (const lang of ['en', 'es', 'ru'])
       const { initializeClassicPersistence } = await import(savePath)
       const validationPath = '/src/game/validateClassicRun.ts'
       const { parseClassicRunSnapshot } = await import(validationPath)
+      const decreePath = '/src/systems/DecreeSystem.ts'
+      const { EXTENDED_HAND_GRANT } = await import(decreePath)
       const service = initializeClassicPersistence(),
         raw = service.getSnapshot().disk.raw
       game.startNewRun(7)
       const state = game.getState()
+      // Six REDRAWs in one round need more than six Turns. Grant them
+      // explicitly: starting Decrees are drawn from the whole pool.
+      for (const owned of state.decreeSystem.getOwnedDecrees())
+        state.decreeSystem.removeDecree(owned.instanceId)
+      state.decreeSystem.acquireDecree(EXTENDED_HAND_GRANT)
       // No Flowers or Seasons in later deals: every REDRAW draws one tile.
       state.wallTemplate = state.wallTemplate.filter(
         (t: { isBonus: boolean }) => !t.isBonus
