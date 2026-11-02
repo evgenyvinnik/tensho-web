@@ -7,48 +7,53 @@
  * - Provides fallback static states for animations
  */
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useSyncExternalStore,
+} from 'react';
 import { useSettingsStore } from '../stores/settingsStore';
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 /**
  * Check if the user prefers reduced motion via media query
  */
 function getSystemPrefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false;
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  return mediaQuery.matches;
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function subscribeToSystemReducedMotion(onChange: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+
+  // Modern browsers
+  if (mediaQuery.addEventListener) {
+    mediaQuery.addEventListener('change', onChange);
+    return () => mediaQuery.removeEventListener('change', onChange);
+  }
+  // Legacy browsers
+  mediaQuery.addListener(onChange);
+  return () => mediaQuery.removeListener(onChange);
 }
 
 /**
  * Hook to detect system-level prefers-reduced-motion preference
+ *
+ * An external store rather than state plus an effect: a change between the
+ * first render and the subscription fires no event for a query list created
+ * after it, so state read at render would keep the old value for good.
+ * useSyncExternalStore reads the query again once it has subscribed.
  */
 export function useSystemReducedMotion(): boolean {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    getSystemPrefersReducedMotion
+  return useSyncExternalStore(
+    subscribeToSystemReducedMotion,
+    getSystemPrefersReducedMotion,
+    () => false
   );
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches);
-    };
-
-    // Modern browsers
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
-    }
-    // Legacy browsers
-    else if (mediaQuery.addListener) {
-      mediaQuery.addListener(handleChange);
-      return () => mediaQuery.removeListener(handleChange);
-    }
-  }, []);
-
-  return prefersReducedMotion;
 }
 
 /**

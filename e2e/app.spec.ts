@@ -425,8 +425,17 @@ test.describe('Game Navigation', () => {
     await expect(rackTiles(page)).toHaveCount(await rackSize())
     const turnsLeft = async () => (await turnBudget(page)).turns
     const initialTurns = await turnsLeft()
-    // Six, plus any a starting Decree grants.
-    expect(initialTurns).toBeGreaterThanOrEqual(6)
+    // Six, plus any a starting Decree grants. Starting Decrees come from the
+    // whole shop pool, so Sacrifice (−1 Turn per round) can start a run too.
+    const sacrifices = await page.evaluate(
+      () =>
+        JSON.parse(
+          localStorage.getItem('tensho-classic-run-v1')!
+        ).snapshot.state.decreeSystem.ownedDecrees.filter(
+          (decree: { id: string }) => decree.id === 'decree-sacrifice'
+        ).length
+    )
+    expect(initialTurns).toBeGreaterThanOrEqual(6 - sacrifices)
 
     // Selecting shows the hand score; the labels do not change.
     await selectTiles(page, 2)

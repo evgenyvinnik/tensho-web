@@ -440,15 +440,17 @@ for (const [lang, bonus] of [
             .state.lastRoundSummary.netGoldChange
       )
     ).toBe(1234567890)
+    // Each viewport watches the authored pay arrive afresh. Forget it as each
+    // page loads, not before leaving: the page being left saves on pagehide,
+    // its shop re-renders with the authored pay and marks it shown.
+    await page.addInitScript(() =>
+      sessionStorage.removeItem('tensho-cash-out-shown')
+    )
     for (const [width, height] of [
       [320, 568],
       [1024, 768],
     ]) {
       await page.setViewportSize({ width, height })
-      // Each viewport watches the authored pay arrive afresh.
-      await page.evaluate(() =>
-        sessionStorage.removeItem('tensho-cash-out-shown')
-      )
       await page.goto(`/${lang}/shop`)
       await expect(page.locator('[data-shop-continue]')).toBeVisible()
       const seen = await collectCashOut(page, {
