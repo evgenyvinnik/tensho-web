@@ -15,7 +15,7 @@ export interface AudioCredit {
   url: string
   license: { name: string; url: string }
   /** What Tensho uses it for: `settings.credits.<role>`. */
-  role: 'interface' | 'casino'
+  role: 'interface' | 'casino' | 'coins'
   /** Folder under scripts/sfx-sources holding the files used. */
   source: string
   /** CC BY asks for changes to be indicated. */
@@ -45,5 +45,14 @@ export const SOUND_EFFECT_CREDITS: readonly AudioCredit[] = [
     license: CC0,
     role: 'casino',
     source: 'kenney-casino',
+  },
+  {
+    id: 'kenney-rpg-audio',
+    title: 'RPG Audio',
+    author: 'Kenney',
+    url: 'https://kenney.nl/assets/rpg-audio',
+    license: CC0,
+    role: 'coins',
+    source: 'kenney-rpg',
   },
 ]

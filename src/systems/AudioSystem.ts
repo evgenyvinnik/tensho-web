@@ -586,7 +586,6 @@ export class AudioSystem {
       itemSold: SHOP_SOUNDS.sell,
       shopRerolled: SHOP_SOUNDS.reroll,
       shopEntered: SHOP_SOUNDS.shopEnter,
-      decreeTriggered: SPECIAL_SOUNDS.decreeTriggered,
       flowerCollected: SPECIAL_SOUNDS.flowerCollected,
       seasonActivated: SPECIAL_SOUNDS.seasonActivated,
       packOpened: SPECIAL_SOUNDS.packOpening,
@@ -604,9 +603,10 @@ export class AudioSystem {
       eventBus.on('decreeAcquired', ({ source }) => {
         if (source !== 'starting') this.play(SPECIAL_SOUNDS.decreeAcquired)
       }),
-      eventBus.on('roundEnd', ({ won }) =>
-        this.play(won ? GAME_SOUNDS.roundComplete : GAME_SOUNDS.roundFailed)
-      ),
+      // A lost round stays quiet; the result screen and music carry it.
+      eventBus.on('roundEnd', ({ won }) => {
+        if (won) this.play(GAME_SOUNDS.roundComplete)
+      }),
       eventBus.on('gameOver', ({ reason }) => {
         this.play(
           reason === 'victory' ? GAME_SOUNDS.victory : GAME_SOUNDS.gameOver
@@ -645,7 +645,6 @@ export const TileSFX = {
   slide: () => playSFX(TILE_SOUNDS.slide),
 }
 export const UISFX = {
-  click: () => playSFX(UI_SOUNDS.buttonClick),
   hover: () => playSFX(UI_SOUNDS.buttonHover),
   menuOpen: () => playSFX(UI_SOUNDS.menuOpen),
   menuClose: () => playSFX(UI_SOUNDS.menuClose),

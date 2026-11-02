@@ -89,7 +89,7 @@ afterEach(() => {
 
 describe('sound assets', () => {
   it('ships non-silent, bounded PCM audio for every declared sound and existing music paths', () => {
-    expect(ALL_SOUND_IDS).toHaveLength(55)
+    expect(ALL_SOUND_IDS).toHaveLength(51)
     for (const id of ALL_SOUND_IDS) {
       const bytes = readFileSync(
         resolve('public', SOUND_EFFECT_CONFIG[id].path.replace(/^\//, ''))
@@ -471,6 +471,35 @@ describe('music and settings', () => {
     audio.unlock()
     await flush()
     expect(audio.getState().isPlaying).toBe(true)
+  })
+
+  it('stays quiet for a lost round and a Decree firing while scoring', () => {
+    audio.initialize()
+    audio.unlock()
+    eventBus.emit('decreeTriggered', { decreeId: 'decree', effect: 'mult' })
+    eventBus.emit('roundEnd', { won: false, score: 10, target: 20 })
+    expect(playedEffects()).toHaveLength(0)
+    eventBus.emit('roundEnd', { won: true, score: 30, target: 20 })
+    expect(playedEffects().map((a) => a.src)).toEqual([
+      expect.stringMatching(/\/game_round_complete\.wav$/),
+    ])
+  })
+
+  it('keeps button presses silent; only game actions make sound', () => {
+    useSettingsStore.setState({
+      musicEnabled: false,
+      sfxEnabled: true,
+      sfxVolume: 0.8,
+    })
+    renderHook(useAudioLifecycle)
+    act(() => {
+      document.dispatchEvent(new Event('pointerdown'))
+    })
+    const button = document.createElement('button')
+    document.body.append(button)
+    act(() => button.click())
+    expect(playedEffects()).toHaveLength(0)
+    button.remove()
   })
 
   it('connects persisted preferences before any gesture and reacts to settings', async () => {

@@ -379,7 +379,6 @@ export function useSoundEffects() {
 
   const ui = useMemo(
     () => ({
-      click: () => sfxEnabled && UISFX.click(),
       hover: () => sfxEnabled && UISFX.hover(),
       menuOpen: () => sfxEnabled && UISFX.menuOpen(),
       menuClose: () => sfxEnabled && UISFX.menuClose(),
@@ -459,7 +458,6 @@ interface AudioContextValue {
     deselect: () => void;
   };
   uiSFX: {
-    click: () => void;
     hover: () => void;
   };
 }

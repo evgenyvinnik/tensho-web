@@ -872,9 +872,10 @@
       "title": "Emeği Geçenler",
       "soundEffects": "Ses efektleri",
       "interface": "Düğme ve menü sesleri",
-      "casino": "Taş sesleri, fişler, altın ve kart paketleri",
+      "casino": "Taş sesleri, fişler ve kart paketleri",
       "modified": "Tensho için tek tek seslere bölündü, temizlendi ve ses seviyesi eşitlendi.",
-      "original": "Koto, çanlar ve taiko dahil diğer tüm ses efektleri, Tensho için sentezlenmiş özgün seslerdir."
+      "original": "Koto, çanlar ve taiko dahil diğer tüm ses efektleri, Tensho için sentezlenmiş özgün seslerdir.",
+      "coins": "Altın paralar ve kâğıt"
     }
   },
   "gameplay": {

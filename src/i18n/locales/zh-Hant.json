@@ -553,9 +553,10 @@
       "title": "致謝",
       "soundEffects": "音效",
       "interface": "按鈕與選單音效",
-      "casino": "牌的聲音、籌碼、金幣與卡包",
+      "casino": "牌的聲音、籌碼與卡包",
       "modified": "已為 Tensho 切分成單個音效，並做了降噪與音量匹配。",
-      "original": "其餘所有音效（包括筝、鈴與太鼓）都是專為 Tensho 合成的原創聲音。"
+      "original": "其餘所有音效（包括筝、鈴與太鼓）都是專為 Tensho 合成的原創聲音。",
+      "coins": "金幣與紙張的聲音"
     }
   },
   "gameplay": {

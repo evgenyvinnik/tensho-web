@@ -2,7 +2,8 @@
  *
  * Ordinary actions use CC0 recordings from scripts/sfx-sources (SOURCES.md
  * lists each file's origin and licence): Kenney's clay-chip clacks, slowed,
- * for every tile action, plus interface clicks, chips and card packs.
+ * for every tile action, plus interface clicks, chips, card packs, coins and
+ * a page flip.
  * Payoffs and refusals are synthesized from physically-inspired voices:
  *
  *   sample recorded slice: leading silence skipped, room hiss gated, faded
@@ -195,6 +196,7 @@ function sample(ctx, t, name, options = {}) {
     fadeOut = 0.012,
     gate = 0,
     highpass = 60,
+    lowpass = 0,
   } = options
   const clip = source(name)
   const first = Math.round(from * RATE)
@@ -223,6 +225,8 @@ function sample(ctx, t, name, options = {}) {
     Math.floor((end - start - 1) / rate)
   )
   const filter = biquad('highpass', highpass, 0.707)
+  // Optional low-pass: felt swallows the bright click of a hard landing.
+  const soften = lowpass > 0 ? biquad('lowpass', lowpass, 0.707) : (x) => x
   const fadeIn = Math.round(0.0005 * RATE)
   const fadeLength = Math.max(1, Math.round(fadeOut * RATE))
   for (let k = 0; k < length; k++) {
@@ -237,7 +241,7 @@ function sample(ctx, t, name, options = {}) {
         : 1
     const shape =
       Math.min(1, (k + 1) / fadeIn) * Math.min(1, (length - k) / fadeLength)
-    data[offset + k] += gain * expand * shape * filter(value)
+    data[offset + k] += gain * expand * shape * soften(filter(value))
   }
 }
 
@@ -251,6 +255,8 @@ const ui = (ctx, t, name, options) =>
   sample(ctx, t, `kenney-interface/${name}`, options)
 const casino = (ctx, t, name, options) =>
   sample(ctx, t, `kenney-casino/${name}`, options)
+const rpg = (ctx, t, name, options) =>
+  sample(ctx, t, `kenney-rpg/${name}`, options)
 
 // =============================================================================
 // Primitive voices
@@ -536,14 +542,21 @@ const arpeggio = (ctx, t, notes, spacing, options = {}) =>
 
 const RECIPES = {
   // --- Tiles: slowed chip clacks, felt thump under set-downs -----------------
-  tile_select: [0.12, -19, (c) => tile(c, 0, 'chips-collide-1', 0.82)],
-  tile_deselect: [
-    0.14,
-    -21,
+  // The most frequent sound in the game: a tap flies a tile onto the felt.
+  // Kept soft, dark and well under everything else so it never grates.
+  tile_select: [
+    0.12,
+    -26,
     (c) => {
-      tile(c, 0, 'chip-lay-1', 0.78)
-      thump(c, 0, { gain: 0.2 })
+      thump(c, 0, { frequency: 210, gain: 0.7 })
+      tile(c, 0, 'chip-lay-1', 0.72, { lowpass: 2600, gain: 0.8 })
     },
+  ],
+  // Flying back to the rack: lighter and quieter still.
+  tile_deselect: [
+    0.1,
+    -28,
+    (c) => tile(c, 0, 'chips-collide-1', 0.9, { lowpass: 3400, gain: 0.8 }),
   ],
   tile_draw: [0.14, -20, (c) => tile(c, 0, 'chips-stack-2', 0.8)],
   tile_discard: [
@@ -554,7 +567,6 @@ const RECIPES = {
       tile(c, 0, 'chip-lay-2', 0.75)
     },
   ],
-  tile_place: [0.13, -18, (c) => tile(c, 0, 'chips-stack-1', 0.8)],
   tile_slide: [
     0.24,
     -21,
@@ -566,7 +578,6 @@ const RECIPES = {
   tile_flip: [0.13, -19, (c) => tile(c, 0, 'chips-stack-6', 0.85)],
 
   // --- Interface: Kenney clicks, quiet; heard on every button ----------------
-  ui_button_click: [0.04, -25, (c) => ui(c, 0, 'click_001')],
   ui_button_hover: [0.03, -33, (c) => ui(c, 0, 'tick_001')],
   ui_menu_open: [0.3, -25, (c) => ui(c, 0, 'maximize_001')],
   ui_menu_close: [0.3, -25, (c) => ui(c, 0, 'minimize_001')],
@@ -590,8 +601,17 @@ const RECIPES = {
   game_score_chip: [0.08, -22, (c) => casino(c, 0, 'chips-collide-4')],
   game_score_tally: [0.36, -21, (c) => casino(c, 0, 'chips-handle-4')],
   // Gold is a stack of casino chips: clacking in, sliding out.
-  game_gold_earned: [0.4, -19, (c) => casino(c, 0, 'chips-stack-3')],
-  game_gold_spent: [0.25, -21, (c) => casino(c, 0, 'chips-handle-3')],
+  // Gold is real metal coins: a handful landing, a few slid away.
+  game_gold_earned: [
+    0.6,
+    -19,
+    (c) => rpg(c, 0, 'handleCoins', { from: 0.115, to: 0.62, fadeOut: 0.08 }),
+  ],
+  game_gold_spent: [
+    0.32,
+    -21,
+    (c) => rpg(c, 0, 'handleCoins2', { fadeOut: 0.04 }),
+  ],
   game_round_complete: [
     1.2,
     -18,
@@ -599,15 +619,6 @@ const RECIPES = {
       clap(c, 0)
       arpeggio(c, 0.05, [3, 5, 6, 8], 0.08, { sustain: 0.9 })
       bell(c, 0.29, yo(10), { gain: 0.45, tau: 0.6 })
-    },
-  ],
-  game_round_failed: [
-    0.95,
-    -21,
-    (c) => {
-      koto(c, 0, dark(5), { sustain: 0.8, brightness: 0.4 })
-      koto(c, 0.17, dark(3), { sustain: 0.9, brightness: 0.35, gain: 0.9 })
-      taiko(c, 0.17, { frequency: 70, gain: 0.35 })
     },
   ],
   game_act_complete: [
@@ -702,14 +713,6 @@ const RECIPES = {
       bell(c, 0.12, yo(11), { gain: 0.3, tau: 0.5 })
     },
   ],
-  special_decree_triggered: [
-    0.35,
-    -21,
-    (c) => {
-      koto(c, 0, yo(8), { sustain: 0.3, brightness: 0.7 })
-      tick(c, 0, { frequency: 2400, gain: 0.5 })
-    },
-  ],
   special_flower_collected: [
     0.8,
     -20,
@@ -800,7 +803,16 @@ const RECIPES = {
   feedback_notification: [0.22, -22, (c) => ui(c, 0, 'glass_001')],
 
   // --- Consumables -----------------------------------------------------------
-  consumable_fate_seal: [0.3, -18, (c) => stamp(c, 0)],
+  // A paper charm flicked out, then its rin bell answers.
+  consumable_fate_seal: [
+    0.8,
+    -19,
+    (c) => {
+      rpg(c, 0, 'bookFlip3', { gain: 0.8 })
+      bell(c, 0.07, yo(9), { tau: 0.5 })
+      bell(c, 0.07, yo(12), { gain: 0.35, tau: 0.35 })
+    },
+  ],
   consumable_celestial_orb: [
     0.9,
     -20,

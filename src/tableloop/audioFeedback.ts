@@ -48,7 +48,6 @@ export function playTableAction(
         ? GAME_SOUNDS.victory
         : GAME_SOUNDS.roundComplete
     )
-  if (state.phase === 'runFailed') playSFX(GAME_SOUNDS.roundFailed)
   if (action.type === 'openShop') audioSystem.playMusic('shop')
   if (action.type === 'nextRound' || action.type === 'chooseStarter')
     audioSystem.playMusic('gameplay')
