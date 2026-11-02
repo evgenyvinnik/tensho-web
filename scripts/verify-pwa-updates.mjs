@@ -14,6 +14,34 @@ import { chromium, expect } from '@playwright/test'
 import { illustrationCopies } from './lib/illustration-delivery.mjs'
 
 /**
+ * Mirror DECREE_RUNTIME and CONSUMABLE_RUNTIME in
+ * src/game/migrateClassicSnapshot.ts: the fields of a saved Decree or
+ * consumable that survive loading; every other field is re-read from the
+ * catalog of the release doing the loading.
+ */
+const DECREE_RUNTIME = new Set([
+  'edition',
+  'sticker',
+  'stickers',
+  'isDebuffed',
+  'sellValue',
+  'instanceId',
+  'randomCopyTargetId',
+  'acquiredRound',
+  'roundsActive',
+  'scalingValue',
+])
+const CONSUMABLE_RUNTIME = new Set([
+  'instanceId',
+  'isUsed',
+  'edition',
+  'sellValue',
+  'source',
+  'currentLevel',
+])
+const CONSUMABLE_TYPES = new Set(['FateSeal', 'CelestialOrb', 'VoidScript'])
+
+/**
  * Mirrors RETIRED_FAMILIES in src/systems/CelestialOrbSystem.ts: Orb upgrade
  * families renamed since the baseline release, keyed to their current name.
  */
@@ -395,23 +423,33 @@ try {
         ).toBeVisible()
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
-        // Loading a save re-reads every saved item from the catalog, so an
-        // item's name and description follow the new release, as does a
-        // Celestial Orb's effect when a release re-targets it. Other effects,
-        // ownership and runtime fields stay exact.
+        // Loading a save re-reads every saved item from the catalog, so a
+        // Decree's or consumable's catalog fields (name, rules, rarity, price)
+        // follow the new release; only its runtime fields must stay exact.
+        // Other items keep everything but their name and description.
+        const catalogItemKeys = (value) =>
+          typeof value.instanceId === 'string' &&
+          typeof value.category === 'string' &&
+          'rarity' in value
+            ? DECREE_RUNTIME
+            : CONSUMABLE_TYPES.has(value.type)
+              ? CONSUMABLE_RUNTIME
+              : null
         const withoutCatalogText = (value) =>
           Array.isArray(value)
             ? value.map(withoutCatalogText)
             : value && typeof value === 'object'
               ? Object.fromEntries(
                   Object.entries(value)
-                    .filter(
-                      ([key]) =>
-                        typeof value.id !== 'string' ||
-                        (key !== 'name' &&
-                          key !== 'description' &&
-                          !(value.type === 'CelestialOrb' && key === 'effect'))
-                    )
+                    .filter(([key]) => {
+                      if (typeof value.id !== 'string') return true
+                      const runtime = catalogItemKeys(value)
+                      if (runtime)
+                        return (
+                          key === 'id' || key === 'type' || runtime.has(key)
+                        )
+                      return key !== 'name' && key !== 'description'
+                    })
                     .map(([key, child]) => [key, withoutCatalogText(child)])
                 )
               : value
