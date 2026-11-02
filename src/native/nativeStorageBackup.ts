@@ -2,8 +2,9 @@ import type { PreferencesPlugin } from '@capacitor/preferences'
 
 /**
  * iOS may clear a WebView's localStorage when the device runs low on space.
- * The iOS app mirrors all of it into Preferences (UserDefaults), which lasts
- * until the app is deleted, and writes it back before the game reads a save.
+ * The apps mirror all of it into Preferences (UserDefaults on iOS,
+ * SharedPreferences on Android), which lasts until the app is deleted, and
+ * write it back before the game reads a save.
  */
 export const NATIVE_STORAGE_BACKUP_KEY = 'tensho-local-storage'
 /** Lives in localStorage; resetting progress removes named keys, never this. */

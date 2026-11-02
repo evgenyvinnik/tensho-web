@@ -11,10 +11,11 @@ const packageVersion = JSON.parse(
 const appVersion = process.env.VITE_APP_VERSION || packageVersion
 
 // https://vite.dev/config/
-// `--mode native` builds the iOS app's web layer (`bun run build:ios`). Capacitor
-// serves it from capacitor://localhost/ and answers every route with
-// index.html, and the App Store ships its updates: it needs neither the Pages
-// route entries nor a service worker.
+// `--mode native` builds the apps' web layer (`bun run build:ios`, `bun run
+// build:android`). Capacitor serves it from capacitor://localhost/ (iOS) or
+// https://localhost/ (Android) and answers every route with index.html, and
+// the stores ship its updates: it needs neither the Pages route entries nor a
+// service worker.
 export default defineConfig(({ mode }) => ({
   base: mode === 'native' ? '/' : deploymentBase,
   build: mode === 'native' ? { outDir: 'dist-native' } : undefined,

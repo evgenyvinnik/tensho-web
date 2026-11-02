@@ -3,7 +3,7 @@ import {
   type AdmobConsentInfo,
 } from '@capacitor-community/admob'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { startAdMob } from './admobInterstitials'
+import { interstitialAdUnit, startAdMob } from './admobInterstitials'
 import { offerPrivacyChoices, usePrivacyChoices } from './privacy'
 
 const { AdMob } = vi.hoisted(() => ({
@@ -110,4 +110,21 @@ it('leaves consent untouched when the form cannot open', async () => {
 
   await expect(usePrivacyChoices.getState().open!()).rejects.toThrow()
   expect(AdMob.requestConsentInfo).toHaveBeenCalledTimes(1)
+})
+
+it("picks each platform's ad unit, or Google's sample one", () => {
+  const env = {
+    VITE_ADMOB_INTERSTITIAL_IOS: 'ios-unit',
+    VITE_ADMOB_INTERSTITIAL_ANDROID: 'android-unit',
+  } as unknown as ImportMetaEnv
+  expect(interstitialAdUnit('ios', env)).toBe('ios-unit')
+  expect(interstitialAdUnit('android', env)).toBe('android-unit')
+
+  const unset = {} as ImportMetaEnv
+  expect(interstitialAdUnit('ios', unset)).toBe(
+    'ca-app-pub-3940256099942544/4411468910'
+  )
+  expect(interstitialAdUnit('android', unset)).toBe(
+    'ca-app-pub-3940256099942544/1033173712'
+  )
 })

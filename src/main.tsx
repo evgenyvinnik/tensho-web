@@ -41,10 +41,10 @@ document.addEventListener('visibilitychange', () => {
     void useUpdateStore.getState().attempt()
 })
 
-// The iOS app behaves like a native game: no text selection or callouts.
+// The apps behave like a native game: no text selection or callouts.
 if (IS_NATIVE_APP) document.documentElement.dataset.nativeApp = ''
 
-// Register service worker for PWA. The iOS app updates through the App Store.
+// Register service worker for PWA. The apps update through their stores.
 if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
   void registerUpdates(
     navigator.serviceWorker,
@@ -55,7 +55,7 @@ if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
 
 // Only English is bundled up front; the detected language is fetched first so
 // the interface does not render once in English and then again translated.
-// The iOS app first restores saves the OS may have cleared.
+// The apps first restore saves the OS may have cleared.
 void nativeStorageReady
   .then(() => i18nReady)
   .finally(() => {
@@ -68,13 +68,18 @@ void nativeStorageReady
     )
   })
 
-// The iOS app's ads, after every second Boss. The consent and tracking prompts
+// The apps' ads, after every second Boss. The consent and tracking prompts
 // come after the first frame; the website never loads AdMob. The mode check
 // is spelled out (not IS_NATIVE_APP) so the web build drops this import before
 // it splits chunks; otherwise AdMob's code shares a stray chunk with Settings.
-if (import.meta.env.MODE === 'native')
+if (import.meta.env.MODE === 'native') {
   void nativeStorageReady
     .then(() => import('./native/admobInterstitials'))
     .then(({ startAdMob }) => startAdMob())
     .then((ads) => scheduleBossAds(ads))
     .catch((error: unknown) => console.warn('Ads unavailable', error))
+  // Android's Back button closes what is open, else leaves the game.
+  void import('./native/androidBack')
+    .then(({ handleBackButton }) => handleBackButton())
+    .catch((error: unknown) => console.warn('Back button unavailable', error))
+}

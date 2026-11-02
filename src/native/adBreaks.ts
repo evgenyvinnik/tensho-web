@@ -2,7 +2,7 @@ import { eventBus } from '../game/EventBus'
 import { gameOrchestrator } from '../game/GameOrchestrator'
 
 /**
- * The iOS app shows a full-screen ad after every second Boss: Acts 2, 4, 6
+ * The apps show a full-screen ad after every second Boss: Acts 2, 4, 6
  * and on into Endless, whether the Boss was beaten or ended the run. It waits
  * for the next screen (the Tea House or the results), so it never covers the
  * scoring reveal of the hand that decided the fight.

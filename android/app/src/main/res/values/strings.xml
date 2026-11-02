@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tensho</string>
+    <string name="title_activity_main">Tensho</string>
+    <string name="package_name">com.evgenyvinnik.tensho</string>
+    <string name="custom_url_scheme">com.evgenyvinnik.tensho</string>
+</resources>

@@ -32,17 +32,25 @@ bun run preview      # Preview production build locally
 bun run sloc         # Count source lines of code
 bun run build:ios    # Build the iOS app's web layer (--mode native) and sync it into ios/
 bun run ios:open     # Open the Capacitor Xcode project (ios/App)
+bun run build:android  # The same web layer, synced into android/
+bun run android:open   # Open the Android project in Android Studio
 ```
 
-The iOS app wraps `dist-native` with Capacitor 8 (Swift Package Manager, no
-CocoaPods). That build has no service worker and drops the original
-illustration PNGs. `prepare-native-build.mjs` stamps the package version into
-the Xcode project. `src/native/` mirrors localStorage into Preferences, because
-iOS can clear WebView storage, and restores it before the stores hydrate.
-Ads (iOS only): `src/native/adBreaks.ts` schedules an AdMob interstitial after
-every second Boss, shown on the next screen. `admobInterstitials.ts` handles
-consent, the tracking prompt and loading. They use Google's test IDs until
-`VITE_ADMOB_INTERSTITIAL_IOS` and `GADApplicationIdentifier` (Info.plist) are set.
+The iOS and Android apps wrap `dist-native` with Capacitor 8 (iOS: Swift
+Package Manager, no CocoaPods). That build has no service worker and drops the
+original illustration PNGs. `prepare-native-build.mjs <ios|android>` stamps the
+package version into the Xcode or Gradle project (`scripts/lib/native-versions.mjs`).
+`src/native/` mirrors localStorage into Preferences, because iOS can clear
+WebView storage, and restores it before the stores hydrate. Both apps send
+`appinactive`/`appactive` (`SceneDelegate.swift`, `MainActivity.java`) so the
+music stops on lock. Android's Back (`src/native/androidBack.ts`) closes the top
+dialog or popover, else backgrounds the app. Ads (apps only):
+`src/native/adBreaks.ts` schedules an AdMob interstitial after every second
+Boss, shown on the next screen. `admobInterstitials.ts` handles consent, the
+tracking prompt and loading. They use Google's test IDs until each platform's
+ad unit (`VITE_ADMOB_INTERSTITIAL_IOS` / `_ANDROID` in `.env.native`) and app ID
+(`GADApplicationIdentifier` in Info.plist, `APPLICATION_ID` in
+AndroidManifest.xml) are set. See `docs/ANDROID_RELEASE.md` for Google Play.
 
 ## Testing
 

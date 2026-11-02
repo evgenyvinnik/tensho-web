@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-/** The iOS app opens the policy in Safari, at the site's public address. */
+/** The apps open the policy in the browser, at the site's public address. */
 export const PUBLIC_PRIVACY_POLICY_URL = 'https://tensho.app/privacy/'
 
 /** The website links its own copy, served as-is from public/privacy/. */
@@ -10,7 +10,7 @@ export const privacyPolicyUrl = (
 ): string => (native ? PUBLIC_PRIVACY_POLICY_URL : `${base}privacy/`)
 
 /**
- * Settings › Privacy Choices. Only the iOS app's AdMob module registers it,
+ * Settings › Privacy Choices. Only the apps' AdMob module registers it,
  * and only while Google's consent check (UMP) says the player must be able to
  * change their answer. The website imports this module, never Capacitor.
  */

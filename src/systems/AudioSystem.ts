@@ -97,7 +97,7 @@ export class AudioSystem {
     // without a visibilitychange; pagehide/pageshow cover those exits.
     window.addEventListener('pagehide', this.onPageHide)
     window.addEventListener('pageshow', this.onPageShow)
-    // The iOS app reports lock and background itself, through appinactive.
+    // The apps report lock and background themselves, through appinactive.
     if (!IS_NATIVE_APP) {
       window.addEventListener('blur', this.onWindowFocus)
       window.addEventListener('focus', this.onWindowFocus)
@@ -489,7 +489,7 @@ export class AudioSystem {
   private onMusicEnded = () => {
     if (this.canPlayMusic() && !this.state.isCrossfading) this.nextTrack()
   }
-  /** iOS app only: a locked screen deactivates the app without hiding the page. */
+  /** Apps only: a locked screen deactivates the app without hiding the page. */
   private onAppActivity = (event: Event) => {
     this.appInactive = event.type === 'appinactive'
     this.onVisibility()

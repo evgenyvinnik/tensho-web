@@ -10,4 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_ADSENSE_CLIENT?: string
   /** 'on' requests Google's test ads. */
   readonly VITE_ADS_TEST?: string
+  /** AdMob interstitial ad units for the apps (.env.native). */
+  readonly VITE_ADMOB_INTERSTITIAL_IOS?: string
+  readonly VITE_ADMOB_INTERSTITIAL_ANDROID?: string
 }

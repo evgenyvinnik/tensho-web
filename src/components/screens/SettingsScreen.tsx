@@ -54,7 +54,7 @@ export function SettingsScreen() {
   const [showFullUnlockConfirm, setShowFullUnlockConfirm] = useState(false)
   const [resetting, setResetting] = useState(false)
   const [fullUnlockError, setFullUnlockError] = useState(false)
-  // Google's form, in the iOS app only and only where UMP requires it.
+  // Google's form, in the apps only and only where UMP requires it.
   const openPrivacyChoices = usePrivacyChoices((state) => state.open)
   const [privacyChoicesOpen, setPrivacyChoicesOpen] = useState(false)
   const [privacyChoicesError, setPrivacyChoicesError] = useState(false)
@@ -311,7 +311,7 @@ export function SettingsScreen() {
             <ControlIcon name="lock" size={36} /> {t('settings.privacy.title')}
           </h2>
 
-          {/* The app opens the public policy in Safari, not in the game. The
+          {/* The app opens the public policy in the browser, not in the game. The
                 link looks like the buttons here, over the global link style. */}
           <div className="flex flex-col gap-3 py-1 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">

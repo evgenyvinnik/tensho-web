@@ -4,7 +4,7 @@ import {
   startNativeStorageBackup,
 } from './nativeStorageBackup'
 
-/** The iOS app's web layer (`vite build --mode native`), never the website. */
+/** The apps' web layer (`vite build --mode native`), never the website. */
 export const IS_NATIVE_APP = import.meta.env.MODE === 'native'
 
 // main.tsx imports this module first, so no store has written yet.

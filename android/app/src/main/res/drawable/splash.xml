@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 7-11 starting window, drawn like Android 12+'s splash: the
+     288 dp tile centred on its green, never stretched to the screen. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/tensho_splash_background" />
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/tensho_splash" />
+    </item>
+</layer-list>
