@@ -111,10 +111,15 @@ for (const language of ['en', 'es'])
         const target = getCelestialOrbsByRarity('Common').find(
           (orb: { id: string }) => !ids.includes(orb.id)
         )
-        if (charterId === 'star_chart')
-          game
-            .getState()
-            .celestialOrbSystem.onYakuScored(target.effect.targetYaku)
+        // Every play records its families, the fixture's three included, so
+        // score the target's family until it is the most played.
+        if (charterId === 'star_chart') {
+          const orbs = game.getState().celestialOrbSystem
+          const leads = () => orbs.getOrbForMostPlayedYaku()?.id === target.id
+          for (let i = 0; i < 10 && !leads(); i++)
+            orbs.onYakuScored(target.effect.targetYaku)
+          if (!leads()) throw new Error('Star Chart target never led')
+        }
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')
         return target?.id

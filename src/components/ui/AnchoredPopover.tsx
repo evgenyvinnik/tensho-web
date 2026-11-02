@@ -270,10 +270,9 @@ export function AnchoredPopover({
       onPointerEnter={mouseOnly(onPointerEnter)}
       onPointerLeave={mouseOnly(onPointerLeave)}
       onKeyDown={onPanelKeyDown}
-      // No transitions: reduced motion gives every element a one-frame one,
-      // which would sweep the panel from its measuring spot across the page
-      // under a resting mouse, and closing it then reads as re-entering the
-      // trigger, reopening a hover panel.
+      // No transitions: one would sweep the panel from its measuring spot
+      // across the page under a resting mouse, and closing it then reads as
+      // re-entering the trigger, reopening a hover panel.
       className="fixed z-[90] overflow-y-auto overscroll-contain rounded-xl transition-none border border-[var(--color-metallic-gold)]/80 bg-[#0b1b15]/[0.98] p-3 text-left text-[var(--color-beige-white)] shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
       style={
         placement
@@ -283,10 +282,8 @@ export function AnchoredPopover({
               width: placement.width,
               maxHeight: placement.maxHeight,
             }
-          : // Measured before it is shown. Opacity, not visibility: a
-            // visibility change can still be mid-transition (reduced motion
-            // gives everything a tiny one) when focus moves in, and a hidden
-            // button ignores focus.
+          : // Measured before it is shown. Opacity, not visibility: a hidden
+            // button ignores focus, so focus moving in must never meet one.
             { opacity: 0, pointerEvents: 'none', left: 0, top: 0 }
       }
     >
