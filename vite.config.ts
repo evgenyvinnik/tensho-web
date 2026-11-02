@@ -25,12 +25,10 @@ export default defineConfig(({ mode }) => ({
     mode !== 'native' &&
       publicSitePlugin(deploymentBase, process.env.VITE_SITE_URL),
     react({
-      // React Compiler is experimental - uncomment when using React 19+
-      // babel: {
-      //   plugins: [
-      //     ['babel-plugin-react-compiler', {}],
-      //   ],
-      // },
+      // Keep the React Compiler off: screens read the mutable game.state during
+      // render, and its memoization would keep showing stale values. To try it,
+      // use `reactCompilerPreset` with @rolldown/plugin-babel (see the
+      // @vitejs/plugin-react README).
     }),
     VitePWA({
       disable: mode === 'native',

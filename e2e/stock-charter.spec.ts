@@ -105,7 +105,10 @@ for (const lang of ['en', 'es'])
       // startNewRun queues its starting Decrees for a reveal over the shop.
       await clearReveals(page)
       const initial = await saved()
-      const first = initial.shop.teaHouse.itemOfferings[0].id
+      // A bought Seal waits on its wall picker; buy an offer that leaves at once.
+      const first = initial.shop.teaHouse.itemOfferings.find(
+        (offer: { itemType: string }) => offer.itemType !== 'FateSeal'
+      ).id
       await buyOffer(page, first)
       await expect(offerCard(page, first)).toHaveCount(0)
       await settleReveals(page)

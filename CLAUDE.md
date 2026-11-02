@@ -6,16 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Tensho (天翔) Mahjong Roguelike** — A web-based React game reinterpreting Riichi Mahjong as a scoring optimization roguelike (inspired by Balatro).
 
-- **Framework:** React 19 + React Compiler (experimental)
+- **Framework:** React 19 (React Compiler installed but off; see `vite.config.ts`)
 - **Language:** TypeScript (strict mode)
-- **Build:** Vite 6
+- **Build:** Vite 8 (Rolldown)
 - **Runtime:** Bun
 - **Styling:** Tailwind CSS v4
 - **State:** Zustand + GameOrchestrator pattern
 - **Animations:** React Spring
 - **Routing:** React Router v7
 - **i18n:** i18next (13 languages)
-- **Testing:** Vitest 4 (unit), Playwright (E2E)
+- **Testing:** Vitest 5 (unit), Playwright (E2E)
 - **PWA:** vite-plugin-pwa
 
 See [ARCHITECTURE.MD](ARCHITECTURE.MD) for detailed game design and [ITEM_LIBRARIES.md](ITEM_LIBRARIES.md) for complete item/effect lists.
@@ -26,7 +26,7 @@ See [ARCHITECTURE.MD](ARCHITECTURE.MD) for detailed game design and [ITEM_LIBRAR
 bun install          # Install dependencies
 bun run dev          # Start development server (Vite)
 bun run build        # TypeScript check + production build
-bun run lint         # Run ESLint
+bun run lint         # Run Oxlint
 bun run format       # Format code with Prettier
 bun run preview      # Preview production build locally
 bun run sloc         # Count source lines of code

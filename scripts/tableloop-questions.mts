@@ -20,7 +20,6 @@
 
 import { TableLoopEngine } from '../src/tableloop/TableLoopEngine.ts'
 import { enumerateRackGroups } from '../src/tableloop/groupRules.ts'
-import { MeldType } from '../src/core/Meld.ts'
 import { PAIR_SLOT_INDEX, type TableDecreeId, type TableLoopState } from '../src/tableloop/types.ts'
 
 const RUNS = Number(process.argv[2] ?? 300)

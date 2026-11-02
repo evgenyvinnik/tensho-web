@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import ts from 'typescript'
+// TypeScript 7 has no compiler API yet; its 6.0 compatibility package parses.
+import ts from '@typescript/typescript6'
 import { describe, expect, it } from 'vitest'
 import {
   generatedArtPaths,

@@ -155,6 +155,8 @@ for (const language of ['en', 'es'])
     expect((await saved()).random).toEqual(before.random)
     await activate(page.locator('[data-game-action="play"]'))
     await expect(page).toHaveURL(/\/shop\/?$/)
+    // The play saves before the Tea House opens; capture the opened shop.
+    await expect.poll(async () => (await saved()).shop.opened).toBe(true)
     const shop = await saved()
     expect(shop.state.score).toBe(345)
     expect(shop.state.decreeSystem.ownedDecrees[1].randomCopyTargetId).toBe(

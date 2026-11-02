@@ -170,6 +170,8 @@ for (const language of ['en', 'es'])
     await activate(page.locator('[data-game-action="play"]'))
     await expect.poll(async () => (await saved()).state.phase).toBe('shop')
     await expect(page).toHaveURL(/\/shop\/?$/)
+    // The play saves before the Tea House opens; capture the opened shop.
+    await expect.poll(async () => (await saved()).shop.opened).toBe(true)
     const paid = await saved()
     expect(paid.state.score - before.state.score).toBe(ECHO_SCORE)
     // Treasure Hunter's 5 gold, halved by Frostbite, settles as 2.5.

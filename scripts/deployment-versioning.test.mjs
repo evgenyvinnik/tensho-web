@@ -322,14 +322,14 @@ test('workflow gates the built artifact and preserves Pages base and SPA fallbac
   assert.match(workflow, /cancel-in-progress: false/)
 })
 
-test('runtime setup uses the repository Bun pin and Node 22 before release checks', () => {
+test('runtime setup uses the repository Bun pin and Node 26 before release checks', () => {
   const manifest = JSON.parse(
     readFileSync(new URL('../package.json', import.meta.url), 'utf8')
   )
   assert.equal(manifest.packageManager, 'bun@1.3.3')
   assert.equal(
     readFileSync(new URL('../.nvmrc', import.meta.url), 'utf8').trim(),
-    '22'
+    '26'
   )
   assert.match(workflow, /bun-version-file: package\.json/)
   assert.doesNotMatch(workflow, /bun-version: 1\.1\.38/)

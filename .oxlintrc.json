@@ -1,0 +1,97 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "unicorn", "oxc"],
+  "categories": { "correctness": "error" },
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+    // The React Compiler is off (see vite.config.ts), so its rules only warn.
+    "react/globals": "warn",
+    "react/purity": "warn",
+    "react/refs": "warn",
+    "react/set-state-in-effect": "warn",
+    "react/static-components": "warn",
+    // Sized arrays are deliberate in the scoring hot paths.
+    "unicorn/no-new-array": "off",
+    // Misreads copies taken before mutating loops and spreads of strings.
+    "unicorn/no-useless-spread": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/no-wrapper-object-types": "error"
+  },
+  "overrides": [
+    {
+      // Table rows are data; DataTable keys every cell it renders.
+      "files": ["src/components/screens/tutorial/useTutorialSteps.tsx"],
+      "rules": { "react/jsx-key": "off" }
+    }
+  ],
+  // Retired code from retired-files.json, kept only until it is deleted.
+  "ignorePatterns": [
+    "dist",
+    "dist-native",
+    "dev-dist",
+    "ios",
+    "src/tableloop",
+    "src/components/tableloop",
+    "src/components/screens/TableLoopScreen.tsx",
+    "src/stores/tableLoopStore.ts",
+    "src/stores/tableLoopStore.test.ts",
+    "src/stores/tableLoopConcurrency.test.ts",
+    "src/components/ui/UpdateNotice.tsx",
+    "src/components/ui/UpdateNotice.test.tsx",
+    "src/components/gameplay/RiichiControl.tsx",
+    "src/components/gameplay/RiichiControl.test.tsx",
+    "src/components/gameplay/HandBuilder.tsx",
+    "src/components/gameplay/HandBuilder.test.tsx",
+    "src/components/gameplay/RackTools.tsx",
+    "src/components/gameplay/RackTools.test.tsx",
+    "src/components/gameplay/CoachPanel.tsx",
+    "src/components/gameplay/CoachPanel.test.tsx",
+    "src/components/gameplay/PlayArea.tsx",
+    "src/components/gameplay/ScorePanel.tsx",
+    "src/components/gameplay/GameplayTopBar.tsx",
+    "src/components/gameplay/GameplayTopBar.test.tsx",
+    "src/components/gameplay/ConsumablesBar.tsx",
+    "src/components/gameplay/ConsumablesBar.test.tsx",
+    "src/components/gameplay/FloraTrackCompact.tsx",
+    "src/components/gameplay/FloraTrackCompact.test.tsx",
+    "src/components/gameplay/RoundTypeIndicator.tsx",
+    "src/components/gameplay/RoundTypeIndicator.test.tsx",
+    "src/components/gameplay/PointsMultDisplay.tsx",
+    "src/components/gameplay/PointsMultDisplay.test.tsx",
+    "src/components/gameplay/ExactScoreDetails.tsx",
+    "src/components/gameplay/HandInterpretationDetails.tsx",
+    "src/components/gameplay/HandInterpretationDetails.test.tsx",
+    "src/components/gameplay/PlayStructureHint.test.tsx",
+    "src/gameplay/forecastGuidance.ts",
+    "src/gameplay/forecastGuidance.test.ts",
+    "src/gameplay/playAreaContent.ts",
+    "src/gameplay/handBuildingAdvice.ts",
+    "src/game/HandBuildingAdvice.test.ts",
+    "src/game/Riichi.test.ts",
+    "src/components/shop/ShopItemCard.tsx",
+    "src/components/shop/ShopItemCard.test.tsx",
+    "src/components/shop/CharterCard.tsx",
+    "src/components/shop/CharterCard.test.tsx",
+    "src/components/shop/PackCard.tsx",
+    "src/components/shop/PackCard.test.tsx",
+    "src/components/gameplay/ScoreEquationConsistency.test.tsx"
+  ]
+}

@@ -12,7 +12,7 @@ This project uses [Bun](https://bun.sh) as the JavaScript runtime and package ma
 
 ### Prerequisites
 
-- Node 22, at least 22.18.0 (`.nvmrc` selects the major version).
+- Node 26 (`.nvmrc` selects the major version).
 - Bun 1.3.3, pinned in `package.json`; CI reads the same pin.
 
 ### Installation

@@ -283,7 +283,7 @@ The existence of a tag alone must never be reported as proof of deployment.
 
 ## Runtime and verification gates
 
-- Node 22 is selected from `.nvmrc`; `package.json` requires at least 22.18.0.
+- Node 26 is selected from `.nvmrc`; `package.json` requires at least 26.0.0.
 - Bun 1.3.3 is selected from the manifest's `packageManager` field. This replaces
   the old 1.1.38 CI pin. Bun's default text lockfile arrived in 1.2; see the
   [official lockfile documentation](https://bun.com/docs/pm/lockfile).

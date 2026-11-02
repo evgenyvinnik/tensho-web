@@ -41,7 +41,7 @@ const consent = (
   privacyOptionsRequirementStatus,
 })
 const npaOfLastAd = () =>
-  (AdMob.prepareInterstitial.mock.lastCall?.[0] as { npa: boolean }).npa
+  (AdMob.prepareInterstitial.mock.lastCall![0] as { npa: boolean }).npa
 
 beforeEach(() => {
   vi.clearAllMocks()

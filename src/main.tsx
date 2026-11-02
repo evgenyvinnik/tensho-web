@@ -69,8 +69,10 @@ void nativeStorageReady
   })
 
 // The iOS app's ads, after every second Boss. The consent and tracking prompts
-// come after the first frame; the website never loads AdMob.
-if (IS_NATIVE_APP)
+// come after the first frame; the website never loads AdMob. The mode check
+// is spelled out (not IS_NATIVE_APP) so the web build drops this import before
+// it splits chunks; otherwise AdMob's code shares a stray chunk with Settings.
+if (import.meta.env.MODE === 'native')
   void nativeStorageReady
     .then(() => import('./native/admobInterstitials'))
     .then(({ startAdMob }) => startAdMob())
