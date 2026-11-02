@@ -930,6 +930,10 @@ describe('loss prevention Decrees', () => {
   it('keeps Immortal Decree but halves the score afterwards', () => {
     const orchestrator = new GameOrchestrator()
     orchestrator.startNewRun(2025, 1)
+    // A starting Decree could clear the round and leave nothing to rescue.
+    const decrees = orchestrator.getState().decreeSystem
+    for (const owned of decrees.getOwnedDecrees())
+      decrees.removeDecree(owned.instanceId)
     orchestrator.addDecree(decreeById('decree-immortal-decree'))
 
     let guard = 0

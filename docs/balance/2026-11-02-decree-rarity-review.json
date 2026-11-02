@@ -2606,7 +2606,7 @@
   }
  },
  "after": {
-  "tree": "ab05ab7 + this change",
+  "tree": "27c6d19 (re-tier, fixed starters)",
   "tables": {
    "green_felt": {
     "outcomes": {
@@ -5068,6 +5068,2486 @@
       "seed": 50,
       "act": 2,
       "rounds": 4,
+      "outcome": "loss"
+     }
+    ]
+   }
+  }
+ },
+ "startingFromWholePool": {
+  "tree": "27c6d19 + starting Decrees drawn like Tea House slots",
+  "startingDecreeTally": {
+   "seeds": "1-1000",
+   "decrees": 2000,
+   "LocalEdict": 1381,
+   "RegionalMandate": 520,
+   "ImperialDecree": 99,
+   "distinct": 117,
+   "locked": 0,
+   "flowerGated": 0,
+   "duplicates": 0
+  },
+  "tables": {
+   "green_felt": {
+    "outcomes": {
+     "loss": 47,
+     "win": 3
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "rounds": 0,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 20,
+      "outcome": "loss"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 46,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "red_lacquer": {
+    "outcomes": {
+     "loss": 46,
+     "win": 4
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "rounds": 0,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 46,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "bamboo_mat": {
+    "outcomes": {
+     "loss": 46,
+     "win": 4
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "rounds": 15,
+      "outcome": "loss"
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 5,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 9,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 2,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 44,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 46,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 47,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "imperial_gold": {
+    "outcomes": {
+     "loss": 41,
+     "win": 9
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 3,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 16,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 39,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 44,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 46,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 47,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 50,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "night_market": {
+    "outcomes": {
+     "loss": 40,
+     "win": 10
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 3,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 5,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "rounds": 0,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 6,
+      "rounds": 16,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 20,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 24,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 32,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 46,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 48,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 50,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "temple_stone": {
+    "outcomes": {
+     "loss": 45,
+     "win": 5
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 3,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 22,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 5,
+      "rounds": 13,
+      "outcome": "loss"
+     },
+     {
+      "seed": 46,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 48,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "ghost_parlor": {
+    "outcomes": {
+     "loss": 46,
+     "win": 4
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 3,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "rounds": 0,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 11,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 6,
+      "rounds": 16,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 16,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 21,
+      "outcome": "win"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 46,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     }
+    ]
+   },
+   "dragons_den": {
+    "outcomes": {
+     "loss": 49,
+     "win": 1
+    },
+    "runs": [
+     {
+      "seed": 1,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 2,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 3,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 4,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 5,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 6,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 7,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 8,
+      "act": 1,
+      "rounds": 0,
+      "outcome": "loss"
+     },
+     {
+      "seed": 9,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 10,
+      "act": 6,
+      "rounds": 18,
+      "outcome": "win"
+     },
+     {
+      "seed": 11,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 12,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 13,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 14,
+      "act": 5,
+      "rounds": 14,
+      "outcome": "loss"
+     },
+     {
+      "seed": 15,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 16,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 17,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 18,
+      "act": 3,
+      "rounds": 6,
+      "outcome": "loss"
+     },
+     {
+      "seed": 19,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 20,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 21,
+      "act": 2,
+      "rounds": 4,
+      "outcome": "loss"
+     },
+     {
+      "seed": 22,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 23,
+      "act": 1,
+      "rounds": 1,
+      "outcome": "loss"
+     },
+     {
+      "seed": 24,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 25,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 26,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 27,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 28,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 29,
+      "act": 3,
+      "rounds": 8,
+      "outcome": "loss"
+     },
+     {
+      "seed": 30,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 31,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 32,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 33,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 34,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 35,
+      "act": 5,
+      "rounds": 12,
+      "outcome": "loss"
+     },
+     {
+      "seed": 36,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 37,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 38,
+      "act": 6,
+      "rounds": 20,
+      "outcome": "loss"
+     },
+     {
+      "seed": 39,
+      "act": 6,
+      "rounds": 17,
+      "outcome": "loss"
+     },
+     {
+      "seed": 40,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 41,
+      "act": 2,
+      "rounds": 5,
+      "outcome": "loss"
+     },
+     {
+      "seed": 42,
+      "act": 2,
+      "rounds": 3,
+      "outcome": "loss"
+     },
+     {
+      "seed": 43,
+      "act": 4,
+      "rounds": 10,
+      "outcome": "loss"
+     },
+     {
+      "seed": 44,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 45,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 46,
+      "act": 4,
+      "rounds": 9,
+      "outcome": "loss"
+     },
+     {
+      "seed": 47,
+      "act": 3,
+      "rounds": 7,
+      "outcome": "loss"
+     },
+     {
+      "seed": 48,
+      "act": 1,
+      "rounds": 2,
+      "outcome": "loss"
+     },
+     {
+      "seed": 49,
+      "act": 4,
+      "rounds": 11,
+      "outcome": "loss"
+     },
+     {
+      "seed": 50,
+      "act": 1,
+      "rounds": 2,
       "outcome": "loss"
      }
     ]

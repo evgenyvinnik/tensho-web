@@ -449,7 +449,9 @@ export const PURE_SUIT_ASCETICISM: Decree = {
 }
 
 /**
- * Collection of all starter decrees
+ * The five original hand-written Decrees, which share portrait art. Runs no
+ * longer start from this list: GameOrchestrator draws starting Decrees from
+ * the whole shop pool.
  */
 export const STARTER_DECREES: Decree[] = [
   RIVER_TAX,

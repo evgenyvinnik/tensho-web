@@ -72,11 +72,7 @@ import {
   resolveTableRules,
 } from './tableStyleRules'
 import type { ActiveTableModifiers } from '../systems/TableStyleSystem'
-import {
-  ALL_DECREES,
-  DecreeSystem,
-  STARTER_DECREES,
-} from '../systems/DecreeSystem'
+import { ALL_DECREES, DecreeSystem } from '../systems/DecreeSystem'
 import { FlowerSystem } from '../systems/FlowerSystem'
 import { decreeKey } from '../systems/decreeIdentity'
 import { hasDecreeSticker } from '../systems/decreeStickers'
@@ -86,6 +82,7 @@ import {
   ScoreBreakdown as SystemScoreBreakdown,
   type Decree,
   type DecreeEdition,
+  type DecreeRarity,
   type ImperialCharter,
   type RoundType,
 } from '../systems/types'
@@ -129,7 +126,10 @@ import {
   type DecreeUnlockResolver,
 } from '../config/decreeUnlocks'
 import { DebuffSystem } from './DebuffSystem'
-import type { TeaHouseVisitModifiers } from '../systems/TeaHouseSystem'
+import {
+  DECREE_RARITY_WEIGHTS,
+  type TeaHouseVisitModifiers,
+} from '../systems/TeaHouseSystem'
 import {
   MandateEffectSystem,
   isFaceDebuffTarget,
@@ -364,6 +364,35 @@ interface RoundConfig {
   discardsPerRound: number
   redrawsPerRound: number
   startingHandSize: number
+}
+
+/**
+ * One starting Decree at a Tea House slot's odds: roll a rarity the pool can
+ * fill, then pick uniformly within it. Zero-weight tiers never start a run.
+ */
+function drawStartingDecree(
+  pool: readonly Decree[],
+  random: () => number
+): Decree | undefined {
+  const tiers = (
+    Object.entries(DECREE_RARITY_WEIGHTS) as [DecreeRarity, number][]
+  ).filter(
+    ([rarity, weight]) =>
+      weight > 0 && pool.some((decree) => decree.rarity === rarity)
+  )
+  const total = tiers.reduce((sum, [, weight]) => sum + weight, 0)
+  if (total === 0) return undefined
+  let roll = random() * total
+  let rarity = tiers[tiers.length - 1][0]
+  for (const [tier, weight] of tiers) {
+    if (roll < weight) {
+      rarity = tier
+      break
+    }
+    roll -= weight
+  }
+  const candidates = pool.filter((decree) => decree.rarity === rarity)
+  return candidates[Math.floor(random() * candidates.length)]
 }
 
 const DEFAULT_ROUND_CONFIG: RoundConfig = {
@@ -613,23 +642,29 @@ export class GameOrchestrator {
   }
 
   /**
-   * Initialize starter decrees for a new run
-   * Gives player 2 random decrees from the starter pool
+   * Give a new run its two starting Decrees. Each is drawn like an ordinary
+   * Tea House slot: from the whole shop pool, at the shop's rarity odds. So
+   * locked, Flower-gated and special-source Decrees never start a run.
    */
   private initializeStarterDecrees(seed: number): void {
     // Offset so this draws differently from the wall shuffle on the same seed.
     const seededRandom = createSeededRandom(seed + 12345)
 
-    const shuffled = [...STARTER_DECREES]
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(seededRandom() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-
-    // Give player 2 starter decrees
     const starterCount = 2
-    for (let i = 0; i < starterCount && i < shuffled.length; i++) {
-      this.state.decreeSystem.acquireDecree(shuffled[i])
+    for (let i = 0; i < starterCount; i++) {
+      const owned = this.state.decreeSystem
+        .getOwnedDecrees()
+        .map((decree) => decree.id)
+      const decree = drawStartingDecree(
+        DecreeSystem.getShopCandidates(
+          owned,
+          undefined,
+          0,
+          this.decreeUnlockResolver
+        ),
+        seededRandom
+      )
+      if (decree) this.state.decreeSystem.acquireDecree(decree)
     }
 
     if (this.state.tableModifiers.grantRegionalMandate) {
@@ -707,7 +742,7 @@ export class GameOrchestrator {
       wallVariant: table.id,
     })
 
-    // Give starter decrees (2 random from the starter pool)
+    // Two starting Decrees, drawn like Tea House slots
     this.initializeStarterDecrees(actualSeed)
 
     // Update target score from round manager

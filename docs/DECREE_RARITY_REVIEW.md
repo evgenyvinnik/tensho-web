@@ -25,8 +25,9 @@ Uncommons paid less than Flame or Spark, which have no condition at all.
 
 ## How power was measured
 
-Every run starts with two of the five starter Decrees, so Extended Hand Grant
-is in 40% of runs from the first round. That makes its slot a clean test bed.
+Before this change, every run started with two of five fixed starter
+Decrees, so Extended Hand Grant was in 40% of runs from the first round. That
+made its slot a clean test bed.
 Its effect was replaced in memory with each variant below, and the same seeds
 were replayed. The comparison covers the 167 runs (of 400) that start with
 it.
@@ -126,7 +127,8 @@ payoffs and Boss Slayer 5, Wealth Engine 4, and the four Uncommon Yaku payoffs
 | Heavenly Ordinance (special sources) | 41 | 39 | — |
 
 Extended Hand Grant is now about 14 times rarer in an ordinary Tea House slot.
-It stays in the starter pool, so 40% of runs still begin with it.
+It no longer has a fixed place among the starting Decrees either; see
+[Starting Decrees from the whole pool](#starting-decrees-from-the-whole-pool).
 
 ## Measurement
 
@@ -145,16 +147,58 @@ eight tables at Stake 1.
 | Dragon's Den | 2 | 2 | 5.84 | 5.68 |
 | **All 400 runs** | **25 (6.3%)** | **25 (6.3%)** | **7.58** | **7.53** |
 
-The change is neutral for this bot. 269 of 400 runs are identical, 66 clear
-more rounds and 65 fewer. Most of the bot's Decrees are its starters, which
-this change does not swap. Of the moved Decrees, Time Lord and Time Master now
+The re-tier alone is neutral for this bot. 269 of 400 runs are identical, 66
+clear more rounds and 65 fewer. Most of the bot's Decrees were its fixed
+starters, which the re-tier did not swap. Of the moved Decrees, Time Lord and Time Master now
 appear in shops and end 9 and 11 runs, against none before. Crimson Banner
 drops from 19 final builds to 2.
 
 Paired per-seed results, the slot calibration and the starter nulling are in
 [balance/2026-11-02-decree-rarity-review.json](balance/2026-11-02-decree-rarity-review.json).
 
+## Starting Decrees from the whole pool
+
+A run used to start with two of five fixed Decrees: River Tax, Extended Hand
+Grant, Simples Dispensation, Moonlit Emblem and Pure Suit Asceticism. Now each
+of the two starting Decrees is drawn like an ordinary Tea House slot. The
+draw rolls a rarity at the shop's odds (Common 70%, Uncommon 25%, Rare 5%) and
+then picks uniformly within that tier. It uses the same pool as the shop, so a
+locked Decree, a Flower-gated Decree and a Legendary or Mythic Decree never
+start a run, and the second draw never repeats the first. Imperial Gold still
+adds one seeded Regional Mandate on top.
+
+The draw keeps its own seeded stream (run seed + 12345), so it does not shift
+the wall, shop or Omen rolls. `STARTER_DECREES` remains as the group of five
+hand-written Decrees that share portrait art; nothing deals from it any more.
+
+Across seeds 1 to 1,000 the 2,000 starting Decrees were 69% Common, 26%
+Uncommon and 5% Rare, from 117 different Decrees. None was locked,
+Flower-gated or special-source, and no run started with a duplicate.
+
+Same harness, policy and seeds, after the re-tier:
+
+| Table | Wins, fixed starters | Wins, whole pool | Mean rounds, fixed | Mean rounds, whole pool |
+|-------|---------------------:|-----------------:|-------------------:|------------------------:|
+| Green Felt | 2 | 3 | 6.98 | 8.76 |
+| Red Lacquer | 3 | 4 | 7.02 | 8.78 |
+| Bamboo Mat | 2 | 4 | 7.44 | 9.72 |
+| Imperial Gold | 4 | 9 | 8.70 | 10.68 |
+| Night Market | 6 | 10 | 8.48 | 11.14 |
+| Temple Stone | 3 | 5 | 8.58 | 10.20 |
+| Ghost Parlor | 3 | 4 | 7.32 | 9.24 |
+| Dragon's Den | 2 | 1 | 5.68 | 7.64 |
+| **All 400 runs** | **25 (6.3%)** | **40 (10.0%)** | **7.53** | **9.52** |
+
+Runs get noticeably easier for the bot: 181 runs clear more rounds, 76 fewer
+and 143 tie. The old starters were weak for it (the nulling table above puts
+four of the five near zero), while a typical draw is a +Mult or +Points
+Common, which the slot calibration rates at 1 to 3 rounds.
+
 ## Follow-ups not done here
+
+- Starting from the whole pool raised the bot's win rate from 6.3% to 10%. If
+  that is too generous for new players, the starting draw could be limited to
+  Commons, or cut to one Decree, without changing the shop.
 
 - Flat Mult stays strong through Act 3. Blazing Banner (+10 Mult, Uncommon)
   cleared as many rounds as ×3 Mult. It stays Uncommon because the Rare

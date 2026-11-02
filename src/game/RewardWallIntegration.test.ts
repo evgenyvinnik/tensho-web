@@ -140,7 +140,10 @@ describe.each(rewards)(
         const springs = state.seasonSystem
           .getSeasonStack()
           .filter((season) => season.type === 'Spring' && !season.isCorrupted)
-        expect(game.getHandTiles()).toHaveLength(14 + springs.length * 2)
+        // Starting Decrees come from the whole pool and may add rack spaces.
+        expect(game.getHandTiles()).toHaveLength(
+          14 + state.decreeSystem.getHandSizeBonus() + springs.length * 2
+        )
         markedTilesDealt += game
           .getHandTiles()
           .filter((tile) => tile.suit === suit).length
