@@ -549,9 +549,10 @@
       "title": "Credits",
       "soundEffects": "Sound effects",
       "interface": "Button and menu sounds",
-      "casino": "Tile sounds, chips, gold and card packs",
+      "casino": "Tile sounds, chips and card packs",
       "modified": "Cut into single sounds, cleaned up and level-matched for Tensho.",
-      "original": "All other sound effects, including the koto, bells and taiko, are original sounds synthesized for Tensho."
+      "original": "All other sound effects, including the koto, bells and taiko, are original sounds synthesized for Tensho.",
+      "coins": "Gold coins and paper"
     }
   },
   "gameplay": {

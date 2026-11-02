@@ -872,9 +872,10 @@
       "title": "Mga Kredito",
       "soundEffects": "Mga sound effect",
       "interface": "Tunog ng mga button at menu",
-      "casino": "Tunog ng mga tile, chips, ginto, at card pack",
+      "casino": "Tunog ng mga tile, chips, at card pack",
       "modified": "Hinati sa mga solong tunog, nilinis, at pinantay ang lakas para sa Tensho.",
-      "original": "Ang lahat ng iba pang sound effect, kasama ang koto, mga kampana, at taiko, ay orihinal na tunog na sinintesis para sa Tensho."
+      "original": "Ang lahat ng iba pang sound effect, kasama ang koto, mga kampana, at taiko, ay orihinal na tunog na sinintesis para sa Tensho.",
+      "coins": "Gintong barya at papel"
     }
   },
   "gameplay": {

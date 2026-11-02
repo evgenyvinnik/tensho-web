@@ -16,18 +16,23 @@ declare global {
 async function observeAudio(page: Page, muted = false) {
   await page.addInitScript(
     ({ muted }) => {
-      localStorage.setItem(
-        'tensho-settings',
-        JSON.stringify({
-          state: {
-            musicEnabled: !muted,
-            sfxEnabled: !muted,
-            musicVolume: 0.3,
-            sfxVolume: 0.5,
-          },
-          version: 1,
-        })
-      )
+      // Seed settings once per session, so later navigations see what the
+      // player changed (as a real reload would), not the seed again.
+      if (!sessionStorage.getItem('audio-settings-seeded')) {
+        localStorage.setItem(
+          'tensho-settings',
+          JSON.stringify({
+            state: {
+              musicEnabled: !muted,
+              sfxEnabled: !muted,
+              musicVolume: 0.3,
+              sfxVolume: 0.5,
+            },
+            version: 1,
+          })
+        )
+        sessionStorage.setItem('audio-settings-seeded', 'true')
+      }
       window.__audioProbe = { elements: [], started: [], failed: [] }
       const nativePlay = HTMLMediaElement.prototype.play
       HTMLMediaElement.prototype.play = function () {
@@ -153,11 +158,16 @@ test('persisted mute blocks playback and settings can independently enable SFX',
   expect(await page.evaluate(() => window.__audioProbe.started)).toEqual([])
   await sfx.click()
   await expect(sfx).toHaveAttribute('aria-checked', 'false')
+  // Buttons are silent, so the switch itself plays nothing.
+  expect(await page.evaluate(() => window.__audioProbe.started)).toEqual([])
+  // Effects alone play at the table, with music still muted.
+  await openTable(page)
+  await selectTiles(page, 1)
   await expect
     .poll(() =>
       page.evaluate(() =>
         window.__audioProbe.started.some((src) =>
-          src.endsWith('/ui_button_click.wav')
+          src.endsWith('/tile_select.wav')
         )
       )
     )
@@ -167,16 +177,6 @@ test('persisted mute blocks playback and settings can independently enable SFX',
       window.__audioProbe.started.some((src) => src.endsWith('.mp3'))
     )
   ).toBe(false)
-  await sfx.click()
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        window.__audioProbe.elements
-          .filter((audio) => audio.src.includes('/sfx/'))
-          .every((audio) => audio.paused)
-      )
-    )
-    .toBe(true)
 })
 
 test('a saved game preserves its paid play without replaying scoring audio on reload', async ({

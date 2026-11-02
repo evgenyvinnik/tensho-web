@@ -243,7 +243,6 @@ export function HandRack({
         key={tile.id}
         type="button"
         data-play-tile={tile.id}
-        data-own-sound
         aria-pressed={false}
         disabled={disabled}
         aria-label={tileName(tile, t, faceDownIds.has(tile.id))}

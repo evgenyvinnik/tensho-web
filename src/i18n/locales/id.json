@@ -761,9 +761,10 @@
       "title": "Kredit",
       "soundEffects": "Efek suara",
       "interface": "Suara tombol dan menu",
-      "casino": "Suara ubin, chip, emas, dan paket kartu",
+      "casino": "Suara ubin, chip, dan paket kartu",
       "modified": "Dipotong menjadi suara tunggal, dibersihkan, dan diseimbangkan volumenya untuk Tensho.",
-      "original": "Semua efek suara lainnya, termasuk koto, lonceng, dan taiko, adalah suara orisinal yang disintesis untuk Tensho."
+      "original": "Semua efek suara lainnya, termasuk koto, lonceng, dan taiko, adalah suara orisinal yang disintesis untuk Tensho.",
+      "coins": "Koin emas dan kertas"
     }
   },
   "gameplay": {

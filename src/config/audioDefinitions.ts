@@ -20,7 +20,6 @@ export const TILE_SOUNDS = {
   select: 'tile_select',
   deselect: 'tile_deselect',
   slide: 'tile_slide',
-  place: 'tile_place',
   flip: 'tile_flip',
 } as const
 
@@ -28,7 +27,6 @@ export const TILE_SOUNDS = {
  * UI sound effects
  */
 export const UI_SOUNDS = {
-  buttonClick: 'ui_button_click',
   buttonHover: 'ui_button_hover',
   menuOpen: 'ui_menu_open',
   menuClose: 'ui_menu_close',
@@ -47,7 +45,6 @@ export const GAME_SOUNDS = {
   goldEarned: 'game_gold_earned',
   goldSpent: 'game_gold_spent',
   roundComplete: 'game_round_complete',
-  roundFailed: 'game_round_failed',
   actComplete: 'game_act_complete',
   gameOver: 'game_over',
   victory: 'game_victory',
@@ -62,7 +59,6 @@ export const SPECIAL_SOUNDS = {
   yakumanScored: 'special_yakuman',
   yakumanDramatic: 'special_yakuman_dramatic',
   decreeAcquired: 'special_decree_acquired',
-  decreeTriggered: 'special_decree_triggered',
   flowerCollected: 'special_flower_collected',
   seasonActivated: 'special_season_activated',
   packOpening: 'special_pack_opening',
@@ -204,10 +200,8 @@ const PRELOADED = new Set<SoundEffectId>([
   ...Object.values(TILE_SOUNDS),
   GAME_SOUNDS.handPlayed,
   GAME_SOUNDS.goldEarned,
-  UI_SOUNDS.buttonClick,
   FEEDBACK_SOUNDS.invalidAction,
   SPECIAL_SOUNDS.yakuScored,
-  SPECIAL_SOUNDS.decreeTriggered,
 ])
 
 export const SOUND_EFFECT_CONFIG = Object.fromEntries(
