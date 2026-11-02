@@ -364,15 +364,17 @@ export const RIVER_TAX: Decree = {
 }
 
 /**
- * Extended Hand Grant (Common) - +3 Turns per round
+ * Extended Hand Grant (Rare) - +3 Turns per round. The top of the Turn ladder:
+ * Time Lord (+1) is Common and Time Master (+2) Uncommon, mirroring the
+ * free-redraw and rack-space ladders. docs/DECREE_RARITY_REVIEW.md.
  */
 export const EXTENDED_HAND_GRANT: Decree = {
   id: 'extended_hand_grant',
   name: 'Extended Hand Grant',
   description: '+3 Turns per round.',
   category: 'Entropy',
-  rarity: 'LocalEdict',
-  cost: 5,
+  rarity: 'ImperialDecree',
+  cost: 8,
   effect: {
     type: 'draw',
     trigger: 'Passive',
@@ -382,7 +384,8 @@ export const EXTENDED_HAND_GRANT: Decree = {
 }
 
 /**
- * Tanyao Dispensation (Uncommon) - Terminals allowed in Tanyao
+ * Tanyao Dispensation (Common) - Terminals allowed in Tanyao. It only acts on
+ * complete hands, so it sits with the other complete-hand Yaku payoffs.
  */
 export const TANYAO_DISPENSATION: Decree = {
   id: 'tanyao_dispensation',
@@ -390,8 +393,8 @@ export const TANYAO_DISPENSATION: Decree = {
   description:
     'All Simples (normally only 2–8 tiles) also accepts 1s and 9s. Winds and Dragons still break it.',
   category: 'YakuDoctrine',
-  rarity: 'RegionalMandate',
-  cost: 6,
+  rarity: 'LocalEdict',
+  cost: 4,
   effect: {
     type: 'rule_modification',
     trigger: 'Passive',
@@ -402,7 +405,8 @@ export const TANYAO_DISPENSATION: Decree = {
 }
 
 /**
- * Moonlit Emblem (Uncommon) - Honor tiles add stacking multiplier
+ * Moonlit Emblem (Common) - Honor tiles add stacking multiplier. With three or
+ * four Honors it pays less than Honor Guard's ×1.5, so it is not an Uncommon.
  */
 export const MOONLIT_SEAL: Decree = {
   id: 'moonlit_seal',
@@ -410,8 +414,8 @@ export const MOONLIT_SEAL: Decree = {
   description:
     'Each Wind or Dragon played adds 0.1 to this Decree’s ×Mult (three give ×1.3).',
   category: 'Scaling',
-  rarity: 'RegionalMandate',
-  cost: 6,
+  rarity: 'LocalEdict',
+  cost: 4,
   effect: {
     type: 'scaling',
     trigger: 'OnScored',
@@ -424,7 +428,8 @@ export const MOONLIT_SEAL: Decree = {
 }
 
 /**
- * Pure Suit Asceticism (Rare) - Dominant suit tiles scale multiplicatively
+ * Pure Suit Asceticism (Uncommon) - Dominant suit tiles scale multiplicatively.
+ * A six-tile play tops out near ×1.8, Flush Fever's band rather than Inferno's.
  */
 export const PURE_SUIT_ASCETICISM: Decree = {
   id: 'pure_suit_asceticism',
@@ -432,8 +437,8 @@ export const PURE_SUIT_ASCETICISM: Decree = {
   description:
     '×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6).',
   category: 'Scaling',
-  rarity: 'ImperialDecree',
-  cost: 8,
+  rarity: 'RegionalMandate',
+  cost: 6,
   effect: {
     type: 'multiplicative_score',
     trigger: 'OnScored',
@@ -587,14 +592,15 @@ export const CLOSED_HAND_AUSTERITY: Decree = {
   effect: AUSTERITY_EFFECT,
 }
 
+// Common: four Terminals give ×1.2, what Spark pays on every play.
 export const TERMINAL_DEVOTION: Decree = {
   id: 'terminal_devotion',
   name: 'Terminal Devotion',
   description:
     'Each Terminal (1 or 9) played adds 0.05 to this Decree’s ×Mult (four give ×1.2).',
   category: 'Scaling',
-  rarity: 'RegionalMandate',
-  cost: 5,
+  rarity: 'LocalEdict',
+  cost: 4,
   effect: {
     type: 'scaling',
     trigger: 'OnScored',
