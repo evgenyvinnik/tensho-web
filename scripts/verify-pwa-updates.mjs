@@ -13,6 +13,25 @@ import { resolve, extname, sep } from 'node:path'
 import { chromium, expect } from '@playwright/test'
 import { illustrationCopies } from './lib/illustration-delivery.mjs'
 
+/**
+ * Mirrors RETIRED_FAMILIES in src/systems/CelestialOrbSystem.ts: Orb upgrade
+ * families renamed since the baseline release, keyed to their current name.
+ */
+const RETIRED_FAMILIES = {
+  Riichi: 'Pairs',
+  Tanyao: 'TwoSequences',
+  Yakuhai: 'Dragons',
+  Pinfu: 'Sequence',
+  Ittsu: 'Straights',
+  Honitsu: 'FullHouse',
+  Toitoi: 'Triplets',
+  Chinitsu: 'Quads',
+  Sanshoku: 'MixedSuits',
+  SevenPairs: 'ThreePairs',
+  Chanta: 'Loose',
+  Kokushi: 'Winds',
+}
+
 const [before, after, artifacts] = process.argv
   .slice(2)
   .map((path) => resolve(path))
@@ -377,7 +396,8 @@ try {
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
         // Loading a save re-reads every saved item from the catalog, so an
-        // item's name and description follow the new release. Effects,
+        // item's name and description follow the new release, as does a
+        // Celestial Orb's effect when a release re-targets it. Other effects,
         // ownership and runtime fields stay exact.
         const withoutCatalogText = (value) =>
           Array.isArray(value)
@@ -388,14 +408,47 @@ try {
                     .filter(
                       ([key]) =>
                         typeof value.id !== 'string' ||
-                        (key !== 'name' && key !== 'description')
+                        (key !== 'name' &&
+                          key !== 'description' &&
+                          !(value.type === 'CelestialOrb' && key === 'effect'))
                     )
                     .map(([key, child]) => [key, withoutCatalogText(child)])
                 )
               : value
+        // Upgrade families renamed by a release move to the family the same
+        // Orb raises now (RETIRED_FAMILIES in CelestialOrbSystem.ts); a family
+        // the old save never had starts at level 1 with nothing scored.
+        const resumed = (await readSave(page, classicKey)).snapshot
+        const families = (snapshot, key) => {
+          const result = new Map()
+          for (const [name, value] of snapshot.state.celestialOrbSystem[key])
+            result.set(RETIRED_FAMILIES[name] ?? name, value)
+          return result
+        }
+        for (const [key, fresh] of [
+          ['orbLevels', 1],
+          ['yakuTriggerCounts', 0],
+        ]) {
+          const before = families(durable.snapshot, key)
+          const after = families(resumed, key)
+          for (const [family, value] of after)
+            assert.equal(value, before.get(family) ?? fresh, `${key} ${family}`)
+          for (const family of before.keys()) assert.ok(after.has(family))
+        }
+        const withoutFamilies = (snapshot) => ({
+          ...snapshot,
+          state: {
+            ...snapshot.state,
+            celestialOrbSystem: {
+              ...snapshot.state.celestialOrbSystem,
+              orbLevels: undefined,
+              yakuTriggerCounts: undefined,
+            },
+          },
+        })
         assert.deepEqual(
-          withoutCatalogText((await readSave(page, classicKey)).snapshot),
-          withoutCatalogText(durable.snapshot)
+          withoutCatalogText(withoutFamilies(resumed)),
+          withoutCatalogText(withoutFamilies(durable.snapshot))
         )
         await page.screenshot({
           path: resolve(artifacts, `${label}-resumed.png`),

@@ -19,7 +19,7 @@
 
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { FATE_SEALS } from '../systems/FateSealSystem'
-import { CELESTIAL_ORBS } from '../systems/CelestialOrbSystem'
+import { CELESTIAL_ORBS, currentFamilyId } from '../systems/CelestialOrbSystem'
 import { VOID_SCRIPTS } from '../systems/VoidScriptSystem'
 import { ALL_CHARTERS } from '../config/charterDefinitions'
 import { ALL_MANDATES } from '../config/mandateDefinitions'
@@ -170,10 +170,29 @@ function refreshOffering(offering: unknown, arcanaBonus: number): unknown {
 const mapArray = (value: unknown, map: (item: unknown) => unknown) =>
   Array.isArray(value) ? value.map(map) : value
 
-const renameRiichi = (entries: unknown) =>
-  mapArray(entries, (entry) =>
-    Array.isArray(entry) && entry[0] === 'Riichi' ? ['Pairs', entry[1]] : entry
-  )
+/**
+ * Upgrade-family entries saved under a retired family (Riichi, and the Yaku
+ * families before the simple-family rework) move to the family the same Orb
+ * raises now; two that land on one family keep the higher value. Malformed or
+ * unknown entries pass through unchanged for the validator to reject.
+ */
+const renameRetiredFamilies = (entries: unknown) => {
+  if (!Array.isArray(entries)) return entries
+  const kept: unknown[] = []
+  const merged = new Map<string, number>()
+  for (const entry of entries) {
+    const family =
+      Array.isArray(entry) &&
+      entry.length === 2 &&
+      typeof entry[0] === 'string' &&
+      typeof entry[1] === 'number'
+        ? currentFamilyId(entry[0])
+        : null
+    if (family) merged.set(family, Math.max(merged.get(family) ?? 0, entry[1]))
+    else kept.push(entry)
+  }
+  return [...merged.entries(), ...kept]
+}
 
 /** Refresh every saved catalog item to its current definition. */
 function refreshContent(snapshot: Json): Json {
@@ -207,8 +226,8 @@ function refreshContent(snapshot: Json): Json {
     if (isRecord(state.celestialOrbSystem))
       state.celestialOrbSystem = {
         ...state.celestialOrbSystem,
-        orbLevels: renameRiichi(state.celestialOrbSystem.orbLevels),
-        yakuTriggerCounts: renameRiichi(
+        orbLevels: renameRetiredFamilies(state.celestialOrbSystem.orbLevels),
+        yakuTriggerCounts: renameRetiredFamilies(
           state.celestialOrbSystem.yakuTriggerCounts
         ),
         activeOrbs: mapArray(

@@ -801,7 +801,7 @@ export class CelestialOrbSystem {
       saved: [string, number][]
     ) => {
       for (const [savedFamily, value] of saved) {
-        const family = currentFamily(savedFamily)
+        const family = currentFamilyId(savedFamily)
         if (family) target.set(family, Math.max(target.get(family) ?? 0, value))
       }
     }
@@ -831,7 +831,11 @@ const RETIRED_FAMILIES: Readonly<Record<string, YakuCategory>> = {
   Kokushi: 'Winds', // Eris
 }
 
-function currentFamily(saved: string): YakuCategory | null {
+/**
+ * The current family for a saved family name: itself if it is current, the
+ * family its Orb raises now if it was retired, else null.
+ */
+export function currentFamilyId(saved: string): YakuCategory | null {
   if ((UPGRADE_FAMILY_IDS as readonly string[]).includes(saved))
     return saved as YakuCategory
   return RETIRED_FAMILIES[saved] ?? null
