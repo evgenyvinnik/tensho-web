@@ -129,7 +129,7 @@ for (const [index, language] of languages.entries()) {
         }
       })
       expect(row).toEqual({ fits: true, firstRow: 3 })
-      // Every family any run can upgrade shows from level 0, three by three.
+      // All 13 upgrade families show from level 0, three to a row.
       const { minSize, ...grid } = await page
         .locator('[data-yaku-upgrade-grid]')
         .evaluate((node) => {
@@ -147,7 +147,7 @@ for (const [index, language] of languages.entries()) {
             ),
           }
         })
-      expect(grid).toEqual({ count: 9, columns: 3, rows: 3 })
+      expect(grid).toEqual({ count: 13, columns: 3, rows: 5 })
       expect(minSize).toBeGreaterThanOrEqual(44)
       // A common phone fits Decrees and upgrades side by side, offers in view.
       await page.setViewportSize({ width: 390, height: 844 })

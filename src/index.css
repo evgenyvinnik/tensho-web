@@ -1841,7 +1841,12 @@ button:active .game-illustration,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* None rather than a tiny duration: transition-property defaults to all,
+       so a tiny one turned every style change into a one-frame transition,
+       and layout read in that frame saw the old values (a panel still at its
+       measuring spot, a page still at its unstyled width). Nothing waits for
+       transitionend. */
+    transition: none !important;
   }
 }
 

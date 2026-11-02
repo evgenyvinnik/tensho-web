@@ -123,7 +123,9 @@ for (const language of ['en', 'es'])
     await page.screenshot({ path: testInfo.outputPath('succession-rule.png') })
     expect(await saved()).toEqual(before)
     // This is an outside-dismissed inventory popover, not a modal with Close.
-    await activate(page.locator('[data-hand-score]'))
+    // On a phone it covers the hand score, so press the round title above it.
+    // Dispatched: touch adjustment moves a real tap there onto the Stake button.
+    await page.locator('[data-run-header-round]').dispatchEvent('pointerdown')
     await expect(dialog).toHaveCount(0)
     for (const tile of before.state.handTiles)
       await activate(
