@@ -13,9 +13,6 @@ import {
   getStickerArt,
 } from './itemArt'
 
-/** Orbs whose portrait is commissioned but not delivered yet. */
-const ORBS_AWAITING_ART = new Set(['moon_orb'])
-
 /** A transparent square WebP of the given edge, small enough for the cache. */
 function expectTransparentSquare(path: string, edge: number, maxBytes: number) {
   const bytes = readFileSync(`public${path}`)
@@ -100,19 +97,6 @@ describe('Season, Flower, sticker and result artwork', () => {
     for (const orb of orbs) {
       const family = orb.effect.targetYaku
       const art = getItemArt('yakuUpgrades', family)
-      // An Orb still awaiting its portrait leaves its family on the shared
-      // family artwork; it joins the unique set once its art lands.
-      if (ORBS_AWAITING_ART.has(orb.id)) {
-        expect(art, family).toEqual({
-          src: illustrationAssets.yakuLedger,
-          hasOwnArt: false,
-        })
-        expect(getItemArt('orbs', orb.id), orb.id).toEqual({
-          src: illustrationAssets.consumables.celestialOrb,
-          hasOwnArt: false,
-        })
-        continue
-      }
       expect(art.hasOwnArt, family).toBe(true)
       if (family !== 'Pairs')
         expect(art.src, family).toBe(getItemArt('orbs', orb.id).src)
@@ -124,9 +108,8 @@ describe('Season, Flower, sticker and result artwork', () => {
           .digest('hex')
       )
     }
-    const pictured = orbs.length - ORBS_AWAITING_ART.size
-    expect(sources.size).toBe(pictured)
-    expect(hashes.size).toBe(pictured)
+    expect(sources.size).toBe(orbs.length)
+    expect(hashes.size).toBe(orbs.length)
   })
 
   it('ships three different compact ending scenes', () => {

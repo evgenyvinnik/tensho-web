@@ -99,6 +99,35 @@ always share one label. It shows in the Tea House kind line
 decorative identifiers, not rule diagrams: the family's "works with" text
 (`upgradeFamilies.*.covers`) is the rule.
 
+## Orbs V5 (2026-11-02)
+
+The upgrade-family rework (simple pattern and tile families, see
+`playOrbCategories`) gave seven Orbs a new family, so their carved motif no
+longer matched. The V5 set replaces six V4 portraits and adds the Moon, made to
+`docs/ORB_ART_BRIEF.md` from the V4 masters as style references:
+
+| Orb | Family | Motif |
+|-----|--------|-------|
+| Moon (new) | Sequence + Pair | 2-3-4 Bamboo, pair of 9 Bamboo |
+| Mercury | Two Sequences | 1-2-3 and 7-8-9 Characters |
+| Jupiter | Full House | three 8 Bamboo, two 2 Bamboo |
+| Mars | Quads | four 5 Circles |
+| Eris | Winds | 東 南 西 北 |
+| Ceres | Loose Tiles | 一萬, 中, 9 Bamboo set apart |
+| Planet X | Three Pairs | 2-2, 6-6, 8-8 Bamboo |
+
+Pluto, Venus, Earth, Saturn, Uranus, Neptune and the Black Hole keep their V4
+portraits. Runtime copies use the V4 transform (crop to alpha above 3%, fit in
+244 px, centre on 256 px, WebP quality 72), encoded with Pillow (method 6,
+alpha quality 100) because `cwebp` was not available; each is 18–23 KB. The
+manifest records the V5 master hashes (`Tensho_Orbs_V5/png/<id>.png`); the
+masters stay in the delivery archive `Tensho_Orbs_V5.zip`, not in the repo.
+
+A family's Tea House token and its upgrade reveal show the same portrait as
+its Orb (`getItemArt('yakuUpgrades', family)` resolves through
+`UPGRADE_ORBS`), so these seven files update both places. Pairs keeps its own
+two-tile badge.
+
 ## Tile finishes (2026-10-31)
 
 A marked tile is no longer the plain face shrunk inside a material frame. It
