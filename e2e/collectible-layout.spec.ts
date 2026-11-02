@@ -154,7 +154,8 @@ for (const width of [320, 390, 1280]) {
         orbPath
       )
       game.setConsumableUnlockResolver(() => true)
-      for (const family of ['Pairs', 'SevenPairs', 'Pinfu']) {
+      // Pluto, Planet X and Venus.
+      for (const family of ['Pairs', 'ThreePairs', 'Sequence']) {
         const orb = CelestialOrbSystem.createCelestialOrbInstance(
           getCelestialOrbByYaku(family)
         )

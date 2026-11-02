@@ -309,7 +309,8 @@ test.describe('Game Navigation', () => {
     await expect(
       page.getByRole('heading', { name: 'How to play', exact: true })
     ).toBeVisible()
-    await expect(guide.locator('[data-guide-pattern]')).toHaveCount(11)
+    // Every taught hand (TAUGHT_PATTERNS), from Pair to Mahjong.
+    await expect(guide.locator('[data-guide-pattern]')).toHaveCount(14)
     await expect(guide).toContainText('Winds are worth 50 points each')
     await expect(guide).toContainText('Each round gives you 6 Turns')
     const guideLayout = await page
