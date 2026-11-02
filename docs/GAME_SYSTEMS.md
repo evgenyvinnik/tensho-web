@@ -338,14 +338,14 @@ For a full, expanded list of Decrees with triggers, rarity, and design notes, se
 | **False Eye Mandate** | Structural | Rare | One meld may act as the pair. |
 | **Honor Transmutation** | Tile Identity | Rare | Honors may count as a chosen suit. |
 | **Celestial Wildcard** | Tile Identity | Mythic | One tile per hand may impersonate any tile. |
-| **Tanyao Dispensation** | Yaku Doctrine | Uncommon | Terminals allowed in Tanyao. |
+| **Tanyao Dispensation** | Yaku Doctrine | Common | Terminals allowed in Tanyao. |
 | **Yakuman Succession** | Yaku Doctrine | Mythic | Certain yaku may ascend to yakuman. |
 | **Dead Wall Writ** | Entropy & Fate | Uncommon | One draw per hand may come from the Dead Pool. |
-| **Extended Hand Grant** | Entropy & Fate | Common | +3 draws before failure each round. |
-| **Pure Suit Asceticism** | Scaling | Rare | Dominant suit tiles scale multiplicatively. |
+| **Extended Hand Grant** | Entropy & Fate | Rare | +3 Turns per round. |
+| **Pure Suit Asceticism** | Scaling | Uncommon | Dominant suit tiles scale multiplicatively. |
 | **Closed-Hand Austerity** | Scaling | Rare | Concealed hands gain exponential scaling. |
 | **River Tax** | Entropy & Fate | Common | Each discard yields small gold. |
-| **Moonlit Emblem** | Scaling | Uncommon | Honor tiles add a stacking multiplier. |
+| **Moonlit Emblem** | Scaling | Common | Honor tiles add a stacking multiplier. |
 
 ---
 

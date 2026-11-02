@@ -558,11 +558,11 @@ Sources: [GameOrchestrator.ts](../src/game/GameOrchestrator.ts), `executePartial
 
 ### 1.3 Early upgrades do not reliably establish a plan
 
-The current run grants two random starter Decrees. The pool includes an exception to Tanyao, an economy effect, extra plays, and scoring modifiers. Their practical value varies considerably for a player who is mainly making small tactical plays.
+The current run grants two random starting Decrees, drawn like Tea House slots from the whole shop pool (see [DECREE_RARITY_REVIEW.md](DECREE_RARITY_REVIEW.md)). Most are plain Commons such as +Mult or +Points, but a run can also open with a rule exception, an economy effect or a complete-hand payoff. Their practical value varies considerably for a player who is mainly making small tactical plays.
 
 An unfamiliar exception to an unfamiliar rule asks for understanding before it offers a clear desire. A better opening upgrade would immediately answer: **Which tiles do I want now, and why?**
 
-Sources: [DecreeSystem.ts](../src/systems/DecreeSystem.ts), `STARTER_DECREES`; [GameOrchestrator.ts](../src/game/GameOrchestrator.ts), `initializeStarterDecrees`.
+Sources: [GameOrchestrator.ts](../src/game/GameOrchestrator.ts), `initializeStarterDecrees` and `drawStartingDecree`.
 
 ### 1.4 The current coach can teach a weak scoring habit
 

@@ -40,7 +40,7 @@ function createEffect(
 }
 
 // ============================================================================
-// COMMON DECREES (Tier 1) - 40 decrees
+// COMMON DECREES (Tier 1) - 42 decrees
 // Simple, reliable effects with no conditions
 // ============================================================================
 
@@ -119,24 +119,6 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     rarity: 'common',
     effects: [createEffect('additive_mult', 4)],
     baseSellValue: 2,
-  },
-  {
-    id: 'decree-crimson-banner',
-    name: 'Crimson Banner',
-    japaneseName: '紅旗',
-    description: '+5 Mult',
-    rarity: 'common',
-    effects: [createEffect('additive_mult', 5)],
-    baseSellValue: 3,
-  },
-  {
-    id: 'decree-golden-seal',
-    name: 'Golden Regalia',
-    japaneseName: '金璽',
-    description: '+6 Mult',
-    rarity: 'common',
-    effects: [createEffect('additive_mult', 6)],
-    baseSellValue: 3,
   },
 
   // Suit-Focused Decrees
@@ -313,6 +295,15 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     effects: [createEffect('discard_count', 1)],
     baseSellValue: 3,
   },
+  {
+    id: 'decree-time-lord',
+    name: 'Time Lord',
+    japaneseName: '時の主',
+    description: '+1 Turn per round',
+    rarity: 'common',
+    effects: [createEffect('special', 1, 'extra hand')],
+    baseSellValue: 3,
+  },
 
   // Mixed Effects
   {
@@ -426,15 +417,59 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     effects: [createEffect('additive_mult', 3, 'when scoring Pinfu')],
     baseSellValue: 2,
   },
+  {
+    id: 'decree-yakuhai-zealot',
+    name: 'Value Zealot',
+    japaneseName: '役牌狂信者',
+    description:
+      '×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind',
+    rarity: 'common',
+    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Yakuhai')],
+    baseSellValue: 3,
+  },
+  {
+    id: 'decree-toitoi-titan',
+    name: 'Triplet Titan',
+    japaneseName: '対々巨人',
+    description:
+      '×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair',
+    rarity: 'common',
+    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Toitoi')],
+    baseSellValue: 3,
+  },
+  {
+    id: 'decree-ittsu-initiate',
+    name: 'Ninefold Initiate',
+    japaneseName: '一通入門',
+    description:
+      '×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit',
+    rarity: 'common',
+    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Ittsu')],
+    baseSellValue: 3,
+  },
+  {
+    id: 'decree-chinitsu-champion',
+    name: 'Full Flush Champion',
+    japaneseName: '清一色王者',
+    description:
+      '×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons',
+    rarity: 'common',
+    effects: [
+      createEffect('multiplicative_mult', 2.0, 'when scoring Chinitsu'),
+    ],
+    baseSellValue: 3,
+  },
 ]
 
 // ============================================================================
-// UNCOMMON DECREES (Tier 2) - 40 decrees
+// UNCOMMON DECREES (Tier 2) - 46 decrees, including achievement rewards
 // Conditional effects with stronger bonuses
 // ============================================================================
 
 export const UNCOMMON_DECREES: DecreeDefinition[] = [
-  ...ACHIEVEMENT_REWARD_DECREES.filter((decree) => decree.rarity === 'uncommon'),
+  ...ACHIEVEMENT_REWARD_DECREES.filter(
+    (decree) => decree.rarity === 'uncommon'
+  ),
   // Suit Specialists
   {
     id: 'decree-manzu-emperor',
@@ -603,6 +638,15 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     effects: [createEffect('gold_gain', 4)],
     baseSellValue: 5,
   },
+  {
+    id: 'decree-wealth-engine',
+    name: 'Wealth Engine',
+    japaneseName: '富の機関',
+    description: '+1 Gold per Decree owned at the end of each round',
+    rarity: 'uncommon',
+    effects: [createEffect('gold_gain', 1, 'per Decree owned')],
+    baseSellValue: 4,
+  },
 
   // Flower Power
   {
@@ -684,46 +728,47 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
 
   // Yaku Specialists
   {
-    id: 'decree-yakuhai-zealot',
-    name: 'Value Zealot',
-    japaneseName: '役牌狂信者',
+    id: 'decree-honitsu-herald',
+    name: 'Half Flush Herald',
+    japaneseName: '混一色先駆',
     description:
-      '×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind',
+      '×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons',
     rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Yakuhai')],
+    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Honitsu')],
     baseSellValue: 5,
   },
   {
-    id: 'decree-toitoi-titan',
-    name: 'Triplet Titan',
-    japaneseName: '対々巨人',
+    id: 'decree-sanshoku-sage',
+    name: 'Triple Sequence Sage',
+    japaneseName: '三色賢者',
     description:
-      '×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair',
-    rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Toitoi')],
-    baseSellValue: 5,
-  },
-  {
-    id: 'decree-ittsu-initiate',
-    name: 'Ninefold Initiate',
-    japaneseName: '一通入門',
-    description:
-      '×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit',
-    rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Ittsu')],
-    baseSellValue: 5,
-  },
-  {
-    id: 'decree-chinitsu-champion',
-    name: 'Full Flush Champion',
-    japaneseName: '清一色王者',
-    description:
-      '×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons',
+      '×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits',
     rarity: 'uncommon',
     effects: [
-      createEffect('multiplicative_mult', 2.0, 'when scoring Chinitsu'),
+      createEffect('multiplicative_mult', 2.0, 'when scoring Sanshoku'),
     ],
-    baseSellValue: 6,
+    baseSellValue: 5,
+  },
+  {
+    id: 'decree-chanta-champion',
+    name: 'Outside Hand Champion',
+    japaneseName: '全帯幺王者',
+    description:
+      '×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts.',
+    rarity: 'uncommon',
+    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Chanta')],
+    baseSellValue: 5,
+  },
+
+  // Boss Synergy
+  {
+    id: 'decree-boss-slayer',
+    name: 'Boss Slayer',
+    japaneseName: '親衛殺し',
+    description: '×2 Mult during Boss rounds',
+    rarity: 'uncommon',
+    effects: [createEffect('multiplicative_mult', 2.0, 'during Boss rounds')],
+    baseSellValue: 5,
   },
 
   // Act Scaling
@@ -754,6 +799,24 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     description: '+80 Points',
     rarity: 'uncommon',
     effects: [createEffect('additive_chips', 80)],
+    baseSellValue: 4,
+  },
+  {
+    id: 'decree-crimson-banner',
+    name: 'Crimson Banner',
+    japaneseName: '紅旗',
+    description: '+5 Mult',
+    rarity: 'uncommon',
+    effects: [createEffect('additive_mult', 5)],
+    baseSellValue: 4,
+  },
+  {
+    id: 'decree-golden-seal',
+    name: 'Golden Regalia',
+    japaneseName: '金璽',
+    description: '+6 Mult',
+    rarity: 'uncommon',
+    effects: [createEffect('additive_mult', 6)],
     baseSellValue: 4,
   },
   {
@@ -823,10 +886,19 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     effects: [createEffect('discard_count', 2)],
     baseSellValue: 5,
   },
+  {
+    id: 'decree-time-master',
+    name: 'Time Master',
+    japaneseName: '時の支配者',
+    description: '+2 Turns per round',
+    rarity: 'uncommon',
+    effects: [createEffect('special', 2, 'extra hands')],
+    baseSellValue: 5,
+  },
 ]
 
 // ============================================================================
-// RARE DECREES (Tier 3) - 35 decrees
+// RARE DECREES (Tier 3) - 34 decrees, including achievement rewards
 // Powerful effects with significant impact
 // ============================================================================
 
@@ -871,15 +943,6 @@ export const RARE_DECREES: DecreeDefinition[] = [
     description: '+2 Mult per 10 Gold you hold',
     rarity: 'rare',
     effects: [createEffect('additive_mult', 2, 'per ¥10')],
-    baseSellValue: 6,
-  },
-  {
-    id: 'decree-wealth-engine',
-    name: 'Wealth Engine',
-    japaneseName: '富の機関',
-    description: '+1 Gold per Decree owned at the end of each round',
-    rarity: 'rare',
-    effects: [createEffect('gold_gain', 1, 'per Decree owned')],
     baseSellValue: 6,
   },
   {
@@ -982,40 +1045,6 @@ export const RARE_DECREES: DecreeDefinition[] = [
     baseSellValue: 6,
   },
 
-  // Yaku Mastery
-  {
-    id: 'decree-honitsu-herald',
-    name: 'Half Flush Herald',
-    japaneseName: '混一色先駆',
-    description:
-      '×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons',
-    rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Honitsu')],
-    baseSellValue: 7,
-  },
-  {
-    id: 'decree-sanshoku-sage',
-    name: 'Triple Sequence Sage',
-    japaneseName: '三色賢者',
-    description:
-      '×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits',
-    rarity: 'rare',
-    effects: [
-      createEffect('multiplicative_mult', 2.0, 'when scoring Sanshoku'),
-    ],
-    baseSellValue: 7,
-  },
-  {
-    id: 'decree-chanta-champion',
-    name: 'Outside Hand Champion',
-    japaneseName: '全帯幺王者',
-    description:
-      '×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts.',
-    rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Chanta')],
-    baseSellValue: 7,
-  },
-
   // Boss Synergy
   {
     id: 'decree-mandate-breaker',
@@ -1028,15 +1057,6 @@ export const RARE_DECREES: DecreeDefinition[] = [
       createEffect('multiplicative_mult', 1.5, 'during Boss rounds'),
     ],
     baseSellValue: 6,
-  },
-  {
-    id: 'decree-boss-slayer',
-    name: 'Boss Slayer',
-    japaneseName: '親衛殺し',
-    description: '×2 Mult during Boss rounds',
-    rarity: 'rare',
-    effects: [createEffect('multiplicative_mult', 2.0, 'during Boss rounds')],
-    baseSellValue: 7,
   },
 
   // Multi-Effect Combos
@@ -1185,7 +1205,7 @@ export const RARE_DECREES: DecreeDefinition[] = [
 ]
 
 // ============================================================================
-// LEGENDARY DECREES (Tier 4) - 25 decrees
+// LEGENDARY DECREES (Tier 4) - 23 decrees
 // Very powerful, often unique effects
 // ============================================================================
 
@@ -1379,15 +1399,6 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     effects: [createEffect('special', 0, 'prevents one loss')],
     baseSellValue: 15,
   },
-  {
-    id: 'decree-time-lord',
-    name: 'Time Lord',
-    japaneseName: '時の主',
-    description: '+1 Turn per round',
-    rarity: 'legendary',
-    effects: [createEffect('special', 1, 'extra hand')],
-    baseSellValue: 12,
-  },
 
   // Score Scaling
   {
@@ -1446,7 +1457,7 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
 ]
 
 // ============================================================================
-// MYTHIC DECREES (Tier 5) - 15 decrees
+// MYTHIC DECREES (Tier 5) - 14 decrees
 // Game-changing, run-defining effects
 // ============================================================================
 
@@ -1587,15 +1598,6 @@ export const MYTHIC_DECREES: DecreeDefinition[] = [
     rarity: 'mythic',
     effects: [createEffect('special', 0, 'tiles are wild')],
     baseSellValue: 25,
-  },
-  {
-    id: 'decree-time-master',
-    name: 'Time Master',
-    japaneseName: '時の支配者',
-    description: '+2 Turns per round',
-    rarity: 'mythic',
-    effects: [createEffect('special', 2, 'extra hands')],
-    baseSellValue: 20,
   },
   {
     id: 'decree-immortal-decree',

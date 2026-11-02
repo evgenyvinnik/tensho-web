@@ -346,16 +346,17 @@ deleting owned Decrees. See [resolved ownership rules](docs/RUN_OWNERSHIP_IMPLEM
 
 | Rarity | Count | Engine Tier | Tea House Weight | Base Cost |
 |--------|-------|-------------|------------------|-----------|
-| Common | 39 | Local Edict | 70% | ¥4 |
-| Uncommon | 39 | Regional Mandate | 25% | ¥6 |
-| Rare | 33 | Imperial Decree | 5% | ¥8 |
-| Legendary | 24 | Heavenly Ordinance | — (special sources) | ¥10 |
-| Mythic | 15 | Heavenly Ordinance | — (special sources) | ¥15 |
+| Common | 42 | Local Edict | 70% | ¥4 |
+| Uncommon | 43 | Regional Mandate | 25% | ¥6 |
+| Rare | 28 | Imperial Decree | 5% | ¥8 |
+| Legendary | 23 | Heavenly Ordinance | — (special sources) | ¥10 |
+| Mythic | 14 | Heavenly Ordinance | — (special sources) | ¥15 |
 | **Total** | **150** | — | — | — |
 
 The 15 rule-bending Decrees in `src/systems/DecreeSystem.ts` share these tiers
-(165 in all). The Tea House gives Heavenly Ordinance weight 0, so these
-Decrees come from a Blessing Pack's legendary roll, Script of the Soul, Seal of
+(165 in all). Achievement-reward Decrees are listed separately. Tiers were last
+reviewed in [docs/DECREE_RARITY_REVIEW.md](docs/DECREE_RARITY_REVIEW.md). The
+Tea House gives Heavenly Ordinance weight 0, so these Decrees come from a Blessing Pack's legendary roll, Script of the Soul, Seal of
 the Immortal, or a Rare+ Omen once no Rare is left. See
 [docs/LEGENDARY_DECREE_TIER.md](docs/LEGENDARY_DECREE_TIER.md).
 
@@ -373,8 +374,6 @@ Basic, reliable effects with no conditions.
 | Gentle Breeze | 微風 | +2 Mult |
 | Rising Sun | 朝日 | +3 Mult |
 | Lunar Glow | 月光 | +4 Mult |
-| Crimson Banner | 紅旗 | +5 Mult |
-| Golden Regalia | 金璽 | +6 Mult |
 | Master of Characters | 萬子師 | +3 Mult if the play includes a Characters tile |
 | Perfectionist of Circles | 筒子匠 | +3 Mult if the play includes a Circles tile |
 | Scholar of Bamboo | 索子学 | +3 Mult if the play includes a Bamboo tile |
@@ -393,6 +392,7 @@ Basic, reliable effects with no conditions.
 | Seasonal Blessing | 季福 | +2 Mult per active Season |
 | Wide Grip | 広握 | +1 rack space |
 | Second Chance | 再機会 | +1 free redraw per round |
+| Time Lord | 時の主 | +1 Turn per round |
 | Balanced Path | 均衡道 | +15 Chips and +2 Mult |
 | Modest Fortune | 謙運 | +20 Points, and +1 Gold at the end of each round |
 | Humble Power | 謙力 | +2 Mult, and +1 Gold at the end of each round |
@@ -404,6 +404,10 @@ Basic, reliable effects with no conditions.
 | Riichi Devotee | 立直信者 | +3 Mult when scoring Riichi |
 | Simples Tactician | 断么戦術家 | +3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons |
 | Sequence Purist | 平和純粋者 | +3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind |
+| Value Zealot | 役牌狂信者 | ×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind |
+| Triplet Titan | 対々巨人 | ×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair |
+| Ninefold Initiate | 一通入門 | ×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit |
+| Full Flush Champion | 清一色王者 | ×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons |
 
 ### Uncommon Decrees (Tier 2)
 
@@ -428,6 +432,7 @@ Conditional effects with stronger bonuses.
 | Golden Ratio | 黄金比 | +1 Mult per 5 Gold you hold (max +10) |
 | Treasure Hunter | 宝探し | When you win a round, +1 Gold for each different suit left on your rack. Winds and Dragons count as separate suits. |
 | Tax Collector | 徴税官 | +4 Gold at the end of each round |
+| Wealth Engine | 富の機関 | +1 Gold per Decree owned at the end of each round |
 | Garden Keeper | 庭師 | +4 Mult per Flower |
 | Blossom Storm | 花嵐 | ×1.2 Mult per collected Flower |
 | Seasonal Wind | 季節風 | +50 Chips per Season |
@@ -436,13 +441,15 @@ Conditional effects with stronger bonuses.
 | Crescendo | 漸強 | ×1.1 Mult for each earlier play this round |
 | Waste Not | 無駄無 | +5 Mult if no discards used |
 | Recycler | 再利用者 | +20 Chips per discard used |
-| Value Zealot | 役牌狂信者 | ×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind |
-| Triplet Titan | 対々巨人 | ×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair |
-| Ninefold Initiate | 一通入門 | ×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit |
-| Full Flush Champion | 清一色王者 | ×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons |
+| Half Flush Herald | 混一色先駆 | ×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons |
+| Triple Sequence Sage | 三色賢者 | ×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits |
+| Outside Hand Champion | 全帯幺王者 | ×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts. |
+| Boss Slayer | 親衛殺し | ×2 Mult during Boss rounds |
 | Veteran | 古参 | +30 Points per completed Act |
 | Experience | 経験 | ×1.1 Mult per completed Act |
 | Greater Jade | 大玉 | +80 Chips |
+| Crimson Banner | 紅旗 | +5 Mult |
+| Golden Regalia | 金璽 | +6 Mult |
 | Blazing Banner | 烈火旗 | +10 Mult |
 | Flame | 炎 | ×1.5 Mult |
 | Wind and Dragon | 風竜 | +5 Mult if the play includes both a Wind and a Dragon |
@@ -450,6 +457,7 @@ Conditional effects with stronger bonuses.
 | Bookends | 端揃 | +60 Points if the play includes both a 1 and a 9 |
 | Expansive Grip | 拡張握 | +2 rack spaces |
 | Careful Player | 慎重者 | +2 free redraws per round |
+| Time Master | 時の支配者 | +2 Turns per round |
 
 ### Rare Decrees (Tier 3)
 
@@ -461,7 +469,6 @@ Powerful effects with significant impact.
 | Supernova | 超新星 | ×2.5 Mult if this play brings the round score to at least twice the target, before Supernova/Perfectionist bonuses |
 | Perfectionist | 完璧主義 | ×3.0 Mult if the first play clears the round, before Supernova/Perfectionist bonuses |
 | Compound Interest | 複利 | +2 Mult per 10 Gold you hold |
-| Wealth Engine | 富の機関 | +1 Gold per Decree owned at the end of each round |
 | Perpetual Motion | 永久機関 | +2 Mult for each earlier play this run |
 | Triple Echo | 三重響 | Every scoring tile scores twice |
 | Terminal Resonance | 端牌共鳴 | Every Terminal (1 or 9) played scores three times |
@@ -472,11 +479,7 @@ Powerful effects with significant impact.
 | Flower Emperor | 花帝 | ×1.5 Mult per collected Flower |
 | Season Lord | 季節主 | +10 Mult per Season |
 | Nature Bond | 自然絆 | +3 Mult/Flower, +30 Chips/Season |
-| Half Flush Herald | 混一色先駆 | ×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons |
-| Triple Sequence Sage | 三色賢者 | ×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits |
-| Outside Hand Champion | 全帯幺王者 | ×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts. |
 | Mandate Breaker | 令破壊者 | During Boss rounds: +15 Mult and ×1.5 Mult |
-| Boss Slayer | 親衛殺し | ×2 Mult during Boss rounds |
 | Fortune and Glory | 運と栄光 | +60 Points and +8 Mult, and +3 Gold at the end of each round |
 | Emperor's Blessing | 皇帝祝福 | +100 Chips and +10 Mult |
 | Golden Age | 黄金時代 | +8 Gold at the end of each round |
@@ -515,7 +518,6 @@ Very powerful, often unique effects.
 | God of Bamboo | 索子神 | ×3 Mult if every played tile is Bamboo |
 | Glass Cannon | 硝子砲 | ×6 Mult. Destroyed if you lose a Boss round. |
 | Phoenix | 鳳凰 | If you would lose a round, you clear it instead. This Decree is then destroyed. |
-| Time Lord | 時の主 | +1 extra hand per round |
 | Exponential | 指数的 | ×1.3 Mult per 100 base Points in the play |
 | Chain Reaction | 連鎖反応 | ×1.5 Mult per Yaku in the scored hand |
 | Cosmic Jade | 宇宙玉 | +200 Points and ×1.5 Mult |
@@ -540,6 +542,5 @@ Game-changing, run-defining effects.
 | Yaku Nexus | 役結節 | All Yaku score at +1 tier | — |
 | Yakuman Blessing | 役満祝福 | ×10.0 Mult on Yakuman | 3 Yakuman in one run |
 | Reality Warp | 現実歪曲 | All tiles are wild | — |
-| Time Master | 時の支配者 | +2 extra hands per round | — |
 | Immortal Decree | 不死勅令 | Cannot lose (halves score) | — |
 | Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 in optional Endless |

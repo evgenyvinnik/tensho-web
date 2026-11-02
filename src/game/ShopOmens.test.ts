@@ -68,6 +68,9 @@ it.each([1, 2, 3, 4, 5, 6])(
 
 it('retains an impossible Rare+ Omen and its tradeoff while other shop Omens settle', () => {
   const { game, state, tag } = visit(7)
+  const starting = new Set(
+    state.decreeSystem.getOwnedDecrees().map((decree) => decree.id)
+  )
   // Explicit catalog-exhaustion fixture, not a claim about ordinary slot capacity.
   for (const decree of ALL_DECREES.filter((d) =>
     ['ImperialDecree', 'HeavenlyOrdinance'].includes(d.rarity)
@@ -87,7 +90,10 @@ it('retains an impossible Rare+ Omen and its tradeoff while other shop Omens set
   expect(game.shop.state.currentRerollCost).toBe(0)
   expect(game.shop.reroll().success).toBe(true)
   expect(state.gold).toBe(100)
-  const released = ALL_DECREES.find((d) => d.rarity === 'ImperialDecree')!
+  // A starting Rare is held twice now, so releasing one copy would not free it.
+  const released = ALL_DECREES.find(
+    (d) => d.rarity === 'ImperialDecree' && !starting.has(d.id)
+  )!
   state.decreeSystem.removeDecree(released.id)
   expect(game.shop.close()).toBe(true)
   expect(game.shop.open()).toBe(true)

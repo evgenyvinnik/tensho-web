@@ -354,9 +354,10 @@ test.describe('Game Navigation', () => {
 
     const firstDecree = page.locator('[data-decree-scroll]').first()
     await expect(firstDecree).toBeVisible()
+    // Starting Decrees come from the whole pool, so any Decree portrait folder.
     await expect(firstDecree.locator('img').first()).toHaveAttribute(
       'src',
-      /\/illustrations\/(decrees|items\/decrees)\/.+\.(png|webp)$/
+      /\/illustrations\/(decrees|items\/decrees|generated\/decrees|rewards)\/.+\.(png|webp)$/
     )
     await expect(page.getByRole('button', { name: /^Sell / })).toHaveCount(0)
 
