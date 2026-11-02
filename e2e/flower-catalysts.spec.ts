@@ -186,6 +186,8 @@ for (const language of ['en', 'es'])
 
     // Sell one exact copy through the real inventory confirmation, still leaving
     // less than the six gold required for a normal purchase.
+    // Moonlit Emblem is a 4G Common and sells for half its price.
+    const saleValue = 2
     const owned = page
       .locator('[data-shop-build] [data-decree-instance]')
       .first()
@@ -197,7 +199,7 @@ for (const language of ['en', 'es'])
         .getByRole('button', { name: copy.common.confirm, exact: true })
     )
     const afterSale = await saved()
-    expect(afterSale.state.gold).toBe(3)
+    expect(afterSale.state.gold).toBe(saleValue)
     await offerFlower()
     await activate(dialog.locator('input[value="catalyst-plum"]'))
     await expect(
@@ -215,7 +217,7 @@ for (const language of ['en', 'es'])
     )
     await expect(page.locator('[data-catalyst-receipt]')).toBeVisible()
     const paid = await saved()
-    expect(paid.state.gold).toBe(3)
+    expect(paid.state.gold).toBe(saleValue)
     expect(paid.shop.spent).toBe(0)
     expect(paid.shop.purchases).toBe(1)
     expect(paid.state.decreeSystem.maxSlots).toBe(5)
