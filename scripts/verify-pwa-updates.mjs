@@ -40,6 +40,8 @@ const CONSUMABLE_RUNTIME = new Set([
   'currentLevel',
 ])
 const CONSUMABLE_TYPES = new Set(['FateSeal', 'CelestialOrb', 'VoidScript'])
+/** Mirrors NO_RUNTIME there: a saved round's Boss is re-read whole. */
+const BOSS_RUNTIME = new Set()
 
 /**
  * Mirrors RETIRED_FAMILIES in src/systems/CelestialOrbSystem.ts: Orb upgrade
@@ -424,17 +426,21 @@ try {
         await page.goto(root + 'en/play')
         await expect(page.locator('[data-game-action="play"]')).toBeVisible()
         // Loading a save re-reads every saved item from the catalog, so a
-        // Decree's or consumable's catalog fields (name, rules, rarity, price)
-        // follow the new release; only its runtime fields must stay exact.
-        // Other items keep everything but their name and description.
+        // Decree's, consumable's or Boss's catalog fields (name, rules, rarity,
+        // price) follow the new release; only its runtime fields must stay
+        // exact. That includes Decrees still on offer in the Tea House or in a
+        // pack, which have no instanceId yet. Other items keep everything but
+        // their name and description.
         const catalogItemKeys = (value) =>
-          typeof value.instanceId === 'string' &&
           typeof value.category === 'string' &&
-          'rarity' in value
+          'rarity' in value &&
+          'effect' in value
             ? DECREE_RUNTIME
             : CONSUMABLE_TYPES.has(value.type)
               ? CONSUMABLE_RUNTIME
-              : null
+              : typeof value.minAct === 'number' && 'effect' in value
+                ? BOSS_RUNTIME
+                : null
         const withoutCatalogText = (value) =>
           Array.isArray(value)
             ? value.map(withoutCatalogText)

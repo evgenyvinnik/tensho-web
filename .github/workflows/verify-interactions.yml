@@ -24,12 +24,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      # Live release.json verified November 2: v1.0.261102-5.
+      # Live release.json verified November 3: v1.0.261103-4.
       # Pin its commit, not a second build of the candidate; refresh this baseline
       # when the live manifest changes before the next completion candidate.
       - uses: actions/checkout@v6
         with:
-          ref: 17a182940b361a635e97ec1dbea577b86f789c63
+          ref: e1a418e43a9fd9f9899fed41ac95e79a68e230cd
           path: .verification-baseline
           persist-credentials: false
       - uses: actions/setup-node@v6
