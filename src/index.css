@@ -230,7 +230,7 @@ a {
    Utility Classes
    ============================================================================ */
 
-/* The iOS app: no text selection, loupe or Copy/Look Up callout on a long
+/* The apps: no text selection, loupe or Copy/Look Up callout on a long
  * press, as in a native game. Fields stay editable. */
 [data-native-app] body {
   -webkit-user-select: none;
@@ -245,9 +245,10 @@ a {
 
 /* The iOS app hides the status bar, so only the camera is left at the top.
  * Every iPhone taller than 2:1 has a notch or Dynamic Island: keep a gap
- * below it, and clear the island even if the web view reports no inset. */
+ * below it, and clear the island even if the web view reports no inset.
+ * Android keeps its status bar, whose inset already clears the camera. */
 @media (max-aspect-ratio: 1/2) {
-  [data-native-app] {
+  [data-native-app='ios'] {
     --safe-top: calc(max(env(safe-area-inset-top, 0px), 50px) + 12px);
   }
 }

@@ -19,6 +19,7 @@ import { installFloraRevealQueue } from './game/floraRevealQueue'
 import { installDecreeRevealQueue } from './game/decreeRevealQueue'
 import { installOrbRevealQueue } from './game/orbRevealQueue'
 import { scheduleBossAds } from './native/adBreaks'
+import { nativePlatform } from './native/nativePlatform'
 
 // Install persisted Archive, lifetime progression, and achievement tracking
 // before any run can emit gameplay events.
@@ -41,8 +42,9 @@ document.addEventListener('visibilitychange', () => {
     void useUpdateStore.getState().attempt()
 })
 
-// The apps behave like a native game: no text selection or callouts.
-if (IS_NATIVE_APP) document.documentElement.dataset.nativeApp = ''
+// The apps behave like a native game: no text selection or callouts. The
+// value names the platform for styles that differ, such as the iPhone's top.
+if (IS_NATIVE_APP) document.documentElement.dataset.nativeApp = nativePlatform()
 
 // Register service worker for PWA. The apps update through their stores.
 if (import.meta.env.PROD && !IS_NATIVE_APP && 'serviceWorker' in navigator) {
