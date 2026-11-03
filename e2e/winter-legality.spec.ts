@@ -2,7 +2,9 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import {
   clearReveals,
+  closeOmenReveal,
   continueToNextRound,
+  expectTeaHouse,
   handScoreTotal,
   settleReveals,
   swiftClear,
@@ -208,10 +210,21 @@ for (const language of ['en', 'es'])
         path: testInfo.outputPath('winter-interpretation.png'),
       })
       await activate(play)
+      if (shape === 'complete') {
+        // Mahjong clears the round at once, far below its target.
+        await expectTeaHouse(page)
+        await closeOmenReveal(page)
+      }
       await expect
         .poll(async () => (await saved()).state.score)
         .toBe(drawn.state.score + forecast)
       const paid = await saved()
+      if (shape === 'complete')
+        expect(paid.state.lastRoundSummary).toMatchObject({
+          clearedByCompleteHand: true,
+          score: drawn.state.score + forecast,
+          target: 1e9,
+        })
       expect(paid.state.handsRemaining).toBe(drawn.state.handsRemaining - 1)
       const playedIds =
         shape === 'complete'
@@ -228,8 +241,8 @@ for (const language of ['en', 'es'])
       )
       await page.reload()
       expect(await saved()).toEqual(paid)
-      // Skip is gone: clear the round to reach the next one.
-      await swiftClear(page)
+      // Skip is gone: a small play must clear the round to reach the next one.
+      if (shape === 'tactical') await swiftClear(page)
       await continueToNextRound(page)
       await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
       const next = await saved()

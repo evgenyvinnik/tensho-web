@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { closeOmenReveal, expectTeaHouse } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es'])
@@ -206,10 +207,18 @@ for (const language of ['en', 'es'])
       })
       const play = page.locator('[data-game-action="play"]')
       await activate(play)
+      // Mahjong clears the round at once, far below its target.
+      await expectTeaHouse(page)
+      await closeOmenReveal(page)
       await expect
         .poll(async () => (await saved()).state.score)
         .toBe(replay[mode])
       const after = await saved()
+      expect(after.state.lastRoundSummary).toMatchObject({
+        clearedByCompleteHand: true,
+        score: replay[mode],
+        target: 1e9,
+      })
       expect(after.state.handsRemaining).toBe(before.state.handsRemaining - 1)
       expect(after.state.celestialOrbs).toHaveLength(mode === 'use' ? 1 : 2)
       await page.reload()

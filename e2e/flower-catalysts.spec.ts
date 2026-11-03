@@ -100,7 +100,7 @@ for (const language of ['en', 'es'])
         state.wallTemplate = state.wallTemplate.filter(
           (t: { isBonus: boolean }) => !t.isBonus
         )
-        const offer = game.shop.state.itemOfferings[0]
+        const [offer, former] = game.shop.state.itemOfferings
         Object.assign(offer, {
           itemType: 'Decree',
           item: {
@@ -111,6 +111,21 @@ for (const language of ['en', 'es'])
           baseCost: 6,
           editionCost: 0,
           finalCost: 6,
+          isPurchased: false,
+          isLocked: false,
+        })
+        // Pair Amplifier was a catalyst while it boosted Yaku; it no longer is.
+        Object.assign(former, {
+          itemType: 'Decree',
+          item: {
+            ...ALL_DECREES.find(
+              (d: { id: string }) => d.id === 'decree-yaku-amplifier'
+            ),
+          },
+          edition: undefined,
+          baseCost: 12,
+          editionCost: 0,
+          finalCost: 12,
           isPurchased: false,
           isLocked: false,
         })
@@ -128,6 +143,25 @@ for (const language of ['en', 'es'])
     await closeOmenReveal(page)
     const before = await saved()
     const offerId = before.shop.teaHouse.itemOfferings[0].id
+    // Only hand-rule Decrees take a Flower: the former catalyst's details
+    // offer Buy alone.
+    const formerId = before.shop.teaHouse.itemOfferings[1].id
+    expect(before.shop.teaHouse.itemOfferings[1].item.id).toBe(
+      'decree-yaku-amplifier'
+    )
+    const formerOffer = page.locator(`[data-shop-offer="${formerId}"]`)
+    await formerOffer.scrollIntoViewIfNeeded()
+    await activate(formerOffer)
+    const formerDetails = page
+      .getByRole('dialog')
+      .filter({ has: page.locator(`[data-shop-offer-details="${formerId}"]`) })
+    await expect(
+      formerDetails.locator(`[data-shop-buy="${formerId}"]`)
+    ).toBeVisible()
+    await expect(formerDetails.locator('[data-offer-flower]')).toHaveCount(0)
+    await page.keyboard.press('Escape')
+    await expect(formerDetails).toHaveCount(0)
+    expect(await saved()).toEqual(before)
     // The Flower payment sits in the offer's details, beside Buy.
     const offer = page.locator(`[data-shop-offer="${offerId}"]`)
     const offerFlower = async () => {

@@ -1,10 +1,9 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { selectCompleteHand } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es', 'ru'])
-  test(`concealed mastery, artwork, staged play and reload (${language})`, async ({
+  test(`pattern repetition streak, artwork, staged play and reload (${language})`, async ({
     page,
     baseURL,
     isMobile,
@@ -12,8 +11,8 @@ for (const language of ['en', 'es', 'ru'])
     const copy = JSON.parse(
       readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
     )
-    const replay = process.env.AUSTERITY_REPLAY_FILE
-      ? JSON.parse(readFileSync(process.env.AUSTERITY_REPLAY_FILE, 'utf8'))
+    const replay = process.env.REPETITION_REPLAY_FILE
+      ? JSON.parse(readFileSync(process.env.REPETITION_REPLAY_FILE, 'utf8'))
       : null
     const errors: string[] = []
     page.on('pageerror', (error) => errors.push(error.message))
@@ -67,37 +66,42 @@ for (const language of ['en', 'es', 'ru'])
           game.getState().decreeSystem.removeDecree(d.id)
         game.addDecree(
           ALL_DECREES.find(
-            (d: { id: string }) => d.id === 'closed_hand_austerity'
+            (d: { id: string }) => d.id === 'yaku_repetition_charter'
           )
         )
+        // Each deal has its own tile ids: a Boss such as The Hook can send a
+        // dealt tile to the river, where a reused id would be a duplicate.
+        let deals = 0
         const deal = () => {
+          const key = deals++
           const state = game.getState()
           state.flowerSystem.clear()
           state.seasonSystem.clear()
           state.mandateEffectSystem.deactivateMandate()
           state.selectedTileIds.clear()
           state.faceDownTileIds.clear()
+          // Two Pairs (2-2 of Characters, 5-5 of Circles) and spares.
           state.handTiles = [
-            ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-              (rank, i) => new Tile(TileSuit.Souzu, rank, `run-${i}`)
-            ),
-            ...[6, 6, 6].map(
-              (rank, i) => new Tile(TileSuit.Manzu, rank, `triplet-${i}`)
+            ...[2, 2].map(
+              (rank, i) => new Tile(TileSuit.Manzu, rank, `pm-${key}-${i}`)
             ),
             ...[5, 5].map(
-              (rank, i) => new Tile(TileSuit.Pinzu, rank, `pair-${i}`)
+              (rank, i) => new Tile(TileSuit.Pinzu, rank, `pp-${key}-${i}`)
+            ),
+            ...[1, 4, 7, 9].map(
+              (rank, i) => new Tile(TileSuit.Souzu, rank, `spare-${key}-${i}`)
             ),
           ]
           state.wall = Array.from(
             { length: 60 },
-            (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${i}`)
+            (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${key}-${i}`)
           )
           state.wallTemplate = [...state.handTiles, ...state.wall]
           state.drawIndex = 0
           state.summerReserve = []
           state.targetScore = 1
           state.roundManager.getCurrentRound().scoreTarget = 1
-          return state.handTiles.map((t: { id: string }) => t.id)
+          return state.handTiles.slice(0, 4).map((t: { id: string }) => t.id)
         }
         // Controlled deals, but actual paid plays and round transitions earn the streak.
         for (let i = 0; i < 2; i++) {
@@ -111,10 +115,12 @@ for (const language of ['en', 'es', 'ru'])
         decree.isDebuffed = true
         const neutral = game.previewScore(ids)
         decree.isDebuffed = false
+        if (neutral.pattern.id !== 'two_pairs') throw Error('Not Two Pairs')
+        // Two earlier rounds in the streak: ×1.2².
         const expected = Math.floor(
           neutral.equation.points *
             neutral.equation.multiplier *
-            Math.min(4, 1.5 * 1.2 ** 2)
+            Math.min(4, 1.2 ** 2)
         )
         if (game.previewScore(ids).finalScore !== expected)
           throw Error('Streak forecast does not match compounded formula')
@@ -122,7 +128,7 @@ for (const language of ['en', 'es', 'ru'])
         return expected
       })
       writeFileSync(
-        info.outputPath('austerity-replay.json'),
+        info.outputPath('repetition-replay.json'),
         JSON.stringify({
           expected,
           savedRun: await page.evaluate(() =>
@@ -133,10 +139,10 @@ for (const language of ['en', 'es', 'ru'])
       await page.reload()
     }
     const before = await saved()
-    expect(before.state.completeConcealedHandsPlayed).toBe(2)
+    expect(before.state.previousRoundYakuStreaks).toEqual({ two_pairs: 2 })
     const scroll = page
       .locator('[data-decree-instance]')
-      .filter({ has: page.locator('img[src$="closed-hand-austerity.webp"]') })
+      .filter({ has: page.locator('img[src$="yaku-repetition.webp"]') })
     await expect(scroll).toBeVisible()
     await expect
       .poll(() =>
@@ -150,35 +156,46 @@ for (const language of ['en', 'es', 'ru'])
       .toBe(true)
     await activate(scroll)
     const dialog = page.getByRole('dialog')
-    await expect(dialog).toContainText(copy.closedHandAusterity.description)
-    // ×2.16 reads ×2.2, like every multiplier on screen.
-    await expect(dialog.locator('[data-austerity-details]')).toContainText(
-      (2.2).toLocaleString(language)
+    await expect(dialog).toContainText(copy.yakuRepetition.description)
+    await expect(dialog.locator('[data-yaku-streak]')).toHaveCount(1)
+    await expect(dialog.locator('[data-yaku-streak="two_pairs"]')).toHaveText(
+      copy.yakuRepetition.streak
+        .replace('{{name}}', copy.patterns.two_pairs.name)
+        .replace('{{rounds}}', (2).toLocaleString(language))
     )
     const box = await dialog.boundingBox()
     expect(box!.x).toBeGreaterThanOrEqual(0)
     expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width)
-    await page.screenshot({ path: info.outputPath('austerity-inspector.png') })
+    await page.screenshot({ path: info.outputPath('repetition-inspector.png') })
     await page.keyboard.press('Escape')
-    expect((await saved()).state.completeConcealedHandsPlayed).toEqual(
-      before.state.completeConcealedHandsPlayed
+    expect((await saved()).state.previousRoundYakuStreaks).toEqual(
+      before.state.previousRoundYakuStreaks
     )
-    await selectCompleteHand(page, isMobile)
+    const twoPairs = before.state.handTiles
+      .slice(0, 4)
+      .map((t: { id: string }) => t.id)
+    for (const id of twoPairs)
+      await activate(
+        page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+      )
     await expect(
       page.locator('[data-play-zone="felt"] [data-play-tile]')
-    ).toHaveCount(14)
+    ).toHaveCount(4)
+    await expect(
+      page.locator('[data-hand-score] [data-hand-score-pattern]')
+    ).toHaveText(copy.patterns.two_pairs.name)
     await expect
-      .poll(async () => (await saved()).state.selectedTileIds.length)
-      .toBe(14)
+      .poll(async () => (await saved()).state.selectedTileIds)
+      .toEqual(twoPairs)
     expect((await saved()).state.score).toBe(0)
     await activate(page.locator('[data-game-action="play"]'))
     await expect.poll(async () => (await saved()).state.phase).toBe('shop')
     const paid = await saved()
     expect(paid.state.score).toBe(expected)
-    expect(paid.state.completeConcealedHandsPlayed).toBe(3)
+    expect(paid.state.previousRoundYakuStreaks).toEqual({ two_pairs: 3 })
     await page.reload()
-    expect((await saved()).state.completeConcealedHandsPlayed).toEqual(
-      paid.state.completeConcealedHandsPlayed
+    expect((await saved()).state.previousRoundYakuStreaks).toEqual(
+      paid.state.previousRoundYakuStreaks
     )
     expect(
       await page.evaluate(

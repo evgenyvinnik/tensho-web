@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { selectCompleteHand } from './helpers/table'
+import {
+  closeOmenReveal,
+  continueToNextRound,
+  expectTeaHouse,
+  selectCompleteHand,
+} from './helpers/table'
 
 for (const language of ['en', 'es']) {
   test(`paid Yakuman unlocks survive reload without preview awards (${language})`, async ({
@@ -8,6 +13,8 @@ for (const language of ['en', 'es']) {
     isMobile,
     baseURL,
   }, info) => {
+    // Three rounds, each played, reloaded and settled in the Tea House.
+    test.setTimeout(90_000)
     const replay = process.env.DECREE_UNLOCK_REPLAY_FILE
       ? JSON.parse(readFileSync(process.env.DECREE_UNLOCK_REPLAY_FILE, 'utf8'))
       : null
@@ -30,7 +37,14 @@ for (const language of ['en', 'es']) {
       page.evaluate(
         () => JSON.parse(localStorage.getItem('tensho-progression')!).state
       )
+    const run = () =>
+      page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('tensho-classic-run-v1')!).snapshot
+      )
     await saved()
+    // A complete hand clears its round, so the run's three Yakuman are played
+    // in its Small, Large and Boss rounds.
     for (let play = replay ? 2 : 0; play < 3; play++) {
       const ids: string[] = replay
         ? await page.evaluate(() =>
@@ -122,9 +136,18 @@ for (const language of ['en', 'es']) {
         Boolean((await profile()).unlocks.unlock_seal_of_the_immortal)
       ).toBe(play > 0)
       await page.locator('[data-game-action="play"]').click()
+      // Each one clears its round at once, far below the target.
+      await expectTeaHouse(page)
+      await closeOmenReveal(page)
       await expect
         .poll(async () => (await profile()).stats.currentRunYakumanScored)
         .toBe(play + 1)
+      await saved()
+      expect((await run()).state.lastRoundSummary).toMatchObject({
+        roundType: ['Small', 'Large', 'Boss'][play],
+        clearedByCompleteHand: true,
+        target: 1e12,
+      })
       const earned = await profile()
       expect(earned.unlocks.unlock_heavenly_ordinance).toBeTruthy()
       expect(earned.unlocks.unlock_seal_of_the_immortal).toBeTruthy()
@@ -141,6 +164,10 @@ for (const language of ['en', 'es']) {
       expect((await profile()).stats.currentRunYakumanScored).toBe(play + 1)
       expect((await profile()).unlocks.unlock_seal_of_the_immortal).toBeTruthy()
       expect((await profile()).stats.yakuScored.kokushi).toBe(play + 1)
+      if (play < 2) {
+        await closeOmenReveal(page)
+        await continueToNextRound(page)
+      }
     }
   })
 }

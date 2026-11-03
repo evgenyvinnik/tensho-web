@@ -1,10 +1,17 @@
 import { test, expect } from '@playwright/test'
+import en from '../src/i18n/locales/en.json' with { type: 'json' }
+import es from '../src/i18n/locales/es.json' with { type: 'json' }
 import {
   clearReveals,
+  closeOmenReveal,
+  continueToNextRound,
+  expectTeaHouse,
   handScoreTotal,
   openTable,
   selectCompleteHand,
 } from './helpers/table'
+
+const copies = { en, es }
 
 for (const { language, motion } of [
   { language: 'en', motion: 'reduce' },
@@ -20,6 +27,7 @@ for (const { language, motion } of [
       isMobile ? { width: 320, height: 740 } : { width: 1280, height: 800 }
     )
     await page.emulateMedia({ reducedMotion: motion })
+    const copy = copies[language]
     await openTable(page, `/${language}/play`)
     const play = page.locator('[data-game-action="play"]')
     if (motion === 'no-preference') {
@@ -79,19 +87,31 @@ for (const { language, motion } of [
       page.locator('[data-play-zone="felt"] [data-play-tile]')
     ).toHaveCount(14)
     await play.click()
-    await expect
-      .poll(() =>
-        page.evaluate(async () => {
-          const path = '/src/game/GameOrchestrator.ts'
-          const { gameOrchestrator: game } = await import(path)
-          return game.getState().score
-        })
-      )
-      .toBe(expected.score)
-    await expect(handScoreTotal(page, 'last')).toHaveText(
-      expected.score.toLocaleString(language)
+    // Mahjong clears the round at once, far below its target, and the
+    // Tea House pays the round as cleared by it.
+    await expectTeaHouse(page)
+    expect(
+      await page.evaluate(async () => {
+        const path = '/src/game/GameOrchestrator.ts'
+        const { gameOrchestrator: game } = await import(path)
+        const { score, lastRoundSummary } = game.getState()
+        return { score, summary: lastRoundSummary }
+      })
+    ).toMatchObject({
+      score: expected.score,
+      summary: {
+        score: expected.score,
+        target: 1e9,
+        clearedByCompleteHand: true,
+      },
+    })
+    await closeOmenReveal(page)
+    await expect(page.locator('[data-cash-out-toast="clear"]')).toContainText(
+      copy.shop.roundClearedByMahjong
     )
-    let cumulative = expected.score
+    // The tactical payments are made in the next round.
+    await continueToNextRound(page)
+    let cumulative = 0
     for (const effect of ['plain', 'bonus', 'decay']) {
       const score = await page.evaluate(async (effect) => {
         const gamePath = '/src/game/GameOrchestrator.ts'
@@ -101,6 +121,12 @@ for (const { language, motion } of [
         const { Tile, TileSuit } = await import(tilePath)
         const { eventBus } = await import(eventPath)
         const state = game.getState()
+        state.flowerSystem.clear()
+        state.seasonSystem.clear()
+        state.mandateEffectSystem.deactivateMandate()
+        state.handsRemaining = 10
+        state.targetScore = 1e9
+        state.roundManager.getCurrentRound().scoreTarget = 1e9
         // Controlled deal to exercise real stage/confirm/payment UI, not a balance simulation.
         state.handTiles = [
           ...[4, 5, 6].map(

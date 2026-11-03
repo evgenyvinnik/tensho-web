@@ -1,10 +1,9 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { selectCompleteHand } from './helpers/table'
 
 test.use({ serviceWorkers: 'block' })
 for (const language of ['en', 'es', 'ru'])
-  test(`repetition streak, artwork, staged play and reload (${language})`, async ({
+  test(`six-tile mastery, artwork, staged play and reload (${language})`, async ({
     page,
     baseURL,
     isMobile,
@@ -12,8 +11,8 @@ for (const language of ['en', 'es', 'ru'])
     const copy = JSON.parse(
       readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
     )
-    const replay = process.env.REPETITION_REPLAY_FILE
-      ? JSON.parse(readFileSync(process.env.REPETITION_REPLAY_FILE, 'utf8'))
+    const replay = process.env.AUSTERITY_REPLAY_FILE
+      ? JSON.parse(readFileSync(process.env.AUSTERITY_REPLAY_FILE, 'utf8'))
       : null
     const errors: string[] = []
     page.on('pageerror', (error) => errors.push(error.message))
@@ -67,10 +66,14 @@ for (const language of ['en', 'es', 'ru'])
           game.getState().decreeSystem.removeDecree(d.id)
         game.addDecree(
           ALL_DECREES.find(
-            (d: { id: string }) => d.id === 'yaku_repetition_charter'
+            (d: { id: string }) => d.id === 'closed_hand_austerity'
           )
         )
+        // Each deal has its own tile ids: a Boss such as The Hook can send a
+        // dealt tile to the river, where a reused id would be a duplicate.
+        let deals = 0
         const deal = () => {
+          const key = deals++
           const state = game.getState()
           state.flowerSystem.clear()
           state.seasonSystem.clear()
@@ -79,18 +82,18 @@ for (const language of ['en', 'es', 'ru'])
           state.faceDownTileIds.clear()
           state.handTiles = [
             ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-              (rank, i) => new Tile(TileSuit.Souzu, rank, `run-${i}`)
+              (rank, i) => new Tile(TileSuit.Souzu, rank, `run-${key}-${i}`)
             ),
             ...[6, 6, 6].map(
-              (rank, i) => new Tile(TileSuit.Manzu, rank, `triplet-${i}`)
+              (rank, i) => new Tile(TileSuit.Manzu, rank, `triplet-${key}-${i}`)
             ),
             ...[5, 5].map(
-              (rank, i) => new Tile(TileSuit.Pinzu, rank, `pair-${i}`)
+              (rank, i) => new Tile(TileSuit.Pinzu, rank, `pair-${key}-${i}`)
             ),
           ]
           state.wall = Array.from(
             { length: 60 },
-            (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${i}`)
+            (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${key}-${i}`)
           )
           state.wallTemplate = [...state.handTiles, ...state.wall]
           state.drawIndex = 0
@@ -99,13 +102,22 @@ for (const language of ['en', 'es', 'ru'])
           state.roundManager.getCurrentRound().scoreTarget = 1
           return state.handTiles.map((t: { id: string }) => t.id)
         }
-        // Controlled deals, but actual paid plays and round transitions earn the streak.
-        for (let i = 0; i < 2; i++) {
-          if (!game.processAction({ type: 'play', tileIds: deal() }).success)
+        // 1-2-3 of Bamboo and the 6 of Characters triplet: six tiles, every
+        // one of them in a group.
+        const sixGrouped = (ids: string[]) => [
+          ...ids.slice(0, 3),
+          ...ids.slice(9, 12),
+        ]
+        // Controlled deals, but actual paid plays and round transitions earn
+        // the streak: a complete hand counts, and so does a six-tile play.
+        for (const pick of [(ids: string[]) => ids, sixGrouped]) {
+          if (
+            !game.processAction({ type: 'play', tileIds: pick(deal()) }).success
+          )
             throw Error('Prior play failed')
           game.exitShop()
         }
-        const ids = deal(),
+        const ids = sixGrouped(deal()),
           state = game.getState(),
           decree = state.decreeSystem.getOwnedDecrees()[0]
         decree.isDebuffed = true
@@ -114,15 +126,15 @@ for (const language of ['en', 'es', 'ru'])
         const expected = Math.floor(
           neutral.equation.points *
             neutral.equation.multiplier *
-            Math.min(4, 1.2 ** 4)
+            Math.min(4, 1.5 * 1.2 ** 2)
         )
         if (game.previewScore(ids).finalScore !== expected)
           throw Error('Streak forecast does not match compounded formula')
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
-        return expected
+        return { score: expected, ids }
       })
       writeFileSync(
-        info.outputPath('repetition-replay.json'),
+        info.outputPath('austerity-replay.json'),
         JSON.stringify({
           expected,
           savedRun: await page.evaluate(() =>
@@ -133,10 +145,10 @@ for (const language of ['en', 'es', 'ru'])
       await page.reload()
     }
     const before = await saved()
-    expect(before.state.previousRoundYakuStreaks.ittsu).toBe(2)
+    expect(before.state.completeConcealedHandsPlayed).toBe(2)
     const scroll = page
       .locator('[data-decree-instance]')
-      .filter({ has: page.locator('img[src$="yaku-repetition.webp"]') })
+      .filter({ has: page.locator('img[src$="closed-hand-austerity.webp"]') })
     await expect(scroll).toBeVisible()
     await expect
       .poll(() =>
@@ -150,34 +162,44 @@ for (const language of ['en', 'es', 'ru'])
       .toBe(true)
     await activate(scroll)
     const dialog = page.getByRole('dialog')
-    await expect(dialog).toContainText(copy.yakuRepetition.description)
-    await expect(dialog.locator('[data-yaku-streak="ittsu"]')).toContainText(
-      copy.yaku.ittsu
+    await expect(dialog).toContainText(copy.closedHandAusterity.description)
+    // ×2.16 reads ×2.2, like every multiplier on screen.
+    await expect(dialog.locator('[data-austerity-details]')).toHaveText(
+      copy.closedHandAusterity.progress
+        .replace('{{count}}', (2).toLocaleString(language))
+        .replace('{{factor}}', (2.2).toLocaleString(language))
     )
     const box = await dialog.boundingBox()
     expect(box!.x).toBeGreaterThanOrEqual(0)
     expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width)
-    await page.screenshot({ path: info.outputPath('repetition-inspector.png') })
+    await page.screenshot({ path: info.outputPath('austerity-inspector.png') })
     await page.keyboard.press('Escape')
-    expect((await saved()).state.previousRoundYakuStreaks).toEqual(
-      before.state.previousRoundYakuStreaks
+    expect((await saved()).state.completeConcealedHandsPlayed).toEqual(
+      before.state.completeConcealedHandsPlayed
     )
-    await selectCompleteHand(page, isMobile)
+    // The staged play is six grouped tiles, not a complete hand.
+    for (const id of expected.ids)
+      await activate(
+        page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
+      )
     await expect(
       page.locator('[data-play-zone="felt"] [data-play-tile]')
-    ).toHaveCount(14)
+    ).toHaveCount(6)
+    await expect(
+      page.locator('[data-hand-score] [data-hand-score-pattern]')
+    ).toHaveText(copy.patterns.triplet_sequence.name)
     await expect
-      .poll(async () => (await saved()).state.selectedTileIds.length)
-      .toBe(14)
+      .poll(async () => (await saved()).state.selectedTileIds)
+      .toEqual(expected.ids)
     expect((await saved()).state.score).toBe(0)
     await activate(page.locator('[data-game-action="play"]'))
     await expect.poll(async () => (await saved()).state.phase).toBe('shop')
     const paid = await saved()
-    expect(paid.state.score).toBe(expected)
-    expect(paid.state.previousRoundYakuStreaks.ittsu).toBe(3)
+    expect(paid.state.score).toBe(expected.score)
+    expect(paid.state.completeConcealedHandsPlayed).toBe(3)
     await page.reload()
-    expect((await saved()).state.previousRoundYakuStreaks).toEqual(
-      paid.state.previousRoundYakuStreaks
+    expect((await saved()).state.completeConcealedHandsPlayed).toEqual(
+      paid.state.completeConcealedHandsPlayed
     )
     expect(
       await page.evaluate(

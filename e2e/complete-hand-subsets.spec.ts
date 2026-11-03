@@ -2,12 +2,14 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import {
   clearReveals,
+  closeOmenReveal,
+  expectTeaHouse,
   handScoreTotal,
   selectCompleteHand,
 } from './helpers/table'
 
 for (const language of ['en', 'es'])
-  for (const shape of ['standard', 'pairs', 'orphans', 'wildcard', 'clemency'])
+  for (const shape of ['standard', 'pairs', 'orphans', 'wildcard'])
     test(`expanded rack ${shape} picks a declaration without its spares (${language})`, async ({
       page,
       isMobile,
@@ -71,19 +73,15 @@ for (const language of ['en', 'es'])
           state.flowerSystem.addFlower(
             new Tile(TileSuit.Flower, type, `flower-${type}`)
           )
-        if (shape === 'wildcard' || shape === 'clemency')
-          if (
-            !game.addDecree(
-              ALL_DECREES.find(
-                (d: { id: string }) =>
-                  d.id ===
-                  (shape === 'wildcard'
-                    ? 'celestial_wildcard'
-                    : 'shanten_clemency')
-              )
+        if (
+          shape === 'wildcard' &&
+          !game.addDecree(
+            ALL_DECREES.find(
+              (d: { id: string }) => d.id === 'celestial_wildcard'
             )
           )
-            throw new Error('Decree fixture failed')
+        )
+          throw new Error('Decree fixture failed')
         const groups: [string, number[]][] =
           shape === 'orphans'
             ? [
@@ -111,14 +109,11 @@ for (const language of ['en', 'es'])
         )
         if (shape === 'wildcard')
           tiles[0] = new Tile(TileSuit.Souzu, 3, tiles[0].id)
-        if (shape === 'clemency') tiles.pop()
         const spareSuit = shape === 'orphans' ? TileSuit.Pinzu : TileSuit.Dragon
         tiles.unshift(
           new Tile(spareSuit, 2, 'spare-a'),
           new Tile(spareSuit, 1, 'spare-b')
         )
-        if (shape === 'clemency')
-          tiles.unshift(new Tile(TileSuit.Dragon, 3, 'spare-c'))
         state.handTiles = tiles
         state.wallTemplate = state.wallTemplate.filter(
           (t: { isBonus: boolean }) => !t.isBonus
@@ -133,8 +128,7 @@ for (const language of ['en', 'es'])
         state.targetScore = 1e9
         state.roundManager.getCurrentRound().scoreTarget = 1e9
         const ids = game.findCompleteHandSelection()
-        if (!ids || ids.length !== (shape === 'clemency' ? 13 : 14))
-          throw new Error('Missing subset')
+        if (!ids || ids.length !== 14) throw new Error('Missing subset')
         const score = game.previewScore(ids).finalScore
         if (!(await service.saveNewRun(raw)))
           throw new Error('Fixture save failed')
@@ -200,16 +194,25 @@ for (const language of ['en', 'es'])
       await expect(play).toBeInViewport()
       await page.screenshot({ path: testInfo.outputPath('spares.png') })
       await activate(play)
+      // Mahjong clears the round at once, far below its target, so the rack
+      // is not refilled: only the spares stay on it.
+      await expectTeaHouse(page)
+      await closeOmenReveal(page)
       await expect
         .poll(async () => (await saved()).state.handsRemaining)
         .toBe(before.state.handsRemaining - 1)
       const played = await saved()
       expect(played.state.score).toBe(expected.score)
-      expect(played.state.handTiles).toHaveLength(16)
-      for (const spare of before.state.handTiles.filter(
-        (t: { id: string }) => !expected.ids.includes(t.id)
-      ))
-        expect(played.state.handTiles).toContainEqual(spare)
+      expect(played.state.lastRoundSummary).toMatchObject({
+        clearedByCompleteHand: true,
+        score: expected.score,
+        target: 1e9,
+      })
+      expect(played.state.handTiles).toEqual(
+        before.state.handTiles.filter(
+          (t: { id: string }) => !expected.ids.includes(t.id)
+        )
+      )
       expect(
         played.state.discards.filter((t: { id: string }) =>
           expected.ids.includes(t.id)

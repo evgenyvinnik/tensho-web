@@ -8,7 +8,7 @@ import {
 
 const replayPath = process.env.SUCCESSION_REPLAY_PATH
 for (const language of ['en', 'es'])
-  test(`illustrated Succession, ascended forecast, exact payment and persistence (${language})`, async ({
+  test(`illustrated Grand Succession, ×4 Straight forecast, exact payment and persistence (${language})`, async ({
     page,
     isMobile,
     baseURL,
@@ -79,9 +79,18 @@ for (const language of ['en', 'es'])
         state.mandateEffectSystem.deactivateMandate()
         state.faceDownTileIds.clear()
         state.selectedTileIds.clear()
-        state.handTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 5].map(
-          (rank, i) => new Tile(TileSuit.Manzu, rank, `succession-${i}`)
-        )
+        // A Straight of four (3-4-5-6 of Characters) and spares.
+        state.handTiles = [
+          ...[3, 4, 5, 6].map(
+            (rank, i) => new Tile(TileSuit.Manzu, rank, `succession-${i}`)
+          ),
+          ...[1, 9].map(
+            (rank, i) => new Tile(TileSuit.Pinzu, rank, `spare-p-${i}`)
+          ),
+          ...[2, 8].map(
+            (rank, i) => new Tile(TileSuit.Souzu, rank, `spare-s-${i}`)
+          ),
+        ]
         state.wall = Array.from(
           { length: 70 },
           (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `tail-${i}`)
@@ -127,44 +136,46 @@ for (const language of ['en', 'es'])
     // Dispatched: touch adjustment moves a real tap there onto the Stake button.
     await page.locator('[data-run-header-round]').dispatchEvent('pointerdown')
     await expect(dialog).toHaveCount(0)
-    for (const tile of before.state.handTiles)
+    const straight = before.state.handTiles
+      .slice(0, 4)
+      .map((tile: { id: string }) => tile.id)
+    for (const id of straight)
       await activate(
-        page.locator(`[data-play-zone="hand"] [data-play-tile="${tile.id}"]`)
+        page.locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
       )
-    // The table's forecast is the engine's, with Chinitsu ascended to a ×4
-    // Yakuman by Succession.
-    const engine = await page.evaluate(
-      async (ids) => {
-        const path = '/src/game/GameOrchestrator.ts'
-        const { gameOrchestrator: game } = await import(path)
-        const preview = game.previewScore(ids)
-        const chinitsu = preview.detectedYaku.find(
-          (yaku: { definition: { id: string } }) =>
-            yaku.definition.id === 'chinitsu'
-        )
-        return {
-          score: preview.finalScore,
-          chinitsu: chinitsu && {
-            ascended: chinitsu.definition.ascended,
-            tier: chinitsu.definition.tier,
-            multiplier: chinitsu.definition.multiplier,
-          },
-        }
-      },
-      before.state.handTiles.map((tile: { id: string }) => tile.id)
-    )
-    expect(engine.chinitsu).toEqual({ ascended: true, tier: 4, multiplier: 4 })
+    // The table's forecast is the engine's: with two Flowers held, the
+    // Straight's Mult is ×4. A plain sequence is no Straight and gains
+    // nothing.
+    const engine = await page.evaluate(async (ids) => {
+      const path = '/src/game/GameOrchestrator.ts'
+      const { gameOrchestrator: game } = await import(path)
+      const decree = game.getState().decreeSystem.getOwnedDecrees()[0]
+      const run = ids.slice(0, 3)
+      decree.isDebuffed = true
+      const neutral = game.previewScore(ids)
+      const neutralRun = game.previewScore(run).finalScore
+      decree.isDebuffed = false
+      const preview = game.previewScore(ids)
+      return {
+        pattern: preview.pattern.id,
+        score: preview.finalScore,
+        quadrupled: Math.floor(
+          neutral.equation.points * neutral.equation.multiplier * 4
+        ),
+        run: game.previewScore(run).finalScore,
+        neutralRun,
+      }
+    }, straight)
+    expect(engine.pattern).toBe('straight4')
+    expect(engine.score).toBe(engine.quadrupled)
+    expect(engine.neutralRun).toBeGreaterThan(0)
+    expect(engine.run).toBe(engine.neutralRun)
     await expect(
       page.locator('[data-hand-score] [data-hand-score-pattern]')
-    ).toHaveText(copy.patterns.mahjong.name)
+    ).toHaveText(copy.patterns.straight4.name)
     expect(await saved()).toEqual({
       ...before,
-      state: {
-        ...before.state,
-        selectedTileIds: before.state.handTiles.map(
-          (tile: { id: string }) => tile.id
-        ),
-      },
+      state: { ...before.state, selectedTileIds: straight },
     })
     const forecast = Number(
       (await handScoreTotal(page, 'preview').getAttribute('title'))!.replace(
@@ -187,7 +198,7 @@ for (const language of ['en', 'es'])
       paid.state.discards.filter((t: { id: string }) =>
         t.id.startsWith('succession-')
       )
-    ).toHaveLength(14)
+    ).toEqual(before.state.handTiles.slice(0, 4))
     await page.reload()
     expect(await saved()).toEqual(paid)
     // Skip is gone: clear the round to reach the next one.

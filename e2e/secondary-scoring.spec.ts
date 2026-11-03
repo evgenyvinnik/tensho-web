@@ -1,18 +1,13 @@
 import { expect, test } from '@playwright/test'
 import en from '../src/i18n/locales/en.json' with { type: 'json' }
 import es from '../src/i18n/locales/es.json' with { type: 'json' }
-import {
-  clearReveals,
-  handScoreTotal,
-  openTable,
-  selectCompleteHand,
-} from './helpers/table'
+import { clearReveals, handScoreTotal, openTable } from './helpers/table'
 
 for (const [language, copy] of [
   ['en', en],
   ['es', es],
 ] as const) {
-  test(`Yaku Decrees respect Frostbite and Crimson Heart through forecast and payment (${language})`, async ({
+  test(`group Decrees respect Frostbite and Crimson Heart through forecast and payment (${language})`, async ({
     page,
     isMobile,
   }, testInfo) => {
@@ -42,15 +37,16 @@ for (const [language, copy] of [
           .getOwnedDecrees()
           .forEach((d: { id: string }) => state.decreeSystem.removeDecree(d.id))
         // Controlled builds/deals isolate the scoring integration; all staging/payment is UI-driven.
+        // A Full House (6-6-6 of Characters and 5-5 of Circles) and spares.
         state.handTiles = [
-          ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-            (n, i) => new Tile(TileSuit.Souzu, n, `run-${mode}-${i}`)
-          ),
           ...[6, 6, 6].map(
             (n, i) => new Tile(TileSuit.Manzu, n, `triplet-${mode}-${i}`)
           ),
           ...[5, 5].map(
             (n, i) => new Tile(TileSuit.Pinzu, n, `pair-${mode}-${i}`)
+          ),
+          ...[1, 4, 8].map(
+            (n, i) => new Tile(TileSuit.Souzu, n, `spare-${mode}-${i}`)
           ),
         ]
         state.wall = Array.from(
@@ -60,7 +56,7 @@ for (const [language, copy] of [
         state.drawIndex = 0
         state.targetScore = 1e9
         state.roundManager.getCurrentRound().scoreTarget = 1e9
-        const ids = state.handTiles.map((t: { id: string }) => t.id)
+        const ids = state.handTiles.slice(0, 5).map((t: { id: string }) => t.id)
         const base = game.previewScore(ids)
         for (const id of mode === 'frostbite'
           ? ['decree-yaku-amplifier', 'decree-yaku-nexus']
@@ -83,8 +79,9 @@ for (const [language, copy] of [
           )
         eventBus.emit('tileSelected', { tileId: '', selectedCount: 0 })
         return {
-          base: base.yakuMultiplier,
-          boosted: boosted.yakuMultiplier,
+          ids,
+          base: base.finalScore,
+          boosted: boosted.finalScore,
           forecast: game.previewScore(ids),
           before: state.score,
           disabled: state.mandateEffectSystem.getDisabledDecreeIds(),
@@ -95,16 +92,21 @@ for (const [language, copy] of [
       }, mode)
       // startNewRun queues its starting Decrees for a reveal over the table.
       await clearReveals(page)
+      // 80 Points (25 for the tiles, Triplet +40, Pair +15) × 3 Mult (1 and
+      // a Full House's 2) = 240 before any Decree.
+      expect(result.base).toBe(240)
       if (mode === 'frostbite') {
-        expect(result.forecast.yakuMultiplier).toBeCloseTo(
-          result.base + (result.boosted - result.base) / 2
-        )
-        // 225 points × (Yaku 4.3 + 4 for a complete hand) = 1867.5.
-        expect(result.forecast.finalScore).toBe(1867)
+        // Pair Amplifier ×2 for the pair, Group Nexus ×2.5 for each of the
+        // two groups: ×12.5 in all.
+        expect(result.boosted).toBe(3000)
+        // Frostbite halves the Decrees' combined factor, never the play's own
+        // Mult: 240 × (1 + 11.5 / 2) = 1620.
+        expect(result.forecast.finalScore).toBe(1620)
       } else {
+        expect(result.boosted).toBe(480)
         expect(result.disabled).toEqual([result.amplifierInstanceId])
-        // The disabled Amplifier adds nothing: 225 × (Yaku 2.6 + 4) = 1485.
-        expect(result.forecast.finalScore).toBe(1485)
+        // The disabled Amplifier adds nothing.
+        expect(result.forecast.finalScore).toBe(240)
         const decree = page.getByRole('button', {
           name: copy.decrees.items['decree-yaku-amplifier'].name,
           exact: true,
@@ -119,13 +121,19 @@ for (const [language, copy] of [
           .screenshot({ path: testInfo.outputPath('crimson-disabled.png') })
         await page.keyboard.press('Escape')
       }
-      await selectCompleteHand(page)
+      for (const id of result.ids) {
+        const tile = page.locator(
+          `[data-play-zone="hand"] [data-play-tile="${id}"]`
+        )
+        if (isMobile) await tile.tap()
+        else await tile.click()
+      }
       await expect(
         page.locator('[data-play-zone="felt"] [data-play-tile]')
-      ).toHaveCount(14)
+      ).toHaveCount(5)
       await expect(
         page.locator('[data-hand-score] [data-hand-score-pattern]')
-      ).toHaveText(copy.patterns.mahjong.name)
+      ).toHaveText(copy.patterns.triplet_pair.name)
       await expect(handScoreTotal(page, 'preview')).toHaveText(
         result.forecast.finalScore.toLocaleString(language)
       )

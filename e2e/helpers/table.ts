@@ -90,7 +90,9 @@ export async function selectTiles(
 
 /**
  * Pick the complete Mahjong hand the engine finds on the rack onto the felt,
- * one tile at a time in the engine's order (`tap` on touch layouts).
+ * one tile at a time in the engine's order (`tap` on touch layouts). Playing
+ * it clears the round at once, whatever it scores (unless a Boss Mandate
+ * blocks the play), so the next screen is the Tea House: see `expectTeaHouse`.
  */
 export async function selectCompleteHand(
   page: Page,
@@ -205,6 +207,16 @@ export async function swiftClear(
       .locator(`[data-play-zone="hand"] [data-play-tile="${id}"]`)
       .click()
   await page.locator('[data-game-action="play"]').click()
+  await expectTeaHouse(page)
+  if (!keepReveal) await closeOmenReveal(page)
+}
+
+/**
+ * Wait for the Tea House a cleared round leads to: its route, and the visit
+ * ShopScreen opens once it mounts. A swift clear's Omen reveal may still be
+ * on screen (see `closeOmenReveal`).
+ */
+export async function expectTeaHouse(page: Page): Promise<void> {
   await expect(page).toHaveURL(/\/shop$/)
   // Route navigation precedes ShopScreen's effect that opens this visit.
   await expect
@@ -216,7 +228,6 @@ export async function swiftClear(
       })
     )
     .toBe(true)
-  if (!keepReveal) await closeOmenReveal(page)
 }
 
 /**
