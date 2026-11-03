@@ -62,7 +62,7 @@ function safeAreaInsets(): Insets {
     insetProbe = document.createElement('div')
     insetProbe.setAttribute('aria-hidden', 'true')
     insetProbe.style.cssText =
-      'position:fixed;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)'
+      'position:fixed;visibility:hidden;pointer-events:none;padding-top:var(--safe-top);padding-bottom:env(safe-area-inset-bottom)'
     document.body.appendChild(insetProbe)
   }
   const style = getComputedStyle(insetProbe)

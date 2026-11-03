@@ -493,7 +493,7 @@ export function MenuScreen() {
 
       {/* Language selector - top right, below a notch or status bar */}
       <AnimatedDiv
-        className="absolute top-[calc(env(safe-area-inset-top)_+_1rem)] right-[calc(env(safe-area-inset-right)_+_1rem)] z-20"
+        className="absolute top-[calc(var(--safe-top)_+_1rem)] right-[calc(env(safe-area-inset-right)_+_1rem)] z-20"
         style={{
           opacity: langSpring.opacity,
           transform: langSpring.y.to((y) => `translateY(${y}px)`),
