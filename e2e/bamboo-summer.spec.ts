@@ -9,8 +9,9 @@ import { closeOmenReveal, settleReveals, turnBudget } from './helpers/table'
  */
 const PAYMENT = { quad: 491, complete: 3985 }
 /**
- * One point above that payment, so the sheltering play leaves the round open
- * and any later scoring play clears it.
+ * One point above that payment, so the sheltering quad leaves the round open
+ * and any later scoring play clears it. A complete hand clears the round
+ * whatever it scores.
  */
 const TARGET = { quad: PAYMENT.quad + 1, complete: PAYMENT.complete + 1 }
 
@@ -256,6 +257,53 @@ for (const language of ['en', 'es'])
       expect(staged.state.summerReserve).toEqual(drawn.state.summerReserve)
       expect(staged.state.handsRemaining).toBe(drawn.state.handsRemaining)
       await activate(play)
+      const nextRound = async () => {
+        await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+        // Clearing with Turns to spare earns an Omen, revealed before the shop.
+        await closeOmenReveal(page)
+        await activate(
+          page.getByRole('button', {
+            name: copy.shop.ui.nextRound,
+            exact: true,
+          })
+        )
+        await expect(page).toHaveURL(new RegExp(`/${language}/play/?$`))
+        await expect
+          .poll(async () => (await saved()).state.currentRound)
+          .toBe(2)
+        const next = await saved()
+        expect(next.state.bambooSummerProtection).toBe(false)
+        expect(next.state.seasonSystem.seasonStack).toEqual([])
+        await page.reload()
+        expect(await saved()).toEqual(next)
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth + 1
+          )
+        ).toBe(true)
+        expect(errors).toEqual([])
+      }
+      if (shape === 'complete') {
+        // The complete hand clears the round at once, below its target. Bamboo
+        // still returns the reserve as the hand lands; its shelter then ends
+        // with the round it was earned in.
+        await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+        await expect
+          .poll(async () => (await saved()).state.lastRoundSummary)
+          .toMatchObject({ clearedByCompleteHand: true })
+        const cleared = await saved()
+        expect(cleared.state.score - drawn.state.score).toBe(forecast)
+        expect(cleared.state.lastRoundSummary.score).toBe(cleared.state.score)
+        expect(cleared.state.score).toBeLessThan(TARGET.complete)
+        expect(cleared.state.summerReserve).toEqual([])
+        for (const id of reserved)
+          expect(
+            cleared.state.wall.some((t: { id: string }) => t.id === id)
+          ).toBe(true)
+        expect(cleared.state.bambooSummerProtection).toBe(false)
+        await nextRound()
+        return
+      }
       await expect
         .poll(async () => (await saved()).state.bambooSummerProtection)
         .toBe(true)
@@ -264,7 +312,7 @@ for (const language of ['en', 'es'])
       expect(paid.state.score - drawn.state.score).toBe(forecast)
       expect(paid.state.handsRemaining).toBe(drawn.state.handsRemaining - 1)
       expect(paid.state.wall.length - paid.state.drawIndex).toBe(
-        liveBefore + 9 - (shape === 'quad' ? 4 : 14)
+        liveBefore + 9 - 4
       )
       for (const id of reserved)
         expect(paid.state.wall.some((t: { id: string }) => t.id === id)).toBe(
@@ -307,23 +355,5 @@ for (const language of ['en', 'es'])
         later.state.handTiles.slice(0, 2).map((t: { id: string }) => t.id)
       )
       await activate(play)
-      await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
-      // Clearing with Turns to spare earns an Omen, revealed before the shop.
-      await closeOmenReveal(page)
-      await activate(
-        page.getByRole('button', { name: copy.shop.ui.nextRound, exact: true })
-      )
-      await expect(page).toHaveURL(new RegExp(`/${language}/play/?$`))
-      await expect.poll(async () => (await saved()).state.currentRound).toBe(2)
-      const next = await saved()
-      expect(next.state.bambooSummerProtection).toBe(false)
-      expect(next.state.seasonSystem.seasonStack).toEqual([])
-      await page.reload()
-      expect(await saved()).toEqual(next)
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= innerWidth + 1
-        )
-      ).toBe(true)
-      expect(errors).toEqual([])
+      await nextRound()
     })

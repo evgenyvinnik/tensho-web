@@ -42,7 +42,7 @@
         {
           "suit": "manzu",
           "rank": 1,
-          "id": "complete-m-0",
+          "id": "tactical-0",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -53,7 +53,7 @@
         {
           "suit": "manzu",
           "rank": 2,
-          "id": "complete-m-1",
+          "id": "tactical-1",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -64,7 +64,7 @@
         {
           "suit": "manzu",
           "rank": 3,
-          "id": "complete-m-2",
+          "id": "tactical-2",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -75,7 +75,7 @@
         {
           "suit": "manzu",
           "rank": 4,
-          "id": "complete-m-3",
+          "id": "tactical-3",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -86,7 +86,7 @@
         {
           "suit": "manzu",
           "rank": 5,
-          "id": "complete-m-4",
+          "id": "tactical-4",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -1743,7 +1743,7 @@
         {
           "suit": "manzu",
           "rank": 1,
-          "id": "tactical-0",
+          "id": "complete-m-0",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -1754,7 +1754,7 @@
         {
           "suit": "manzu",
           "rank": 2,
-          "id": "tactical-1",
+          "id": "complete-m-1",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -1765,7 +1765,7 @@
         {
           "suit": "manzu",
           "rank": 3,
-          "id": "tactical-2",
+          "id": "complete-m-2",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -1776,7 +1776,7 @@
         {
           "suit": "manzu",
           "rank": 4,
-          "id": "tactical-3",
+          "id": "complete-m-3",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",
@@ -1787,7 +1787,7 @@
         {
           "suit": "manzu",
           "rank": 5,
-          "id": "tactical-4",
+          "id": "complete-m-4",
           "isRed": false,
           "modifiers": {
             "enhancement": "none",

@@ -91,9 +91,11 @@ for (const language of ['en', 'es'])
         ]
         for (const type of types)
           state.flowerSystem.addFlower(Tile.createFlower(type, `owned-${type}`))
+        // The tactical play comes first: its refill brings the rest of the
+        // complete hand, which then clears the round.
         state.handTiles = [
           ...[1, 2, 3, 4, 5].map(
-            (rank, i) => new Tile(TileSuit.Manzu, rank, `complete-m-${i}`)
+            (rank, i) => new Tile(TileSuit.Manzu, rank, `tactical-${i}`)
           ),
           ...[2, 3, 4].map(
             (rank, i) => new Tile(TileSuit.Pinzu, rank, `complete-p-${i}`)
@@ -109,7 +111,7 @@ for (const language of ['en', 'es'])
         state.wall = [
           ...types.map((type) => Tile.createFlower(type, `duplicate-${type}`)),
           ...[1, 2, 3, 4, 5].map(
-            (rank, i) => new Tile(TileSuit.Manzu, rank, `tactical-${i}`)
+            (rank, i) => new Tile(TileSuit.Manzu, rank, `complete-m-${i}`)
           ),
           ...Array.from(
             { length: 70 },
@@ -132,7 +134,7 @@ for (const language of ['en', 'es'])
         state.bambooSummerProtection = false
         state.faceDownTileIds.clear()
         state.selectedTileIds.clear()
-        // The complete hand leaves the round open; the tactical play clears it.
+        // The tactical play leaves the round open; the complete hand clears it.
         state.targetScore = target
         state.roundManager.getCurrentRound().scoreTarget = target
         if (!(await service.saveNewRun(raw))) throw Error('Fixture save failed')
@@ -153,7 +155,8 @@ for (const language of ['en', 'es'])
     for (let i = 0; i < 4; i++) {
       const old = await saved()
       const redrawn = old.state.handTiles.find(
-        (t: { id: string }) => !t.id.startsWith('complete-')
+        (t: { id: string }) =>
+          !t.id.startsWith('complete-') && !t.id.startsWith('tactical-')
       )
       // REDRAW refills from the live wall in order: the next duplicate Flower.
       await stage([redrawn.id])
@@ -208,7 +211,9 @@ for (const language of ['en', 'es'])
     expect(await saved()).toEqual(awakened)
     await page.reload()
     expect(await saved()).toEqual(awakened)
-    for (const prefix of ['complete-', 'tactical-']) {
+    // The tactical play leaves the round open; the complete hand then clears
+    // it at once, as every complete hand does.
+    for (const prefix of ['tactical-', 'complete-']) {
       const old = await saved()
       const ids = old.state.handTiles
         .filter((t: { id: string }) => t.id.startsWith(prefix))
@@ -244,13 +249,15 @@ for (const language of ['en', 'es'])
         after.state.discards.filter((t: { id: string }) => ids.includes(t.id))
       ).toHaveLength(ids.length)
       expect(after.state.flowerSystem).toEqual(awakened.state.flowerSystem)
-      if (prefix === 'complete-') {
+      if (prefix === 'tactical-') {
         expect(after.state.phase).toBe('gameplay')
         await page.reload()
         expect(await saved()).toEqual(after)
       } else {
-        // The tactical play reaches the target: the round is won.
         await expect(page).toHaveURL(new RegExp(`/${language}/shop/?$`))
+        expect(after.state.lastRoundSummary).toMatchObject({
+          clearedByCompleteHand: true,
+        })
       }
     }
     // Clearing with Turns to spare earns an Omen, revealed before the shop.
