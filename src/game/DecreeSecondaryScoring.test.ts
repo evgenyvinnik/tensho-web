@@ -2,7 +2,7 @@ import { afterEach, expect, it } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
-import { Tile, TileSuit, WindType, DragonType } from '../core/Tile'
+import { Tile, TileSuit, WindType } from '../core/Tile'
 import { CRIMSON_HEART } from '../config/mandateDefinitions'
 import { ALL_DECREES } from '../systems/DecreeSystem'
 import { SeasonSystem } from '../systems/SeasonSystem'
@@ -99,35 +99,8 @@ it.each([false, true])(
   }
 )
 
-for (const count of [1, 2]) {
-  it.each([
-    ['decree-yaku-amplifier'],
-    ['decree-yaku-nexus'],
-    ['decree-yaku-amplifier', 'decree-yaku-nexus'],
-  ])(
-    `scales only the combined Yaku Decree contribution with ${count} Frostbites: %j`,
-    (...decrees) => {
-      const { game, ids, add, frost, pay } = fixture()
-      const baseline = game.previewScore(ids)!
-      decrees.forEach(add)
-      const enhanced = game.previewScore(ids)!
-      expect(enhanced.yakuMultiplier).toBeGreaterThan(baseline.yakuMultiplier)
-      frost(count)
-      const paid = pay()
-      expect(paid.yakuMultiplier).toBeCloseTo(
-        baseline.yakuMultiplier +
-          (enhanced.yakuMultiplier - baseline.yakuMultiplier) * 0.5 ** count
-      )
-      expect(paid.basePoints).toBe(baseline.basePoints)
-      expect(paid.detectedYaku.map((y) => y.definition.id)).toEqual(
-        baseline.detectedYaku.map((y) => y.definition.id)
-      )
-    }
-  )
-}
-
 it.each([
-  'decree-yaku-amplifier',
+  'decree-chain-reaction',
   'decree-yaku-nexus',
   'decree-triple-echo',
   'decree-echo-dimension',
@@ -143,32 +116,21 @@ it.each([
   expect(pay().finalScore).toBe(baseline.finalScore)
 })
 
-it('does not apply Yaku powers to a tactical play with no Yaku', () => {
-  const { game, ids, add, frost, pay } = fixture(false)
-  const baseline = game.previewScore(ids)!
-  expect(baseline.detectedYaku).toHaveLength(0)
-  add('decree-yaku-amplifier')
-  add('decree-yaku-nexus')
-  frost()
-  expect(pay().finalScore).toBe(baseline.finalScore)
-})
-
-it('does not let Blueprint skip a suppressed Yaku neighbor', () => {
+it('does not let Blueprint skip a suppressed neighbor', () => {
   const { game, ids, add, suppress, pay } = fixture()
   add('decree-blueprint')
-  add('decree-yaku-amplifier')
+  add('decree-chain-reaction')
   add('decree-yaku-nexus')
-  suppress('decree-yaku-amplifier', 'decree-blueprint')
+  suppress('decree-chain-reaction', 'decree-blueprint')
   const baseline = game.previewScore(ids)!
-  expect(baseline.yakuMultiplier).toBe(4)
-  suppress('decree-yaku-amplifier')
+  suppress('decree-chain-reaction')
   expect(pay().finalScore).toBe(baseline.finalScore)
 })
 
 it('honors an actual Crimson Heart activation, then restores the Decree on deactivation', () => {
   const { game, state, ids, add, pay } = fixture()
   const base = game.previewScore(ids)!
-  add('decree-yaku-amplifier')
+  add('decree-chain-reaction')
   const enhanced = game.previewScore(ids)!
   expect(
     state.mandateEffectSystem.activateMandate(
@@ -178,7 +140,7 @@ it('honors an actual Crimson Heart activation, then restores the Decree on deact
     ).success
   ).toBe(true)
   expect(state.mandateEffectSystem.getDisabledDecreeIds()).toEqual([
-    state.decreeSystem.getOwnedDecree('decree-yaku-amplifier')!.instanceId,
+    state.decreeSystem.getOwnedDecree('decree-chain-reaction')!.instanceId,
   ])
   expect(game.previewScore(ids)!.finalScore).toBe(base.finalScore)
   state.mandateEffectSystem.deactivateMandate()
@@ -195,27 +157,4 @@ it('copies Echo Dimension amplification and disables its copies with the source'
   expect(game.previewScore(ids)!.basePoints).toBe(75)
   suppress('decree-echo-dimension')
   expect(pay().basePoints).toBe(60)
-})
-
-it('preserves Dragon’s Den native Yakuman benefit while weakening its Decree boost', () => {
-  const { game, state, add, frost } = fixture(true, 'dragons_den')
-  state.handTiles = [
-    ...[WindType.East, WindType.South, WindType.West].flatMap((wind) =>
-      [0, 1, 2].map((i) => Tile.createWind(wind, `w-${wind}-${i}`))
-    ),
-    ...[0, 1, 2].map((i) => Tile.createDragon(DragonType.Red, `red-${i}`)),
-    ...[0, 1].map((i) => Tile.createDragon(DragonType.Green, `green-${i}`)),
-  ]
-  const ids = state.handTiles.map((tile) => tile.id)
-  const base = game.previewScore(ids)!
-  expect(base.detectedYaku.some((y) => y.definition.tier === 4)).toBe(true)
-  add('decree-yaku-amplifier')
-  const enhanced = game.previewScore(ids)!
-  frost()
-  const preview = game.previewScore(ids)!
-  expect(preview.yakuMultiplier).toBeCloseTo(
-    base.yakuMultiplier + (enhanced.yakuMultiplier - base.yakuMultiplier) / 2
-  )
-  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
-  expect(state.score).toBe(preview.finalScore)
 })

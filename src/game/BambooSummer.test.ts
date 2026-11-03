@@ -125,9 +125,17 @@ it('qualifies a complete hand, not just tactical plays', () => {
   const ids = state.handTiles.map((t) => t.id),
     score = game.previewScore(ids)!
   expect(score.structure.kind).toBe('complete')
+  // The complete hand clears the round, which ends the protection with it:
+  // read it as the play lands.
+  let sheltered = false
+  const off = eventBus.on('handPlayed', () => {
+    sheltered = state.bambooSummerProtection === true
+  })
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
+  off()
   expect(state.score).toBe(score.finalScore)
-  expect(state.bambooSummerProtection).toBe(true)
+  expect(sheltered).toBe(true)
+  expect(state.phase).toBe('shop')
   expect(state.summerReserve).toEqual([])
 })
 

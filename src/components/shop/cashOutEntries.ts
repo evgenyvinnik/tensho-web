@@ -45,7 +45,9 @@ export function cashOutEntries(
   const sources: CashOutEntry[] = [
     {
       id: 'clear',
-      label: t('shop.roundCleared'),
+      label: summary.clearedByCompleteHand
+        ? t('shop.roundClearedByMahjong')
+        : t('shop.roundCleared'),
       amount: summary.baseReward,
       ...(summary.stakeWithheldReward
         ? {

@@ -138,7 +138,7 @@ it('saves exact river/rack identities without replaying rewards and returns to n
   expect(physical(game.getState())).toEqual(physical(state))
 })
 
-it('pays one recovery per sequence in a complete hand without sharing a river identity', () => {
+it('pays a complete hand, which clears the round before any recovery', () => {
   const { game, state } = fixture()
   state.handTiles = [
     ...[1, 2, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
@@ -158,11 +158,8 @@ it('pays one recovery per sequence in a complete hand without sharing a river id
   expect(forecast.structure.kind).toBe('complete')
   expect(play(game, all).success).toBe(true)
   expect(state.score - before).toBe(forecast.finalScore)
-  expect(state.handTiles).toHaveLength(17)
-  expect(held(state)).toEqual(
-    expect.arrayContaining(['river-0', 'river-1', 'river-2'])
-  )
-  expect(physical(state)).toEqual(identities)
+  expect(state.phase).toBe('shop')
+  expect(held(state)).not.toEqual(expect.arrayContaining(['river-0']))
   expect(new Set(physical(state)).size).toBe(identities.length)
 })
 

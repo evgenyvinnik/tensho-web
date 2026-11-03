@@ -99,7 +99,7 @@
     "grammar": "Grammatica (Yaku)",
     "hierarchyOverride": "Quando le regole entrano in conflitto, quelle con autorità maggiore prevalgono su quelle con autorità minore. Controlla le condizioni specifiche di ogni effetto.",
     "tipScoreTitle": "Fai giocate utili",
-    "tipScore": "Confronta l’anteprima del punteggio per gruppi fino a {{max}} tessere o per una mano di Mahjong completa. Usa i turni per avvicinarti all’obiettivo invece di aspettare soltanto una mano perfetta.",
+    "tipScore": "Confronta l’anteprima del punteggio per gruppi fino a {{max}} tessere. Una mano di Mahjong completa supera subito il round, qualunque sia il punteggio. Usa i turni per avvicinarti all’obiettivo invece di aspettare soltanto una mano perfetta.",
     "tipSynergyTitle": "Crea sinergie",
     "tipSynergy": "Decreti che si completano a vicenda possono essere più forti di Decreti potenti presi singolarmente.",
     "tipPurposeTitle": "Compra con uno scopo",
@@ -120,7 +120,7 @@
     "tipLoss": "Dopo una partita, trova una decisione che cambieresti, come una ripescata troppo presto o una tessera tenuta senza un piano, e provala la volta dopo.",
     "biggerHandP1": "Ogni gruppo dopo il primo aggiunge Mult, e una mano di Mahjong completa ne aggiunge più di tutti. Invece di giocare ogni piccolo gruppo appena compare, tieni i gruppi che hai e ripesca le tessere in più.",
     "biggerHandRack": "Questo leggio ha due sequenze finite, due sequenze di {{circles}} incomplete e una coppia di {{east}}, più due Draghi spaiati. Un solo RIPESCA manda entrambi i Draghi nel fiume.",
-    "biggerHandComplete": "Se le nuove tessere sono l’1 e il 4 di {{circles}}, le quattordici tessere formano quattro sequenze e una coppia. Seleziona tutte e quattordici e giocale: una mano completa non segna da sola.",
+    "biggerHandComplete": "Se le nuove tessere sono l’1 e il 4 di {{circles}}, le quattordici tessere formano quattro sequenze e una coppia. Seleziona tutte e quattordici e giocale: una mano completa supera subito il round, ma solo quando la giochi.",
     "biggerHandWarning": "Le pescate sono casuali, e inseguire una mano grande può costarti il round. Confronta il punteggio che puoi fare ora con i turni che ti restano.",
     "congratulations": "<strong>Congratulazioni!</strong> Ora conosci le basi di Tensho.",
     "farewell": "Che le tessere ti siano propizie nella tua ascesa celeste!",
@@ -285,16 +285,16 @@
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
   },
   "closedHandAusterity": {
-    "name": "Austerità della mano chiusa",
-    "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten, lo Scritto dell’eclissi o lo Scritto del silenzio non contano.",
-    "progress": "Mani complete finora: {{count}}. Prossima: ×{{factor}} prima dei Fiori."
+    "name": "Austerità delle sei tessere",
+    "description": "Ogni giocata di sei o più tessere, tutte in un gruppo, ottiene ×1,5, che cresce di ×1,2 per ogni giocata simile precedente in questa partita, fino a ×4 prima dei bonus dei Fiori.",
+    "progress": "Giocate valide finora: {{count}}. Prossima: ×{{factor}} prima dei Fiori."
   },
   "yakuRepetition": {
-    "name": "Editto della Ripetizione degli Yaku",
-    "description": "Uno Yaku segnato in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quello Yaku interrompe la serie.",
+    "name": "Editto della Ripetizione delle Combinazioni",
+    "description": "Una combinazione (come «Doppia coppia») giocata in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quella combinazione interrompe la serie.",
     "title": "Combinazioni da ripetere",
     "streak": "{{name}} · {{rounds}} round precedenti consecutivi",
-    "empty": "Nessuna serie precedente. Realizza uno Yaku in questo round per iniziarne una."
+    "empty": "Nessuna serie precedente. Gioca una combinazione in questo round per iniziarne una."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Realizza uno Yakuman, una mano di livello massimo come Tre Grandi Draghi.",
@@ -365,7 +365,7 @@
     },
     "yaku": {
       "title": "Combinazioni e moltiplicatori",
-      "content": "Puoi fare punti con un piccolo gruppo; una mano completa può attivare moltiplicatori Yaku. Controlla l’anteprima del punteggio per decidere cosa giocare e cosa tenere."
+      "content": "Puoi fare punti con un piccolo gruppo, e una mano completa supera subito il round. Controlla l’anteprima del punteggio per decidere cosa giocare e cosa tenere."
     },
     "flora": {
       "title": "Fiori e Stagioni",
@@ -938,7 +938,7 @@
     "beginnerFlowSelect": "Tocca una figura utile.",
     "beginnerFlowPreview": "Leggi la previsione esatta.",
     "beginnerFlowPlay": "Giocala e pesca i rimpiazzi.",
-    "beginnerFullHand": "Più avanti, quattro figure e una coppia formano una mano completa e sbloccano potenti moltiplicatori Yaku.",
+    "beginnerFullHand": "Più avanti, quattro figure e una coppia formano una mano completa. Giocarla supera subito il round.",
     "showGuidedMove": "Mostrami una mossa",
     "guidedMove": "Prima mossa guidata",
     "beginnerPatternReady": "Combinazione pronta: {{pattern}}",
@@ -1045,7 +1045,10 @@
       "adReady": "Ricompensa pronta",
       "adClaim": "Ottieni +1 turno"
     },
-    "decreeDetails": "Dettagli di {{name}}"
+    "decreeDetails": "Dettagli di {{name}}",
+    "mahjongHint": "Mahjong! Il tuo leggio contiene una mano completa. Giocala per superare il round.",
+    "mahjongHintSelect": "Selezionala",
+    "mahjongClearsRound": "Round superato!"
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -1187,7 +1190,8 @@
       "result": "Risultato",
       "becomes": "{{from}} diventa {{to}}",
       "destroyed": "{{name}} sparisce"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong! Round superato"
   },
   "decrees": {
     "title": "Decreti",
@@ -1380,11 +1384,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Stratega dei semplici",
-        "description": "+3 Mult quando realizzi Tutti semplici: una mano completa di sole tessere da 2 a 8, senza 1, 9, Venti o Draghi"
+        "description": "+3 Mult se tutte le tessere giocate sono da 2 a 8 (niente 1, 9, Venti o Draghi)"
       },
       "decree-pinfu-purist": {
         "name": "Purista delle sequenze",
-        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze, nessuna con numeri saltati, più una coppia che non sia di Draghi o di Vento d’Est"
+        "description": "+5 Mult se la giocata include due sequenze (come 2-3-4 e 6-7-8)"
       },
       "decree-manzu-emperor": {
         "name": "Imperatore dei Caratteri",
@@ -1412,7 +1416,7 @@
       },
       "decree-straight-arrow": {
         "name": "Freccia diritta",
-        "description": "+80 Punti se la giocata include 3 o più sequenze"
+        "description": "+80 Punti se la giocata include una Scala (quattro o più tessere consecutive dello stesso seme)"
       },
       "decree-run-master": {
         "name": "Maestro delle sequenze",
@@ -1480,19 +1484,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Zelota del valore",
-        "description": "×1,5 Mult quando realizzi Tessere di valore: una mano completa con un tris o un poker di Draghi o di Vento d’Est"
+        "description": "×1,5 Mult se la giocata include una coppia, un tris o un poker di Draghi o di Venti d’Est"
       },
       "decree-toitoi-titan": {
         "name": "Titano dei tris",
-        "description": "×1,5 Mult quando realizzi Tutti tris: una mano completa di quattro tris o poker più una coppia"
+        "description": "×1,5 Mult se la giocata include un Full: un tris e una coppia"
       },
       "decree-ittsu-initiate": {
         "name": "Iniziato dei nove",
-        "description": "×1,5 Mult quando realizzi una Scala 1–9: una mano completa con 1-2-3, 4-5-6 e 7-8-9 dello stesso seme"
+        "description": "×1,5 Mult se la giocata include la sequenza 1-2-3, 4-5-6 o 7-8-9"
       },
       "decree-chinitsu-champion": {
-        "name": "Campione del colore puro",
-        "description": "×2 Mult quando realizzi Colore puro: una mano completa di un solo seme, senza Venti né Draghi"
+        "name": "Campione del colore",
+        "description": "×2 Mult se la giocata ha 5 o più tessere, tutte di un solo seme numerato"
       },
       "decree-veteran": {
         "name": "Veterano",
@@ -1595,16 +1599,16 @@
         "description": "+3 Mult per ogni Fiore, +30 Punti per ogni Stagione."
       },
       "decree-honitsu-herald": {
-        "name": "Araldo del mezzo colore",
-        "description": "×2 Mult quando realizzi Mezzo colore: una mano completa di un seme più Venti o Draghi"
+        "name": "Araldo del poker",
+        "description": "×2 Mult se la giocata include quattro o più tessere uguali (un Poker)"
       },
       "decree-sanshoku-sage": {
-        "name": "Saggio della tripla sequenza",
-        "description": "×2 Mult quando realizzi Tripla sequenza mista: una mano completa con la stessa sequenza in tutti e tre i semi"
+        "name": "Saggio delle sequenze gemelle",
+        "description": "×2 Mult se la giocata include la stessa sequenza in due semi (come 3-4-5 di Caratteri e 3-4-5 di Cerchi)"
       },
       "decree-chanta-champion": {
-        "name": "Campione della mano esterna",
-        "description": "×2 Mult quando realizzi una Mano esterna: una mano completa con almeno una sequenza, in cui ogni gruppo e la coppia includono un 1, un 9, un Vento o un Drago. Vale anche la Mano esterna pura (uguale, ma senza Venti né Draghi, quindi ogni gruppo e la coppia includono un 1 o un 9)."
+        "name": "Campione esterno",
+        "description": "×2 Mult se la giocata ha due o più gruppi e ogni gruppo include un 1, un 9, un Vento o un Drago"
       },
       "decree-mandate-breaker": {
         "name": "Infrangitore di mandati",
@@ -1675,12 +1679,12 @@
         "description": "Ogni Drago giocato segna punti quattro volte"
       },
       "decree-yaku-amplifier": {
-        "name": "Amplificatore degli Yaku",
-        "description": "Quando una mano completa segna Yaku, il loro moltiplicatore combinato viene moltiplicato per 1,5"
+        "name": "Amplificatore delle coppie",
+        "description": "×2 Mult per ogni coppia nella giocata"
       },
       "decree-yakuman-seeker": {
-        "name": "Cercatore di Yakuman",
-        "description": "×5 Mult quando realizzi uno Yakuman, una mano di livello massimo come Tre Grandi Draghi o Tredici orfani"
+        "name": "Grande cercatore",
+        "description": "×5 Mult se la giocata include cinque o più tessere uguali, o una Scala di sei tessere"
       },
       "decree-four-seasons-master": {
         "name": "Maestro delle quattro stagioni",
@@ -1732,7 +1736,7 @@
       },
       "decree-chain-reaction": {
         "name": "Reazione a catena",
-        "description": "×1,5 Mult per ogni Yaku nella mano realizzata"
+        "description": "×1,5 Mult per ogni gruppo nella giocata (le coppie contano)"
       },
       "decree-cosmic-jade": {
         "name": "Giada cosmica",
@@ -1767,12 +1771,12 @@
         "description": "×1,2 Mult ogni 10 Oro posseduti"
       },
       "decree-yaku-nexus": {
-        "name": "Nesso degli Yaku",
-        "description": "Ogni Yaku segna come se fosse di un livello superiore (un Livello 1 da ×1,3 diventa ×1,6)"
+        "name": "Nesso dei gruppi",
+        "description": "×2,5 Mult per ogni gruppo nella giocata (le coppie contano)"
       },
       "decree-reality-warp": {
         "name": "Distorsione della realtà",
-        "description": "Qualsiasi gruppo di 14 tessere selezionate può formare una mano completa"
+        "description": "Le giocate che non sono una mano completa possono contenere fino a 8 tessere invece di 6"
       },
       "decree-time-master": {
         "name": "Maestro del tempo",
@@ -1788,7 +1792,7 @@
       },
       "false_eye_mandate": {
         "name": "Mandato del falso occhio",
-        "description": "Una mano completa può usare uno dei suoi gruppi al posto della coppia."
+        "description": "I tuoi Decreti contano ogni giocata come se contenesse una coppia in più."
       },
       "honor_transmutation": {
         "name": "Trasmutazione degli onori",
@@ -1803,20 +1807,20 @@
         "description": "Una volta per round, scambia una tessera scelta con una del muro morto (le tessere riservate in fondo al muro) senza spendere turni."
       },
       "shanten_clemency": {
-        "name": "Clemenza Shanten",
-        "description": "Una mano a cui manca una tessera per essere completa può essere giocata come mano completa, a metà punteggio."
+        "name": "Clemenza delle tessere sciolte",
+        "description": "Le tessere sciolte (tessere giocate fuori da ogni gruppo) segnano tutti i loro Punti invece della metà."
       },
       "closed_hand_austerity": {
-        "name": "Austerità della mano chiusa",
-        "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten, lo Scritto dell’eclissi o lo Scritto del silenzio non contano."
+        "name": "Austerità delle sei tessere",
+        "description": "Ogni giocata di sei o più tessere, tutte in un gruppo, ottiene ×1,5, che cresce di ×1,2 per ogni giocata simile precedente in questa partita, fino a ×4 prima dei bonus dei Fiori."
       },
       "terminal_devotion": {
         "name": "Devozione ai terminali",
         "description": "Ogni tessera terminale (1 o 9) giocata aggiunge 0,05 al ×Mult di questo Decreto (quattro danno ×1,2)."
       },
       "yaku_repetition_charter": {
-        "name": "Editto della Ripetizione degli Yaku",
-        "description": "Uno Yaku segnato in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quello Yaku interrompe la serie."
+        "name": "Editto della Ripetizione delle Combinazioni",
+        "description": "Una combinazione (come «Doppia coppia») giocata in round consecutivi ottiene ×1,2 per ogni round precedente della sua serie, fino a ×4 prima dei bonus dei Fiori. Un round senza quella combinazione interrompe la serie."
       },
       "decree-blueprint": {
         "name": "Progetto",
@@ -1835,8 +1839,8 @@
         "description": "Copia gli effetti di tutti gli altri tuoi Decreti"
       },
       "decree-yakuman-blessing": {
-        "name": "Benedizione Yakuman",
-        "description": "×10 Mult quando realizzi uno Yakuman, una mano di livello massimo come Tre Grandi Draghi o Tredici orfani"
+        "name": "Benedizione sestupla",
+        "description": "×8 Mult se la giocata ha sei o più tessere e ognuna fa parte di un gruppo"
       },
       "decree-omega": {
         "name": "Omega",
@@ -1847,8 +1851,8 @@
         "description": "Quando vinci un round, +1 Oro per ogni seme diverso rimasto sul leggio. Venti e Draghi contano come semi separati."
       },
       "yakuman_succession": {
-        "name": "Successione Yakuman",
-        "description": "Finché possiedi almeno 2 Fiori, queste mani diventano Yakuman, il livello massimo (×4 ciascuna): Mezzo colore, Colore puro, Doppia sequenza pura doppia (due volte due sequenze identiche), Mano esterna pura (un 1 o un 9 in ogni gruppo e nella coppia) e Sette coppie. Una mano indebolita da un Mandato non può salire. Le copie non si sommano."
+        "name": "Grande successione",
+        "description": "Finché possiedi almeno 2 Fiori: ×4 Mult se la giocata include quattro o più tessere uguali (un Poker) o una Scala (quattro o più tessere consecutive dello stesso seme)."
       },
       "river_tax": {
         "name": "Tassa fluviale",
@@ -1860,7 +1864,7 @@
       },
       "tanyao_dispensation": {
         "name": "Deroga dei semplici",
-        "description": "Tutti semplici (di norma solo tessere da 2 a 8) accetta anche 1 e 9. Venti e Draghi continuano a invalidarlo."
+        "description": "Per i tuoi Decreti, anche 1 e 9 contano come semplici (tessere da 2 a 8). Venti e Draghi continuano a non contare."
       },
       "moonlit_seal": {
         "name": "Emblema lunare",
@@ -1897,6 +1901,34 @@
       "decree-infinite-loop": {
         "name": "Ciclo Infinito",
         "description": "Ogni tessera che segna punti lo fa quattro volte"
+      },
+      "decree-mirror-lake": {
+        "name": "Lago specchio",
+        "description": "×2 Mult se questa giocata ripete una combinazione già giocata in questo round (come una Coppia dopo una Coppia)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Ruota del nove",
+        "description": "×3 Mult sulla terza giocata di ogni round e, da lì in poi, ogni tre giocate"
+      },
+      "decree-sleeved-tile": {
+        "name": "Tessera nella manica",
+        "description": "+2 Mult per ogni tessera ripescata in questo round"
+      },
+      "decree-three-roads": {
+        "name": "Tre strade",
+        "description": "×1,5 Mult per ogni combinazione diversa giocata nelle giocate precedenti di questo round"
+      },
+      "decree-open-palm": {
+        "name": "Palmo aperto",
+        "description": "+2 ripescate gratuite per round, ma la prima giocata di ogni round riceve ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Angolo condiviso",
+        "description": "+3 Mult per ogni gruppo delle giocate precedenti di questo round (le coppie contano)"
+      },
+      "decree-last-word": {
+        "name": "L’ultima parola",
+        "description": "×4 Mult se questa giocata usa l’ultimo turno del round"
       }
     }
   },
@@ -1915,7 +1947,7 @@
     "chrysanthemumWinter": "Con Crisantemo attivo, le giocate coperte ignorano la penalità di Inverno mantenendo la regola delle sequenze che saltano un rango. Le giocate scoperte subiscono ancora la penalità. La Siccità blocca questa protezione se il Fiore non è protetto.",
     "catalystsTitle": "Pagare con un Fiore",
     "catalystsIntro": "Alcune offerte dirette di Decreti nella Casa del Tè permettono di usare un Fiore al posto dell’Oro. Scegli esattamente il Fiore posseduto e conferma: è facoltativo, mai un sacrificio automatico.",
-    "catalystsCost": "Perdere il Fiore riduce anche i bonus di collezione. L’acquisto è bloccato se gli spazi rimanenti non possono contenere la collezione. Raccoglierlo di nuovo ripristina il risveglio ottenuto per questa partita. Successione Yakuman richiede comunque due Fiori: pagarne uno significa possederne almeno tre prima."
+    "catalystsCost": "Perdere il Fiore riduce anche i bonus di collezione. L’acquisto è bloccato se gli spazi rimanenti non possono contenere la collezione. Raccoglierlo di nuovo ripristina il risveglio ottenuto per questa partita."
   },
   "codexUpgrades": {
     "patternsTitle": "Famiglie di combinazione",
@@ -2266,7 +2298,7 @@
       "p1": "Una giocata può contenere fino a {{max}} tessere. Segna come la mano migliore che formano:",
       "headerHand": "Mano",
       "headerMeaning": "Cos'è",
-      "mahjong": "Una mano di Mahjong completa aggiunge +{{mult}} al Mult, oltre ai suoi Yaku."
+      "mahjong": "Una mano di Mahjong completa supera subito il round, qualunque sia il punteggio, e aggiunge +{{mult}} al Mult, oltre ai suoi Yaku."
     },
     "ready": {
       "title": "Sei Pronto!",
@@ -2434,7 +2466,7 @@
       "p1": "Ogni round ti dà {{turns}} turni. Ogni turno è una di due azioni:",
       "play": "fai punti con le tessere scelte: fino a {{max}}, o una mano di Mahjong completa.",
       "redraw": "manda nel fiume quante tessere scelte vuoi e pescane di nuove.",
-      "p2": "Raggiungi l'obiettivo del round prima di finire i turni. L'ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
+      "p2": "Raggiungi l’obiettivo del round prima di finire i turni, oppure gioca una mano di Mahjong completa per superare subito il round. L’ultimo turno è sempre una giocata, e alcuni oggetti danno ripescate gratuite che non costano turni.",
       "warning": "Se finisci i turni sotto l'obiettivo, la partita è finita.",
       "emergency": "Dal {{stake}} in su, dall’Atto {{act}}, puoi prolungare l’ultimo turno: compra un turno in più con l’oro. Il prezzo sale a ogni Atto e raddoppia per ogni turno extra comprato nello stesso round."
     },
@@ -3210,7 +3242,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Una mano completa: quattro gruppi (sequenze, tris o poker) e una coppia, di solito 14 tessere. Sette coppie e Tredici orfani sono eccezioni speciali. I suoi yaku moltiplicano il punteggio."
+      "explain": "Una mano completa: quattro gruppi (sequenze, tris o poker) e una coppia, di solito 14 tessere. Sette coppie e Tredici orfani sono eccezioni speciali. Giocarne una supera subito il round, qualunque sia il punteggio."
     },
     "three_dragons": {
       "name": "Tre Draghi",
@@ -3227,7 +3259,7 @@
   },
   "guide": {
     "title": "Come si gioca",
-    "intro": "Tensho è un gioco in stile poker con le tessere del Mahjong. Scegli tessere che formano una mano, giocala per fare punti e raggiungi l’obiettivo di ogni round.",
+    "intro": "Tensho è un gioco in stile poker con le tessere del Mahjong. Scegli tessere che formano una mano, giocala per fare punti e raggiungi l’obiettivo di ogni round. Una mano di Mahjong completa supera subito il round.",
     "turnsTitle": "Il tuo turno",
     "playHelp": "fa punti con le tessere scelte.",
     "redrawHelp": "manda al fiume quante tessere scelte vuoi e ne pesca di nuove.",

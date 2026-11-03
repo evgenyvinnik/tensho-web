@@ -1,6 +1,5 @@
 import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
-import { SHANTEN_CLEMENCY } from '../systems/DecreeSystem'
 import { VOID_SCRIPTS, VoidScriptSystem } from '../systems/VoidScriptSystem'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
@@ -73,29 +72,18 @@ it('scores a hand one tile short of complete after Script of Eclipse, at full sc
 
   const preview = game.previewScore(ids)!
   expect(preview.pattern.id).toBe('mahjong')
-  // Shanten Clemency completes the same hand at half score.
-  const clemency = fixture(oneAway())
-  expect(clemency.game.addDecree(SHANTEN_CLEMENCY)).toBe(true)
-  expect(clemency.game.previewScore(clemency.ids)!.finalScore).toBe(
-    Math.floor(preview.finalScore * 0.5)
-  )
+  // Eclipse lasts the round, not one hand.
+  expect(state.voidScriptSystem.isShantenScoringAllowed()).toBe(true)
 
   const before = state.score
   const concealed = state.completeConcealedHandsPlayed ?? 0
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   expect(state.score - before).toBe(preview.finalScore)
   expect(state.completeConcealedHandsPlayed ?? 0).toBe(concealed)
-  // Eclipse lasts the round, not one hand.
-  expect(state.voidScriptSystem.isShantenScoringAllowed()).toBe(true)
-})
-
-it('waives the Shanten Clemency penalty while Eclipse is active', () => {
-  const { game, ids } = fixture(oneAway())
-  expect(game.addDecree(SHANTEN_CLEMENCY)).toBe(true)
-  const penalized = game.previewScore(ids)!.finalScore
-  useScript(game, 'script_of_eclipse')
-  expect(game.inspectCompleteHand(ids)!.usedShantenClemency).toBe(false)
-  expect(Math.floor(game.previewScore(ids)!.finalScore * 0.5)).toBe(penalized)
+  // The finished hand clears the round; Eclipse does not reach the next one.
+  expect(state.phase).toBe('shop')
+  game.exitShop()
+  expect(state.voidScriptSystem.isShantenScoringAllowed()).toBe(false)
 })
 
 it('lets the next complete hand include one loose group after Script of Silence', () => {
@@ -139,6 +127,12 @@ it('keeps Silence through tactical plays and natural hands until a hand needs it
   expect(play(natural).success).toBe(true)
   expect(state.voidScriptSystem.isMeldValidationBypassed()).toBe(true)
 
+  // The natural hand cleared the round; Silence carries into the next one.
+  expect(state.phase).toBe('shop')
+  game.exitShop()
+  state.mandateEffectSystem.deactivateMandate()
+  state.targetScore = 1e9
+  state.roundManager.getCurrentRound()!.scoreTarget = 1e9
   const loose = oneLooseGroup()
   state.handTiles = loose
   expect(play(loose).success).toBe(true)

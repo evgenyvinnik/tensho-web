@@ -17,24 +17,24 @@ const PAIR = ['pair-0', 'pair-1']
 const SEQUENCE = ['seq-0', 'seq-1', 'seq-2']
 const OTHER_PAIR = ['pair-2', 'pair-3']
 // 234m 456m 678p 345s 66s: Menzen Tsumo, Tanyao and Pinfu.
-const MAHJONG = ([
-  [TileSuit.Manzu, 2],
-  [TileSuit.Manzu, 3],
-  [TileSuit.Manzu, 4],
-  [TileSuit.Manzu, 4],
-  [TileSuit.Manzu, 5],
-  [TileSuit.Manzu, 6],
-  [TileSuit.Pinzu, 6],
-  [TileSuit.Pinzu, 7],
-  [TileSuit.Pinzu, 8],
-  [TileSuit.Souzu, 3],
-  [TileSuit.Souzu, 4],
-  [TileSuit.Souzu, 5],
-  [TileSuit.Souzu, 6],
-  [TileSuit.Souzu, 6],
-] satisfies [TileSuit, number][]).map(
-  ([suit, rank], i) => new Tile(suit, rank, `mj-${i}`)
-)
+const MAHJONG = (
+  [
+    [TileSuit.Manzu, 2],
+    [TileSuit.Manzu, 3],
+    [TileSuit.Manzu, 4],
+    [TileSuit.Manzu, 4],
+    [TileSuit.Manzu, 5],
+    [TileSuit.Manzu, 6],
+    [TileSuit.Pinzu, 6],
+    [TileSuit.Pinzu, 7],
+    [TileSuit.Pinzu, 8],
+    [TileSuit.Souzu, 3],
+    [TileSuit.Souzu, 4],
+    [TileSuit.Souzu, 5],
+    [TileSuit.Souzu, 6],
+    [TileSuit.Souzu, 6],
+  ] satisfies [TileSuit, number][]
+).map(([suit, rank], i) => new Tile(suit, rank, `mj-${i}`))
 
 function fixture() {
   const game = new GameOrchestrator()
@@ -157,7 +157,18 @@ describe('The Mouth', () => {
     expect(play(ids).success).toBe(true)
     expect(state.score).toBe(forecast.finalScore)
     expect(state.mandateEffectSystem.getLockedPattern()).toBe('mahjong')
-    expect(game.previewScore(PAIR)!.blockedByMandate).toBe(true)
+    // Far below the target, the complete hand still clears the round.
+    expect(state.phase).toBe('shop')
+  })
+
+  it('keeps the round open when it blocks a complete hand', () => {
+    const { game, state, play } = fixture()
+    expect(play(PAIR).success).toBe(true)
+    const ids = MAHJONG.map((t) => t.id)
+    expect(game.previewScore(ids)!.blockedByMandate).toBe(true)
+    expect(play(ids).success).toBe(true)
+    expect(state.phase).toBe('gameplay')
+    expect(state.lastRoundSummary?.clearedByCompleteHand).toBeUndefined()
   })
 
   it('saves the lock and restores it', () => {

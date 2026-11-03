@@ -131,6 +131,7 @@ export interface ScoringContext {
   multiplicativeBonus?: number // Extra multiplicative bonuses from game systems
   debuffedTileIds?: ReadonlySet<string> // Suppressed for points/marks, still valid structurally
   tanyaoAllowsTerminals?: boolean // Tanyao Dispensation rule rewrite
+  fullLooseTiles?: boolean // Loose Tile Clemency: loose tiles score in full
   /**
    * Set for a partial play: the selection is not a complete winning hand, so
    * structure comes from these groups and no yaku are awarded. Everything else
@@ -198,11 +199,15 @@ export const DRAGON_TILE_POINTS = 15
  * 50 and only numbered tiles take the loose-tile discount. A Wind inside a
  * group pays more, which is what makes a Wind pair worth chasing.
  */
-export function playedTilePoints(tile: Tile, grouped: boolean): number {
+export function playedTilePoints(
+  tile: Tile,
+  grouped: boolean,
+  fullLoose = false
+): number {
   const base = getTilePoints(tile)
   if (tile.suit === TileSuit.Wind && !tile.isStone && grouped)
     return WIND_GROUP_POINTS
-  if (grouped || tile.isHonor) return base
+  if (grouped || tile.isHonor || fullLoose) return base
   return Math.floor(base * UNGROUPED_TILE_SHARE)
 }
 
@@ -354,7 +359,7 @@ export function calculateScore(context: ScoringContext): ScoreBreakdown {
   const tilePoints = scoringTiles.reduce(
     (sum, tile) =>
       sum +
-      playedTilePoints(tile, isGrouped(tile)) *
+      playedTilePoints(tile, isGrouped(tile), context.fullLooseTiles) *
         (1 +
           Math.max(0, context.extraRetriggers?.get(tile.id) ?? 0) * strength),
     0
@@ -509,6 +514,7 @@ export function createScoringContext(
     multiplicativeBonus?: number
     debuffedTileIds?: ReadonlySet<string>
     tanyaoAllowsTerminals?: boolean
+    fullLooseTiles?: boolean
     partialMelds?: Meld[]
     previewMode?: boolean
     extraRetriggers?: ReadonlyMap<string, number>
@@ -530,6 +536,7 @@ export function createScoringContext(
     multiplicativeBonus: options.multiplicativeBonus,
     debuffedTileIds: options.debuffedTileIds,
     tanyaoAllowsTerminals: options.tanyaoAllowsTerminals,
+    fullLooseTiles: options.fullLooseTiles,
     partialMelds: options.partialMelds,
     previewMode: options.previewMode,
     extraRetriggers: options.extraRetriggers,

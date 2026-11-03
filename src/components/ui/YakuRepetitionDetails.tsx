@@ -1,18 +1,13 @@
 import { useTranslation } from 'react-i18next'
+import { PLAY_PATTERN_IDS } from '../../rules/PlayPattern'
 
+/** The play patterns of the last round and their back-to-back streaks. */
 export interface YakuRepetitionHistory {
   previousRoundYakuIds: ReadonlySet<string>
   previousRoundYakuStreaks?: Readonly<Record<string, number>>
 }
-const aliases: Record<string, string> = {
-  menzen_tsumo: 'menzenTsumo',
-  sanshoku_doujun: 'sanshokuDoujun',
-  seven_pairs: 'chiitoitsu',
-  kokushi: 'kokushiMusou',
-  suu_ankou: 'suuAnkou',
-  dai_sangen: 'daisangen',
-  chuuren_poutou: 'chuurenPoutou',
-}
+
+const PATTERN_IDS: ReadonlySet<string> = new Set(PLAY_PATTERN_IDS)
 
 /** Read-only planning information inside the player's optional item inspector. */
 export function YakuRepetitionDetails({
@@ -21,6 +16,10 @@ export function YakuRepetitionDetails({
   history: YakuRepetitionHistory
 }) {
   const { t, i18n } = useTranslation()
+  // Saves from before patterns replaced Yaku can still list Yaku ids.
+  const patterns = [...history.previousRoundYakuIds].filter((id) =>
+    PATTERN_IDS.has(id)
+  )
   return (
     <div
       data-yaku-repetition-details
@@ -29,12 +28,12 @@ export function YakuRepetitionDetails({
       <p className="font-semibold text-[var(--color-golden-yellow)]">
         {t('yakuRepetition.title')}
       </p>
-      {history.previousRoundYakuIds.size ? (
+      {patterns.length ? (
         <ul className="mt-2 space-y-1">
-          {[...history.previousRoundYakuIds].map((id) => (
+          {patterns.map((id) => (
             <li key={id} data-yaku-streak={id}>
               {t('yakuRepetition.streak', {
-                name: t(`yaku.${aliases[id] ?? id}`, id),
+                name: t(`patterns.${id}.name`, id),
                 rounds: (
                   history.previousRoundYakuStreaks?.[id] ?? 1
                 ).toLocaleString(i18n.resolvedLanguage),

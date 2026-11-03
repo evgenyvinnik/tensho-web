@@ -42,6 +42,8 @@ export interface GameController {
   shop: GameOrchestrator['shop']
   flora: ReturnType<GameOrchestrator['getFloraState']>
   partialHandRules: ReturnType<GameOrchestrator['getPartialHandRules']>
+  /** Most tiles a play that is not a complete hand may hold. */
+  maxPlayTiles: number
   /** Every family the Tea House lists, upgraded or not. */
   yakuFamilies: ReturnType<GameOrchestrator['getYakuFamilyState']>
   // State (reactive)
@@ -158,6 +160,10 @@ export interface GameController {
   canPerformAction: (action: PlayerAction) => boolean
   validateConsumableAction: GameOrchestrator['validateConsumableAction']
   isCompleteHand: (tileIds: string[]) => boolean
+  /** A complete hand the rack holds (Wild tiles and rules included), or null. */
+  findCompleteHandSelection: () => string[] | null
+  /** Changes whenever the rack, or a rule that decides completeness, changes. */
+  rackSignature: string
   inspectCompleteHand: GameOrchestrator['inspectCompleteHand']
   previewScore: GameOrchestrator['previewScore']
   resetGame: () => void
@@ -487,9 +493,32 @@ export function useGameController(
     [orchestrator]
   )
 
+  const findCompleteHandSelection = useCallback(
+    () => orchestrator.findCompleteHandSelection(),
+    [orchestrator]
+  )
+
   const inspectCompleteHand = useCallback<
     GameOrchestrator['inspectCompleteHand']
   >((tileIds) => orchestrator.inspectCompleteHand(tileIds), [orchestrator])
+
+  // Everything findCompleteHandSelection reads, so callers can memoize it.
+  const rackSignature = [
+    state.phase,
+    state.handsRemaining,
+    handTiles
+      .map((tile) => `${tile.id}:${tile.typeKey}${tile.isWild ? '*' : ''}`)
+      .join(','),
+    orchestrator.getFaceDownTileIds().join(','),
+    orchestrator.getBannedTileIds().join(','),
+    state.mandateEffectSystem.getLockedTileIds().join(','),
+    state.decreeSystem
+      .getOwnedDecrees()
+      .map((decree) => decree.instanceId ?? decree.id)
+      .join(','),
+    state.mandateEffectSystem.getDisabledDecreeIds().join(','),
+    String(state.voidScriptSystem.isShantenScoringAllowed()),
+  ].join('|')
 
   const resetGame = useCallback(() => {
     orchestrator.resetGame()
@@ -503,6 +532,7 @@ export function useGameController(
     shop: orchestrator.shop,
     flora: orchestrator.getFloraState(),
     partialHandRules: orchestrator.getPartialHandRules(),
+    maxPlayTiles: orchestrator.getMaxPlayTiles(),
     yakuFamilies: orchestrator.getYakuFamilyState(),
     // State
     state,
@@ -592,6 +622,8 @@ export function useGameController(
     canPerformAction,
     validateConsumableAction,
     isCompleteHand,
+    findCompleteHandSelection,
+    rackSignature,
     inspectCompleteHand,
     previewScore,
     resetGame,

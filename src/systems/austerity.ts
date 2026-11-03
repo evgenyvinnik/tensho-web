@@ -1,4 +1,4 @@
-/** Base Decree factor, before other systems; only actual complete plays grow it. */
+/** Base Decree factor, before other systems; only qualifying plays grow it. */
 export function austerityMultiplier(priorCompleteHands: number): number {
   return Math.min(4, 1.5 * 1.2 ** priorCompleteHands)
 }
@@ -24,7 +24,7 @@ export const LEGACY_AUSTERITY_EFFECT: DecreeEffect = {
 export const AUSTERITY_EFFECT: DecreeEffect = {
   type: 'scaling',
   trigger: 'Independent',
-  description: 'Complete concealed hand mastery',
+  description: 'Six grouped tiles mastery',
   baseValue: 0.5,
   scalingFactor: 0.2,
   scalingCondition: 'complete_concealed_hands',

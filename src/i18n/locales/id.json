@@ -99,7 +99,7 @@
     "grammar": "Tata Bahasa (Yaku)",
     "hierarchyOverride": "Saat aturan bertentangan, aturan dengan kewenangan lebih tinggi didahulukan daripada aturan berkewenangan lebih rendah. Periksa syarat khusus setiap efek.",
     "tipScoreTitle": "Mainkan tangan yang berguna",
-    "tipScore": "Bandingkan pratinjau skor untuk grup berisi hingga {{max}} ubin, atau satu tangan Mahjong lengkap. Gunakan Giliran untuk mendekati target, bukan hanya menunggu tangan sempurna.",
+    "tipScore": "Bandingkan pratinjau skor untuk grup berisi hingga {{max}} ubin. Tangan Mahjong lengkap langsung menuntaskan ronde, berapa pun skornya. Gunakan Giliran untuk mendekati target, bukan hanya menunggu tangan sempurna.",
     "tipSynergyTitle": "Bangun sinergi",
     "tipSynergy": "Dekrit yang saling mendukung bisa lebih kuat daripada Dekrit hebat yang bekerja sendiri.",
     "tipPurposeTitle": "Beli dengan tujuan",
@@ -120,7 +120,7 @@
     "tipLoss": "Setelah permainan, temukan satu keputusan yang ingin kamu ubah, misalnya tarik ulang yang terlalu cepat atau ubin yang disimpan tanpa rencana, lalu coba di permainan berikutnya.",
     "biggerHandP1": "Setiap grup setelah yang pertama menambah Mult, dan tangan Mahjong lengkap menambah paling banyak. Daripada memainkan setiap grup kecil begitu muncul, simpan grup yang sudah ada dan tarik ulang ubin sisanya.",
     "biggerHandRack": "Rak ini berisi dua urutan jadi, dua urutan {{circles}} yang belum jadi, sepasang {{east}}, ditambah dua Naga tanpa pasangan. Satu TARIK ULANG mengirim kedua Naga ke sungai.",
-    "biggerHandComplete": "Jika ubin barunya 1 dan 4 {{circles}}, keempat belas ubin membentuk empat urutan dan satu pasangan. Pilih keempat belasnya lalu mainkan: tangan yang sudah jadi tidak mencetak skor dengan sendirinya.",
+    "biggerHandComplete": "Jika ubin barunya 1 dan 4 {{circles}}, keempat belas ubin membentuk empat urutan dan satu pasangan. Pilih keempat belasnya lalu mainkan: tangan yang sudah jadi langsung menuntaskan ronde, tetapi hanya saat kamu memainkannya.",
     "biggerHandWarning": "Tarikan ubin itu acak, dan mengejar tangan besar bisa membuatmu kalah di ronde ini. Bandingkan skor yang bisa kamu buat sekarang dengan sisa Giliranmu.",
     "congratulations": "<strong>Selamat!</strong> Kini kamu memahami dasar-dasar Tensho.",
     "farewell": "Semoga ubin berpihak padamu dalam perjalananmu menuju langit!",
@@ -413,16 +413,16 @@
     "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."
   },
   "closedHandAusterity": {
-    "name": "Disiplin Tangan Tertutup",
-    "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, Naskah Gerhana, atau Naskah Kesunyian, tidak dihitung.",
-    "progress": "Tangan lengkap sejauh ini: {{count}}. Berikutnya: ×{{factor}} sebelum Bunga."
+    "name": "Disiplin Enam Ubin",
+    "description": "Setiap kali main berisi enam ubin atau lebih yang semuanya termasuk dalam kelompok mendapat ×1,5, tumbuh ×1,2 untuk setiap kali main serupa sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga.",
+    "progress": "Kali main yang memenuhi syarat sejauh ini: {{count}}. Berikutnya: ×{{factor}} sebelum Bunga."
   },
   "yakuRepetition": {
-    "name": "Piagam Pengulangan Yaku",
-    "description": "Yaku yang mencetak skor di ronde berturut-turut mendapat ×1,2 untuk setiap ronde sebelumnya dalam rangkaiannya, hingga ×4 sebelum bonus Bunga. Ronde tanpa Yaku itu mengakhiri rangkaiannya.",
+    "name": "Piagam Pengulangan Pola",
+    "description": "Pola main (seperti Dua pasangan) yang dimainkan di ronde berturut-turut mendapat ×1,2 untuk setiap ronde sebelumnya dalam rangkaiannya, hingga ×4 sebelum bonus Bunga. Ronde tanpa pola itu mengakhiri rangkaiannya.",
     "title": "Pola untuk diulang",
     "streak": "{{name}} · {{rounds}} ronde sebelumnya berturut-turut",
-    "empty": "Belum ada rentetan. Raih skor dengan Yaku pada ronde ini untuk memulainya."
+    "empty": "Belum ada rentetan. Mainkan sebuah pola pada ronde ini untuk memulainya."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Raih skor dengan Yakuman, tangan tingkat tertinggi seperti Tiga Naga Besar.",
@@ -493,7 +493,7 @@
     },
     "yaku": {
       "title": "Pola dan pengali",
-      "content": "Kelompok kecil bisa menghasilkan poin; tangan lengkap bisa mengaktifkan pengali Yaku. Periksa perkiraan skor sebelum memilih ubin yang dimainkan atau disimpan."
+      "content": "Kelompok kecil bisa menghasilkan poin, dan tangan lengkap langsung menuntaskan ronde. Periksa perkiraan skor sebelum memilih ubin yang dimainkan atau disimpan."
     },
     "flora": {
       "title": "Bunga & Musim",
@@ -827,7 +827,7 @@
     "beginnerFlowSelect": "Ketuk pola yang berguna.",
     "beginnerFlowPreview": "Baca perkiraan tepatnya.",
     "beginnerFlowPlay": "Mainkan dan ambil ubin pengganti.",
-    "beginnerFullHand": "Nanti, empat pola ditambah satu pasangan membentuk tangan lengkap dan membuka pengali Yaku yang kuat.",
+    "beginnerFullHand": "Nanti, empat pola ditambah satu pasangan membentuk tangan lengkap. Memainkannya langsung menuntaskan ronde.",
     "showGuidedMove": "Tunjukkan satu langkah",
     "guidedMove": "Langkah pertama terpandu",
     "beginnerPatternReady": "{{pattern}} siap",
@@ -934,7 +934,10 @@
       "adReady": "Hadiah siap",
       "adClaim": "Ambil +1 giliran"
     },
-    "decreeDetails": "Detail {{name}}"
+    "decreeDetails": "Detail {{name}}",
+    "mahjongHint": "Mahjong! Rakmu berisi tangan lengkap. Mainkan untuk menuntaskan ronde.",
+    "mahjongHintSelect": "Pilih",
+    "mahjongClearsRound": "Ronde selesai!"
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -1076,7 +1079,8 @@
       "result": "Hasil",
       "becomes": "{{from}} menjadi {{to}}",
       "destroyed": "{{name}} dihancurkan"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong! Ronde selesai"
   },
   "decrees": {
     "title": "Dekrit",
@@ -1277,11 +1281,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Taktisi Sederhana",
-        "description": "+3 Mult saat kamu mencetak skor Semua Sederhana: tangan lengkap yang hanya berisi ubin 2–8, tanpa 1, 9, Angin, atau Naga"
+        "description": "+3 Mult jika setiap ubin yang dimainkan adalah ubin 2–8 (tanpa 1, 9, Angin, atau Naga)"
       },
       "decree-pinfu-purist": {
         "name": "Penganut Urutan",
-        "description": "+3 Mult saat kamu mencetak skor Semua Urutan: tangan lengkap berisi empat urutan yang tidak melewati angka, ditambah pasangan yang bukan Naga atau Angin Timur"
+        "description": "+5 Mult jika dua urutan ikut dimainkan (seperti 2-3-4 dan 6-7-8)"
       },
       "decree-manzu-emperor": {
         "name": "Kaisar Karakter",
@@ -1309,7 +1313,7 @@
       },
       "decree-straight-arrow": {
         "name": "Panah Lurus",
-        "description": "+80 Poin jika 3 urutan atau lebih ikut dimainkan"
+        "description": "+80 Poin jika Lurus (empat ubin atau lebih berurutan dari satu jenis) ikut dimainkan"
       },
       "decree-run-master": {
         "name": "Master Urutan",
@@ -1385,19 +1389,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Fanatik Nilai",
-        "description": "×1,5 Mult saat kamu mencetak skor Ubin Bernilai: tangan lengkap dengan triplet atau kuartet Naga atau Angin Timur"
+        "description": "×1,5 Mult jika pasangan, triplet, atau kuartet Naga atau Angin Timur ikut dimainkan"
       },
       "decree-toitoi-titan": {
         "name": "Titan Triplet",
-        "description": "×1,5 Mult saat kamu mencetak skor Semua Triplet: tangan lengkap berisi empat triplet atau kuartet ditambah pasangan"
+        "description": "×1,5 Mult jika Full house ikut dimainkan: satu triplet dan satu pasangan"
       },
       "decree-ittsu-initiate": {
         "name": "Pemula Sembilan",
-        "description": "×1,5 Mult saat kamu mencetak skor Lurus 1–9: tangan lengkap yang memuat 1-2-3, 4-5-6, dan 7-8-9 dari satu jenis"
+        "description": "×1,5 Mult jika urutan 1-2-3, 4-5-6, atau 7-8-9 ikut dimainkan"
       },
       "decree-chinitsu-champion": {
-        "name": "Juara Warna Penuh",
-        "description": "×2 Mult saat kamu mencetak skor Warna Penuh: tangan lengkap dari satu jenis saja, tanpa Angin atau Naga"
+        "name": "Juara Flush",
+        "description": "×2 Mult jika 5 ubin atau lebih dimainkan, semuanya dari satu jenis bernomor"
       },
       "decree-veteran": {
         "name": "Veteran",
@@ -1500,16 +1504,16 @@
         "description": "+3 Mult per Bunga, +30 Poin per Musim"
       },
       "decree-honitsu-herald": {
-        "name": "Pelopor Setengah Warna",
-        "description": "×2 Mult saat kamu mencetak skor Setengah Warna: tangan lengkap dari satu jenis ditambah Angin atau Naga"
+        "name": "Pelopor Kuartet",
+        "description": "×2 Mult jika empat atau lebih ubin yang sama (Kuartet) ikut dimainkan"
       },
       "decree-sanshoku-sage": {
-        "name": "Bijak Tiga Urutan",
-        "description": "×2 Mult saat kamu mencetak skor Urutan Tiga Campuran: tangan lengkap dengan urutan yang sama di ketiga jenis"
+        "name": "Bijak Urutan Kembar",
+        "description": "×2 Mult jika urutan yang sama dalam dua jenis ikut dimainkan (seperti 3-4-5 Karakter dan 3-4-5 Lingkaran)"
       },
       "decree-chanta-champion": {
-        "name": "Juara Tangan Luar",
-        "description": "×2 Mult saat kamu mencetak skor Tangan Luar: tangan lengkap dengan setidaknya satu urutan, yang setiap grup dan pasangannya memuat 1, 9, Angin, atau Naga. Tangan Luar Murni (sama, tetapi tanpa Angin atau Naga, sehingga setiap grup dan pasangannya memuat 1 atau 9) juga dihitung."
+        "name": "Juara Kelompok Luar",
+        "description": "×2 Mult jika yang dimainkan berisi dua kelompok atau lebih dan setiap kelompoknya memuat 1, 9, Angin, atau Naga"
       },
       "decree-mandate-breaker": {
         "name": "Pemecah Mandat",
@@ -1592,12 +1596,12 @@
         "description": "Setiap Naga yang dimainkan dihitung empat kali"
       },
       "decree-yaku-amplifier": {
-        "name": "Penguat Yaku",
-        "description": "Saat tangan lengkap mencetak skor Yaku, gabungan pengali Yaku-nya dikalikan 1,5"
+        "name": "Penguat Pasangan",
+        "description": "×2 Mult per pasangan yang dimainkan"
       },
       "decree-yakuman-seeker": {
-        "name": "Pencari Yakuman",
-        "description": "×5 Mult saat kamu mencetak skor Yakuman, tangan tingkat tertinggi seperti Tiga Naga Besar atau Tiga Belas Yatim"
+        "name": "Pencari Agung",
+        "description": "×5 Mult jika lima atau lebih ubin yang sama, atau Lurus enam ubin, ikut dimainkan"
       },
       "decree-four-seasons-master": {
         "name": "Master Empat Musim",
@@ -1653,7 +1657,7 @@
       },
       "decree-chain-reaction": {
         "name": "Reaksi Berantai",
-        "description": "×1,5 Mult per Yaku di tangan yang dinilai"
+        "description": "×1,5 Mult per kelompok yang dimainkan (pasangan ikut dihitung)"
       },
       "decree-cosmic-jade": {
         "name": "Giok Kosmik",
@@ -1704,16 +1708,16 @@
         "description": "×1,2 Mult per 10 Emas yang kamu miliki"
       },
       "decree-yaku-nexus": {
-        "name": "Nexus Yaku",
-        "description": "Setiap Yaku dihitung seolah satu tingkat lebih tinggi (Tingkat 1 ×1,3 menjadi ×1,6)"
+        "name": "Nexus Kelompok",
+        "description": "×2,5 Mult per kelompok yang dimainkan (pasangan ikut dihitung)"
       },
       "decree-yakuman-blessing": {
-        "name": "Berkah Yakuman",
-        "description": "×10 Mult saat kamu mencetak skor Yakuman, tangan tingkat tertinggi seperti Tiga Naga Besar atau Tiga Belas Yatim"
+        "name": "Berkah Enam Lipat",
+        "description": "×8 Mult jika enam ubin atau lebih dimainkan dan semuanya termasuk dalam kelompok"
       },
       "decree-reality-warp": {
         "name": "Distorsi Realitas",
-        "description": "14 ubin apa pun yang kamu pilih bisa membentuk tangan lengkap"
+        "description": "Kali main yang bukan tangan lengkap boleh berisi hingga 8 ubin, bukan 6"
       },
       "decree-time-master": {
         "name": "Penguasa Waktu",
@@ -1728,8 +1732,8 @@
         "description": "+500 Poin, +50 Mult, dan ×2 Mult"
       },
       "yakuman_succession": {
-        "name": "Suksesi Yakuman",
-        "description": "Selama kamu memiliki setidaknya 2 Bunga, tangan-tangan ini menjadi Yakuman, tingkat tertinggi (masing-masing ×4): Setengah Warna, Warna Penuh, Urutan Ganda Murni Dua Kali (dua pasang urutan identik), Tangan Luar Murni (1 atau 9 di setiap grup dan pasangan), dan Tujuh Pasangan. Tangan yang dilemahkan Mandat tidak bisa naik. Salinan tidak bertumpuk."
+        "name": "Suksesi Agung",
+        "description": "Selama kamu memiliki setidaknya 2 Bunga: ×4 Mult jika empat atau lebih ubin yang sama (Kuartet) atau Lurus (empat ubin atau lebih berurutan dari satu jenis) ikut dimainkan."
       },
       "river_tax": {
         "name": "Pajak Sungai",
@@ -1741,7 +1745,7 @@
       },
       "tanyao_dispensation": {
         "name": "Dispensasi Sederhana",
-        "description": "Semua Sederhana (biasanya hanya ubin 2–8) juga menerima 1 dan 9. Angin dan Naga tetap membatalkannya."
+        "description": "Bagi Dekritmu, 1 dan 9 juga dihitung sebagai Sederhana (ubin 2–8). Angin dan Naga tetap tidak."
       },
       "moonlit_seal": {
         "name": "Lambang Rembulan",
@@ -1757,7 +1761,7 @@
       },
       "false_eye_mandate": {
         "name": "Mandat Mata Palsu",
-        "description": "Tangan lengkap boleh memakai salah satu grupnya sebagai pengganti pasangan."
+        "description": "Dekritmu menghitung setiap kali main seolah berisi satu pasangan tambahan."
       },
       "honor_transmutation": {
         "name": "Transmutasi Kehormatan",
@@ -1772,20 +1776,48 @@
         "description": "Sekali per ronde, tukar satu ubin terpilih dengan ubin dari dinding mati (ubin cadangan di bagian belakang dinding) tanpa memakai Giliran."
       },
       "shanten_clemency": {
-        "name": "Keringanan Shanten",
-        "description": "Tangan yang kurang satu ubin untuk lengkap bisa dimainkan sebagai tangan lengkap, dengan setengah skor."
+        "name": "Keringanan Ubin Lepas",
+        "description": "Ubin lepas (ubin yang dimainkan di luar kelompok) mendapat Poin penuh, bukan setengah."
       },
       "closed_hand_austerity": {
-        "name": "Kesederhanaan Tangan Tertutup",
-        "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, Naskah Gerhana, atau Naskah Kesunyian, tidak dihitung."
+        "name": "Disiplin Enam Ubin",
+        "description": "Setiap kali main berisi enam ubin atau lebih yang semuanya termasuk dalam kelompok mendapat ×1,5, tumbuh ×1,2 untuk setiap kali main serupa sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga."
       },
       "terminal_devotion": {
         "name": "Pengabdian Terminal",
         "description": "Setiap Terminal (1 atau 9) yang dimainkan menambah 0,05 ke ×Mult Dekrit ini (empat memberi ×1,2)."
       },
       "yaku_repetition_charter": {
-        "name": "Piagam Pengulangan Yaku",
-        "description": "Yaku yang mencetak skor di ronde berturut-turut mendapat ×1,2 untuk setiap ronde sebelumnya dalam rangkaiannya, hingga ×4 sebelum bonus Bunga. Ronde tanpa Yaku itu mengakhiri rangkaiannya."
+        "name": "Piagam Pengulangan Pola",
+        "description": "Pola main (seperti Dua pasangan) yang dimainkan di ronde berturut-turut mendapat ×1,2 untuk setiap ronde sebelumnya dalam rangkaiannya, hingga ×4 sebelum bonus Bunga. Ronde tanpa pola itu mengakhiri rangkaiannya."
+      },
+      "decree-mirror-lake": {
+        "name": "Danau Cermin",
+        "description": "×2 Mult jika kali main ini mengulang pola yang sudah dimainkan di ronde ini (seperti Pasangan setelah Pasangan)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Roda Sembilan",
+        "description": "×3 Mult pada kali main ketiga di setiap ronde, dan pada setiap kali main ketiga sesudahnya"
+      },
+      "decree-sleeved-tile": {
+        "name": "Ubin di Balik Lengan",
+        "description": "+2 Mult untuk setiap ubin yang ditarik ulang ronde ini"
+      },
+      "decree-three-roads": {
+        "name": "Tiga Jalan",
+        "description": "×1,5 Mult untuk setiap pola berbeda dari kali main sebelumnya di ronde ini"
+      },
+      "decree-open-palm": {
+        "name": "Telapak Terbuka",
+        "description": "+2 tarik ulang gratis per ronde, tetapi kali main pertama di setiap ronde mendapat ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Sudut Bersama",
+        "description": "+3 Mult untuk setiap kelompok dari kali main sebelumnya di ronde ini (pasangan ikut dihitung)"
+      },
+      "decree-last-word": {
+        "name": "Kata Terakhir",
+        "description": "×4 Mult jika kali main ini memakai giliran terakhir ronde"
       }
     }
   },
@@ -1804,7 +1836,7 @@
     "chrysanthemumWinter": "Saat Krisan aktif, kali main tertutup mengabaikan penalti skor Musim Dingin tetapi tetap memakai aturan urutan yang melompati satu angka. Kali main terbuka tetap terkena penalti. Kekeringan meniadakan perlindungan ini kecuali Bunganya dilindungi.",
     "catalystsTitle": "Membayar dengan Bunga",
     "catalystsIntro": "Penawaran Dekret langsung tertentu di Rumah Teh memungkinkan pembayaran dengan Bunga sebagai ganti Emas. Pilih tepat satu Bunga yang dimiliki lalu konfirmasi; ini opsional dan tidak pernah menjadi pengorbanan otomatis.",
-    "catalystsCost": "Kehilangan Bunga juga mengurangi bonus set. Pembelian diblokir jika slot tersisa tidak cukup untuk koleksi. Mengumpulkannya kembali memulihkan kebangkitannya dalam permainan ini. Suksesi Yakuman tetap membutuhkan dua Bunga, jadi membayar satu membutuhkan setidaknya tiga Bunga sebelumnya."
+    "catalystsCost": "Kehilangan Bunga juga mengurangi bonus set. Pembelian diblokir jika slot tersisa tidak cukup untuk koleksi. Mengumpulkannya kembali memulihkan kebangkitannya dalam permainan ini."
   },
   "codexUpgrades": {
     "patternsTitle": "Keluarga pola",
@@ -2155,7 +2187,7 @@
       "p1": "Sekali main bisa berisi hingga {{max}} ubin. Nilainya dihitung sebagai tangan terbaik yang bisa dibentuk:",
       "headerHand": "Tangan",
       "headerMeaning": "Isinya",
-      "mahjong": "Tangan Mahjong lengkap menambah Mult +{{mult}} di atas Yaku-nya."
+      "mahjong": "Tangan Mahjong lengkap langsung menuntaskan ronde, berapa pun skornya, dan menambah Mult +{{mult}} di atas Yaku-nya."
     },
     "ready": {
       "title": "Anda Siap!",
@@ -2323,7 +2355,7 @@
       "p1": "Setiap ronde memberimu {{turns}} Giliran. Setiap Giliran adalah salah satu dari dua aksi:",
       "play": "cetak poin dari ubin terpilih: hingga {{max}}, atau satu tangan Mahjong lengkap.",
       "redraw": "kirim ubin terpilih sebanyak apa pun ke sungai dan ambil yang baru.",
-      "p2": "Capai target ronde sebelum Giliranmu habis. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
+      "p2": "Capai target ronde sebelum Giliranmu habis, atau mainkan tangan Mahjong lengkap untuk langsung menuntaskan ronde. Giliran terakhir selalu untuk memainkan tangan, dan item bisa memberi tarik-ulang gratis yang tidak memakai Giliran.",
       "warning": "Jika Giliran habis di bawah target, permainan berakhir.",
       "emergency": "Di {{stake}} ke atas, mulai Babak {{act}}, giliran terakhirmu bisa diperpanjang: beli satu giliran lagi dengan emas. Harganya naik tiap Babak dan berlipat dua untuk setiap giliran tambahan di ronde yang sama."
     },
@@ -3210,7 +3242,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Tangan lengkap: empat kelompok (urutan, triplet, atau kuartet) dan satu pasangan, biasanya 14 ubin. Tujuh Pasangan dan Tiga Belas Yatim adalah pengecualian khusus. Yaku-nya melipatgandakan skor."
+      "explain": "Tangan lengkap: empat kelompok (urutan, triplet, atau kuartet) dan satu pasangan, biasanya 14 ubin. Tujuh Pasangan dan Tiga Belas Yatim adalah pengecualian khusus. Memainkannya langsung menuntaskan ronde, berapa pun skornya."
     },
     "three_dragons": {
       "name": "Tiga Naga",
@@ -3227,7 +3259,7 @@
   },
   "guide": {
     "title": "Cara bermain",
-    "intro": "Tensho adalah permainan ala poker dengan ubin Mahjong. Pilih ubin yang membentuk tangan, mainkan untuk poin, dan capai target tiap ronde.",
+    "intro": "Tensho adalah permainan ala poker dengan ubin Mahjong. Pilih ubin yang membentuk tangan, mainkan untuk poin, dan capai target tiap ronde. Tangan Mahjong lengkap langsung menuntaskan ronde.",
     "turnsTitle": "Giliranmu",
     "playHelp": "memberi skor dari ubin terpilih.",
     "redrawHelp": "mengirim berapa pun ubin terpilih ke sungai dan menarik yang baru.",

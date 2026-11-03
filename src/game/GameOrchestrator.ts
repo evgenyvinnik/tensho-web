@@ -47,7 +47,11 @@ import {
   findCompleteHandSubset,
   REGULAR_TILE_TYPES,
 } from '../rules/CompleteHandSubset'
-import { parsePlay, toPartialParsedHand } from '../rules/PartialHandParser'
+import {
+  bestPlayReading,
+  type PartialParse,
+  toPartialParsedHand,
+} from '../rules/PartialHandParser'
 import { classifyPlay, type PlayPatternId } from '../rules/PlayPattern'
 import { eventBus } from './EventBus'
 import { settleScoreEquation, type ScoreEquation } from '../rules/ScoreEquation'
@@ -197,6 +201,8 @@ export interface RoundCashOutSummary {
   omenCopies?: number
   /** Turns left unspent when the round was cleared. */
   spareTurns?: number
+  /** A complete Mahjong hand cleared the round, whatever its score. */
+  clearedByCompleteHand?: boolean
 }
 
 /**
@@ -255,6 +261,8 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /** Groups the round's plays have held so far (Shared Corner). */
+  groupsPlayedThisRound?: number
   /**
    * Emergency Turns bought with Gold this round; each doubles the next one's
    * price. Missing in older saves: none bought.
@@ -428,6 +436,17 @@ function promoteSimpleToTerminal(tile: Tile): Tile {
   if (!tile.isSimple) return tile
 
   return new Tile(tile.suit, 1, tile.id, tile.isRed, tile.modifiers)
+}
+
+/**
+ * Six-Tile Austerity counts a play of six or more tiles with every one of
+ * them in a group.
+ */
+function isAusterityPlay(parse: PartialParse, tiles: Tile[]): boolean {
+  const grouped = new Set(
+    parse.groups.flatMap((group) => group.tiles.map((tile) => tile.id))
+  )
+  return tiles.length >= 6 && tiles.every((tile) => grouped.has(tile.id))
 }
 
 // =============================================================================
@@ -831,6 +850,7 @@ export class GameOrchestrator {
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.groupsPlayedThisRound = 0
     this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
     this.state.luckyRolls = {}
@@ -971,6 +991,57 @@ export class GameOrchestrator {
         new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
       ).length > 0
     )
+  }
+
+  /** Most tiles a play that is not a complete hand may hold (Reality Warp). */
+  getMaxPlayTiles(): number {
+    const extra = this.state.decreeSystem
+      .getRuleContributions(
+        'wide_plays',
+        new Set(this.state.mandateEffectSystem.getDisabledDecreeIds())
+      )
+      .map(({ effect }) => Number(effect.modification.extraPlayTiles) || 0)
+    // Copies do not stack: the widest grant applies.
+    return MAX_TACTICAL_PLAY_TILES + Math.max(0, ...extra)
+  }
+
+  /**
+   * How a play that is not a complete hand is read: Harmonizer lets its
+   * sequences mix suits, and Celestial Wildcard lets one tile stand in for any
+   * face that completes a group, when that pays more. The stand-in keeps the
+   * tile's id and Edition.
+   */
+  private readTacticalPlay(tiles: Tile[]): {
+    tiles: Tile[]
+    parse: PartialParse
+  } {
+    const rules = {
+      ...this.getPartialHandRules(),
+      suitsMatchForSequences: this.isDecreeRuleActive('suits_match'),
+    }
+    const readings: { tiles: Tile[]; mustGroup?: string }[] = [{ tiles }]
+    if (this.isDecreeRuleActive('wildcard_tile'))
+      for (const tile of tiles) {
+        if (tile.isBonus || tile.isStone) continue
+        for (const [suit, maximum] of REGULAR_TILE_TYPES)
+          for (let rank = 1; rank <= maximum; rank++) {
+            if (tile.suit === suit && tile.rank === rank) continue
+            const standIn = new Tile(
+              suit,
+              rank,
+              tile.id,
+              tile.isRed,
+              tile.modifiers
+            )
+            readings.push({
+              tiles: tiles.map((other) =>
+                other.id === tile.id ? standIn : other
+              ),
+              mustGroup: tile.id,
+            })
+          }
+      }
+    return bestPlayReading(readings, rules)
   }
 
   /** Apply the current Boss Mandate to this round's tile instances. */
@@ -1463,11 +1534,11 @@ export class GameOrchestrator {
           ? this.validateEmergencyTurn()
           : action.type === 'adTurn'
             ? this.validateAdTurn()
-          : action.type === 'useSeal' ||
-            action.type === 'useScript' ||
-            action.type === 'useOrb'
-          ? this.validateConsumableAction(action)
-          : this.actionProcessor.validate(action, snapshot)
+            : action.type === 'useSeal' ||
+                action.type === 'useScript' ||
+                action.type === 'useOrb'
+              ? this.validateConsumableAction(action)
+              : this.actionProcessor.validate(action, snapshot)
     if (!validation.isValid) {
       return {
         success: false,
@@ -1637,9 +1708,8 @@ export class GameOrchestrator {
     this.state.adTurns = {
       actNumber: act,
       count:
-        (this.state.adTurns?.actNumber === act
-          ? this.state.adTurns.count
-          : 0) + 1,
+        (this.state.adTurns?.actNumber === act ? this.state.adTurns.count : 0) +
+        1,
     }
     effects.push({
       type: 'round_state_changed',
@@ -1951,12 +2021,10 @@ export class GameOrchestrator {
     )
     if (!mandate.valid)
       errors.push(mandate.error ?? 'Boss Mandate blocks this play')
-    if (
-      tileIds.length > MAX_TACTICAL_PLAY_TILES &&
-      !this.isCompleteHand(tileIds)
-    ) {
+    const maxPlayTiles = this.getMaxPlayTiles()
+    if (tileIds.length > maxPlayTiles && !this.isCompleteHand(tileIds)) {
       errors.push(
-        `A play that is not a complete Mahjong hand can use at most ${MAX_TACTICAL_PLAY_TILES} tiles.`
+        `A play that is not a complete Mahjong hand can use at most ${maxPlayTiles} tiles.`
       )
     }
     return { isValid: errors.length === 0, errors }
@@ -2014,9 +2082,7 @@ export class GameOrchestrator {
         completeHand.parsedHand,
         undefined,
         true,
-        !completeHand.usedShantenClemency &&
-          !completeHand.completedBy &&
-          completeHand.parsedHand.isConcealed
+        !completeHand.usedShantenClemency && !completeHand.completedBy
       )
       if (completeHand.usedShantenClemency) {
         complete.finalScore = Math.floor(complete.finalScore * 0.5)
@@ -2028,14 +2094,15 @@ export class GameOrchestrator {
       return complete
     }
 
-    if (selectedTiles.length > MAX_TACTICAL_PLAY_TILES) return null
+    if (selectedTiles.length > this.getMaxPlayTiles()) return null
 
-    const parse = parsePlay(tilesToScore, this.getPartialHandRules())
+    const reading = this.readTacticalPlay(tilesToScore)
     const partial = this.calculateHandScore(
-      tilesToScore,
-      toPartialParsedHand(parse, tilesToScore),
-      parse.groups,
-      true
+      reading.tiles,
+      toPartialParsedHand(reading.parse, reading.tiles),
+      reading.parse.groups,
+      true,
+      isAusterityPlay(reading.parse, reading.tiles)
     )
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
       partial.finalScore = Math.floor(partial.finalScore / 2)
@@ -2166,14 +2233,16 @@ export class GameOrchestrator {
     )
 
     // Calculate score for complete hand
+    // A complete hand puts every tile in a group, so Six-Tile Austerity counts
+    // it, unless a Void Script had to finish it.
+    const austerityPlay =
+      !completeHand.usedShantenClemency && !completeHand.completedBy
     const scoreResult = this.calculateHandScore(
       completeHand.tilesToScore,
       completeHand.parsedHand,
       undefined,
       false,
-      !completeHand.usedShantenClemency &&
-        !completeHand.completedBy &&
-        completeHand.parsedHand.isConcealed
+      austerityPlay
     )
     if (completeHand.usedShantenClemency) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore * 0.5)
@@ -2212,13 +2281,13 @@ export class GameOrchestrator {
     this.state.lastHandScore = scoreResult.finalScore
     this.state.handsPlayedThisRun++
     this.state.playsThisRound = this.getPlaysThisRound() + 1
-    if (
-      !completeHand.usedShantenClemency &&
-      !completeHand.completedBy &&
-      completeHand.parsedHand.isConcealed
-    )
+    if (austerityPlay)
       this.state.completeConcealedHandsPlayed =
         (this.state.completeConcealedHandsPlayed ?? 0) + 1
+    this.state.groupsPlayedThisRound =
+      (this.state.groupsPlayedThisRound ?? 0) +
+      completeHand.parsedHand.melds.length +
+      (completeHand.parsedHand.pair.tiles.length === 2 ? 1 : 0)
     this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
@@ -2238,12 +2307,7 @@ export class GameOrchestrator {
       })
     }
 
-    this.applyPlayedTileMandates(
-      tileIds,
-      scoreResult.pattern.id,
-      scoreResult.detectedYaku.map((yaku) => yaku.definition.id),
-      effects
-    )
+    this.applyPlayedTileMandates(tileIds, scoreResult.pattern.id, effects)
 
     this.applyPlayedEditionEffects(scoreResult, selectedTiles, effects)
 
@@ -2313,8 +2377,9 @@ export class GameOrchestrator {
 
     this.state.voidScriptSystem.onHandEnd()
 
-    // Check round completion
-    this.checkRoundCompletion(effects)
+    // Mahjong: a complete hand clears the round whatever its score, unless a
+    // Boss Mandate blocked the play.
+    this.checkRoundCompletion(effects, scoreResult.blockedByMandate !== true)
 
     // Auto-draw to refill hand if not round completed
     if (this.state.phase === 'gameplay') {
@@ -2341,15 +2406,18 @@ export class GameOrchestrator {
       ? this.transmuteHonorsToDominantSuit(selectedTiles)
       : [...selectedTiles]
 
-    const parse = parsePlay(tilesToScore, this.getPartialHandRules())
-    const parsedHand = toPartialParsedHand(parse, tilesToScore)
+    const { tiles: scoringTiles, parse } = this.readTacticalPlay(tilesToScore)
+    const parsedHand = toPartialParsedHand(parse, scoringTiles)
 
     const plumRecovery = this.planPlumRecovery(parse.groups, selectedTiles)
 
+    const austerityPlay = isAusterityPlay(parse, scoringTiles)
     const scoreResult = this.calculateHandScore(
-      tilesToScore,
+      scoringTiles,
       parsedHand,
-      parse.groups
+      parse.groups,
+      false,
+      austerityPlay
     )
     if (this.state.voidScriptSystem.isBaseScoreHalved()) {
       scoreResult.finalScore = Math.floor(scoreResult.finalScore / 2)
@@ -2364,6 +2432,11 @@ export class GameOrchestrator {
     this.state.lastHandScore = finalScore
     this.state.handsPlayedThisRun++
     this.state.playsThisRound = this.getPlaysThisRound() + 1
+    if (austerityPlay)
+      this.state.completeConcealedHandsPlayed =
+        (this.state.completeConcealedHandsPlayed ?? 0) + 1
+    this.state.groupsPlayedThisRound =
+      (this.state.groupsPlayedThisRound ?? 0) + parse.groups.length
     this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
@@ -2384,7 +2457,7 @@ export class GameOrchestrator {
     }
 
     const tileIds = selectedTiles.map((tile) => tile.id)
-    this.applyPlayedTileMandates(tileIds, scoreResult.pattern.id, [], effects)
+    this.applyPlayedTileMandates(tileIds, scoreResult.pattern.id, effects)
 
     this.applyPlayedEditionEffects(scoreResult, selectedTiles, effects)
 
@@ -2466,7 +2539,6 @@ export class GameOrchestrator {
   private applyPlayedTileMandates(
     tileIds: string[],
     patternId: PlayPatternId,
-    yakuIds: string[],
     effects: Effect[]
   ): void {
     this.state.mandateEffectSystem.onHandPlayed(
@@ -2487,7 +2559,8 @@ export class GameOrchestrator {
       patternId,
       (this.state.patternPlayCounts.get(patternId) ?? 0) + 1
     )
-    for (const yakuId of yakuIds) this.state.currentRoundYakuIds.add(yakuId)
+    // Pattern Repetition Charter reads the patterns played this round.
+    this.state.currentRoundYakuIds.add(patternId)
   }
 
   /**
@@ -2660,8 +2733,8 @@ export class GameOrchestrator {
     const seal = this.state.fateSeals[sealIndex]
 
     // Build the context for seal usage
-    const selectedTiles = (targets ?? []).map(
-      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    const selectedTiles = (targets ?? []).map((id) =>
+      this.state.handTiles.find((tile) => tile.id === id)!
     )
 
     const selectionError = validateConsumableTargetCount(
@@ -2810,8 +2883,8 @@ export class GameOrchestrator {
         if (copyError) return copyError
       }
     }
-    const selected = (targets ?? []).map(
-      (id) => wall.find((tile) => tile.id === id)!
+    const selected = (targets ?? []).map((id) =>
+      wall.find((tile) => tile.id === id)!
     )
     const context = {
       ...this.createFateSealContext(seal, selected),
@@ -2882,8 +2955,8 @@ export class GameOrchestrator {
     targets: readonly string[],
     acquired: boolean
   ): boolean {
-    const selected = targets.map(
-      (id) => this.state.wallTemplate.find((tile) => tile.id === id)!
+    const selected = targets.map((id) =>
+      this.state.wallTemplate.find((tile) => tile.id === id)!
     )
     const result = this.state.fateSealSystem.useSeal(
       seal,
@@ -2972,8 +3045,8 @@ export class GameOrchestrator {
     const script = this.state.voidScripts[scriptIndex]
 
     // Build the context for script usage
-    const selectedTiles = (targets ?? []).map(
-      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    const selectedTiles = (targets ?? []).map((id) =>
+      this.state.handTiles.find((tile) => tile.id === id)!
     )
 
     const selectionError = validateConsumableTargetCount(
@@ -3081,8 +3154,8 @@ export class GameOrchestrator {
       action.targets?.length ?? 0
     )
     if (countError) return { isValid: false, errors: [countError] }
-    const selected = (action.targets ?? []).map(
-      (id) => this.state.handTiles.find((tile) => tile.id === id)!
+    const selected = (action.targets ?? []).map((id) =>
+      this.state.handTiles.find((tile) => tile.id === id)!
     )
     const hidden = selected.some((tile) =>
       this.state.faceDownTileIds.has(tile.id)
@@ -3909,6 +3982,13 @@ export class GameOrchestrator {
       lastHandScore: this.state.lastHandScore,
       gold: this.state.gold,
       handsPlayedThisRun: this.state.handsPlayedThisRun,
+      completeHand: partialMelds === undefined,
+      playPatternId: patternId,
+      patternsPlayedThisRound: this.state.currentRoundYakuIds,
+      groupsPlayedThisRound: this.state.groupsPlayedThisRound ?? 0,
+      turnsRemaining: this.state.handsRemaining,
+      phantomPairs: this.isDecreeRuleActive('phantom_pair') ? 1 : 0,
+      terminalsCountAsSimples: this.isDecreeRuleActive('tanyao_terminals'),
       completeConcealedHand,
       completeConcealedHandsPlayed:
         this.state.completeConcealedHandsPlayed ?? 0,
@@ -3950,7 +4030,7 @@ export class GameOrchestrator {
       additiveBonus: 0,
       multiplicativeBonus: flowerBonus * seasonModifiers.scoreMultiplier,
       debuffedTileIds: this.state.debuffSystem.getDebuffedTileIds(),
-      tanyaoAllowsTerminals: this.isDecreeRuleActive('tanyao_terminals'),
+      fullLooseTiles: this.isDecreeRuleActive('full_loose_tiles'),
       partialMelds,
       previewMode: preview,
       retriggerStrength: seasonModifiers.decreeModifier,
@@ -3972,16 +4052,16 @@ export class GameOrchestrator {
       partialMelds ?? parsedHand.melds,
       this.getPartialHandRules()
     )
-    // Legacy saves prove only the immediately preceding round, never a longer
-    // inferred streak.
-    systemContext.yakuMultipliers = new Map(
-      baseBreakdown.detectedYaku.map(({ definition: { id } }) => [
-        id,
-        this.state.previousRoundYakuIds.has(id)
-          ? (this.state.previousRoundYakuStreaks?.[id] ?? 1)
+    // Pattern Repetition Charter: this play's pattern and its streak of
+    // back-to-back rounds. Legacy saves prove only the preceding round.
+    systemContext.yakuMultipliers = new Map([
+      [
+        patternId,
+        this.state.previousRoundYakuIds.has(patternId)
+          ? (this.state.previousRoundYakuStreaks?.[patternId] ?? 1)
           : 0,
-      ])
-    )
+      ],
+    ])
     baseBreakdown.basePoints *= this.state.tableModifiers.baseScoreMultiplier
     // Yaku Nexus scores each yaku as if it ranked higher; Yaku Amplifier scales
     // the combined multiplier. Both are Court authority over Grammar.
@@ -4190,8 +4270,12 @@ export class GameOrchestrator {
   /**
    * Check if round is complete
    */
-  private checkRoundCompletion(effects: Effect[]): void {
-    const roundWon = this.state.score >= this.state.targetScore
+  private checkRoundCompletion(
+    effects: Effect[],
+    completeHandPlayed = false
+  ): void {
+    const roundWon =
+      completeHandPlayed || this.state.score >= this.state.targetScore
     // Out of Turns, or The Needle's single Play is spent.
     const handsExhausted =
       this.state.handsRemaining <= 0 ||
@@ -4199,7 +4283,7 @@ export class GameOrchestrator {
         this.getPlaysThisRound() > 0)
 
     if (roundWon) {
-      this.handleRoundWin(effects)
+      this.handleRoundWin(effects, completeHandPlayed)
     } else if (handsExhausted) {
       this.handleRoundLoss(effects)
     }
@@ -4376,11 +4460,13 @@ export class GameOrchestrator {
   /**
    * Handle round win
    */
-  private handleRoundWin(effects: Effect[]): void {
+  private handleRoundWin(effects: Effect[], byCompleteHand = false): void {
     // Capture the completed round before RoundManager advances its cursor.
     const completedRound = this.state.roundManager.getCurrentRound()
     if (!completedRound || completedRound.isCompleted) return
-    this.state.roundManager.submitScore(this.state.score)
+    // A complete hand clears the round at once, below the target or not; the
+    // round keeps the score it actually made.
+    this.state.roundManager.submitScore(this.state.score, byCompleteHand)
 
     const roundState = completedRound
     let goldReward = 0
@@ -4472,6 +4558,7 @@ export class GameOrchestrator {
       omenCopies: swiftOmen?.omen ? swiftOmen.copies : 0,
       spareTurns: this.state.handsRemaining,
       ...(stakeWithheldReward ? { stakeWithheldReward } : {}),
+      ...(byCompleteHand ? { clearedByCompleteHand: true } : {}),
     }
 
     eventBus.emit('roundEnd', {

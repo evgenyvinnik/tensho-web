@@ -1,6 +1,5 @@
 import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
-import { ALL_DECREES } from '../systems/DecreeSystem'
 import { useProgressionStore } from '../stores/progressionStore'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import {
@@ -18,14 +17,13 @@ afterEach(() => {
 })
 
 it.each([
-  { yaku: 'seven_pairs', orb: 'planet_x_orb', ascended: false },
-  { yaku: 'seven_pairs', orb: 'planet_x_orb', ascended: true },
-  { yaku: 'chanta', orb: 'ceres_orb', ascended: false },
+  { yaku: 'seven_pairs', orb: 'planet_x_orb' },
+  { yaku: 'chanta', orb: 'ceres_orb' },
 ])(
   // Planet X and Ceres were once earned by these hands; they are offered from
   // the start now, and a paid hand still counts toward the gated consumables.
-  'records a paid $yaku hand (ascended=$ascended) without gating $orb',
-  ({ yaku, orb, ascended }) => {
+  'records a paid $yaku hand without gating $orb',
+  ({ yaku, orb }) => {
     useProgressionStore.getState().resetProgression()
     initializeMetaProgressionBridge()
     const game = new GameOrchestrator()
@@ -38,13 +36,6 @@ it.each([
     state.mandateEffectSystem.deactivateMandate()
     state.targetScore = 1e12
     state.roundManager.getCurrentRound()!.scoreTarget = 1e12
-    if (ascended) {
-      state.flowerSystem.addFlower(Tile.createFlower(1, 'f1'))
-      state.flowerSystem.addFlower(Tile.createFlower(2, 'f2'))
-      state.decreeSystem.acquireDecree(
-        ALL_DECREES.find((d) => d.id === 'yakuman_succession')!
-      )
-    }
     const patterns: [TileSuit, number[]][] =
       yaku === 'seven_pairs'
         ? [
@@ -65,8 +56,7 @@ it.each([
     const forecast = game.previewScore(ids)!
     expect(
       forecast.detectedYaku.some(
-        (y) =>
-          y.definition.id === yaku && (y.definition.tier === 4) === ascended
+        (y) => y.definition.id === yaku && y.definition.tier !== 4
       )
     ).toBe(true)
     expect(game.isConsumableUnlocked(orb)).toBe(true)
@@ -79,15 +69,13 @@ it.each([
     )
     expect(game.isConsumableUnlocked(orb)).toBe(true)
     // Only a paid Yakuman earns the Immortal seal; the other gates stay shut.
-    expect(game.isConsumableUnlocked('seal_of_the_immortal')).toBe(ascended)
+    expect(game.isConsumableUnlocked('seal_of_the_immortal')).toBe(false)
     expect(game.isConsumableUnlocked('seal_of_the_void')).toBe(false)
     expect(game.isConsumableUnlocked('black_hole_orb')).toBe(false)
     expect(useProgressionStore.getState().stats.yakuScored[yaku]).toBe(1)
     expect(useProgressionStore.getState().stats.currentRunYakuIds).toContain(
       yaku
     )
-    expect(useProgressionStore.getState().stats.yakumanScored).toBe(
-      ascended ? 1 : 0
-    )
+    expect(useProgressionStore.getState().stats.yakumanScored).toBe(0)
   }
 )

@@ -76,7 +76,10 @@ export type ScalingSource =
   // Structure of the played hand
   | 'sequences'
   | 'triplets'
-  | 'yaku_this_hand'
+  | 'pairs' // Pairs in the play, the complete hand's pair included
+  | 'groups' // Every group in the play, pairs included
+  | 'patterns_earlier_this_round' // Distinct patterns played before this one
+  | 'groups_earlier_this_round' // Groups played before this one this round
   | 'base_chips_per_100'
   // Round and run progress
   | 'hands_this_round'
@@ -117,33 +120,37 @@ export type GateCondition =
   | 'three_plus_honors'
   | 'four_plus_terminals'
   | 'no_simples'
+  | 'all_simples'
   | 'has_one_and_nine'
   | 'wind_and_dragon'
+  | 'five_tile_flush' // Five or more tiles, all from one numbered suit
   // Structure of the played hand
   | 'contains_pair'
   | 'two_plus_pairs'
   | 'contains_sequence'
+  | 'two_plus_sequences'
   | 'contains_triplet'
   | 'two_plus_triplets'
-  | 'three_sequences'
+  | 'full_house' // A triplet and a pair
+  | 'contains_quad' // Four or more of a kind
+  | 'contains_straight'
+  | 'flowered_quad_or_straight' // 2+ Flowers held, and a Quad or a Straight
+  | 'value_group' // A pair, triplet or quad of Dragons or East Winds
+  | 'ninefold_run' // A run holding 1-2-3, 4-5-6 or 7-8-9
+  | 'twin_sequences' // The same sequence in two suits
+  | 'outside_groups' // Two or more groups, each with a 1, 9, Wind or Dragon
+  | 'grand_pattern' // Five or more of a kind, or a six-tile Straight
+  | 'six_grouped' // Six or more tiles, every one of them in a group
   // Round state
   | 'boss_round'
   | 'no_discards_used'
   | 'first_hand'
   | 'last_hand_scored_zero'
   | 'double_target'
-  // Yaku scored by this hand
-  | 'yaku_riichi'
-  | 'yaku_tanyao'
-  | 'yaku_pinfu'
-  | 'yaku_yakuhai'
-  | 'yaku_ittsu'
-  | 'yaku_toitoi'
-  | 'yaku_sanshoku'
-  | 'yaku_honitsu'
-  | 'yaku_chinitsu'
-  | 'yaku_chanta'
-  | 'yaku_yakuman'
+  | 'repeat_pattern' // This play's pattern was already played this round
+  | 'every_third_play' // The 3rd, 6th, … play of the round
+  | 'first_play_of_round'
+  | 'last_turn' // This play spends the round's last Turn
 
 /**
  * Additive score bonus effect
@@ -270,12 +277,7 @@ export interface ConditionalEffect extends BaseEffect {
  */
 export interface DecreeCondition {
   type:
-    | 'tile_count'
-    | 'meld_type'
-    | 'suit'
-    | 'yaku'
-    | 'hand_state'
-    | 'round_state'
+    'tile_count' | 'meld_type' | 'suit' | 'yaku' | 'hand_state' | 'round_state'
   target: string
   operator: 'gte' | 'lte' | 'eq' | 'contains' | 'not_contains'
   value: number | string | boolean
@@ -426,10 +428,7 @@ export type SeasonVariant = 'Spring' | 'Summer' | 'Autumn' | 'Winter'
  * Types of corrupted seasons
  */
 export type CorruptedSeasonVariant =
-  | 'Drought'
-  | 'Monsoon'
-  | 'Frostbite'
-  | 'Decay'
+  'Drought' | 'Monsoon' | 'Frostbite' | 'Decay'
 
 /**
  * Base season effect
@@ -450,10 +449,7 @@ export interface SeasonEffect {
  */
 export interface CorruptedSeasonEffect {
   type:
-    | 'suppress_flowers'
-    | 'randomize_draws'
-    | 'halve_decrees'
-    | 'discard_penalty'
+    'suppress_flowers' | 'randomize_draws' | 'halve_decrees' | 'discard_penalty'
   severity: number
   description: string
 }
@@ -674,7 +670,21 @@ export interface ScoringContext {
   gold?: number
   /** Hands played so far across the whole run. */
   handsPlayedThisRun?: number
-  /** Current play is complete without Clemency and contains no open melds. */
+  /** Current play is a complete Mahjong hand, which clears the round. */
+  completeHand?: boolean
+  /** This play's pattern, for Decrees that compare it with earlier plays. */
+  playPatternId?: string
+  /** Patterns already played this round, before this play. */
+  patternsPlayedThisRound?: ReadonlySet<string>
+  /** Groups already played this round, before this play. */
+  groupsPlayedThisRound?: number
+  /** Turns left before this play spends one. */
+  turnsRemaining?: number
+  /** Extra pairs False Eye Mandate grants every play, for Decrees only. */
+  phantomPairs?: number
+  /** Simples Dispensation: 1s and 9s also count as Simples for Decrees. */
+  terminalsCountAsSimples?: boolean
+  /** Current play qualifies for Six-Tile Austerity: six or more tiles, all grouped. */
   completeConcealedHand?: boolean
   /** Earlier committed qualifying plays, not previews or this play. */
   completeConcealedHandsPlayed?: number

@@ -107,10 +107,8 @@ it('keeps the Red Stake withheld reward through save and load, and rejects a neg
 
 it('loads a Red Stake save from before the Boss target rule and reads the rule from the catalog', () => {
   const saved = json(start(7, 2).captureRun())
-  const modifiers = saved.state.roundManager.stakeModifiers as unknown as Record<
-    string,
-    unknown
-  >
+  const modifiers = saved.state.roundManager
+    .stakeModifiers as unknown as Record<string, unknown>
   delete modifiers.bossTargetMultiplier
   const parsed = parseClassicRunSnapshot(saved)
   expect(parsed.state.roundManager.stakeModifiers.bossTargetMultiplier).toBe(
@@ -262,49 +260,52 @@ it('accepts every owned Charter and its shop adapter without relying on current 
   }
 })
 
-it.each([6, 7, 8])('accepts terminal defeat and secured Act %i victory followed by once-only Endless continuation', (act) => {
-  const lost = start(19)
-  const losingState = lost.getState() as OrchestratorState
-  losingState.targetScore = 1e12
-  losingState.roundManager.getCurrentRound()!.scoreTarget = 1e12
-  for (let i = 0; i < 10 && lost.getState().phase === 'gameplay'; i++) {
-    lost.processAction({
-      type: 'play',
-      tileIds: lost
-        .getHandTiles()
-        .slice(0, 2)
-        .map((t) => t.id),
-    })
-    check(lost)
-  }
-  expect(lost.getState().phase).toBe('gameOver')
-  expect(lost.getState().hasWonRun).toBe(false)
+it.each([6, 7, 8])(
+  'accepts terminal defeat and secured Act %i victory followed by once-only Endless continuation',
+  (act) => {
+    const lost = start(19)
+    const losingState = lost.getState() as OrchestratorState
+    losingState.targetScore = 1e12
+    losingState.roundManager.getCurrentRound()!.scoreTarget = 1e12
+    for (let i = 0; i < 10 && lost.getState().phase === 'gameplay'; i++) {
+      lost.processAction({
+        type: 'play',
+        tileIds: lost
+          .getHandTiles()
+          .slice(0, 2)
+          .map((t) => t.id),
+      })
+      check(lost)
+    }
+    expect(lost.getState().phase).toBe('gameOver')
+    expect(lost.getState().hasWonRun).toBe(false)
 
-  const won = shop(7)
-  const state = won.getState() as OrchestratorState
-  state.roundManager.startAct(act)
-  state.roundManager.skipRound()
-  state.roundManager.skipRound()
-  state.roundManager.getCurrentRound()!.bossMandate = undefined
-  state.lastCompletedRoundType = 'Large'
-  won.exitShop()
-  state.targetScore = 1
-  state.roundManager.getCurrentRound()!.scoreTarget = 1
-  expect(
-    won.processAction({
-      type: 'play',
-      tileIds: won
-        .getHandTiles()
-        .slice(0, 2)
-        .map((t) => t.id),
-    }).success
-  ).toBe(true)
-  expect(won.getState().hasWonRun).toBe(true)
-  check(won)
-  expect(won.continueEndless()).toBe(true)
-  check(won)
-  expect(won.continueEndless()).toBe(false)
-})
+    const won = shop(7)
+    const state = won.getState() as OrchestratorState
+    state.roundManager.startAct(act)
+    state.roundManager.skipRound()
+    state.roundManager.skipRound()
+    state.roundManager.getCurrentRound()!.bossMandate = undefined
+    state.lastCompletedRoundType = 'Large'
+    won.exitShop()
+    state.targetScore = 1
+    state.roundManager.getCurrentRound()!.scoreTarget = 1
+    expect(
+      won.processAction({
+        type: 'play',
+        tileIds: won
+          .getHandTiles()
+          .slice(0, 2)
+          .map((t) => t.id),
+      }).success
+    ).toBe(true)
+    expect(won.getState().hasWonRun).toBe(true)
+    check(won)
+    expect(won.continueEndless()).toBe(true)
+    check(won)
+    expect(won.continueEndless()).toBe(false)
+  }
+)
 
 const mutations: [string, (s: ClassicRunSnapshot) => void][] = [
   [
@@ -514,6 +515,7 @@ describe('untrusted save boundary', () => {
         [
           'playsThisRound',
           'tilesRedrawnThisRound',
+          'groupsPlayedThisRound',
           'emergencyTurnsBoughtThisRound',
           'honorDiscardsThisRound',
           'patternPlayCounts',
@@ -536,9 +538,7 @@ describe('untrusted save boundary', () => {
     const parsed = parseClassicRunSnapshot(saved)
     parsed.state.handTiles[0].rank = 9
     expect(parsed.state.handTiles[0]).not.toBe(saved.state.handTiles[0])
-    expect(parsed.state.decreeSystem.ownedDecrees[0].description).toBe(
-      current
-    )
+    expect(parsed.state.decreeSystem.ownedDecrees[0].description).toBe(current)
   })
 
   it('re-reads tampered rules from the catalog instead of trusting the save', () => {

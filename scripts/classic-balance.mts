@@ -179,6 +179,7 @@ function playRun(seed: number): RunResult {
   let hands = 0
   let blindHands = 0
   let completeHands = 0
+  let completeConcealedHands = 0
   const yakuTriggers: Record<string, number> = {}
   let redraws = 0
   let redrawnTiles = 0
@@ -443,7 +444,16 @@ function playRun(seed: number): RunResult {
       if (shopSamples.length > 6) shopSamples.shift()
     }
     if (!advice) blindHands += 1
-    if (selection.length > MAX_TACTICAL_PLAY_TILES) completeHands++
+    if (selection.length > MAX_TACTICAL_PLAY_TILES) {
+      completeHands++
+      // A hand a Void Script had to finish is not a natural complete hand.
+      const assisted = result.effects.some(
+        (effect) =>
+          effect.type === 'consumable_effect' &&
+          /completed the hand|did not fit/.test(effect.description)
+      )
+      if (!assisted) completeConcealedHands++
+    }
     for (const effect of result.effects) {
       if (effect.type !== 'score_added' || !('breakdown' in effect)) continue
       for (const yaku of (effect.breakdown as ScoreBreakdown).detectedYaku) {
@@ -477,7 +487,7 @@ function playRun(seed: number): RunResult {
     hands,
     blindHands,
     completeHands,
-    completeConcealedHands: final.completeConcealedHandsPlayed ?? 0,
+    completeConcealedHands,
     yakuTriggers,
     redraws,
     redrawnTiles,
@@ -617,7 +627,7 @@ const outcomes = results.reduce<Record<string, number>>((counts, run) => {
 }, {})
 const limitations = [
   'Heuristic candidate search, not exhaustive or optimal play.',
-  'completeHands counts plays larger than the tactical limit (six tiles), including assisted completions. completeConcealedHands records actual complete concealed hands without Shanten Clemency.',
+  'completeHands counts plays larger than the tactical limit (six tiles), including assisted completions. completeConcealedHands records the complete hands no Void Script had to finish.',
   'Table and Stake entry are selected directly. No persistent player profile is loaded; Decree, Charter and consumable unlock resolvers remain at engine defaults.',
   RESOURCES
     ? 'Cycles low-connectivity spare tiles when behind the required score pace.'

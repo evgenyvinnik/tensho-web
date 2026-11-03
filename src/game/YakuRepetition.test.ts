@@ -1,3 +1,8 @@
+/**
+ * Pattern Repetition Charter (`yaku_repetition_charter`): a play pattern
+ * played in back-to-back rounds compounds ×1.2 per earlier round in its
+ * streak, capped at ×4 before Flowers.
+ */
 import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit } from '../core/Tile'
 import { ALL_DECREES } from '../systems/DecreeSystem'
@@ -29,6 +34,7 @@ function fixture() {
   )
   return game
 }
+/** Deal Two Pairs (2m 2m 5p 5p), a Pair (1s 1s) and spares. */
 function deal(game: GameOrchestrator, clear = true) {
   const state = game.getState() as OrchestratorState
   state.flowerSystem.clear()
@@ -37,39 +43,36 @@ function deal(game: GameOrchestrator, clear = true) {
   state.faceDownTileIds.clear()
   state.targetScore = clear ? 1 : 1e12
   state.roundManager.getCurrentRound()!.scoreTarget = state.targetScore
+  const make = (suit: TileSuit, ranks: number[], key: string) =>
+    ranks.map((rank, i) => new Tile(suit, rank, `${key}-${i}`))
   state.handTiles = [
-    ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-      (rank, i) => new Tile(TileSuit.Souzu, rank, `run-${i}`)
-    ),
-    ...[6, 6, 6].map(
-      (rank, i) => new Tile(TileSuit.Manzu, rank, `triplet-${i}`)
-    ),
-    ...[5, 5].map((rank, i) => new Tile(TileSuit.Pinzu, rank, `pair-${i}`)),
+    ...make(TileSuit.Manzu, [2, 2], 'pm'),
+    ...make(TileSuit.Pinzu, [5, 5], 'pp'),
+    ...make(TileSuit.Souzu, [1, 1], 'pair'),
+    ...make(TileSuit.Manzu, [9, 7, 4], 'spare'),
   ]
   state.wall = Array.from(
     { length: 60 },
     (_, i) => new Tile(TileSuit.Pinzu, (i % 9) + 1, `wall-${i}`)
   )
   state.drawIndex = 0
-  return state.handTiles.map((tile) => tile.id)
+  const ids = state.handTiles.map((tile) => tile.id)
+  return { twoPairs: ids.slice(0, 4), pair: ids.slice(4, 6) }
 }
 
-it('compounds each matching family over consecutive rounds, without preview/reload growth', () => {
+it('compounds a repeated pattern over consecutive rounds, without preview/reload growth', () => {
   const game = fixture()
   for (let round = 0; round < 4; round++) {
-    const ids = deal(game)
+    const { twoPairs } = deal(game)
     const before = game.captureRun()
-    const forecast = game.previewScore(ids)!
-    const families = forecast.detectedYaku.length
-    expect(families).toBeGreaterThan(0)
-    expect(repetitionFactor(forecast)).toBeCloseTo(
-      Math.min(4, 1.2 ** (round * families))
-    )
-    expect(game.previewScore(ids)).toEqual(forecast)
+    const forecast = game.previewScore(twoPairs)!
+    expect(forecast.pattern.id).toBe('two_pairs')
+    expect(repetitionFactor(forecast)).toBeCloseTo(Math.min(4, 1.2 ** round))
+    expect(game.previewScore(twoPairs)).toEqual(forecast)
     expect(game.captureRun()).toEqual(before)
-    expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
-      true
-    )
+    expect(
+      game.processAction({ type: 'play', tileIds: twoPairs }).success
+    ).toBe(true)
     expect(game.getState().score).toBe(forecast.finalScore)
     const saved = parseClassicRunSnapshot(
       JSON.parse(JSON.stringify(game.captureRun()))
@@ -81,13 +84,11 @@ it('compounds each matching family over consecutive rounds, without preview/relo
   }
 })
 
-it('pays no repetition bonus on a hand the Eye blocks', () => {
+it('pays no repetition bonus on a play the Eye blocks', () => {
   const game = fixture()
-  const ids = deal(game, false)
+  const { twoPairs } = deal(game, false)
   const state = game.getState() as OrchestratorState
-  state.previousRoundYakuIds = new Set(
-    game.previewScore(ids)!.detectedYaku.map((y) => y.definition.id)
-  )
+  state.previousRoundYakuIds = new Set(['two_pairs'])
   state.mandateEffectSystem.activateMandate(
     THE_EYE,
     state.handTiles,
@@ -95,57 +96,52 @@ it('pays no repetition bonus on a hand the Eye blocks', () => {
   )
   state.mandateEffectSystem = MandateEffectSystem.fromJSON({
     ...state.mandateEffectSystem.toJSON(),
-    playedPatternIds: ['mahjong'],
+    playedPatternIds: ['two_pairs'],
   })
-  const score = game.previewScore(ids)!
+  const score = game.previewScore(twoPairs)!
   expect(score.blockedByMandate).toBe(true)
-  expect(score.detectedYaku).toEqual([])
   expect(score.finalScore).toBe(0)
 })
 
-it('grows only at round settlement, retains unused families during the round, and breaks them after a miss', () => {
+it('grows only at round settlement, keeps patterns played earlier in the round, and breaks them after a miss', () => {
   const game = fixture()
-  let ids = deal(game)
-  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
-  const earned = { ...game.getState().previousRoundYakuStreaks }
-  expect(Object.values(earned).every((n) => n === 1)).toBe(true)
+  let hand = deal(game)
+  expect(
+    game.processAction({ type: 'play', tileIds: hand.twoPairs }).success
+  ).toBe(true)
+  expect(game.getState().previousRoundYakuStreaks).toEqual({ two_pairs: 1 })
   game.exitShop()
   for (let play = 0; play < 2; play++) {
-    ids = deal(game, false)
-    expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
-      true
-    )
-    expect(game.getState().previousRoundYakuStreaks).toEqual(earned)
+    hand = deal(game, false)
+    expect(
+      game.processAction({ type: 'play', tileIds: hand.twoPairs }).success
+    ).toBe(true)
+    expect(game.getState().previousRoundYakuStreaks).toEqual({ two_pairs: 1 })
   }
-  // A tactical clear does not erase full-hand Yaku already scored this round.
-  ids = deal(game)
-  expect(
-    game.processAction({ type: 'play', tileIds: ids.slice(0, 3) }).success
-  ).toBe(true)
-  expect(
-    Object.values(game.getState().previousRoundYakuStreaks!).every(
-      (n) => n === 2
-    )
-  ).toBe(true)
+  // A different pattern clears the round; Two Pairs still counts for it.
+  hand = deal(game)
+  expect(game.processAction({ type: 'play', tileIds: hand.pair }).success).toBe(
+    true
+  )
+  expect(game.getState().previousRoundYakuStreaks).toEqual({
+    two_pairs: 2,
+    pair: 1,
+  })
   game.exitShop()
-  ids = deal(game)
-  expect(
-    game.processAction({ type: 'play', tileIds: ids.slice(0, 3) }).success
-  ).toBe(true)
-  expect(game.getState().previousRoundYakuStreaks).toEqual({})
+  hand = deal(game)
+  expect(game.processAction({ type: 'play', tileIds: hand.pair }).success).toBe(
+    true
+  )
+  expect(game.getState().previousRoundYakuStreaks).toEqual({ pair: 2 })
   game.exitShop()
-  const forecast = game.previewScore(deal(game))!
-  expect(repetitionFactor(forecast)).toBe(1)
+  expect(repetitionFactor(game.previewScore(deal(game).twoPairs)!)).toBe(1)
 })
 
 it('starts a fresh run without history', () => {
   const game = fixture()
   expect(
-    game.processAction({ type: 'play', tileIds: deal(game) }).success
+    game.processAction({ type: 'play', tileIds: deal(game).twoPairs }).success
   ).toBe(true)
-  expect(
-    Object.keys(game.getState().previousRoundYakuStreaks ?? {}).length
-  ).toBeGreaterThan(0)
   expect(game.getState().previousRoundYakuIds.size).toBeGreaterThan(0)
   game.startNewRun(8)
   expect(game.getState().previousRoundYakuStreaks).toBeUndefined()
@@ -154,23 +150,22 @@ it('starts a fresh run without history', () => {
 
 it('preserves legacy history without inventing earlier rounds and validates new history strictly', () => {
   const game = fixture()
-  const ids = deal(game, false)
+  const { twoPairs } = deal(game, false)
   const state = game.getState() as OrchestratorState
-  state.previousRoundYakuIds = new Set(['ittsu'])
+  state.previousRoundYakuIds = new Set(['two_pairs'])
   const legacy = JSON.parse(JSON.stringify(game.captureRun()))
   delete legacy.state.previousRoundYakuStreaks
   game.restoreRun(parseClassicRunSnapshot(legacy))
   expect(game.captureRun()).toEqual(legacy)
-  const forecast = game.previewScore(ids)!
-  expect(repetitionFactor(forecast)).toBeCloseTo(1.2)
+  expect(repetitionFactor(game.previewScore(twoPairs)!)).toBeCloseTo(1.2)
   for (const history of [
-    { ittsu: 0 },
-    { ittsu: -1 },
-    { ittsu: 1.5 },
-    { ittsu: '2' },
-    { ittsu: null },
+    { two_pairs: 0 },
+    { two_pairs: -1 },
+    { two_pairs: 1.5 },
+    { two_pairs: '2' },
+    { two_pairs: null },
     {},
-    { ittsu: 2, tanyao: 1 },
+    { two_pairs: 2, pair: 1 },
   ]) {
     const corrupt = structuredClone(legacy)
     corrupt.state.previousRoundYakuStreaks = history
@@ -179,20 +174,29 @@ it('preserves legacy history without inventing earlier rounds and validates new 
     )
   }
   const valid = structuredClone(legacy)
-  valid.state.previousRoundYakuStreaks = { ittsu: 4 }
+  valid.state.previousRoundYakuStreaks = { two_pairs: 4 }
   game.restoreRun(parseClassicRunSnapshot(valid))
   expect(game.captureRun()).toEqual(valid)
-  expect(repetitionFactor(game.previewScore(ids)!)).toBeCloseTo(1.2 ** 4)
+  expect(repetitionFactor(game.previewScore(twoPairs)!)).toBeCloseTo(1.2 ** 4)
+})
+
+it('ignores Yaku left in history by older saves', () => {
+  const game = fixture()
+  const { twoPairs } = deal(game, false)
+  const state = game.getState() as OrchestratorState
+  state.previousRoundYakuIds = new Set(['ittsu', 'tanyao'])
+  state.previousRoundYakuStreaks = { ittsu: 3, tanyao: 2 }
+  expect(repetitionFactor(game.previewScore(twoPairs)!)).toBe(1)
 })
 
 it('caps the bonus, copies it per active Decree, and lets suppression/Frostbite reduce it', () => {
   const game = fixture()
-  const ids = deal(game, false)
+  const { twoPairs } = deal(game, false)
   const state = game.getState() as OrchestratorState
-  state.previousRoundYakuIds = new Set(['ittsu'])
-  state.previousRoundYakuStreaks = { ittsu: 50 }
+  state.previousRoundYakuIds = new Set(['two_pairs'])
+  state.previousRoundYakuStreaks = { two_pairs: 50 }
   const repetition = state.decreeSystem.getOwnedDecrees()[0]
-  const ratio = () => repetitionFactor(game.previewScore(ids)!)
+  const ratio = () => repetitionFactor(game.previewScore(twoPairs)!)
   expect(ratio()).toBeCloseTo(4)
   state.decreeSystem.acquireDecree(
     ALL_DECREES.find((d) => d.id === 'decree-brainstorm')!

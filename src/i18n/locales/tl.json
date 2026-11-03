@@ -99,7 +99,7 @@
     "grammar": "Balarila (Yaku)",
     "hierarchyOverride": "Kapag may magkasalungat na tuntunin, nangingibabaw ang may mas mataas na awtoridad kaysa sa may mas mababa. Suriin ang mga partikular na kondisyon ng bawat epekto.",
     "tipScoreTitle": "Gumawa ng kapaki-pakinabang na mga laro",
-    "tipScore": "Ihambing ang paunang ipinapakitang puntos para sa mga grupong may hanggang {{max}} tile, o isang buong kamay ng Mahjong. Gamitin ang mga turno para lumapit sa target sa halip na maghintay lamang ng perpektong kamay.",
+    "tipScore": "Ihambing ang paunang ipinapakitang puntos para sa mga grupong may hanggang {{max}} tile. Agad na nilalampasan ng buong kamay ng Mahjong ang round, anuman ang puntos nito. Gamitin ang mga turno para lumapit sa target sa halip na maghintay lamang ng perpektong kamay.",
     "tipSynergyTitle": "Bumuo ng nagtutulungang mga epekto",
     "tipSynergy": "Maaaring mas malakas ang mga Dekretong nagtutulungan kaysa sa malalakas na Dekretong hiwa-hiwalay ang epekto.",
     "tipPurposeTitle": "Bumili nang may layunin",
@@ -120,7 +120,7 @@
     "tipLoss": "Pagkatapos ng laro, maghanap ng isang desisyong babaguhin mo, gaya ng REDRAW na masyadong maaga o tile na itinabi nang walang plano, at subukan ito sa susunod.",
     "biggerHandP1": "Bawat grupo pagkatapos ng una ay nagdaragdag ng Mult, at ang buong kamay ng Mahjong ang may pinakamalaking dagdag. Sa halip na laruin agad ang bawat maliit na grupo, itabi ang mga grupong mayroon ka at i-redraw ang mga sobrang tile.",
     "biggerHandRack": "May dalawang tapos na Sequence, dalawang hindi pa tapos na Sequence ng {{circles}} at isang pares ng {{east}} ang rack na ito, pati dalawang Dragon na walang kapares. Isang MAG-REDRAW lang ang magpapadala sa dalawang Dragon sa ilog.",
-    "biggerHandComplete": "Kung 1 at 4 ng {{circles}} ang mga bagong tile, bubuo ang labing-apat na tile ng apat na Sequence at isang pares. Piliin ang lahat ng labing-apat at laruin: hindi kusang nagkakapuntos ang tapos na kamay.",
+    "biggerHandComplete": "Kung 1 at 4 ng {{circles}} ang mga bagong tile, bubuo ang labing-apat na tile ng apat na Sequence at isang pares. Piliin ang lahat ng labing-apat at laruin: agad na nilalampasan ng tapos na kamay ang round, pero kapag nilaro mo lang ito.",
     "biggerHandWarning": "Random ang mga nabubunot, at puwedeng ikatalo mo sa round ang paghahabol ng malaking kamay. Ihambing ang puntos na kaya mo ngayon sa natitira mong mga turno.",
     "congratulations": "<strong>Binabati kita!</strong> Nauunawaan mo na ang mga batayan ng Tensho.",
     "farewell": "Nawa'y pumanig sa iyo ang mga tile sa iyong pag-akyat sa langit!",
@@ -285,16 +285,16 @@
     "holdingNote": "Ginagantimpalaan ng Bantayan ng mga Bituin ang paghawak sa Globong ito. Ang paggamit nito ay nagbibigay ng permanenteng upgrade ngunit inaalis ang bonus sa paghawak."
   },
   "closedHandAusterity": {
-    "name": "Disiplina ng Saradong Kamay",
-    "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na paglalaro, at ang mga kamay na binuo ng Awa sa Shanten, Kasulatan ng Eklipse o Kasulatan ng Katahimikan.",
-    "progress": "Mga buong kamay sa ngayon: {{count}}. Susunod: ×{{factor}} bago ang mga Bulaklak."
+    "name": "Disiplina ng Anim na Tile",
+    "description": "Bawat laro na may anim o higit pang tile, na nasa grupo ang lahat, ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang ganitong laro sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak.",
+    "progress": "Mga kuwalipikadong laro sa ngayon: {{count}}. Susunod: ×{{factor}} bago ang mga Bulaklak."
   },
   "yakuRepetition": {
-    "name": "Utos ng Pag-uulit ng Yaku",
-    "description": "Ang Yaku na umiskor sa magkakasunod na round ay may ×1.2 sa bawat naunang round ng serye nito, hanggang ×4 bago ang mga bonus ng Bulaklak. Napuputol ang serye sa round na wala ito.",
+    "name": "Utos ng Pag-uulit ng Pattern",
+    "description": "Ang pattern ng laro (gaya ng Dalawang pares) na nilaro sa magkakasunod na round ay may ×1.2 sa bawat naunang round ng serye nito, hanggang ×4 bago ang mga bonus ng Bulaklak. Napuputol ang serye sa round na wala ito.",
     "title": "Mga pattern na uulitin",
     "streak": "{{name}} · {{rounds}} naunang magkakasunod na round",
-    "empty": "Wala pang serye. Umiskor gamit ang Yaku sa round na ito para magsimula."
+    "empty": "Wala pang serye. Maglaro ng pattern sa round na ito para magsimula."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Umiskor ng Yakuman, isang kamay na nasa pinakamataas na antas gaya ng Tatlong Malalaking Dragon.",
@@ -365,7 +365,7 @@
     },
     "yaku": {
       "title": "Mga pattern at multiplier",
-      "content": "Maaaring makakuha ng puntos ang maliit na grupo; maaaring magbukas ng Yaku multiplier ang kumpletong kamay. Tingnan ang inaasahang puntos bago pumili ng ilalaro at ititira."
+      "content": "Maaaring makakuha ng puntos ang maliit na grupo, at agad na nilalampasan ng kumpletong kamay ang round. Tingnan ang inaasahang puntos bago pumili ng ilalaro at ititira."
     },
     "flora": {
       "title": "Mga Bulaklak at Panahon",
@@ -938,7 +938,7 @@
     "beginnerFlowSelect": "Pindutin ang kapaki-pakinabang na hugis.",
     "beginnerFlowPreview": "Basahin ang eksaktong tantiya.",
     "beginnerFlowPlay": "Ilaro at bumunot ng kapalit.",
-    "beginnerFullHand": "Sa kalaunan, apat na hugis at isang pares ang bubuo ng kumpletong kamay at magbubukas ng malalakas na Yaku multiplier.",
+    "beginnerFullHand": "Sa kalaunan, apat na hugis at isang pares ang bubuo ng kumpletong kamay. Kapag nilaro ito, agad na malalampasan ang round.",
     "showGuidedMove": "Ipakita ang isang galaw",
     "guidedMove": "Unang galaw na may gabay",
     "beginnerPatternReady": "Handa ang {{pattern}}",
@@ -1045,7 +1045,10 @@
       "adReady": "Handa na ang gantimpala",
       "adClaim": "Kunin ang +1 turno"
     },
-    "decreeDetails": "Mga detalye ng {{name}}"
+    "decreeDetails": "Mga detalye ng {{name}}",
+    "mahjongHint": "Mahjong! May buong kamay sa rack mo. Laruin ito para malampasan ang round.",
+    "mahjongHintSelect": "Piliin ito",
+    "mahjongClearsRound": "Tapos ang round!"
   },
   "rounds": {
     "small": "Maliit na Round",
@@ -1187,7 +1190,8 @@
       "result": "Resulta",
       "becomes": "Magiging {{to}} ang {{from}}",
       "destroyed": "Masisira ang {{name}}"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong! Tapos ang round"
   },
   "decrees": {
     "title": "Mga Dekreto",
@@ -1255,8 +1259,8 @@
         "description": "Kinokopya ang mga epekto ng lahat ng iba mo pang Dekreto"
       },
       "decree-yakuman-blessing": {
-        "name": "Basbas ng Yakuman",
-        "description": "×10 Mult kapag umiskor ka ng Yakuman, isang kamay na nasa pinakamataas na antas gaya ng Tatlong Malalaking Dragon o Labintatlong Ulila"
+        "name": "Basbas ng Anim",
+        "description": "×8 Mult kung may anim o higit pang tile ang laro at nasa grupo ang bawat isa sa mga ito"
       },
       "decree-omega": {
         "name": "Omega",
@@ -1267,8 +1271,8 @@
         "description": "Kapag nanalo ka sa round, +1 Ginto sa bawat magkaibang suit na natitira sa rack mo. Magkahiwalay na suit ang bilang ng Hangin at Dragon."
       },
       "yakuman_succession": {
-        "name": "Pagmamana ng Yakuman",
-        "description": "Habang may hawak kang hindi bababa sa 2 Bulaklak, nagiging Yakuman, ang pinakamataas na antas (×4 bawat isa), ang mga kamay na ito: Kalahating Flush, Buong Flush, Dalawang Beses na Purong Dobleng Sequence (dalawang pares ng magkaparehong sequence), Purong Panlabas na Kamay (may 1 o 9 sa bawat grupo at sa pares) at Pitong Pares. Hindi makaaangat ang kamay na pinahina ng Mandato. Hindi nagsasalansan ang mga kopya."
+        "name": "Dakilang Pagmamana",
+        "description": "Habang may hawak kang hindi bababa sa 2 Bulaklak: ×4 Mult kung may apat o higit pang magkaparehong tile (isang Quad) o Straight (apat o higit pang sunod-sunod na tile, parehong suit) sa laro."
       },
       "river_tax": {
         "name": "Buwis sa Ilog",
@@ -1280,7 +1284,7 @@
       },
       "tanyao_dispensation": {
         "name": "Pahintulot sa Simple",
-        "description": "Tinatanggap na rin ng Lahat Simple (karaniwang puro tile na 2–8) ang 1 at 9. Sinisira pa rin ito ng Hangin at Dragon."
+        "description": "Para sa iyong mga Dekreto, bilang Simple na rin ang 1 at 9 (mga tile na 2–8). Hindi pa rin kasama ang Hangin at Dragon."
       },
       "moonlit_seal": {
         "name": "Emblema ng Buwan",
@@ -1460,11 +1464,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Estratehista ng Simple",
-        "description": "+3 Mult kapag umiskor ka ng Lahat Simple: buong kamay na puro tile na 2–8, walang 1, 9, Hangin o Dragon"
+        "description": "+3 Mult kung 2–8 ang lahat ng nilarong tile (walang 1, 9, Hangin o Dragon)"
       },
       "decree-pinfu-purist": {
         "name": "Tagapagtaguyod ng Sequence",
-        "description": "+3 Mult kapag umiskor ka ng Lahat Sequence: buong kamay na may apat na sequence na walang nilalaktawang numero at isang pares na hindi Dragon o Hanging Silangan"
+        "description": "+5 Mult kung may dalawang sequence sa laro (gaya ng 2-3-4 at 6-7-8)"
       },
       "decree-manzu-emperor": {
         "name": "Emperador ng Karakter",
@@ -1492,7 +1496,7 @@
       },
       "decree-straight-arrow": {
         "name": "Tuwid na Palaso",
-        "description": "+80 Puntos kung may 3 o higit pang sequence sa laro"
+        "description": "+80 Puntos kung may Straight sa laro (apat o higit pang sunod-sunod na tile, parehong suit)"
       },
       "decree-run-master": {
         "name": "Dalubhasa sa Sunod-sunod",
@@ -1560,19 +1564,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Masugid na Alagad ng Halaga",
-        "description": "×1.5 Mult kapag umiskor ka ng Mga Tile na May Halaga: buong kamay na may triplet o quad ng Dragon o Hanging Silangan"
+        "description": "×1.5 Mult kung may pares, triplet o quad ng Dragon o Hanging Silangan sa laro"
       },
       "decree-toitoi-titan": {
         "name": "Higante ng Triplet",
-        "description": "×1.5 Mult kapag umiskor ka ng Lahat Triplet: buong kamay na may apat na triplet o quad at isang pares"
+        "description": "×1.5 Mult kung may Full House sa laro: isang triplet at isang pares"
       },
       "decree-ittsu-initiate": {
         "name": "Baguhang Alagad ng Siyam",
-        "description": "×1.5 Mult kapag umiskor ka ng Straight na 1–9: buong kamay na may 1-2-3, 4-5-6 at 7-8-9 ng iisang suit"
+        "description": "×1.5 Mult kung may sequence na 1-2-3, 4-5-6 o 7-8-9 sa laro"
       },
       "decree-chinitsu-champion": {
-        "name": "Kampeon ng Buong Flush",
-        "description": "×2 Mult kapag umiskor ka ng Buong Flush: buong kamay na iisang suit lang, walang Hangin o Dragon"
+        "name": "Kampeon ng Flush",
+        "description": "×2 Mult kung may 5 o higit pang tile ang laro, lahat mula sa iisang suit na may numero"
       },
       "decree-veteran": {
         "name": "Beterano",
@@ -1675,16 +1679,16 @@
         "description": "+3 Mult bawat Bulaklak, +30 Puntos bawat Panahon"
       },
       "decree-honitsu-herald": {
-        "name": "Tagapagbalita ng Kalahating Flush",
-        "description": "×2 Mult kapag umiskor ka ng Kalahating Flush: buong kamay ng iisang suit kasama ang Hangin o Dragon"
+        "name": "Tagapagbalita ng Quad",
+        "description": "×2 Mult kung may apat o higit pang magkaparehong tile (isang Quad) sa laro"
       },
       "decree-sanshoku-sage": {
-        "name": "Pantas ng Tripleng Sequence",
-        "description": "×2 Mult kapag umiskor ka ng Halong Tripleng Sequence: buong kamay na may parehong sequence sa lahat ng tatlong suit"
+        "name": "Pantas ng Kambal na Sequence",
+        "description": "×2 Mult kung may parehong sequence sa dalawang suit ang laro (gaya ng 3-4-5 ng Karakter at 3-4-5 ng Bilog)"
       },
       "decree-chanta-champion": {
-        "name": "Kampeon ng Panlabas na Kamay",
-        "description": "×2 Mult kapag umiskor ka ng Panlabas na Kamay: buong kamay na may hindi bababa sa isang sequence, kung saan may 1, 9, Hangin o Dragon ang bawat grupo at ang pares. Kasama rin ang Purong Panlabas na Kamay (ganoon din, pero walang Hangin o Dragon, kaya may 1 o 9 ang bawat grupo at ang pares)."
+        "name": "Kampeon ng Panlabas",
+        "description": "×2 Mult kung may dalawa o higit pang grupo ang laro at may 1, 9, Hangin o Dragon ang bawat grupo"
       },
       "decree-mandate-breaker": {
         "name": "Tagasira ng Mandato",
@@ -1755,12 +1759,12 @@
         "description": "Binibilang nang apat na beses ang bawat Dragon na nilaro"
       },
       "decree-yaku-amplifier": {
-        "name": "Tagapagpalakas ng Yaku",
-        "description": "Kapag may Yaku ang umiskor na buong kamay, pinararami nang 1.5 ang pinagsamang multiplikador ng Yaku nito"
+        "name": "Tagapagpalakas ng Pares",
+        "description": "×2 Mult bawat pares sa laro"
       },
       "decree-yakuman-seeker": {
-        "name": "Tagahanap ng Yakuman",
-        "description": "×5 Mult kapag umiskor ka ng Yakuman, isang kamay na nasa pinakamataas na antas gaya ng Tatlong Malalaking Dragon o Labintatlong Ulila"
+        "name": "Dakilang Tagahanap",
+        "description": "×5 Mult kung may lima o higit pang magkaparehong tile, o Straight na anim na tile, sa laro"
       },
       "decree-four-seasons-master": {
         "name": "Dalubhasa sa Apat na Panahon",
@@ -1812,7 +1816,7 @@
       },
       "decree-chain-reaction": {
         "name": "Sunod-sunod na Reaksiyon",
-        "description": "×1.5 Mult bawat Yaku sa umiskor na kamay"
+        "description": "×1.5 Mult bawat grupo sa laro (binibilang ang mga pares)"
       },
       "decree-cosmic-jade": {
         "name": "Jade ng Kalawakan",
@@ -1847,12 +1851,12 @@
         "description": "×1.2 Mult bawat 10 Gintong hawak mo"
       },
       "decree-yaku-nexus": {
-        "name": "Tagpuan ng Yaku",
-        "description": "Nagpupuntos ang bawat Yaku na parang isang antas na mas mataas (ang ×1.3 ng Antas 1 ay nagiging ×1.6)"
+        "name": "Tagpuan ng Grupo",
+        "description": "×2.5 Mult bawat grupo sa laro (binibilang ang mga pares)"
       },
       "decree-reality-warp": {
         "name": "Pagbaluktot ng Realidad",
-        "description": "Puwedeng bumuo ng buong kamay ang alinmang 14 tile na pipiliin mo"
+        "description": "Puwedeng maglaman ng hanggang 8 tile sa halip na 6 ang mga larong hindi buong kamay"
       },
       "decree-time-master": {
         "name": "Dalubhasa sa Oras",
@@ -1868,7 +1872,7 @@
       },
       "false_eye_mandate": {
         "name": "Mandato ng Huwad na Mata",
-        "description": "Puwedeng gamitin ng buong kamay ang isa sa mga grupo nito kapalit ng pares."
+        "description": "Binibilang ng iyong mga Dekreto ang bawat laro na parang may isa pang pares ito."
       },
       "honor_transmutation": {
         "name": "Pagbabagong-anyo ng Honor",
@@ -1883,20 +1887,48 @@
         "description": "Isang beses bawat round, ipalit ang isang napiling tile sa tile mula sa Dead Wall (ang mga nakareserbang tile sa dulo ng pader) nang hindi gumagastos ng turno."
       },
       "shanten_clemency": {
-        "name": "Awa sa Shanten",
-        "description": "Puwedeng laruin bilang buong kamay ang kamay na kulang ng isang tile para makumpleto, sa kalahating puntos."
+        "name": "Awa sa Solong Tile",
+        "description": "Buong Puntos ang naiiskor ng mga solong tile (mga nilarong tile na walang grupo) sa halip na kalahati."
       },
       "closed_hand_austerity": {
-        "name": "Disiplina ng Saradong Kamay",
-        "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na paglalaro, at ang mga kamay na binuo ng Awa sa Shanten, Kasulatan ng Eklipse o Kasulatan ng Katahimikan."
+        "name": "Disiplina ng Anim na Tile",
+        "description": "Bawat laro na may anim o higit pang tile, na nasa grupo ang lahat, ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang ganitong laro sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak."
       },
       "terminal_devotion": {
         "name": "Debosyon sa mga Terminal",
         "description": "Bawat terminal (1 o 9) na nilaro ay nagdaragdag ng 0.05 sa ×Mult ng Dekretong ito (×1.2 kapag apat)."
       },
       "yaku_repetition_charter": {
-        "name": "Utos ng Pag-uulit ng Yaku",
-        "description": "Ang Yaku na umiskor sa magkakasunod na round ay may ×1.2 sa bawat naunang round ng serye nito, hanggang ×4 bago ang mga bonus ng Bulaklak. Napuputol ang serye sa round na wala ito."
+        "name": "Utos ng Pag-uulit ng Pattern",
+        "description": "Ang pattern ng laro (gaya ng Dalawang pares) na nilaro sa magkakasunod na round ay may ×1.2 sa bawat naunang round ng serye nito, hanggang ×4 bago ang mga bonus ng Bulaklak. Napuputol ang serye sa round na wala ito."
+      },
+      "decree-mirror-lake": {
+        "name": "Lawang Salamin",
+        "description": "×2 Mult kung inuulit ng larong ito ang pattern na nalaro mo na ngayong round (gaya ng Pares pagkatapos ng Pares)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Gulong ng Siyam",
+        "description": "×3 Mult sa ikatlong laro ng bawat round, at sa bawat ikatlong laro pagkatapos nito"
+      },
+      "decree-sleeved-tile": {
+        "name": "Tile sa Manggas",
+        "description": "+2 Mult sa bawat tile na na-redraw mo ngayong round"
+      },
+      "decree-three-roads": {
+        "name": "Tatlong Daan",
+        "description": "×1.5 Mult sa bawat naiibang pattern sa mga naunang laro ngayong round"
+      },
+      "decree-open-palm": {
+        "name": "Bukas na Palad",
+        "description": "+2 libreng redraw bawat round, ngunit ×0.5 Mult ang unang laro ng bawat round"
+      },
+      "decree-shared-corner": {
+        "name": "Pinagsasaluhang Sulok",
+        "description": "+3 Mult sa bawat grupo sa mga naunang laro ngayong round (binibilang ang mga pares)"
+      },
+      "decree-last-word": {
+        "name": "Ang Huling Salita",
+        "description": "×4 Mult kung ginagamit ng larong ito ang huling turno ng round"
       }
     }
   },
@@ -1915,7 +1947,7 @@
     "chrysanthemumWinter": "Kapag aktibo ang Krisantemo, binabalewala ng mga nakatagong laro ang score penalty ng Taglamig habang pinananatili ang tuntunin ng sequence na lumalaktaw ng isang ranggo. May penalty pa rin ang bukas na laro. Hinaharang ng Tagtuyot ang proteksiyong ito maliban kung protektado ang Bulaklak.",
     "catalystsTitle": "Pagbabayad gamit ang Bulaklak",
     "catalystsIntro": "Ang ilang direktang alok ng Kautusan sa Bahay-Tsaa ay tumatanggap ng Bulaklak sa halip na Ginto. Piliin ang mismong hawak na Bulaklak at kumpirmahin; opsyonal ito at hindi kailanman awtomatikong sakripisyo.",
-    "catalystsCost": "Nababawasan din ang mga set bonus kapag nawala ang Bulaklak. Hindi matutuloy ang pagbili kung kulang ang natitirang puwesto para sa koleksiyon. Kapag nakolekta itong muli, babalik ang paggising na nakamit sa larong ito. Kailangan pa rin ng Pamana ng Yakuman ng dalawang Bulaklak, kaya dapat may tatlo muna bago magbayad ng isa."
+    "catalystsCost": "Nababawasan din ang mga set bonus kapag nawala ang Bulaklak. Hindi matutuloy ang pagbili kung kulang ang natitirang puwesto para sa koleksiyon. Kapag nakolekta itong muli, babalik ang paggising na nakamit sa larong ito."
   },
   "codexUpgrades": {
     "patternsTitle": "Mga pamilya ng pattern",
@@ -2266,7 +2298,7 @@
       "p1": "Hanggang {{max}} tile ang puwede sa isang laro. Pinupuntos ito bilang pinakamagandang kamay na nabubuo ng mga tile:",
       "headerHand": "Kamay",
       "headerMeaning": "Ano ito",
-      "mahjong": "Ang buong kamay ng Mahjong ay nagdaragdag ng +{{mult}} Mult bukod pa sa Yaku nito."
+      "mahjong": "Agad na nilalampasan ng buong kamay ng Mahjong ang round, anuman ang puntos nito, at nagdaragdag ito ng +{{mult}} Mult bukod pa sa Yaku nito."
     },
     "ready": {
       "title": "Handa Ka Na!",
@@ -2434,7 +2466,7 @@
       "p1": "Bawat round ay may {{turns}} turno ka. Bawat turno ay isa sa dalawang aksyon:",
       "play": "ipuntos ang mga piniling tile: hanggang {{max}}, o isang buong kamay ng Mahjong.",
       "redraw": "ipadala sa ilog ang kahit ilang piniling tile at bumunot ng bago.",
-      "p2": "Abutin ang target ng round bago maubos ang iyong mga turno. Laging laro ang huling turno, at may mga item na nagbibigay ng libreng redraw na hindi gumagamit ng turno.",
+      "p2": "Abutin ang target ng round bago maubos ang iyong mga turno, o maglaro ng buong kamay ng Mahjong para agad na malampasan ang round. Laging laro ang huling turno, at may mga item na nagbibigay ng libreng redraw na hindi gumagamit ng turno.",
       "warning": "Kapag naubos ang turno na kulang pa sa target, tapos na ang laro.",
       "emergency": "Sa {{stake}} pataas, mula Akto {{act}}, mapapahaba mo ang huling turno: bumili ng isa pang turno gamit ang ginto. Tumataas ang presyo bawat Akto at dumodoble sa bawat dagdag na turnong binili sa parehong round."
     },
@@ -3210,7 +3242,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Buong kamay: apat na grupo (sequence, triplet o quad) at isang pares, kadalasang 14 tile. Espesyal na eksepsiyon ang Pitong Pares at Labintatlong Ulila. Pinaparami ng yaku ang puntos."
+      "explain": "Buong kamay: apat na grupo (sequence, triplet o quad) at isang pares, kadalasang 14 tile. Espesyal na eksepsiyon ang Pitong Pares at Labintatlong Ulila. Kapag nilaro ang isa, agad na malalampasan ang round, anuman ang puntos nito."
     },
     "three_dragons": {
       "name": "Tatlong Dragon",
@@ -3227,7 +3259,7 @@
   },
   "guide": {
     "title": "Paano maglaro",
-    "intro": "Ang Tensho ay larong parang poker gamit ang mga tile ng Mahjong. Pumili ng mga tile na bumubuo ng kamay, laruin para sa puntos, at abutin ang target ng bawat round.",
+    "intro": "Ang Tensho ay larong parang poker gamit ang mga tile ng Mahjong. Pumili ng mga tile na bumubuo ng kamay, laruin para sa puntos, at abutin ang target ng bawat round. Agad na nilalampasan ng buong kamay ng Mahjong ang round.",
     "turnsTitle": "Iyong turno",
     "playHelp": "nagbibigay ng puntos sa napiling mga tile.",
     "redrawHelp": "ipinapadala sa ilog ang kahit ilang napiling tile at kumukuha ng bago.",

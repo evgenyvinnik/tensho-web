@@ -1,10 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { Tile, TileSuit, FlowerType, SeasonType } from '../core/Tile'
-import {
-  calculateModifierEffects,
-  EnhancementType,
-} from '../core/TileModifier'
+import { calculateModifierEffects, EnhancementType } from '../core/TileModifier'
 import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { RIVER_TAX } from '../systems/DecreeSystem'
 import {
@@ -110,9 +107,7 @@ describe('Classic REDRAW resources', () => {
     )
     expect(state.handTiles).toHaveLength(size)
     expect(state.handTiles.some((t) => all.includes(t.id))).toBe(false)
-    expect(state.discards.map((t) => t.id)).toEqual(
-      expect.arrayContaining(all)
-    )
+    expect(state.discards.map((t) => t.id)).toEqual(expect.arrayContaining(all))
   })
 
   it('makes locked REDRAW availability match execution', () => {
@@ -196,7 +191,9 @@ describe('Classic REDRAW resources', () => {
 
   it('shuffles reproducibly and does not mutate the wall during availability checks', () => {
     function run(probes: number) {
-      const { game, state } = fixture(24)
+      // The fixture removes the starting Decrees after the deal: this seed's
+      // leave the rack size alone, so a refill restores the dealt size.
+      const { game, state } = fixture(27)
       const tileIds = state.handTiles.slice(0, 3).map((t) => t.id)
       const before = snapshot(state)
       const physical = activeTiles(state)

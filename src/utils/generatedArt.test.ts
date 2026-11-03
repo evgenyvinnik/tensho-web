@@ -37,14 +37,14 @@ const manifest = JSON.parse(
 }
 
 it('keeps every generated runtime image decodable, bounded and linked to its original hash', () => {
-  expect(manifest.assets).toHaveLength(370)
+  expect(manifest.assets).toHaveLength(377)
   expect(
     new Set(manifest.assets.map(({ category, id }) => `${category}:${id}`)).size
-  ).toBe(370)
+  ).toBe(377)
   // Tile Stamps are gone, and with them their wax-stamp art.
-  expect(manifest.assets.filter(({ category }) => category === 'seals')).toEqual(
-    []
-  )
+  expect(
+    manifest.assets.filter(({ category }) => category === 'seals')
+  ).toEqual([])
   expect(generatedArtPaths).not.toHaveProperty('seals')
   for (const item of manifest.assets) {
     const bytes = readFileSync(`public/${item.path}`)

@@ -2,12 +2,14 @@ import { expect, test, type Locator } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import {
   clearReveals,
+  closeOmenReveal,
+  expectTeaHouse,
   handScoreTotal,
   selectCompleteHand,
 } from './helpers/table'
 
 for (const language of ['en', 'es'])
-  for (const shape of ['ordinary', 'pairs', 'orphans', 'clemency'])
+  for (const shape of ['ordinary', 'pairs', 'orphans', 'tactical'])
     test(`wildcard ${shape} picks then pays consistently (${language})`, async ({
       page,
       isMobile,
@@ -15,6 +17,9 @@ for (const language of ['en', 'es'])
       const copy = JSON.parse(
         readFileSync(`src/i18n/locales/${language}.json`, 'utf8')
       )
+      // Three complete hands the Wildcard finishes, and a small play it reads
+      // as a Quad.
+      const complete = shape !== 'tactical'
       const errors: string[] = []
       page.on('pageerror', (error) => errors.push(error.message))
       await page.setViewportSize(
@@ -41,14 +46,14 @@ for (const language of ['en', 'es'])
       const expected = await page.evaluate(async (shape) => {
         const gamePath = '/src/game/GameOrchestrator.ts',
           tilePath = '/src/core/Tile.ts',
+          editionPath = '/src/core/TileModifier.ts',
           decreePath = '/src/systems/DecreeSystem.ts',
           orbPath = '/src/systems/CelestialOrbSystem.ts',
           savePath = '/src/game/classicPersistenceApp.ts'
         const { gameOrchestrator: game } = await import(gamePath)
         const { Tile, TileSuit, FlowerType } = await import(tilePath)
-        const { CELESTIAL_WILDCARD, SHANTEN_CLEMENCY } = await import(
-          decreePath
-        )
+        const { EnhancementType } = await import(editionPath)
+        const { CELESTIAL_WILDCARD } = await import(decreePath)
         const { CelestialOrbSystem, getCelestialOrbByYaku } = await import(
           orbPath
         )
@@ -74,7 +79,7 @@ for (const language of ['en', 'es'])
                 ['Manzu', [5]],
                 ['Pinzu', [2, 3, 4, 3, 4, 5, 6, 7, 8, 6, 6, 6, 5]],
               ]
-            : shape === 'pairs' || shape === 'clemency'
+            : shape === 'pairs'
               ? [
                   ['Manzu', [1, 1, 4, 4, 7, 7]],
                   ['Pinzu', [2, 2, 5, 5]],
@@ -82,26 +87,26 @@ for (const language of ['en', 'es'])
                   ['Wind', [1]],
                   ['Dragon', [1]],
                 ]
-              : [
-                  ['Manzu', [1, 9, 5]],
-                  ['Pinzu', [1, 9]],
-                  ['Souzu', [1, 9]],
-                  ['Wind', [1, 2, 3, 4]],
-                  ['Dragon', [1, 2, 2]],
-                ]
+              : shape === 'orphans'
+                ? [
+                    ['Manzu', [1, 9, 5]],
+                    ['Pinzu', [1, 9]],
+                    ['Souzu', [1, 9]],
+                    ['Wind', [1, 2, 3, 4]],
+                    ['Dragon', [1, 2, 2]],
+                  ]
+                : [
+                    ['Pinzu', [5, 5, 5]],
+                    ['Souzu', [9]],
+                  ]
         state.handTiles = groups.flatMap(([suit, ranks]) =>
           ranks.map((rank, i) => new Tile(TileSuit[suit], rank, `${suit}-${i}`))
         )
-        if (shape === 'clemency') {
-          state.handTiles.pop()
-          state.handTiles[0] = new Tile(
-            TileSuit.Manzu,
-            3,
-            state.handTiles[0].id
+        // The stand-in keeps its tile's Edition.
+        if (shape === 'tactical')
+          state.handTiles[3] = state.handTiles[3].withEnhancement(
+            EnhancementType.Mult
           )
-          if (!game.addDecree(SHANTEN_CLEMENCY))
-            throw new Error('Clemency acquisition failed')
-        }
         state.wall = Array.from(
           { length: 60 },
           (_, i) => new Tile(TileSuit.Souzu, (i % 9) + 1, `wall-${i}`)
@@ -124,8 +129,9 @@ for (const language of ['en', 'es'])
             family: 'Winds',
             scored: ['Winds', 'Dragons', 'MixedSuits'],
           },
-          // Here the East keeps its face, so the hand shows a Wind.
-          clemency: { family: 'Winds', scored: ['Winds', 'MixedSuits'] },
+          // The 9 of Bamboo stands in for a fourth 5 of Circles: the small
+          // play scores as a Quad, its only family.
+          tactical: { family: 'Quads', scored: ['Quads'] },
         }
         const { family, scored } = families[shape]
         const base = game.previewScore(ids).finalScore
@@ -172,31 +178,26 @@ for (const language of ['en', 'es'])
           )
         )
         .toBe(true)
-      if (shape === 'clemency') {
-        const clemencyArt = page
-          .locator('img[src$="/decrees/shanten-clemency.webp"]')
-          .first()
-        await expect(clemencyArt).toBeVisible()
-        await expect
-          .poll(() =>
-            clemencyArt.evaluate(
-              (img: HTMLImageElement) => img.complete && img.naturalWidth > 0
+      // Every rack tile goes to the felt: the Wildcard completes the hand,
+      // or turns the small play's odd tile into a fourth of a kind.
+      if (complete) await selectCompleteHand(page, isMobile)
+      else
+        for (const tile of before.state.handTiles)
+          await activate(
+            page.locator(
+              `[data-play-zone="hand"] [data-play-tile="${tile.id}"]`
             )
           )
-          .toBe(true)
-      }
-      // The wildcard completes the hand; every rack tile goes to the felt.
-      await selectCompleteHand(page, isMobile)
       await expect(
         page.locator('[data-play-zone="felt"] [data-play-tile]')
       ).toHaveCount(before.state.handTiles.length)
       const staged = await saved()
       expect(staged.state.score).toBe(before.state.score)
       expect(staged.state.handsRemaining).toBe(before.state.handsRemaining)
-      // The hand score reads the picked tiles as Mahjong at the engine's value.
+      // The hand score reads the picked tiles at the engine's value.
       const handScore = page.locator('[data-hand-score]')
       await expect(handScore.locator('[data-hand-score-pattern]')).toHaveText(
-        copy.patterns.mahjong.name
+        complete ? copy.patterns.mahjong.name : copy.patterns.quad.name
       )
       await expect(handScoreTotal(page, 'preview')).toHaveAttribute(
         'title',
@@ -215,11 +216,25 @@ for (const language of ['en', 'es'])
       })
       await page.screenshot({ path: testInfo.outputPath('staged.png') })
       await activate(play)
+      if (complete) {
+        // Mahjong clears the round at once, far below its target.
+        await expectTeaHouse(page)
+        await closeOmenReveal(page)
+      }
       await expect
         .poll(async () => (await saved()).state.score)
         .toBe(before.state.score + expected.score)
       const after = await saved()
+      expect(after.state.phase).toBe(complete ? 'shop' : 'gameplay')
+      if (complete)
+        expect(after.state.lastRoundSummary).toMatchObject({
+          clearedByCompleteHand: true,
+          score: expected.score,
+          target: 1e9,
+        })
+      else await expect(page).toHaveURL(/\/play$/)
       expect(after.state.handsRemaining).toBe(before.state.handsRemaining - 1)
+      // The stand-in is only a reading: the river keeps the physical tiles.
       const ids = before.state.handTiles.map((t: { id: string }) => t.id)
       expect(
         after.state.discards.filter((t: { id: string }) => ids.includes(t.id))

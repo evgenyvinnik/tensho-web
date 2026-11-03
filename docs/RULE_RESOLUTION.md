@@ -81,6 +81,21 @@ The Water forbids REDRAW (free or paid); The Needle allows one play but keeps
 REDRAW. A round ends when the score reaches the target, or in defeat when the
 Turns run out (or The Needle's play is spent) below it.
 
+**Mahjong clears the round.** Playing a complete Mahjong hand clears the round at
+once, whatever it scores and in any round, Boss included. The round keeps the
+score it actually made (`RoundManager.submitScore(score, true)`); the cash-out
+summary marks `clearedByCompleteHand`. A play a Boss Mandate blocks (The Mouth,
+The Eye) scores nothing and clears nothing. Hands finished by Script of Eclipse
+or Script of Silence still clear. With Hand Hints on, the rack points out a
+complete hand it already holds, Wild tiles and rule-bending Decrees included
+(`findCompleteHandSelection`), and offers to select it.
+
+**Decrees reward simple plays.** No Decree pays on a Yaku or needs a complete
+hand: they read the play's tiles and groups (pairs, sequences, Triplets, Quads,
+Straights, a Full House, groups per play). Harmonizer and Celestial Wildcard
+apply to every play, not only complete hands; a Wildcard stand-in counts only
+when that tile joins a group. Reality Warp lets a small play hold 8 tiles.
+
 **REDRAW.** Any number of selected, unlocked tiles go to the river (Discard
 Pool) and the rack refills under the round's draw rules. It counts once for
 Decay and for River Tax (+2 Gold per REDRAW), and per tile for "per tile
@@ -297,7 +312,8 @@ and hosted-verified in v1.0.261008-11. [Evidence](BROAD_INTEGRATION_AUDIT.md).
 ### Score thresholds use this play's neutral paid score
 
 Supernova checks whether this play brings the round total to at least twice the
-target; Perfectionist checks whether the first play clears it. Both qualify before
+target; Perfectionist checks whether the first play clears it (a complete hand
+always does). Both qualify before
 all Supernova/Perfectionist bonuses, including copies, so neither can bootstrap
 itself or the other. Ordinary modifiers, penalties and rounding remain part of
 the neutral score. Actual random tile effects resolve once; previews retain their

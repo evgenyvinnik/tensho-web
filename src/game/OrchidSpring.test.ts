@@ -155,7 +155,7 @@ it('pays once for each natural Honor, not once per cycle or recursively for bonu
   ).toHaveLength(6)
 })
 
-it('pays the complete-hand forecast before granting extra tiles in its refill', () => {
+it('pays the complete-hand forecast, which clears the round before any refill', () => {
   const { game, state } = fixture()
   state.handTiles = [
     ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(
@@ -172,9 +172,8 @@ it('pays the complete-hand forecast before granting extra tiles in its refill', 
   expect(game.captureRun()).toEqual(before)
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   expect(state.score - before.state.score).toBe(preview.finalScore)
-  expect(state.handTiles).toHaveLength(17)
-  expect(state.handTiles.some((t) => t.id === 'gift')).toBe(true)
-  expect(state.handsRemaining).toBe(before.state.handsRemaining - 1)
+  expect(state.phase).toBe('shop')
+  expect(state.handTiles.some((t) => t.id === 'gift')).toBe(false)
 })
 
 it.each([
