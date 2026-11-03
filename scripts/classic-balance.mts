@@ -256,9 +256,12 @@ function playRun(seed: number): RunResult {
       break
     }
 
+    // A tile-ban Boss (The Club, The Head, ...) bars some tiles from every
+    // play: price only the tiles a play may hold.
+    const banned = new Set(orchestrator.getBannedTileIds())
     const advice = buildCoachAdvice({
       partialRules: orchestrator.getPartialHandRules(),
-      tiles: [...state.handTiles],
+      tiles: state.handTiles.filter((tile) => !banned.has(tile.id)),
       concealedIds: state.faceDownTileIds,
       requiredTileIds: state.mandateEffectSystem.getLockedTileIds(),
       completeHandTileIds: orchestrator.findCompleteHandSelection(),
@@ -386,6 +389,26 @@ function playRun(seed: number): RunResult {
               orchestrator.canPerformAction({ type: 'play', tileIds })
           )
         : null)
+    if (!selection && banned.size > 0) {
+      // Nothing playable is left in view: send the barred tiles back, as many
+      // as one REDRAW may take.
+      const ids = [...banned]
+      let redraw: { type: 'redraw'; tileIds: string[] } | null = null
+      for (let count = ids.length; count > 0 && !redraw; count--) {
+        const action = { type: 'redraw' as const, tileIds: ids.slice(0, count) }
+        if (orchestrator.canPerformAction(action)) redraw = action
+      }
+      if (redraw) {
+        const result = orchestrator.processAction(redraw)
+        if (!result.success) {
+          outcome = `invalidAction:redraw:${result.errors?.join(',')}`
+          break
+        }
+        redraws++
+        redrawnTiles += redraw.tileIds.length
+        continue
+      }
+    }
     if (!selection) {
       outcome = 'noAdvice'
       break

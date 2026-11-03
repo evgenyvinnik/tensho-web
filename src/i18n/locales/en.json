@@ -714,6 +714,7 @@
     "freeRedraws": "+{{formattedCount}} free",
     "playHand": "Play hand",
     "reasonExact": "Play exactly {{count}} tiles",
+    "reasonBanned": "{{target}} can’t be played this round",
     "reasonMinimum": "Select at least {{count}} tiles",
     "reasonMaximum": "Up to {{count}} tiles, or a full Mahjong hand",
     "reasonMaximumRedraw": "Play: up to {{count}} tiles or a full Mahjong hand. REDRAW: any number",
@@ -1750,6 +1751,7 @@
     "red": "Red Dragon",
     "modifiers": "Special tile:",
     "debuffed": "Debuffed tile",
+    "banned": "Can’t be played this round",
     "lockedMustPlay": "Locked tile: must be played",
     "tileRow": "Tile row",
     "honors": "Honors"
@@ -1842,23 +1844,23 @@
       },
       "the_club": {
         "name": "The Club",
-        "description": "Bamboo tiles score nothing"
+        "description": "Bamboo tiles can’t be played, only redrawn"
       },
       "the_goad": {
         "name": "The Goad",
-        "description": "Circles tiles score nothing"
+        "description": "Circles tiles can’t be played, only redrawn"
       },
       "the_window": {
         "name": "The Window",
-        "description": "Characters tiles score nothing"
+        "description": "Characters tiles can’t be played, only redrawn"
       },
       "the_head": {
         "name": "The Head",
-        "description": "Dragons score nothing"
+        "description": "Dragons can’t be played, only redrawn"
       },
       "the_plant": {
         "name": "The Plant",
-        "description": "Winds and Dragons score nothing"
+        "description": "Winds and Dragons can’t be played, only redrawn"
       },
       "the_ox": {
         "name": "The Ox",
@@ -3243,8 +3245,7 @@
     "no_discards": "No REDRAW",
     "decrease_play_level": "Hand type −{{count}} level",
     "fixed_hand_size": "Play exactly {{count}} tiles",
-    "debuff_suit": "{{target}} score 0",
-    "debuff_tile_type": "{{target}} score 0",
+    "ban_tiles": "{{target}} can’t be played",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} Gold per tile played",
     "most_played_pattern_zeroes_gold": "Top hand type costs all Gold",

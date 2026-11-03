@@ -97,47 +97,45 @@ export function amberAcornHiddenCount(ownedDecrees: number): number {
 }
 
 // =============================================================================
-// FACE DEBUFFS
+// TILE BANS
 // =============================================================================
 
-const DEBUFF_SUITS: Record<string, TileSuit> = {
-  souzu: TileSuit.Souzu,
-  pinzu: TileSuit.Pinzu,
-  manzu: TileSuit.Manzu,
+/** English names for log and error text; the UI translates its own. */
+const BAN_TARGET_NAMES: Record<string, string> = {
+  souzu: 'Bamboo',
+  pinzu: 'Circles',
+  manzu: 'Characters',
+  dragon: 'Dragon',
+  wind: 'Wind',
+  honor: 'Wind and Dragon',
 }
+const banTargetName = (target = '') => BAN_TARGET_NAMES[target] ?? target
 
 type MandateEffectRef = { type: string; target?: string }
 
-/** A Mandate that debuffs tiles by what is printed on them. */
-function isFaceDebuffMandate(effect: MandateEffectRef): boolean {
-  return effect.type === 'debuff_suit' || effect.type === 'debuff_tile_type'
-}
-
 /**
- * Whether a suit or tile-kind Mandate debuffs this tile. A Stone has no rank
- * or suit for a Mandate to read, so no face debuff reaches it.
+ * Whether a tile-ban Mandate bars this tile from every play: one suit (The
+ * Club, The Goad, The Window), the Dragons (The Head) or every Honor (The
+ * Plant). The printed face decides, so a Wild tile is barred by its own suit
+ * only. A Stone has no rank or suit for a Mandate to read, so it stays
+ * playable. A barred tile can still be redrawn.
  */
-export function isFaceDebuffTarget(
-  effect: MandateEffectRef,
-  tile: Tile
-): boolean {
-  if (tile.isStone || !effect.target) return false
-  const target = effect.target.toLowerCase()
-
-  if (effect.type === 'debuff_suit') return tile.suit === DEBUFF_SUITS[target]
-  if (effect.type !== 'debuff_tile_type') return false
-
-  switch (target) {
+export function isTileBanTarget(effect: MandateEffectRef, tile: Tile): boolean {
+  if (effect.type !== 'ban_tiles' || tile.isStone || !effect.target)
+    return false
+  switch (effect.target.toLowerCase()) {
+    case 'souzu':
+      return tile.suit === TileSuit.Souzu
+    case 'pinzu':
+      return tile.suit === TileSuit.Pinzu
+    case 'manzu':
+      return tile.suit === TileSuit.Manzu
     case 'dragon':
       return tile.suit === TileSuit.Dragon
     case 'wind':
       return tile.suit === TileSuit.Wind
     case 'honor':
       return tile.isHonor
-    case 'terminal':
-      return tile.isTerminal
-    case 'simple':
-      return tile.isSimple
     default:
       return false
   }
@@ -324,10 +322,9 @@ export class MandateEffectSystem {
         result.message += ` - ${mandate.effect.value} random tiles discarded after each draw`
         break
 
-      case 'debuff_suit':
-      case 'debuff_tile_type':
-        result.debuffedTileIds = this.applyFaceDebuff(tiles, mandate)
-        result.message += ` - All ${mandate.effect.target} tiles debuffed`
+      case 'ban_tiles':
+        // Enforced when a play is validated (validateHandPlay)
+        result.message += ` - ${banTargetName(mandate.effect.target)} tiles can't be played`
         break
 
       case 'debuff_used_tiles':
@@ -449,47 +446,6 @@ export class MandateEffectSystem {
   // ===========================================================================
   // DEBUFF APPLICATION
   // ===========================================================================
-
-  /**
-   * Apply a suit or tile-kind debuff (The Club, The Head, ...)
-   */
-  private applyFaceDebuff(tiles: Tile[], mandate: MandateDefinition): string[] {
-    if (!this.debuffSystem) return []
-
-    const debuffedIds = tiles
-      .filter((tile) => isFaceDebuffTarget(mandate.effect, tile))
-      .map((tile) => tile.id)
-    this.debuffSystem.debuffTiles(debuffedIds, {
-      type: 'mandate',
-      mandateId: mandate.id,
-    })
-
-    return debuffedIds
-  }
-
-  /**
-   * Re-read a suit or tile-kind debuff after tiles change face mid-round, such
-   * as a Seal of Stone covering a debuffed Manzu. Debuffs from other sources
-   * stay.
-   */
-  refreshFaceDebuffs(tiles: readonly Tile[]): void {
-    const mandate = this.state.activeMandate
-    if (!this.debuffSystem || !mandate || !isFaceDebuffMandate(mandate.effect))
-      return
-
-    for (const tile of tiles) {
-      const source = this.debuffSystem.getDebuffSource('tile', tile.id)
-      if (source && source.type !== 'mandate') continue
-      if (isFaceDebuffTarget(mandate.effect, tile)) {
-        this.debuffSystem.debuffTile(tile.id, {
-          type: 'mandate',
-          mandateId: mandate.id,
-        })
-      } else if (source) {
-        this.debuffSystem.removeDebuffFromTile(tile.id)
-      }
-    }
-  }
 
   /**
    * Apply debuffs to previously used tiles (The Pillar)
@@ -735,14 +691,34 @@ export class MandateEffectSystem {
   // ===========================================================================
 
   /**
+   * Whether the active Mandate bars this tile from every play (The Club,
+   * The Goad, The Window, The Head, The Plant). Read from the tile's current
+   * face, so a tile that changes face mid-round is judged by its new one.
+   */
+  isTilePlayBanned(tile: Tile): boolean {
+    const mandate = this.state.activeMandate
+    return mandate !== null && isTileBanTarget(mandate.effect, tile)
+  }
+
+  /**
    * Check if a hand play is valid given mandate restrictions
    */
-  validateHandPlay(tileIds: string[]): { valid: boolean; error?: string } {
+  validateHandPlay(tiles: readonly Tile[]): { valid: boolean; error?: string } {
     if (!this.state.activeMandate) {
       return { valid: true }
     }
 
     const mandate = this.state.activeMandate
+    const tileIds = tiles.map((tile) => tile.id)
+
+    // The Club, The Goad, The Window, The Head, The Plant: barred tiles
+    // can't be played at all
+    if (tiles.some((tile) => isTileBanTarget(mandate.effect, tile))) {
+      return {
+        valid: false,
+        error: `${banTargetName(mandate.effect.target)} tiles can't be played (${mandate.name})`,
+      }
+    }
 
     // The Psychic: Must play exactly N tiles
     if (mandate.effect.type === 'fixed_hand_size') {

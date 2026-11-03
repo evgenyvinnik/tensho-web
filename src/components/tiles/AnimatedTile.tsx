@@ -42,6 +42,8 @@ export interface AnimatedTileProps {
   locked?: boolean
   /** Whether the tile contributes no score while still forming structure. */
   debuffed?: boolean
+  /** Whether this round's Boss bars the tile from every play. */
+  banned?: boolean
   /** Whether dragging is enabled */
   draggable?: boolean
   /** Click handler */
@@ -79,6 +81,7 @@ export const AnimatedTile = React.memo(function AnimatedTile({
   faceDown = false,
   locked = false,
   debuffed = false,
+  banned = false,
   draggable = false,
   onClick,
   onDragStart,
@@ -90,6 +93,9 @@ export const AnimatedTile = React.memo(function AnimatedTile({
   style,
 }: AnimatedTileProps) {
   const { t } = useTranslation()
+  const banLabel = banned
+    ? t('tiles.banned', 'Can’t be played this round')
+    : t('tiles.debuffed', 'Debuffed tile')
   const reducedMotion = useSettingsStore((state) => state.reducedMotion)
   const dimensions = tileSizes[size]
   const elementRef = useRef<HTMLDivElement>(null)
@@ -333,10 +339,10 @@ export const AnimatedTile = React.memo(function AnimatedTile({
         className="w-full h-full"
       />
 
-      {debuffed && (
+      {(debuffed || banned) && (
         <div
           className="absolute inset-0 pointer-events-none rounded bg-slate-950/45 ring-2 ring-slate-400/70"
-          title={t('tiles.debuffed', 'Debuffed tile')}
+          title={banLabel}
           aria-hidden="true"
         >
           <span className="absolute left-1 top-1 rounded bg-slate-950/90 px-1 text-xs text-slate-100">
@@ -362,9 +368,7 @@ export const AnimatedTile = React.memo(function AnimatedTile({
           {t('tiles.lockedMustPlay', 'Locked tile: must be played')}
         </span>
       )}
-      {debuffed && (
-        <span className="sr-only">{t('tiles.debuffed', 'Debuffed tile')}</span>
-      )}
+      {(debuffed || banned) && <span className="sr-only">{banLabel}</span>}
       {/* Glow overlay */}
       {glowing && (
         <animated.div
