@@ -406,7 +406,7 @@ Basic, reliable effects with no conditions.
 | Ember | 残火 | ×1.3 Mult |
 | Riichi Devotee | 立直信者 | +3 Mult when scoring Riichi |
 | Simples Tactician | 断么戦術家 | +3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons |
-| Sequence Purist | 平和純粋者 | +3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind |
+| Sequence Purist | 平和純粋者 | +3 Mult when you score All Sequences: a complete hand of four sequences (such as 3-4-5) plus a pair. The pair cannot be Dragons or East Winds. |
 | Value Zealot | 役牌狂信者 | ×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind |
 | Triplet Titan | 対々巨人 | ×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair |
 | Ninefold Initiate | 一通入門 | ×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit |

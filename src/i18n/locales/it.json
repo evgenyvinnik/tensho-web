@@ -1382,7 +1382,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Purista delle sequenze",
-        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze più una coppia che non sia di Draghi o di Vento d’Est"
+        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze (come 3-4-5) più una coppia. La coppia non può essere di Draghi né di Venti d’Est."
       },
       "decree-manzu-emperor": {
         "name": "Imperatore dei Caratteri",

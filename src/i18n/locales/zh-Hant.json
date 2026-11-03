@@ -1091,7 +1091,7 @@
       },
       "decree-pinfu-purist": {
         "name": "平和純粹者",
-        "description": "以平和得分時+3倍率：由四組順子加一對組成的和牌，且對子不是三元牌或東風"
+        "description": "以平和得分時+3倍率：由四組順子（如3-4-5）加一對組成的和牌，對子不能是三元牌或東風"
       },
       "decree-manzu-emperor": {
         "name": "萬子皇帝",

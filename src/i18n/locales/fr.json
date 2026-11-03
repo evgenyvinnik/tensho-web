@@ -1091,7 +1091,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Puriste des séquences",
-        "description": "+3 Mult quand vous marquez Tout Séquences : une main complète de quatre séquences et d’une paire qui n’est ni de Dragons ni de Vent d’Est"
+        "description": "+3 Mult quand vous marquez Tout Séquences : une main complète de quatre séquences (comme 3-4-5) et d’une paire. La paire ne peut être ni de Dragons ni de Vents d’Est."
       },
       "decree-manzu-emperor": {
         "name": "Empereur des Caractères",

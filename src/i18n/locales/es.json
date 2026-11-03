@@ -1091,7 +1091,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Purista de Secuencias",
-        "description": "+3 Mult al puntuar Todo secuencias: una mano completa de cuatro secuencias más un par que no sea de Dragones ni de Viento del Este"
+        "description": "+3 Mult al puntuar Todo secuencias: una mano completa de cuatro secuencias (como 3-4-5) más un par. El par no puede ser de Dragones ni de Vientos del Este."
       },
       "decree-manzu-emperor": {
         "name": "Emperador de Caracteres",

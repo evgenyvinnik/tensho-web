@@ -1462,7 +1462,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Seri Safçısı",
-        "description": "Hep Seri ile puan aldığında +3 Çarpan: dört seri ile Ejderha ya da Doğu Rüzgârı olmayan bir çiftten oluşan tam el."
+        "description": "Hep Seri ile puan aldığında +3 Çarpan: dört seri (3-4-5 gibi) ve bir çiftten oluşan tam el. Çift, Ejderha ya da Doğu Rüzgârı olamaz."
       },
       "decree-manzu-emperor": {
         "name": "Karakterlerin İmparatoru",

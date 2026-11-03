@@ -1087,7 +1087,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Sequence Purist",
-        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind"
+        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences (such as 3-4-5) plus a pair. The pair cannot be Dragons or East Winds."
       },
       "decree-manzu-emperor": {
         "name": "Emperor of Characters",
