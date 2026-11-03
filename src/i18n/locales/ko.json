@@ -1860,11 +1860,11 @@
       },
       "the_head": {
         "name": "머리",
-        "description": "삼원패는 점수를 얻지 못함"
+        "description": "삼원패는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_plant": {
         "name": "초목",
-        "description": "풍패와 삼원패는 점수를 얻지 못함"
+        "description": "풍패와 삼원패는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_ox": {
         "name": "황소",
@@ -3249,8 +3249,7 @@
     "no_discards": "다시 뽑기 불가",
     "decrease_play_level": "족보 레벨 −{{count}}",
     "fixed_hand_size": "정확히 {{count}}장 내기",
-    "ban_suit": "{{target}} 낼 수 없음",
-    "debuff_tile_type": "{{target}} 0점",
+    "ban_tiles": "{{target}} 낼 수 없음",
     "hand_size_reduction": "패 −{{count}}장",
     "gold_per_tile": "낸 패 한 장마다 골드 −{{count}}",
     "most_played_pattern_zeroes_gold": "최다 족보를 내면 골드 0",

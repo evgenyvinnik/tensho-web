@@ -1,16 +1,19 @@
 /**
- * The Club, The Goad and The Window bar one suit from every play. The barred
- * tiles cannot reach a play (not even a complete Mahjong hand), but they can
- * still be redrawn, and a round left with nothing playable or redrawable ends
- * instead of waiting for a move the player cannot make.
+ * The Club, The Goad and The Window bar one suit from every play, The Head the
+ * Dragons and The Plant every Honor. The barred tiles cannot reach a play (not
+ * even a complete Mahjong hand), but they can still be redrawn, and a round
+ * left with nothing playable or redrawable ends instead of waiting for a move
+ * the player cannot make.
  */
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { Tile, TileSuit } from '../core/Tile'
+import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
 import {
   THE_CLUB,
   THE_GOAD,
+  THE_HEAD,
+  THE_PLANT,
   THE_WINDOW,
   type MandateDefinition,
 } from '../config/mandateDefinitions'
@@ -53,68 +56,114 @@ function fixture(
   return { game, state }
 }
 
-const SUITS = [
-  { mandate: THE_CLUB, banned: TileSuit.Souzu, free: TileSuit.Pinzu },
-  { mandate: THE_GOAD, banned: TileSuit.Pinzu, free: TileSuit.Manzu },
-  { mandate: THE_WINDOW, banned: TileSuit.Manzu, free: TileSuit.Souzu },
+type Face = [TileSuit, number]
+const BANS: {
+  mandate: MandateDefinition
+  label: string
+  banned: Face
+  free: Face
+}[] = [
+  {
+    mandate: THE_CLUB,
+    label: 'Bamboo',
+    banned: [TileSuit.Souzu, 5],
+    free: [TileSuit.Pinzu, 5],
+  },
+  {
+    mandate: THE_GOAD,
+    label: 'Circles',
+    banned: [TileSuit.Pinzu, 5],
+    free: [TileSuit.Manzu, 5],
+  },
+  {
+    mandate: THE_WINDOW,
+    label: 'Characters',
+    banned: [TileSuit.Manzu, 5],
+    free: [TileSuit.Souzu, 5],
+  },
+  {
+    mandate: THE_HEAD,
+    label: 'Dragons',
+    banned: [TileSuit.Dragon, DragonType.Red],
+    free: [TileSuit.Wind, WindType.East],
+  },
+  {
+    mandate: THE_PLANT,
+    label: 'Winds',
+    banned: [TileSuit.Wind, WindType.East],
+    free: [TileSuit.Manzu, 5],
+  },
+  {
+    mandate: THE_PLANT,
+    label: 'Dragons',
+    banned: [TileSuit.Dragon, DragonType.Green],
+    free: [TileSuit.Pinzu, 5],
+  },
 ]
 
-describe.each(SUITS)('$mandate.name', ({ mandate, banned, free }) => {
-  const rack = () => [
-    tile(banned, 5, 'banned-0'),
-    tile(banned, 5, 'banned-1'),
-    tile(free, 5, 'free-0'),
-    tile(free, 5, 'free-1'),
-  ]
+describe.each(BANS)(
+  '$mandate.name bars $label',
+  ({ mandate, banned, free }) => {
+    const rack = () => [
+      tile(...banned, 'banned-0'),
+      tile(...banned, 'banned-1'),
+      tile(...free, 'free-0'),
+      tile(...free, 'free-1'),
+    ]
 
-  it('refuses any play holding its suit, and allows the same shape in another', () => {
-    const { game, state } = fixture(mandate, rack())
+    it('refuses any play holding a barred tile, and allows the same shape unbarred', () => {
+      const { game, state } = fixture(mandate, rack())
 
-    for (const ids of [
-      ['banned-0', 'banned-1'],
-      ['banned-0', 'free-0'],
-    ]) {
-      expect(game.canPerformAction({ type: 'play', tileIds: ids })).toBe(false)
-      expect(game.previewScore(ids)).toBeNull()
-      expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
-        false
+      for (const ids of [
+        ['banned-0', 'banned-1'],
+        ['banned-0', 'free-0'],
+      ]) {
+        expect(game.canPerformAction({ type: 'play', tileIds: ids })).toBe(
+          false
+        )
+        expect(game.previewScore(ids)).toBeNull()
+        expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
+          false
+        )
+      }
+      expect(state.score).toBe(0)
+
+      expect(
+        game.canPerformAction({ type: 'play', tileIds: ['free-0', 'free-1'] })
+      ).toBe(true)
+      expect(
+        game.processAction({ type: 'play', tileIds: ['free-0', 'free-1'] })
+          .success
+      ).toBe(true)
+      expect(state.score).toBeGreaterThan(0)
+    })
+
+    it('lists the barred tiles and still lets them be redrawn', () => {
+      const { game } = fixture(mandate, rack())
+
+      expect(game.getBannedTileIds().sort()).toEqual(['banned-0', 'banned-1'])
+      expect(
+        game.processAction({
+          type: 'redraw',
+          tileIds: ['banned-0', 'banned-1'],
+        }).success
+      ).toBe(true)
+      expect(game.getHandTiles().map((t) => t.id)).not.toContain('banned-0')
+    })
+
+    it('bars no Stone, which has no face', () => {
+      const covered = tile(...banned, 'covered').withEnhancement(
+        EnhancementType.Stone
       )
-    }
-    expect(state.score).toBe(0)
+      const { game } = fixture(mandate, [covered, ...rack()])
 
-    expect(
-      game.canPerformAction({ type: 'play', tileIds: ['free-0', 'free-1'] })
-    ).toBe(true)
-    expect(
-      game.processAction({ type: 'play', tileIds: ['free-0', 'free-1'] })
-        .success
-    ).toBe(true)
-    expect(state.score).toBeGreaterThan(0)
-  })
-
-  it('lists its suit as barred and still lets those tiles be redrawn', () => {
-    const { game } = fixture(mandate, rack())
-
-    expect(game.getBannedTileIds().sort()).toEqual(['banned-0', 'banned-1'])
-    expect(
-      game.processAction({ type: 'redraw', tileIds: ['banned-0', 'banned-1'] })
-        .success
-    ).toBe(true)
-    expect(game.getHandTiles().map((t) => t.id)).not.toContain('banned-0')
-  })
-
-  it('bars no Stone, which has no suit', () => {
-    const covered = tile(banned, 5, 'covered').withEnhancement(
-      EnhancementType.Stone
-    )
-    const { game } = fixture(mandate, [covered, ...rack()])
-
-    expect(game.getBannedTileIds()).not.toContain('covered')
-    expect(
-      game.canPerformAction({ type: 'play', tileIds: ['covered', 'free-0'] })
-    ).toBe(true)
-  })
-})
+      expect(game.getBannedTileIds()).not.toContain('covered')
+      expect(
+        game.canPerformAction({ type: 'play', tileIds: ['covered', 'free-0'] })
+      ).toBe(true)
+    })
+  }
+)
 
 describe('The Goad in a real Boss round', () => {
   it('bars the Circles in the rack and debuffs nothing', () => {

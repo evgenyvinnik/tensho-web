@@ -51,7 +51,7 @@ export interface GameController {
   faceDownTileIds: string[]
   lockedTileIds: string[]
   debuffedTileIds: string[]
-  /** Rack tiles the Boss bars from play (The Club, The Goad, The Window). */
+  /** Rack tiles the Boss bars from play (The Club, The Head, ...). */
   bannedTileIds: string[]
   disabledDecreeIds: string[]
   /** Decrees Amber Acorn turned face-down (and disabled) this round. */

@@ -1860,11 +1860,11 @@
       },
       "the_head": {
         "name": "首",
-        "description": "三元牌は得点しない"
+        "description": "三元牌は打てない（引き直しのみ可）"
       },
       "the_plant": {
         "name": "草",
-        "description": "風牌と三元牌は得点しない"
+        "description": "風牌と三元牌は打てない（引き直しのみ可）"
       },
       "the_ox": {
         "name": "牛",
@@ -3249,8 +3249,7 @@
     "no_discards": "引き直し不可",
     "decrease_play_level": "役のレベル−{{count}}",
     "fixed_hand_size": "ちょうど{{count}}枚で打つ",
-    "ban_suit": "{{target}}は打てない",
-    "debuff_tile_type": "{{target}}は0点",
+    "ban_tiles": "{{target}}は打てない",
     "hand_size_reduction": "手牌−{{count}}枚",
     "gold_per_tile": "打った牌1枚ごとに金貨−{{count}}",
     "most_played_pattern_zeroes_gold": "最多の役で金貨が0に",

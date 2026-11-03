@@ -2169,11 +2169,11 @@
       },
       "the_head": {
         "name": "Baş",
-        "description": "Ejderhalar hiç puan vermez"
+        "description": "Ejderhalar oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_plant": {
         "name": "Bitki",
-        "description": "Rüzgârlar ve Ejderhalar hiç puan vermez"
+        "description": "Rüzgârlar ve Ejderhalar oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_ox": {
         "name": "Öküz",
@@ -3249,8 +3249,7 @@
     "no_discards": "YENİDEN ÇEKME yok",
     "decrease_play_level": "El türü −{{count}} seviye",
     "fixed_hand_size": "Tam {{count}} taş oyna",
-    "ban_suit": "{{target}} oynanamaz",
-    "debuff_tile_type": "{{target}} 0 puan",
+    "ban_tiles": "{{target}} oynanamaz",
     "hand_size_reduction": "Istaka −{{count}} taş",
     "gold_per_tile": "Oynanan taş başına −{{count}} altın",
     "most_played_pattern_zeroes_gold": "En çok oynanan el türü tüm altını alır",

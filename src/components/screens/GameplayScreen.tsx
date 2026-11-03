@@ -30,6 +30,7 @@ import { useGameController, useGameEvent } from '../../game/useGameController'
 import { TablePattern } from '../ui/TablePattern'
 import { ConfirmPopup } from '../ui/Popup'
 import { Tile } from '../../core/Tile'
+import { mandateTargetKey } from '../../gameplay/mandateConsequence'
 import { TileRoundContext } from '../tiles/TileRoundContext'
 import { useItemText } from '../../i18n/useItemText'
 import { ClassicSaveNotice } from '../gameplay/ClassicSaveNotice'
@@ -319,16 +320,15 @@ export function GameplayScreen() {
     game.state.roundManager.checkMandateEffect('fixed_hand_size')
   const lockedMissing = game.lockedTileIds.some((id) => !selectedSet.has(id))
   const bannedSelected = selectedIds.some((id) => bannedTileIds.has(id))
-  const bannedSuit =
+  const bannedKey = mandateTargetKey(
     game.state.mandateEffectSystem.getActiveMandate()?.effect.target
+  )
   const playReason = playAllowed
     ? undefined
     : lockedMissing
       ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
       : bannedSelected
-        ? t('gameplay.reasonBanned', {
-            target: t(`tiles.${bannedSuit}`),
-          })
+        ? t('gameplay.reasonBanned', { target: bannedKey ? t(bannedKey) : '' })
         : fixedHand.active && selectedIds.length !== Number(fixedHand.value)
           ? t('gameplay.reasonExact', {
               count: Number(fixedHand.value),

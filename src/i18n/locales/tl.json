@@ -2169,11 +2169,11 @@
       },
       "the_head": {
         "name": "Ang Ulo",
-        "description": "Walang puntos ang mga Dragon"
+        "description": "Hindi puwedeng laruin ang mga Dragon, i-redraw lang"
       },
       "the_plant": {
         "name": "Ang Halaman",
-        "description": "Walang puntos ang mga Hangin at Dragon"
+        "description": "Hindi puwedeng laruin ang mga Hangin at Dragon, i-redraw lang"
       },
       "the_ox": {
         "name": "Ang Baka",
@@ -3249,8 +3249,7 @@
     "no_discards": "Walang REDRAW",
     "decrease_play_level": "Uri ng kamay −{{count}} antas",
     "fixed_hand_size": "Eksaktong {{count}} tile",
-    "ban_suit": "Bawal laruin ang {{target}}",
-    "debuff_tile_type": "0 puntos ang {{target}}",
+    "ban_tiles": "Bawal laruin ang {{target}}",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} ginto bawat tile na nilaro",
     "most_played_pattern_zeroes_gold": "Ubos ang ginto sa pinakamadalas na uri ng kamay",

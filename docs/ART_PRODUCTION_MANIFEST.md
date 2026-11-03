@@ -350,8 +350,8 @@ Prompt: *a menacing Boss Mandate token: a black-lacquer and crimson plaque depic
 | `the_club` | The Club | Souzu tiles can’t be played, only redrawn | delivered |
 | `the_goad` | The Goad | Pinzu tiles can’t be played, only redrawn | delivered |
 | `the_window` | The Window | Manzu tiles can’t be played, only redrawn | delivered |
-| `the_head` | The Head | All Dragon tiles are debuffed | delivered |
-| `the_plant` | The Plant | All Honor tiles are debuffed | delivered |
+| `the_head` | The Head | Dragon tiles can’t be played, only redrawn | delivered |
+| `the_plant` | The Plant | Honor tiles can’t be played, only redrawn | delivered |
 | `the_ox` | The Ox | Playing most-played Yaku sets gold to 0 | delivered |
 | `the_house` | The House | First hand drawn face-down | delivered |
 | `the_wheel` | The Wheel | 1 in 7 tiles drawn face-down | delivered |

@@ -134,10 +134,7 @@ import {
   DECREE_RARITY_WEIGHTS,
   type TeaHouseVisitModifiers,
 } from '../systems/TeaHouseSystem'
-import {
-  MandateEffectSystem,
-  isFaceDebuffTarget,
-} from '../systems/MandateEffectSystem'
+import { MandateEffectSystem } from '../systems/MandateEffectSystem'
 import { getMandateById } from '../config/mandateDefinitions'
 import {
   AD_TURNS_PER_ACT,
@@ -996,20 +993,8 @@ export class GameOrchestrator {
       )
     }
 
-    // A suit ban (The Club, The Goad, The Window) debuffs nothing: it is
-    // enforced when a play is validated.
-
-    if (mandate.effect.type === 'debuff_tile_type') {
-      for (const tile of allTiles) {
-        if (isFaceDebuffTarget(mandate.effect, tile)) {
-          this.state.debuffSystem.debuffTile(tile.id, {
-            type: 'mandate',
-            mandateId: mandate.id,
-          })
-        }
-      }
-      return
-    }
+    // A tile ban (The Club, The Goad, The Window, The Head, The Plant)
+    // debuffs nothing: it is enforced when a play is validated.
 
     if (mandate.effect.type === 'debuff_used_tiles') {
       for (const tile of allTiles) {
@@ -3410,7 +3395,6 @@ export class GameOrchestrator {
     this.state.summerReserve = replace(this.state.summerReserve)
     this.state.deadWall = replace(this.state.deadWall)
     this.state.discards = replace(this.state.discards)
-    this.state.mandateEffectSystem.refreshFaceDebuffs([replacement])
   }
 
   private destroyTiles(tileIds: string[], effects: Effect[]): void {
@@ -4359,8 +4343,8 @@ export class GameOrchestrator {
       return false
     }
 
-    // The Club, The Goad, The Window: barred tiles can't be played, but while
-    // one can still be redrawn the round is not stuck.
+    // A tile-ban Boss: barred tiles can't be played, but while one can still
+    // be redrawn the round is not stuck.
     const banned = this.state.handTiles.filter((tile) =>
       this.state.mandateEffectSystem.isTilePlayBanned(tile)
     )
@@ -5403,7 +5387,7 @@ export class GameOrchestrator {
 
   /**
    * Face-up rack tiles this round's Boss bars from every play (The Club,
-   * The Goad, The Window). They can still be redrawn.
+   * The Goad, The Window, The Head, The Plant). They can still be redrawn.
    */
   getBannedTileIds(): string[] {
     return this.state.handTiles

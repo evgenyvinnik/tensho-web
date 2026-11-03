@@ -17,12 +17,18 @@ export interface MandateConsequence {
   values: Record<string, string | number>
 }
 
-const SUIT_KEYS: Record<string, string> = {
+const TARGET_KEYS: Record<string, string> = {
   manzu: 'tiles.manzu',
   pinzu: 'tiles.pinzu',
   souzu: 'tiles.souzu',
+  wind: 'tiles.winds',
   dragon: 'tiles.dragons',
   honor: 'tiles.honors',
+}
+
+/** i18n key naming the tiles a Mandate targets ("Circles", "Dragons"), or ''. */
+export function mandateTargetKey(target: string | undefined): string {
+  return (target && TARGET_KEYS[target]) || ''
 }
 
 export function mandateConsequence(
@@ -53,7 +59,7 @@ export function mandateConsequence(
     values: {
       count,
       value: count,
-      ...(effect.target ? { targetKey: SUIT_KEYS[effect.target] ?? '' } : {}),
+      ...(effect.target ? { targetKey: mandateTargetKey(effect.target) } : {}),
     },
   }
 }

@@ -34,8 +34,7 @@ export type MandateEffectType =
   | 'no_discards' // The Water: 0 redraws this round
   | 'decrease_play_level' // The Arm: Each play lowers its hand type's level
   | 'fixed_hand_size' // The Psychic: Must play exactly N tiles
-  | 'ban_suit' // The Club/Goad/Window: tiles of one suit can't be played
-  | 'debuff_tile_type' // The Head/Plant: Specific tile type debuffed
+  | 'ban_tiles' // The Club/Goad/Window/Head/Plant: a suit or Honors can't be played
   | 'hand_size_reduction' // The Manacle: Reduce hand size by N
   | 'gold_per_tile' // The Tooth: Lose gold per tile played
   | 'most_played_pattern_zeroes_gold' // The Ox: Playing the most-played hand type sets gold to 0
@@ -233,7 +232,7 @@ export const THE_CLUB: MandateDefinition = {
   description: 'Bamboo tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'ban_suit', target: 'souzu' },
+  effect: { type: 'ban_tiles', target: 'souzu' },
   minAct: 1,
 }
 
@@ -247,7 +246,7 @@ export const THE_GOAD: MandateDefinition = {
   description: 'Circles tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'ban_suit', target: 'pinzu' },
+  effect: { type: 'ban_tiles', target: 'pinzu' },
   minAct: 1,
 }
 
@@ -261,35 +260,35 @@ export const THE_WINDOW: MandateDefinition = {
   description: 'Characters tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'ban_suit', target: 'manzu' },
+  effect: { type: 'ban_tiles', target: 'manzu' },
   minAct: 1,
 }
 
 /**
- * The Head - All Dragon tiles are debuffed
+ * The Head - Dragons can't be played (they can still be redrawn)
  */
 export const THE_HEAD: MandateDefinition = {
   id: 'the_head',
   name: 'The Head',
   japaneseName: '頭',
-  description: 'Dragons score nothing',
+  description: 'Dragons can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'debuff_tile_type', target: 'dragon' },
+  effect: { type: 'ban_tiles', target: 'dragon' },
   minAct: 1,
 }
 
 /**
- * The Plant - All Honor tiles are debuffed
+ * The Plant - Winds and Dragons can't be played (they can still be redrawn)
  */
 export const THE_PLANT: MandateDefinition = {
   id: 'the_plant',
   name: 'The Plant',
   japaneseName: '草',
-  description: 'Winds and Dragons score nothing',
+  description: 'Winds and Dragons can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Hard',
-  effect: { type: 'debuff_tile_type', target: 'honor' },
+  effect: { type: 'ban_tiles', target: 'honor' },
   minAct: 4,
 }
 
@@ -672,8 +671,7 @@ export function isScoringMandate(mandate: MandateDefinition): boolean {
  */
 export function isTileMandate(mandate: MandateDefinition): boolean {
   return [
-    'ban_suit',
-    'debuff_tile_type',
+    'ban_tiles',
     'debuff_used_tiles',
     'debuff_until_sell',
     'lock_random_tile',

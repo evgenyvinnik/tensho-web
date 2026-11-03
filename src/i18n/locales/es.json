@@ -1860,11 +1860,11 @@
       },
       "the_head": {
         "name": "La Cabeza",
-        "description": "Los Dragones no puntúan"
+        "description": "Los Dragones no se pueden jugar, solo RECAMBIAR"
       },
       "the_plant": {
         "name": "La Planta",
-        "description": "Los Vientos y Dragones no puntúan"
+        "description": "Los Vientos y Dragones no se pueden jugar, solo RECAMBIAR"
       },
       "the_ox": {
         "name": "El Buey",
@@ -3249,8 +3249,7 @@
     "no_discards": "Sin RECAMBIAR",
     "decrease_play_level": "Tipo de mano −{{count}} nivel",
     "fixed_hand_size": "Juega exactamente {{count}}",
-    "ban_suit": "{{target}}: no se juegan",
-    "debuff_tile_type": "{{target}} dan 0",
+    "ban_tiles": "{{target}}: no se juegan",
     "hand_size_reduction": "Atril −{{count}} ficha",
     "gold_per_tile": "−{{count}} de oro por ficha jugada",
     "most_played_pattern_zeroes_gold": "El tipo de mano más usado vacía tu oro",

@@ -2149,11 +2149,11 @@
       },
       "the_head": {
         "name": "La Testa",
-        "description": "I Draghi non segnano punti"
+        "description": "I Draghi non si possono giocare, solo ripescare"
       },
       "the_plant": {
         "name": "La Pianta",
-        "description": "Venti e Draghi non segnano punti"
+        "description": "Venti e Draghi non si possono giocare, solo ripescare"
       },
       "the_ox": {
         "name": "Il Bue",
@@ -3249,8 +3249,7 @@
     "no_discards": "Niente RIPESCA",
     "decrease_play_level": "Tipo di mano −{{count}} livello",
     "fixed_hand_size": "Gioca esattamente {{count}}",
-    "ban_suit": "{{target}}: non giocabili",
-    "debuff_tile_type": "{{target}}: 0 punti",
+    "ban_tiles": "{{target}}: non giocabili",
     "hand_size_reduction": "Leggio −{{count}} tessera",
     "gold_per_tile": "−{{count}} oro per tessera giocata",
     "most_played_pattern_zeroes_gold": "Il tipo di mano più usato azzera l’oro",

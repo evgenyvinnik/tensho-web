@@ -1860,11 +1860,11 @@
       },
       "the_head": {
         "name": "La Tête",
-        "description": "Les Dragons ne marquent rien"
+        "description": "Les Dragons ne peuvent pas être joués, seulement repiochés"
       },
       "the_plant": {
         "name": "La Plante",
-        "description": "Les Vents et les Dragons ne marquent rien"
+        "description": "Les Vents et les Dragons ne peuvent pas être joués, seulement repiochés"
       },
       "the_ox": {
         "name": "Le Bœuf",
@@ -3249,8 +3249,7 @@
     "no_discards": "Pas de REPIOCHE",
     "decrease_play_level": "Type de main −{{count}} niveau",
     "fixed_hand_size": "Jouez exactement {{count}}",
-    "ban_suit": "{{target}} : injouables",
-    "debuff_tile_type": "{{target}} : 0 point",
+    "ban_tiles": "{{target}} : injouables",
     "hand_size_reduction": "Chevalet −{{count}} tuile",
     "gold_per_tile": "−{{count}} or par tuile jouée",
     "most_played_pattern_zeroes_gold": "Le type de main le plus joué vide votre or",

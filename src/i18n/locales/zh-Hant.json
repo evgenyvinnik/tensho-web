@@ -1860,11 +1860,11 @@
       },
       "the_head": {
         "name": "首",
-        "description": "三元牌不計分"
+        "description": "三元牌不能打出，只能重抽"
       },
       "the_plant": {
         "name": "草木",
-        "description": "風牌和三元牌不計分"
+        "description": "風牌和三元牌不能打出，只能重抽"
       },
       "the_ox": {
         "name": "牛",
@@ -3249,8 +3249,7 @@
     "no_discards": "不能重抽",
     "decrease_play_level": "牌型等級−{{count}}",
     "fixed_hand_size": "每次正好{{count}}張",
-    "ban_suit": "{{target}}不能打出",
-    "debuff_tile_type": "{{target}}得0分",
+    "ban_tiles": "{{target}}不能打出",
     "hand_size_reduction": "手牌−{{count}}張",
     "gold_per_tile": "每打一張牌金幣−{{count}}",
     "most_played_pattern_zeroes_gold": "打出最常用牌型時金幣歸零",

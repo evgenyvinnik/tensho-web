@@ -1856,11 +1856,11 @@
       },
       "the_head": {
         "name": "The Head",
-        "description": "Dragons score nothing"
+        "description": "Dragons can’t be played, only redrawn"
       },
       "the_plant": {
         "name": "The Plant",
-        "description": "Winds and Dragons score nothing"
+        "description": "Winds and Dragons can’t be played, only redrawn"
       },
       "the_ox": {
         "name": "The Ox",
@@ -3245,8 +3245,7 @@
     "no_discards": "No REDRAW",
     "decrease_play_level": "Hand type −{{count}} level",
     "fixed_hand_size": "Play exactly {{count}} tiles",
-    "ban_suit": "{{target}} can’t be played",
-    "debuff_tile_type": "{{target}} score 0",
+    "ban_tiles": "{{target}} can’t be played",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} Gold per tile played",
     "most_played_pattern_zeroes_gold": "Top hand type costs all Gold",

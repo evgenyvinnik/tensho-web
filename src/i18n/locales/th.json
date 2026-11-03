@@ -2357,11 +2357,11 @@
       },
       "the_head": {
         "name": "ศีรษะ",
-        "description": "ไพ่มังกรไม่ได้คะแนน"
+        "description": "ลงไพ่มังกรไม่ได้ จั่วใหม่ได้เท่านั้น"
       },
       "the_plant": {
         "name": "พืช",
-        "description": "ไพ่ลมและไพ่มังกรไม่ได้คะแนน"
+        "description": "ลงไพ่ลมและไพ่มังกรไม่ได้ จั่วใหม่ได้เท่านั้น"
       },
       "the_ox": {
         "name": "วัว",
@@ -3249,8 +3249,7 @@
     "no_discards": "จั่วใหม่ไม่ได้",
     "decrease_play_level": "ประเภทมือลด {{count}} ระดับ",
     "fixed_hand_size": "ต้องลงพอดี {{count}} ใบ",
-    "ban_suit": "ลง{{target}}ไม่ได้",
-    "debuff_tile_type": "{{target}} ได้ 0",
+    "ban_tiles": "ลง{{target}}ไม่ได้",
     "hand_size_reduction": "ราง −{{count}} ใบ",
     "gold_per_tile": "เสียทอง {{count}} ต่อไพ่ที่ลง",
     "most_played_pattern_zeroes_gold": "ประเภทมือที่ใช้บ่อยสุดทำให้ทองเป็น 0",

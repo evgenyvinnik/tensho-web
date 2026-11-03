@@ -2048,11 +2048,11 @@
       },
       "the_head": {
         "name": "Sang Kepala",
-        "description": "Naga tidak mencetak skor"
+        "description": "Naga tidak bisa dimainkan, hanya bisa ditarik ulang"
       },
       "the_plant": {
         "name": "Sang Tumbuhan",
-        "description": "Angin dan Naga tidak mencetak skor"
+        "description": "Angin dan Naga tidak bisa dimainkan, hanya bisa ditarik ulang"
       },
       "the_ox": {
         "name": "Sang Lembu",
@@ -3249,8 +3249,7 @@
     "no_discards": "Tak bisa TARIK ULANG",
     "decrease_play_level": "Jenis tangan −{{count}} level",
     "fixed_hand_size": "Mainkan tepat {{count}}",
-    "ban_suit": "{{target}} tak bisa dimainkan",
-    "debuff_tile_type": "{{target}} bernilai 0",
+    "ban_tiles": "{{target}} tak bisa dimainkan",
     "hand_size_reduction": "Rak −{{count}} ubin",
     "gold_per_tile": "−{{count}} emas per ubin dimainkan",
     "most_played_pattern_zeroes_gold": "Jenis tangan tersering menghabiskan emas",

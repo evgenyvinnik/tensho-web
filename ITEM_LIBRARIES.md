@@ -290,11 +290,11 @@ cancel, and only a Seal that can work then is made. See
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
 | **The Eye** | 目 | Each hand type scores once this round; a repeat scores 0 | 3 |
 | **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 | 2 |
-| **The Plant** | 草 | All Honor tiles debuffed | 4 |
+| **The Plant** | 草 | Winds and Dragons can’t be played, only redrawn | 4 |
 | **The Serpent** | 蛇 | After play/discard, always draw 3 tiles | 5 |
 | **The Pillar** | 柱 | Tiles played earlier this Ante are debuffed | 1 |
 | **The Needle** | 針 | Play only 1 hand (precision required) | 2 |
-| **The Head** | 頭 | All Dragon tiles debuffed | 1 |
+| **The Head** | 頭 | Dragons can’t be played, only redrawn | 1 |
 | **The Tooth** | 歯 | Lose ¥1 per tile played | 3 |
 | **The Flint** | 火打石 | Every play scores half | 2 |
 | **The Veil** | 帳 | All Honor tiles drawn face-down | 2 |
