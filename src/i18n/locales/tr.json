@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Taş verimliliği",
     "tipEfficiency": "Birden fazla grubu tamamlayabilecek taşları tutun. Tek kalan taşları değiştirmek için YENİDEN ÇEK kullanın; Hamle bedelini ve ücretsiz yeniden çekişlerinizi hesaba katın.",
     "tipWallTitle": "Kalan taşları sayın",
-    "tipWall": "Belirli bir taşın peşine düşmeden önce nehri ve duvarda kalan taşları kontrol edin. Yeniden çekişle değiştirilen taşlar turun sonuna kadar nehirde kalır.",
+    "tipWall": "Belirli bir taşın peşine düşmeden önce nehri ve duvarda kalan taşları kontrol edin. Yeniden çekişle değiştirilen taşlar, bir etki onları geri getirmedikçe turun sonuna kadar nehirde kalır.",
     "tipMandateTitle": "Hükümleri erkenden okuyun",
     "tipMandate": "Yaklaşan Patron Hükmünü okuyun ve onun kısıtlaması altında puan kazanabilecek bir düzen hazırlayın.",
     "tipLossTitle": "Yenilgiden öğren",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Elde tutulan her Küre, kendi Yaku ailesi puan kazandığında ×1,5 Çarpan verir; her Küre oyun hamlesi başına bir kez sayılır. Kara Delik Küresi, puan kazanan her Yaku ile eşleşir.",
+    "description": "Elde tuttuğun her Küre, oynayışın kendi el ailesiyle puan aldığında ×1,5 Çarpan verir; bu, her Küre için oynayış başına bir kez olur. Kara Delik Küresi, oynayışın puan aldığı her el ailesiyle eşleşir.",
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
   },
   "closedHandAusterity": {
     "name": "Kapalı El Disiplini",
-    "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oyunlar ve Shanten Merhameti ile tamamlanan eller sayılmaz.",
+    "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oynayışlar ve Shanten Merhameti, Tutulma Yazıtı ya da Sessizlik Yazıtı ile tamamlanan eller sayılmaz.",
     "progress": "Şimdiye kadarki tam eller: {{count}}. Sonraki: Çiçeklerden önce ×{{factor}}."
   },
   "yakuRepetition": {
@@ -351,7 +351,7 @@
     "overCapacity": "Kapasite azaldı: sahip olduğunuz Fermanları korursunuz. Yenisini almadan önce yer açın."
   },
   "yakuUpgrades": {
-    "title": "Yaku geliştirmeleri",
+    "title": "Küre geliştirmeleri",
     "level": "Seviye {{level}} / {{max}}",
     "bonus": "+{{chips}} temel puan · +{{mult}} Çarpan",
     "triggers": "Puan kazandırma sayısı: {{total}}",
@@ -442,7 +442,7 @@
       },
       "speed_omen": {
         "name": "Hız Alameti",
-        "description": "Bu koşudaki her hızlı galibiyet için 5 Altın kazan (hamle artırarak geçilen bir Küçük ya da Büyük tur)."
+        "description": "Bu koşudaki her hızlı galibiyet için 5 Altın kazan (en az 2 hamle kalmışken geçilen bir Küçük ya da Büyük tur)."
       },
       "throwback_omen": {
         "name": "Geçmişin Alameti",
@@ -498,11 +498,11 @@
       },
       "score_surge_omen": {
         "name": "Puan Sıçraması Alameti",
-        "description": "Puan kazandıran sonraki oyun +100 temel Puan kazanır."
+        "description": "Puan kazandıran bir sonraki oynayış +100 temel Puan kazanır."
       },
       "multiplication_omen": {
         "name": "Çarpan Alameti",
-        "description": "Puan kazandıran sonraki oyun Çarpan ×1,5 kazanır."
+        "description": "Puan kazandıran bir sonraki oynayış ×1,5 Çarpan kazanır."
       },
       "blessing_pack_omen": {
         "name": "Lütuf Paketi Alameti",
@@ -727,7 +727,7 @@
     "penalty_lose_tile": "Rastgele 1 taş kaybet.",
     "penalty_lose_gold": "Tüm altını kaybet.",
     "penalty_lose_hand_size": "Bu koşunun geri kalanında {{count}} ıstaka yeri kaybedersin.",
-    "penalty_lock_tile": "Rastgele 1 taşı nehirde kilitle: bir daha çekilemez.",
+    "penalty_lock_tile": "Istakandaki rastgele 1 taşı nehre gönder; tur bitene kadar orada kalır.",
     "penalty_lose_decree_slot": "Sonraki turda {{count}} Ferman yuvası kaybet.",
     "penalty_halve_base_score": "Sonraki oyunun temel Puanı yarıya iner.",
     "penalty_destroy_decrees": "Diğer tüm Fermanları yok et.",
@@ -944,7 +944,7 @@
     "beginnerPatternReady": "{{pattern}} hazır",
     "beginnerTapGlowing": "Aşağıdaki {{count}} parlayan taşa dokun. Zaten puan getiren bir şekil oluşturuyorlar.",
     "beginnerRedrawTitle": "Tek kalan taşları yenile",
-    "beginnerRedrawHelp": "Parlayan tek taşlara dokun, ardından Çift, Dizi veya Üçlü aramak için Yeniden Çek’e bas.",
+    "beginnerRedrawHelp": "Parlayan tek taşlara dokun, ardından Çift, Seri veya Üçlü aramak için Yeniden Çek’e bas.",
     "beginnerRedrawReady": "Hazır — bu tek taşları değiştirmek için Yeniden Çek’e bas.",
     "beginnerPatternComplete": "Harika — bu {{pattern}} +{{points}} şekil puanı kazandırır. Tahmini kontrol et ve oyna.",
     "beginnerSelectedProgress": "{{total}} parlayan taşın {{current}} tanesi hazır",
@@ -1044,7 +1044,8 @@
       "adCountdown": "Ödülün {{seconds}} sn içinde hazır",
       "adReady": "Ödül hazır",
       "adClaim": "+1 hamle al"
-    }
+    },
+    "decreeDetails": "{{name}} ayrıntıları"
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -1167,16 +1168,17 @@
       "pack": "Paket · {{from}} içinden {{choose}} seç",
       "charter": "İmparatorluk Beratı · kalıcı oyun geliştirmesi",
       "charterHelp": "İmparatorluk Beratı oyunun geri kalanı için kalıcı bir geliştirmedir. Yuva kaplamaz ve satılamaz.",
-      "orbHelp": "Aldığın anda kullanılır: ailenin seviyesi hemen yükselir ve tüm koşu boyunca kalır."
+      "orbHelp": "Aldığın anda kullanılır: ailenin seviyesi hemen yükselir ve tüm koşu boyunca kalır.",
+      "packChoice": "{{from}} ödülden en fazla {{choose}} tanesini seç: bu paket normalden fazlasını sunuyor."
     },
     "offerLabel": "{{name}}, {{price}} altın",
     "buyFor": "Satın al · {{price}} altın",
     "help": {
       "what": "Çay Evi, turlar arasındaki dükkândır.",
-      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Fermanlar kuralları değiştirir, Küreler ve Kader Mühürleri hemen etki eder (bir Kader Mührü duvarındaki hangi taşları değiştireceğini sorar), Tomarlar turda kullanılır, Paketler ödül seçtirir ve Beratlar tüm oyunu geliştirir.",
+      "buy": "Ne işe yaradığını görmek için bir eşyaya dokun, sonra Satın Al’a bas. Fermanlar kuralları değiştirir, Küreler ve Kader Mühürleri hemen etki eder (bir Kader Mührü duvarındaki hangi taşları değiştireceğini sorar), Hiçlik Yazıtları turda kullanılır, Paketler ödül seçtirir ve Beratlar tüm koşuyu geliştirir.",
       "interest": "Elinde tuttuğun altın faiz getirir: tur sonunda her 5 altın için +1, en fazla +{{cap}}.",
       "cashOut": "Tur ödemesi gelişinde keseye düşer; her kaynak için bir bildirim: tamamlanan tur, faiz, Fermanlar ve kesilen kiralar.",
-      "build": "Yapın sahip olduğun Fermanları Yaku geliştirmelerinin yanında gösterir: kurallarını okumak veya satmak için parşömeni, seviyesini görmek için geliştirmeyi aç. Her alım kendi Satın Al düğmesiyle yapılır."
+      "build": "Yapın sahip olduğun Fermanları Küre geliştirmelerinin yanında gösterir: kurallarını okumak veya satmak için parşömeni, seviyesini görmek için geliştirmeyi aç. Her alım kendi Satın Al düğmesiyle yapılır."
     },
     "sealUsed": "{{name}} kullanıldı",
     "sealWall": {
@@ -1286,7 +1288,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Tek Tür Disiplini",
-        "description": "Oyunda en çok bulunan türden oynanan her taş için Çarpan ×1,1, katlanarak (beşi yaklaşık ×1,6 verir)."
+        "description": "Oynadığın taşlar arasında en çok bulunan sayı taşı türünden her taş için Çarpan ×1,1, katlanarak (beşi yaklaşık ×1,6 verir)."
       },
       "decree-half-suited": {
         "name": "Yarım Renk",
@@ -1294,7 +1296,7 @@
       },
       "decree-photograph": {
         "name": "Fotoğraf",
-        "description": "Oyunda bir Onur taşı (Rüzgâr veya Ejderha) varsa Çarpan ×2."
+        "description": "Oynadığın taşlar arasında bir Onur taşı (Rüzgâr veya Ejderha) varsa Çarpan ×2."
       },
       "decree-polished-stone": {
         "name": "Cilalı Taş",
@@ -1462,7 +1464,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Seri Safçısı",
-        "description": "Hep Seri ile puan aldığında +3 Çarpan: dört seri ile Ejderha ya da Doğu Rüzgârı olmayan bir çiftten oluşan tam el."
+        "description": "Hep Seri ile puan aldığında +3 Çarpan: hiçbiri sayı atlamayan dört seri ile Ejderha ya da Doğu Rüzgârı olmayan bir çiftten oluşan tam el."
       },
       "decree-manzu-emperor": {
         "name": "Karakterlerin İmparatoru",
@@ -1874,7 +1876,7 @@
       },
       "celestial_wildcard": {
         "name": "Göksel Joker",
-        "description": "Oyun başına bir taş, ihtiyacın olan herhangi bir taşın yerine geçebilir."
+        "description": "Her oynayışta bir taş, ihtiyacın olan herhangi bir taşın yerine geçebilir."
       },
       "dead_wall_writ": {
         "name": "Ölü Duvar Buyruğu",
@@ -1886,7 +1888,7 @@
       },
       "closed_hand_austerity": {
         "name": "Kapalı El Disiplini",
-        "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oyunlar ve Shanten Merhameti ile tamamlanan eller sayılmaz."
+        "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oynayışlar ve Shanten Merhameti, Tutulma Yazıtı ya da Sessizlik Yazıtı ile tamamlanan eller sayılmaz."
       },
       "terminal_devotion": {
         "name": "Uç Taş Bağlılığı",
@@ -1919,7 +1921,7 @@
     "patternsTitle": "Desen aileleri",
     "tilesTitle": "Taş aileleri",
     "intro": "Bir Göksel Küre, bir oyun ailesini koşunun geri kalanı boyunca bir seviye yükseltir: 0’dan en fazla {{max}}. seviyeye kadar. Aldığın anda kullanılır.",
-    "stacking": "Her oyun, gruplarının adını verdiği tek bir desen ailesiyle ve taşlarında görünen her taş ailesiyle puan alır. Puan aldığı her aile, o ailenin temel puanını ve Çarpanını seviye başına bir kez ekler; Dağınık taşlar ise her dağınık taş için bir kez kazandırır. İşte Seri ailesi bir seviye yükselmeden önce ve sonra bir Seri:",
+    "stacking": "Bir oynayış en fazla bir desen ailesiyle (gruplarının oluşturduğu aileyle) ve taşlarında görünen her taş ailesiyle puan alır; grup içermeyen bir oynayış hiçbir desen ailesiyle puan almaz. Puan aldığı her aile, o ailenin temel puanını ve Çarpanını seviye başına bir kez ekler; Dağınık taşlar ise her dağınık taş için bir kez kazandırır. İşte Seri ailesi bir seviye yükselmeden önce ve sonra bir Seri:",
     "exampleBefore": "{{pattern}}, seviye 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}}, seviye 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
     "patternTip": "Desen aileleri asla birbirinin üstüne eklenmez: Seri + Çift yalnızca Seri + Çift ailesiyle puan alır, Seri veya Çiftler ile değil.",
@@ -2125,11 +2127,11 @@
       },
       "the_eye": {
         "name": "Göz",
-        "description": "Bu tur her el türü yalnızca bir kez puan alır. Tekrarı 0 puan alır"
+        "description": "Bu tur her desen (örneğin Çift veya Seri) yalnızca bir kez puan alır. Tekrarı 0 puan alır"
       },
       "the_mouth": {
         "name": "Ağız",
-        "description": "İlk oyunun bu turun el türünü belirler. Başka her el 0 puan alır"
+        "description": "İlk oynayışın bu turun desenini belirler (örneğin Çift veya Seri). Başka her desen 0 puan alır"
       },
       "the_flint": {
         "name": "Çakmaktaşı",
@@ -2177,7 +2179,7 @@
       },
       "the_ox": {
         "name": "Öküz",
-        "description": "En çok oynadığın el türünü oynamak Altını 0 yapar"
+        "description": "En çok oynadığın deseni (örneğin Çift veya Seri) oynamak Altınını 0 yapar"
       },
       "the_house": {
         "name": "Ev",
@@ -2233,7 +2235,7 @@
       "scoreScaling": "Puan hedefleri Perde 1’de Beyaz kademeyle aynıdır; ardından her perdede artar ve Perde {{act}} itibarıyla Beyaz kademenin {{multiplier}} katına ulaşır. Masa değiştiricileri de uygulanır.",
       "redrawPenalty": "Tur başına hamle: −{{amount}}.",
       "eternalChance": "Mağaza Fermanları: {{chance}} olasılıkla Ebedî (satılamaz veya yok edilemez).",
-      "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Geçici ({{rounds}} tur sonra çalışmayı bırakır).",
+      "perishableChance": "Ebedî olmayan mağaza Fermanları: {{chance}} olasılıkla Süreli ({{rounds}} tur sonra çalışmayı bırakır).",
       "rentalChance": "Mağaza Fermanları: {{chance}} olasılıkla Kiralık (satın almak {{price}} altın, ardından her tur {{fee}} altın)."
     },
     "title": "Masa Seviyeleri",
@@ -2309,8 +2311,8 @@
     },
     "sequences": {
       "note1": "Bonus taş çektiğinizde anında açılır ve yerine bir taş çekersiniz. Çiçekler ve Mevsimler büyüyen bonuslar ve etkiler verir!",
-      "p1": "<1>Sıra</1>, <4>aynı takımdan ardışık 3 taştır</4>.",
-      "p2": "Geçerli sıra örnekleri:"
+      "p1": "<1>Seri</1>, <4>aynı türden ardışık 3 taştır</4>.",
+      "p2": "Geçerli seri örnekleri:"
     },
     "melds_overview": {
       "p1": "<1>Grup</1> (bazen «takım» da denir), taşların belirli bir birleşimidir:",
@@ -2432,7 +2434,7 @@
       "p1": "Her tur sana {{turns}} hamle verir. Her hamle iki eylemden biridir:",
       "play": "seçili taşlarla puan al: en fazla {{max}} taş ya da tam bir Mahjong eli.",
       "redraw": "seçtiğin taşları istediğin kadar nehre gönder ve yenilerini çek.",
-      "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
+      "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlende her zaman taş oynarsın; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
       "warning": "Hedefin altında hamlelerin biterse oyun sona erer.",
       "emergency": "{{stake}} ve üzerinde, {{act}}. Perde'den itibaren son hamlende altınla bir hamle daha satın alabilirsin. Fiyat her Perde'de artar ve aynı turda alınan her ek hamlede iki katına çıkar."
     },
@@ -2450,7 +2452,7 @@
       "title": "YENİDEN ÇEK",
       "p1": "İstemediğin taşları, istediğin kadar seç ve YENİDEN ÇEK’e bas. Nehre giderler ve yerlerini yeni taşlar alır.",
       "li1": "Önce eşyalardan gelen ücretsiz yeniden çekişler kullanılır; yoksa bir yeniden çekiş bir hamleye mal olur.",
-      "li2": "Yeniden çekilen taşlar tur bitene kadar nehirde kalır.",
+      "li2": "Yeniden çekilen taşlar, bir etki onları geri getirmedikçe tur bitene kadar nehirde kalır.",
       "li3": "Bazı Fermanlar her yeniden çekişi ödüllendirir, bir Patron Hükmü onu yasaklayabilir, Mevsimler de bedelini değiştirebilir. Önce etkin etkileri kontrol et.",
       "note": "Zaten grup oluşturan taşları tut, yalnız kalanları yeniden çek."
     },
@@ -2480,7 +2482,7 @@
     },
     "swift": {
       "title": "Hızlı galibiyet",
-      "p1": "Turlar atlanamaz. Küçük ya da Büyük turu {{spare}} veya daha fazla hamle artırarak geçersen bir Alamet kazanırsın.",
+      "p1": "Turlar atlanamaz. Küçük ya da Büyük turu en az {{spare}} hamlen kalmışken geçersen bir Alamet kazanırsın.",
       "li1": "Turun altınını yine alır, Çay Evi’ne de uğrarsın.",
       "li2": "Patron turları asla Alamet vermez.",
       "note": "Erken gelen güçlü bir el hamle kazandırır; artan hamleler Alamete dönüşür."
@@ -2817,7 +2819,17 @@
   "errors": {
     "failedToLoad": "Bileşen yüklenemedi",
     "stackTrace": "Yığın izi:",
-    "componentStack": "Bileşen yığını:"
+    "componentStack": "Bileşen yığını:",
+    "somethingWentWrong": "Bir şeyler ters gitti",
+    "tryAgain": "Tekrar Dene",
+    "componentError": "Bu bölüm çalışmayı durdurdu",
+    "componentErrorDesc": "Oyunun bu bölümünde bir hata oluştu.",
+    "retry": "Tekrar Dene",
+    "showDetails": "Teknik ayrıntıları göster",
+    "hideDetails": "Teknik ayrıntıları gizle",
+    "oops": "Hay aksi! Bir şeyler ters gitti",
+    "description": "Üzgünüz, beklenmedik bir şey oldu. Hata kaydedildi.",
+    "goHome": "Menüye Git"
   },
   "tableStyle": {
     "unlock": "Açılma koşulu: {{requirement}}",
@@ -2982,7 +2994,7 @@
       },
       "ceres_orb": {
         "name": "Ceres Küresi",
-        "description": "Dağınık taşlar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, oyundaki her dağınık taş için +5 temel puan ekler."
+        "description": "Dağınık taşlar ailesini bu koşu boyunca 1 seviye yükseltir (en fazla 9. seviye). Her seviye, oynadığın her dağınık taş için +5 temel puan ekler; Kaya taşları hariç."
       },
       "black_hole_orb": {
         "name": "Kara Delik Küresi",
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Beş Aynı",
-      "explain": "Beş aynı taş: duvardakinden bir fazla."
+      "explain": "Beş aynı taş. Duvarda başta her taştan dört tane olduğu için fazladan bir kopya gerekir."
     },
     "six_of_a_kind": {
       "name": "Altı Aynı",
-      "explain": "Altı aynı taş: duvardakinden iki fazla."
+      "explain": "Altı aynı taş. Duvarda başta her taştan dört tane olduğu için fazladan iki kopya gerekir."
     },
     "straight4": {
       "name": "Dörtlü sıra",
@@ -3219,7 +3231,7 @@
     "turnsTitle": "Senin hamlen",
     "playHelp": "seçili taşlarla puan alır.",
     "redrawHelp": "seçili taşlardan istediğin kadarını nehre atar ve yenilerini çeker.",
-    "turnsHelp": "Her tur {{turns}} hamle verir. Eli oynamak ve YENİDEN ÇEKMEK birer hamle harcar; ücretsiz yeniden çekişler hamle harcamaz ve son hamlen bir oyun olmalıdır. Küçük ya da Büyük turu {{spare}} hamle artırarak geçersen bir Alamet kazanırsın.",
+    "turnsHelp": "Her tur {{turns}} hamle verir. Eli oynamak ve YENİDEN ÇEKMEK birer hamle harcar; ücretsiz yeniden çekişler hamle harcamaz. Son hamlende mutlaka taş oynamalısın. Küçük ya da Büyük turu en az {{spare}} hamlen kalmışken geçersen bir Alamet kazanırsın.",
     "scoreTitle": "Puanın",
     "points": "Puan",
     "mult": "Çarpan",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Karışık türler",
-      "covers": "İki veya daha fazla türden sayı taşı içeren her oyun: Karakterler, Daireler ve Bambular."
+      "covers": "İki veya daha fazla türden sayı taşı içeren her oynayış: Karakterler, Daireler ve Bambular. Joker taş her türe uyduğu için asla ikinci bir tür eklemez."
     },
     "Loose": {
       "name": "Dağınık taşlar",
-      "covers": "Oyundaki her dağınık taş için bir kez kazandırır: hiçbir gruba ait olmayan taş."
+      "covers": "Oynadığın taşlar arasındaki her dağınık taş için bir kez kazandırır: hiçbir gruba ait olmayan taş. Kaya taşları asla sayılmaz."
     },
     "All": {
       "name": "Tüm aileler",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Göksel Küre kullanıldı",
-    "title": "{{name}} kullanıldı: yaku geliştirildi"
+    "title": "{{name}} kullanıldı: el ailesi geliştirildi"
   },
   "omenReveal": {
     "title": "Alamet kazanıldı: {{name}}",
@@ -3355,7 +3367,7 @@
       "shop": "Şimdi, bu Çay Evi’nde. Etkisi tekliflere zaten yansıdı.",
       "round": "Sonraki turun başında.",
       "hand": "Puan kazandıran sonraki elinde.",
-      "voidScript": "Bir sonraki Hiçlik Tomarı kullanımında.",
+      "voidScript": "Bir sonraki Hiçlik Yazıtı kullanımında.",
       "now": "Hemen. Zaten uygulandı.",
       "run": "Oyunun geri kalanında puan kazandıran her elde.",
       "nextOmen": "Bir sonraki Alameti kazandığında."

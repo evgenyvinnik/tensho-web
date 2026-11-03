@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Aprovecha las fichas",
     "tipEfficiency": "Conserva las fichas que puedan completar varios grupos. Usa RECAMBIAR para sustituir fichas aisladas, teniendo en cuenta su coste en turnos y los recambios gratis disponibles.",
     "tipWallTitle": "Cuenta las fichas restantes",
-    "tipWall": "Revisa el río y lo que queda del muro antes de buscar una ficha concreta. Las fichas recambiadas permanecen en el río el resto de la ronda.",
+    "tipWall": "Revisa el río y lo que queda del muro antes de buscar una ficha concreta. Las fichas recambiadas permanecen en el río el resto de la ronda, salvo que un efecto las devuelva.",
     "tipMandateTitle": "Lee los mandatos con antelación",
     "tipMandate": "Lee el próximo Mandato de Jefe y prepara una combinación de recursos que pueda puntuar bajo esa restricción.",
     "tipLossTitle": "Aprende de una derrota",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Cada Orbe conservado da ×1,5 Mult cuando puntúa su familia de Yaku, una vez por Orbe y jugada. El Orbe de Agujero Negro coincide con cualquier Yaku puntuado.",
+    "description": "Cada Orbe conservado da ×1,5 Mult cuando la jugada puntúa su familia de manos, una vez por Orbe y jugada. El Orbe de Agujero Negro coincide con cualquier familia de manos que puntúe la jugada.",
     "holdingNote": "El Observatorio recompensa conservar este Orbe. Usarlo otorga su mejora permanente, pero elimina esta bonificación por conservarlo."
   },
   "closedHandAusterity": {
     "name": "Austeridad de mano cerrada",
-    "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten no cuentan.",
+    "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten, Guion del Eclipse o Guion del Silencio no cuentan.",
     "progress": "Manos completas hasta ahora: {{count}}. Siguiente: ×{{factor}} antes de las Flores."
   },
   "yakuRepetition": {
@@ -329,7 +329,7 @@
     "limits": "Las acciones de una vez por ronda comparten un único límite; las copias no añaden usos."
   },
   "randomCopy": {
-    "description": "Copia un Decreto sin efecto de copia al obtenerlo y al iniciar cada ronda.",
+    "description": "Copia un Decreto al azar sin efecto de copia al obtenerlo y al iniciar cada ronda.",
     "target": "Copiando {{name}} · posición {{slot}}",
     "waiting": "Esperando otro Decreto.",
     "missing": "Objetivo eliminado; nueva elección en la próxima ronda.",
@@ -351,7 +351,7 @@
     "overCapacity": "Capacidad reducida: conservas tus Decretos. Libera espacio antes de conseguir más."
   },
   "yakuUpgrades": {
-    "title": "Mejoras de yaku",
+    "title": "Mejoras de Orbes",
     "level": "Nivel {{level}} / {{max}}",
     "bonus": "+{{chips}} puntos base · +{{mult}} Mult",
     "triggers": "Veces puntuado: {{total}}",
@@ -428,7 +428,7 @@
     "penalty_lose_tile": "Pierdes 1 ficha aleatoria.",
     "penalty_lose_gold": "Pierdes todo el oro.",
     "penalty_lose_hand_size": "Pierdes {{count}} espacio del atril durante el resto de esta partida.",
-    "penalty_lock_tile": "Se bloquea 1 ficha al azar en el río: no se puede volver a robar.",
+    "penalty_lock_tile": "1 ficha al azar de tu atril va al río durante el resto de la ronda.",
     "penalty_lose_decree_slot": "Pierdes {{count}} ranura de Decreto en la próxima ronda.",
     "penalty_halve_base_score": "Los Puntos base se reducen a la mitad en la próxima jugada.",
     "penalty_destroy_decrees": "Se destruyen todos los demás Decretos.",
@@ -629,7 +629,7 @@
     "beginnerGuideTitle": "Mahjong en un minuto",
     "beginnerGuideIntro": "Todavía no necesitas conocer una mano completa. En Tensho, empieza por encontrar una figura pequeña y juégala para ganar puntos.",
     "beginnerFamiliesTitle": "Conoce las familias",
-    "beginnerFamiliesHelp": "Caracteres, Círculos y Bambú van del 1 al 9. Vientos y Dragones son Honores: puedes emparejarlos, pero nunca forman escaleras.",
+    "beginnerFamiliesHelp": "Caracteres, Círculos y Bambú van del 1 al 9. Vientos y Dragones son Honores: puedes emparejarlos, pero nunca forman secuencias.",
     "beginnerShapesTitle": "Figuras que debes buscar",
     "beginnerPairHelp": "Dos fichas idénticas. La figura más fácil de reconocer.",
     "beginnerSequenceHelp": "Tres números consecutivos del mismo palo.",
@@ -645,7 +645,7 @@
     "beginnerPatternReady": "Combinación lista: {{pattern}}",
     "beginnerTapGlowing": "Toca las {{count}} fichas brillantes de abajo. Ya forman una figura que puntúa.",
     "beginnerRedrawTitle": "Renueva fichas aisladas",
-    "beginnerRedrawHelp": "Toca las fichas aisladas brillantes y pulsa Recambiar para buscar una Pareja, Escalera o Trío.",
+    "beginnerRedrawHelp": "Toca las fichas aisladas brillantes y pulsa Recambiar para buscar un Par, una Secuencia o un Triplete.",
     "beginnerRedrawReady": "Listo: pulsa Recambiar para sustituir estas fichas aisladas.",
     "beginnerPatternComplete": "¡Bien! {{pattern}} otorga +{{points}} puntos de figura. Consulta la previsión y juega.",
     "beginnerSelectedProgress": "{{current}} de {{total}} fichas brillantes preparadas",
@@ -745,7 +745,8 @@
       "adCountdown": "Tu recompensa estará lista en {{seconds}} s",
       "adReady": "Recompensa lista",
       "adClaim": "Recoger +1 turno"
-    }
+    },
+    "decreeDetails": "Detalles de {{name}}"
   },
   "rounds": {
     "small": "Ronda Pequeña",
@@ -868,16 +869,17 @@
       "pack": "Paquete · elige {{choose}} de {{from}}",
       "charter": "Carta imperial · mejora permanente",
       "charterHelp": "Una Carta imperial es una mejora permanente para el resto de la partida. No ocupa espacio y no se puede vender.",
-      "orbHelp": "Se usa en cuanto lo tomas: el nivel de la familia sube al instante y se mantiene toda la partida."
+      "orbHelp": "Se usa en cuanto lo tomas: el nivel de la familia sube al instante y se mantiene toda la partida.",
+      "packChoice": "Elige hasta {{choose}} de {{from}} recompensas: este paquete ofrece más de lo habitual."
     },
     "offerLabel": "{{name}}, {{price}} de oro",
     "buyFor": "Comprar · {{price}} de oro",
     "help": {
       "what": "La Casa de Té es la tienda entre rondas.",
-      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los decretos cambian las reglas, los Orbes y los Sellos del Destino actúan al instante (un Sello del Destino te pregunta qué fichas de tu muro cambiar), los Escritos se usan en una ronda, los paquetes te dejan elegir recompensas y las cartas mejoran toda la partida.",
+      "buy": "Toca cualquier objeto para ver qué hace y pulsa Comprar. Los Decretos cambian las reglas, los Orbes y los Sellos del Destino actúan al instante (un Sello del Destino te pregunta qué fichas de tu muro cambiar), los Guiones del Vacío se usan durante una ronda, los Paquetes te dejan elegir recompensas y las Cartas Imperiales mejoran toda la partida.",
       "interest": "El oro que guardas genera interés: +1 por cada 5 que tengas al acabar una ronda, hasta +{{cap}}.",
       "cashOut": "La paga de la ronda llega a tu bolsa al entrar, un aviso por cada fuente: la ronda superada, los intereses, los Decretos y los alquileres cobrados.",
-      "build": "Tu configuración muestra tus Decretos junto a tus mejoras de yaku: abre un pergamino para leer sus reglas o venderlo, o una mejora para ver su nivel. Cada compra se hace con su propio botón Comprar."
+      "build": "Tu configuración muestra tus Decretos junto a tus mejoras de Orbes: abre un pergamino para leer sus reglas o venderlo, o una mejora para ver su nivel. Cada compra se hace con su propio botón Comprar."
     },
     "sealUsed": "{{name}} usado",
     "sealWall": {
@@ -1091,7 +1093,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Purista de Secuencias",
-        "description": "+3 Mult al puntuar Todo secuencias: una mano completa de cuatro secuencias más un par que no sea de Dragones ni de Viento del Este"
+        "description": "+3 Mult al puntuar Todo secuencias: una mano completa de cuatro secuencias, ninguna con un número saltado, más un par que no sea de Dragones ni de Viento del Este"
       },
       "decree-manzu-emperor": {
         "name": "Emperador de Caracteres",
@@ -1555,7 +1557,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Ascetismo de Palo Puro",
-        "description": "×1,1 Mult por cada ficha jugada del palo más común de la jugada, de forma compuesta (cinco dan aproximadamente ×1,6)."
+        "description": "×1,1 Mult por cada ficha jugada del palo numerado más común de la jugada, de forma compuesta (cinco dan aproximadamente ×1,6)."
       },
       "broken_stair_edict": {
         "name": "Edicto de la Escalera Rota",
@@ -1587,7 +1589,7 @@
       },
       "closed_hand_austerity": {
         "name": "Austeridad de Mano Cerrada",
-        "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten no cuentan."
+        "description": "Cada mano de Mahjong completa gana ×1,5, que crece ×1,2 por cada mano completa anterior de esta partida, hasta ×4 antes de las bonificaciones de Flores. Las jugadas más pequeñas y las manos terminadas con Clemencia de Shanten, Guion del Eclipse o Guion del Silencio no cuentan."
       },
       "terminal_devotion": {
         "name": "Devoción Terminal",
@@ -1620,10 +1622,10 @@
     "patternsTitle": "Familias de patrón",
     "tilesTitle": "Familias de fichas",
     "intro": "Un Orbe Celeste sube una familia de jugadas un nivel durante el resto de la partida, de 0 hasta {{max}}. Se usa en cuanto lo tomas.",
-    "stacking": "Cada jugada puntúa una familia de patrón, la que nombran sus grupos, más cada familia de fichas que muestren sus fichas. Cada familia que puntúa suma sus puntos base y su Mult una vez por nivel; Fichas sueltas paga una vez por cada ficha suelta. Esta es una Secuencia antes y después de un nivel de Secuencia:",
+    "stacking": "Una jugada puntúa como máximo una familia de patrón, la que forman sus grupos, más cada familia de fichas que muestren sus fichas; una jugada sin grupos no puntúa ninguna familia de patrón. Cada familia que puntúa suma sus puntos base y su Mult una vez por nivel; Fichas sueltas paga una vez por cada ficha suelta. Esta es una Secuencia antes y después de un nivel de Secuencia:",
     "exampleBefore": "{{pattern}}, nivel 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} nivel 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Las familias de patrón nunca se acumulan entre sí: una Secuencia + Par solo puntúa Secuencia + Par, no Secuencia ni Pares.",
+    "patternTip": "Las familias de patrón nunca se acumulan entre sí: una Secuencia + Par solo puntúa la familia Secuencia + Par, no Secuencia ni Pares.",
     "completeHands": "Una mano de Mahjong completa no puntúa ninguna familia de patrón, solo las familias de fichas que muestren sus fichas.",
     "patternsIntro": "Una jugada puntúa la única familia de patrón que forman sus grupos. Cada ejemplo indica su patrón y todas las familias que puntúa.",
     "tilesIntro": "Las familias de fichas se suman a la familia de patrón siempre que las fichas de la jugada las muestren.",
@@ -1816,11 +1818,11 @@
       },
       "the_eye": {
         "name": "El Ojo",
-        "description": "Cada tipo de mano puntúa una sola vez esta ronda. Repetirlo puntúa 0"
+        "description": "Cada combinación (como Par o Secuencia) puntúa una sola vez esta ronda. Repetirla puntúa 0"
       },
       "the_mouth": {
         "name": "La Boca",
-        "description": "Tu primera jugada fija el tipo de mano de esta ronda. Cualquier otra mano puntúa 0"
+        "description": "Tu primera jugada fija la combinación de esta ronda (como Par o Secuencia). Cualquier otra combinación puntúa 0"
       },
       "the_flint": {
         "name": "El Pedernal",
@@ -1868,7 +1870,7 @@
       },
       "the_ox": {
         "name": "El Buey",
-        "description": "Jugar tu tipo de mano más usado deja tu oro a 0"
+        "description": "Jugar tu combinación más usada (como Par o Secuencia) deja tu oro a 0"
       },
       "the_house": {
         "name": "La Casa",
@@ -1998,20 +2000,20 @@
       "p2": "Las fichas de Viento son <1>fichas de Honor</1> y valen <4>50 puntos</4> cada una, 100 dentro de un grupo: ¡el valor base más alto!"
     },
     "dragon_tiles": {
-      "note1": "Los Vientos no pueden formar escaleras. Solo tríos o parejas.",
+      "note1": "Los Vientos no pueden formar secuencias. Solo tripletes o pares.",
       "p1": "Hay <1>tres fichas de Dragón</1>:",
       "p2": "<0>白 (Dragón Blanco / Haku)</0> — Una ficha en blanco o enmarcada, que representa la pureza o el vacío",
       "p3": "<0>發 (Dragón Verde / Hatsu)</0> — El carácter 發 en verde, que significa «prosperidad» o «emitir»",
       "p4": "<0>中 (Dragón Rojo / Chun)</0> — El carácter 中 en rojo, que significa «centro»",
-      "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa suma +2 al Mult, +4 dentro de un grupo. No pueden formar escaleras."
+      "p5": "Los Dragones son <1>fichas de Honor</1> que valen <4>15 puntos</4>, y cada Dragón que puntúa suma +2 al Mult, +4 dentro de un grupo. No pueden formar secuencias."
     },
     "bonus_tiles": {
       "p1": "Las <0>fichas de bonificación</0> son fichas adicionales que no forman parte de tu mano:"
     },
     "sequences": {
       "note1": "Cuando robas una ficha de bonificación, se revela al instante y robas otra en su lugar. ¡Flores y Estaciones dan bonificaciones y efectos crecientes!",
-      "p1": "Una <1>escalera</1> son <4>3 fichas consecutivas del mismo palo</4>.",
-      "p2": "Ejemplos de escaleras válidas:"
+      "p1": "Una <1>secuencia</1> está formada por <4>3 fichas consecutivas del mismo palo</4>.",
+      "p2": "Ejemplos de secuencias válidas:"
     },
     "melds_overview": {
       "p1": "Un <1>grupo</1> (también llamado «combinación») es una combinación concreta de fichas:",
@@ -2025,9 +2027,9 @@
       "p2": "Ejemplos de tríos válidos:"
     },
     "quads": {
-      "li1": "Las escaleras deben ser del <1>mismo palo</1>",
+      "li1": "Las secuencias deben ser del <1>mismo palo</1>",
       "li2": "<2>No pueden dar la vuelta</2> (no vale 9-1-2)",
-      "li3": "Las fichas de Honor <2>no pueden formar escaleras</2>",
+      "li3": "Las fichas de Honor <2>no pueden formar secuencias</2>",
       "p1": "Un <1>cuarteto</1> (también llamado «kong» o «kan») son <4>4 fichas idénticas</4>.",
       "p2": "¡Los cuartetos son el grupo más raro: en el muro estándar usan las 4 copias de una ficha!"
     },
@@ -2047,9 +2049,9 @@
     },
     "gameplay_overview": {
       "note1": "La pareja vale <1>+15 puntos</1>. Cualquier ficha puede formar pareja: numeradas, vientos o dragones.",
-      "li1": "1-2-3 de Círculos (escalera)",
+      "li1": "1-2-3 de Círculos (secuencia)",
       "li2": "5-5-5 de Bambú (trío)",
-      "li3": "6-7-8 de Caracteres (escalera)",
+      "li3": "6-7-8 de Caracteres (secuencia)",
       "li4": "Este-Este-Este (trío)",
       "li5": "Pareja de Dragón Rojo"
     },
@@ -2151,7 +2153,7 @@
       "title": "RECAMBIAR",
       "p1": "Elige las fichas que no quieras, tantas como quieras, y pulsa RECAMBIAR. Van al río y fichas nuevas ocupan su lugar.",
       "li1": "Primero se usan los recambios gratis de los objetos; si no hay, un recambio cuesta un turno.",
-      "li2": "Las fichas recambiadas se quedan en el río el resto de la ronda.",
+      "li2": "Las fichas recambiadas se quedan en el río el resto de la ronda, salvo que un efecto las devuelva.",
       "li3": "Algunos Decretos premian cada recambio, un Mandato de Jefe puede prohibirlo y las Estaciones pueden cambiar su coste. Revisa antes los efectos activos.",
       "note": "Conserva las fichas que ya forman grupo y recambia las sueltas."
     },
@@ -2258,7 +2260,17 @@
   "errors": {
     "failedToLoad": "Error al cargar el componente",
     "stackTrace": "Traza de pila:",
-    "componentStack": "Pila de componentes:"
+    "componentStack": "Pila de componentes:",
+    "somethingWentWrong": "Algo ha salido mal",
+    "tryAgain": "Intentar de nuevo",
+    "componentError": "Esta sección ha dejado de funcionar",
+    "componentErrorDesc": "Se ha producido un error en esta sección del juego.",
+    "retry": "Reintentar",
+    "showDetails": "Mostrar detalles técnicos",
+    "hideDetails": "Ocultar detalles técnicos",
+    "oops": "¡Vaya! Algo ha salido mal",
+    "description": "Lo sentimos, ha ocurrido algo inesperado. El error se ha registrado.",
+    "goHome": "Ir al menú"
   },
   "tableStyle": {
     "unlock": "Para desbloquear: {{requirement}}",
@@ -2456,7 +2468,7 @@
       },
       "ceres_orb": {
         "name": "Orbe de Ceres",
-        "description": "Sube la familia Fichas sueltas 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +5 puntos base por cada ficha suelta de la jugada."
+        "description": "Sube la familia Fichas sueltas 1 nivel durante esta partida (hasta el nivel 9). Cada nivel suma +5 puntos base por cada ficha suelta de la jugada, salvo las fichas de Piedra."
       },
       "black_hole_orb": {
         "name": "Orbe de Agujero Negro",
@@ -2491,7 +2503,7 @@
       },
       "speed_omen": {
         "name": "Presagio de Velocidad",
-        "description": "Gana 5 de oro por cada ronda veloz de esta partida (una ronda pequeña o grande superada con turnos de sobra)."
+        "description": "Gana 5 de oro por cada ronda veloz de esta partida (una ronda pequeña o grande superada con 2 o más turnos de sobra)."
       },
       "throwback_omen": {
         "name": "Presagio de Retorno",
@@ -2963,11 +2975,11 @@
       },
       "arcana_jumbo": {
         "name": "Paquete de Arcanos Grande",
-        "description": "Elige 2 de 5 Sellos del Destino"
+        "description": "Elige hasta 2 de 5 Sellos del Destino"
       },
       "arcana_mega": {
         "name": "Paquete de Arcanos Mega",
-        "description": "Elige 3 de 6 Sellos del Destino"
+        "description": "Elige hasta 3 de 6 Sellos del Destino"
       },
       "celestial_normal": {
         "name": "Paquete Celeste",
@@ -2975,11 +2987,11 @@
       },
       "celestial_jumbo": {
         "name": "Paquete Celeste Grande",
-        "description": "Elige 2 de 5 Orbes Celestes"
+        "description": "Elige hasta 2 de 5 Orbes Celestes"
       },
       "celestial_mega": {
         "name": "Paquete Celeste Mega",
-        "description": "Elige 3 de 6 Orbes Celestes"
+        "description": "Elige hasta 3 de 6 Orbes Celestes"
       },
       "tile_normal": {
         "name": "Paquete de Fichas",
@@ -2987,11 +2999,11 @@
       },
       "tile_jumbo": {
         "name": "Paquete de Fichas Grande",
-        "description": "Elige 2 de 5 fichas especiales"
+        "description": "Elige hasta 2 de 5 fichas especiales"
       },
       "tile_mega": {
         "name": "Paquete de Fichas Mega",
-        "description": "Elige 3 de 6 fichas especiales"
+        "description": "Elige hasta 3 de 6 fichas especiales"
       },
       "decree_normal": {
         "name": "Paquete de Decretos",
@@ -2999,11 +3011,11 @@
       },
       "decree_jumbo": {
         "name": "Paquete de Decretos Grande",
-        "description": "Elige 2 de 5 Decretos"
+        "description": "Elige hasta 2 de 5 Decretos"
       },
       "decree_mega": {
         "name": "Paquete de Decretos Mega",
-        "description": "Elige 3 de 6 Decretos"
+        "description": "Elige hasta 3 de 6 Decretos"
       },
       "void_normal": {
         "name": "Paquete del Vacío",
@@ -3011,11 +3023,11 @@
       },
       "void_jumbo": {
         "name": "Paquete del Vacío Grande",
-        "description": "Elige 2 de 5 Guiones del Vacío"
+        "description": "Elige hasta 2 de 5 Guiones del Vacío"
       },
       "void_mega": {
         "name": "Paquete del Vacío Mega",
-        "description": "Elige 3 de 6 Guiones del Vacío"
+        "description": "Elige hasta 3 de 6 Guiones del Vacío"
       }
     }
   },
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Cinco iguales",
-      "explain": "Cinco fichas iguales: una más de las que tiene el muro."
+      "explain": "Cinco fichas iguales. El muro empieza con cuatro de cada una, así que necesitas una copia extra."
     },
     "six_of_a_kind": {
       "name": "Seis iguales",
-      "explain": "Seis fichas iguales: dos más de las que tiene el muro."
+      "explain": "Seis fichas iguales. El muro empieza con cuatro de cada una, así que necesitas dos copias extra."
     },
     "straight4": {
       "name": "Escalera de cuatro",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Palos mezclados",
-      "covers": "Cualquier jugada con fichas numeradas de dos o más palos: Caracteres, Círculos y Bambú."
+      "covers": "Cualquier jugada con fichas numeradas de dos o más palos: Caracteres, Círculos y Bambú. Una ficha Comodín encaja en todos los palos, así que nunca añade un segundo palo."
     },
     "Loose": {
       "name": "Fichas sueltas",
-      "covers": "Paga una vez por cada ficha suelta de la jugada: una ficha que no pertenece a ningún grupo."
+      "covers": "Paga una vez por cada ficha suelta de la jugada: una ficha que no pertenece a ningún grupo. Las fichas de Piedra nunca cuentan."
     },
     "All": {
       "name": "Todas las familias",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Orbe Celeste usado",
-    "title": "{{name}} usado: yaku mejorado"
+    "title": "{{name}} usado: familia de manos mejorada"
   },
   "omenReveal": {
     "title": "Presagio obtenido: {{name}}",
@@ -3355,7 +3367,7 @@
       "shop": "Ahora, en esta Casa de Té. Su efecto ya está en las ofertas.",
       "round": "Al empezar la próxima ronda.",
       "hand": "En tu próxima mano puntuada.",
-      "voidScript": "La próxima vez que uses un Escrito del Vacío.",
+      "voidScript": "La próxima vez que uses un Guion del Vacío.",
       "now": "De inmediato. Ya se ha aplicado.",
       "run": "En cada mano puntuada durante el resto de la partida.",
       "nextOmen": "Cuando ganes tu próximo Presagio."

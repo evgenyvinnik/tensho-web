@@ -142,14 +142,14 @@ export function ErrorFallback({
     return (
       <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-center">
         <p className="text-red-400 text-sm mb-2">
-          {t('error.somethingWentWrong', 'Something went wrong')}
+          {t('errors.somethingWentWrong', 'Something went wrong')}
         </p>
         {onRetry && (
           <button
             onClick={onRetry}
             className="text-xs text-[var(--color-golden-yellow)] hover:underline"
           >
-            {t('error.tryAgain', 'Try again')}
+            {t('errors.tryAgain', 'Try Again')}
           </button>
         )}
       </div>
@@ -165,11 +165,11 @@ export function ErrorFallback({
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-bold text-red-400 mb-2">
-              {t('error.componentError', 'Component Error')}
+              {t('errors.componentError', 'Component Error')}
             </h3>
             <p className="text-[var(--color-beige-white)] text-sm mb-4">
               {t(
-                'error.componentErrorDesc',
+                'errors.componentErrorDesc',
                 'This part of the app encountered an error.'
               )}
             </p>
@@ -180,7 +180,7 @@ export function ErrorFallback({
                   className="px-4 py-2 bg-[var(--color-vibrant-orange)] hover:bg-[var(--color-deep-orange)]
                              text-white font-bold rounded-lg text-sm transition-colors"
                 >
-                  {t('error.retry', 'Retry')}
+                  {t('errors.retry', 'Retry')}
                 </button>
               )}
               <button
@@ -190,8 +190,8 @@ export function ErrorFallback({
                            border border-[var(--color-metallic-gold)]"
               >
                 {showDetails
-                  ? t('error.hideDetails', 'Hide Details')
-                  : t('error.showDetails', 'Show Details')}
+                  ? t('errors.hideDetails', 'Hide technical details')
+                  : t('errors.showDetails', 'Show technical details')}
               </button>
             </div>
             {showDetails && (
@@ -221,13 +221,13 @@ export function ErrorFallback({
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-[var(--color-golden-yellow)] mb-3">
-          {t('error.oops', 'Oops! Something went wrong')}
+          {t('errors.oops', 'Oops! Something went wrong')}
         </h1>
 
         {/* Description */}
         <p className="text-[var(--color-beige-white)] mb-6">
           {t(
-            'error.description',
+            'errors.description',
             "We're sorry, but something unexpected happened. The error has been logged."
           )}
         </p>
@@ -248,7 +248,7 @@ export function ErrorFallback({
                          text-white font-bold rounded-lg transition-all hover:scale-105
                          border-2 border-[var(--color-golden-yellow)]"
             >
-              {t('error.tryAgain', 'Try Again')}
+              {t('errors.tryAgain', 'Try Again')}
             </button>
           )}
           {onGoHome && (
@@ -258,7 +258,7 @@ export function ErrorFallback({
                          text-[var(--color-beige-white)] font-bold rounded-lg transition-all
                          border-2 border-[var(--color-metallic-gold)]"
             >
-              {t('error.goHome', 'Go to Menu')}
+              {t('errors.goHome', 'Go to Menu')}
             </button>
           )}
         </div>
@@ -269,21 +269,23 @@ export function ErrorFallback({
           className="mt-6 text-sm text-[var(--color-metallic-gold)] hover:text-[var(--color-golden-yellow)] transition-colors"
         >
           {showDetails
-            ? t('error.hideDetails', 'Hide technical details')
-            : t('error.showDetails', 'Show technical details')}
+            ? t('errors.hideDetails', 'Hide technical details')
+            : t('errors.showDetails', 'Show technical details')}
         </button>
 
         {/* Technical details */}
         {showDetails && (
           <div className="mt-4 text-left bg-black/50 rounded-lg p-4 max-h-60 overflow-auto">
-            <p className="text-xs text-gray-400 mb-2">Stack trace:</p>
+            <p className="text-xs text-gray-400 mb-2">
+              {t('errors.stackTrace', 'Stack trace:')}
+            </p>
             <pre className="text-xs text-red-300 whitespace-pre-wrap break-all">
               {error.stack}
             </pre>
             {errorInfo?.componentStack && (
               <>
                 <p className="text-xs text-gray-400 mt-4 mb-2">
-                  Component stack:
+                  {t('errors.componentStack', 'Component stack:')}
                 </p>
                 <pre className="text-xs text-yellow-300 whitespace-pre-wrap break-all">
                   {errorInfo.componentStack}

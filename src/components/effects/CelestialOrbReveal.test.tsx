@@ -95,7 +95,7 @@ it('shows the family rising to its new level with its bonus, then dismisses', ()
     })
     render(<CelestialOrbReveal />)
     const dialog = screen.getByRole('dialog', {
-      name: 'Planet X Orb used: Yaku upgraded',
+      name: 'Planet X Orb used: hand family upgraded',
     })
     expect(dialog).toHaveAttribute('data-orb-reveal', 'planet_x_orb')
     // The planet names the Orb; the family it raises is the subtitle.

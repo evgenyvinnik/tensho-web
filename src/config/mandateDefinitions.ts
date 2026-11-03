@@ -116,7 +116,8 @@ export const THE_EYE: MandateDefinition = {
   id: 'the_eye',
   name: 'The Eye',
   japaneseName: '目',
-  description: 'Each hand type scores only once this round. A repeat scores 0',
+  description:
+    'Each play pattern (such as Pair or Sequence) scores only once this round. A repeat scores 0',
   category: 'Standard',
   difficulty: 'Medium',
   effect: { type: 'no_repeat_pattern' },
@@ -131,7 +132,7 @@ export const THE_MOUTH: MandateDefinition = {
   name: 'The Mouth',
   japaneseName: '口',
   description:
-    'Your first play sets this round’s hand type. Any other hand scores 0',
+    'Your first play sets this round’s pattern (such as Pair or Sequence). Any other pattern scores 0',
   category: 'Standard',
   difficulty: 'Hard',
   effect: { type: 'single_play_pattern' },
@@ -299,7 +300,8 @@ export const THE_OX: MandateDefinition = {
   id: 'the_ox',
   name: 'The Ox',
   japaneseName: '牛',
-  description: 'Playing your most-played hand type sets your Gold to 0',
+  description:
+    'Playing your most-played pattern (such as Pair or Sequence) sets your Gold to 0',
   category: 'Standard',
   difficulty: 'Hard',
   effect: { type: 'most_played_pattern_zeroes_gold' },

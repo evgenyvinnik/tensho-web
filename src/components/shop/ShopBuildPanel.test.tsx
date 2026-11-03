@@ -30,7 +30,7 @@ afterEach(async () => {
   })
 })
 
-it('shows owned Decrees and the Yaku upgrades on one line, nothing behind a toggle', () => {
+it('shows owned Decrees and the Orb upgrades on one line, nothing behind a toggle', () => {
   const system = new DecreeSystem()
   system.acquireDecree(stone)
   const sell = vi.fn()

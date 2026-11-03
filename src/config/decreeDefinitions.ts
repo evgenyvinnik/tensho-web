@@ -412,7 +412,7 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     name: 'Sequence Purist',
     japaneseName: '平和純粋者',
     description:
-      '+3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind',
+      '+3 Mult when you score All Sequences: a complete hand of four sequences, none skipping a number, plus a pair that is not Dragons or East Wind',
     rarity: 'common',
     effects: [createEffect('additive_mult', 3, 'when scoring Pinfu')],
     baseSellValue: 2,

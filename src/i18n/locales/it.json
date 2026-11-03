@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Sfrutta bene le tessere",
     "tipEfficiency": "Conserva le tessere che possono completare più gruppi. Usa RIPESCA per sostituire le tessere isolate, tenendo conto del costo in turni e delle ripescate gratuite disponibili.",
     "tipWallTitle": "Conta le tessere rimaste",
-    "tipWall": "Controlla il fiume e ciò che rimane del muro prima di cercare una tessera specifica. Le tessere sostituite con RIPESCA restano nel fiume per il resto del round.",
+    "tipWall": "Controlla il fiume e ciò che rimane del muro prima di cercare una tessera specifica. Le tessere sostituite con RIPESCA restano nel fiume per il resto del round, a meno che un effetto non le riporti indietro.",
     "tipMandateTitle": "Leggi i mandati in anticipo",
     "tipMandate": "Leggi il prossimo Mandato del Boss e prepara una combinazione di risorse capace di segnare punti con quella restrizione.",
     "tipLossTitle": "Impara da una sconfitta",
@@ -239,7 +239,7 @@
     },
     "archiveCompletePlus": {
       "name": "Archivio completo +",
-      "description": "Vinci al Livello Oro con ogni Tavolo."
+      "description": "Vinci al Livello Oro con ogni Muro."
     },
     "archiveCompletePlusPlus": {
       "name": "Archivio completo ++",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la sua famiglia di Yaku segna punti, una volta per Sfera e giocata. La Sfera del Buco Nero corrisponde a qualsiasi Yaku segnato.",
+    "description": "Ogni Sfera conservata dà ×1,5 Mult quando la giocata segna la sua famiglia di mani, una volta per Sfera e per giocata. La Sfera del Buco Nero corrisponde a qualsiasi famiglia di mani segnata dalla giocata.",
     "holdingNote": "L’Osservatorio premia il mantenimento di questa Sfera. Usarla concede il suo potenziamento permanente, ma rimuove questo bonus di possesso."
   },
   "closedHandAusterity": {
     "name": "Austerità della mano chiusa",
-    "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten non contano.",
+    "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten, lo Scritto dell’eclissi o lo Scritto del silenzio non contano.",
     "progress": "Mani complete finora: {{count}}. Prossima: ×{{factor}} prima dei Fiori."
   },
   "yakuRepetition": {
@@ -329,7 +329,7 @@
     "limits": "Le azioni utilizzabili una volta per round condividono lo stesso limite; le copie non aggiungono utilizzi."
   },
   "randomCopy": {
-    "description": "Copia un Decreto senza effetto di copia all’acquisizione e all’inizio di ogni round.",
+    "description": "Copia un Decreto casuale senza effetto di copia all’acquisizione e all’inizio di ogni round.",
     "target": "Copia di {{name}} · posizione {{slot}}",
     "waiting": "In attesa di un altro Decreto.",
     "missing": "Bersaglio rimosso; nuova scelta al prossimo round.",
@@ -351,7 +351,7 @@
     "overCapacity": "Capacità ridotta: conservi i Decreti posseduti. Libera spazio prima di acquisirne altri."
   },
   "yakuUpgrades": {
-    "title": "Potenziamenti yaku",
+    "title": "Potenziamenti Sfere",
     "level": "Livello {{level}} / {{max}}",
     "bonus": "+{{chips}} punti base · +{{mult}} Mult",
     "triggers": "Volte a segno: {{total}}",
@@ -438,7 +438,7 @@
       },
       "speed_omen": {
         "name": "Presagio della velocità",
-        "description": "Ottieni 5 Oro per ogni vittoria lampo in questa partita (un round piccolo o grande superato con turni d’avanzo)."
+        "description": "Ottieni 5 Oro per ogni vittoria lampo in questa partita (un round piccolo o grande superato con 2 o più turni d’avanzo)."
       },
       "throwback_omen": {
         "name": "Presagio del ritorno",
@@ -727,7 +727,7 @@
     "penalty_lose_tile": "Perdi 1 tessera casuale.",
     "penalty_lose_gold": "Perdi tutto l’oro.",
     "penalty_lose_hand_size": "Perdi {{count}} spazio del leggio per il resto di questa partita.",
-    "penalty_lock_tile": "Blocca 1 tessera casuale nel fiume: non può più essere pescata.",
+    "penalty_lock_tile": "Manda nel fiume 1 tessera casuale del tuo leggio per il resto del round.",
     "penalty_lose_decree_slot": "Perdi {{count}} spazio Decreto nel prossimo round.",
     "penalty_halve_base_score": "Dimezza i Punti base della prossima giocata.",
     "penalty_destroy_decrees": "Distruggi tutti gli altri Decreti.",
@@ -1044,7 +1044,8 @@
       "adCountdown": "La ricompensa sarà pronta tra {{seconds}} s",
       "adReady": "Ricompensa pronta",
       "adClaim": "Ottieni +1 turno"
-    }
+    },
+    "decreeDetails": "Dettagli di {{name}}"
   },
   "rounds": {
     "small": "Round Piccolo",
@@ -1167,7 +1168,8 @@
       "pack": "Pacchetto · scegli {{choose}} su {{from}}",
       "charter": "Carta imperiale · potenziamento permanente",
       "charterHelp": "Una Carta imperiale è un potenziamento permanente per il resto della partita. Non occupa spazi e non si può vendere.",
-      "orbHelp": "Usato nell’istante in cui lo prendi: il livello della famiglia sale subito e resta per tutta la partita."
+      "orbHelp": "Usato nell’istante in cui lo prendi: il livello della famiglia sale subito e resta per tutta la partita.",
+      "packChoice": "Scegli fino a {{choose}} ricompense tra {{from}}: questo pacchetto ne offre più del solito."
     },
     "offerLabel": "{{name}}, {{price}} oro",
     "buyFor": "Compra · {{price}} oro",
@@ -1176,7 +1178,7 @@
       "buy": "Tocca un oggetto per vedere cosa fa, poi premi Compra. I Decreti cambiano le regole, Sfere e Sigilli del Destino agiscono subito (un Sigillo del Destino chiede quali tessere del tuo muro cambiare), gli Scritti si usano nel round, i Pacchetti fanno scegliere ricompense e le Carte potenziano tutta la partita.",
       "interest": "L’oro che tieni frutta interessi: +1 ogni 5 posseduti a fine round, fino a +{{cap}}.",
       "cashOut": "La paga del round arriva nella borsa al tuo ingresso, un avviso per ogni fonte: il round superato, gli interessi, i Decreti e gli affitti addebitati.",
-      "build": "La tua configurazione mostra i tuoi Decreti accanto ai potenziamenti yaku: apri una pergamena per leggerne le regole o venderla, o un potenziamento per vederne il livello. Ogni acquisto avviene con il proprio pulsante Compra."
+      "build": "La tua configurazione mostra i tuoi Decreti accanto ai potenziamenti delle Sfere: apri una pergamena per leggerne le regole o venderla, o un potenziamento per vederne il livello. Ogni acquisto avviene con il proprio pulsante Compra."
     },
     "sealUsed": "{{name}} usato",
     "sealWall": {
@@ -1382,7 +1384,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Purista delle sequenze",
-        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze più una coppia che non sia di Draghi o di Vento d’Est"
+        "description": "+3 Mult quando realizzi Tutte sequenze: una mano completa di quattro sequenze, nessuna con numeri saltati, più una coppia che non sia di Draghi o di Vento d’Est"
       },
       "decree-manzu-emperor": {
         "name": "Imperatore dei Caratteri",
@@ -1806,7 +1808,7 @@
       },
       "closed_hand_austerity": {
         "name": "Austerità della mano chiusa",
-        "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten non contano."
+        "description": "Ogni mano di Mahjong completa ottiene ×1,5, che cresce di ×1,2 per ogni mano completa precedente in questa partita, fino a ×4 prima dei bonus dei Fiori. Le giocate più piccole e le mani completate con la Clemenza Shanten, lo Scritto dell’eclissi o lo Scritto del silenzio non contano."
       },
       "terminal_devotion": {
         "name": "Devozione ai terminali",
@@ -1866,7 +1868,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Ascetismo di un solo seme",
-        "description": "×1,1 Mult per ogni tessera giocata del seme più presente nella giocata, in modo composto (cinque danno circa ×1,6)."
+        "description": "×1,1 Mult per ogni tessera giocata del seme numerato più presente nella giocata, in modo composto (cinque danno circa ×1,6)."
       },
       "decree-half-suited": {
         "name": "Mezzo Colore",
@@ -1919,10 +1921,10 @@
     "patternsTitle": "Famiglie di combinazione",
     "tilesTitle": "Famiglie di tessere",
     "intro": "Una Sfera Celeste alza di un livello una famiglia di giocate per il resto della partita, da 0 fino a {{max}}. Si usa nell’istante in cui la prendi.",
-    "stacking": "Ogni giocata segna una famiglia di combinazione, indicata dai suoi gruppi, più ogni famiglia di tessere che mostrano le sue tessere. Ogni famiglia segnata aggiunge i suoi punti base e il suo Mult una volta per livello; Tessere sciolte paga una volta per ogni tessera sciolta. Ecco una Sequenza prima e dopo un livello di Sequenza:",
+    "stacking": "Una giocata segna al massimo una famiglia di combinazione, quella formata dai suoi gruppi, più ogni famiglia di tessere presente tra le sue tessere; una giocata senza gruppi non segna nessuna famiglia di combinazione. Ogni famiglia segnata aggiunge i suoi punti base e il suo Mult una volta per livello; Tessere sciolte paga una volta per ogni tessera sciolta. Ecco una Sequenza prima e dopo un livello di Sequenza:",
     "exampleBefore": "{{pattern}}, livello 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} livello 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Le famiglie di combinazione non si sommano mai tra loro: una Sequenza + Coppia segna solo Sequenza + Coppia, non Sequenza né Coppie.",
+    "patternTip": "Le famiglie di combinazione non si sommano mai tra loro: una Sequenza + Coppia segna solo la famiglia Sequenza + Coppia, non Sequenza né Coppie.",
     "completeHands": "Una mano di Mahjong completa non segna nessuna famiglia di combinazione, solo le famiglie di tessere che mostrano le sue tessere.",
     "patternsIntro": "Una giocata segna l’unica famiglia di combinazione formata dai suoi gruppi. Ogni esempio indica la sua combinazione e tutte le famiglie che segna.",
     "tilesIntro": "Le famiglie di tessere si aggiungono alla famiglia di combinazione ogni volta che le tessere della giocata le mostrano.",
@@ -2105,11 +2107,11 @@
       },
       "the_eye": {
         "name": "L’Occhio",
-        "description": "Ogni tipo di mano vale una sola volta in questo round. Una ripetizione vale 0"
+        "description": "Ogni combinazione (come Coppia o Sequenza) vale una sola volta in questo round. Una ripetizione vale 0"
       },
       "the_mouth": {
         "name": "La Bocca",
-        "description": "La prima giocata fissa il tipo di mano del round. Ogni altra mano vale 0"
+        "description": "La prima giocata fissa la combinazione del round (come Coppia o Sequenza). Ogni altra combinazione vale 0"
       },
       "the_flint": {
         "name": "La Selce",
@@ -2157,7 +2159,7 @@
       },
       "the_ox": {
         "name": "Il Bue",
-        "description": "Giocare il tipo di mano usato più spesso porta l’Oro a 0"
+        "description": "Giocare la combinazione usata più spesso (come Coppia o Sequenza) porta l’Oro a 0"
       },
       "the_house": {
         "name": "La Casa",
@@ -2297,20 +2299,20 @@
       "p2": "Le tessere del Vento sono <1>tessere d'Onore</1> e valgono <4>50 punti</4> ciascuna, 100 dentro un gruppo: il valore base più alto!"
     },
     "dragon_tiles": {
-      "note1": "I Venti non possono formare scale. Solo tris o coppie.",
+      "note1": "I Venti non possono formare sequenze. Solo tris o coppie.",
       "p1": "Ci sono <1>tre tessere del Drago</1>:",
       "p2": "<0>白 (Drago Bianco / Haku)</0> — Una tessera vuota o incorniciata, che rappresenta purezza o vuoto",
       "p3": "<0>發 (Drago Verde / Hatsu)</0> — Il carattere 發 in verde, che significa «prosperità» o «emettere»",
       "p4": "<0>中 (Drago Rosso / Chun)</0> — Il carattere 中 in rosso, che significa «centro»",
-      "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna aggiunge +2 al Mult, +4 dentro un gruppo. Non possono formare scale."
+      "p5": "I Draghi sono <1>tessere d'Onore</1> che valgono <4>15 punti</4>, e ogni Drago che segna aggiunge +2 al Mult, +4 dentro un gruppo. Non possono formare sequenze."
     },
     "bonus_tiles": {
       "p1": "Le <0>tessere bonus</0> sono tessere extra che non fanno parte della mano:"
     },
     "sequences": {
       "note1": "Quando peschi una tessera bonus viene scoperta subito e ne peschi una sostitutiva. Fiori e Stagioni danno bonus ed effetti crescenti!",
-      "p1": "Una <1>scala</1> è composta da <4>3 tessere consecutive dello stesso seme</4>.",
-      "p2": "Esempi di scale valide:"
+      "p1": "Una <1>sequenza</1> è composta da <4>3 tessere consecutive dello stesso seme</4>.",
+      "p2": "Esempi di sequenze valide:"
     },
     "melds_overview": {
       "p1": "Una <1>combinazione</1> (detta anche «gruppo») è un insieme preciso di tessere:",
@@ -2324,9 +2326,9 @@
       "p2": "Esempi di tris validi:"
     },
     "quads": {
-      "li1": "Le scale devono essere dello <1>stesso seme</1>",
+      "li1": "Le sequenze devono essere dello <1>stesso seme</1>",
       "li2": "<2>Non possono chiudersi ad anello</2> (niente 9-1-2)",
-      "li3": "Le tessere d'Onore <2>non possono formare scale</2>",
+      "li3": "Le tessere d'Onore <2>non possono formare sequenze</2>",
       "p1": "Un <1>poker</1> (detto anche «kong» o «kan») è composto da <4>4 tessere identiche</4>.",
       "p2": "I poker sono la combinazione più rara: nel muro standard usano tutte e 4 le copie di una tessera!"
     },
@@ -2346,9 +2348,9 @@
     },
     "gameplay_overview": {
       "note1": "La coppia vale <1>+15 punti</1>. Qualsiasi tessera può formare una coppia: numerate, venti o draghi.",
-      "li1": "1-2-3 Cerchi (scala)",
+      "li1": "1-2-3 Cerchi (sequenza)",
       "li2": "5-5-5 Bambù (tris)",
-      "li3": "6-7-8 Caratteri (scala)",
+      "li3": "6-7-8 Caratteri (sequenza)",
       "li4": "Est-Est-Est (tris)",
       "li5": "Coppia di Drago Rosso"
     },
@@ -2450,7 +2452,7 @@
       "title": "RIPESCA",
       "p1": "Scegli le tessere che non vuoi, quante ne vuoi, e premi RIPESCA. Vanno nel fiume e tessere nuove ne prendono il posto.",
       "li1": "Prima si usano le ripescate gratuite degli oggetti; altrimenti una ripescata costa un turno.",
-      "li2": "Le tessere ripescate restano nel fiume per il resto del round.",
+      "li2": "Le tessere ripescate restano nel fiume per il resto del round, a meno che un effetto non le riporti indietro.",
       "li3": "Alcuni Decreti premiano ogni ripescata, un Mandato del Boss può vietarla e le Stagioni possono cambiarne il costo. Controlla prima gli effetti attivi.",
       "note": "Tieni le tessere che formano già un gruppo e ripesca quelle isolate."
     },
@@ -2543,8 +2545,8 @@
         "description": "Modificatori delle regole che persistono tra i round."
       },
       "walls": {
-        "name": "Tavoli",
-        "description": "Varianti del tavolo con mix di tessere diversi."
+        "name": "Muri",
+        "description": "Varianti del muro con mix di tessere diversi."
       },
       "charters": {
         "name": "Carte imperiali",
@@ -2848,7 +2850,7 @@
       },
       "ceres_orb": {
         "name": "Sfera di Cerere",
-        "description": "Alza la famiglia «Tessere sciolte» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +5 punti base per ogni tessera sciolta nella giocata."
+        "description": "Alza la famiglia «Tessere sciolte» di 1 livello per questa partita (fino al livello 9). Ogni livello aggiunge +5 punti base per ogni tessera sciolta nella giocata, tranne le tessere Pietra."
       },
       "black_hole_orb": {
         "name": "Sfera del Buco Nero",
@@ -2928,11 +2930,11 @@
       },
       "arcana_jumbo": {
         "name": "Pacchetto Arcano Gigante",
-        "description": "Scegli 2 fra 5 Sigilli del Destino."
+        "description": "Scegli fino a 2 fra 5 Sigilli del Destino."
       },
       "arcana_mega": {
         "name": "Megapacchetto Arcano",
-        "description": "Scegli 3 fra 6 Sigilli del Destino."
+        "description": "Scegli fino a 3 fra 6 Sigilli del Destino."
       },
       "celestial_normal": {
         "name": "Pacchetto Celeste",
@@ -2940,11 +2942,11 @@
       },
       "celestial_jumbo": {
         "name": "Pacchetto Celeste Gigante",
-        "description": "Scegli 2 fra 5 Sfere Celesti."
+        "description": "Scegli fino a 2 fra 5 Sfere Celesti."
       },
       "celestial_mega": {
         "name": "Megapacchetto Celeste",
-        "description": "Scegli 3 fra 6 Sfere Celesti."
+        "description": "Scegli fino a 3 fra 6 Sfere Celesti."
       },
       "tile_normal": {
         "name": "Pacchetto di Tessere",
@@ -2952,11 +2954,11 @@
       },
       "tile_jumbo": {
         "name": "Pacchetto Gigante di Tessere",
-        "description": "Scegli 2 fra 5 tessere speciali."
+        "description": "Scegli fino a 2 fra 5 tessere speciali."
       },
       "tile_mega": {
         "name": "Megapacchetto di Tessere",
-        "description": "Scegli 3 fra 6 tessere speciali."
+        "description": "Scegli fino a 3 fra 6 tessere speciali."
       },
       "decree_normal": {
         "name": "Pacchetto di Decreti",
@@ -2964,11 +2966,11 @@
       },
       "decree_jumbo": {
         "name": "Pacchetto Gigante di Decreti",
-        "description": "Scegli 2 fra 5 Decreti."
+        "description": "Scegli fino a 2 fra 5 Decreti."
       },
       "decree_mega": {
         "name": "Megapacchetto di Decreti",
-        "description": "Scegli 3 fra 6 Decreti."
+        "description": "Scegli fino a 3 fra 6 Decreti."
       },
       "void_normal": {
         "name": "Pacchetto del Vuoto",
@@ -2976,11 +2978,11 @@
       },
       "void_jumbo": {
         "name": "Pacchetto Gigante del Vuoto",
-        "description": "Scegli 2 fra 5 Scritti del Vuoto."
+        "description": "Scegli fino a 2 fra 5 Scritti del Vuoto."
       },
       "void_mega": {
         "name": "Megapacchetto del Vuoto",
-        "description": "Scegli 3 fra 6 Scritti del Vuoto."
+        "description": "Scegli fino a 3 fra 6 Scritti del Vuoto."
       }
     }
   },
@@ -3005,7 +3007,17 @@
   "errors": {
     "failedToLoad": "Impossibile caricare il componente",
     "stackTrace": "Traccia dello stack:",
-    "componentStack": "Stack dei componenti:"
+    "componentStack": "Stack dei componenti:",
+    "somethingWentWrong": "Qualcosa è andato storto",
+    "tryAgain": "Riprova",
+    "componentError": "Questa sezione ha smesso di funzionare",
+    "componentErrorDesc": "Si è verificato un errore in questa sezione del gioco.",
+    "retry": "Riprova",
+    "showDetails": "Mostra dettagli tecnici",
+    "hideDetails": "Nascondi dettagli tecnici",
+    "oops": "Ops! Qualcosa è andato storto",
+    "description": "Ci dispiace, si è verificato un imprevisto. L’errore è stato registrato.",
+    "goHome": "Vai al menu"
   },
   "tableStyle": {
     "unlock": "Per sbloccare: {{requirement}}",
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Cinque uguali",
-      "explain": "Cinque tessere uguali: una in più di quante ne ha il muro."
+      "explain": "Cinque tessere uguali. Il muro parte con quattro di ciascuna, quindi ti serve una copia in più."
     },
     "six_of_a_kind": {
       "name": "Sei uguali",
-      "explain": "Sei tessere uguali: due in più di quante ne ha il muro."
+      "explain": "Sei tessere uguali. Il muro parte con quattro di ciascuna, quindi ti servono due copie in più."
     },
     "straight4": {
       "name": "Scala di quattro",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Semi misti",
-      "covers": "Ogni giocata con tessere numerate di due o più semi: Caratteri, Cerchi e Bambù."
+      "covers": "Ogni giocata con tessere numerate di due o più semi: Caratteri, Cerchi e Bambù. Una tessera Jolly vale per ogni seme, quindi non aggiunge mai un secondo seme."
     },
     "Loose": {
       "name": "Tessere sciolte",
-      "covers": "Paga una volta per ogni tessera sciolta nella giocata: una tessera che non appartiene a nessun gruppo."
+      "covers": "Paga una volta per ogni tessera sciolta nella giocata: una tessera che non appartiene a nessun gruppo. Le tessere Pietra non contano mai."
     },
     "All": {
       "name": "Tutte le famiglie",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Sfera Celeste usata",
-    "title": "{{name}} usata: yaku potenziato"
+    "title": "{{name}} usata: famiglia di mani potenziata"
   },
   "omenReveal": {
     "title": "Presagio ottenuto: {{name}}",

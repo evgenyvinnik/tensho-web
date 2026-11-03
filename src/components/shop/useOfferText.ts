@@ -16,6 +16,7 @@ import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { Tile } from '../../core/Tile'
 import { useItemText } from '../../i18n/useItemText'
 import { tileRewardText } from '../../i18n/tileRewardText'
+import { PACK_SIZE_DEFINITIONS } from '../../config/packDefinitions'
 
 export const RARITY_COLORS: Record<string, string> = {
   common: '#A0A0A0',
@@ -131,13 +132,23 @@ export function useOfferText(
     case 'BlessingPack': {
       const pack = offering.item as BlessingPack
       const id = `${pack.type.toLowerCase()}_${pack.size.toLowerCase()}`
+      // The catalog text states the usual counts; Crystal Lens can add offers.
+      const usual = PACK_SIZE_DEFINITIONS[pack.size]
+      const usualCounts =
+        pack.choiceCount === usual.choiceCount &&
+        pack.selectCount === usual.selectCount
       return {
         name: t(`packs.items.${id}.name`),
         kind: t('shop.kinds.pack', {
           choose: pack.selectCount,
           from: pack.choiceCount,
         }),
-        description: t(`packs.items.${id}.description`),
+        description: usualCounts
+          ? t(`packs.items.${id}.description`)
+          : t('shop.kinds.packChoice', {
+              choose: pack.selectCount,
+              from: pack.choiceCount,
+            }),
         rarity:
           pack.size === 'Mega'
             ? 'rare'

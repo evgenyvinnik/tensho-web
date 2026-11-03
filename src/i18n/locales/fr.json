@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Tirez parti de vos tuiles",
     "tipEfficiency": "Gardez les tuiles qui peuvent compléter plusieurs groupes. Utilisez REPIOCHER pour remplacer les tuiles isolées, en tenant compte du coût en tours et des repioches gratuites disponibles.",
     "tipWallTitle": "Comptez les tuiles restantes",
-    "tipWall": "Vérifiez la rivière et ce qu’il reste du mur avant de chercher une tuile précise. Les tuiles remplacées par une repioche restent dans la rivière jusqu’à la fin de la manche.",
+    "tipWall": "Vérifiez la rivière et ce qu’il reste du mur avant de chercher une tuile précise. Les tuiles remplacées par une repioche restent dans la rivière jusqu’à la fin de la manche, sauf si un effet les ramène.",
     "tipMandateTitle": "Lisez les mandats à l’avance",
     "tipMandate": "Lisez le prochain Mandat de Boss et préparez une combinaison d’effets capable de marquer malgré sa restriction.",
     "tipLossTitle": "Apprendre d’une défaite",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Chaque Orbe conservé donne ×1,5 Mult si sa famille de Yaku marque des points, une fois par Orbe et par coup. L’Orbe du Trou Noir correspond à tout Yaku qui marque.",
+    "description": "Chaque Orbe conservé donne ×1,5 Mult quand le coup marque sa famille de mains, une fois par Orbe et par coup. L’Orbe du Trou Noir correspond à toute famille de mains que marque le coup.",
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
   },
   "closedHandAusterity": {
     "name": "Ascèse de la main fermée",
-    "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten ne comptent pas.",
+    "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten, au Guide de l'Éclipse ou au Guide du Silence ne comptent pas.",
     "progress": "Mains complètes jusqu’ici : {{count}}. Prochaine : ×{{factor}} avant les Fleurs."
   },
   "yakuRepetition": {
@@ -329,7 +329,7 @@
     "limits": "Les actions limitées à une fois par manche partagent cette limite ; les copies n’ajoutent pas d’utilisations."
   },
   "randomCopy": {
-    "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche.",
+    "description": "Copie un Décret choisi au hasard, sans effet de copie, à l’acquisition et au début de chaque manche.",
     "target": "Copie de {{name}} · place {{slot}}",
     "waiting": "En attente d’un autre Décret.",
     "missing": "Cible retirée ; nouveau choix à la prochaine manche.",
@@ -351,7 +351,7 @@
     "overCapacity": "Capacité réduite : vous conservez vos Décrets. Libérez de la place avant d’en acquérir d’autres."
   },
   "yakuUpgrades": {
-    "title": "Améliorations des yaku",
+    "title": "Améliorations d’Orbes",
     "level": "Niveau {{level}} / {{max}}",
     "bonus": "+{{chips}} points de base · +{{mult}} Mult",
     "triggers": "Occurrences marquées : {{total}}",
@@ -428,8 +428,8 @@
     "penalty_lose_tile": "Perdez 1 tuile aléatoire.",
     "penalty_lose_gold": "Perdez tout votre or.",
     "penalty_lose_hand_size": "Perdez {{count}} place sur le chevalet pour le reste de la partie.",
-    "penalty_lock_tile": "Bloquez 1 tuile au hasard dans la rivière : elle ne pourra plus être piochée.",
-    "penalty_lose_decree_slot": "Perdez {{count}} emplacement de Décret au prochain tour.",
+    "penalty_lock_tile": "Envoyez 1 tuile au hasard de votre chevalet dans la rivière jusqu’à la fin de la manche.",
+    "penalty_lose_decree_slot": "Perdez {{count}} emplacement de Décret lors de la prochaine manche.",
     "penalty_halve_base_score": "Divisez par deux les Points de base du prochain coup.",
     "penalty_destroy_decrees": "Détruisez tous les autres Décrets.",
     "penalty_none": "Aucune pénalité supplémentaire.",
@@ -647,7 +647,7 @@
     "beginnerRedrawTitle": "Renouveler les tuiles isolées",
     "beginnerRedrawHelp": "Touchez les tuiles isolées lumineuses, puis Repiocher pour chercher une Paire, une Séquence ou un Brelan.",
     "beginnerRedrawReady": "Prêt : appuyez sur Repiocher pour remplacer ces tuiles isolées.",
-    "beginnerPatternComplete": "Superbe : cette {{pattern}} rapporte +{{points}} points de figure. Vérifiez la prévision, puis jouez.",
+    "beginnerPatternComplete": "Superbe : la combinaison « {{pattern}} » rapporte +{{points}} points de figure. Vérifiez la prévision, puis jouez.",
     "beginnerSelectedProgress": "{{current}} tuiles lumineuses préparées sur {{total}}",
     "tilesReady": "{{count}} tuiles prêtes à jouer",
     "beginnerRedrawForecast": "Prêt à repiocher",
@@ -745,7 +745,8 @@
       "adCountdown": "Votre récompense sera prête dans {{seconds}} s",
       "adReady": "Récompense prête",
       "adClaim": "Obtenir +1 tour"
-    }
+    },
+    "decreeDetails": "Détails : {{name}}"
   },
   "rounds": {
     "small": "Petite Manche",
@@ -868,16 +869,17 @@
       "pack": "Paquet · choisissez {{choose}} parmi {{from}}",
       "charter": "Charte impériale · amélioration permanente",
       "charterHelp": "Une Charte impériale est une amélioration permanente pour le reste de la partie. Elle n’occupe aucun emplacement et ne se vend pas.",
-      "orbHelp": "Utilisé dès que vous le prenez : le niveau de la famille monte aussitôt et reste acquis pour toute la partie."
+      "orbHelp": "Utilisé dès que vous le prenez : le niveau de la famille monte aussitôt et reste acquis pour toute la partie.",
+      "packChoice": "Choisissez jusqu’à {{choose}} récompenses parmi {{from}} : ce paquet en propose plus que d’habitude."
     },
     "offerLabel": "{{name}}, {{price}} or",
     "buyFor": "Acheter · {{price}} or",
     "help": {
       "what": "La Maison de Thé est la boutique entre les manches.",
-      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les Orbes et les Sceaux du Destin agissent aussitôt (un Sceau du Destin vous demande quelles tuiles de votre mur changer), les Écrits s’utilisent en manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
+      "buy": "Touchez un objet pour voir son effet, puis Acheter. Les Décrets changent les règles, les Orbes et les Sceaux du Destin agissent aussitôt (un Sceau du Destin vous demande quelles tuiles de votre mur changer), les Guides du Vide s’utilisent pendant une manche, les Paquets offrent des récompenses au choix et les Chartes améliorent toute la partie.",
       "interest": "L’or conservé rapporte des intérêts : +1 pour chaque tranche de 5 en fin de manche, jusqu’à +{{cap}}.",
       "cashOut": "La paie de la manche arrive dans votre bourse à votre entrée, une notification par source : la manche réussie, les intérêts, les Décrets et les locations prélevées.",
-      "build": "Votre configuration montre vos Décrets à côté de vos améliorations de yaku : ouvrez un parchemin pour lire ses règles ou le vendre, ou une amélioration pour voir son niveau. Chaque achat se fait avec son propre bouton Acheter."
+      "build": "Votre configuration montre vos Décrets à côté de vos améliorations d’Orbes : ouvrez un parchemin pour lire ses règles ou le vendre, ou une amélioration pour voir son niveau. Chaque achat se fait avec son propre bouton Acheter."
     },
     "sealUsed": "{{name}} utilisé",
     "sealWall": {
@@ -1091,7 +1093,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Puriste des séquences",
-        "description": "+3 Mult quand vous marquez Tout Séquences : une main complète de quatre séquences et d’une paire qui n’est ni de Dragons ni de Vent d’Est"
+        "description": "+3 Mult quand vous marquez Tout Séquences : une main complète de quatre séquences, dont aucune ne saute de nombre, et d’une paire qui n’est ni de Dragons ni de Vent d’Est"
       },
       "decree-manzu-emperor": {
         "name": "Empereur des Caractères",
@@ -1431,7 +1433,7 @@
       },
       "decree-doppelganger": {
         "name": "Doppelganger",
-        "description": "Copie un Décret sans effet de copie à l’acquisition et au début de chaque manche."
+        "description": "Copie un Décret choisi au hasard, sans effet de copie, à l’acquisition et au début de chaque manche."
       },
       "decree-manzu-god": {
         "name": "Dieu des Caractères",
@@ -1555,7 +1557,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Ascèse de Couleur Pure",
-        "description": "×1,1 Mult par tuile jouée de la famille la plus présente dans le coup, en se multipliant (cinq donnent environ ×1,6)."
+        "description": "×1,1 Mult par tuile jouée de la famille numérotée la plus présente dans le coup, en se multipliant (cinq donnent environ ×1,6)."
       },
       "broken_stair_edict": {
         "name": "Édit de l'Escalier Brisé",
@@ -1587,7 +1589,7 @@
       },
       "closed_hand_austerity": {
         "name": "Austérité de Main Fermée",
-        "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten ne comptent pas."
+        "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten, au Guide de l'Éclipse ou au Guide du Silence ne comptent pas."
       },
       "terminal_devotion": {
         "name": "Dévotion Terminale",
@@ -1620,10 +1622,10 @@
     "patternsTitle": "Familles de combinaison",
     "tilesTitle": "Familles de tuiles",
     "intro": "Un Orbe Céleste monte une famille de coups d’un niveau pour le reste de la partie, de 0 jusqu’à {{max}}. Il est utilisé dès que vous le prenez.",
-    "stacking": "Chaque coup marque une famille de combinaison, désignée par ses groupes, plus chaque famille de tuiles que montrent ses tuiles. Chaque famille marquée ajoute ses points de base et son Mult une fois par niveau ; « Tuiles isolées » rapporte une fois pour chaque tuile isolée. Voici une Séquence avant et après un niveau de « Séquence » :",
+    "stacking": "Un coup marque au plus une famille de combinaison, celle que forment ses groupes, plus chaque famille de tuiles que montrent ses tuiles ; un coup sans groupe ne marque aucune famille de combinaison. Chaque famille marquée ajoute ses points de base et son Mult une fois par niveau ; « Tuiles isolées » rapporte une fois pour chaque tuile isolée. Voici une Séquence avant et après un niveau de « Séquence » :",
     "exampleBefore": "{{pattern}}, niveau 0 : {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} niveau 1 : ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Les familles de combinaison ne se cumulent jamais entre elles : une Séquence + Paire marque seulement « Séquence + Paire », ni « Séquence » ni « Paires ».",
+    "patternTip": "Les familles de combinaison ne se cumulent jamais entre elles : une Séquence + Paire marque seulement la famille « Séquence + Paire », ni « Séquence » ni « Paires ».",
     "completeHands": "Une main de Mahjong complète ne marque aucune famille de combinaison, seulement les familles de tuiles que montrent ses tuiles.",
     "patternsIntro": "Un coup marque la seule famille de combinaison que forment ses groupes. Chaque exemple indique sa combinaison et toutes les familles qu’il marque.",
     "tilesIntro": "Les familles de tuiles s’ajoutent à la famille de combinaison dès que les tuiles du coup les montrent.",
@@ -1816,11 +1818,11 @@
       },
       "the_eye": {
         "name": "L'Œil",
-        "description": "Chaque type de main ne rapporte qu'une fois cette manche. Une répétition rapporte 0"
+        "description": "Chaque combinaison (par exemple Paire ou Séquence) ne rapporte qu'une fois cette manche. Une répétition rapporte 0"
       },
       "the_mouth": {
         "name": "La Bouche",
-        "description": "Votre premier coup fixe le type de main de la manche. Toute autre main rapporte 0"
+        "description": "Votre premier coup fixe la combinaison de la manche (par exemple Paire ou Séquence). Toute autre combinaison rapporte 0"
       },
       "the_flint": {
         "name": "Le Silex",
@@ -1868,7 +1870,7 @@
       },
       "the_ox": {
         "name": "Le Bœuf",
-        "description": "Jouer votre type de main le plus joué ramène votre or à 0"
+        "description": "Jouer votre combinaison la plus jouée (par exemple Paire ou Séquence) ramène votre or à 0"
       },
       "the_house": {
         "name": "La Maison",
@@ -2151,7 +2153,7 @@
       "title": "REPIOCHER",
       "p1": "Choisissez les tuiles dont vous ne voulez pas, autant que vous voulez, et appuyez sur REPIOCHER. Elles vont à la rivière et de nouvelles tuiles les remplacent.",
       "li1": "Les repioches gratuites des objets passent en premier ; sinon, une repioche coûte un tour.",
-      "li2": "Les tuiles repiochées restent dans la rivière jusqu’à la fin de la manche.",
+      "li2": "Les tuiles repiochées restent dans la rivière jusqu’à la fin de la manche, sauf si un effet les ramène.",
       "li3": "Certains Décrets récompensent chaque repioche, un Mandat de Boss peut l’interdire et les Saisons peuvent en changer le coût. Vérifiez d’abord les effets actifs.",
       "note": "Gardez les tuiles qui forment déjà un groupe et repiochez les isolées."
     },
@@ -2258,7 +2260,17 @@
   "errors": {
     "failedToLoad": "Échec du chargement du composant",
     "stackTrace": "Trace de pile :",
-    "componentStack": "Pile de composants :"
+    "componentStack": "Pile de composants :",
+    "somethingWentWrong": "Un problème est survenu",
+    "tryAgain": "Réessayer",
+    "componentError": "Cette section ne fonctionne plus",
+    "componentErrorDesc": "Cette section du jeu a rencontré une erreur.",
+    "retry": "Réessayer",
+    "showDetails": "Afficher les détails techniques",
+    "hideDetails": "Masquer les détails techniques",
+    "oops": "Oups ! Un problème est survenu",
+    "description": "Désolé, une erreur inattendue s’est produite. Elle a été enregistrée.",
+    "goHome": "Aller au menu"
   },
   "tableStyle": {
     "unlock": "Déblocage : {{requirement}}",
@@ -2456,7 +2468,7 @@
       },
       "ceres_orb": {
         "name": "Orbe de Cérès",
-        "description": "Monte la famille « Tuiles isolées » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +5 points de base pour chaque tuile isolée du coup."
+        "description": "Monte la famille « Tuiles isolées » de 1 niveau pour cette partie (jusqu’au niveau 9). Chaque niveau ajoute +5 points de base pour chaque tuile isolée du coup, sauf les tuiles de Pierre."
       },
       "black_hole_orb": {
         "name": "Orbe du Trou Noir",
@@ -2491,7 +2503,7 @@
       },
       "speed_omen": {
         "name": "Présage de Vitesse",
-        "description": "Gagnez 5 pièces d’or par victoire éclair de cette partie (une Petite ou une Grande Manche remportée avec des tours d’avance)."
+        "description": "Gagnez 5 pièces d’or par victoire éclair de cette partie (une Petite ou une Grande Manche remportée avec 2 tours d’avance ou plus)."
       },
       "throwback_omen": {
         "name": "Présage du Retour",
@@ -2963,11 +2975,11 @@
       },
       "arcana_jumbo": {
         "name": "Grand Paquet d'Arcanes",
-        "description": "Choisissez 2 Sceaux du Destin parmi 5"
+        "description": "Choisissez jusqu’à 2 Sceaux du Destin parmi 5"
       },
       "arcana_mega": {
         "name": "Méga Paquet d'Arcanes",
-        "description": "Choisissez 3 Sceaux du Destin parmi 6"
+        "description": "Choisissez jusqu’à 3 Sceaux du Destin parmi 6"
       },
       "celestial_normal": {
         "name": "Paquet Céleste",
@@ -2975,11 +2987,11 @@
       },
       "celestial_jumbo": {
         "name": "Grand Paquet Céleste",
-        "description": "Choisissez 2 Orbes célestes parmi 5"
+        "description": "Choisissez jusqu’à 2 Orbes célestes parmi 5"
       },
       "celestial_mega": {
         "name": "Méga Paquet Céleste",
-        "description": "Choisissez 3 Orbes célestes parmi 6"
+        "description": "Choisissez jusqu’à 3 Orbes célestes parmi 6"
       },
       "tile_normal": {
         "name": "Paquet de Tuiles",
@@ -2987,11 +2999,11 @@
       },
       "tile_jumbo": {
         "name": "Grand Paquet de Tuiles",
-        "description": "Choisissez 2 tuiles spéciales parmi 5"
+        "description": "Choisissez jusqu’à 2 tuiles spéciales parmi 5"
       },
       "tile_mega": {
         "name": "Méga Paquet de Tuiles",
-        "description": "Choisissez 3 tuiles spéciales parmi 6"
+        "description": "Choisissez jusqu’à 3 tuiles spéciales parmi 6"
       },
       "decree_normal": {
         "name": "Paquet de Décrets",
@@ -2999,11 +3011,11 @@
       },
       "decree_jumbo": {
         "name": "Grand Paquet de Décrets",
-        "description": "Choisissez 2 Décrets parmi 5"
+        "description": "Choisissez jusqu’à 2 Décrets parmi 5"
       },
       "decree_mega": {
         "name": "Méga Paquet de Décrets",
-        "description": "Choisissez 3 Décrets parmi 6"
+        "description": "Choisissez jusqu’à 3 Décrets parmi 6"
       },
       "void_normal": {
         "name": "Paquet du Vide",
@@ -3011,11 +3023,11 @@
       },
       "void_jumbo": {
         "name": "Grand Paquet du Vide",
-        "description": "Choisissez 2 Guides du Vide parmi 5"
+        "description": "Choisissez jusqu’à 2 Guides du Vide parmi 5"
       },
       "void_mega": {
         "name": "Méga Paquet du Vide",
-        "description": "Choisissez 3 Guides du Vide parmi 6"
+        "description": "Choisissez jusqu’à 3 Guides du Vide parmi 6"
       }
     }
   },
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Cinq identiques",
-      "explain": "Cinq tuiles identiques : une de plus que le mur n’en contient."
+      "explain": "Cinq tuiles identiques. Le mur en contient quatre de chaque au départ : il vous faut une copie supplémentaire."
     },
     "six_of_a_kind": {
       "name": "Six identiques",
-      "explain": "Six tuiles identiques : deux de plus que le mur n’en contient."
+      "explain": "Six tuiles identiques. Le mur en contient quatre de chaque au départ : il vous faut deux copies supplémentaires."
     },
     "straight4": {
       "name": "Suite de quatre",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Familles mêlées",
-      "covers": "Tout coup contenant des tuiles numérotées d’au moins deux familles : Caractères, Cercles et Bambous."
+      "covers": "Tout coup contenant des tuiles numérotées d’au moins deux familles : Caractères, Cercles et Bambous. Une tuile Joker convient à toutes les familles : elle n’en ajoute donc jamais une deuxième."
     },
     "Loose": {
       "name": "Tuiles isolées",
-      "covers": "Rapporte une fois pour chaque tuile isolée du coup : une tuile qui n’appartient à aucun groupe."
+      "covers": "Rapporte une fois pour chaque tuile isolée du coup : une tuile qui n’appartient à aucun groupe. Les tuiles de Pierre ne comptent jamais."
     },
     "All": {
       "name": "Toutes les familles",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Orbe Céleste utilisé",
-    "title": "{{name}} utilisé : yaku amélioré"
+    "title": "{{name}} utilisé : famille de mains améliorée"
   },
   "omenReveal": {
     "title": "Présage obtenu : {{name}}",
@@ -3355,7 +3367,7 @@
       "shop": "Maintenant, dans cette Maison de Thé. Son effet est déjà sur les offres.",
       "round": "Au début de la prochaine manche.",
       "hand": "Sur votre prochaine main comptée.",
-      "voidScript": "La prochaine fois que vous utilisez un Écrit du Vide.",
+      "voidScript": "La prochaine fois que vous utilisez un Guide du Vide.",
       "now": "Immédiatement. Il est déjà appliqué.",
       "run": "Sur chaque main comptée jusqu’à la fin de la partie.",
       "nextOmen": "Quand vous obtiendrez votre prochain Présage."

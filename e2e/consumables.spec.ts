@@ -352,7 +352,7 @@ test('a targeted Script discloses its penalty and applies both effect and cost o
   await openAndUse(page, itemId)
   const dialog = targetDialog(page)
   await expect(dialog).toContainText(
-    'Lock 1 random tile in the river: it cannot be drawn again.'
+    'Send 1 random tile from your rack to the river for the rest of the round.'
   )
   await expect(dialog.locator('[data-consumable-confirm]')).toBeDisabled()
   await dialog.locator('[data-consumable-target="source"]').click()

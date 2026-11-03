@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Mahusay na paggamit ng tile",
     "tipEfficiency": "Itabi ang mga tile na puwedeng makakumpleto ng iba't ibang grupo. Gamitin ang MAG-REDRAW para palitan ang mga nakahiwalay na tile, habang isinasaalang-alang ang gastos na turno at mga libreng redraw.",
     "tipWallTitle": "Bilangin ang natitirang mga tile",
-    "tipWall": "Suriin ang ilog at natitirang pader bago maghabol ng isang partikular na tile. Nananatili sa ilog ang mga tile na pinalitan sa redraw hanggang matapos ang round.",
+    "tipWall": "Suriin ang ilog at natitirang pader bago maghabol ng isang partikular na tile. Nananatili sa ilog ang mga tile na pinalitan sa redraw hanggang matapos ang round, maliban kung may epektong magbabalik sa kanila.",
     "tipMandateTitle": "Basahin nang maaga ang mga mandato",
     "tipMandate": "Basahin ang paparating na Mandato ng Boss at maghanda ng kombinasyon ng mga tile at gamit na makakapuntos sa ilalim ng restriksyon nito.",
     "tipLossTitle": "Matuto sa pagkatalo",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Bawat hawak na Globo ay nagbibigay ng ×1.5 Mult kapag nakapuntos ang pamilya ng Yaku nito, isang beses bawat Globo sa bawat laro. Tugma ang Globo ng Itim na Butas sa anumang Yaku na nakapuntos.",
+    "description": "Bawat hawak na Globo ay nagbibigay ng ×1.5 Mult kapag iniiskor ng paglalaro ang pamilya ng kamay nito, isang beses bawat Globo sa bawat paglalaro. Tugma ang Globo ng Itim na Butas sa anumang pamilya ng kamay na iniiskor ng paglalaro.",
     "holdingNote": "Ginagantimpalaan ng Bantayan ng mga Bituin ang paghawak sa Globong ito. Ang paggamit nito ay nagbibigay ng permanenteng upgrade ngunit inaalis ang bonus sa paghawak."
   },
   "closedHandAusterity": {
     "name": "Disiplina ng Saradong Kamay",
-    "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na laro at ang mga kamay na binuo ng Awa sa Shanten.",
+    "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na paglalaro, at ang mga kamay na binuo ng Awa sa Shanten, Kasulatan ng Eklipse o Kasulatan ng Katahimikan.",
     "progress": "Mga buong kamay sa ngayon: {{count}}. Susunod: ×{{factor}} bago ang mga Bulaklak."
   },
   "yakuRepetition": {
@@ -351,7 +351,7 @@
     "overCapacity": "Nabawasan ang kapasidad: mapapanatili mo ang mga hawak na Dekreto. Magbakante bago kumuha ng dagdag."
   },
   "yakuUpgrades": {
-    "title": "Mga pag-upgrade ng yaku",
+    "title": "Mga upgrade ng Globo",
     "level": "Antas {{level}} / {{max}}",
     "bonus": "+{{chips}} batayang puntos · +{{mult}} Mult",
     "triggers": "Bilang ng pag-iskor: {{total}}",
@@ -442,7 +442,7 @@
       },
       "speed_omen": {
         "name": "Pangitain ng Bilis",
-        "description": "Makakuha ng 5 Ginto sa bawat mabilis na panalo sa run na ito (Maliit o Malaking round na natapos nang may natitirang turno)."
+        "description": "Makakuha ng 5 Ginto sa bawat mabilis na panalo sa run na ito (Maliit o Malaking round na natapos nang may 2 o higit pang natitirang turno)."
       },
       "throwback_omen": {
         "name": "Pangitain ng Pagbabalik-tanaw",
@@ -727,7 +727,7 @@
     "penalty_lose_tile": "Mawawalan ng 1 sapalarang tile.",
     "penalty_lose_gold": "Mawawala ang lahat ng ginto.",
     "penalty_lose_hand_size": "Mawawalan ng {{count}} puwesto sa rack sa natitirang bahagi ng run na ito.",
-    "penalty_lock_tile": "I-lock ang 1 sapalarang tile sa ilog: hindi na ito mabubunot muli.",
+    "penalty_lock_tile": "Mapupunta sa ilog ang 1 sapalarang tile mula sa rack mo at mananatili roon hanggang matapos ang round.",
     "penalty_lose_decree_slot": "Mawawalan ng {{count}} puwesto ng Dekreto sa susunod na round.",
     "penalty_halve_base_score": "Hatiin ang batayang Puntos ng susunod na laro.",
     "penalty_destroy_decrees": "Masisira ang lahat ng ibang Dekreto.",
@@ -998,8 +998,8 @@
       "title": "Dalawang paraan para laruin ito",
       "dismiss": "Itago",
       "pointsNow": "Puntos ngayon",
-      "keepsPace": "Nakakahabol: kailangan ng kamay na ito ng {{required}}.",
-      "behindPace": "Kulang sa {{required}} na kailangan ng kamay na ito.",
+      "keepsPace": "Nakakahabol: kailangan ng {{required}} puntos sa paglalarong ito.",
+      "behindPace": "Kulang sa {{required}} puntos na kailangan sa paglalarong ito.",
       "buildToward": "Bumuo patungo sa {{pattern}}",
       "buildTowardPlain": "Bumuo patungo sa isang hugis",
       "shapeCost": "Mas mababa ng {{difference}} puntos ngayon gamit ang isang buong grupo. Hindi nito hinuhulaan ang susunod na bunot.",
@@ -1044,7 +1044,8 @@
       "adCountdown": "Handa ang gantimpala mo sa loob ng {{seconds}} s",
       "adReady": "Handa na ang gantimpala",
       "adClaim": "Kunin ang +1 turno"
-    }
+    },
+    "decreeDetails": "Mga detalye ng {{name}}"
   },
   "rounds": {
     "small": "Maliit na Round",
@@ -1105,7 +1106,7 @@
       "rarity_rare": "Bihira",
       "rarity_legendary": "Maalamat",
       "items": "Mga Item",
-      "availableCount": "Available: {{count}}",
+      "availableCount": "Magagamit: {{count}}",
       "allPurchased": "Nabili na ang lahat ng item!",
       "packs": "Mga Pakete ng Biyaya",
       "noPacks": "Walang available na pakete",
@@ -1167,7 +1168,8 @@
       "pack": "Pakete · pumili ng {{choose}} sa {{from}}",
       "charter": "Imperyal na Karta · permanenteng upgrade",
       "charterHelp": "Ang Imperyal na Karta ay permanenteng upgrade sa natitirang laro. Walang slot na ginagamit at hindi maibebenta.",
-      "orbHelp": "Ginagamit sa sandaling kunin mo: agad tumataas ang antas ng pamilya at nananatili sa buong run."
+      "orbHelp": "Ginagamit sa sandaling kunin mo: agad tumataas ang antas ng pamilya at nananatili sa buong run.",
+      "packChoice": "Pumili ng hanggang {{choose}} sa {{from}} gantimpala: mas marami ang iniaalok ng paketeng ito kaysa karaniwan."
     },
     "offerLabel": "{{name}}, {{price}} ginto",
     "buyFor": "Bilhin · {{price}} ginto",
@@ -1176,7 +1178,7 @@
       "buy": "I-tap ang anumang gamit para makita ang epekto, saka pindutin ang Bilhin. Binabago ng Dekreto ang patakaran, agad gumagana ang Globo at Selyo ng Kapalaran (itatanong ng Selyo ng Kapalaran kung aling mga tile sa pader mo ang babaguhin), ginagamit sa round ang Kasulatan, pinapapili ka ng Pakete ng gantimpala, at ina-upgrade ng Karta ang buong laro.",
       "interest": "May interes ang gintong itinatabi mo: +1 bawat 5 na hawak mo pagtatapos ng round, hanggang +{{cap}}.",
       "cashOut": "Pumapasok sa pitaka ang bayad ng round pagdating mo, isang abiso bawat pinagmulan: ang pagtapos ng round, interes, mga Dekreto, at anumang sinisingil na upa.",
-      "build": "Nakalista sa build mo ang mga Dekreto mo katabi ng mga pag-upgrade ng yaku: buksan ang balumbon para basahin ang mga tuntunin o ibenta ito, o ang upgrade para makita ang antas nito. Bawat bili ay may sariling Bilhin."
+      "build": "Nakalista sa build mo ang mga Dekreto mo katabi ng mga upgrade ng Globo: buksan ang balumbon para basahin ang mga tuntunin o ibenta ito, o ang upgrade para makita ang antas nito. Bawat bili ay may sariling Bilhin."
     },
     "sealUsed": "Nagamit ang {{name}}",
     "sealWall": {
@@ -1286,7 +1288,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Debosyon sa Iisang Suit",
-        "description": "×1.1 Mult sa bawat nilarong tile ng pinakamaraming suit sa laro, nagpapatong-patong (mga ×1.6 kapag lima)."
+        "description": "×1.1 Mult sa bawat nilarong tile na kabilang sa pinakamaraming may-numerong suit sa paglalarong ito, nagpapatong-patong (mga ×1.6 kapag lima)."
       },
       "decree-half-suited": {
         "name": "Kalahating Suit",
@@ -1294,7 +1296,7 @@
       },
       "decree-photograph": {
         "name": "Larawan",
-        "description": "×2 Mult kung may Honor (Hangin o Dragon) sa laro"
+        "description": "×2 Mult kung may Honor (Hangin o Dragon) sa mga tile na nilaro mo sa pagkakataong ito"
       },
       "decree-polished-stone": {
         "name": "Pinakintab na Bato",
@@ -1462,7 +1464,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Tagapagtaguyod ng Sequence",
-        "description": "+3 Mult kapag umiskor ka ng Lahat Sequence: buong kamay na may apat na sequence at isang pares na hindi Dragon o Hanging Silangan"
+        "description": "+3 Mult kapag umiskor ka ng Lahat Sequence: buong kamay na may apat na sequence na walang nilalaktawang numero at isang pares na hindi Dragon o Hanging Silangan"
       },
       "decree-manzu-emperor": {
         "name": "Emperador ng Karakter",
@@ -1886,7 +1888,7 @@
       },
       "closed_hand_austerity": {
         "name": "Disiplina ng Saradong Kamay",
-        "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na laro at ang mga kamay na binuo ng Awa sa Shanten."
+        "description": "Bawat buong kamay ng Mahjong ay may ×1.5, na lumalago nang ×1.2 sa bawat naunang buong kamay sa run na ito, hanggang ×4 bago ang mga bonus ng Bulaklak. Hindi kasama ang mas maliliit na paglalaro, at ang mga kamay na binuo ng Awa sa Shanten, Kasulatan ng Eklipse o Kasulatan ng Katahimikan."
       },
       "terminal_devotion": {
         "name": "Debosyon sa mga Terminal",
@@ -1919,10 +1921,10 @@
     "patternsTitle": "Mga pamilya ng pattern",
     "tilesTitle": "Mga pamilya ng tile",
     "intro": "Itinataas ng Makalangit na Globo ang isang pamilya ng laro nang isang antas sa natitirang bahagi ng run, mula 0 hanggang {{max}}. Ginagamit ito sa sandaling kunin mo.",
-    "stacking": "Bawat laro ay umiiskor ng isang pamilya ng pattern, na pinapangalanan ng mga grupo nito, at ng bawat pamilya ng tile na makikita sa mga tile nito. Nagdaragdag ang bawat pamilyang iniiskor nito ng batayang puntos at Mult ng pamilyang iyon nang isang beses bawat antas; may bayad ang Mga solong tile nang isang beses sa bawat solong tile. Narito ang isang Sequence bago at pagkatapos ng isang antas ng Sequence:",
+    "stacking": "Hindi hihigit sa isang pamilya ng pattern ang iniiskor ng isang paglalaro, ang binubuo ng mga grupo nito, kasama ang bawat pamilya ng tile na makikita sa mga tile nito; walang pamilya ng pattern na iniiskor ang paglalarong walang grupo. Nagdaragdag ang bawat pamilyang iniiskor nito ng batayang puntos at Mult ng pamilyang iyon nang isang beses bawat antas; nagbibigay ng bonus ang Mga solong tile nang isang beses sa bawat solong tile. Narito ang isang Sequence bago at pagkatapos ng isang antas ng Sequence:",
     "exampleBefore": "{{pattern}}, antas 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}}, antas 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Hindi kailanman nagpapatong ang mga pamilya ng pattern: ang Sequence + Pares ay umiiskor lang ng Sequence + Pares, hindi ng Sequence o Mga Pares.",
+    "patternTip": "Hindi kailanman nagpapatong ang mga pamilya ng pattern: ang Sequence + Pares ay umiiskor lang ng pamilyang Sequence + Pares, hindi ng Sequence o Mga Pares.",
     "completeHands": "Walang iniiskor na pamilya ng pattern ang buong kamay ng Mahjong, tanging ang mga pamilya ng tile na makikita sa mga tile nito.",
     "patternsIntro": "Umiiskor ang isang laro ng iisang pamilya ng pattern na binubuo ng mga grupo nito. Pinapangalanan ng bawat halimbawa ang pattern nito at bawat pamilyang iniiskor nito.",
     "tilesIntro": "Nagpapatong ang mga pamilya ng tile sa ibabaw ng pamilya ng pattern tuwing makikita ang mga ito sa mga tile ng laro.",
@@ -2125,11 +2127,11 @@
       },
       "the_eye": {
         "name": "Ang Mata",
-        "description": "Isang beses lang makakapuntos ang bawat uri ng kamay sa round na ito. 0 ang inulit"
+        "description": "Isang beses lang makakapuntos ang bawat pattern (gaya ng Pares o Sequence) sa round na ito. 0 ang inulit na pattern"
       },
       "the_mouth": {
         "name": "Ang Bibig",
-        "description": "Ang unang laro mo ang magtatakda ng uri ng kamay sa round na ito. 0 ang ibang kamay"
+        "description": "Ang unang paglalaro mo ang magtatakda ng pattern ng round na ito (gaya ng Pares o Sequence). 0 ang ibang pattern"
       },
       "the_flint": {
         "name": "Ang Batong Apoy",
@@ -2177,7 +2179,7 @@
       },
       "the_ox": {
         "name": "Ang Baka",
-        "description": "Ginagawang 0 ang iyong Ginto kapag nilaro ang pinakamadalas mong laruin na uri ng kamay"
+        "description": "Ginagawang 0 ang iyong Ginto kapag nilaro ang pattern na pinakamadalas mong laruin (gaya ng Pares o Sequence)"
       },
       "the_house": {
         "name": "Ang Bahay",
@@ -2450,7 +2452,7 @@
       "title": "REDRAW",
       "p1": "Piliin ang mga tile na ayaw mo, kahit ilan, at pindutin ang MAG-REDRAW. Mapupunta sila sa ilog at papalitan ng mga bagong tile.",
       "li1": "Unang ginagamit ang libreng redraw mula sa item; kung wala, isang turno ang halaga ng REDRAW.",
-      "li2": "Nananatili sa ilog ang mga tile na ni-redraw hanggang matapos ang round.",
+      "li2": "Nananatili sa ilog ang mga tile na ni-redraw hanggang matapos ang round, maliban kung may epektong magbabalik sa kanila.",
       "li3": "May mga Dekretong nagbibigay ng gantimpala sa bawat REDRAW, puwede itong ipagbawal ng Mandato ng Boss, at puwedeng baguhin ng mga Panahon ang halaga nito. Suriin muna ang mga aktibong epekto.",
       "note": "Itabi ang mga tile na bumubuo na ng grupo, at i-redraw ang mga nag-iisa."
     },
@@ -2817,7 +2819,17 @@
   "errors": {
     "failedToLoad": "Nabigong i-load ang component",
     "stackTrace": "Stack trace:",
-    "componentStack": "Component stack:"
+    "componentStack": "Component stack:",
+    "somethingWentWrong": "May nangyaring mali",
+    "tryAgain": "Subukang Muli",
+    "componentError": "Huminto sa paggana ang bahaging ito",
+    "componentErrorDesc": "Nagkaroon ng error ang bahaging ito ng laro.",
+    "retry": "Subukan Muli",
+    "showDetails": "Ipakita ang teknikal na detalye",
+    "hideDetails": "Itago ang teknikal na detalye",
+    "oops": "Ay! May nangyaring mali",
+    "description": "Paumanhin, may hindi inaasahang nangyari. Naitala na ang error.",
+    "goHome": "Pumunta sa Menu"
   },
   "tableStyle": {
     "unlock": "Upang buksan: {{requirement}}",
@@ -2982,7 +2994,7 @@
       },
       "ceres_orb": {
         "name": "Globo ng Ceres",
-        "description": "Itinataas ng 1 antas ang Mga solong tile sa run na ito (hanggang antas 9). Bawat antas ay nagdaragdag ng +5 batayang puntos sa bawat solong tile sa isang laro."
+        "description": "Itinataas ng 1 antas ang Mga solong tile sa run na ito (hanggang antas 9). Bawat antas ay nagdaragdag ng +5 batayang puntos sa bawat solong tile sa isang paglalaro, maliban sa mga tile na Bato."
       },
       "black_hole_orb": {
         "name": "Globo ng Itim na Butas",
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Limang Magkapareho",
-      "explain": "Limang magkaparehong tile, isang higit sa nasa pader."
+      "explain": "Limang magkaparehong tile. Apat lang ng bawat isa ang laman ng pader sa simula, kaya kailangan mo ng isang dagdag na kopya."
     },
     "six_of_a_kind": {
       "name": "Anim na Magkapareho",
-      "explain": "Anim na magkaparehong tile, dalawang higit sa nasa pader."
+      "explain": "Anim na magkaparehong tile. Apat lang ng bawat isa ang laman ng pader sa simula, kaya kailangan mo ng dalawang dagdag na kopya."
     },
     "straight4": {
       "name": "Straight na apat",
@@ -3229,7 +3241,7 @@
     "secretTitle": "Mga lihim na kamay",
     "secretFound": "Natuklasan ang lihim na kamay",
     "secretInGuide": "Nasa ? gabay na ito ngayon.",
-    "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2, ang straight na anim at ang Limang Magkapareho ay +3, at ang Anim na Magkapareho ay +4. Kapag may higit sa isang paraan ng pagpapangkat, ang pinakamataas na bayad ang binibilang. Isang beses lang binibilang ang bawat tile; tanging ang nagising na Plum ang nagpapahintulot sa dalawang sequence na magbahagi ng isa, na ipinapakita bilang Sequence ×2. Hanggang 6 na tile ang isang laro maliban kung buong kamay ng Mahjong.",
+    "patternRule": "Bawat grupo pagkatapos ng una ay +1 Mult. Ang triplet at straight na apat ay +1 pa, ang quad at straight na lima ay +2, ang straight na anim at ang Limang Magkapareho ay +3, at ang Anim na Magkapareho ay +4. Kapag may higit sa isang paraan ng pagpapangkat sa mga tile, ang paraang nagbibigay ng pinakamataas na puntos ang ginagamit. Isang beses lang binibilang ang bawat tile; tanging ang nagising na Plum ang nagpapahintulot sa dalawang sequence na magbahagi ng isa, na ipinapakita bilang Sequence ×2. Hanggang 6 na tile ang isang paglalaro maliban kung buong kamay ng Mahjong.",
     "tilesTitle": "Mga tile",
     "tilesHelp": "Ang Mga Karakter ay may numerong Tsino 一 hanggang 九; ang Bilog at Kawayan ay bilang ang ipinapakita (ibon ang 1 ng Kawayan). Mabubuksan ang numero sa tile sa Settings.",
     "honorsHelp": "Bawat Hangin ay {{wind}} puntos, {{windGroup}} sa loob ng grupo. Bawat Dragon ay +{{dragon}} Mult, +{{dragonGroup}} sa loob ng grupo.",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Halong Suit",
-      "covers": "Anumang larong may mga may-numerong tile mula sa dalawa o higit pang suit: Mga Karakter, Mga Bilog at Mga Kawayan."
+      "covers": "Anumang paglalarong may mga may-numerong tile mula sa dalawa o higit pang suit: Mga Karakter, Mga Bilog at Mga Kawayan. Bagay ang tile na Wild sa lahat ng suit, kaya hindi ito kailanman nagdaragdag ng ikalawang suit."
     },
     "Loose": {
       "name": "Mga solong tile",
-      "covers": "May bayad nang isang beses sa bawat solong tile sa isang laro: tile na hindi kasama sa anumang grupo."
+      "covers": "Nagbibigay ng bonus nang isang beses sa bawat solong tile sa isang paglalaro: tile na hindi kasama sa anumang grupo. Hindi kailanman kasama ang mga tile na Bato."
     },
     "All": {
       "name": "Lahat ng pamilya",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Nagamit ang Makalangit na Globo",
-    "title": "Nagamit ang {{name}}: na-upgrade ang yaku"
+    "title": "Nagamit ang {{name}}: na-upgrade ang pamilya ng kamay"
   },
   "omenReveal": {
     "title": "Nakuha ang Pangitain: {{name}}",

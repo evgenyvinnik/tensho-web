@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Tile efficiency",
     "tipEfficiency": "Keep tiles that can complete several groups. Use REDRAW to replace isolated tiles, allowing for its Turn cost and any free redraws.",
     "tipWallTitle": "Count remaining tiles",
-    "tipWall": "Check the river and remaining wall before chasing a specific tile. Redrawn tiles stay in the river for the rest of the round.",
+    "tipWall": "Check the river and remaining wall before chasing a specific tile. Redrawn tiles stay in the river for the rest of the round, unless an effect brings them back.",
     "tipMandateTitle": "Read mandates early",
     "tipMandate": "Read the upcoming Boss Mandate and prepare a build that can score under its restriction.",
     "tipLossTitle": "Learn from a loss",
@@ -281,12 +281,12 @@
     }
   },
   "observatory": {
-    "description": "Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play. The Black Hole Orb matches any scored Yaku.",
+    "description": "Each held Orb gives ×1.5 Mult when the play scores its hand family, once per Orb per play. The Black Hole Orb matches any hand family the play scores.",
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
   },
   "closedHandAusterity": {
     "name": "Closed-Hand Austerity",
-    "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.",
+    "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays, and hands finished by Shanten Clemency, Script of Eclipse or Script of Silence, do not count.",
     "progress": "Complete hands so far: {{count}}. Next one: ×{{factor}} before Flowers."
   },
   "yakuRepetition": {
@@ -351,7 +351,7 @@
     "overCapacity": "Capacity reduced: you keep your owned Decrees. Make room before acquiring more."
   },
   "yakuUpgrades": {
-    "title": "Yaku upgrades",
+    "title": "Orb upgrades",
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} base points · +{{mult}} Mult",
     "triggers": "Times scored: {{total}}",
@@ -428,7 +428,7 @@
     "penalty_lose_tile": "Lose 1 random tile.",
     "penalty_lose_gold": "Lose all gold.",
     "penalty_lose_hand_size": "Lose {{count}} rack space for the rest of this run.",
-    "penalty_lock_tile": "Lock 1 random tile in the river: it cannot be drawn again.",
+    "penalty_lock_tile": "Send 1 random tile from your rack to the river for the rest of the round.",
     "penalty_lose_decree_slot": "Lose {{count}} Decree slot next round.",
     "penalty_halve_base_score": "Halve base Points for the next play.",
     "penalty_destroy_decrees": "Destroy all other Decrees.",
@@ -741,7 +741,8 @@
       "adCountdown": "Your reward is ready in {{seconds}} s",
       "adReady": "Reward ready",
       "adClaim": "Claim +1 Turn"
-    }
+    },
+    "decreeDetails": "{{name}} details"
   },
   "rounds": {
     "small": "Small Round",
@@ -855,7 +856,7 @@
       "seal": "Fate Seal · works at once",
       "sealHelp": "Used the moment you take it: choose the wall tiles it changes, and they stay changed for the whole run.",
       "sealHelpInstant": "Used the moment you take it.",
-      "orb": "Celestial Orb · upgrades a family of hands",
+      "orb": "Celestial Orb · upgrades a hand family",
       "orbFamily": "Celestial Orb · {{family}}",
       "script": "Void Script · powerful, with a cost",
       "consumableHelp": "Kept with your items until used. Tap it on the table to use it.",
@@ -864,7 +865,8 @@
       "pack": "Blessing Pack · choose {{choose}} of {{from}}",
       "charter": "Imperial Charter · permanent run upgrade",
       "charterHelp": "An Imperial Charter is a permanent upgrade for the rest of this run. It never takes a slot and can’t be sold.",
-      "orbHelp": "Used the moment you take it: the family's level rises at once and stays up for the whole run."
+      "orbHelp": "Used the moment you take it: the family's level rises at once and stays up for the whole run.",
+      "packChoice": "Choose up to {{choose}} of {{from}} rewards: this pack offers more than usual."
     },
     "offerLabel": "{{name}}, {{price}} Gold",
     "buyFor": "Buy · {{price}} Gold",
@@ -873,7 +875,7 @@
       "buy": "Tap any item to see what it does, then press Buy. Decrees change the rules, Orbs and Fate Seals work at once (a Fate Seal asks which wall tiles to change), Scripts are used during a round, Packs let you pick rewards, and Charters upgrade the whole run.",
       "interest": "Gold you keep earns interest: +1 Gold for every 5 you hold when a round ends, up to +{{cap}}.",
       "cashOut": "Your round's pay lands in the purse as you arrive, one toast per source: the clear itself, interest, Decrees and any rentals charged.",
-      "build": "Your build shows the Decrees you own beside your Yaku upgrades: open a scroll to read its rules or sell it, or an upgrade to see its level. Every purchase happens with its own Buy button."
+      "build": "Your build shows the Decrees you own beside your Orb upgrades: open a scroll to read its rules or sell it, or an upgrade to see its level. Every purchase happens with its own Buy button."
     },
     "sealUsed": "{{name}} used",
     "sealWall": {
@@ -1087,7 +1089,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Sequence Purist",
-        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences plus a pair that is not Dragons or East Wind"
+        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences, none skipping a number, plus a pair that is not Dragons or East Wind"
       },
       "decree-manzu-emperor": {
         "name": "Emperor of Characters",
@@ -1551,7 +1553,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Pure Suit Asceticism",
-        "description": "×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6)."
+        "description": "×1.1 Mult for each played tile of the play’s most common numbered suit, compounding (five give about ×1.6)."
       },
       "broken_stair_edict": {
         "name": "Broken Stair Edict",
@@ -1583,7 +1585,7 @@
       },
       "closed_hand_austerity": {
         "name": "Closed-Hand Austerity",
-        "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count."
+        "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays, and hands finished by Shanten Clemency, Script of Eclipse or Script of Silence, do not count."
       },
       "terminal_devotion": {
         "name": "Terminal Devotion",
@@ -1616,10 +1618,10 @@
     "patternsTitle": "Pattern families",
     "tilesTitle": "Tile families",
     "intro": "A Celestial Orb raises one family of plays by a level for the rest of the run, from 0 up to {{max}}. It is used the moment you take it.",
-    "stacking": "Every play scores one pattern family, named by its groups, plus every tile family its tiles show. Each family it scores adds that family's base points and Mult once per level; Loose Tiles pays once for every loose tile. Here is a Sequence before and after one level of Sequence:",
+    "stacking": "A play scores at most one pattern family, the one its groups make, plus every tile family its tiles show; a play with no groups scores no pattern family. Each family it scores adds that family's base points and Mult once per level; Loose Tiles pays once for every loose tile. Here is a Sequence before and after one level of Sequence:",
     "exampleBefore": "{{pattern}}, level 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}} level 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Pattern families never stack with each other: a Sequence + Pair raises only Sequence + Pair, not Sequence or Pairs.",
+    "patternTip": "Pattern families never stack with each other: a Sequence + Pair scores only the Sequence + Pair family, not Sequence or Pairs.",
     "completeHands": "A complete Mahjong hand scores no pattern family, only the tile families its tiles show.",
     "patternsIntro": "A play scores the one pattern family its groups make. Each example names its pattern and every family it scores.",
     "tilesIntro": "Tile families stack on top of the pattern family whenever the play's tiles show them.",
@@ -1812,11 +1814,11 @@
       },
       "the_eye": {
         "name": "The Eye",
-        "description": "Each hand type scores only once this round. A repeat scores 0"
+        "description": "Each play pattern (such as Pair or Sequence) scores only once this round. A repeat scores 0"
       },
       "the_mouth": {
         "name": "The Mouth",
-        "description": "Your first play sets this round’s hand type. Any other hand scores 0"
+        "description": "Your first play sets this round’s pattern (such as Pair or Sequence). Any other pattern scores 0"
       },
       "the_flint": {
         "name": "The Flint",
@@ -1864,7 +1866,7 @@
       },
       "the_ox": {
         "name": "The Ox",
-        "description": "Playing your most-played hand type sets your Gold to 0"
+        "description": "Playing your most-played pattern (such as Pair or Sequence) sets your Gold to 0"
       },
       "the_house": {
         "name": "The House",
@@ -2147,7 +2149,7 @@
       "title": "REDRAW",
       "p1": "Select the tiles you don't want, as many as you like, and press REDRAW. They go to the river and new tiles take their place.",
       "li1": "Free redraws from items are used first; otherwise a REDRAW costs one Turn.",
-      "li2": "Redrawn tiles stay in the river for the rest of the round.",
+      "li2": "Redrawn tiles stay in the river for the rest of the round, unless an effect brings them back.",
       "li3": "Some Decrees reward each REDRAW, a Boss Mandate can forbid it, and Seasons can change its cost. Check the active effects first.",
       "note": "Keep the tiles that already make a group, and redraw the loners."
     },
@@ -2379,7 +2381,7 @@
       },
       "speed_omen": {
         "name": "Speed Omen",
-        "description": "Gain 5 Gold for each swift clear this run (a Small or Large round cleared with Turns to spare)."
+        "description": "Gain 5 Gold for each swift clear this run (a Small or Large round cleared with 2 or more Turns to spare)."
       },
       "throwback_omen": {
         "name": "Throwback Omen",
@@ -2643,7 +2645,7 @@
       },
       "ceres_orb": {
         "name": "Ceres Orb",
-        "description": "Raises Loose Tiles by 1 level for this run (up to level 9). Each level adds +5 base points for every loose tile in a play."
+        "description": "Raises Loose Tiles by 1 level for this run (up to level 9). Each level adds +5 base points for every loose tile in a play, except Stone tiles."
       },
       "black_hole_orb": {
         "name": "Black Hole Orb",
@@ -2773,7 +2775,17 @@
   "errors": {
     "failedToLoad": "Failed to load component",
     "stackTrace": "Stack trace:",
-    "componentStack": "Component stack:"
+    "componentStack": "Component stack:",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Try Again",
+    "componentError": "This part stopped working",
+    "componentErrorDesc": "This part of the game ran into an error.",
+    "retry": "Retry",
+    "showDetails": "Show technical details",
+    "hideDetails": "Hide technical details",
+    "oops": "Oops! Something went wrong",
+    "description": "Sorry, something unexpected happened. The error has been logged.",
+    "goHome": "Go to Menu"
   },
   "tableStyle": {
     "unlock": "Unlock: {{requirement}}",
@@ -3138,11 +3150,11 @@
     },
     "five_of_a_kind": {
       "name": "Five of a Kind",
-      "explain": "Five identical tiles: one more than the wall holds."
+      "explain": "Five identical tiles. The wall starts with four of each, so you need an extra copy."
     },
     "six_of_a_kind": {
       "name": "Six of a Kind",
-      "explain": "Six identical tiles: two more than the wall holds."
+      "explain": "Six identical tiles. The wall starts with four of each, so you need two extra copies."
     },
     "straight4": {
       "name": "Straight of Four",
@@ -3307,11 +3319,11 @@
     },
     "MixedSuits": {
       "name": "Mixed Suits",
-      "covers": "Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo."
+      "covers": "Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo. A Wild tile fits every suit, so it never adds a second one."
     },
     "Loose": {
       "name": "Loose Tiles",
-      "covers": "Pays once for every loose tile in a play: a tile that belongs to no group."
+      "covers": "Pays once for every loose tile in a play: a tile that belongs to no group. Stone tiles never count."
     },
     "All": {
       "name": "Every family",
@@ -3335,7 +3347,7 @@
   },
   "orbReveal": {
     "used": "Celestial Orb used",
-    "title": "{{name}} used: Yaku upgraded"
+    "title": "{{name}} used: hand family upgraded"
   },
   "omenReveal": {
     "title": "Omen earned: {{name}}",

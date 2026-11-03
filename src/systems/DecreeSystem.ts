@@ -434,7 +434,7 @@ export const PURE_SUIT_ASCETICISM: Decree = {
   id: 'pure_suit_asceticism',
   name: 'Pure Suit Asceticism',
   description:
-    '×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6).',
+    '×1.1 Mult for each played tile of the play’s most common numbered suit, compounding (five give about ×1.6).',
   category: 'Scaling',
   rarity: 'RegionalMandate',
   cost: 6,
@@ -586,7 +586,7 @@ export const CLOSED_HAND_AUSTERITY: Decree = {
   id: 'closed_hand_austerity',
   name: 'Closed-Hand Austerity',
   description:
-    'Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.',
+    'Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays, and hands finished by Shanten Clemency, Script of Eclipse or Script of Silence, do not count.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 8,

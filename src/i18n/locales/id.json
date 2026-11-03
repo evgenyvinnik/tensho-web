@@ -113,7 +113,7 @@
     "tipEfficiencyTitle": "Efisiensi ubin",
     "tipEfficiency": "Simpan ubin yang bisa melengkapi beberapa grup. Gunakan TARIK ULANG untuk mengganti ubin yang menyendiri, dengan memperhitungkan biaya Giliran dan tarik ulang gratis yang tersedia.",
     "tipWallTitle": "Hitung sisa ubin",
-    "tipWall": "Periksa sungai dan sisa tembok sebelum mengejar ubin tertentu. Ubin yang diganti lewat tarik ulang tetap di sungai hingga ronde berakhir.",
+    "tipWall": "Periksa sungai dan sisa tembok sebelum mengejar ubin tertentu. Ubin yang diganti lewat tarik ulang tetap di sungai hingga ronde berakhir, kecuali ada efek yang mengembalikannya.",
     "tipMandateTitle": "Baca mandat lebih awal",
     "tipMandate": "Baca Mandat Bos yang akan datang dan siapkan susunan yang bisa mencetak skor di bawah batasannya.",
     "tipLossTitle": "Belajar dari kekalahan",
@@ -352,11 +352,11 @@
       },
       "arcana_jumbo": {
         "name": "Paket Arkana Jumbo",
-        "description": "Pilih 2 dari 5 Segel Takdir"
+        "description": "Pilih hingga 2 dari 5 Segel Takdir"
       },
       "arcana_mega": {
         "name": "Paket Arkana Mega",
-        "description": "Pilih 3 dari 6 Segel Takdir"
+        "description": "Pilih hingga 3 dari 6 Segel Takdir"
       },
       "celestial_normal": {
         "name": "Paket Langit",
@@ -364,11 +364,11 @@
       },
       "celestial_jumbo": {
         "name": "Paket Langit Jumbo",
-        "description": "Pilih 2 dari 5 Orb Langit"
+        "description": "Pilih hingga 2 dari 5 Orb Langit"
       },
       "celestial_mega": {
         "name": "Paket Langit Mega",
-        "description": "Pilih 3 dari 6 Orb Langit"
+        "description": "Pilih hingga 3 dari 6 Orb Langit"
       },
       "tile_normal": {
         "name": "Paket Ubin",
@@ -376,11 +376,11 @@
       },
       "tile_jumbo": {
         "name": "Paket Ubin Jumbo",
-        "description": "Pilih 2 dari 5 ubin khusus"
+        "description": "Pilih hingga 2 dari 5 ubin khusus"
       },
       "tile_mega": {
         "name": "Paket Ubin Mega",
-        "description": "Pilih 3 dari 6 ubin khusus"
+        "description": "Pilih hingga 3 dari 6 ubin khusus"
       },
       "decree_normal": {
         "name": "Paket Dekrit",
@@ -388,11 +388,11 @@
       },
       "decree_jumbo": {
         "name": "Paket Dekrit Jumbo",
-        "description": "Pilih 2 dari 5 Dekrit"
+        "description": "Pilih hingga 2 dari 5 Dekrit"
       },
       "decree_mega": {
         "name": "Paket Dekrit Mega",
-        "description": "Pilih 3 dari 6 Dekrit"
+        "description": "Pilih hingga 3 dari 6 Dekrit"
       },
       "void_normal": {
         "name": "Paket Kehampaan",
@@ -400,21 +400,21 @@
       },
       "void_jumbo": {
         "name": "Paket Kehampaan Jumbo",
-        "description": "Pilih 2 dari 5 Naskah Kehampaan"
+        "description": "Pilih hingga 2 dari 5 Naskah Kehampaan"
       },
       "void_mega": {
         "name": "Paket Kehampaan Mega",
-        "description": "Pilih 3 dari 6 Naskah Kehampaan"
+        "description": "Pilih hingga 3 dari 6 Naskah Kehampaan"
       }
     }
   },
   "observatory": {
-    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat keluarga Yaku-nya mencetak poin, sekali per Orb tiap kali main. Orb Lubang Hitam cocok dengan Yaku mana pun yang mencetak poin.",
+    "description": "Setiap Orb yang disimpan memberi ×1,5 Mult saat kali main mencetak skor dengan keluarga tangannya, sekali per Orb tiap kali main. Orb Lubang Hitam cocok dengan keluarga tangan mana pun yang dicetak kali main itu.",
     "holdingNote": "Observatorium memberi bonus karena menyimpan Orb ini. Memakainya memberi peningkatan permanen, tetapi menghapus bonus penyimpanan ini."
   },
   "closedHandAusterity": {
     "name": "Disiplin Tangan Tertutup",
-    "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, tidak dihitung.",
+    "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, Naskah Gerhana, atau Naskah Kesunyian, tidak dihitung.",
     "progress": "Tangan lengkap sejauh ini: {{count}}. Berikutnya: ×{{factor}} sebelum Bunga."
   },
   "yakuRepetition": {
@@ -479,7 +479,7 @@
     "overCapacity": "Kapasitas berkurang: Dekrit yang dimiliki tetap disimpan. Kosongkan tempat sebelum mendapat yang baru."
   },
   "yakuUpgrades": {
-    "title": "Peningkatan yaku",
+    "title": "Peningkatan Orb",
     "level": "Level {{level}} / {{max}}",
     "bonus": "+{{chips}} poin dasar · +{{mult}} Mult",
     "triggers": "Jumlah pemicu skor: {{total}}",
@@ -616,7 +616,7 @@
     "penalty_lose_tile": "Kehilangan 1 ubin acak.",
     "penalty_lose_gold": "Kehilangan semua emas.",
     "penalty_lose_hand_size": "Kehilangan {{count}} ruang rak sampai akhir permainan ini.",
-    "penalty_lock_tile": "Kunci 1 ubin acak di sungai: ubin itu tidak bisa ditarik lagi.",
+    "penalty_lock_tile": "Kirim 1 ubin acak dari rakmu ke sungai sampai ronde berakhir.",
     "penalty_lose_decree_slot": "Kehilangan {{count}} slot Dekrit pada ronde berikutnya.",
     "penalty_halve_base_score": "Poin dasar kali main berikutnya menjadi setengah.",
     "penalty_destroy_decrees": "Hancurkan semua Dekrit lainnya.",
@@ -933,7 +933,8 @@
       "adCountdown": "Hadiahmu siap dalam {{seconds}} dtk",
       "adReady": "Hadiah siap",
       "adClaim": "Ambil +1 giliran"
-    }
+    },
+    "decreeDetails": "Detail {{name}}"
   },
   "rounds": {
     "small": "Ronde Kecil",
@@ -1056,7 +1057,8 @@
       "pack": "Paket · pilih {{choose}} dari {{from}}",
       "charter": "Piagam Kekaisaran · peningkatan permanen",
       "charterHelp": "Piagam Kekaisaran adalah peningkatan permanen untuk sisa permainan. Tidak memakai slot dan tidak bisa dijual.",
-      "orbHelp": "Dipakai saat kamu mengambilnya: level keluarga langsung naik dan bertahan sepanjang permainan."
+      "orbHelp": "Dipakai saat kamu mengambilnya: level keluarga langsung naik dan bertahan sepanjang permainan.",
+      "packChoice": "Pilih hingga {{choose}} dari {{from}} hadiah: paket ini menawarkan lebih banyak dari biasanya."
     },
     "offerLabel": "{{name}}, {{price}} emas",
     "buyFor": "Beli · {{price}} emas",
@@ -1065,7 +1067,7 @@
       "buy": "Ketuk barang untuk melihat fungsinya, lalu tekan Beli. Dekrit mengubah aturan, Orb dan Segel Takdir langsung bekerja (Segel Takdir menanyakan ubin dinding mana yang diubah), Naskah dipakai saat ronde, Paket memberi pilihan hadiah, dan Piagam meningkatkan seluruh permainan.",
       "interest": "Emas yang kamu simpan berbunga: +1 untuk setiap 5 emas saat ronde berakhir, maksimal +{{cap}}.",
       "cashOut": "Bayaran ronde masuk ke dompet saat kamu tiba, satu notifikasi per sumber: ronde yang selesai, bunga, Dekrit, dan sewa yang ditagih.",
-      "build": "Susunanmu menampilkan Dekrit milikmu di samping peningkatan yaku: buka gulungan untuk membaca aturan atau menjualnya, atau peningkatan untuk melihat levelnya. Setiap pembelian lewat tombol Beli masing-masing."
+      "build": "Susunanmu menampilkan Dekrit milikmu di samping peningkatan Orb: buka gulungan untuk membaca aturan atau menjualnya, atau peningkatan untuk melihat levelnya. Setiap pembelian lewat tombol Beli masing-masing."
     },
     "sealUsed": "{{name}} dipakai",
     "sealWall": {
@@ -1279,7 +1281,7 @@
       },
       "decree-pinfu-purist": {
         "name": "Penganut Urutan",
-        "description": "+3 Mult saat kamu mencetak skor Semua Urutan: tangan lengkap berisi empat urutan ditambah pasangan yang bukan Naga atau Angin Timur"
+        "description": "+3 Mult saat kamu mencetak skor Semua Urutan: tangan lengkap berisi empat urutan yang tidak melewati angka, ditambah pasangan yang bukan Naga atau Angin Timur"
       },
       "decree-manzu-emperor": {
         "name": "Kaisar Karakter",
@@ -1603,7 +1605,7 @@
       },
       "decree-eternal-garden": {
         "name": "Taman Abadi",
-        "description": "+10 Mult per Bunga. Kekeringan tidak bisa menekan Bungamu."
+        "description": "+10 Mult per Bunga. Kekeringan tidak menonaktifkan Bungamu."
       },
       "decree-midas-touch": {
         "name": "Sentuhan Midas",
@@ -1747,7 +1749,7 @@
       },
       "pure_suit_asceticism": {
         "name": "Pertapaan Warna Murni",
-        "description": "×1,1 Mult untuk setiap ubin dari jenis yang paling banyak dimainkan dalam sekali main itu, berlipat (lima memberi sekitar ×1,6)."
+        "description": "×1,1 Mult untuk setiap ubin yang dimainkan dari jenis berangka yang paling banyak dalam kali main itu, berlipat (lima memberi sekitar ×1,6)."
       },
       "broken_stair_edict": {
         "name": "Dekrit Tangga Patah",
@@ -1775,7 +1777,7 @@
       },
       "closed_hand_austerity": {
         "name": "Kesederhanaan Tangan Tertutup",
-        "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, tidak dihitung."
+        "description": "Setiap tangan Mahjong lengkap mendapat ×1,5, tumbuh ×1,2 untuk setiap tangan lengkap sebelumnya dalam permainan ini, hingga ×4 sebelum bonus Bunga. Kali main yang bukan tangan lengkap, dan tangan yang dilengkapi lewat Keringanan Shanten, Naskah Gerhana, atau Naskah Kesunyian, tidak dihitung."
       },
       "terminal_devotion": {
         "name": "Pengabdian Terminal",
@@ -1791,7 +1793,7 @@
     "empowerment": "Setiap Bunga yang dimiliki juga memperkuat hadiah numerik Dekret sebesar 10%. Bonus set menghitung jenis Bunga berbeda yang sedang dimiliki, bukan semua Bunga yang pernah dikumpulkan.",
     "awakeningLifecycle": "Akses mekar kembali tetap terbuka pada permainan berikutnya. Salinan pertama biasa; setelah akses terbuka, menarik duplikat membangkitkan Bunga itu untuk permainan ini. Duplikat berikutnya tidak menumpuk kekuatan atau menambah slot. Permainan baru menghapus kebangkitan, bukan aksesnya.",
     "chrysanthemumSet": "Jika keempat Bunga dimiliki, faktor kebangkitan menjadi ×{{factor}} per kelompok tertutup. Pasangan dan ubin lepas tidak menambah tingkatan.",
-    "drought": "Kekeringan menekan kekuatan Bunga, termasuk kebangkitan dan penguatan Dekret, kecuali dilindungi Taman Abadi yang aktif. Bunga, kebangkitan yang diperoleh, dan slot koleksi tidak dihapus.",
+    "drought": "Kekeringan menonaktifkan sementara kekuatan Bunga, termasuk kebangkitan dan penguatan Dekrit, kecuali dilindungi Taman Abadi yang aktif. Bunga, kebangkitan yang diperoleh, dan slot koleksi tidak dihapus.",
     "distinction": "Bunga dapat bangkit; Musim tidak. Musim bisa normal atau rusak. Ubin bonus yang ditarik diperlihatkan dan diganti otomatis tanpa menghabiskan Giliran.",
     "corruption": "Mulai Babak 2, Musim dapat rusak alih-alih memberikan efek normal. Ruang Hantu memungkinkan kerusakan sejak Babak 1. Musim rusak hanya berlangsung selama ronde ini; bukan Musim yang bangkit.",
     "interactionsTitle": "Interaksi Bunga dan Musim",
@@ -1807,11 +1809,11 @@
   "codexUpgrades": {
     "patternsTitle": "Keluarga pola",
     "tilesTitle": "Keluarga ubin",
-    "intro": "Orb Langit menaikkan satu keluarga kali main sebanyak satu level selama sisa permainan, dari 0 hingga {{max}}. Orb langsung dipakai saat kamu mengambilnya.",
-    "stacking": "Setiap kali main mencetak skor dengan satu keluarga pola, yang dinamai menurut kelompoknya, ditambah setiap keluarga ubin yang tampak pada ubinnya. Setiap keluarga yang dicetaknya menambahkan poin dasar dan Mult keluarga itu sekali per level; Ubin lepas dihitung sekali untuk setiap ubin lepas. Berikut satu Urutan sebelum dan sesudah keluarga Urutan naik satu level:",
+    "intro": "Orb Langit menaikkan satu keluarga tangan sebanyak satu level selama sisa permainan, dari 0 hingga {{max}}. Orb langsung dipakai saat kamu mengambilnya.",
+    "stacking": "Satu kali main mencetak skor dengan paling banyak satu keluarga pola, yaitu yang dibentuk kelompoknya, ditambah setiap keluarga ubin yang tampak pada ubinnya; kali main tanpa kelompok tidak mencetak keluarga pola apa pun. Setiap keluarga yang dicetaknya menambahkan poin dasar dan Mult keluarga itu sekali per level; Ubin lepas dihitung sekali untuk setiap ubin lepas. Berikut satu Urutan sebelum dan sesudah keluarga Urutan naik satu level:",
     "exampleBefore": "{{pattern}}, level 0: {{points}} × {{mult}} = {{score}}",
     "exampleAfter": "{{family}}, level 1: ({{points}} + {{chips}}) × ({{mult}} + {{bonusMult}}) = {{score}}",
-    "patternTip": "Keluarga pola tidak pernah saling bertumpuk: Urutan + Pasangan hanya menaikkan Urutan + Pasangan, bukan Urutan atau Pasangan.",
+    "patternTip": "Keluarga pola tidak pernah saling bertumpuk: Urutan + Pasangan hanya mencetak skor dengan keluarga Urutan + Pasangan, bukan Urutan atau Pasangan.",
     "completeHands": "Tangan Mahjong lengkap tidak mencetak keluarga pola apa pun, hanya keluarga ubin yang tampak pada ubinnya.",
     "patternsIntro": "Satu kali main mencetak satu keluarga pola yang dibentuk oleh kelompoknya. Setiap contoh menyebut polanya dan semua keluarga yang dicetaknya.",
     "tilesIntro": "Keluarga ubin bertumpuk di atas keluarga pola setiap kali ubin yang dimainkan menunjukkannya.",
@@ -2004,11 +2006,11 @@
       },
       "the_eye": {
         "name": "Sang Mata",
-        "description": "Tiap jenis tangan hanya dihitung sekali ronde ini. Pengulangan bernilai 0"
+        "description": "Tiap pola (misalnya Pasangan atau Urutan) hanya dihitung sekali ronde ini. Pengulangan bernilai 0"
       },
       "the_mouth": {
         "name": "Sang Mulut",
-        "description": "Kali main pertamamu menentukan jenis tangan ronde ini. Tangan lain bernilai 0"
+        "description": "Kali main pertamamu menentukan pola ronde ini (misalnya Pasangan atau Urutan). Pola lain bernilai 0"
       },
       "the_flint": {
         "name": "Sang Batu Api",
@@ -2056,7 +2058,7 @@
       },
       "the_ox": {
         "name": "Sang Lembu",
-        "description": "Memainkan jenis tangan yang paling sering kamu mainkan membuat emasmu jadi 0"
+        "description": "Memainkan pola yang paling sering kamu mainkan (misalnya Pasangan atau Urutan) membuat emasmu jadi 0"
       },
       "the_house": {
         "name": "Sang Rumah",
@@ -2339,7 +2341,7 @@
       "title": "TARIK ULANG",
       "p1": "Pilih ubin yang tidak kamu mau, sebanyak apa pun, lalu tekan TARIK ULANG. Ubin itu masuk ke sungai dan diganti ubin baru.",
       "li1": "Tarik-ulang gratis dari item dipakai lebih dulu; jika tidak ada, satu tarik-ulang memakai satu Giliran.",
-      "li2": "Ubin yang ditarik ulang tetap di sungai sampai ronde berakhir.",
+      "li2": "Ubin yang ditarik ulang tetap di sungai sampai ronde berakhir, kecuali ada efek yang mengembalikannya.",
       "li3": "Beberapa Dekrit memberi hadiah setiap tarik ulang, Mandat Bos bisa melarangnya, dan Musim bisa mengubah biayanya. Periksa dulu efek yang aktif.",
       "note": "Simpan ubin yang sudah membentuk grup, dan tarik ulang yang menyendiri."
     },
@@ -2486,7 +2488,17 @@
   "errors": {
     "failedToLoad": "Gagal memuat komponen",
     "stackTrace": "Jejak tumpukan:",
-    "componentStack": "Tumpukan komponen:"
+    "componentStack": "Tumpukan komponen:",
+    "somethingWentWrong": "Terjadi kesalahan",
+    "tryAgain": "Coba Lagi",
+    "componentError": "Bagian ini berhenti bekerja",
+    "componentErrorDesc": "Bagian permainan ini mengalami kesalahan.",
+    "retry": "Coba Lagi",
+    "showDetails": "Tampilkan detail teknis",
+    "hideDetails": "Sembunyikan detail teknis",
+    "oops": "Ups! Terjadi kesalahan",
+    "description": "Maaf, terjadi sesuatu yang tidak terduga. Kesalahan ini telah dicatat.",
+    "goHome": "Ke Menu"
   },
   "tableStyle": {
     "unlock": "Syarat membuka: {{requirement}}",
@@ -2684,7 +2696,7 @@
       },
       "ceres_orb": {
         "name": "Orb Ceres",
-        "description": "Menaikkan keluarga Ubin lepas 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +5 poin dasar untuk setiap ubin lepas dalam kali main."
+        "description": "Menaikkan keluarga Ubin lepas 1 level selama permainan ini (hingga level 9). Tiap level menambahkan +5 poin dasar untuk setiap ubin lepas dalam kali main, kecuali Ubin Batu."
       },
       "black_hole_orb": {
         "name": "Orb Lubang Hitam",
@@ -2719,7 +2731,7 @@
       },
       "speed_omen": {
         "name": "Pertanda Kecepatan",
-        "description": "Dapat 5 Emas untuk setiap kemenangan cepat dalam permainan ini (ronde Kecil atau Besar yang dituntaskan dengan sisa Giliran)."
+        "description": "Dapat 5 Emas untuk setiap kemenangan cepat dalam permainan ini (ronde Kecil atau Besar yang dituntaskan dengan sisa 2 Giliran atau lebih)."
       },
       "throwback_omen": {
         "name": "Pertanda Kilas Balik",
@@ -3142,11 +3154,11 @@
     },
     "five_of_a_kind": {
       "name": "Lima Kembar",
-      "explain": "Lima ubin yang sama: satu lebih banyak dari isi tembok."
+      "explain": "Lima ubin yang sama. Tembok awalnya berisi empat dari setiap ubin, jadi kamu butuh satu salinan tambahan."
     },
     "six_of_a_kind": {
       "name": "Enam Kembar",
-      "explain": "Enam ubin yang sama: dua lebih banyak dari isi tembok."
+      "explain": "Enam ubin yang sama. Tembok awalnya berisi empat dari setiap ubin, jadi kamu butuh dua salinan tambahan."
     },
     "straight4": {
       "name": "Lurus empat",
@@ -3225,7 +3237,7 @@
     "mult": "Mult",
     "score": "Skor",
     "scoreHelp": "Poin adalah nilai ubin ditambah bonus tiap kelompok. Mult mulai dari 1 dan naik lewat tangan besar, Naga, Orb, dan Dekrit. Ubin berangka di luar kelompok bernilai setengah.",
-    "handsTitle": "Tangan-tangan",
+    "handsTitle": "Pola tangan",
     "secretTitle": "Tangan rahasia",
     "secretFound": "Tangan rahasia ditemukan",
     "secretInGuide": "Kini ada di panduan ?.",
@@ -3311,11 +3323,11 @@
     },
     "MixedSuits": {
       "name": "Jenis campuran",
-      "covers": "Setiap kali main dengan ubin berangka dari dua jenis atau lebih: Karakter, Lingkaran, dan Bambu."
+      "covers": "Setiap kali main dengan ubin berangka dari dua jenis atau lebih: Karakter, Lingkaran, dan Bambu. Ubin Liar cocok dengan semua jenis, jadi tidak pernah menambah jenis kedua."
     },
     "Loose": {
       "name": "Ubin lepas",
-      "covers": "Dihitung sekali untuk setiap ubin lepas dalam kali main: ubin yang bukan bagian dari kelompok mana pun."
+      "covers": "Dihitung sekali untuk setiap ubin lepas dalam kali main: ubin yang bukan bagian dari kelompok mana pun. Ubin Batu tidak pernah dihitung."
     },
     "All": {
       "name": "Semua keluarga",
@@ -3339,7 +3351,7 @@
   },
   "orbReveal": {
     "used": "Orb Langit digunakan",
-    "title": "{{name}} digunakan: yaku ditingkatkan"
+    "title": "{{name}} digunakan: keluarga tangan ditingkatkan"
   },
   "omenReveal": {
     "title": "Pertanda didapat: {{name}}",
