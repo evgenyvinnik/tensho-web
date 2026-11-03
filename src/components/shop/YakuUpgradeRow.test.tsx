@@ -38,7 +38,7 @@ it('renders nothing for an empty list', () => {
 
 it('shows each upgrade inline with its level and opens its details on tap', () => {
   const { container } = render(<YakuUpgradeRow upgrades={[threePairs(2)]} />)
-  expect(screen.getByRole('group', { name: 'Yaku upgrades' })).toBeVisible()
+  expect(screen.getByRole('group', { name: 'Orb upgrades' })).toBeVisible()
   // One Orb used: the family's first upgrade, counted from 0.
   const token = screen.getByRole('button', {
     name: 'Three Pairs upgrade, level 1',

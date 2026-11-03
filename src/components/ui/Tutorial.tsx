@@ -9,6 +9,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { Popup } from './Popup'
 import { getTileImagePath } from '../../utils/assets'
 import { useTutorialSteps } from '../screens/tutorial/useTutorialSteps'
+import { useCategoryLabel } from '../../i18n/categoryLabel'
 import type { TutorialStep } from '../screens/tutorial/TutorialComponents'
 
 const AnimatedDiv = animated('div')
@@ -20,6 +21,7 @@ export interface TutorialProps {
 }
 
 function TutorialStepContent({ step }: { step: TutorialStep }) {
+  const categoryLabel = useCategoryLabel()
   const tileSpring = useSpring({
     from: { opacity: 0, y: 20 },
     to: { opacity: 1, y: 0 },
@@ -30,7 +32,7 @@ function TutorialStepContent({ step }: { step: TutorialStep }) {
     <div className="space-y-4">
       {step.category && (
         <div className="inline-block px-2 py-1 text-xs rounded bg-[var(--color-forest-green)] text-[var(--color-metallic-gold)] border border-[var(--color-metallic-gold)]/30">
-          {step.category}
+          {categoryLabel(step.category)}
         </div>
       )}
       <div className="text-base leading-relaxed">{step.content}</div>
@@ -68,13 +70,12 @@ function TutorialStepContent({ step }: { step: TutorialStep }) {
 }
 
 function ProgressBar({ current, total }: { current: number; total: number }) {
+  const { t } = useTranslation()
   const percentage = ((current + 1) / total) * 100
   return (
     <div className="w-full">
       <div className="flex justify-between text-xs text-[var(--color-metallic-gold)] mb-1">
-        <span>
-          Step {current + 1} of {total}
-        </span>
+        <span>{t('codex.stepOf', { current: current + 1, total })}</span>
         <span>{Math.round(percentage)}%</span>
       </div>
       <div className="w-full h-2 bg-[var(--color-dark-forest)] rounded-full overflow-hidden">
@@ -96,6 +97,7 @@ function CategoryNav({
   currentCategory: string
   onCategoryClick: (category: string) => void
 }) {
+  const categoryLabel = useCategoryLabel()
   return (
     <div className="flex flex-wrap gap-1 justify-center mb-4">
       {categories.map((cat) => (
@@ -104,7 +106,7 @@ function CategoryNav({
           onClick={() => onCategoryClick(cat)}
           className={`px-2 py-1 text-xs rounded transition-all ${cat === currentCategory ? 'bg-[var(--color-vibrant-orange)] text-white' : 'bg-[var(--color-forest-green)] text-[var(--color-metallic-gold)] hover:bg-[var(--color-dark-forest)]'}`}
         >
-          {cat}
+          {categoryLabel(cat)}
         </button>
       ))}
     </div>

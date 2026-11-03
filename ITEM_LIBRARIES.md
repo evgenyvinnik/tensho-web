@@ -57,7 +57,7 @@ honor.
 | Seal | Effect | Unlock Condition |
 |------|--------|------------------|
 | **Seal of the Immortal** | Creates a Mythic Decree (if room) | Score a Yakuman |
-| **Seal of the Void** | Upgrades every Yaku by 1 level | Play all Yaku types in one run |
+| **Seal of the Void** | Raises every hand family by 1 level | Play all Yaku types in one run |
 
 ---
 
@@ -97,8 +97,8 @@ families. The Codex shows tile examples for every family
 |-----|--------|--------------|-----------------|------------|
 | **Eris Orb** (エリス) | Winds | Common, 3 Gold | +10 base points, +1 Mult | Any play with at least one Wind tile, in a group or loose. |
 | **Uranus Orb** (天王星) | Dragons | Common, 3 Gold | +10 base points, +1 Mult | Any play with at least one Dragon tile, in a group or loose. |
-| **Neptune Orb** (海王星) | Mixed Suits | Common, 3 Gold | +10 base points, +0.5 Mult | Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo. |
-| **Ceres Orb** (ケレス) | Loose Tiles | Uncommon, 4 Gold | +5 base points per loose tile | Pays once for every loose tile in a play: a tile that belongs to no group. |
+| **Neptune Orb** (海王星) | Mixed Suits | Common, 3 Gold | +10 base points, +0.5 Mult | Any play with numbered tiles from two or more suits: Characters, Circles and Bamboo. A Wild tile fits every suit, so it never adds a second one. |
+| **Ceres Orb** (ケレス) | Loose Tiles | Uncommon, 4 Gold | +5 base points per loose tile | Pays once for every loose tile in a play: a tile that belongs to no group. Stone tiles never count. |
 
 ### Mythic Orb
 
@@ -132,7 +132,7 @@ retired family's levels move to the family its Orb raises now
 | **Script of the Hex** | 呪詛の書 | Adds a Polychrome Finish to a random Decree, destroys all others | Nuclear option |
 | **Script of the Cryptid** | 異形の書 | Create 2 copies of 1 selected tile in hand | Duplicates in deck |
 | **Script of the Soul** | 魂の書 | Creates a Legendary (Heavenly Ordinance) Decree | Secret, 0.3% chance |
-| **Script of the Singularity** | 特異点の書 | Upgrade every Yaku by 1 level | Secret, 0.3% chance |
+| **Script of the Singularity** | 特異点の書 | Raises every hand family by 1 level | Secret, 0.3% chance |
 
 ---
 
@@ -145,7 +145,7 @@ retired family's levels move to the family its Orb raises now
 | **Refinement Edict** | ¥10 | Decree Finishes (Foil/Holo/Prismatic) appear 2× more | **Radiance Decree** | Appear 4× more | Have 5 enhanced Decrees |
 | **Reroll Subsidy** | ¥10 | Rerolls cost ¥2 less | **Reroll Grant** | Cost ¥2 less again | Reroll shop 100 times total |
 | **Crystal Sphere** | ¥10 | Arcana Packs offer +1 choice | **Omen Globe** | Void Scripts may appear in Fate Seal packs | Use 25 Fate Seals from packs |
-| **Star Chart** | ¥10 | Celestial Packs always contain Orb for most-played Yaku | **Observatory License** | Each held Orb gives ×1.5 Mult when its Yaku family scores, once per Orb per play; Black Hole matches any scored Yaku | Use 25 Orbs from packs |
+| **Star Chart** | ¥10 | Celestial Packs always contain Orb for most-played Yaku | **Observatory License** | Each held Orb gives ×1.5 Mult when the play scores its hand family, once per Orb per play; Black Hole matches any hand family the play scores | Use 25 Orbs from packs |
 | **Extra Hand Writ** | ¥10 | +1 hand per round | **Dual Hand Decree** | +1 more hand per round | Play 2500 tiles total |
 | **Discard Permit** | ¥10 | +1 discard per round | **Recycle Order** | +1 more discard per round | Discard 2500 tiles total |
 | **Seal Merchant** | ¥10 | Fate Seals appear 2× more in shop | **Seal Tycoon** | Appear 4× more | Buy 50 Seals from shop |
@@ -265,7 +265,7 @@ cancel, and only a Seal that can work then is made. See
 | **Juggle Omen** | 手捌の兆 | +3 Hand Size for next round only | Temporary |
 | **D6 Omen** | 骰子の兆 | Next shop: Rerolls start at ¥0 | Still increases |
 | **Top-up Omen** | 補充の兆 | Create up to 2 Common Decrees (if room) | Instant |
-| **Speed Omen** | 疾走の兆 | Gain ¥5 per skipped Mandate this run | Minimum ¥5 |
+| **Speed Omen** | 疾走の兆 | Gain ¥5 per swift clear this run (a Small or Large round cleared with 2 or more Turns to spare) | Minimum ¥5 |
 | **Orbital Omen** | 軌道の兆 | Upgrades a random Yaku by 3 levels | Powerful |
 | **Economy Omen** | 経済の兆 | Doubles your gold (max +¥40) | Instant |
 
@@ -276,7 +276,7 @@ cancel, and only a Seal that can work then is made. See
 | Mandate | Japanese | Effect | Min Ante |
 |---------|----------|--------|----------|
 | **The Hook** | 鉤 | Discards 2 random tiles from hand after each play | 1 |
-| **The Ox** | 牛 | Names your most-played hand type as the round starts; playing it sets gold to ¥0 | 6 |
+| **The Ox** | 牛 | Names your most-played play pattern as the round starts; playing it sets gold to ¥0 | 6 |
 | **The House** | 家 | First hand drawn face-down | 2 |
 | **The Wall** | 壁 | 4× base score requirement | 2 |
 | **The Wheel** | 輪 | 1/7 tiles drawn face-down | 2 |
@@ -288,8 +288,8 @@ cancel, and only a Seal that can work then is made. See
 | **The Water** | 水 | Start with 0 discards | 2 |
 | **The Window** | 窓 | Characters tiles can’t be played, only redrawn | 1 |
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
-| **The Eye** | 目 | Each hand type scores once this round; a repeat scores 0 | 3 |
-| **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 | 2 |
+| **The Eye** | 目 | Each play pattern (such as Pair or Sequence) scores once this round; a repeat scores 0 | 3 |
+| **The Mouth** | 口 | Your first play sets this round’s pattern; any other pattern scores 0 | 2 |
 | **The Plant** | 草 | Winds and Dragons can’t be played, only redrawn | 4 |
 | **The Serpent** | 蛇 | After play/discard, always draw 3 tiles | 5 |
 | **The Pillar** | 柱 | Tiles played earlier this Ante are debuffed | 1 |

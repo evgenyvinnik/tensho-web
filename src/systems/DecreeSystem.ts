@@ -555,7 +555,7 @@ export const PURE_SUIT_ASCETICISM: Decree = {
   id: 'pure_suit_asceticism',
   name: 'Pure Suit Asceticism',
   description:
-    '×1.1 Mult for each played tile of the play’s most common suit, compounding (five give about ×1.6).',
+    '×1.1 Mult for each played tile of the play’s most common numbered suit, compounding (five give about ×1.6).',
   category: 'Scaling',
   rarity: 'RegionalMandate',
   cost: 6,

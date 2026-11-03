@@ -348,7 +348,7 @@ export function ConsumableDialog({
                       aria-pressed={index >= 0}
                       aria-label={
                         hidden
-                          ? t('tiles.faceDown', 'Face-down tile')
+                          ? t('tileDetails.faceDown', 'Face-down tile')
                           : tile.displayName
                       }
                       disabled={index < 0 && targets.length >= range.max}

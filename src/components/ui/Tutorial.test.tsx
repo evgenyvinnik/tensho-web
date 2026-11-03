@@ -1,6 +1,13 @@
-import { act, renderHook } from '@testing-library/react'
+import {
+  act,
+  cleanup,
+  render,
+  renderHook,
+  screen,
+} from '@testing-library/react'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { useTutorial } from './Tutorial'
+import i18n, { loadLanguage } from '../../i18n'
+import { Tutorial, useTutorial } from './Tutorial'
 
 const key = 'tensho_tutorial_completed'
 let values: Map<string, string>
@@ -61,9 +68,11 @@ it('keeps completion in memory through failed writes and retries after recovery'
 
 it('keeps reset usable through a failed removal without touching run data', () => {
   values.set(key, 'true')
-  const remove = vi.spyOn(localStorage, 'removeItem').mockImplementationOnce(() => {
-    throw new DOMException('Storage denied', 'SecurityError')
-  })
+  const remove = vi
+    .spyOn(localStorage, 'removeItem')
+    .mockImplementationOnce(() => {
+      throw new DOMException('Storage denied', 'SecurityError')
+    })
   const { result } = renderHook(useTutorial)
   act(() => result.current.reset())
   expect(result.current.hasCompleted).toBe(false)
@@ -72,4 +81,25 @@ it('keeps reset usable through a failed removal without touching run data', () =
   expect(remove).toHaveBeenCalledTimes(2)
   expect(values.has(key)).toBe(false)
   expect(values.get('tensho-table-loop-v1')).toBe('keep this run')
+})
+
+it('labels the menu tutorial categories and progress in the player’s language', async () => {
+  await loadLanguage('ja')
+  await i18n.changeLanguage('ja')
+  try {
+    render(<Tutorial isOpen onClose={() => {}} />)
+    const ja = i18n.getFixedT('ja')
+    expect(
+      screen.getAllByText(ja('codex.introduction')).length
+    ).toBeGreaterThan(0)
+    const stepOf = ja('codex.stepOf', { current: '1', total: 'TOTAL' })
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      .replace('TOTAL', '\\d+')
+    expect(screen.getByText(new RegExp(`^${stepOf}$`))).toBeVisible()
+    expect(screen.queryByText('Introduction')).toBeNull()
+    expect(screen.queryByText(/Step 1 of/)).toBeNull()
+  } finally {
+    cleanup()
+    await i18n.changeLanguage('en')
+  }
 })

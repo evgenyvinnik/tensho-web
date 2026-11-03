@@ -223,7 +223,7 @@ export const SPEED_OMEN: OmenDefinition = {
   name: 'Speed Omen',
   japaneseName: '疾走の兆',
   description:
-    'Gain 5 Gold for each swift clear this run (a Small or Large round cleared with Turns to spare).',
+    'Gain 5 Gold for each swift clear this run (a Small or Large round cleared with 2 or more Turns to spare).',
   category: 'Economy',
   rarity: 'Uncommon',
   trigger: 'OnAcquire',
