@@ -16,12 +16,20 @@
 bin/
 gen/
 out/
-#  Uncomment the following line in case you need and you don't have the release build type files in your app
-# release/
+# Android Studio's Generate Signed Bundle / APK writes here by default.
+app/release/
 
-# Gradle files
+# Gradle files (the wrapper in gradle/wrapper/ and gradlew stay committed)
 .gradle/
 build/
+.kotlin/
+gradle-app.setting
+.gradletasknamecache
+
+# Eclipse and VS Code's Java tools, when they import the Gradle project
+.project
+.classpath
+.settings/
 
 # Local configuration file (sdk path, etc)
 local.properties
