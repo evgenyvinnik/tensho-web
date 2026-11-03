@@ -51,6 +51,8 @@ export interface GameController {
   faceDownTileIds: string[]
   lockedTileIds: string[]
   debuffedTileIds: string[]
+  /** Rack tiles the Boss bars from play (The Club, The Head, ...). */
+  bannedTileIds: string[]
   disabledDecreeIds: string[]
   /** Decrees Amber Acorn turned face-down (and disabled) this round. */
   hiddenDecreeIds: string[]
@@ -509,6 +511,7 @@ export function useGameController(
     faceDownTileIds: orchestrator.getFaceDownTileIds(),
     lockedTileIds: state.mandateEffectSystem.getLockedTileIds(),
     debuffedTileIds: Array.from(state.debuffSystem.getDebuffedTileIds()),
+    bannedTileIds: orchestrator.getBannedTileIds(),
     disabledDecreeIds: state.mandateEffectSystem.getDisabledDecreeIds(),
     hiddenDecreeIds: state.mandateEffectSystem.getHiddenDecreeIds(),
     isRunActive: state.isRunActive,

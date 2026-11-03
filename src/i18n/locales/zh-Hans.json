@@ -718,6 +718,7 @@
     "freeRedraws": "免费+{{formattedCount}}",
     "playHand": "出牌",
     "reasonExact": "必须正好打出{{count}}张",
+    "reasonBanned": "本回合不能打出{{target}}",
     "reasonMinimum": "至少选择{{count}}张",
     "reasonMaximum": "最多{{count}}张，或一副完整的和牌",
     "reasonMaximumRedraw": "出牌最多{{count}}张，或一副完整的和牌；重抽不限张数",
@@ -1754,6 +1755,7 @@
     "red": "中",
     "modifiers": "特殊牌：",
     "debuffed": "被削弱的牌",
+    "banned": "本回合不能打出",
     "lockedMustPlay": "锁定牌：必须打出",
     "tileRow": "牌列",
     "honors": "字牌"
@@ -1846,23 +1848,23 @@
       },
       "the_club": {
         "name": "棍",
-        "description": "索子不计分"
+        "description": "索子不能打出，只能重抽"
       },
       "the_goad": {
         "name": "刺棒",
-        "description": "筒子不计分"
+        "description": "筒子不能打出，只能重抽"
       },
       "the_window": {
         "name": "窗",
-        "description": "万子不计分"
+        "description": "万子不能打出，只能重抽"
       },
       "the_head": {
         "name": "首",
-        "description": "三元牌不计分"
+        "description": "三元牌不能打出，只能重抽"
       },
       "the_plant": {
         "name": "草木",
-        "description": "风牌和三元牌不计分"
+        "description": "风牌和三元牌不能打出，只能重抽"
       },
       "the_ox": {
         "name": "牛",
@@ -3247,8 +3249,7 @@
     "no_discards": "不能重抽",
     "decrease_play_level": "牌型等级−{{count}}",
     "fixed_hand_size": "每次正好{{count}}张",
-    "debuff_suit": "{{target}}得0分",
-    "debuff_tile_type": "{{target}}得0分",
+    "ban_tiles": "{{target}}不能打出",
     "hand_size_reduction": "手牌−{{count}}张",
     "gold_per_tile": "每打一张牌金币−{{count}}",
     "most_played_pattern_zeroes_gold": "打出最常用牌型时金币归零",

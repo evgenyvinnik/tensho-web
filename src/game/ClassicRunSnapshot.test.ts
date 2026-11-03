@@ -5,7 +5,7 @@ import { runRandom } from './RunRandom'
 import { Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { EnhancementType } from '../core/TileModifier'
-import { THE_CLUB } from '../config/mandateDefinitions'
+import { VERDANT_LEAF } from '../config/mandateDefinitions'
 import { useOmenStore } from '../stores/omenStore'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import { BlessingPackSystem } from '../systems/BlessingPackSystem'
@@ -149,7 +149,7 @@ it('reattaches Mandate cleanup to the restored Debuff system', () => {
   const game = start()
   const state = game.getState()
   const tile = new Tile(TileSuit.Souzu, 3, 'boss-tile')
-  state.mandateEffectSystem.activateMandate(THE_CLUB, [tile], [])
+  state.mandateEffectSystem.activateMandate(VERDANT_LEAF, [tile], [])
   expect(state.debuffSystem.isTileDebuffed(tile.id)).toBe(true)
   game.restoreRun(json(game.captureRun()))
   const restored = game.getState()

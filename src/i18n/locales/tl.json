@@ -1017,6 +1017,7 @@
     "freeRedraws": "+{{formattedCount}} libre",
     "playHand": "Laruin",
     "reasonExact": "Eksaktong {{count}} tile ang laruin",
+    "reasonBanned": "Bawal laruin ang {{target}} sa round na ito",
     "reasonMinimum": "Pumili ng kahit {{count}} tile",
     "reasonMaximum": "Hanggang {{count}} tile, o buong kamay ng Mahjong",
     "reasonMaximumRedraw": "Laruin: hanggang {{count}} tile o buong kamay ng Mahjong. MAG-REDRAW: kahit ilan",
@@ -2053,6 +2054,7 @@
     "red": "Pulang Dragon",
     "modifiers": "Espesyal na tile:",
     "debuffed": "Pinahinang tile",
+    "banned": "Bawal laruin sa round na ito",
     "lockedMustPlay": "Naka-lock na tile: kailangang laruin",
     "tileRow": "Hanay ng tile",
     "honors": "Honors"
@@ -2155,23 +2157,23 @@
       },
       "the_club": {
         "name": "Ang Pamalo",
-        "description": "Walang puntos ang mga tile na Kawayan"
+        "description": "Hindi puwedeng laruin ang mga tile na Kawayan, i-redraw lang"
       },
       "the_goad": {
         "name": "Ang Pantulak",
-        "description": "Walang puntos ang mga tile na Bilog"
+        "description": "Hindi puwedeng laruin ang mga tile na Bilog, i-redraw lang"
       },
       "the_window": {
         "name": "Ang Bintana",
-        "description": "Walang puntos ang mga tile na Karakter"
+        "description": "Hindi puwedeng laruin ang mga tile na Karakter, i-redraw lang"
       },
       "the_head": {
         "name": "Ang Ulo",
-        "description": "Walang puntos ang mga Dragon"
+        "description": "Hindi puwedeng laruin ang mga Dragon, i-redraw lang"
       },
       "the_plant": {
         "name": "Ang Halaman",
-        "description": "Walang puntos ang mga Hangin at Dragon"
+        "description": "Hindi puwedeng laruin ang mga Hangin at Dragon, i-redraw lang"
       },
       "the_ox": {
         "name": "Ang Baka",
@@ -3247,8 +3249,7 @@
     "no_discards": "Walang REDRAW",
     "decrease_play_level": "Uri ng kamay −{{count}} antas",
     "fixed_hand_size": "Eksaktong {{count}} tile",
-    "debuff_suit": "0 puntos ang {{target}}",
-    "debuff_tile_type": "0 puntos ang {{target}}",
+    "ban_tiles": "Bawal laruin ang {{target}}",
     "hand_size_reduction": "Rack −{{count}} tile",
     "gold_per_tile": "−{{count}} ginto bawat tile na nilaro",
     "most_played_pattern_zeroes_gold": "Ubos ang ginto sa pinakamadalas na uri ng kamay",

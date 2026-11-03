@@ -59,6 +59,8 @@ export interface HandRackProps {
   faceDownIds?: ReadonlySet<string>
   lockedIds?: ReadonlySet<string>
   debuffedIds?: ReadonlySet<string>
+  /** Tiles this round's Boss bars from play; they can still be redrawn. */
+  bannedIds?: ReadonlySet<string>
   onToggle: (tile: Tile) => void
   /** Group rules when grouping is on; null shows the rack in plain order. */
   groupRules?: PartialHandRules | null
@@ -123,6 +125,7 @@ export function HandRack({
   faceDownIds = new Set(),
   lockedIds = new Set(),
   debuffedIds = new Set(),
+  bannedIds = new Set(),
   onToggle,
   groupRules = null,
   disabled = false,
@@ -257,6 +260,7 @@ export function HandRack({
           faceDown={faceDownIds.has(tile.id)}
           locked={lockedIds.has(tile.id)}
           debuffed={debuffedIds.has(tile.id)}
+          banned={bannedIds.has(tile.id)}
           disabled={disabled}
         />
       </button>
@@ -283,6 +287,7 @@ export function HandRack({
           faceDownIds={faceDownIds}
           lockedIds={lockedIds}
           debuffedIds={debuffedIds}
+          bannedIds={bannedIds}
           onToggle={toggle}
           size={fitted}
           disabled={disabled}

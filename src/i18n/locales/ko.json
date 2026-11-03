@@ -718,6 +718,7 @@
     "freeRedraws": "무료 +{{formattedCount}}",
     "playHand": "패 내기",
     "reasonExact": "정확히 {{count}}장을 내세요",
+    "reasonBanned": "이번 라운드에는 {{target}}를 낼 수 없어요",
     "reasonMinimum": "{{count}}장 이상 고르세요",
     "reasonMaximum": "{{count}}장까지, 또는 완성된 마작 패",
     "reasonMaximumRedraw": "패 내기는 {{count}}장까지, 또는 완성된 마작 패. 다시 뽑기는 몇 장이든",
@@ -1754,6 +1755,7 @@
     "red": "중",
     "modifiers": "특수 패:",
     "debuffed": "약화된 패",
+    "banned": "이번 라운드에는 낼 수 없음",
     "lockedMustPlay": "잠긴 패: 반드시 내야 합니다",
     "tileRow": "패 열",
     "honors": "자패"
@@ -1846,23 +1848,23 @@
       },
       "the_club": {
         "name": "곤봉",
-        "description": "삭수는 점수를 얻지 못함"
+        "description": "삭수는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_goad": {
         "name": "가시막대",
-        "description": "통수는 점수를 얻지 못함"
+        "description": "통수는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_window": {
         "name": "창",
-        "description": "만수는 점수를 얻지 못함"
+        "description": "만수는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_head": {
         "name": "머리",
-        "description": "삼원패는 점수를 얻지 못함"
+        "description": "삼원패는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_plant": {
         "name": "초목",
-        "description": "풍패와 삼원패는 점수를 얻지 못함"
+        "description": "풍패와 삼원패는 낼 수 없음 (다시 뽑기만 가능)"
       },
       "the_ox": {
         "name": "황소",
@@ -3247,8 +3249,7 @@
     "no_discards": "다시 뽑기 불가",
     "decrease_play_level": "족보 레벨 −{{count}}",
     "fixed_hand_size": "정확히 {{count}}장 내기",
-    "debuff_suit": "{{target}} 0점",
-    "debuff_tile_type": "{{target}} 0점",
+    "ban_tiles": "{{target}} 낼 수 없음",
     "hand_size_reduction": "패 −{{count}}장",
     "gold_per_tile": "낸 패 한 장마다 골드 −{{count}}",
     "most_played_pattern_zeroes_gold": "최다 족보를 내면 골드 0",

@@ -1017,6 +1017,7 @@
     "freeRedraws": "+{{formattedCount}} bedava",
     "playHand": "Eli oyna",
     "reasonExact": "Tam {{count}} taş oynayın",
+    "reasonBanned": "Bu tur {{target}} oynanamaz",
     "reasonMinimum": "En az {{count}} taş seçin",
     "reasonMaximum": "En fazla {{count}} taş ya da tam bir Mahjong eli",
     "reasonMaximumRedraw": "Oyna: en fazla {{count}} taş ya da tam bir Mahjong eli. YENİDEN ÇEK: istediğin kadar",
@@ -2053,6 +2054,7 @@
     "red": "Kırmızı Ejderha",
     "modifiers": "Özel taş:",
     "debuffed": "Zayıflatılmış taş",
+    "banned": "Bu tur oynanamaz",
     "lockedMustPlay": "Kilitli taş: oynanmalı",
     "tileRow": "Taş sırası",
     "honors": "Onur taşları"
@@ -2155,23 +2157,23 @@
       },
       "the_club": {
         "name": "Sopa",
-        "description": "Bambular hiç puan vermez"
+        "description": "Bambular oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_goad": {
         "name": "Üvendire",
-        "description": "Daireler hiç puan vermez"
+        "description": "Daireler oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_window": {
         "name": "Pencere",
-        "description": "Karakterler hiç puan vermez"
+        "description": "Karakterler oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_head": {
         "name": "Baş",
-        "description": "Ejderhalar hiç puan vermez"
+        "description": "Ejderhalar oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_plant": {
         "name": "Bitki",
-        "description": "Rüzgârlar ve Ejderhalar hiç puan vermez"
+        "description": "Rüzgârlar ve Ejderhalar oynanamaz, yalnızca yeniden çekilebilir"
       },
       "the_ox": {
         "name": "Öküz",
@@ -3247,8 +3249,7 @@
     "no_discards": "YENİDEN ÇEKME yok",
     "decrease_play_level": "El türü −{{count}} seviye",
     "fixed_hand_size": "Tam {{count}} taş oyna",
-    "debuff_suit": "{{target}} 0 puan",
-    "debuff_tile_type": "{{target}} 0 puan",
+    "ban_tiles": "{{target}} oynanamaz",
     "hand_size_reduction": "Istaka −{{count}} taş",
     "gold_per_tile": "Oynanan taş başına −{{count}} altın",
     "most_played_pattern_zeroes_gold": "En çok oynanan el türü tüm altını alır",

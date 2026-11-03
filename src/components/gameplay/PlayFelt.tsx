@@ -28,6 +28,8 @@ export interface PlayFeltProps {
   faceDownIds?: ReadonlySet<string>
   lockedIds?: ReadonlySet<string>
   debuffedIds?: ReadonlySet<string>
+  /** Tiles this round's Boss bars from play; they can still be redrawn. */
+  bannedIds?: ReadonlySet<string>
   /** The click is passed on so the rack can keep keyboard focus in place. */
   onToggle: (tile: Tile, event: MouseEvent<HTMLButtonElement>) => void
   /** The rack's tile size, so a tile looks the same on either side. */
@@ -40,6 +42,7 @@ export function PlayFelt({
   faceDownIds = new Set(),
   lockedIds = new Set(),
   debuffedIds = new Set(),
+  bannedIds = new Set(),
   onToggle,
   size,
   disabled = false,
@@ -84,6 +87,7 @@ export function PlayFelt({
             faceDown={faceDownIds.has(tile.id)}
             locked={lockedIds.has(tile.id)}
             debuffed={debuffedIds.has(tile.id)}
+            banned={bannedIds.has(tile.id)}
             disabled={disabled}
           />
         </button>

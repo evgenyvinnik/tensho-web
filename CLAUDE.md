@@ -44,11 +44,16 @@ package version into the Xcode or Gradle project (`scripts/lib/native-versions.m
 WebView storage, and restores it before the stores hydrate. Both apps send
 `appinactive`/`appactive` (`SceneDelegate.swift`, `MainActivity.java`) so the
 music stops on lock. Android's Back (`src/native/androidBack.ts`) closes the top
-dialog or popover, else backgrounds the app. Ads (apps only):
-`src/native/adBreaks.ts` schedules an AdMob interstitial after every second
-Boss, shown on the next screen. `admobInterstitials.ts` handles consent, the
-tracking prompt and loading. They use Google's test IDs until each platform's
-ad unit (`VITE_ADMOB_INTERSTITIAL_IOS` / `_ANDROID` in `.env.native`) and app ID
+dialog or popover, else backgrounds the app. The iOS status bar is hidden
+through Info.plist. Keep `UIViewControllerBasedStatusBarAppearance` off,
+because Capacitor's SystemBars plugin shows the bar again at launch otherwise.
+For top spacing, use `var(--safe-top)` and not `env(safe-area-inset-top)`: on
+iPhones with a notch or Dynamic Island, the app adds room below the camera
+(`src/index.css`). Ads (apps only): `src/native/adBreaks.ts` schedules an
+AdMob interstitial after every second Boss, shown on the next screen.
+`admobInterstitials.ts` handles consent, the tracking prompt and loading. They
+use Google's test IDs until each platform's ad unit
+(`VITE_ADMOB_INTERSTITIAL_IOS` / `_ANDROID` in `.env.native`) and app ID
 (`GADApplicationIdentifier` in Info.plist, `APPLICATION_ID` in
 AndroidManifest.xml) are set. See `docs/ANDROID_RELEASE.md` for Google Play.
 

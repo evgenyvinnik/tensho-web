@@ -1017,6 +1017,7 @@
     "freeRedraws": "+{{formattedCount}} gratis",
     "playHand": "Gioca mano",
     "reasonExact": "Gioca esattamente {{count}} tessere",
+    "reasonBanned": "{{target}}: non giocabili in questo round",
     "reasonMinimum": "Scegli almeno {{count}} tessere",
     "reasonMaximum": "Fino a {{count}} tessere, o una mano di Mahjong completa",
     "reasonMaximumRedraw": "Gioca: fino a {{count}} tessere o una mano di Mahjong completa. RIPESCA: quante vuoi",
@@ -2053,6 +2054,7 @@
     "red": "Drago Rosso",
     "modifiers": "Tessera speciale:",
     "debuffed": "Tessera indebolita",
+    "banned": "Non giocabile in questo round",
     "lockedMustPlay": "Tessera bloccata: va giocata",
     "tileRow": "Fila di tessere",
     "honors": "Onori"
@@ -2135,23 +2137,23 @@
       },
       "the_club": {
         "name": "La Clava",
-        "description": "Le tessere di Bambù non segnano punti"
+        "description": "Le tessere di Bambù non si possono giocare, solo ripescare"
       },
       "the_goad": {
         "name": "Il Pungolo",
-        "description": "Le tessere di Cerchi non segnano punti"
+        "description": "Le tessere di Cerchi non si possono giocare, solo ripescare"
       },
       "the_window": {
         "name": "La Finestra",
-        "description": "Le tessere di Caratteri non segnano punti"
+        "description": "Le tessere di Caratteri non si possono giocare, solo ripescare"
       },
       "the_head": {
         "name": "La Testa",
-        "description": "I Draghi non segnano punti"
+        "description": "I Draghi non si possono giocare, solo ripescare"
       },
       "the_plant": {
         "name": "La Pianta",
-        "description": "Venti e Draghi non segnano punti"
+        "description": "Venti e Draghi non si possono giocare, solo ripescare"
       },
       "the_ox": {
         "name": "Il Bue",
@@ -3247,8 +3249,7 @@
     "no_discards": "Niente RIPESCA",
     "decrease_play_level": "Tipo di mano −{{count}} livello",
     "fixed_hand_size": "Gioca esattamente {{count}}",
-    "debuff_suit": "{{target}}: 0 punti",
-    "debuff_tile_type": "{{target}}: 0 punti",
+    "ban_tiles": "{{target}}: non giocabili",
     "hand_size_reduction": "Leggio −{{count}} tessera",
     "gold_per_tile": "−{{count}} oro per tessera giocata",
     "most_played_pattern_zeroes_gold": "Il tipo di mano più usato azzera l’oro",
