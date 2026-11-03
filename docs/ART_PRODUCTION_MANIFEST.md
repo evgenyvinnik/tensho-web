@@ -347,9 +347,9 @@ Prompt: *a menacing Boss Mandate token: a black-lacquer and crimson plaque depic
 | `the_water` | The Water | No REDRAW this round | delivered |
 | `the_arm` | The Arm | Yaku tier decreased by 1 for scoring | delivered |
 | `the_psychic` | The Psychic | Every play must use exactly 5 tiles | delivered |
-| `the_club` | The Club | All Souzu tiles are debuffed | delivered |
-| `the_goad` | The Goad | All Pinzu tiles are debuffed | delivered |
-| `the_window` | The Window | All Manzu tiles are debuffed | delivered |
+| `the_club` | The Club | Souzu tiles can’t be played, only redrawn | delivered |
+| `the_goad` | The Goad | Pinzu tiles can’t be played, only redrawn | delivered |
+| `the_window` | The Window | Manzu tiles can’t be played, only redrawn | delivered |
 | `the_head` | The Head | All Dragon tiles are debuffed | delivered |
 | `the_plant` | The Plant | All Honor tiles are debuffed | delivered |
 | `the_ox` | The Ox | Playing most-played Yaku sets gold to 0 | delivered |

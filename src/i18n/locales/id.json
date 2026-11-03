@@ -906,6 +906,7 @@
     "freeRedraws": "+{{formattedCount}} gratis",
     "playHand": "Mainkan",
     "reasonExact": "Mainkan tepat {{count}} ubin",
+    "reasonBanned": "{{target}} tidak bisa dimainkan ronde ini",
     "reasonMinimum": "Pilih minimal {{count}} ubin",
     "reasonMaximum": "Maksimal {{count}} ubin, atau tangan Mahjong lengkap",
     "reasonMaximumRedraw": "Mainkan: maksimal {{count}} ubin atau tangan Mahjong lengkap. TARIK ULANG: berapa pun",
@@ -1942,6 +1943,7 @@
     "red": "Naga Merah",
     "modifiers": "Ubin khusus:",
     "debuffed": "Ubin dilemahkan",
+    "banned": "Tidak bisa dimainkan ronde ini",
     "lockedMustPlay": "Ubin terkunci: harus dimainkan",
     "tileRow": "Baris ubin",
     "honors": "Ubin kehormatan"
@@ -2034,15 +2036,15 @@
       },
       "the_club": {
         "name": "Sang Pentung",
-        "description": "Ubin Bambu tidak mencetak skor"
+        "description": "Ubin Bambu tidak bisa dimainkan, hanya bisa ditarik ulang"
       },
       "the_goad": {
         "name": "Sang Tongkat",
-        "description": "Ubin Lingkaran tidak mencetak skor"
+        "description": "Ubin Lingkaran tidak bisa dimainkan, hanya bisa ditarik ulang"
       },
       "the_window": {
         "name": "Sang Jendela",
-        "description": "Ubin Karakter tidak mencetak skor"
+        "description": "Ubin Karakter tidak bisa dimainkan, hanya bisa ditarik ulang"
       },
       "the_head": {
         "name": "Sang Kepala",
@@ -3247,7 +3249,7 @@
     "no_discards": "Tak bisa TARIK ULANG",
     "decrease_play_level": "Jenis tangan −{{count}} level",
     "fixed_hand_size": "Mainkan tepat {{count}}",
-    "debuff_suit": "{{target}} bernilai 0",
+    "ban_suit": "{{target}} tak bisa dimainkan",
     "debuff_tile_type": "{{target}} bernilai 0",
     "hand_size_reduction": "Rak −{{count}} ubin",
     "gold_per_tile": "−{{count}} emas per ubin dimainkan",

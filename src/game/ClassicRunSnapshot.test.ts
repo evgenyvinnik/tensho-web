@@ -2,10 +2,10 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { GameOrchestrator, type OrchestratorState } from './GameOrchestrator'
 import { eventBus } from './EventBus'
 import { runRandom } from './RunRandom'
-import { Tile, TileSuit } from '../core/Tile'
+import { DragonType, Tile, TileSuit } from '../core/Tile'
 import { Meld, MeldType } from '../core/Meld'
 import { EnhancementType } from '../core/TileModifier'
-import { THE_CLUB } from '../config/mandateDefinitions'
+import { THE_HEAD } from '../config/mandateDefinitions'
 import { useOmenStore } from '../stores/omenStore'
 import { FATE_SEALS, FateSealSystem } from '../systems/FateSealSystem'
 import { BlessingPackSystem } from '../systems/BlessingPackSystem'
@@ -148,8 +148,8 @@ it('links the restored current round to the Act ledger before further scoring', 
 it('reattaches Mandate cleanup to the restored Debuff system', () => {
   const game = start()
   const state = game.getState()
-  const tile = new Tile(TileSuit.Souzu, 3, 'boss-tile')
-  state.mandateEffectSystem.activateMandate(THE_CLUB, [tile], [])
+  const tile = new Tile(TileSuit.Dragon, DragonType.Red, 'boss-tile')
+  state.mandateEffectSystem.activateMandate(THE_HEAD, [tile], [])
   expect(state.debuffSystem.isTileDebuffed(tile.id)).toBe(true)
   game.restoreRun(json(game.captureRun()))
   const restored = game.getState()

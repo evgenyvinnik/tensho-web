@@ -1,6 +1,7 @@
 /**
  * A Stone has no rank or suit, so nothing that reads a tile's face sees it:
- * suit and tile-kind Boss Mandates do not debuff it, The Veil does not hide it
+ * suit Boss Mandates do not bar it, tile-kind ones do not debuff it, The Veil
+ * does not hide it
  * as an Honor, it shows no suit to the Mixed Suits Orb family and is never a
  * Loose tile, and a red 5 under a Stone Mark is no red five.
  */
@@ -26,7 +27,11 @@ import { parsePlay } from '../rules/PartialHandParser'
 import { classifyPlay } from '../rules/PlayPattern'
 import { playOrbCategories } from './CelestialOrbSystem'
 import { FATE_SEALS, FateSealSystem } from './FateSealSystem'
-import { MandateEffectSystem, isFaceDebuffTarget } from './MandateEffectSystem'
+import {
+  MandateEffectSystem,
+  isFaceDebuffTarget,
+  isSuitBanTarget,
+} from './MandateEffectSystem'
 import {
   RedFiveSystem,
   calculateRedFiveBonus,
@@ -53,7 +58,6 @@ function activate(
 
 describe('suit and tile-kind Mandates read no Stone face', () => {
   it.each([
-    ['debuff_suit', 'manzu', manzu(1, 'a')],
     ['debuff_tile_type', 'terminal', manzu(9, 'a')],
     ['debuff_tile_type', 'simple', pinzu(5, 'a')],
     ['debuff_tile_type', 'honor', wind('a')],
@@ -64,11 +68,21 @@ describe('suit and tile-kind Mandates read no Stone face', () => {
     expect(isFaceDebuffTarget({ type, target }, stone(tile))).toBe(false)
   })
 
-  it('The Window debuffs Manzu but not a Stone Manzu', () => {
-    const tiles = [stone(manzu(1, 'stone')), manzu(2, 'plain'), pinzu(2, 'p')]
-    const { debuffs } = activate(THE_WINDOW, tiles)
+  it('ban_suit manzu bars the bare tile but not its Stone', () => {
+    const effect = { type: 'ban_suit', target: 'manzu' }
+    expect(isSuitBanTarget(effect, manzu(1, 'a'))).toBe(true)
+    expect(isSuitBanTarget(effect, stone(manzu(1, 'a')))).toBe(false)
+    expect(isSuitBanTarget(effect, pinzu(1, 'a'))).toBe(false)
+  })
 
-    expect([...debuffs.getDebuffedTileIds()]).toEqual(['plain'])
+  it('The Window bars Manzu but not a Stone Manzu, and debuffs nothing', () => {
+    const tiles = [stone(manzu(1, 'stone')), manzu(2, 'plain'), pinzu(2, 'p')]
+    const { mandates, debuffs } = activate(THE_WINDOW, tiles)
+
+    expect(tiles.filter((tile) => mandates.isTilePlayBanned(tile))).toEqual([
+      tiles[1],
+    ])
+    expect([...debuffs.getDebuffedTileIds()]).toEqual([])
   })
 
   it.each([THE_HEAD, THE_PLANT])(
@@ -107,9 +121,9 @@ describe('suit and tile-kind Mandates read no Stone face', () => {
 
 describe('a tile that changes face mid-round is re-read by the Mandate', () => {
   it('lifts the debuff from a tile turned to Stone and debuffs one uncovered', () => {
-    const covered = manzu(1, 'covered')
-    const uncovered = stone(manzu(2, 'uncovered'))
-    const { mandates, debuffs } = activate(THE_WINDOW, [covered, uncovered])
+    const covered = dragon('covered')
+    const uncovered = stone(dragon('uncovered'))
+    const { mandates, debuffs } = activate(THE_HEAD, [covered, uncovered])
     expect(debuffs.isTileDebuffed('covered')).toBe(true)
     expect(debuffs.isTileDebuffed('uncovered')).toBe(false)
 
@@ -123,8 +137,8 @@ describe('a tile that changes face mid-round is re-read by the Mandate', () => {
   })
 
   it('leaves a debuff from another source in place', () => {
-    const tile = manzu(1, 'blighted')
-    const { mandates, debuffs } = activate(THE_WINDOW, [])
+    const tile = dragon('blighted')
+    const { mandates, debuffs } = activate(THE_HEAD, [])
     debuffs.applyBlight([tile.id])
 
     mandates.refreshFaceDebuffs([stone(tile)])
@@ -165,7 +179,6 @@ describe('the run applies Boss Mandates by what a tile shows', () => {
     (game as unknown as { applyMandateDebuffs(): void }).applyMandateDebuffs()
 
   it.each([
-    { mandate: THE_WINDOW, suit: TileSuit.Manzu, rank: 4 },
     { mandate: THE_HEAD, suit: TileSuit.Dragon, rank: DragonType.Red },
     { mandate: THE_PLANT, suit: TileSuit.Dragon, rank: DragonType.Red },
   ])(
@@ -184,7 +197,7 @@ describe('the run applies Boss Mandates by what a tile shows', () => {
     }
   )
 
-  it('a Seal of Stone used in a Window round lifts the Manzu debuff', () => {
+  it('a Seal of Stone used in a Window round frees the barred Manzu', () => {
     const { game, state } = bossRound(THE_WINDOW)
     const target = manzu(1, state.handTiles[0].id)
     for (const key of ['handTiles', 'wallTemplate', 'wall'] as const)
@@ -192,7 +205,7 @@ describe('the run applies Boss Mandates by what a tile shows', () => {
         tile.id === target.id ? target : tile
       )
     state.mandateEffectSystem.activateMandate(THE_WINDOW, state.handTiles, [])
-    expect(state.debuffSystem.isTileDebuffed(target.id)).toBe(true)
+    expect(game.getBannedTileIds()).toContain(target.id)
 
     const seal = FateSealSystem.createFateSealInstance(FATE_SEALS.seal_of_stone)
     expect(game.addFateSeal(seal)).toBe(true)
@@ -207,7 +220,7 @@ describe('the run applies Boss Mandates by what a tile shows', () => {
     expect(
       game.getHandTiles().find((tile) => tile.id === target.id)?.isStone
     ).toBe(true)
-    expect(state.debuffSystem.isTileDebuffed(target.id)).toBe(false)
+    expect(game.getBannedTileIds()).not.toContain(target.id)
   })
 })
 

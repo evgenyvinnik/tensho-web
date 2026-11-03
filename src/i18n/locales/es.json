@@ -718,6 +718,7 @@
     "freeRedraws": "+{{formattedCount}} gratis",
     "playHand": "Jugar mano",
     "reasonExact": "Juega exactamente {{count}} fichas",
+    "reasonBanned": "Esta ronda no se pueden jugar {{target}}",
     "reasonMinimum": "Elige al menos {{count}} fichas",
     "reasonMaximum": "Hasta {{count}} fichas, o una mano de Mahjong completa",
     "reasonMaximumRedraw": "Jugar: hasta {{count}} fichas o una mano de Mahjong completa. RECAMBIAR: las que quieras",
@@ -1754,6 +1755,7 @@
     "red": "Dragón Rojo",
     "modifiers": "Ficha especial:",
     "debuffed": "Ficha debilitada",
+    "banned": "No se puede jugar esta ronda",
     "lockedMustPlay": "Ficha bloqueada: debe jugarse",
     "tileRow": "Fila de fichas",
     "honors": "Honores"
@@ -1846,15 +1848,15 @@
       },
       "the_club": {
         "name": "La Porra",
-        "description": "Las fichas de Bambúes no puntúan"
+        "description": "Las fichas de Bambúes no se pueden jugar, solo RECAMBIAR"
       },
       "the_goad": {
         "name": "La Aguijada",
-        "description": "Las fichas de Círculos no puntúan"
+        "description": "Las fichas de Círculos no se pueden jugar, solo RECAMBIAR"
       },
       "the_window": {
         "name": "La Ventana",
-        "description": "Las fichas de Caracteres no puntúan"
+        "description": "Las fichas de Caracteres no se pueden jugar, solo RECAMBIAR"
       },
       "the_head": {
         "name": "La Cabeza",
@@ -3247,7 +3249,7 @@
     "no_discards": "Sin RECAMBIAR",
     "decrease_play_level": "Tipo de mano −{{count}} nivel",
     "fixed_hand_size": "Juega exactamente {{count}}",
-    "debuff_suit": "{{target}} dan 0",
+    "ban_suit": "{{target}}: no se juegan",
     "debuff_tile_type": "{{target}} dan 0",
     "hand_size_reduction": "Atril −{{count}} ficha",
     "gold_per_tile": "−{{count}} de oro por ficha jugada",

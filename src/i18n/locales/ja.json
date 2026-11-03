@@ -718,6 +718,7 @@
     "freeRedraws": "無料+{{formattedCount}}",
     "playHand": "打つ",
     "reasonExact": "ちょうど{{count}}枚で打ってください",
+    "reasonBanned": "このラウンドは{{target}}を打てません",
     "reasonMinimum": "{{count}}枚以上選んでください",
     "reasonMaximum": "{{count}}枚まで、または和了の形",
     "reasonMaximumRedraw": "打つのは{{count}}枚まで、または和了の形。引き直しは何枚でも",
@@ -1754,6 +1755,7 @@
     "red": "中",
     "modifiers": "特殊な牌:",
     "debuffed": "弱体化した牌",
+    "banned": "このラウンドは打てません",
     "lockedMustPlay": "ロック牌: 必ず打つ必要があります",
     "tileRow": "牌の列",
     "honors": "字牌"
@@ -1846,15 +1848,15 @@
       },
       "the_club": {
         "name": "棍",
-        "description": "索子は得点しない"
+        "description": "索子は打てない（引き直しのみ可）"
       },
       "the_goad": {
         "name": "刺",
-        "description": "筒子は得点しない"
+        "description": "筒子は打てない（引き直しのみ可）"
       },
       "the_window": {
         "name": "窓",
-        "description": "萬子は得点しない"
+        "description": "萬子は打てない（引き直しのみ可）"
       },
       "the_head": {
         "name": "首",
@@ -3247,7 +3249,7 @@
     "no_discards": "引き直し不可",
     "decrease_play_level": "役のレベル−{{count}}",
     "fixed_hand_size": "ちょうど{{count}}枚で打つ",
-    "debuff_suit": "{{target}}は0点",
+    "ban_suit": "{{target}}は打てない",
     "debuff_tile_type": "{{target}}は0点",
     "hand_size_reduction": "手牌−{{count}}枚",
     "gold_per_tile": "打った牌1枚ごとに金貨−{{count}}",

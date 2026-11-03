@@ -277,6 +277,10 @@ export function GameplayScreen() {
     () => new Set(game.debuffedTileIds),
     [game.debuffedTileIds]
   )
+  const bannedTileIds = useMemo(
+    () => new Set(game.bannedTileIds),
+    [game.bannedTileIds]
+  )
 
   const handleToggle = useCallback(
     (tile: Tile) => {
@@ -314,25 +318,32 @@ export function GameplayScreen() {
   const fixedHand =
     game.state.roundManager.checkMandateEffect('fixed_hand_size')
   const lockedMissing = game.lockedTileIds.some((id) => !selectedSet.has(id))
+  const bannedSelected = selectedIds.some((id) => bannedTileIds.has(id))
+  const bannedSuit =
+    game.state.mandateEffectSystem.getActiveMandate()?.effect.target
   const playReason = playAllowed
     ? undefined
     : lockedMissing
       ? t('tiles.lockedMustPlay', 'Locked tile: must be played')
-      : fixedHand.active && selectedIds.length !== Number(fixedHand.value)
-        ? t('gameplay.reasonExact', {
-            count: Number(fixedHand.value),
+      : bannedSelected
+        ? t('gameplay.reasonBanned', {
+            target: t(`tiles.${bannedSuit}`),
           })
-        : selectedIds.length < MIN_TACTICAL_PLAY_TILES
-          ? t('gameplay.reasonMinimum', { count: MIN_TACTICAL_PLAY_TILES })
-          : selectedIds.length > MAX_TACTICAL_PLAY_TILES
-            ? // Too many to play is not too many to REDRAW: say so.
-              t(
-                redrawAllowed
-                  ? 'gameplay.reasonMaximumRedraw'
-                  : 'gameplay.reasonMaximum',
-                { count: MAX_TACTICAL_PLAY_TILES }
-              )
-            : t('gameplay.reasonUnavailable', 'This play is not allowed now')
+        : fixedHand.active && selectedIds.length !== Number(fixedHand.value)
+          ? t('gameplay.reasonExact', {
+              count: Number(fixedHand.value),
+            })
+          : selectedIds.length < MIN_TACTICAL_PLAY_TILES
+            ? t('gameplay.reasonMinimum', { count: MIN_TACTICAL_PLAY_TILES })
+            : selectedIds.length > MAX_TACTICAL_PLAY_TILES
+              ? // Too many to play is not too many to REDRAW: say so.
+                t(
+                  redrawAllowed
+                    ? 'gameplay.reasonMaximumRedraw'
+                    : 'gameplay.reasonMaximum',
+                  { count: MAX_TACTICAL_PLAY_TILES }
+                )
+              : t('gameplay.reasonUnavailable', 'This play is not allowed now')
   const redrawReason = redrawAllowed
     ? undefined
     : game.state.roundManager.checkMandateEffect('no_discards').active
@@ -700,6 +711,7 @@ export function GameplayScreen() {
                   faceDownIds={faceDownTileIds}
                   lockedIds={lockedTileIds}
                   debuffedIds={debuffedTileIds}
+                  bannedIds={bannedTileIds}
                   onToggle={handleToggle}
                   groupRules={showTileHints ? game.partialHandRules : null}
                   hintsHeld={dealPending}

@@ -34,7 +34,7 @@ export type MandateEffectType =
   | 'no_discards' // The Water: 0 redraws this round
   | 'decrease_play_level' // The Arm: Each play lowers its hand type's level
   | 'fixed_hand_size' // The Psychic: Must play exactly N tiles
-  | 'debuff_suit' // The Club/Goad/Window: Specific suit debuffed
+  | 'ban_suit' // The Club/Goad/Window: tiles of one suit can't be played
   | 'debuff_tile_type' // The Head/Plant: Specific tile type debuffed
   | 'hand_size_reduction' // The Manacle: Reduce hand size by N
   | 'gold_per_tile' // The Tooth: Lose gold per tile played
@@ -224,44 +224,44 @@ export const THE_PSYCHIC: MandateDefinition = {
 }
 
 /**
- * The Club - All Bamboo tiles are debuffed
+ * The Club - Bamboo tiles can't be played (they can still be redrawn)
  */
 export const THE_CLUB: MandateDefinition = {
   id: 'the_club',
   name: 'The Club',
   japaneseName: '棍',
-  description: 'Bamboo tiles score nothing',
+  description: 'Bamboo tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'debuff_suit', target: 'souzu' },
+  effect: { type: 'ban_suit', target: 'souzu' },
   minAct: 1,
 }
 
 /**
- * The Goad - All Circles are debuffed
+ * The Goad - Circles tiles can't be played (they can still be redrawn)
  */
 export const THE_GOAD: MandateDefinition = {
   id: 'the_goad',
   name: 'The Goad',
   japaneseName: '突棒',
-  description: 'Circles tiles score nothing',
+  description: 'Circles tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'debuff_suit', target: 'pinzu' },
+  effect: { type: 'ban_suit', target: 'pinzu' },
   minAct: 1,
 }
 
 /**
- * The Window - All Characters are debuffed
+ * The Window - Characters tiles can't be played (they can still be redrawn)
  */
 export const THE_WINDOW: MandateDefinition = {
   id: 'the_window',
   name: 'The Window',
   japaneseName: '窓',
-  description: 'Characters tiles score nothing',
+  description: 'Characters tiles can’t be played, only redrawn',
   category: 'Standard',
   difficulty: 'Easy',
-  effect: { type: 'debuff_suit', target: 'manzu' },
+  effect: { type: 'ban_suit', target: 'manzu' },
   minAct: 1,
 }
 
@@ -672,7 +672,7 @@ export function isScoringMandate(mandate: MandateDefinition): boolean {
  */
 export function isTileMandate(mandate: MandateDefinition): boolean {
   return [
-    'debuff_suit',
+    'ban_suit',
     'debuff_tile_type',
     'debuff_used_tiles',
     'debuff_until_sell',

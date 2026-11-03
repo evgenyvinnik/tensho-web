@@ -1205,6 +1205,7 @@
     "freeRedraws": "ฟรี +{{formattedCount}}",
     "playHand": "ลงไพ่",
     "reasonExact": "ต้องลงพอดี {{count}} ใบ",
+    "reasonBanned": "รอบนี้ลง{{target}}ไม่ได้",
     "reasonMinimum": "เลือกอย่างน้อย {{count}} ใบ",
     "reasonMaximum": "ไม่เกิน {{count}} ใบ หรือมือมาจองที่ครบ",
     "reasonMaximumRedraw": "ลงไพ่: ไม่เกิน {{count}} ใบ หรือมือมาจองที่ครบ จั่วใหม่: กี่ใบก็ได้",
@@ -2241,6 +2242,7 @@
     "red": "มังกรแดง",
     "modifiers": "ไพ่พิเศษ:",
     "debuffed": "ไพ่ที่ถูกลดพลัง",
+    "banned": "รอบนี้ลงไม่ได้",
     "lockedMustPlay": "ไพ่ที่ถูกล็อก: ต้องลง",
     "tileRow": "แถวไพ่",
     "honors": "ไพ่เกียรติ"
@@ -2343,15 +2345,15 @@
       },
       "the_club": {
         "name": "กระบอง",
-        "description": "ไพ่ไผ่ไม่ได้คะแนน"
+        "description": "ลงไพ่ไผ่ไม่ได้ จั่วใหม่ได้เท่านั้น"
       },
       "the_goad": {
         "name": "ปฏัก",
-        "description": "ไพ่วงกลมไม่ได้คะแนน"
+        "description": "ลงไพ่วงกลมไม่ได้ จั่วใหม่ได้เท่านั้น"
       },
       "the_window": {
         "name": "หน้าต่าง",
-        "description": "ไพ่อักขระไม่ได้คะแนน"
+        "description": "ลงไพ่อักขระไม่ได้ จั่วใหม่ได้เท่านั้น"
       },
       "the_head": {
         "name": "ศีรษะ",
@@ -3247,7 +3249,7 @@
     "no_discards": "จั่วใหม่ไม่ได้",
     "decrease_play_level": "ประเภทมือลด {{count}} ระดับ",
     "fixed_hand_size": "ต้องลงพอดี {{count}} ใบ",
-    "debuff_suit": "{{target}} ได้ 0",
+    "ban_suit": "ลง{{target}}ไม่ได้",
     "debuff_tile_type": "{{target}} ได้ 0",
     "hand_size_reduction": "ราง −{{count}} ใบ",
     "gold_per_tile": "เสียทอง {{count}} ต่อไพ่ที่ลง",

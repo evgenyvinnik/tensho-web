@@ -718,6 +718,7 @@
     "freeRedraws": "+{{formattedCount}} sans frais",
     "playHand": "Jouer la main",
     "reasonExact": "Jouez exactement {{count}} tuiles",
+    "reasonBanned": "{{target}} : injouables cette manche",
     "reasonMinimum": "Choisissez au moins {{count}} tuiles",
     "reasonMaximum": "{{count}} tuiles maximum, ou une main de Mahjong complète",
     "reasonMaximumRedraw": "Jouer : {{count}} tuiles maximum ou une main de Mahjong complète. REPIOCHER : autant que vous voulez",
@@ -1754,6 +1755,7 @@
     "red": "Dragon Rouge",
     "modifiers": "Tuile spéciale :",
     "debuffed": "Tuile affaiblie",
+    "banned": "Injouable cette manche",
     "lockedMustPlay": "Tuile verrouillée : doit être jouée",
     "tileRow": "Rangée de tuiles",
     "honors": "Honneurs"
@@ -1846,15 +1848,15 @@
       },
       "the_club": {
         "name": "La Massue",
-        "description": "Les tuiles de Bambous ne marquent rien"
+        "description": "Les tuiles de Bambous ne peuvent pas être jouées, seulement repiochées"
       },
       "the_goad": {
         "name": "L'Aiguillon",
-        "description": "Les tuiles de Cercles ne marquent rien"
+        "description": "Les tuiles de Cercles ne peuvent pas être jouées, seulement repiochées"
       },
       "the_window": {
         "name": "La Fenêtre",
-        "description": "Les tuiles de Caractères ne marquent rien"
+        "description": "Les tuiles de Caractères ne peuvent pas être jouées, seulement repiochées"
       },
       "the_head": {
         "name": "La Tête",
@@ -3247,7 +3249,7 @@
     "no_discards": "Pas de REPIOCHE",
     "decrease_play_level": "Type de main −{{count}} niveau",
     "fixed_hand_size": "Jouez exactement {{count}}",
-    "debuff_suit": "{{target}} : 0 point",
+    "ban_suit": "{{target}} : injouables",
     "debuff_tile_type": "{{target}} : 0 point",
     "hand_size_reduction": "Chevalet −{{count}} tuile",
     "gold_per_tile": "−{{count}} or par tuile jouée",

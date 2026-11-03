@@ -1205,6 +1205,7 @@
     "freeRedraws": "+{{formattedCount}} бесплатно",
     "playHand": "Сыграть",
     "reasonExact": "Сыграйте ровно {{count}} костей",
+    "reasonBanned": "{{target}} нельзя разыграть в этом раунде",
     "reasonMinimum": "Выберите хотя бы {{count}} кости",
     "reasonMaximum": "До {{count}} костей или полная рука маджонга",
     "reasonMaximumRedraw": "Сыграть: до {{count}} костей или полная рука маджонга. ПЕРЕСДАЧА: сколько угодно",
@@ -2243,6 +2244,7 @@
     "red": "Красный дракон",
     "modifiers": "Особая кость:",
     "debuffed": "Ослабленная кость",
+    "banned": "Нельзя разыграть в этом раунде",
     "lockedMustPlay": "Заблокированная кость: нужно разыграть",
     "tileRow": "Ряд костей",
     "honors": "Почётные"
@@ -2325,15 +2327,15 @@
       },
       "the_club": {
         "name": "Дубина",
-        "description": "Кости Бамбука не приносят очков"
+        "description": "Кости Бамбука нельзя разыгрывать, только пересдать"
       },
       "the_goad": {
         "name": "Стрекало",
-        "description": "Кости Кругов не приносят очков"
+        "description": "Кости Кругов нельзя разыгрывать, только пересдать"
       },
       "the_window": {
         "name": "Окно",
-        "description": "Кости Символов не приносят очков"
+        "description": "Кости Символов нельзя разыгрывать, только пересдать"
       },
       "the_head": {
         "name": "Голова",
@@ -3249,7 +3251,7 @@
     "no_discards": "Без пересдачи",
     "decrease_play_level": "Тип руки −{{count}} уровень",
     "fixed_hand_size": "Ровно {{count}} костей",
-    "debuff_suit": "{{target}} — 0 очков",
+    "ban_suit": "{{target}} нельзя разыграть",
     "debuff_tile_type": "{{target}} — 0 очков",
     "hand_size_reduction": "Подставка −{{count}} кость",
     "gold_per_tile": "−{{count}} золота за кость",

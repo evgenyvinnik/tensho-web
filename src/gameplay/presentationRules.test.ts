@@ -48,7 +48,7 @@ describe('Mandate consequences', () => {
       values: { count: 2, value: 2 },
     })
     expect(
-      mandateConsequence({ type: 'debuff_suit', target: 'pinzu' }).values
+      mandateConsequence({ type: 'ban_suit', target: 'pinzu' }).values
     ).toMatchObject({ count: 1, targetKey: 'tiles.pinzu' })
   })
 })

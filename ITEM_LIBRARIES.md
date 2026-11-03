@@ -281,12 +281,12 @@ cancel, and only a Seal that can work then is made. See
 | **The Wall** | 壁 | 4× base score requirement | 2 |
 | **The Wheel** | 輪 | 1/7 tiles drawn face-down | 2 |
 | **The Arm** | 腕 | Each play lowers every Orb family it levels by 1 (never below level 1) before it scores | 2 |
-| **The Club** | 棍 | All Bamboo tiles debuffed | 1 |
+| **The Club** | 棍 | Bamboo tiles can’t be played, only redrawn | 1 |
 | **The Fish** | 魚 | Tiles drawn face-down after each hand | 2 |
 | **The Psychic** | 霊能者 | Must play exactly 5 tiles per hand | 1 |
-| **The Goad** | 突棒 | All Circles debuffed | 1 |
+| **The Goad** | 突棒 | Circles tiles can’t be played, only redrawn | 1 |
 | **The Water** | 水 | Start with 0 discards | 2 |
-| **The Window** | 窓 | All Characters debuffed | 1 |
+| **The Window** | 窓 | Characters tiles can’t be played, only redrawn | 1 |
 | **The Manacle** | 枷 | −1 Hand Size | 1 |
 | **The Eye** | 目 | Each hand type scores once this round; a repeat scores 0 | 3 |
 | **The Mouth** | 口 | Your first play sets this round’s hand type; any other hand scores 0 | 2 |

@@ -144,6 +144,7 @@ import {
   EMERGENCY_TURN_FIRST_ACT,
   EMERGENCY_TURN_FIRST_STAKE,
   MAX_TACTICAL_PLAY_TILES,
+  MIN_TACTICAL_PLAY_TILES,
   SWIFT_CLEAR_SPARE_TURNS,
   TURNS_PER_ROUND,
   emergencyTurnCost,
@@ -995,13 +996,8 @@ export class GameOrchestrator {
       )
     }
 
-    if (mandate.effect.type === 'debuff_suit' && mandate.effect.target) {
-      this.state.debuffSystem.applyMandateRestriction(
-        allTiles,
-        mandate.effect.target
-      )
-      return
-    }
+    // A suit ban (The Club, The Goad, The Window) debuffs nothing: it is
+    // enforced when a play is validated.
 
     if (mandate.effect.type === 'debuff_tile_type') {
       for (const tile of allTiles) {
@@ -1514,6 +1510,15 @@ export class GameOrchestrator {
   }
 
   /**
+   * A Seal or Script can reshape the rack mid-round (a suit change under a
+   * suit-ban Boss, tiles destroyed): end the round if no play remains.
+   */
+  private afterRackChange(result: ActionResult): ActionResult {
+    if (result.success) this.enforcePlayability(result.effects)
+    return result
+  }
+
+  /**
    * Create state snapshot for action validation
    */
   private createStateSnapshot(): GameStateSnapshot {
@@ -1577,13 +1582,17 @@ export class GameOrchestrator {
         return this.executeAdTurn(effects)
 
       case 'useSeal':
-        return this.executeUseSeal(action.sealId, action.targets, effects)
+        return this.afterRackChange(
+          this.executeUseSeal(action.sealId, action.targets, effects)
+        )
 
       case 'useOrb':
         return this.executeUseOrb(action.orbId, effects)
 
       case 'useScript':
-        return this.executeUseScript(action.scriptId, action.targets, effects)
+        return this.afterRackChange(
+          this.executeUseScript(action.scriptId, action.targets, effects)
+        )
 
       default:
         return { success: false, effects, errors: ['Unknown action type'] }
@@ -1784,7 +1793,10 @@ export class GameOrchestrator {
     )
       return null
     const visible = this.state.handTiles.filter(
-      (tile) => !tile.isBonus && !this.state.faceDownTileIds.has(tile.id)
+      (tile) =>
+        !tile.isBonus &&
+        !this.state.faceDownTileIds.has(tile.id) &&
+        !this.state.mandateEffectSystem.isTilePlayBanned(tile)
     )
     const required = this.state.mandateEffectSystem.getLockedTileIds()
     if (required.some((id) => !visible.some((t) => t.id === id))) return null
@@ -1949,7 +1961,9 @@ export class GameOrchestrator {
     if (single.active && this.getPlaysThisRound() > 0) {
       errors.push('Boss Mandate: Only one Play allowed this round')
     }
-    const mandate = this.state.mandateEffectSystem.validateHandPlay(tileIds)
+    const mandate = this.state.mandateEffectSystem.validateHandPlay(
+      this.state.handTiles.filter((tile) => tileIds.includes(tile.id))
+    )
     if (!mandate.valid)
       errors.push(mandate.error ?? 'Boss Mandate blocks this play')
     if (
@@ -4333,7 +4347,7 @@ export class GameOrchestrator {
   /** Whether any selection of the current hand could still be played. */
   private canMakeLegalPlay(): boolean {
     const available = this.state.handTiles.length
-    if (available < 2) return false
+    if (available < MIN_TACTICAL_PLAY_TILES) return false
 
     const fixedHandMandate =
       this.state.roundManager.checkMandateEffect('fixed_hand_size')
@@ -4344,6 +4358,14 @@ export class GameOrchestrator {
     ) {
       return false
     }
+
+    // The Club, The Goad, The Window: barred tiles can't be played, but while
+    // one can still be redrawn the round is not stuck.
+    const banned = this.state.handTiles.filter((tile) =>
+      this.state.mandateEffectSystem.isTilePlayBanned(tile)
+    )
+    if (available - banned.length < MIN_TACTICAL_PLAY_TILES)
+      return this.canPerformAction({ type: 'redraw', tileIds: [banned[0].id] })
 
     return true
   }
@@ -5377,6 +5399,20 @@ export class GameOrchestrator {
 
   getFaceDownTileIds(): string[] {
     return Array.from(this.state.faceDownTileIds)
+  }
+
+  /**
+   * Face-up rack tiles this round's Boss bars from every play (The Club,
+   * The Goad, The Window). They can still be redrawn.
+   */
+  getBannedTileIds(): string[] {
+    return this.state.handTiles
+      .filter(
+        (tile) =>
+          !this.state.faceDownTileIds.has(tile.id) &&
+          this.state.mandateEffectSystem.isTilePlayBanned(tile)
+      )
+      .map((tile) => tile.id)
   }
 
   /**
