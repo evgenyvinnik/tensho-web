@@ -4,14 +4,14 @@ import i18n, { loadLanguage, SUPPORTED_LANGUAGES } from '../../i18n'
 import { ALL_DECREES, DecreeSystem } from '../../systems/DecreeSystem'
 import { DecreeCardCompact } from '../gameplay/DecreeBar'
 import { YakuRepetitionDetails } from './YakuRepetitionDetails'
-import { RUN_YAKU_IDS } from '../../config/consumableUnlocks'
+import { PLAY_PATTERN_IDS } from '../../rules/PlayPattern'
 
 afterEach(async () => {
   cleanup()
   await i18n.changeLanguage('en')
 })
 it.each(SUPPORTED_LANGUAGES)(
-  'localizes all real streak families and the exact rule in %s',
+  'localizes every play pattern streak and the exact rule in %s',
   async (language) => {
     await loadLanguage(language)
     await i18n.changeLanguage(language)
@@ -19,21 +19,25 @@ it.each(SUPPORTED_LANGUAGES)(
       expect(
         i18n.getResource(language, 'translation', `yakuRepetition.${key}`)
       ).toBeTruthy()
+    // Older saves can still list Yaku: they are not play patterns.
     const history = {
-      previousRoundYakuIds: new Set(RUN_YAKU_IDS),
-      previousRoundYakuStreaks: { ittsu: 3 },
+      previousRoundYakuIds: new Set([...PLAY_PATTERN_IDS, 'ittsu']),
+      previousRoundYakuStreaks: { two_pairs: 3 },
     }
     const { container } = render(<YakuRepetitionDetails history={history} />)
     expect(container.querySelectorAll('[data-yaku-streak]')).toHaveLength(
-      RUN_YAKU_IDS.length
+      PLAY_PATTERN_IDS.length
     )
-    expect(container).not.toHaveTextContent('menzen_tsumo')
-    expect(container).not.toHaveTextContent('seven_pairs')
-    expect(container).not.toHaveTextContent('yaku.')
+    expect(container.querySelector('[data-yaku-streak="ittsu"]')).toBeNull()
+    expect(container).not.toHaveTextContent('two_pairs')
+    expect(container).not.toHaveTextContent('patterns.')
     expect(
-      container.querySelector('[data-yaku-streak="ittsu"]')
+      container.querySelector('[data-yaku-streak="two_pairs"]')
     ).toHaveTextContent(
-      i18n.t('yakuRepetition.streak', { name: i18n.t('yaku.ittsu'), rounds: 3 })
+      i18n.t('yakuRepetition.streak', {
+        name: i18n.t('patterns.two_pairs.name'),
+        rounds: 3,
+      })
     )
     cleanup()
     const decree = new DecreeSystem().acquireDecree(

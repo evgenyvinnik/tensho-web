@@ -21,8 +21,7 @@ function decreeById(id: string): Decree {
 
 function scoreOf(effects: { type: string }[]): number {
   const effect = effects.find((e) => e.type === 'score_added') as
-    | ScoreAddedEffect
-    | undefined
+    ScoreAddedEffect | undefined
   return effect?.score ?? 0
 }
 
@@ -93,7 +92,10 @@ describe('retrigger Decrees', () => {
   it('raises the score of a real play', () => {
     const baseline = new GameOrchestrator()
     baseline.startNewRun(4242, 1)
-    const baseIds = baseline.getState().handTiles.slice(0, 5).map((t) => t.id)
+    const baseIds = baseline
+      .getState()
+      .handTiles.slice(0, 5)
+      .map((t) => t.id)
     const baseScore = scoreOf(
       baseline.processAction({ type: 'play', tileIds: baseIds }).effects
     )
@@ -101,7 +103,10 @@ describe('retrigger Decrees', () => {
     const boosted = new GameOrchestrator()
     boosted.startNewRun(4242, 1)
     boosted.addDecree(decreeById('decree-triple-echo'))
-    const boostIds = boosted.getState().handTiles.slice(0, 5).map((t) => t.id)
+    const boostIds = boosted
+      .getState()
+      .handTiles.slice(0, 5)
+      .map((t) => t.id)
     const boostScore = scoreOf(
       boosted.processAction({ type: 'play', tileIds: boostIds }).effects
     )
@@ -122,7 +127,9 @@ describe('Decree copying', () => {
     system.acquireDecree(decreeById('decree-blueprint')) // copies Decree to right
     system.acquireDecree(decreeById('decree-dragon-echo')) // all Dragon tiles
 
-    const extra = system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd1')])
+    const extra = system.calculateRetriggers([
+      Tile.createDragon(DragonType.Red, 'd1'),
+    ])
 
     // One trigger from Dragon Echo itself, one from Blueprint copying it.
     expect(extra.get('d1')).toBe(2)
@@ -132,7 +139,9 @@ describe('Decree copying', () => {
     system.acquireDecree(decreeById('decree-dragon-echo'))
     system.acquireDecree(decreeById('decree-brainstorm')) // copies leftmost
 
-    const extra = system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd1')])
+    const extra = system.calculateRetriggers([
+      Tile.createDragon(DragonType.Red, 'd1'),
+    ])
 
     expect(extra.get('d1')).toBe(2)
   })
@@ -142,7 +151,9 @@ describe('Decree copying', () => {
     system.acquireDecree(decreeById('decree-honor-resonance')) // honors x2
     system.acquireDecree(decreeById('decree-clone-army'))
 
-    const extra = system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd1')])
+    const extra = system.calculateRetriggers([
+      Tile.createDragon(DragonType.Red, 'd1'),
+    ])
 
     // Dragon 1 + honors 2, then Clone Army copies both again.
     expect(extra.get('d1')).toBe(6)
@@ -152,13 +163,17 @@ describe('Decree copying', () => {
     system.acquireDecree(decreeById('decree-blueprint'))
     system.acquireDecree(decreeById('decree-brainstorm'))
 
-    expect(() => system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd')])).not.toThrow()
+    expect(() =>
+      system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd')])
+    ).not.toThrow()
   })
 
   it('copies nothing when it is the only Decree owned', () => {
     system.acquireDecree(decreeById('decree-clone-army'))
 
-    const extra = system.calculateRetriggers([Tile.createDragon(DragonType.Red, 'd1')])
+    const extra = system.calculateRetriggers([
+      Tile.createDragon(DragonType.Red, 'd1'),
+    ])
 
     expect(extra.size).toBe(0)
   })
@@ -171,14 +186,19 @@ describe('yaku, gold, and resource Decrees', () => {
     system = new DecreeSystem(10)
   })
 
-  it('scales yaku multipliers with Yaku Amplifier', () => {
+  it('leaves Yaku alone: Decrees reward simple plays, not complete hands', () => {
+    const touchesYaku = ALL_DECREES.filter((decree) =>
+      [decree.effect, ...(decree.extraEffects ?? [])].some(
+        (effect) => effect.type === 'yaku_modifier'
+      )
+    )
+    expect(touchesYaku.map((decree) => decree.id)).toEqual([])
     system.acquireDecree(decreeById('decree-yaku-amplifier'))
-    expect(system.getYakuModifiers().multiplier).toBe(1.5)
-  })
-
-  it('raises yaku tiers with Yaku Nexus', () => {
     system.acquireDecree(decreeById('decree-yaku-nexus'))
-    expect(system.getYakuModifiers().tierBonus).toBe(1)
+    expect(system.getYakuModifiers()).toMatchObject({
+      multiplier: 1,
+      tierBonus: 0,
+    })
   })
 
   it("doubles gold with Philosopher's Stone", () => {
@@ -198,7 +218,9 @@ describe('yaku, gold, and resource Decrees', () => {
 
     orchestrator.addDecree(decreeById('decree-time-master'))
 
-    expect(orchestrator.getState().decreeSystem.getAdditionalDraws()).toBe(before + 2)
+    expect(orchestrator.getState().decreeSystem.getAdditionalDraws()).toBe(
+      before + 2
+    )
   })
 })
 
@@ -217,7 +239,11 @@ describe('per-Flower and per-Season scaling', () => {
   })
 
   /** A scoring context carrying a given number of Flowers and Seasons. */
-  function contextWith(flowerCount: number, seasonCount: number, decrees: Decree[]) {
+  function contextWith(
+    flowerCount: number,
+    seasonCount: number,
+    decrees: Decree[]
+  ) {
     const flowers = Array.from({ length: flowerCount }, (_, i) => ({
       id: `flower-${i}`,
     }))
@@ -226,7 +252,13 @@ describe('per-Flower and per-Season scaling', () => {
     }))
 
     return {
-      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      hand: {
+        melds: [],
+        pair: null,
+        waitType: 'tanki',
+        winningTile: null,
+        isConcealed: true,
+      },
       tiles: [],
       melds: [],
       decrees,
@@ -264,8 +296,14 @@ describe('per-Flower and per-Season scaling', () => {
     system.acquireDecree(decree)
     const owned = system.getOwnedDecrees()
 
-    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
-    const three = system.applyDecreeEffects(contextWith(3, 0, owned), emptyBreakdown())
+    const none = system.applyDecreeEffects(
+      contextWith(0, 0, owned),
+      emptyBreakdown()
+    )
+    const three = system.applyDecreeEffects(
+      contextWith(3, 0, owned),
+      emptyBreakdown()
+    )
 
     // No Flowers means no bonus at all; three Flowers pay three times over.
     expect(none.decreeMultiplier).toBe(1)
@@ -283,9 +321,18 @@ describe('per-Flower and per-Season scaling', () => {
     system.acquireDecree(decree!)
     const owned = system.getOwnedDecrees()
 
-    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
-    const one = system.applyDecreeEffects(contextWith(1, 0, owned), emptyBreakdown())
-    const two = system.applyDecreeEffects(contextWith(2, 0, owned), emptyBreakdown())
+    const none = system.applyDecreeEffects(
+      contextWith(0, 0, owned),
+      emptyBreakdown()
+    )
+    const one = system.applyDecreeEffects(
+      contextWith(1, 0, owned),
+      emptyBreakdown()
+    )
+    const two = system.applyDecreeEffects(
+      contextWith(2, 0, owned),
+      emptyBreakdown()
+    )
 
     // With no Flowers the multiplier is inert, then compounds per Flower.
     expect(none.decreeMultiplier).toBe(1)
@@ -305,8 +352,14 @@ describe('per-Flower and per-Season scaling', () => {
     system.acquireDecree(decree!)
     const owned = system.getOwnedDecrees()
 
-    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
-    const two = system.applyDecreeEffects(contextWith(0, 2, owned), emptyBreakdown())
+    const none = system.applyDecreeEffects(
+      contextWith(0, 0, owned),
+      emptyBreakdown()
+    )
+    const two = system.applyDecreeEffects(
+      contextWith(0, 2, owned),
+      emptyBreakdown()
+    )
 
     expect(none.additiveBonus).toBe(0)
     expect(two.additiveBonus).toBeGreaterThan(0)
@@ -315,14 +368,23 @@ describe('per-Flower and per-Season scaling', () => {
   it('leaves unconditioned Decrees paying a flat bonus', () => {
     const system = new DecreeSystem(10)
     const flat = LIBRARY_DECREES.find(
-      (d) => d.effect.type === 'additive_score' && !d.effect.scaleBy && d.effect.basePoints
+      (d) =>
+        d.effect.type === 'additive_score' &&
+        !d.effect.scaleBy &&
+        d.effect.basePoints
     )
     expect(flat).toBeDefined()
     system.acquireDecree(flat!)
     const owned = system.getOwnedDecrees()
 
-    const none = system.applyDecreeEffects(contextWith(0, 0, owned), emptyBreakdown())
-    const many = system.applyDecreeEffects(contextWith(5, 3, owned), emptyBreakdown())
+    const none = system.applyDecreeEffects(
+      contextWith(0, 0, owned),
+      emptyBreakdown()
+    )
+    const many = system.applyDecreeEffects(
+      contextWith(5, 3, owned),
+      emptyBreakdown()
+    )
 
     // Flower empowerment still scales it, but it pays with zero Flowers held.
     expect(none.additiveBonus).toBeGreaterThan(0)
@@ -370,12 +432,23 @@ describe('per-count scaling Decrees', () => {
     yakuIds?: string[]
   }) {
     return {
-      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      hand: {
+        melds: [],
+        pair: null,
+        waitType: 'tanki',
+        winningTile: null,
+        isConcealed: true,
+      },
       tiles: options.tiles ?? [],
       melds: options.melds ?? [],
       decrees: [],
       flowers: { flowers: [], activeBonuses: [], totalEffectiveness: 1 },
-      season: { activeSeason: null, seasonStack: [], isCorruptedRound: false, effectMultiplier: 1 },
+      season: {
+        activeSeason: null,
+        seasonStack: [],
+        isCorruptedRound: false,
+        effectMultiplier: 1,
+      },
       round: {
         actNumber: options.actNumber ?? 1,
         roundNumber: options.roundNumber ?? 1,
@@ -443,11 +516,23 @@ describe('per-count scaling Decrees', () => {
     // Souzu 2,3,4,6,8 and the Green Dragon are green; Souzu 1/5/9 are not.
     const green = apply(
       decree,
-      ctx({ tiles: [souzu(2, 'a'), souzu(6, 'b'), Tile.createDragon(DragonType.Green, 'g')] })
+      ctx({
+        tiles: [
+          souzu(2, 'a'),
+          souzu(6, 'b'),
+          Tile.createDragon(DragonType.Green, 'g'),
+        ],
+      })
     )
     const notGreen = apply(
       decree,
-      ctx({ tiles: [souzu(1, 'a'), souzu(5, 'b'), Tile.createDragon(DragonType.Red, 'r')] })
+      ctx({
+        tiles: [
+          souzu(1, 'a'),
+          souzu(5, 'b'),
+          Tile.createDragon(DragonType.Red, 'r'),
+        ],
+      })
     )
 
     expect(green.additive).toBeGreaterThan(0)
@@ -503,7 +588,9 @@ describe('per-count scaling Decrees', () => {
   })
 
   it('compounds Endless Journey once per act completed', () => {
-    const decree = LIBRARY_DECREES.find((d) => d.id === 'decree-endless-journey')!
+    const decree = LIBRARY_DECREES.find(
+      (d) => d.id === 'decree-endless-journey'
+    )!
 
     expect(apply(decree, ctx({ actNumber: 1 })).mult).toBe(1)
     expect(apply(decree, ctx({ actNumber: 4 })).mult).toBeCloseTo(1.2 ** 3)
@@ -549,16 +636,29 @@ describe('per-count scaling Decrees', () => {
     })
 
     it('compounds the gold Decrees per ¥10 held', () => {
-      expect(apply(byId('decree-infinite-wealth'), ctx({ gold: 50 })).mult).toBeCloseTo(1.1 ** 5)
-      expect(apply(byId('decree-dragon-hoard'), ctx({ gold: 50 })).mult).toBeCloseTo(1.2 ** 5)
+      expect(
+        apply(byId('decree-infinite-wealth'), ctx({ gold: 50 })).mult
+      ).toBeCloseTo(1.1 ** 5)
+      expect(
+        apply(byId('decree-dragon-hoard'), ctx({ gold: 50 })).mult
+      ).toBeCloseTo(1.2 ** 5)
     })
 
-    it('compounds Chain Reaction per Yaku scored', () => {
+    it('compounds Chain Reaction per group in the play', () => {
       const decree = byId('decree-chain-reaction')
 
-      expect(apply(decree, ctx({ yakuIds: [] })).mult).toBe(1)
+      expect(apply(decree, ctx({ melds: [] })).mult).toBe(1)
       expect(
-        apply(decree, ctx({ yakuIds: ['tanyao', 'pinfu', 'riichi'] })).mult
+        apply(
+          decree,
+          ctx({
+            melds: [
+              { type: MeldType.Pair },
+              { type: MeldType.Sequence },
+              { type: MeldType.Triplet },
+            ],
+          })
+        ).mult
       ).toBeCloseTo(1.5 ** 3)
     })
 
@@ -582,14 +682,17 @@ describe('per-count scaling Decrees', () => {
     expect(large.mult).toBeGreaterThan(1)
   })
 
-  it('scales with the yaku the hand scored', () => {
-    const decree = scaledDecree('yaku_this_hand')
+  it('scales with the pairs the play holds', () => {
+    const decree = scaledDecree('pairs')
 
-    const none = apply(decree, ctx({ yakuIds: [] }))
-    const three = apply(decree, ctx({ yakuIds: ['tanyao', 'pinfu', 'riichi'] }))
+    const none = apply(decree, ctx({ melds: [{ type: MeldType.Triplet }] }))
+    const two = apply(
+      decree,
+      ctx({ melds: [{ type: MeldType.Pair }, { type: MeldType.Pair }] })
+    )
 
     expect(none.mult).toBe(1)
-    expect(three.mult).toBeGreaterThan(1)
+    expect(two.mult).toBe(4)
   })
 
   it('leaves no authored condition without engine meaning', () => {
@@ -634,7 +737,13 @@ describe('gated (conditional) Decrees', () => {
     lastHandScore?: number
   }) {
     return {
-      hand: { melds: [], pair: null, waitType: 'tanki', winningTile: null, isConcealed: true },
+      hand: {
+        melds: [],
+        pair: null,
+        waitType: 'tanki',
+        winningTile: null,
+        isConcealed: true,
+      },
       tiles: options.tiles ?? [],
       melds: options.melds ?? [],
       decrees: options.decrees,
@@ -784,44 +893,49 @@ describe('gated (conditional) Decrees', () => {
   it('pays a Boss-round Decree only during a Boss round', () => {
     const decree = gatedDecree('boss_round')
 
-    const boss = multiplierWith(decree, contextFor({ roundType: 'Boss', decrees: [] }))
-    const small = multiplierWith(decree, contextFor({ roundType: 'Small', decrees: [] }))
+    const boss = multiplierWith(
+      decree,
+      contextFor({ roundType: 'Boss', decrees: [] })
+    )
+    const small = multiplierWith(
+      decree,
+      contextFor({ roundType: 'Small', decrees: [] })
+    )
 
-    expect(boss.additive + boss.mult).toBeGreaterThan(small.additive + small.mult)
+    expect(boss.additive + boss.mult).toBeGreaterThan(
+      small.additive + small.mult
+    )
   })
 
-  it('pays a yaku Decree only when that yaku scored', () => {
-    const decree = gatedDecree('yaku_toitoi')
+  it('pays a Full House Decree only for a triplet with a pair', () => {
+    const decree = gatedDecree('full_house')
 
-    const scored = multiplierWith(decree, contextFor({ yakuIds: ['toitoi'], decrees: [] }))
-    const notScored = multiplierWith(
+    const fullHouse = multiplierWith(
       decree,
-      contextFor({ yakuIds: ['tanyao'], decrees: [] })
+      contextFor({
+        melds: [{ type: MeldType.Triplet }, { type: MeldType.Pair }],
+        decrees: [],
+      })
+    )
+    const tripletOnly = multiplierWith(
+      decree,
+      contextFor({ melds: [{ type: MeldType.Triplet }], decrees: [] })
     )
 
-    expect(scored.mult).toBeGreaterThan(1)
-    expect(notScored.mult).toBe(1)
+    expect(fullHouse.mult).toBeGreaterThan(1)
+    expect(tripletOnly.mult).toBe(1)
   })
 
-  it('treats every yakuman as satisfying the yakuman gate', () => {
-    const decree = gatedDecree('yaku_yakuman')
-
-    const kokushi = multiplierWith(decree, contextFor({ yakuIds: ['kokushi'], decrees: [] }))
-    const daiSangen = multiplierWith(
-      decree,
-      contextFor({ yakuIds: ['dai_sangen'], decrees: [] })
+  it('never gates a Decree on a Yaku or a complete hand', () => {
+    const yakuGated = LIBRARY_DECREES.filter((d) =>
+      [d.effect, ...(d.extraEffects ?? [])].some(
+        (e) =>
+          (e.type === 'additive_score' || e.type === 'multiplicative_score') &&
+          (String(e.requires ?? '').startsWith('yaku_') ||
+            String(e.scaleBy ?? '').startsWith('yaku_'))
+      )
     )
-    const ordinary = multiplierWith(
-      decree,
-      contextFor({ yakuIds: ['tanyao'], decrees: [] })
-    )
-
-    expect(kokushi.additive + kokushi.mult).toBeGreaterThan(
-      ordinary.additive + ordinary.mult
-    )
-    expect(daiSangen.additive + daiSangen.mult).toBeGreaterThan(
-      ordinary.additive + ordinary.mult
-    )
+    expect(yakuGated.map((d) => d.id)).toEqual([])
   })
 
   it('pays a no-REDRAW Decree only before any tile is redrawn this round', () => {
@@ -874,34 +988,51 @@ describe('tile transformation Decrees', () => {
   it('scores simples as terminals under Transmuter', () => {
     const baseline = new GameOrchestrator()
     baseline.startNewRun(31337, 1)
-    const baseIds = baseline.getState().handTiles.slice(0, 5).map((t) => t.id)
+    const baseIds = baseline
+      .getState()
+      .handTiles.slice(0, 5)
+      .map((t) => t.id)
     const basePreview = baseline.previewScore(baseIds)
 
     const transmuted = new GameOrchestrator()
     transmuted.startNewRun(31337, 1)
     transmuted.addDecree(decreeById('decree-transmuter'))
-    const transIds = transmuted.getState().handTiles.slice(0, 5).map((t) => t.id)
+    const transIds = transmuted
+      .getState()
+      .handTiles.slice(0, 5)
+      .map((t) => t.id)
     const transPreview = transmuted.previewScore(transIds)
 
     // Simples are worth 5, terminals 10, so promoting them can only add points.
     expect(transPreview!.tilePoints).toBeGreaterThan(basePreview!.tilePoints)
   })
 
-  it('completes any fourteen tiles under Reality Warp', () => {
-    const orchestrator = new GameOrchestrator()
-    orchestrator.startNewRun(5150, 1)
-    orchestrator.addDecree(decreeById('decree-reality-warp'))
+  it('lets plays hold eight tiles under Reality Warp', () => {
+    const plain = new GameOrchestrator()
+    plain.startNewRun(5150, 1)
+    const warped = new GameOrchestrator()
+    warped.startNewRun(5150, 1)
+    warped.addDecree(decreeById('decree-reality-warp'))
 
-    const tileIds = orchestrator.getState().handTiles.map((t) => t.id)
-    const result = orchestrator.processAction({ type: 'play', tileIds })
+    const seven = (game: GameOrchestrator) =>
+      game
+        .getState()
+        .handTiles.slice(0, 7)
+        .map((t) => t.id)
+
+    expect(plain.getMaxPlayTiles()).toBe(6)
+    expect(warped.getMaxPlayTiles()).toBe(8)
+    expect(
+      plain.canPerformAction({ type: 'play', tileIds: seven(plain) })
+    ).toBe(false)
+    const result = warped.processAction({
+      type: 'play',
+      tileIds: seven(warped),
+    })
+    expect(result.success).toBe(true)
     const effect = result.effects.find((e) => e.type === 'score_added') as
-      | ScoreAddedEffect
-      | undefined
-
-    // A completed hand scores structure points; a partial one would not reach
-    // the 4-melds-plus-pair total.
-    expect(effect?.description).not.toContain('partial hand')
-    expect(effect!.breakdown.structurePoints).toBeGreaterThan(0)
+      ScoreAddedEffect | undefined
+    expect(effect?.description).toContain('partial hand')
   })
 })
 
@@ -914,7 +1045,10 @@ describe('loss prevention Decrees', () => {
     // Burn every hand on a two-tile play that cannot reach the target.
     let guard = 0
     while (orchestrator.getState().phase === 'gameplay' && guard++ < 20) {
-      const ids = orchestrator.getState().handTiles.slice(0, 2).map((t) => t.id)
+      const ids = orchestrator
+        .getState()
+        .handTiles.slice(0, 2)
+        .map((t) => t.id)
       orchestrator.processAction({ type: 'play', tileIds: ids })
     }
 
@@ -923,7 +1057,9 @@ describe('loss prevention Decrees', () => {
     expect(state.phase).toBe('shop')
     expect(state.isRunActive).toBe(true)
     expect(
-      state.decreeSystem.getOwnedDecrees().some((d) => d.id === 'decree-phoenix')
+      state.decreeSystem
+        .getOwnedDecrees()
+        .some((d) => d.id === 'decree-phoenix')
     ).toBe(false)
   })
 
@@ -938,14 +1074,19 @@ describe('loss prevention Decrees', () => {
 
     let guard = 0
     while (orchestrator.getState().phase === 'gameplay' && guard++ < 20) {
-      const ids = orchestrator.getState().handTiles.slice(0, 2).map((t) => t.id)
+      const ids = orchestrator
+        .getState()
+        .handTiles.slice(0, 2)
+        .map((t) => t.id)
       orchestrator.processAction({ type: 'play', tileIds: ids })
     }
 
     const state = orchestrator.getState()
     expect(state.phase).toBe('shop')
     expect(
-      state.decreeSystem.getOwnedDecrees().some((d) => d.id === 'decree-immortal-decree')
+      state.decreeSystem
+        .getOwnedDecrees()
+        .some((d) => d.id === 'decree-immortal-decree')
     ).toBe(true)
     expect(state.lossPreventionScorePenalty).toBe(0.5)
   })
@@ -956,7 +1097,10 @@ describe('loss prevention Decrees', () => {
 
     let guard = 0
     while (orchestrator.getState().phase === 'gameplay' && guard++ < 20) {
-      const ids = orchestrator.getState().handTiles.slice(0, 2).map((t) => t.id)
+      const ids = orchestrator
+        .getState()
+        .handTiles.slice(0, 2)
+        .map((t) => t.id)
       orchestrator.processAction({ type: 'play', tileIds: ids })
     }
 

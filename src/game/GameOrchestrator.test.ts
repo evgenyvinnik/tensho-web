@@ -41,9 +41,9 @@ import {
   FALSE_EYE_MANDATE,
   HONOR_TRANSMUTATION,
   PURE_SUIT_ASCETICISM,
-  SHANTEN_CLEMENCY,
   TANYAO_DISPENSATION,
   YAKU_REPETITION_CHARTER,
+  ALL_DECREES,
 } from '../systems/DecreeSystem'
 import type { ActionResult, Effect } from './ActionProcessor'
 import { TEA_HOUSE_BASE_CHARTERS } from '../systems/TeaHouseSystem'
@@ -1336,43 +1336,33 @@ describe('GameOrchestrator', () => {
       expect(getScoreEffect(result).description).not.toContain('partial hand')
     })
 
-    it('routes False Eye twelve-tile hands through complete-hand scoring', () => {
-      game.getState().decreeSystem.acquireDecree(FALSE_EYE_MANDATE)
-      const tiles = createDecreeFixtureHand([
-        [TileSuit.Manzu, [1, 2, 3, 4, 5, 6]],
-        [TileSuit.Pinzu, [2, 3, 4]],
-        [TileSuit.Souzu, [7, 7, 7]],
-      ])
+    it('counts the extra pair False Eye Mandate grants for Decrees', () => {
+      const titan = ALL_DECREES.find((d) => d.id === 'decree-toitoi-titan')!
+      const tiles = createDecreeFixtureHand([[TileSuit.Souzu, [7, 7, 7]]])
       replaceHand(game, tiles)
-
-      const result = game.processAction({
-        type: 'play',
-        tileIds: tiles.map((tile) => tile.id),
-      })
-
-      expect(result.success).toBe(true)
-      expect(getScoreEffect(result).description).not.toContain('partial hand')
+      const ids = tiles.map((tile) => tile.id)
+      const plain = game.previewScore(ids)!.equation.multiplier
+      game.getState().decreeSystem.acquireDecree(titan)
+      // A lone triplet is no Full House.
+      expect(game.previewScore(ids)!.equation.multiplier).toBe(plain)
+      game.getState().decreeSystem.acquireDecree(FALSE_EYE_MANDATE)
+      expect(game.previewScore(ids)!.equation.multiplier).toBeCloseTo(
+        plain * 1.5
+      )
     })
 
-    it('applies Tanyao Dispensation to live Yaku scoring', () => {
-      game.getState().decreeSystem.acquireDecree(TANYAO_DISPENSATION)
-      const tiles = createDecreeFixtureHand([
-        [TileSuit.Manzu, [1, 2, 3, 2, 3, 4]],
-        [TileSuit.Pinzu, [3, 4, 5, 5, 5]],
-        [TileSuit.Souzu, [6, 7, 8]],
-      ])
+    it('lets Simples Dispensation count 1s and 9s for Decrees', () => {
+      const tactician = ALL_DECREES.find(
+        (d) => d.id === 'decree-tanyao-tactician'
+      )!
+      const tiles = createDecreeFixtureHand([[TileSuit.Manzu, [1, 2, 3]]])
       replaceHand(game, tiles)
-
-      const result = game.processAction({
-        type: 'play',
-        tileIds: tiles.map((tile) => tile.id),
-      })
-
-      expect(
-        getScoreEffect(result).breakdown.detectedYaku.map(
-          (yaku) => yaku.definition.id
-        )
-      ).toContain('tanyao')
+      const ids = tiles.map((tile) => tile.id)
+      const plain = game.previewScore(ids)!.equation.multiplier
+      game.getState().decreeSystem.acquireDecree(tactician)
+      expect(game.previewScore(ids)!.equation.multiplier).toBe(plain)
+      game.getState().decreeSystem.acquireDecree(TANYAO_DISPENSATION)
+      expect(game.previewScore(ids)!.equation.multiplier).toBe(plain + 3)
     })
 
     it('scales Pure Suit Asceticism once per dominant-suit tile', () => {
@@ -1405,27 +1395,51 @@ describe('GameOrchestrator', () => {
       expect(enhancedScore).toBeGreaterThan(baselineScore * 3.5)
     })
 
-    it('scores a 1-shanten hand through Shanten Clemency with its penalty', () => {
-      game.getState().decreeSystem.acquireDecree(SHANTEN_CLEMENCY)
+    it('clears the round with a complete hand below the target', () => {
       const tiles = createDecreeFixtureHand([
         [TileSuit.Manzu, [1, 2, 3, 2, 3, 4]],
         [TileSuit.Pinzu, [3, 4, 5, 5, 5]],
-        [TileSuit.Souzu, [6, 7]],
+        [TileSuit.Souzu, [6, 7, 8]],
       ])
       replaceHand(game, tiles)
+      const state = game.getState() as OrchestratorState
+      state.targetScore = 1e9
+      state.roundManager.getCurrentRound()!.scoreTarget = 1e9
+      const ids = tiles.map((tile) => tile.id)
+      const forecast = game.previewScore(ids)!
 
-      const result = game.processAction({
-        type: 'play',
-        tileIds: tiles.map((tile) => tile.id),
-      })
+      const result = game.processAction({ type: 'play', tileIds: ids })
 
       expect(result.success).toBe(true)
       expect(getScoreEffect(result).description).not.toContain('partial hand')
-      expect(
-        result.effects.some((effect) =>
-          effect.description.includes('50% score penalty')
-        )
-      ).toBe(true)
+      expect(state.score).toBe(forecast.finalScore)
+      expect(state.score).toBeLessThan(state.targetScore)
+      expect(state.phase).toBe('shop')
+      expect(state.lastRoundSummary).toMatchObject({
+        score: forecast.finalScore,
+        target: 1e9,
+        clearedByCompleteHand: true,
+      })
+    })
+
+    it('keeps playing after a small play below the target', () => {
+      const tiles = createDecreeFixtureHand([
+        [TileSuit.Manzu, [1, 2, 3, 2, 3, 4]],
+        [TileSuit.Pinzu, [3, 4, 5, 5, 5]],
+        [TileSuit.Souzu, [6, 7, 8]],
+      ])
+      replaceHand(game, tiles)
+      const state = game.getState() as OrchestratorState
+      state.targetScore = 1e9
+      state.roundManager.getCurrentRound()!.scoreTarget = 1e9
+
+      const result = game.processAction({
+        type: 'play',
+        tileIds: tiles.slice(0, 3).map((tile) => tile.id),
+      })
+
+      expect(result.success).toBe(true)
+      expect(state.phase).toBe('gameplay')
     })
 
     it('uses Celestial Wildcard during authoritative hand validation', () => {

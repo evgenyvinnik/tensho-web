@@ -78,7 +78,8 @@ const SCALING_CONDITIONS: Record<string, ScalingSource> = {
   // Hand structure
   'per sequence': 'sequences',
   'per triplet': 'triplets',
-  'per Yaku this hand': 'yaku_this_hand',
+  'per pair': 'pairs',
+  'per group': 'groups',
   'per 100 base chips': 'base_chips_per_100',
   // Round and run progress
   'per hand this round': 'hands_this_round',
@@ -136,33 +137,32 @@ const GATE_CONDITIONS: Record<string, GateCondition> = {
   'if 3+ Honors': 'three_plus_honors',
   'if 4+ Terminals': 'four_plus_terminals',
   'if no Simples': 'no_simples',
+  'if all Simples': 'all_simples',
   'if has 1 and 9': 'has_one_and_nine',
   'if Wind and Dragon': 'wind_and_dragon',
+  'if 5+ tile flush': 'five_tile_flush',
   // Hand structure
   'if hand contains pair': 'contains_pair',
   'if 2+ pairs': 'two_plus_pairs',
   'if hand contains sequence': 'contains_sequence',
+  'if 2+ sequences': 'two_plus_sequences',
   'if hand contains triplet': 'contains_triplet',
   'if 2+ triplets': 'two_plus_triplets',
-  'if 3 sequences': 'three_sequences',
+  'if Full House': 'full_house',
+  'if 4+ of a kind': 'contains_quad',
+  'if Straight': 'contains_straight',
+  'if Dragon or East group': 'value_group',
+  'if 1-2-3, 4-5-6 or 7-8-9': 'ninefold_run',
+  'if same sequence in two suits': 'twin_sequences',
+  'if outside groups': 'outside_groups',
+  'if grand pattern': 'grand_pattern',
+  'if six grouped tiles': 'six_grouped',
   // Round state
   'during Boss rounds': 'boss_round',
   'if no discards used': 'no_discards_used',
   'if first hand wins': 'first_hand',
   'if last hand was 0': 'last_hand_scored_zero',
   'if 2x over target': 'double_target',
-  // Yaku scored
-  'when scoring Riichi': 'yaku_riichi',
-  'when scoring Tanyao': 'yaku_tanyao',
-  'when scoring Pinfu': 'yaku_pinfu',
-  'when scoring Yakuhai': 'yaku_yakuhai',
-  'when scoring Ittsu': 'yaku_ittsu',
-  'when scoring Toitoi': 'yaku_toitoi',
-  'when scoring Sanshoku': 'yaku_sanshoku',
-  'when scoring Honitsu': 'yaku_honitsu',
-  'when scoring Chinitsu': 'yaku_chinitsu',
-  'when scoring Chanta': 'yaku_chanta',
-  'when scoring Yakuman': 'yaku_yakuman',
 }
 
 /**
@@ -204,18 +204,6 @@ const SPECIAL_EFFECTS: Record<
     description,
     ruleId: 'shop_entry_offer',
     modification: { itemType: 'CelestialOrb' },
-  }),
-  'all Yaku ×1.5': (value, description) => ({
-    type: 'yaku_modifier',
-    trigger: 'Independent',
-    description,
-    multiplier: value,
-  }),
-  '+1 Yaku tier': (value, description) => ({
-    type: 'yaku_modifier',
-    trigger: 'Independent',
-    description,
-    tierBonus: value,
   }),
   'double retriggers': (value, description) => ({
     type: 'rule_modification',
@@ -274,12 +262,12 @@ const SPECIAL_EFFECTS: Record<
     ruleId: 'suits_match',
     modification: { suitsMatch: true },
   }),
-  'tiles are wild': (_value, description) => ({
+  'plays hold more tiles': (value, description) => ({
     type: 'rule_modification',
     trigger: 'Passive',
     description,
-    ruleId: 'all_wild',
-    modification: { allWild: true },
+    ruleId: 'wide_plays',
+    modification: { extraPlayTiles: value },
   }),
   'Flowers protected': (_value, description) => ({
     type: 'rule_modification',

@@ -75,20 +75,23 @@ function pay(game: GameOrchestrator, ids: string[]) {
 }
 
 // A complete hand's Mult is its Yaku (2.6 here) plus Mahjong's flat +4.
-it('settles complete, repeated complete, partial, and zero-paid plays independently', () => {
+/** A complete hand clears the round: open the next one on the same terms. */
+function nextRound(game: GameOrchestrator) {
+  game.exitShop()
+  const state = game.getState() as OrchestratorState
+  // A one-play clear earns its Omen; keep it out of the next receipt.
+  state.omenSystem.reset()
+  // The next deal can draw Flowers, which would add their own Mult.
+  state.flowerSystem.clear()
+  state.mandateEffectSystem.deactivateMandate()
+  state.seasonSystem.clear()
+  state.targetScore = 1e9
+  state.roundManager.getCurrentRound()!.scoreTarget = 1e9
+  state.handsRemaining = 10
+}
+
+it('settles partial, zero-paid, complete and repeated complete plays independently', () => {
   const game = fixture()
-  expect(pay(game, deal(game, true))).toEqual({
-    points: 225,
-    multiplier: 6.6,
-    adjustment: 0,
-    total: 1485,
-  })
-  expect(pay(game, deal(game, true))).toEqual({
-    points: 225,
-    multiplier: 6.6,
-    adjustment: 0,
-    total: 1485,
-  })
   expect(pay(game, deal(game, false))).toEqual({
     points: 45,
     multiplier: 1,
@@ -103,7 +106,22 @@ it('settles complete, repeated complete, partial, and zero-paid plays independen
     adjustment: -45,
     total: 0,
   })
-  expect(game.getState().score).toBe(1485 * 2 + 45)
+  game.getState().seasonSystem.clear()
+  expect(pay(game, deal(game, true))).toEqual({
+    points: 225,
+    multiplier: 6.6,
+    adjustment: 0,
+    total: 1485,
+  })
+  nextRound(game)
+  expect(pay(game, deal(game, true))).toEqual({
+    points: 225,
+    multiplier: 6.6,
+    adjustment: 0,
+    total: 1485,
+  })
+  expect(game.getState().score).toBe(1485)
+  expect(game.getState().runScore).toBe(45 + 1485 * 2)
 })
 
 it('includes season and loss-prevention multipliers in the receipt, not just Yaku', () => {

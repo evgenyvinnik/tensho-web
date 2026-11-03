@@ -402,19 +402,19 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     name: 'Simples Tactician',
     japaneseName: '断么戦術家',
     description:
-      '+3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons',
+      '+3 Mult if every played tile is a 2–8 (no 1s, 9s, Winds or Dragons)',
     rarity: 'common',
-    effects: [createEffect('additive_mult', 3, 'when scoring Tanyao')],
+    effects: [createEffect('additive_mult', 3, 'if all Simples')],
     baseSellValue: 2,
   },
   {
     id: 'decree-pinfu-purist',
     name: 'Sequence Purist',
-    japaneseName: '平和純粋者',
+    japaneseName: '順子純粋者',
     description:
-      '+3 Mult when you score All Sequences: a complete hand of four sequences (such as 3-4-5) plus a pair. The pair cannot be Dragons or East Winds.',
+      '+5 Mult if the play includes two sequences (such as 2-3-4 and 6-7-8)',
     rarity: 'common',
-    effects: [createEffect('additive_mult', 3, 'when scoring Pinfu')],
+    effects: [createEffect('additive_mult', 5, 'if 2+ sequences')],
     baseSellValue: 2,
   },
   {
@@ -422,41 +422,42 @@ export const COMMON_DECREES: DecreeDefinition[] = [
     name: 'Value Zealot',
     japaneseName: '役牌狂信者',
     description:
-      '×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind',
+      '×1.5 Mult if the play includes a pair, triplet or quad of Dragons or East Winds',
     rarity: 'common',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Yakuhai')],
+    effects: [
+      createEffect('multiplicative_mult', 1.5, 'if Dragon or East group'),
+    ],
     baseSellValue: 3,
   },
   {
     id: 'decree-toitoi-titan',
     name: 'Triplet Titan',
-    japaneseName: '対々巨人',
+    japaneseName: '刻子巨人',
     description:
-      '×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair',
+      '×1.5 Mult if the play includes a Full House: a triplet and a pair',
     rarity: 'common',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Toitoi')],
+    effects: [createEffect('multiplicative_mult', 1.5, 'if Full House')],
     baseSellValue: 3,
   },
   {
     id: 'decree-ittsu-initiate',
     name: 'Ninefold Initiate',
     japaneseName: '一通入門',
-    description:
-      '×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit',
+    description: '×1.5 Mult if the play includes the run 1-2-3, 4-5-6 or 7-8-9',
     rarity: 'common',
-    effects: [createEffect('multiplicative_mult', 1.5, 'when scoring Ittsu')],
+    effects: [
+      createEffect('multiplicative_mult', 1.5, 'if 1-2-3, 4-5-6 or 7-8-9'),
+    ],
     baseSellValue: 3,
   },
   {
     id: 'decree-chinitsu-champion',
-    name: 'Full Flush Champion',
+    name: 'Flush Champion',
     japaneseName: '清一色王者',
     description:
-      '×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons',
+      '×2 Mult if the play holds 5 or more tiles, all from one numbered suit',
     rarity: 'common',
-    effects: [
-      createEffect('multiplicative_mult', 2.0, 'when scoring Chinitsu'),
-    ],
+    effects: [createEffect('multiplicative_mult', 2.0, 'if 5+ tile flush')],
     baseSellValue: 3,
   },
 ]
@@ -536,9 +537,10 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     id: 'decree-straight-arrow',
     name: 'Straight Arrow',
     japaneseName: '直矢',
-    description: '+80 Points if the play includes 3 or more sequences',
+    description:
+      '+80 Points if the play includes a Straight (four or more tiles in a row, one suit)',
     rarity: 'uncommon',
-    effects: [createEffect('additive_chips', 80, 'if 3 sequences')],
+    effects: [createEffect('additive_chips', 80, 'if Straight')],
     baseSellValue: 4,
   },
   {
@@ -729,34 +731,33 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
   // Yaku Specialists
   {
     id: 'decree-honitsu-herald',
-    name: 'Half Flush Herald',
-    japaneseName: '混一色先駆',
-    description:
-      '×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons',
+    name: 'Quad Herald',
+    japaneseName: '槓子先駆',
+    description: '×2 Mult if the play includes four or more of a kind (a Quad)',
     rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Honitsu')],
+    effects: [createEffect('multiplicative_mult', 2.0, 'if 4+ of a kind')],
     baseSellValue: 5,
   },
   {
     id: 'decree-sanshoku-sage',
-    name: 'Triple Sequence Sage',
-    japaneseName: '三色賢者',
+    name: 'Twin Sequence Sage',
+    japaneseName: '同順賢者',
     description:
-      '×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits',
+      '×2 Mult if the play includes the same sequence in two suits (such as 3-4-5 of Characters and 3-4-5 of Circles)',
     rarity: 'uncommon',
     effects: [
-      createEffect('multiplicative_mult', 2.0, 'when scoring Sanshoku'),
+      createEffect('multiplicative_mult', 2.0, 'if same sequence in two suits'),
     ],
     baseSellValue: 5,
   },
   {
     id: 'decree-chanta-champion',
-    name: 'Outside Hand Champion',
+    name: 'Outside Champion',
     japaneseName: '全帯幺王者',
     description:
-      '×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts.',
+      '×2 Mult if the play has two or more groups and every group includes a 1, 9, Wind or Dragon',
     rarity: 'uncommon',
-    effects: [createEffect('multiplicative_mult', 2.0, 'when scoring Chanta')],
+    effects: [createEffect('multiplicative_mult', 2.0, 'if outside groups')],
     baseSellValue: 5,
   },
 
@@ -1263,22 +1264,21 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
   // Yaku Enhancement
   {
     id: 'decree-yaku-amplifier',
-    name: 'Yaku Amplifier',
-    japaneseName: '役増幅器',
-    description:
-      'When a complete hand scores Yaku, its combined Yaku multiplier is multiplied by 1.5',
+    name: 'Pair Amplifier',
+    japaneseName: '対子増幅器',
+    description: '×2 Mult per pair in the play',
     rarity: 'legendary',
-    effects: [createEffect('special', 1.5, 'all Yaku ×1.5')],
+    effects: [createEffect('multiplicative_mult', 2, 'per pair')],
     baseSellValue: 12,
   },
   {
     id: 'decree-yakuman-seeker',
-    name: 'Yakuman Seeker',
-    japaneseName: '役満求道者',
+    name: 'Grand Seeker',
+    japaneseName: '至高求道者',
     description:
-      '×5 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans',
+      '×5 Mult if the play includes five or more of a kind, or a six-tile Straight',
     rarity: 'legendary',
-    effects: [createEffect('multiplicative_mult', 5.0, 'when scoring Yakuman')],
+    effects: [createEffect('multiplicative_mult', 5.0, 'if grand pattern')],
     baseSellValue: 12,
   },
 
@@ -1414,9 +1414,9 @@ export const LEGENDARY_DECREES: DecreeDefinition[] = [
     id: 'decree-chain-reaction',
     name: 'Chain Reaction',
     japaneseName: '連鎖反応',
-    description: '×1.5 Mult per Yaku in the scored hand',
+    description: '×1.5 Mult per group in the play (pairs count)',
     rarity: 'legendary',
-    effects: [createEffect('multiplicative_mult', 1.5, 'per Yaku this hand')],
+    effects: [createEffect('multiplicative_mult', 1.5, 'per group')],
     baseSellValue: 10,
   },
 
@@ -1567,24 +1567,21 @@ export const MYTHIC_DECREES: DecreeDefinition[] = [
   // Yaku Ultimate
   {
     id: 'decree-yaku-nexus',
-    name: 'Yaku Nexus',
-    japaneseName: '役結節',
-    description:
-      'Every Yaku scores as if it were one tier higher (a Tier 1 ×1.3 becomes ×1.6)',
+    name: 'Group Nexus',
+    japaneseName: '面子結節',
+    description: '×2.5 Mult per group in the play (pairs count)',
     rarity: 'mythic',
-    effects: [createEffect('special', 1, '+1 Yaku tier')],
+    effects: [createEffect('multiplicative_mult', 2.5, 'per group')],
     baseSellValue: 20,
   },
   {
     id: 'decree-yakuman-blessing',
-    name: 'Yakuman Blessing',
-    japaneseName: '役満祝福',
+    name: 'Sixfold Blessing',
+    japaneseName: '六牌祝福',
     description:
-      '×10 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans',
+      '×8 Mult if the play holds six or more tiles and every one of them is in a group',
     rarity: 'mythic',
-    effects: [
-      createEffect('multiplicative_mult', 10.0, 'when scoring Yakuman'),
-    ],
+    effects: [createEffect('multiplicative_mult', 8.0, 'if six grouped tiles')],
     baseSellValue: 25,
     unlockCondition: 'Score 3 Yakuman in one run',
   },
@@ -1594,9 +1591,10 @@ export const MYTHIC_DECREES: DecreeDefinition[] = [
     id: 'decree-reality-warp',
     name: 'Reality Warp',
     japaneseName: '現実歪曲',
-    description: 'Any 14 tiles you select can form a complete hand',
+    description:
+      'Plays that are not a complete hand can hold up to 8 tiles instead of 6',
     rarity: 'mythic',
-    effects: [createEffect('special', 0, 'tiles are wild')],
+    effects: [createEffect('special', 2, 'plays hold more tiles')],
     baseSellValue: 25,
   },
   {

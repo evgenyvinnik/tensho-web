@@ -409,7 +409,11 @@ export class RoundManager {
   /**
    * Submit a score for the current round
    */
-  submitScore(score: number): {
+  submitScore(
+    score: number,
+    /** A complete Mahjong hand clears the round whatever the score. */
+    clearedByCompleteHand = false
+  ): {
     success: boolean
     isRoundWon: boolean
     isActComplete: boolean
@@ -422,7 +426,10 @@ export class RoundManager {
     this.currentRound.handsPlayed++
 
     // Check if round is won
-    if (this.currentRound.currentScore >= this.currentRound.scoreTarget) {
+    if (
+      clearedByCompleteHand ||
+      this.currentRound.currentScore >= this.currentRound.scoreTarget
+    ) {
       return this.completeRound(true)
     }
 

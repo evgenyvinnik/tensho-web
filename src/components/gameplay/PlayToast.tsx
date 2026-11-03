@@ -21,6 +21,8 @@ export interface PlayToastData {
   intensity: number
   /** The Boss forbade this hand type (The Mouth): it scored nothing. */
   blocked?: boolean
+  /** A complete Mahjong hand: it clears the round whatever it scored. */
+  clearsRound?: boolean
 }
 
 export function PlayToast({
@@ -39,13 +41,14 @@ export function PlayToast({
     return () => clearTimeout(timer)
   }, [toast, onDone, reducedMotion])
   if (!toast) return null
-  const big = toast.intensity >= 0.6
+  const big = toast.intensity >= 0.6 || toast.clearsRound === true
   return (
     <div
       key={toast.id}
       role="status"
       data-play-toast={toast.pattern}
       data-play-toast-blocked={toast.blocked || undefined}
+      data-play-toast-clears={toast.clearsRound || undefined}
       className={`pointer-events-none absolute inset-x-0 top-2 z-40 flex justify-center ${
         reducedMotion ? '' : 'play-toast-enter'
       }`}
@@ -73,8 +76,17 @@ export function PlayToast({
             {t('gameplay.notAllowed')}
           </p>
         )}
+        {toast.clearsRound && !toast.blocked && (
+          <p className="text-sm font-black uppercase tracking-wider text-white">
+            {t('gameplay.mahjongClearsRound')}
+          </p>
+        )}
         <p className="text-sm font-black tabular-nums text-white">
-          +{scoreNumber(toast.score, i18n.resolvedLanguage ?? i18n.language).display}
+          +
+          {
+            scoreNumber(toast.score, i18n.resolvedLanguage ?? i18n.language)
+              .display
+          }
         </p>
       </div>
     </div>

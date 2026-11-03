@@ -125,11 +125,9 @@ it('Plum declares a thirteen-tile complete hand and finds it in an enlarged rack
 })
 
 it.each([
-  ['false_eye_mandate', false, false],
-  ['false_eye_mandate', true, false],
-  ['false_eye_mandate', false, true],
   ['celestial_wildcard', false, false],
-  ['shanten_clemency', false, false],
+  ['celestial_wildcard', true, false],
+  ['celestial_wildcard', false, true],
 ] as const)(
   'Plum composes with %s, Winter=%s, Bamboo=%s and preserves its interpretation on reload',
   (decree, winter, bamboo) => {
@@ -137,9 +135,7 @@ it.each([
       TileSuit.Manzu,
       bamboo ? [1, 5, 6, 7, 8] : winter ? [1, 2, 4, 5, 6] : [1, 2, 3, 4, 5]
     )
-    let tiles = [...head, ...rest()]
-    if (decree === 'false_eye_mandate') tiles = tiles.slice(0, -2)
-    if (decree === 'shanten_clemency') tiles = tiles.slice(0, -1)
+    const tiles = [...head, ...rest()]
     if (decree === 'celestial_wildcard')
       tiles[1] = new Tile(TileSuit.Dragon, 3, tiles[1].id)
     const { game, state, awaken, ids } = setup(
@@ -162,9 +158,7 @@ it.each([
     expect(found).not.toBeNull()
     expect(game.validatePlaySelection(found).isValid).toBe(true)
     const interpretation = game.inspectCompleteHand(ids)
-    expect(interpretation?.usedShantenClemency).toBe(
-      decree === 'shanten_clemency'
-    )
+    expect(interpretation?.usedShantenClemency).toBe(false)
     const saved = parseClassicRunSnapshot(
       JSON.parse(JSON.stringify(game.captureRun()))
     )

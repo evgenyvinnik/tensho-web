@@ -2,12 +2,8 @@ import { afterEach, expect, it } from 'vitest'
 import { Hand } from '../core/Hand'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
 import { EnhancementType } from '../core/TileModifier'
-import { validateHand, findOneAwayCompletion } from '../rules/HandValidator'
-import {
-  CELESTIAL_WILDCARD,
-  SHANTEN_CLEMENCY,
-  ALL_DECREES,
-} from '../systems/DecreeSystem'
+import { validateHand } from '../rules/HandValidator'
+import { CELESTIAL_WILDCARD } from '../systems/DecreeSystem'
 import {
   CelestialOrbSystem,
   getCelestialOrbByYaku,
@@ -121,8 +117,8 @@ it.each([
     expect(preview.detectedYaku.map((y) => y.definition.id)).toContain(yaku)
     expect(game.captureRun()).toEqual(before)
     // Compare against the same physically complete deal to catch split tile/meld contexts.
-    state.handTiles = tiles.map(
-      (tile) => effective.find((t) => t.id === tile.id)!
+    state.handTiles = tiles.map((tile) =>
+      effective.find((t) => t.id === tile.id)!
     )
     expect(game.previewScore(ids)).toEqual(preview)
     game.restoreRun(parseClassicRunSnapshot(before))
@@ -176,41 +172,27 @@ it('removes the declaration when the Decree is inactive and does not invent two 
   ).toBe(false)
 })
 
-it('carries the same identities through Wildcard plus Shanten Clemency completion', () => {
-  const tiles = pairs().slice(0, 13)
-  tiles[0] = new Tile(TileSuit.Manzu, 3, tiles[0].id)
-  const completion = findOneAwayCompletion(tiles, [], { wildcardCount: 1 })
-  expect(completion).not.toBeNull()
-  expect(completion!.effectiveTiles).toHaveLength(14)
-  const { game, ids } = fixture(tiles)
-  expect(game.addDecree(SHANTEN_CLEMENCY)).toBe(true)
-  const beforeInspection = json(game.captureRun())
-  const interpretation = game.inspectCompleteHand(ids)!
-  expect(interpretation.usedShantenClemency).toBe(true)
-  expect(interpretation.completionTile).toBeDefined()
-  expect(interpretation.substitutions).toHaveLength(1)
-  expect(game.captureRun()).toEqual(beforeInspection)
-  const preview = game.previewScore(ids)!
-  expect(preview.detectedYaku.map((y) => y.definition.id)).toContain(
-    'seven_pairs'
-  )
-  const before = game.getState().score
-  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
-  expect(game.getState().score - before).toBe(preview.finalScore)
-})
-
-it('preserves Reality Warp precedence when both wild rules are owned', () => {
-  const { game, state, ids } = fixture(ordinary())
-  expect(
-    game.addDecree(ALL_DECREES.find((d) => d.id === 'decree-reality-warp')!)
-  ).toBe(true)
-  const together = game.previewScore(ids)
-  expect(game.inspectCompleteHand(ids)).toMatchObject({
-    allWild: true,
-    substitutions: [],
-  })
+it('lets one tile of a small play stand in for the face that pays most', () => {
+  const tiles = [
+    ...numbered(TileSuit.Pinzu, [5, 5, 5], 'circles'),
+    new Tile(TileSuit.Souzu, 9, 'odd').withEnhancement(EnhancementType.Mult),
+  ]
+  const { game, state, ids } = fixture(tiles)
+  const before = json(game.captureRun())
+  const standIn = game.previewScore(ids)!
+  expect(standIn.pattern.id).toBe('quad')
+  expect(game.captureRun()).toEqual(before)
   state.decreeSystem.removeDecree(CELESTIAL_WILDCARD.id)
-  expect(game.previewScore(ids)).toEqual(together)
+  expect(game.previewScore(ids)!.pattern.id).toBe('triplet')
+  expect(game.addDecree(CELESTIAL_WILDCARD)).toBe(true)
+  const score = state.score
+  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
+  expect(state.score - score).toBe(standIn.finalScore)
+  // The stand-in is only a reading: the river keeps the physical tile.
+  expect(state.discards.find((tile) => tile.id === 'odd')).toMatchObject({
+    suit: TileSuit.Souzu,
+    rank: 9,
+  })
 })
 
 it('never discloses hidden tile interpretations, unknown tiles or duplicate selections', () => {
@@ -245,6 +227,9 @@ it.each([
   (category, makeTiles, pick) => {
     const { game, state, ids: dealt } = fixture(makeTiles())
     const ids = pick(dealt)
+    // The Wildcard now also re-reads small plays; only the Orphans need it.
+    if (category !== 'Winds')
+      state.decreeSystem.removeDecree(CELESTIAL_WILDCARD.id)
     game.setConsumableUnlockResolver(() => true) // Already-earned Orb effect.
     const base = game.previewScore(ids)!
     const orb = CelestialOrbSystem.createCelestialOrbInstance(

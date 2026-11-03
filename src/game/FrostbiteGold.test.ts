@@ -140,7 +140,8 @@ it.each([
     expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(
       true
     )
-    expect(state.gold).toBe(10 + paid)
+    // The complete hand clears the round: tile gold lands before the payout.
+    expect(state.lastRoundSummary?.goldBefore).toBe(10 + paid)
   }
 )
 

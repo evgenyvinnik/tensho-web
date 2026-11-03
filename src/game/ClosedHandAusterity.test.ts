@@ -53,7 +53,7 @@ function factor(game: GameOrchestrator, ids: string[]) {
     (score.yakuMultiplier + score.pattern.mult + score.dragonMult)
   )
 }
-it('rewards complete concealed hands with run growth, without growing during preview or reload', () => {
+it('rewards complete hands with run growth, without growing during preview or reload', () => {
   const game = fixture()
   for (let i = 0; i < 8; i++) {
     const ids = deal(game),
@@ -73,7 +73,7 @@ it('rewards complete concealed hands with run growth, without growing during pre
     game.exitShop()
   }
 })
-it('does not reward tactical plays or let them advance mastery', () => {
+it('does not reward plays under six tiles or let them advance mastery', () => {
   const game = fixture(),
     ids = deal(game)
   expect(factor(game, ids.slice(0, 3))).toBe(1)
@@ -128,26 +128,21 @@ it('earns history without owning the Decree, across rounds, and resets on a new 
   expect(game.getState().completeConcealedHandsPlayed).toBeUndefined()
 })
 
-it('excludes Clemency completions from both the multiplier and its history', () => {
-  const game = fixture()
-  deal(game)
-  const state = game.getState() as OrchestratorState
-  state.decreeSystem.acquireDecree(
-    ALL_DECREES.find((d) => d.id === 'shanten_clemency')!
+it('rewards a six-tile play with every tile grouped, and counts it', () => {
+  const game = fixture(),
+    ids = deal(game)
+  // 1-2-3 of Bamboo and a 6 of Characters triplet: six tiles, all grouped.
+  const grouped = [...ids.slice(0, 3), ...ids.slice(9, 12)]
+  // A loose tile spoils it: 1-2-3, a 5 of Circles pair and a lone 6.
+  const loose = [...ids.slice(0, 3), ...ids.slice(12, 14), ids[9]]
+  expect(factor(game, grouped)).toBeCloseTo(1.5)
+  expect(factor(game, loose)).toBe(1)
+  expect(game.processAction({ type: 'play', tileIds: grouped }).success).toBe(
+    true
   )
-  state.handTiles = [
-    ...[1, 2, 3, 2, 3, 4].map((r, i) => new Tile(TileSuit.Manzu, r, `m${i}`)),
-    ...[3, 4, 5, 5, 5].map((r, i) => new Tile(TileSuit.Pinzu, r, `p${i}`)),
-    ...[6, 7].map((r, i) => new Tile(TileSuit.Souzu, r, `s${i}`)),
-  ]
-  const ids = state.handTiles.map((t) => t.id),
-    decree = state.decreeSystem.getOwnedDecrees()[0]
-  const active = game.previewScore(ids)!
-  decree.isDebuffed = true
-  expect(game.previewScore(ids)!.finalScore).toBe(active.finalScore)
-  decree.isDebuffed = false
-  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
-  expect(game.getState().completeConcealedHandsPlayed).toBeUndefined()
+  expect(game.getState().completeConcealedHandsPlayed).toBe(1)
+  game.exitShop()
+  expect(factor(game, deal(game))).toBeCloseTo(1.8)
 })
 
 it('counts Seven Pairs once and copies the factor without multiplying earned history', () => {

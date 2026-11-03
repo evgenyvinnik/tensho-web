@@ -82,7 +82,8 @@ it('executes the Codex two-tile example for one REDRAW and plays the illustrated
   expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
   expect(game.getState().handsRemaining).toBe(hands - 1)
   expect(game.getState().score).toBe(forecast.finalScore)
-  expect(game.getState().phase).toBe('gameplay')
+  // The illustrated hand is complete, so it clears the round at once.
+  expect(game.getState().phase).toBe('shop')
 })
 
 it('does not promise completion when the same exchange draws unhelpful tiles', () => {

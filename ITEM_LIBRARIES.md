@@ -405,12 +405,12 @@ Basic, reliable effects with no conditions.
 | Spark | 火花 | ×1.2 Mult |
 | Ember | 残火 | ×1.3 Mult |
 | Riichi Devotee | 立直信者 | +3 Mult when scoring Riichi |
-| Simples Tactician | 断么戦術家 | +3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons |
-| Sequence Purist | 平和純粋者 | +3 Mult when you score All Sequences: a complete hand of four sequences (such as 3-4-5) plus a pair. The pair cannot be Dragons or East Winds. |
-| Value Zealot | 役牌狂信者 | ×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind |
-| Triplet Titan | 対々巨人 | ×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair |
-| Ninefold Initiate | 一通入門 | ×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit |
-| Full Flush Champion | 清一色王者 | ×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons |
+| Simples Tactician | 断么戦術家 | +3 Mult if every played tile is a 2–8 (no 1s, 9s, Winds or Dragons) |
+| Sequence Purist | 順子純粋者 | +5 Mult if the play includes two sequences (such as 2-3-4 and 6-7-8) |
+| Value Zealot | 役牌狂信者 | ×1.5 Mult if the play includes a pair, triplet or quad of Dragons or East Winds |
+| Triplet Titan | 刻子巨人 | ×1.5 Mult if the play includes a Full House: a triplet and a pair |
+| Ninefold Initiate | 一通入門 | ×1.5 Mult if the play includes the run 1-2-3, 4-5-6 or 7-8-9 |
+| Flush Champion | 清一色王者 | ×2 Mult if the play holds 5 or more tiles, all from one numbered suit |
 
 ### Uncommon Decrees (Tier 2)
 
@@ -424,7 +424,7 @@ Conditional effects with stronger bonuses.
 | Flush Fever | 一色熱 | ×1.5 Mult if every numbered tile played is from one suit (Winds and Dragons allowed) |
 | Honor Guard | 字牌守護 | ×1.5 Mult if the play includes 3 or more Honors (Winds or Dragons) |
 | Terminal Tide | 端牌潮流 | ×1.5 Mult if the play includes 4 or more Terminals (1s or 9s) |
-| Straight Arrow | 直矢 | +80 Points if the play includes 3 or more sequences |
+| Straight Arrow | 直矢 | +80 Points if the play includes a Straight (four or more tiles in a row, one suit) |
 | Run Master | 連続師 | +6 Mult per sequence played |
 | Triple Threat | 三重脅威 | +80 Points if the play includes 2 or more triplets |
 | Triplet Thunder | 刻子雷 | +8 Mult per triplet played |
@@ -444,9 +444,9 @@ Conditional effects with stronger bonuses.
 | Crescendo | 漸強 | ×1.1 Mult for each earlier play this round |
 | Waste Not | 無駄無 | +5 Mult if no discards used |
 | Recycler | 再利用者 | +20 Chips per discard used |
-| Half Flush Herald | 混一色先駆 | ×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons |
-| Triple Sequence Sage | 三色賢者 | ×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits |
-| Outside Hand Champion | 全帯幺王者 | ×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts. |
+| Quad Herald | 槓子先駆 | ×2 Mult if the play includes four or more of a kind (a Quad) |
+| Twin Sequence Sage | 同順賢者 | ×2 Mult if the play includes the same sequence in two suits (such as 3-4-5 of Characters and 3-4-5 of Circles) |
+| Outside Champion | 全帯幺王者 | ×2 Mult if the play has two or more groups and every group includes a 1, 9, Wind or Dragon |
 | Boss Slayer | 親衛殺し | ×2 Mult during Boss rounds |
 | Veteran | 古参 | +30 Points per completed Act |
 | Experience | 経験 | ×1.1 Mult per completed Act |
@@ -491,7 +491,7 @@ Powerful effects with significant impact.
 | Ancient Scroll | 古代巻物 | +150 Points; −2 rack spaces |
 | Sacrifice | 犠牲 | ×3 Mult; −1 Turn per round |
 | Transmuter | 変成者 | Played 2–8 tiles score as Terminals (1s and 9s) |
-| Harmonizer | 調和者 | Sequences may mix suits (for example, 1 of Characters, 2 of Circles, 3 of Bamboo) |
+| Harmonizer | 調和者 | Sequences may mix suits (for example, 1 of Characters, 2 of Circles, 3 of Bamboo), in every play |
 | Final Act | 終幕 | ×1.5 Mult per Act past Act 4 |
 | Endless Journey | 無限旅 | ×1.2 Mult per completed Act |
 | Master Grip | 達人握 | +3 rack spaces |
@@ -508,8 +508,8 @@ Very powerful, often unique effects.
 | Void Blessing | 虚空祝福 | ×5 Mult if every played tile is a Wind or Dragon |
 | Eternal Echo | 永遠響 | Every scoring tile scores three times |
 | Dragon King | 竜王 | Every Dragon played scores four times |
-| Yaku Amplifier | 役増幅器 | When a complete hand scores Yaku, its combined Yaku multiplier is multiplied by 1.5 |
-| Yakuman Seeker | 役満求道者 | ×5 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans |
+| Pair Amplifier | 対子増幅器 | ×2 Mult per pair in the play |
+| Grand Seeker | 至高求道者 | ×5 Mult if the play includes five or more of a kind, or a six-tile Straight |
 | Four Seasons Master | 四季達人 | ×2 Mult per active Season |
 | Eternal Garden | 永遠庭園 | +10 Mult per Flower. Drought cannot suppress your Flowers. |
 | Midas Touch | 黄金の手 | +10 Gold at the end of each round |
@@ -522,7 +522,7 @@ Very powerful, often unique effects.
 | Glass Cannon | 硝子砲 | ×6 Mult. Destroyed if you lose a Boss round. |
 | Phoenix | 鳳凰 | If you would lose a round, you clear it instead. This Decree is then destroyed. |
 | Exponential | 指数的 | ×1.3 Mult per 100 base Points in the play |
-| Chain Reaction | 連鎖反応 | ×1.5 Mult per Yaku in the scored hand |
+| Chain Reaction | 連鎖反応 | ×1.5 Mult per group in the play (pairs count) |
 | Cosmic Jade | 宇宙玉 | +200 Points and ×1.5 Mult |
 | Solar Banner | 太陽旗 | +25 Mult and ×2 Mult |
 | Universal Grip | 万能握 | +4 rack spaces |
@@ -542,8 +542,8 @@ Game-changing, run-defining effects.
 | World Tree | 世界樹 | ×2.0/Flower, ×1.5/Season | — |
 | Philosopher's Stone | 賢者の石 | Double all gold gained | — |
 | Dragon Hoard | 竜の宝庫 | ×1.2 Mult per ¥10 | — |
-| Yaku Nexus | 役結節 | All Yaku score at +1 tier | — |
-| Yakuman Blessing | 役満祝福 | ×10.0 Mult on Yakuman | 3 Yakuman in one run |
-| Reality Warp | 現実歪曲 | All tiles are wild | — |
+| Group Nexus | 面子結節 | ×2.5 Mult per group in the play (pairs count) | — |
+| Sixfold Blessing | 六牌祝福 | ×8 Mult if the play holds six or more tiles, every one of them in a group | 3 Yakuman in one run |
+| Reality Warp | 現実歪曲 | Plays that are not a complete hand can hold up to 8 tiles instead of 6 | — |
 | Immortal Decree | 不死勅令 | Cannot lose (halves score) | — |
 | Omega | 終極 | +500 Chips, +50 Mult, ×2.0 | Complete Act 8 in optional Endless |

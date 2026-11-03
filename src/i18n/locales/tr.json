@@ -99,7 +99,7 @@
     "grammar": "Dilbilgisi (Yaku)",
     "hierarchyOverride": "Kurallar çeliştiğinde, daha yüksek yetkili kurallar daha düşük yetkili olanlardan önce gelir. Her etkinin özel koşullarını kontrol edin.",
     "tipScoreTitle": "İşe yarayan eller oynayın",
-    "tipScore": "En fazla {{max}} taştan oluşan grupların veya tam bir Mahjong elinin puan önizlemelerini karşılaştırın. Yalnızca mükemmel eli beklemek yerine Hamlelerinizi hedefe yaklaşmak için kullanın.",
+    "tipScore": "En fazla {{max}} taştan oluşan grupların puan önizlemelerini karşılaştırın. Tam bir Mahjong eli, puanı ne olursa olsun turu anında geçer. Yalnızca mükemmel eli beklemek yerine Hamlelerinizi hedefe yaklaşmak için kullanın.",
     "tipSynergyTitle": "Birbirini destekleyen etkiler kurun",
     "tipSynergy": "Birlikte çalışan Fermanlar, tek başına güçlü olan Fermanlardan daha etkili olabilir.",
     "tipPurposeTitle": "Amaçla satın al",
@@ -120,7 +120,7 @@
     "tipLoss": "Bir oyundan sonra değiştireceğin tek bir kararı bul; çok erken yapılan bir yeniden çekiş ya da plansız tutulan bir taş gibi. Sonraki oyunda dene.",
     "biggerHandP1": "İlkinden sonraki her grup Çarpan ekler; tam bir Mahjong eli en çoğunu ekler. Her küçük grubu ortaya çıkar çıkmaz oynamak yerine elindeki grupları tut ve fazla taşları yeniden çek.",
     "biggerHandRack": "Bu ıstakada iki tamamlanmış seri, iki yarım {{circles}} serisi ve bir {{east}} çifti ile eşi olmayan iki Ejderha var. Tek bir YENİDEN ÇEK iki Ejderhayı da nehre gönderir.",
-    "biggerHandComplete": "Yeni taşlar {{circles}} 1 ve 4 olursa on dört taş dört seri ve bir çift oluşturur. On dördünü de seçip oyna: tamamlanan bir el kendiliğinden puan getirmez.",
+    "biggerHandComplete": "Yeni taşlar {{circles}} 1 ve 4 olursa on dört taş dört seri ve bir çift oluşturur. On dördünü de seçip oyna: tamamlanan bir el turu anında geçer, ama yalnızca onu oynadığında.",
     "biggerHandWarning": "Çekilen taşlar rastgeledir ve büyük bir elin peşine düşmek tura mal olabilir. Şimdi yapabileceğin puanı kalan hamlelerinle karşılaştır.",
     "congratulations": "<strong>Tebrikler!</strong> Artık Tensho'nun temellerini biliyorsunuz.",
     "farewell": "Göğe yükselişinizde taşlar sizden yana olsun!",
@@ -285,16 +285,16 @@
     "holdingNote": "Gözlemevi bu Küreyi elde tutmayı ödüllendirir. Kullanmak kalıcı yükseltmesini verir, ancak elde tutma bonusunu kaldırır."
   },
   "closedHandAusterity": {
-    "name": "Kapalı El Disiplini",
-    "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oyunlar ve Shanten Merhameti ile tamamlanan eller sayılmaz.",
-    "progress": "Şimdiye kadarki tam eller: {{count}}. Sonraki: Çiçeklerden önce ×{{factor}}."
+    "name": "Altı Taş Disiplini",
+    "description": "Her taşı bir gruba ait olan, altı veya daha fazla taşlık her oyun ×1,5 kazanır; bu koşuda daha önceki her böyle oyun için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır.",
+    "progress": "Şimdiye kadarki uygun oyunlar: {{count}}. Sonraki: Çiçeklerden önce ×{{factor}}."
   },
   "yakuRepetition": {
-    "name": "Yaku Tekrarı Fermanı",
-    "description": "Art arda turlarda puanlanan bir Yaku, serisindeki önceki her tur için ×1,2 kazanır; Çiçek bonuslarından önce en fazla ×4. O Yaku olmadan geçen bir tur seriyi bitirir.",
+    "name": "Desen Tekrarı Fermanı",
+    "description": "Art arda turlarda oynanan bir oyun deseni (İki çift gibi), serisindeki önceki her tur için ×1,2 kazanır; Çiçek bonuslarından önce en fazla ×4. O desen olmadan geçen bir tur seriyi bitirir.",
     "title": "Tekrarlanacak desenler",
     "streak": "{{name}} · önceki {{rounds}} ardışık tur",
-    "empty": "Önceki seri yok. Başlamak için bu tur bir Yaku ile puan kazan."
+    "empty": "Önceki seri yok. Başlamak için bu tur bir desen oyna."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Bir Yakuman ile puan kazan (Büyük Üç Ejderha gibi en üst kademe bir el).",
@@ -365,7 +365,7 @@
     },
     "yaku": {
       "title": "Desenler ve çarpanlar",
-      "content": "Küçük bir grupla puan kazanabilirsin; tamamlanmış bir el Yaku çarpanlarını açabilir. Neyi oynayıp neyi tutacağına karar vermeden önce puan önizlemesine bak."
+      "content": "Küçük bir grupla puan kazanabilirsin; tamamlanmış bir el ise turu anında geçer. Neyi oynayıp neyi tutacağına karar vermeden önce puan önizlemesine bak."
     },
     "flora": {
       "title": "Çiçekler ve Mevsimler",
@@ -938,7 +938,7 @@
     "beginnerFlowSelect": "Yararlı bir şekle dokun.",
     "beginnerFlowPreview": "Kesin tahmini oku.",
     "beginnerFlowPlay": "Oyna ve yerine yeni taşlar çek.",
-    "beginnerFullHand": "Daha sonra dört şekil ve bir çift tam bir el oluşturur ve güçlü Yaku çarpanlarını açar.",
+    "beginnerFullHand": "Daha sonra dört şekil ve bir çift tam bir el oluşturur. Bu eli oynadığında turu anında geçersin.",
     "showGuidedMove": "Bir hamle göster",
     "guidedMove": "Rehberli ilk hamle",
     "beginnerPatternReady": "{{pattern}} hazır",
@@ -1044,7 +1044,10 @@
       "adCountdown": "Ödülün {{seconds}} sn içinde hazır",
       "adReady": "Ödül hazır",
       "adClaim": "+1 hamle al"
-    }
+    },
+    "mahjongHint": "Mahjong! Istakanda tam bir el var. Turu geçmek için onu oyna.",
+    "mahjongHintSelect": "Seç",
+    "mahjongClearsRound": "Tur tamamlandı!"
   },
   "rounds": {
     "small": "Küçük Tur",
@@ -1185,7 +1188,8 @@
       "result": "Sonuç",
       "becomes": "{{from}}, {{to}} olur",
       "destroyed": "{{name}} yok edilir"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong! Tur tamamlandı"
   },
   "decrees": {
     "title": "Fermanlar",
@@ -1253,8 +1257,8 @@
         "description": "Diğer tüm Fermanlarının etkilerini kopyalar."
       },
       "decree-yakuman-blessing": {
-        "name": "Yakuman Lütfu",
-        "description": "Yakuman ile puan aldığında Çarpan ×10 (Büyük Üç Ejderha veya On Üç Yetim gibi en üst kademe eller)."
+        "name": "Altılı Lütuf",
+        "description": "Oyunda altı veya daha fazla taş varsa ve her biri bir grubun parçasıysa Çarpan ×8."
       },
       "decree-omega": {
         "name": "Omega",
@@ -1265,8 +1269,8 @@
         "description": "Bir turu kazandığında ıstakanda kalan her farklı tür için +1 Altın. Rüzgârlar ve Ejderhalar ayrı türler sayılır."
       },
       "yakuman_succession": {
-        "name": "Yakuman Veraseti",
-        "description": "En az 2 Çiçeğe sahipken şu eller en üst kademe olan Yakuman olur (her biri ×4): Yarı Renk, Tam Renk, Çift Saf İkili Seri (aynı serilerden iki çift), Saf Dış El (her grupta ve çiftte bir 1 veya 9) ve Yedi Çift. Bir Hüküm tarafından zayıflatılan el yükselemez. Kopyalar birikmez."
+        "name": "Büyük Veraset",
+        "description": "En az 2 Çiçeğe sahipken: oyunda dört veya daha fazla aynı taş (bir dörtlü) ya da bir sıra (aynı türden art arda dört veya daha fazla taş) varsa Çarpan ×4."
       },
       "river_tax": {
         "name": "Nehir Vergisi",
@@ -1278,7 +1282,7 @@
       },
       "tanyao_dispensation": {
         "name": "Basitler İstisnası",
-        "description": "Hep Basit (normalde yalnızca 2–8 arası taşlar) 1’leri ve 9’ları da kabul eder. Rüzgârlar ve Ejderhalar onu yine bozar."
+        "description": "Fermanların için 1’ler ve 9’lar da Basit (2–8 arası taşlar) sayılır. Rüzgârlar ve Ejderhalar yine sayılmaz."
       },
       "moonlit_seal": {
         "name": "Ay Işığı Amblemi",
@@ -1458,11 +1462,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Basitler Taktikçisi",
-        "description": "Hep Basit ile puan aldığında +3 Çarpan: yalnızca 2–8 arası taşlardan oluşan, hiç 1, 9, Rüzgâr veya Ejderha içermeyen tam el."
+        "description": "Oynanan tüm taşlar 2–8 arasıysa +3 Çarpan (1, 9, Rüzgâr ve Ejderha olmadan)."
       },
       "decree-pinfu-purist": {
         "name": "Seri Safçısı",
-        "description": "Hep Seri ile puan aldığında +3 Çarpan: dört seri (3-4-5 gibi) ve bir çiftten oluşan tam el. Çift, Ejderha ya da Doğu Rüzgârı olamaz."
+        "description": "Oyunda iki seri varsa +5 Çarpan (2-3-4 ve 6-7-8 gibi)."
       },
       "decree-manzu-emperor": {
         "name": "Karakterlerin İmparatoru",
@@ -1490,7 +1494,7 @@
       },
       "decree-straight-arrow": {
         "name": "Dosdoğru Ok",
-        "description": "Oyunda en az 3 seri varsa +80 Puan."
+        "description": "Oyunda bir sıra (aynı türden art arda dört veya daha fazla taş) varsa +80 Puan."
       },
       "decree-run-master": {
         "name": "Seri Ustası",
@@ -1558,19 +1562,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Değer Fanatiği",
-        "description": "Değerli Taşlar ile puan aldığında Çarpan ×1,5: Ejderhalardan ya da Doğu Rüzgârından bir üçlü veya dörtlü içeren tam el."
+        "description": "Oyunda Ejderhalardan ya da Doğu Rüzgârlarından bir çift, üçlü veya dörtlü varsa Çarpan ×1,5."
       },
       "decree-toitoi-titan": {
         "name": "Üçlü Devi",
-        "description": "Hep Üçlü ile puan aldığında Çarpan ×1,5: dört üçlü veya dörtlü ile bir çiftten oluşan tam el."
+        "description": "Oyunda bir Full house varsa Çarpan ×1,5: bir üçlü ve bir çift."
       },
       "decree-ittsu-initiate": {
         "name": "Dokuzlu Müridi",
-        "description": "1–9 Sırası ile puan aldığında Çarpan ×1,5: aynı türden 1-2-3, 4-5-6 ve 7-8-9 içeren tam el."
+        "description": "Oyunda 1-2-3, 4-5-6 veya 7-8-9 serisi varsa Çarpan ×1,5."
       },
       "decree-chinitsu-champion": {
-        "name": "Tam Renk Şampiyonu",
-        "description": "Tam Renk ile puan aldığında Çarpan ×2: Rüzgâr veya Ejderha içermeyen, yalnızca tek türden oluşan tam el."
+        "name": "Renk Şampiyonu",
+        "description": "Oyunda en az 5 taş varsa ve hepsi aynı sayı türündense Çarpan ×2."
       },
       "decree-veteran": {
         "name": "Tecrübeli Savaşçı",
@@ -1673,16 +1677,16 @@
         "description": "Her Çiçek için +3 Çarpan, her Mevsim için +30 Puan."
       },
       "decree-honitsu-herald": {
-        "name": "Yarı Renk Habercisi",
-        "description": "Yarı Renk ile puan aldığında Çarpan ×2: tek tür artı Rüzgârlar veya Ejderhalardan oluşan tam el."
+        "name": "Dörtlü Habercisi",
+        "description": "Oyunda dört veya daha fazla aynı taş (bir dörtlü) varsa Çarpan ×2."
       },
       "decree-sanshoku-sage": {
-        "name": "Üçlü Seri Bilgesi",
-        "description": "Karışık Üçlü Seri ile puan aldığında Çarpan ×2: üç türün hepsinde aynı seriyi içeren tam el."
+        "name": "İkiz Seri Bilgesi",
+        "description": "Oyunda iki türde aynı seri varsa Çarpan ×2 (Karakterlerden 3-4-5 ve Dairelerden 3-4-5 gibi)."
       },
       "decree-chanta-champion": {
-        "name": "Dış El Şampiyonu",
-        "description": "Dış El ile puan aldığında Çarpan ×2: en az bir seri içeren ve her grubunda ve çiftinde bir 1, 9, Rüzgâr veya Ejderha bulunan tam el. Saf Dış El (aynısı, ama Rüzgâr veya Ejderha olmadan; her grupta ve çiftte bir 1 veya 9 bulunur) de sayılır."
+        "name": "Dış Grup Şampiyonu",
+        "description": "Oyunda iki veya daha fazla grup varsa ve her grupta bir 1, 9, Rüzgâr veya Ejderha bulunuyorsa Çarpan ×2."
       },
       "decree-mandate-breaker": {
         "name": "Hüküm Bozan",
@@ -1753,12 +1757,12 @@
         "description": "Oynanan her Ejderha dört kez sayılır."
       },
       "decree-yaku-amplifier": {
-        "name": "Yaku Güçlendirici",
-        "description": "Tam bir el Yaku ile puan aldığında, birleşik Yaku çarpanı 1,5 ile çarpılır."
+        "name": "Çift Güçlendirici",
+        "description": "Oyundaki her çift için Çarpan ×2."
       },
       "decree-yakuman-seeker": {
-        "name": "Yakuman Arayıcısı",
-        "description": "Yakuman ile puan aldığında Çarpan ×5 (Büyük Üç Ejderha veya On Üç Yetim gibi en üst kademe eller)."
+        "name": "Büyük Arayıcı",
+        "description": "Oyunda beş veya daha fazla aynı taş ya da altı taşlık bir sıra varsa Çarpan ×5."
       },
       "decree-four-seasons-master": {
         "name": "Dört Mevsim Ustası",
@@ -1810,7 +1814,7 @@
       },
       "decree-chain-reaction": {
         "name": "Zincirleme Tepki",
-        "description": "Puanlanan eldeki her Yaku için Çarpan ×1,5."
+        "description": "Oyundaki her grup için Çarpan ×1,5 (çiftler de sayılır)."
       },
       "decree-cosmic-jade": {
         "name": "Kozmik Yeşim",
@@ -1845,12 +1849,12 @@
         "description": "Sahip olduğun her 10 Altın için Çarpan ×1,2."
       },
       "decree-yaku-nexus": {
-        "name": "Yaku Kavşağı",
-        "description": "Her Yaku bir kademe üstteymiş gibi puanlanır (×1,3 olan Kademe 1, ×1,6 olur)."
+        "name": "Grup Kavşağı",
+        "description": "Oyundaki her grup için Çarpan ×2,5 (çiftler de sayılır)."
       },
       "decree-reality-warp": {
         "name": "Gerçeklik Bükümü",
-        "description": "Seçtiğin herhangi 14 taş tam bir el oluşturabilir."
+        "description": "Tam el olmayan oyunlar 6 yerine en fazla 8 taş içerebilir."
       },
       "decree-time-master": {
         "name": "Zaman Ustası",
@@ -1866,7 +1870,7 @@
       },
       "false_eye_mandate": {
         "name": "Sahte Göz Hükmü",
-        "description": "Tam bir el, gruplarından birini çift yerine kullanabilir."
+        "description": "Fermanların her oyunu bir fazla çift varmış gibi sayar."
       },
       "honor_transmutation": {
         "name": "Onur Dönüşümü",
@@ -1881,20 +1885,20 @@
         "description": "Tur başına bir kez, seçili bir taşı hamle harcamadan Ölü Duvardan (duvarın arkasında ayrılmış taşlar) bir taşla değiştir."
       },
       "shanten_clemency": {
-        "name": "Shanten Merhameti",
-        "description": "Tamamlanmasına bir taş kalan bir el, yarı puanla tam el olarak oynanabilir."
+        "name": "Dağınık Taş Merhameti",
+        "description": "Dağınık taşlar (hiçbir gruba girmeyen oynanmış taşlar) Puanlarının yarısı yerine tamamını verir."
       },
       "closed_hand_austerity": {
-        "name": "Kapalı El Disiplini",
-        "description": "Her tam Mahjong eli ×1,5 kazanır; bu koşuda daha önceki her tam el için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır. Daha küçük oyunlar ve Shanten Merhameti ile tamamlanan eller sayılmaz."
+        "name": "Altı Taş Disiplini",
+        "description": "Her taşı bir gruba ait olan, altı veya daha fazla taşlık her oyun ×1,5 kazanır; bu koşuda daha önceki her böyle oyun için ×1,2 büyür ve Çiçek bonuslarından önce en fazla ×4’e ulaşır."
       },
       "terminal_devotion": {
         "name": "Uç Taş Bağlılığı",
         "description": "Oynanan her uç taş (1 veya 9), bu Fermanın ×Çarpanına 0,05 ekler (dördü ×1,2 verir)."
       },
       "yaku_repetition_charter": {
-        "name": "Yaku Tekrarı Fermanı",
-        "description": "Art arda turlarda puanlanan bir Yaku, serisindeki önceki her tur için ×1,2 kazanır; Çiçek bonuslarından önce en fazla ×4. O Yaku olmadan geçen bir tur seriyi bitirir."
+        "name": "Desen Tekrarı Fermanı",
+        "description": "Art arda turlarda oynanan bir oyun deseni (İki çift gibi), serisindeki önceki her tur için ×1,2 kazanır; Çiçek bonuslarından önce en fazla ×4. O desen olmadan geçen bir tur seriyi bitirir."
       }
     }
   },
@@ -1913,7 +1917,7 @@
     "chrysanthemumWinter": "Kasımpatı etkinken kapalı oyunlar, Kışın bir sayı atlayan sıra kuralını koruyarak puan cezasını yok sayar. Açık oyunlar cezayı almaya devam eder. Çiçek korunmuyorsa Kuraklık bu korumayı engeller.",
     "catalystsTitle": "Çiçekle ödeme",
     "catalystsIntro": "Çayhanedeki bazı doğrudan Ferman teklifleri Altın yerine Çiçek kabul eder. Sahip olduğunuz belirli bir Çiçeği seçip onaylayın; bu isteğe bağlıdır ve asla otomatik bir fedakârlık değildir.",
-    "catalystsCost": "Çiçeği kaybetmek set bonuslarını da azaltır. Kalan yuvalar düzeninizi taşıyamıyorsa satın alma engellenir. Çiçeği tekrar toplamak, bu koşuda kazandığı uyanışı geri getirir. Yakuman Veraseti hâlâ iki Çiçek gerektirir; biriyle ödemek için önceden en az üç Çiçek gerekir."
+    "catalystsCost": "Çiçeği kaybetmek set bonuslarını da azaltır. Kalan yuvalar düzeninizi taşıyamıyorsa satın alma engellenir. Çiçeği tekrar toplamak, bu koşuda kazandığı uyanışı geri getirir."
   },
   "codexUpgrades": {
     "patternsTitle": "Desen aileleri",
@@ -2264,7 +2268,7 @@
       "p1": "Bir oyunda en fazla {{max}} taş olabilir. Taşların oluşturduğu en iyi el olarak puan alır:",
       "headerHand": "El",
       "headerMeaning": "Nedir",
-      "mahjong": "Tam bir Mahjong eli, Yaku’larına ek olarak Çarpana +{{mult}} ekler."
+      "mahjong": "Tam bir Mahjong eli, puanı ne olursa olsun turu anında geçer ve Yaku’larına ek olarak Çarpana +{{mult}} ekler."
     },
     "ready": {
       "title": "Hazırsınız!",
@@ -2432,7 +2436,7 @@
       "p1": "Her tur sana {{turns}} hamle verir. Her hamle iki eylemden biridir:",
       "play": "seçili taşlarla puan al: en fazla {{max}} taş ya da tam bir Mahjong eli.",
       "redraw": "seçtiğin taşları istediğin kadar nehre gönder ve yenilerini çek.",
-      "p2": "Hamlelerin bitmeden turun hedefine ulaş. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
+      "p2": "Hamlelerin bitmeden turun hedefine ulaş ya da turu anında geçmek için tam bir Mahjong eli oyna. Son hamlen her zaman bir oyundur; bazı eşyalar hamle harcamayan ücretsiz yeniden çekişler verir.",
       "warning": "Hedefin altında hamlelerin biterse oyun sona erer.",
       "emergency": "{{stake}} ve üzerinde, {{act}}. Perde'den itibaren son hamlende altınla bir hamle daha satın alabilirsin. Fiyat her Perde'de artar ve aynı turda alınan her ek hamlede iki katına çıkar."
     },
@@ -3198,7 +3202,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Tam el: dört grup (seri, üçlü veya dörtlü) ve bir çift, genelde 14 taş. Yedi Çift ve On Üç Yetim özel istisnalardır. Yaku’ları puanı katlar."
+      "explain": "Tam el: dört grup (seri, üçlü veya dörtlü) ve bir çift, genelde 14 taş. Yedi Çift ve On Üç Yetim özel istisnalardır. Oynandığında, puanı ne olursa olsun turu anında geçer."
     },
     "three_dragons": {
       "name": "Üç Ejderha",
@@ -3215,7 +3219,7 @@
   },
   "guide": {
     "title": "Nasıl oynanır",
-    "intro": "Tensho, Mahjong taşlarıyla oynanan poker tarzı bir oyun. El oluşturan taşları seç, puan için oyna ve her turun hedefine ulaş.",
+    "intro": "Tensho, Mahjong taşlarıyla oynanan poker tarzı bir oyun. El oluşturan taşları seç, puan için oyna ve her turun hedefine ulaş. Tam bir Mahjong eli turu anında geçer.",
     "turnsTitle": "Senin hamlen",
     "playHelp": "seçili taşlarla puan alır.",
     "redrawHelp": "seçili taşlardan istediğin kadarını nehre atar ve yenilerini çeker.",

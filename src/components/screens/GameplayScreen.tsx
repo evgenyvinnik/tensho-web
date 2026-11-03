@@ -71,10 +71,7 @@ import { WallDisplay } from '../gameplay/WallDisplay'
 import { BeginnerGuide } from '../gameplay/BeginnerGuide'
 import { scoreSignificance } from '../effects/DoomFire'
 import { useCelebrationHold } from '../../game/celebrationHold'
-import {
-  MAX_TACTICAL_PLAY_TILES,
-  MIN_TACTICAL_PLAY_TILES,
-} from '../../game/playRules'
+import { MIN_TACTICAL_PLAY_TILES } from '../../game/playRules'
 import type { VoidScript } from '../../systems/VoidScriptSystem'
 import { useRewardedAd } from '../../hooks/useRewardedAd'
 import {
@@ -218,6 +215,7 @@ export function GameplayScreen() {
           pattern: data.pattern,
           score: data.score,
           blocked: data.blocked,
+          clearsRound: data.pattern === 'mahjong' && !data.blocked,
           intensity: scoreSignificance(data.score, target),
         })
         holdCelebration()
@@ -335,13 +333,13 @@ export function GameplayScreen() {
             })
           : selectedIds.length < MIN_TACTICAL_PLAY_TILES
             ? t('gameplay.reasonMinimum', { count: MIN_TACTICAL_PLAY_TILES })
-            : selectedIds.length > MAX_TACTICAL_PLAY_TILES
+            : selectedIds.length > game.maxPlayTiles
               ? // Too many to play is not too many to REDRAW: say so.
                 t(
                   redrawAllowed
                     ? 'gameplay.reasonMaximumRedraw'
                     : 'gameplay.reasonMaximum',
-                  { count: MAX_TACTICAL_PLAY_TILES }
+                  { count: game.maxPlayTiles }
                 )
               : t('gameplay.reasonUnavailable', 'This play is not allowed now')
   const redrawReason = redrawAllowed
@@ -442,6 +440,26 @@ export function GameplayScreen() {
     else
       for (const id of redrawableIds)
         if (!selectedSet.has(id)) game.selectTile(id)
+  }
+
+  // Hand Hints point out a complete hand the rack already holds, Wild tiles
+  // and rule-bending Decrees included: playing it clears the round.
+  const { rackSignature, findCompleteHandSelection } = game
+  const completeHandIds = useMemo(
+    () => (showTileHints ? findCompleteHandSelection() : null),
+    // rackSignature changes whenever the search's inputs do.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [showTileHints, rackSignature, findCompleteHandSelection]
+  )
+  const completeHandSelected =
+    completeHandIds !== null &&
+    selectedIds.length === completeHandIds.length &&
+    completeHandIds.every((id) => selectedSet.has(id))
+  const selectCompleteHand = () => {
+    if (!completeHandIds) return
+    setActionError(null)
+    game.clearSelection()
+    for (const id of completeHandIds) game.selectTile(id)
   }
 
   // P, R, A and Esc (see useTableShortcuts); each only while its control
@@ -718,6 +736,26 @@ export function GameplayScreen() {
                   disabled={tableClosed}
                   rackHeader={
                     <>
+                      {completeHandIds && !tableClosed && !dealPending && (
+                        <div
+                          data-complete-hand-hint
+                          className="mx-1 mb-1 flex items-center justify-between gap-2 rounded-lg border border-[var(--color-golden-yellow)]/70 bg-emerald-950/85 px-3 py-1"
+                        >
+                          <p className="min-w-0 text-sm font-semibold leading-snug text-[var(--color-golden-yellow)]">
+                            {t('gameplay.mahjongHint')}
+                          </p>
+                          {!completeHandSelected && (
+                            <button
+                              type="button"
+                              data-select-complete-hand
+                              onClick={selectCompleteHand}
+                              className="min-h-11 min-w-11 shrink-0 rounded-full border border-[var(--color-golden-yellow)]/70 bg-black/40 px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-golden-yellow)] hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+                            >
+                              {t('gameplay.mahjongHintSelect')}
+                            </button>
+                          )}
+                        </div>
+                      )}
                       {redrawableIds.length > 1 && !tableClosed && (
                         <div className="flex justify-end px-1 pb-1">
                           <button
@@ -784,7 +822,9 @@ export function GameplayScreen() {
             onWatchAd={handleWatchAd}
             willClear={
               preview !== null &&
-              preview.total >= Math.max(0, game.targetScore - game.score)
+              !preview.blocked &&
+              (preview.pattern === 'mahjong' ||
+                preview.total >= Math.max(0, game.targetScore - game.score))
             }
           />
         </div>

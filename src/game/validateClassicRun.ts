@@ -160,6 +160,7 @@ const roundSummary = schema<RoundCashOutSummary>({
   stakeWithheldReward: optional(nonnegative),
   omenCopies: optional(nonnegative),
   spareTurns: optional(nonnegative),
+  clearedByCompleteHand: optional(bool),
 })
 const meld: Check = (v, p) => {
   schema<ClassicRunState['melds'][number]>({

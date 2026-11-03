@@ -1,13 +1,19 @@
 import type { Decree, DecreeEffect } from './types'
 
-/** Yaku mutation means changing Yaku rules/multipliers, not merely rewarding
- * a hand that happens to contain one. Catalog categories are presentational.
+/** Rules that change how Decrees count a play's tiles and groups. */
+const HAND_RULE_IDS: ReadonlySet<string> = new Set([
+  'tanyao_terminals',
+  'phantom_pair',
+])
+
+/** A hand-rule mutation changes how plays are counted or how Yaku score, not
+ * merely rewarding a play that happens to qualify. Catalog categories are
+ * presentational.
  */
 export function acceptsFlowerCatalyst(decree: Decree): boolean {
-  const changesYaku = (effect: DecreeEffect): boolean =>
+  const changesRules = (effect: DecreeEffect): boolean =>
     effect.type === 'yaku_modifier' ||
-    (effect.type === 'rule_modification' &&
-      effect.ruleId === 'tanyao_terminals') ||
-    (effect.type === 'conditional' && changesYaku(effect.effect))
-  return [decree.effect, ...(decree.extraEffects ?? [])].some(changesYaku)
+    (effect.type === 'rule_modification' && HAND_RULE_IDS.has(effect.ruleId)) ||
+    (effect.type === 'conditional' && changesRules(effect.effect))
+  return [decree.effect, ...(decree.extraEffects ?? [])].some(changesRules)
 }

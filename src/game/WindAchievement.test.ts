@@ -29,6 +29,8 @@ function start(stake = 1, table = 'green_felt') {
 }
 
 function windHand(game: GameOrchestrator, suit = TileSuit.Wind, rank = 1) {
+  // A complete hand clears its round: deal the next one at the table.
+  if (game.getState().phase === 'shop') game.exitShop()
   const state = game.getState() as OrchestratorState
   state.decreeSystem = new DecreeSystem()
   state.flowerSystem.clear()
@@ -243,6 +245,7 @@ it('does not treat a tactical Wind pair as a complete-hand Yaku', () => {
 })
 
 function secureVictory(game: GameOrchestrator) {
+  if (game.getState().phase === 'shop') game.exitShop()
   const state = game.getState() as OrchestratorState
   state.roundManager.startAct(NORMAL_RUN_ACTS)
   state.roundManager.skipRound()
@@ -343,10 +346,14 @@ it('clears the active context after an Endless defeat without replaying run sett
   secureVictory(game)
   expect(game.continueEndless()).toBe(true)
   game.exitShop()
+  playWind(game)
+  // A complete hand would clear the round: lose it on a small play instead.
   const ids = windHand(game)
   const state = game.getState() as OrchestratorState
   state.handsRemaining = 1
-  expect(game.processAction({ type: 'play', tileIds: ids }).success).toBe(true)
+  expect(
+    game.processAction({ type: 'play', tileIds: ids.slice(0, 3) }).success
+  ).toBe(true)
   expect(state.phase).toBe('gameOver')
   expect(state.hasWonRun).toBe(true)
   expect(progress()).toBe(4)

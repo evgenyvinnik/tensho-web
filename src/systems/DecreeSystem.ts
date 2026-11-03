@@ -21,14 +21,13 @@ import {
   ScoreBreakdown,
   Sticker,
 } from './types'
-import { DragonType, Tile, TileSuit } from '../core/Tile'
+import { DragonType, Tile, TileSuit, WindType } from '../core/Tile'
 import { countScoringHonors } from './flowerMutationScoring'
-import { MeldType } from '../core/Meld'
+import { Meld, MeldType } from '../core/Meld'
 import { LIBRARY_DECREES } from '../config/decreeLibrary'
 import { RunRandom, runRandom } from '../game/RunRandom'
 import { decreeKey, isDecreeExcluded } from './decreeIdentity'
 import { getDecreeStickers, hasDecreeSticker } from './decreeStickers'
-import { ALL_YAKU } from '../rules/YakuDetector'
 import { AUSTERITY_EFFECT, austerityMultiplier } from './austerity'
 import {
   isDecreeAvailable,
@@ -90,7 +89,7 @@ function countScalingSource(
     case 'terminal_tiles':
       return countTiles((tile) => tile.isTerminal)
     case 'simple_tiles':
-      return countTiles((tile) => tile.isSimple)
+      return countTiles((tile) => countsAsSimple(tile, context))
     case 'green_tiles':
       return countTiles(isGreenTile)
     case 'rank_one_tiles':
@@ -106,8 +105,10 @@ function countScalingSource(
       return meldCount(MeldType.Sequence)
     case 'triplets':
       return meldCount(MeldType.Triplet)
-    case 'yaku_this_hand':
-      return context.detectedYakuIds?.size ?? 0
+    case 'pairs':
+      return pairCount(context)
+    case 'groups':
+      return playGroups(context).length + (context.phantomPairs ?? 0)
     case 'base_chips_per_100':
       return Math.floor(breakdown.basePoints / 100)
 
@@ -149,22 +150,49 @@ function isGreenTile(tile: Tile): boolean {
   return [2, 3, 4, 6, 8].includes(tile.rank)
 }
 
-/** Yaku gate names mapped to the yaku ids that satisfy them. */
-const YAKU_GATE_IDS: Partial<Record<GateCondition, readonly string[]>> = {
-  yaku_riichi: ['riichi'],
-  yaku_tanyao: ['tanyao'],
-  yaku_pinfu: ['pinfu'],
-  yaku_yakuhai: ['yakuhai'],
-  yaku_ittsu: ['ittsu'],
-  yaku_toitoi: ['toitoi'],
-  yaku_sanshoku: ['sanshoku_doujun'],
-  yaku_honitsu: ['honitsu'],
-  yaku_chinitsu: ['chinitsu'],
-  yaku_chanta: ['chanta', 'junchan'],
-  // Every hand worth a yakuman, by id.
-  yaku_yakuman: ALL_YAKU.filter((yaku) => yaku.tier === 4).map(
-    (yaku) => yaku.id
-  ),
+/**
+ * Every group the play holds, its designated pair included. A tactical play
+ * without a pair carries an empty placeholder, which is not a group.
+ */
+function playGroups(context: ScoringContext): Meld[] {
+  const pair = context.hand?.pair
+  return pair && pair.tiles.length === 2
+    ? [...context.melds, pair]
+    : [...context.melds]
+}
+
+/** Pairs in the play, plus any False Eye Mandate adds for Decrees. */
+function pairCount(context: ScoringContext): number {
+  return (
+    playGroups(context).filter((group) => group.type === MeldType.Pair).length +
+    (context.phantomPairs ?? 0)
+  )
+}
+
+/** A 2–8 tile, or a 1 or 9 while Simples Dispensation is in force. */
+function countsAsSimple(tile: Tile, context: ScoringContext): boolean {
+  return (
+    tile.isSimple ||
+    (context.terminalsCountAsSimples === true && tile.isTerminal)
+  )
+}
+
+/** The ranks of a run, sorted; empty for anything that is not a run. */
+function runRanks(group: Meld): number[] {
+  if (group.type !== MeldType.Sequence && group.type !== MeldType.Straight)
+    return []
+  return group.tiles.map((tile) => tile.rank).sort((a, b) => a - b)
+}
+
+/** The suits a group's natural tiles show; a Wild tile shows none. */
+function naturalSuits(group: Meld): string {
+  return [
+    ...new Set(
+      group.tiles.filter((tile) => !tile.isWild).map((tile) => tile.suit)
+    ),
+  ]
+    .sort()
+    .join('+')
 }
 
 /**
@@ -188,13 +216,8 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
   const meldCount = (type: MeldType): number =>
     context.melds.filter((meld) => meld.type === type).length
 
-  const yakuIds = context.detectedYakuIds
-  if (gate === 'yaku_yakuman' && context.detectedYakumanIds)
-    return context.detectedYakumanIds.size > 0
-  const yakuGate = YAKU_GATE_IDS[gate]
-  if (yakuGate) {
-    return yakuGate.some((id) => yakuIds?.has(id) ?? false)
-  }
+  const groups = playGroups(context)
+  const sameFace = (type: MeldType) => (group: Meld) => group.type === type
 
   switch (gate) {
     case 'all_flower_variants': {
@@ -257,6 +280,20 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       return tiles.filter((tile) => tile.isTerminal).length >= 4
     case 'no_simples':
       return tiles.length > 0 && !tiles.some((tile) => tile.isSimple)
+    case 'all_simples':
+      return (
+        tiles.length > 0 && tiles.every((tile) => countsAsSimple(tile, context))
+      )
+    case 'five_tile_flush': {
+      // A Stone has no suit, so it breaks a flush; a Wild tile fits any suit.
+      const played = context.tiles
+      const natural = played.filter((tile) => !tile.isWild)
+      return (
+        played.length >= 5 &&
+        played.every((tile) => tile.isSuited && !tile.isStone) &&
+        new Set(natural.map((tile) => tile.suit)).size <= 1
+      )
+    }
     case 'has_one_and_nine':
       return (
         tiles.some((tile) => tile.isSuited && tile.rank === 1) &&
@@ -269,34 +306,99 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       )
 
     case 'contains_pair':
-      return (
-        meldCount(MeldType.Pair) > 0 || context.hand?.pair?.tiles.length === 2
-      )
+      return pairCount(context) > 0
     case 'two_plus_pairs':
-      return (
-        meldCount(MeldType.Pair) +
-          (context.hand?.pair?.tiles.length === 2 ? 1 : 0) >=
-        2
-      )
+      return pairCount(context) >= 2
     case 'contains_sequence':
       return meldCount(MeldType.Sequence) > 0
+    case 'two_plus_sequences':
+      return meldCount(MeldType.Sequence) >= 2
     case 'contains_triplet':
       return meldCount(MeldType.Triplet) > 0
     case 'two_plus_triplets':
       return meldCount(MeldType.Triplet) >= 2
-    case 'three_sequences':
-      return meldCount(MeldType.Sequence) >= 3
+    case 'full_house':
+      return meldCount(MeldType.Triplet) > 0 && pairCount(context) > 0
+    case 'contains_quad':
+      return groups.some(sameFace(MeldType.Quad))
+    case 'contains_straight':
+      return groups.some(sameFace(MeldType.Straight))
+    case 'flowered_quad_or_straight':
+      // Grand Succession: held Flowers count, awakened or not.
+      return (
+        context.flowers.flowers.length >= 2 &&
+        groups.some(
+          (group) =>
+            group.type === MeldType.Quad || group.type === MeldType.Straight
+        )
+      )
+    case 'value_group':
+      return groups.some(
+        (group) =>
+          (group.type === MeldType.Pair ||
+            group.type === MeldType.Triplet ||
+            group.type === MeldType.Quad) &&
+          group.tiles.length > 0 &&
+          (group.tiles.every((tile) => tile.suit === TileSuit.Dragon) ||
+            group.tiles.every(
+              (tile) =>
+                tile.suit === TileSuit.Wind && tile.rank === WindType.East
+            ))
+      )
+    case 'ninefold_run':
+      return groups.some((group) => {
+        const ranks = new Set(runRanks(group))
+        return [1, 4, 7].some(
+          (low) => ranks.has(low) && ranks.has(low + 1) && ranks.has(low + 2)
+        )
+      })
+    case 'twin_sequences': {
+      const sequences = groups.filter(sameFace(MeldType.Sequence))
+      return sequences.some((first, i) =>
+        sequences
+          .slice(i + 1)
+          .some(
+            (second) =>
+              runRanks(first).join() === runRanks(second).join() &&
+              naturalSuits(first) !== naturalSuits(second)
+          )
+      )
+    }
+    case 'outside_groups':
+      return (
+        groups.length >= 2 &&
+        groups.every((group) =>
+          group.tiles.some((tile) => tile.isTerminal || tile.isHonor)
+        )
+      )
+    case 'grand_pattern':
+      return groups.some(
+        (group) =>
+          (group.type === MeldType.Quad && group.tiles.length >= 5) ||
+          (group.type === MeldType.Straight && group.tiles.length >= 6)
+      )
+    case 'six_grouped': {
+      const grouped = new Set(
+        groups.flatMap((group) => group.tiles.map((tile) => tile.id))
+      )
+      return (
+        context.tiles.length >= 6 &&
+        context.tiles.every((tile) => grouped.has(tile.id))
+      )
+    }
 
     case 'boss_round':
       return context.round.roundType === 'Boss'
     case 'no_discards_used':
       return (context.round.tilesRedrawn ?? 0) === 0
     case 'first_hand':
+      // A complete hand clears the round whatever it scores.
       return (
         context.round.handsPlayed === 0 &&
-        context.scoreBeforeThresholdBonuses !== undefined &&
-        context.round.currentScore + context.scoreBeforeThresholdBonuses >=
-          context.round.scoreTarget
+        (context.completeHand === true ||
+          (context.scoreBeforeThresholdBonuses !== undefined &&
+            context.round.currentScore + context.scoreBeforeThresholdBonuses >=
+              context.round.scoreTarget))
       )
     case 'last_hand_scored_zero':
       return context.lastHandScore === 0
@@ -390,14 +492,14 @@ export const TANYAO_DISPENSATION: Decree = {
   id: 'tanyao_dispensation',
   name: 'Simples Dispensation',
   description:
-    'All Simples (normally only 2–8 tiles) also accepts 1s and 9s. Winds and Dragons still break it.',
+    'For your Decrees, 1s and 9s also count as Simples (2–8 tiles). Winds and Dragons still do not.',
   category: 'YakuDoctrine',
   rarity: 'LocalEdict',
   cost: 4,
   effect: {
     type: 'rule_modification',
     trigger: 'Passive',
-    description: 'Terminals allowed in Tanyao',
+    description: 'Terminals count as Simples for Decrees',
     ruleId: 'tanyao_terminals',
     modification: { allowTerminals: true },
   },
@@ -483,17 +585,16 @@ export const BROKEN_STAIR_EDICT: Decree = {
 export const FALSE_EYE_MANDATE: Decree = {
   id: 'false_eye_mandate',
   name: 'False Eye Mandate',
-  description:
-    'A complete hand may use one of its groups in place of the pair.',
+  description: 'Your Decrees count every play as holding one extra pair.',
   category: 'Structural',
   rarity: 'ImperialDecree',
   cost: 8,
   effect: {
     type: 'rule_modification',
     trigger: 'Passive',
-    description: 'Meld can act as pair',
-    ruleId: 'meld_as_pair',
-    modification: { allowMeldAsPair: true },
+    description: 'Every play holds one extra pair for Decrees',
+    ruleId: 'phantom_pair',
+    modification: { pairs: 1 },
   },
 }
 
@@ -533,18 +634,19 @@ export const CELESTIAL_WILDCARD: Decree = {
 
 export const YAKUMAN_SUCCESSION: Decree = {
   id: 'yakuman_succession',
-  name: 'Yakuman Succession',
+  name: 'Grand Succession',
   description:
-    'While you hold at least 2 Flowers, these hands become Yakuman, the top tier (×4 each): Half Flush, Full Flush, Twice Pure Double Sequence (two pairs of identical sequences), Pure Outside Hand (a 1 or 9 in every group and the pair) and Seven Pairs. A hand weakened by a Mandate cannot rise. Copies do not stack.',
+    'While you hold at least 2 Flowers: ×4 Mult if the play includes four or more of a kind (a Quad) or a Straight (four or more tiles in a row, one suit).',
   category: 'YakuDoctrine',
   rarity: 'HeavenlyOrdinance',
   cost: 12,
   flowerRequirement: 2,
   effect: {
-    type: 'yaku_modifier',
+    type: 'multiplicative_score',
     trigger: 'Independent',
-    description: 'With 2 Flowers, advanced Yaku ascend to Yakuman',
-    ascendAdvanced: true,
+    description: 'x4 Mult for a Quad or Straight',
+    multiplier: 4,
+    requires: 'flowered_quad_or_straight',
   },
 }
 
@@ -567,26 +669,26 @@ export const DEAD_WALL_WRIT: Decree = {
 
 export const SHANTEN_CLEMENCY: Decree = {
   id: 'shanten_clemency',
-  name: 'Shanten Clemency',
+  name: 'Loose Tile Clemency',
   description:
-    'A hand one tile short of complete can be played as a complete hand, at half score.',
+    'Loose tiles (played tiles in no group) score their full Points instead of half.',
   category: 'Entropy',
   rarity: 'ImperialDecree',
   cost: 9,
   effect: {
     type: 'rule_modification',
     trigger: 'Passive',
-    description: 'Score at 1-shanten (-50%)',
-    ruleId: 'shanten_clemency',
-    modification: { allowedShanten: 1, penalty: 0.5 },
+    description: 'Loose tiles score in full',
+    ruleId: 'full_loose_tiles',
+    modification: { fullLooseTiles: true },
   },
 }
 
 export const CLOSED_HAND_AUSTERITY: Decree = {
   id: 'closed_hand_austerity',
-  name: 'Closed-Hand Austerity',
+  name: 'Six-Tile Austerity',
   description:
-    'Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.',
+    'Each play of six or more tiles, every one of them in a group, gains ×1.5, growing ×1.2 for every earlier such play this run, up to ×4 before Flower bonuses.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 8,
@@ -614,16 +716,16 @@ export const TERMINAL_DEVOTION: Decree = {
 
 export const YAKU_REPETITION_CHARTER: Decree = {
   id: 'yaku_repetition_charter',
-  name: 'Yaku Repetition Charter',
+  name: 'Pattern Repetition Charter',
   description:
-    'A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.',
+    'A play pattern (such as Two Pairs) played in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.',
   category: 'Scaling',
   rarity: 'ImperialDecree',
   cost: 9,
   effect: {
     type: 'scaling',
     trigger: 'OnRoundEnd',
-    description: 'Repeated yaku compounds',
+    description: 'Repeated patterns compound',
     baseValue: 0,
     scalingFactor: 0.2,
     scalingCondition: 'repeated_yaku',

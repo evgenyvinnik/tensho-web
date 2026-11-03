@@ -269,7 +269,10 @@ only once `MetaProgressionBridge` records its first play in
 Each round grants a shared budget of Turns (`TURNS_PER_ROUND` in
 `src/game/playRules.ts`, stored as `handsRemaining`). Play hand and REDRAW each
 spend one; free redraws (`redrawsRemaining`) are spent first, and the last Turn
-is always a play. REDRAW sends any number of selected tiles to the river. There
+is always a play. REDRAW sends any number of selected tiles to the river.
+A complete Mahjong hand clears the round at once, whatever it scores, unless a
+Boss Mandate blocks the play; Hand Hints point one out in the rack, Wild tiles
+included (`findCompleteHandSelection`). There
 is no Skip and no single-tile Discard: a Small or Large round cleared with two
 Turns to spare earns its Omen. On Stake 2+ from Act 2, the last Turn can be
 extended with Gold (`buyTurn`, offered in REDRAW's slot; price
@@ -346,6 +349,11 @@ This project uses Tailwind CSS v4, which has different import syntax than v3:
 Configuration is in `tailwind.config.ts`. The v4 API uses CSS-first configuration with `@theme` blocks when needed.
 
 ## Adding Game Content
+
+Decrees reward simple plays (pairs, sequences, Triplets, Quads, Straights,
+groups); none pays on a Yaku or needs a complete hand. Their play conditions
+are `GateCondition`s in `src/systems/types.ts`, checked in `gateAllows`
+(`DecreeSystem.ts`).
 
 To add new items (decrees, seals, orbs, etc.), follow the data-driven pattern:
 

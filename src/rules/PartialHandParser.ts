@@ -440,13 +440,15 @@ function solveSuit(
  */
 export function parsePlay(
   tiles: Tile[],
-  rules: PartialHandRules = {}
+  rules: SequenceRules = {}
 ): PartialParse {
   const scoringTiles = tiles.filter(hasStructureFace)
+  // The per-suit structure search cannot mix suits in a sequence (Harmonizer).
+  const { suitsMatchForSequences: _mixedSuits, ...searchRules } = rules
   // Larger selections are complete-hand candidates or rack views, where the
   // structure search is the established reading.
   if (scoringTiles.length > MAX_ENUMERATED_PLAY)
-    return parsePartialHand(tiles, rules)
+    return parsePartialHand(tiles, searchRules)
   const ordered = [...scoringTiles].sort(Tile.compare)
   let best: PartialParse | null = null
   let bestValue = -1
@@ -460,12 +462,45 @@ export function parsePlay(
   }
   enumerateSplits(ordered, [], rules, visit)
   // Plum's shared-tile reading is not a disjoint split; compare it as well.
-  if (rules.allowSequenceOverlap) visit(parsePartialHand(tiles, rules).groups)
+  if (rules.allowSequenceOverlap)
+    visit(parsePartialHand(tiles, searchRules).groups)
   return best ?? partialResult([], scoringTiles)
 }
 
 /** Selections up to this size are split exhaustively. */
 const MAX_ENUMERATED_PLAY = 8
+
+/**
+ * The best of several readings of one play, judged as parsePlay judges
+ * splits. The first reading wins ties, so callers list the natural tiles
+ * first and a stand-in (Celestial Wildcard) is used only when it pays more.
+ * A reading naming `mustGroup` counts only if that tile joins a group: a
+ * stand-in completes shapes, it is not a free loose Dragon.
+ */
+export function bestPlayReading(
+  readings: readonly { tiles: Tile[]; mustGroup?: string }[],
+  rules: SequenceRules = {}
+): { tiles: Tile[]; parse: PartialParse } {
+  let best: { tiles: Tile[]; parse: PartialParse } | null = null
+  let bestValue = -1
+  for (const { tiles, mustGroup } of readings) {
+    const parse = parsePlay(tiles, rules)
+    if (
+      mustGroup !== undefined &&
+      !parse.groups.some((group) =>
+        group.tiles.some((tile) => tile.id === mustGroup)
+      )
+    )
+      continue
+    const value = playValue(parse)
+    if (value > bestValue) {
+      best = { tiles, parse }
+      bestValue = value
+    }
+  }
+  if (!best) throw new Error('bestPlayReading needs at least one reading')
+  return best
+}
 
 function playValue(parse: PartialParse): number {
   // Plum may share one tile between two sequences: count each tile once.
@@ -493,7 +528,7 @@ function playValue(parse: PartialParse): number {
 function enumerateSplits(
   tiles: Tile[],
   groups: Meld[],
-  rules: PartialHandRules,
+  rules: SequenceRules,
   visit: (groups: Meld[]) => void
 ): void {
   if (tiles.length === 0) {

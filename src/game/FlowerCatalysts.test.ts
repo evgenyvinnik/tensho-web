@@ -62,21 +62,17 @@ function visit(count = 4, id = 'tanyao_dispensation') {
   return { game, state, shop: game.shop, offer }
 }
 
-it('offers catalysts only for real Yaku changes, not ordinary bonuses labeled YakuDoctrine', () => {
+it('offers catalysts only for hand-rule changes, not ordinary bonuses labeled YakuDoctrine', () => {
   expect(
     ALL_DECREES.filter(acceptsFlowerCatalyst)
       .map((d) => d.id)
       .sort()
-  ).toEqual([
-    'decree-yaku-amplifier',
-    'decree-yaku-nexus',
-    'tanyao_dispensation',
-    'yakuman_succession',
-  ])
+  ).toEqual(['false_eye_mandate', 'tanyao_dispensation'])
   expect(acceptsFlowerCatalyst(catalog('decree-yakuman-seeker'))).toBe(false)
+  expect(acceptsFlowerCatalyst(catalog('decree-yaku-amplifier'))).toBe(false)
 })
 
-it.each(['tanyao_dispensation', 'decree-yaku-amplifier', 'decree-yaku-nexus'])(
+it.each(['tanyao_dispensation', 'false_eye_mandate'])(
   'spends one chosen Flower for %s with no gold spend or resale windfall',
   (id) => {
     const { game, state, shop, offer } = visit(4, id)

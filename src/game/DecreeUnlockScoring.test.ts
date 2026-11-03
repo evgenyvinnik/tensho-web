@@ -42,6 +42,8 @@ it('counts paid natural Yakuman, not previews, across profile hydration and run 
     [TileSuit.Dragon, [1, 2, 3]],
   ]
   for (let play = 0; play < 3; play++) {
+    // Each Yakuman is a complete hand, which clears its round.
+    if (game.getState().phase === 'shop') game.exitShop()
     const state = game.getState() as OrchestratorState
     state.seasonSystem.clear()
     state.mandateEffectSystem.deactivateMandate()

@@ -99,7 +99,7 @@
     "grammar": "Grammar (Yaku)",
     "hierarchyOverride": "When rules conflict, higher-authority rules take precedence over lower-authority rules. Check each effect's specific conditions.",
     "tipScoreTitle": "Make useful plays",
-    "tipScore": "Compare the score preview for groups of up to {{max}} tiles, or a complete Mahjong hand. Spend Turns on progress toward the target instead of waiting only for a perfect hand.",
+    "tipScore": "Compare the score preview for groups of up to {{max}} tiles. A complete Mahjong hand clears the round at once, whatever it scores. Spend Turns on progress toward the target instead of waiting only for a perfect hand.",
     "tipSynergyTitle": "Build synergies",
     "tipSynergy": "Decrees that work together can be stronger than powerful standalone Decrees.",
     "tipPurposeTitle": "Buy with a purpose",
@@ -120,7 +120,7 @@
     "tipLoss": "After a run, find one decision you would change, like a REDRAW spent too early or a tile kept without a plan, and try it next time.",
     "biggerHandP1": "Every group after the first adds Mult, and a complete Mahjong hand adds the most. Instead of playing each small group as soon as it appears, keep the groups you have and REDRAW the spare tiles.",
     "biggerHandRack": "This rack holds two finished sequences, two unfinished {{circles}} sequences and an {{east}} pair, plus two unmatched Dragons. One REDRAW sends both Dragons to the river.",
-    "biggerHandComplete": "If the new tiles are 1 and 4 of {{circles}}, the fourteen tiles make four sequences and a pair. Select all fourteen and play them: a finished hand does not score by itself.",
+    "biggerHandComplete": "If the new tiles are 1 and 4 of {{circles}}, the fourteen tiles make four sequences and a pair. Select all fourteen and play them: a finished hand clears the round at once, but only when you play it.",
     "biggerHandWarning": "Draws are random, and chasing a big hand can cost the round. Compare the score you can make now with the Turns you have left.",
     "congratulations": "<strong>Congratulations!</strong> You now understand the fundamentals of Tensho.",
     "farewell": "May the tiles favor you on your heavenly ascent!",
@@ -285,16 +285,16 @@
     "holdingNote": "Observatory rewards holding this Orb. Using it grants its permanent upgrade but removes this held bonus."
   },
   "closedHandAusterity": {
-    "name": "Closed-Hand Austerity",
-    "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count.",
-    "progress": "Complete hands so far: {{count}}. Next one: ×{{factor}} before Flowers."
+    "name": "Six-Tile Austerity",
+    "description": "Each play of six or more tiles, every one of them in a group, gains ×1.5, growing ×1.2 for every earlier such play this run, up to ×4 before Flower bonuses.",
+    "progress": "Qualifying plays so far: {{count}}. Next one: ×{{factor}} before Flowers."
   },
   "yakuRepetition": {
-    "name": "Yaku Repetition Charter",
-    "description": "A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.",
+    "name": "Pattern Repetition Charter",
+    "description": "A play pattern (such as Two Pairs) played in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak.",
     "title": "Patterns to repeat",
     "streak": "{{name}} · {{rounds}} consecutive prior rounds",
-    "empty": "No prior streaks. Score a Yaku this round to start one."
+    "empty": "No prior streaks. Play a pattern this round to start one."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Score a Yakuman, a top-tier hand such as Big Three Dragons.",
@@ -365,7 +365,7 @@
     },
     "yaku": {
       "title": "Patterns and multipliers",
-      "content": "You can score with a small group; a complete hand can unlock Yaku multipliers. Check the score preview before deciding what to play and what to keep."
+      "content": "You can score with a small group, and a complete hand clears the round at once. Check the score preview before deciding what to play and what to keep."
     },
     "flora": {
       "title": "Flowers & Seasons",
@@ -635,7 +635,7 @@
     "beginnerFlowSelect": "Tap a useful shape.",
     "beginnerFlowPreview": "Read the exact forecast.",
     "beginnerFlowPlay": "Play it and draw replacements.",
-    "beginnerFullHand": "Later, four shapes plus one pair form a complete hand and unlock powerful Yaku multipliers.",
+    "beginnerFullHand": "Later, four shapes plus one pair form a complete hand. Playing it clears the round at once.",
     "showGuidedMove": "Show me a move",
     "guidedMove": "Guided first move",
     "beginnerPatternReady": "{{pattern}} ready",
@@ -741,7 +741,10 @@
       "adCountdown": "Your reward is ready in {{seconds}} s",
       "adReady": "Reward ready",
       "adClaim": "Claim +1 Turn"
-    }
+    },
+    "mahjongHint": "Mahjong! Your rack holds a complete hand. Play it to clear the round.",
+    "mahjongHintSelect": "Select it",
+    "mahjongClearsRound": "Round cleared!"
   },
   "rounds": {
     "small": "Small Round",
@@ -882,7 +885,8 @@
       "result": "Result",
       "becomes": "{{from}} becomes {{to}}",
       "destroyed": "{{name}} is destroyed"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong! Round cleared"
   },
   "decrees": {
     "title": "Decrees",
@@ -1083,11 +1087,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Simples Tactician",
-        "description": "+3 Mult when you score All Simples: a complete hand of only 2–8 tiles, with no 1s, 9s, Winds or Dragons"
+        "description": "+3 Mult if every played tile is a 2–8 (no 1s, 9s, Winds or Dragons)"
       },
       "decree-pinfu-purist": {
         "name": "Sequence Purist",
-        "description": "+3 Mult when you score All Sequences: a complete hand of four sequences (such as 3-4-5) plus a pair. The pair cannot be Dragons or East Winds."
+        "description": "+5 Mult if the play includes two sequences (such as 2-3-4 and 6-7-8)"
       },
       "decree-manzu-emperor": {
         "name": "Emperor of Characters",
@@ -1115,7 +1119,7 @@
       },
       "decree-straight-arrow": {
         "name": "Straight Arrow",
-        "description": "+80 Points if the play includes 3 or more sequences"
+        "description": "+80 Points if the play includes a Straight (four or more tiles in a row, one suit)"
       },
       "decree-run-master": {
         "name": "Run Master",
@@ -1191,19 +1195,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Value Zealot",
-        "description": "×1.5 Mult when you score Value Tiles: a complete hand with a triplet or quad of Dragons or East Wind"
+        "description": "×1.5 Mult if the play includes a pair, triplet or quad of Dragons or East Winds"
       },
       "decree-toitoi-titan": {
         "name": "Triplet Titan",
-        "description": "×1.5 Mult when you score All Triplets: a complete hand of four triplets or quads plus a pair"
+        "description": "×1.5 Mult if the play includes a Full House: a triplet and a pair"
       },
       "decree-ittsu-initiate": {
         "name": "Ninefold Initiate",
-        "description": "×1.5 Mult when you score a 1–9 Straight: a complete hand holding 1-2-3, 4-5-6 and 7-8-9 of one suit"
+        "description": "×1.5 Mult if the play includes the run 1-2-3, 4-5-6 or 7-8-9"
       },
       "decree-chinitsu-champion": {
-        "name": "Full Flush Champion",
-        "description": "×2 Mult when you score a Full Flush: a complete hand of one suit only, with no Winds or Dragons"
+        "name": "Flush Champion",
+        "description": "×2 Mult if the play holds 5 or more tiles, all from one numbered suit"
       },
       "decree-veteran": {
         "name": "Veteran",
@@ -1306,16 +1310,16 @@
         "description": "+3 Mult per Flower, +30 Points per Season"
       },
       "decree-honitsu-herald": {
-        "name": "Half Flush Herald",
-        "description": "×2 Mult when you score a Half Flush: a complete hand of one suit plus Winds or Dragons"
+        "name": "Quad Herald",
+        "description": "×2 Mult if the play includes four or more of a kind (a Quad)"
       },
       "decree-sanshoku-sage": {
-        "name": "Triple Sequence Sage",
-        "description": "×2 Mult when you score a Mixed Triple Sequence: a complete hand with the same sequence in all three suits"
+        "name": "Twin Sequence Sage",
+        "description": "×2 Mult if the play includes the same sequence in two suits (such as 3-4-5 of Characters and 3-4-5 of Circles)"
       },
       "decree-chanta-champion": {
-        "name": "Outside Hand Champion",
-        "description": "×2 Mult when you score an Outside Hand: a complete hand with at least one sequence, where every group and the pair includes a 1, 9, Wind or Dragon. A Pure Outside Hand (the same, but with no Winds or Dragons, so every group and the pair includes a 1 or 9) also counts."
+        "name": "Outside Champion",
+        "description": "×2 Mult if the play has two or more groups and every group includes a 1, 9, Wind or Dragon"
       },
       "decree-mandate-breaker": {
         "name": "Mandate Breaker",
@@ -1398,12 +1402,12 @@
         "description": "Every Dragon played scores four times"
       },
       "decree-yaku-amplifier": {
-        "name": "Yaku Amplifier",
-        "description": "When a complete hand scores Yaku, its combined Yaku multiplier is multiplied by 1.5"
+        "name": "Pair Amplifier",
+        "description": "×2 Mult per pair in the play"
       },
       "decree-yakuman-seeker": {
-        "name": "Yakuman Seeker",
-        "description": "×5 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans"
+        "name": "Grand Seeker",
+        "description": "×5 Mult if the play includes five or more of a kind, or a six-tile Straight"
       },
       "decree-four-seasons-master": {
         "name": "Four Seasons Master",
@@ -1459,7 +1463,7 @@
       },
       "decree-chain-reaction": {
         "name": "Chain Reaction",
-        "description": "×1.5 Mult per Yaku in the scored hand"
+        "description": "×1.5 Mult per group in the play (pairs count)"
       },
       "decree-cosmic-jade": {
         "name": "Cosmic Jade",
@@ -1510,16 +1514,16 @@
         "description": "×1.2 Mult per 10 Gold you hold"
       },
       "decree-yaku-nexus": {
-        "name": "Yaku Nexus",
-        "description": "Every Yaku scores as if it were one tier higher (a Tier 1 ×1.3 becomes ×1.6)"
+        "name": "Group Nexus",
+        "description": "×2.5 Mult per group in the play (pairs count)"
       },
       "decree-yakuman-blessing": {
-        "name": "Yakuman Blessing",
-        "description": "×10 Mult when you score a Yakuman, a top-tier hand such as Big Three Dragons or Thirteen Orphans"
+        "name": "Sixfold Blessing",
+        "description": "×8 Mult if the play holds six or more tiles and every one of them is in a group"
       },
       "decree-reality-warp": {
         "name": "Reality Warp",
-        "description": "Any 14 tiles you select can form a complete hand"
+        "description": "Plays that are not a complete hand can hold up to 8 tiles instead of 6"
       },
       "decree-time-master": {
         "name": "Time Master",
@@ -1543,7 +1547,7 @@
       },
       "tanyao_dispensation": {
         "name": "Simples Dispensation",
-        "description": "All Simples (normally only 2–8 tiles) also accepts 1s and 9s. Winds and Dragons still break it."
+        "description": "For your Decrees, 1s and 9s also count as Simples (2–8 tiles). Winds and Dragons still do not."
       },
       "moonlit_seal": {
         "name": "Moonlit Emblem",
@@ -1559,15 +1563,15 @@
       },
       "false_eye_mandate": {
         "name": "False Eye Mandate",
-        "description": "A complete hand may use one of its groups in place of the pair."
+        "description": "Your Decrees count every play as holding one extra pair."
       },
       "honor_transmutation": {
         "name": "Honor Transmutation",
         "description": "Winds and Dragons may count as numbered tiles of your most common suit."
       },
       "yakuman_succession": {
-        "name": "Yakuman Succession",
-        "description": "While you hold at least 2 Flowers, these hands become Yakuman, the top tier (×4 each): Half Flush, Full Flush, Twice Pure Double Sequence (two pairs of identical sequences), Pure Outside Hand (a 1 or 9 in every group and the pair) and Seven Pairs. A hand weakened by a Mandate cannot rise. Copies do not stack."
+        "name": "Grand Succession",
+        "description": "While you hold at least 2 Flowers: ×4 Mult if the play includes four or more of a kind (a Quad) or a Straight (four or more tiles in a row, one suit)."
       },
       "celestial_wildcard": {
         "name": "Celestial Wildcard",
@@ -1578,20 +1582,20 @@
         "description": "Once per round, swap one selected tile for a tile from the Dead Wall (the reserved tiles at the back of the wall) without spending a Turn."
       },
       "shanten_clemency": {
-        "name": "Shanten Clemency",
-        "description": "A hand one tile short of complete can be played as a complete hand, at half score."
+        "name": "Loose Tile Clemency",
+        "description": "Loose tiles (played tiles in no group) score their full Points instead of half."
       },
       "closed_hand_austerity": {
-        "name": "Closed-Hand Austerity",
-        "description": "Each complete Mahjong hand gains ×1.5, growing ×1.2 for every earlier complete hand this run, up to ×4 before Flower bonuses. Smaller plays and hands finished by Shanten Clemency do not count."
+        "name": "Six-Tile Austerity",
+        "description": "Each play of six or more tiles, every one of them in a group, gains ×1.5, growing ×1.2 for every earlier such play this run, up to ×4 before Flower bonuses."
       },
       "terminal_devotion": {
         "name": "Terminal Devotion",
         "description": "Each Terminal (1 or 9) played adds 0.05 to this Decree’s ×Mult (four give ×1.2)."
       },
       "yaku_repetition_charter": {
-        "name": "Yaku Repetition Charter",
-        "description": "A Yaku scored in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak."
+        "name": "Pattern Repetition Charter",
+        "description": "A play pattern (such as Two Pairs) played in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak."
       }
     }
   },
@@ -1610,7 +1614,7 @@
     "chrysanthemumWinter": "With Chrysanthemum active, concealed plays ignore Winter's score penalty while keeping its one-rank-gap sequence rule. Open plays still pay the penalty. Drought blocks this protection unless the Flower is protected.",
     "catalystsTitle": "Paying with a Flower",
     "catalystsIntro": "Selected direct Decree offers in the Tea House allow a Flower instead of Gold. Choose the exact owned Flower and confirm; this is optional and never an automatic sacrifice.",
-    "catalystsCost": "Losing the Flower also reduces its set bonuses. The purchase is blocked if your remaining slots cannot hold the build. Recollecting it restores its earned awakening for this run. Yakuman Succession still needs two held Flowers, so paying with one requires at least three beforehand."
+    "catalystsCost": "Losing the Flower also reduces its set bonuses. The purchase is blocked if your remaining slots cannot hold the build. Recollecting it restores its earned awakening for this run."
   },
   "codexUpgrades": {
     "patternsTitle": "Pattern families",
@@ -1961,7 +1965,7 @@
       "p1": "A play can hold up to {{max}} tiles. It scores as the best hand its tiles make:",
       "headerHand": "Hand",
       "headerMeaning": "What it is",
-      "mahjong": "A complete Mahjong hand adds +{{mult}} Mult on top of its Yaku."
+      "mahjong": "A complete Mahjong hand clears the round at once, whatever it scores, and adds +{{mult}} Mult on top of its Yaku."
     },
     "ready": {
       "title": "You're Ready!",
@@ -2129,7 +2133,7 @@
       "p1": "Each round gives you {{turns}} Turns. Every Turn is one of two actions:",
       "play": "score the selected tiles: up to {{max}}, or a whole Mahjong hand.",
       "redraw": "send any number of selected tiles to the river and draw new ones.",
-      "p2": "Reach the round's target before your Turns run out. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
+      "p2": "Reach the round's target before your Turns run out, or play a complete Mahjong hand to clear the round at once. Your last Turn is always a play, and items can give free redraws that cost no Turn.",
       "warning": "Run out of Turns below the target and the run is over.",
       "emergency": "On {{stake}} and higher, from Act {{act}}, your last Turn can be extended: buy one more Turn with Gold. The price rises each Act and doubles for each extra Turn bought in the same round."
     },
@@ -3194,7 +3198,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "A complete hand: four groups (sequences, triplets or quads) and a pair, usually 14 tiles. Seven Pairs and Thirteen Orphans are special exceptions. Its Yaku multiply the score."
+      "explain": "A complete hand: four groups (sequences, triplets or quads) and a pair, usually 14 tiles. Seven Pairs and Thirteen Orphans are special exceptions. Playing one clears the round at once, whatever it scores."
     },
     "three_dragons": {
       "name": "Three Dragons",
@@ -3211,7 +3215,7 @@
   },
   "guide": {
     "title": "How to play",
-    "intro": "Tensho is a poker-style game played with Mahjong tiles. Pick tiles that form a hand, play it for points, and reach each round’s target.",
+    "intro": "Tensho is a poker-style game played with Mahjong tiles. Pick tiles that form a hand, play it for points, and reach each round’s target. A complete Mahjong hand clears the round at once.",
     "turnsTitle": "Your turn",
     "playHelp": "scores the selected tiles.",
     "redrawHelp": "sends any number of selected tiles to the river and draws new ones.",

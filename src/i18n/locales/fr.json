@@ -99,7 +99,7 @@
     "grammar": "Grammaire (Yaku)",
     "hierarchyOverride": "Lorsque des règles entrent en conflit, celles de plus haute autorité priment sur celles de moindre autorité. Vérifiez les conditions propres à chaque effet.",
     "tipScoreTitle": "Faites des coups utiles",
-    "tipScore": "Comparez l’aperçu du score pour des groupes allant jusqu’à {{max}} tuiles ou pour une main de Mahjong complète. Utilisez vos tours pour progresser vers l’objectif au lieu d’attendre uniquement une main parfaite.",
+    "tipScore": "Comparez l’aperçu du score pour des groupes allant jusqu’à {{max}} tuiles. Une main de Mahjong complète réussit aussitôt la manche, quel que soit son score. Utilisez vos tours pour progresser vers l’objectif au lieu d’attendre uniquement une main parfaite.",
     "tipSynergyTitle": "Créez des synergies",
     "tipSynergy": "Des Décrets qui se complètent peuvent être plus forts que des Décrets puissants pris isolément.",
     "tipPurposeTitle": "Acheter avec un but",
@@ -120,7 +120,7 @@
     "tipLoss": "Après une partie, trouvez une décision que vous changeriez, comme une repioche trop précoce ou une tuile gardée sans plan, et essayez-la la prochaine fois.",
     "biggerHandP1": "Chaque groupe après le premier ajoute du Mult, et une main de Mahjong complète en ajoute le plus. Au lieu de jouer chaque petit groupe dès qu’il apparaît, gardez vos groupes et repiochez les tuiles en trop.",
     "biggerHandRack": "Ce chevalet contient deux séquences terminées, deux séquences de {{circles}} inachevées et une paire d’{{east}}, plus deux Dragons isolés. Un seul REPIOCHER envoie les deux Dragons à la rivière.",
-    "biggerHandComplete": "Si les nouvelles tuiles sont le 1 et le 4 de {{circles}}, les quatorze tuiles forment quatre séquences et une paire. Sélectionnez les quatorze et jouez-les : une main complète ne marque pas toute seule.",
+    "biggerHandComplete": "Si les nouvelles tuiles sont le 1 et le 4 de {{circles}}, les quatorze tuiles forment quatre séquences et une paire. Sélectionnez les quatorze et jouez-les : une main complète réussit aussitôt la manche, mais seulement quand vous la jouez.",
     "biggerHandWarning": "Les pioches sont aléatoires, et viser une grosse main peut coûter la manche. Comparez le score possible maintenant avec les tours qu’il vous reste.",
     "congratulations": "<strong>Félicitations !</strong> Vous connaissez maintenant les bases de Tensho.",
     "farewell": "Que les tuiles vous soient favorables dans votre ascension céleste !",
@@ -285,16 +285,16 @@
     "holdingNote": "L’Observatoire récompense la conservation de cet Orbe. L’utiliser accorde son amélioration permanente, mais retire ce bonus de conservation."
   },
   "closedHandAusterity": {
-    "name": "Ascèse de la main fermée",
-    "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten ne comptent pas.",
-    "progress": "Mains complètes jusqu’ici : {{count}}. Prochaine : ×{{factor}} avant les Fleurs."
+    "name": "Austérité des Six Tuiles",
+    "description": "Chaque coup d’au moins six tuiles, toutes dans un groupe, gagne ×1,5, puis ×1,2 de plus pour chaque coup de ce type déjà joué dans cette partie, jusqu’à ×4 avant les bonus des Fleurs.",
+    "progress": "Coups comptabilisés jusqu’ici : {{count}}. Prochain : ×{{factor}} avant les Fleurs."
   },
   "yakuRepetition": {
-    "name": "Décret de Répétition des Yaku",
-    "description": "Un Yaku marqué sur des manches consécutives gagne ×1,2 pour chaque manche précédente de sa série, jusqu’à ×4 avant les bonus des Fleurs. Une manche sans lui met fin à la série.",
+    "name": "Charte de Répétition des Combinaisons",
+    "description": "Une combinaison (comme « Double paire ») jouée sur des manches consécutives gagne ×1,2 pour chaque manche précédente de sa série, jusqu’à ×4 avant les bonus des Fleurs. Une manche sans elle met fin à la série.",
     "title": "Figures à répéter",
     "streak": "{{name}} · {{rounds}} manches précédentes consécutives",
-    "empty": "Aucune série précédente. Marquez un Yaku cette manche pour en commencer une."
+    "empty": "Aucune série précédente. Jouez une combinaison cette manche pour en commencer une."
   },
   "consumableUnlocks": {
     "seal_of_the_immortal": "Marquez un Yakuman, une main du plus haut niveau comme Trois Grands Dragons.",
@@ -365,7 +365,7 @@
     },
     "yaku": {
       "title": "Combinaisons et multiplicateurs",
-      "content": "Un petit groupe peut rapporter des points ; une main complète peut activer des multiplicateurs Yaku. Consultez l’aperçu du score pour choisir quoi jouer et quoi garder."
+      "content": "Un petit groupe peut rapporter des points, et une main complète réussit aussitôt la manche. Consultez l’aperçu du score pour choisir quoi jouer et quoi garder."
     },
     "flora": {
       "title": "Fleurs et Saisons",
@@ -639,7 +639,7 @@
     "beginnerFlowSelect": "Touchez une figure utile.",
     "beginnerFlowPreview": "Lisez la prévision exacte.",
     "beginnerFlowPlay": "Jouez-la et piochez des remplaçantes.",
-    "beginnerFullHand": "Plus tard, quatre figures et une paire forment une main complète et débloquent de puissants multiplicateurs Yaku.",
+    "beginnerFullHand": "Plus tard, quatre figures et une paire forment une main complète. La jouer réussit aussitôt la manche.",
     "showGuidedMove": "Montrez-moi un coup",
     "guidedMove": "Premier coup guidé",
     "beginnerPatternReady": "Combinaison prête : {{pattern}}",
@@ -745,7 +745,10 @@
       "adCountdown": "Votre récompense sera prête dans {{seconds}} s",
       "adReady": "Récompense prête",
       "adClaim": "Obtenir +1 tour"
-    }
+    },
+    "mahjongHint": "Mahjong ! Votre chevalet contient une main complète. Jouez-la pour réussir la manche.",
+    "mahjongHintSelect": "La choisir",
+    "mahjongClearsRound": "Manche réussie !"
   },
   "rounds": {
     "small": "Petite Manche",
@@ -886,7 +889,8 @@
       "result": "Résultat",
       "becomes": "{{from}} devient {{to}}",
       "destroyed": "{{name}} disparaît"
-    }
+    },
+    "roundClearedByMahjong": "Mahjong ! Manche réussie"
   },
   "decrees": {
     "title": "Décrets",
@@ -1087,11 +1091,11 @@
       },
       "decree-tanyao-tactician": {
         "name": "Tacticien des simples",
-        "description": "+3 Mult quand vous marquez Tout Simples : une main complète uniquement de tuiles de 2 à 8, sans 1, 9, Vents ni Dragons"
+        "description": "+3 Mult si toutes les tuiles jouées vont de 2 à 8 (sans 1, 9, Vents ni Dragons)"
       },
       "decree-pinfu-purist": {
         "name": "Puriste des séquences",
-        "description": "+3 Mult quand vous marquez Tout Séquences : une main complète de quatre séquences (comme 3-4-5) et d’une paire. La paire ne peut être ni de Dragons ni de Vents d’Est."
+        "description": "+5 Mult si le coup contient deux séquences (comme 2-3-4 et 6-7-8)"
       },
       "decree-manzu-emperor": {
         "name": "Empereur des Caractères",
@@ -1119,7 +1123,7 @@
       },
       "decree-straight-arrow": {
         "name": "Flèche Droite",
-        "description": "+80 Points si le coup contient au moins 3 séquences"
+        "description": "+80 Points si le coup contient une Suite (au moins quatre tuiles qui se suivent, d’une même famille)"
       },
       "decree-run-master": {
         "name": "Maître des Séquences",
@@ -1195,19 +1199,19 @@
       },
       "decree-yakuhai-zealot": {
         "name": "Zélote de la valeur",
-        "description": "×1,5 Mult quand vous marquez Tuiles de Valeur : une main complète avec un brelan ou un carré de Dragons ou de Vent d’Est"
+        "description": "×1,5 Mult si le coup contient une paire, un brelan ou un carré de Dragons ou de Vents d’Est"
       },
       "decree-toitoi-titan": {
         "name": "Titan des brelans",
-        "description": "×1,5 Mult quand vous marquez Tout Brelans : une main complète de quatre brelans ou carrés et d’une paire"
+        "description": "×1,5 Mult si le coup contient un Full : un brelan et une paire"
       },
       "decree-ittsu-initiate": {
         "name": "Initié des neuf",
-        "description": "×1,5 Mult quand vous marquez une Suite 1–9 : une main complète contenant 1-2-3, 4-5-6 et 7-8-9 d’une même famille"
+        "description": "×1,5 Mult si le coup contient la séquence 1-2-3, 4-5-6 ou 7-8-9"
       },
       "decree-chinitsu-champion": {
-        "name": "Champion de la couleur pure",
-        "description": "×2 Mult quand vous marquez une Couleur Pure : une main complète d’une seule famille, sans Vents ni Dragons"
+        "name": "Champion de la couleur",
+        "description": "×2 Mult si le coup compte au moins 5 tuiles, toutes d’une seule famille numérotée"
       },
       "decree-veteran": {
         "name": "Vétéran",
@@ -1310,16 +1314,16 @@
         "description": "+3 Mult par Fleur, +30 Points par Saison"
       },
       "decree-honitsu-herald": {
-        "name": "Héraut de la semi-couleur",
-        "description": "×2 Mult quand vous marquez une Semi-Couleur : une main complète d’une seule famille plus des Vents ou des Dragons"
+        "name": "Héraut du carré",
+        "description": "×2 Mult si le coup contient au moins quatre tuiles identiques (un Carré)"
       },
       "decree-sanshoku-sage": {
-        "name": "Sage de la triple séquence",
-        "description": "×2 Mult quand vous marquez une Triple Séquence Mixte : une main complète avec la même séquence dans les trois familles"
+        "name": "Sage des séquences jumelles",
+        "description": "×2 Mult si le coup contient la même séquence dans deux familles (comme 3-4-5 de Caractères et 3-4-5 de Cercles)"
       },
       "decree-chanta-champion": {
-        "name": "Champion de la main extérieure",
-        "description": "×2 Mult quand vous marquez une Main Extérieure : une main complète avec au moins une séquence, dont chaque groupe et la paire contiennent un 1, un 9, un Vent ou un Dragon. Une Main Extérieure Pure (la même, mais sans Vents ni Dragons : chaque groupe et la paire contiennent un 1 ou un 9) compte aussi."
+        "name": "Champion de l’extérieur",
+        "description": "×2 Mult si le coup compte au moins deux groupes et que chaque groupe contient un 1, un 9, un Vent ou un Dragon"
       },
       "decree-mandate-breaker": {
         "name": "Briseur de Mandats",
@@ -1402,12 +1406,12 @@
         "description": "Chaque Dragon joué compte quatre fois"
       },
       "decree-yaku-amplifier": {
-        "name": "Amplificateur de Yaku",
-        "description": "Quand une main complète marque des Yaku, son multiplicateur de Yaku combiné est multiplié par 1,5"
+        "name": "Amplificateur de paires",
+        "description": "×2 Mult par paire dans le coup"
       },
       "decree-yakuman-seeker": {
-        "name": "Chercheur de Yakuman",
-        "description": "×5 Mult quand vous marquez un Yakuman, une main du plus haut niveau comme Trois Grands Dragons ou Treize Orphelins"
+        "name": "Grand chercheur",
+        "description": "×5 Mult si le coup contient au moins cinq tuiles identiques, ou une Suite de six tuiles"
       },
       "decree-four-seasons-master": {
         "name": "Maître des Saisons",
@@ -1463,7 +1467,7 @@
       },
       "decree-chain-reaction": {
         "name": "Réaction en Chaîne",
-        "description": "×1,5 Mult par Yaku dans la main marquée"
+        "description": "×1,5 Mult par groupe dans le coup (les paires comptent)"
       },
       "decree-cosmic-jade": {
         "name": "Jade Cosmique",
@@ -1514,16 +1518,16 @@
         "description": "×1,2 Mult par tranche de 10 pièces d’or que vous possédez"
       },
       "decree-yaku-nexus": {
-        "name": "Nexus de Yaku",
-        "description": "Chaque Yaku marque comme s’il était d’un niveau au-dessus (un Niveau 1 à ×1,3 devient ×1,6)"
+        "name": "Nexus des groupes",
+        "description": "×2,5 Mult par groupe dans le coup (les paires comptent)"
       },
       "decree-yakuman-blessing": {
-        "name": "Bénédiction Yakuman",
-        "description": "×10 Mult quand vous marquez un Yakuman, une main du plus haut niveau comme Trois Grands Dragons ou Treize Orphelins"
+        "name": "Bénédiction sextuple",
+        "description": "×8 Mult si le coup compte au moins six tuiles et que chacune fait partie d’un groupe"
       },
       "decree-reality-warp": {
         "name": "Distorsion de Réalité",
-        "description": "Toute sélection de 14 tuiles peut former une main complète"
+        "description": "Les coups qui ne sont pas une main complète peuvent compter jusqu’à 8 tuiles au lieu de 6"
       },
       "decree-time-master": {
         "name": "Maître du Temps",
@@ -1547,7 +1551,7 @@
       },
       "tanyao_dispensation": {
         "name": "Dispense des simples",
-        "description": "Tout Simples (normalement uniquement des tuiles de 2 à 8) accepte aussi les 1 et les 9. Les Vents et les Dragons l’annulent toujours."
+        "description": "Pour vos Décrets, les 1 et les 9 comptent aussi comme des Simples (tuiles de 2 à 8). Les Vents et les Dragons ne comptent toujours pas."
       },
       "moonlit_seal": {
         "name": "Emblème de Lune",
@@ -1563,15 +1567,15 @@
       },
       "false_eye_mandate": {
         "name": "Mandat du Faux Œil",
-        "description": "Une main complète peut utiliser l’un de ses groupes à la place de la paire."
+        "description": "Vos Décrets considèrent chaque coup comme s’il contenait une paire de plus."
       },
       "honor_transmutation": {
         "name": "Transmutation des Honneurs",
         "description": "Les Vents et les Dragons peuvent compter comme des tuiles numérotées de votre famille la plus fréquente."
       },
       "yakuman_succession": {
-        "name": "Succession Yakuman",
-        "description": "Tant que vous détenez au moins 2 Fleurs, ces mains deviennent des Yakuman, le plus haut niveau (×4 chacune) : Semi-Couleur, Couleur Pure, Double Séquence Pure Doublée (deux paires de séquences identiques), Main Extérieure Pure (un 1 ou un 9 dans chaque groupe et la paire) et Sept Paires. Une main affaiblie par un Mandat ne peut pas s’élever. Les copies ne se cumulent pas."
+        "name": "Grande Succession",
+        "description": "Tant que vous détenez au moins 2 Fleurs : ×4 Mult si le coup contient au moins quatre tuiles identiques (un Carré) ou une Suite (au moins quatre tuiles qui se suivent, d’une même famille)."
       },
       "celestial_wildcard": {
         "name": "Joker Céleste",
@@ -1582,20 +1586,20 @@
         "description": "Une fois par manche, échangez une tuile choisie contre une tuile du mur mort (les tuiles réservées au fond du mur) sans dépenser de tour."
       },
       "shanten_clemency": {
-        "name": "Clémence de Shanten",
-        "description": "Une main à une tuile d’être complète peut être jouée comme une main complète, pour la moitié du score."
+        "name": "Clémence des Tuiles Isolées",
+        "description": "Les tuiles isolées (tuiles jouées hors de tout groupe) rapportent tous leurs Points au lieu de la moitié."
       },
       "closed_hand_austerity": {
-        "name": "Austérité de Main Fermée",
-        "description": "Chaque main de Mahjong complète gagne ×1,5, puis ×1,2 de plus pour chaque main complète précédente de cette partie, jusqu’à ×4 avant les bonus des Fleurs. Les coups plus petits et les mains terminées grâce à Clémence de Shanten ne comptent pas."
+        "name": "Austérité des Six Tuiles",
+        "description": "Chaque coup d’au moins six tuiles, toutes dans un groupe, gagne ×1,5, puis ×1,2 de plus pour chaque coup de ce type déjà joué dans cette partie, jusqu’à ×4 avant les bonus des Fleurs."
       },
       "terminal_devotion": {
         "name": "Dévotion Terminale",
         "description": "Chaque Terminal (1 ou 9) joué ajoute 0,05 au ×Mult de ce Décret (quatre donnent ×1,2)."
       },
       "yaku_repetition_charter": {
-        "name": "Charte de Répétition de Yaku",
-        "description": "Un Yaku marqué sur des manches consécutives gagne ×1,2 pour chaque manche précédente de sa série, jusqu’à ×4 avant les bonus des Fleurs. Une manche sans lui met fin à la série."
+        "name": "Charte de Répétition des Combinaisons",
+        "description": "Une combinaison (comme « Double paire ») jouée sur des manches consécutives gagne ×1,2 pour chaque manche précédente de sa série, jusqu’à ×4 avant les bonus des Fleurs. Une manche sans elle met fin à la série."
       }
     }
   },
@@ -1614,7 +1618,7 @@
     "chrysanthemumWinter": "Avec Chrysanthème actif, les coups cachés ignorent la pénalité d’Hiver tout en conservant sa règle de séquences sautant un rang. Les coups ouverts subissent toujours la pénalité. La Sécheresse bloque cette protection sauf si la Fleur est protégée.",
     "catalystsTitle": "Payer avec une Fleur",
     "catalystsIntro": "Certaines offres directes de Décrets de la Maison de thé acceptent une Fleur à la place de l’Or. Choisissez précisément une Fleur détenue et confirmez : ce choix est facultatif, jamais automatique.",
-    "catalystsCost": "Perdre la Fleur réduit aussi ses bonus de collection. L’achat est bloqué si les emplacements restants ne suffisent pas. La recueillir à nouveau restaure son éveil pour cette partie. Succession Yakuman exige toujours deux Fleurs : en sacrifier une nécessite donc d’en détenir au moins trois avant l’achat."
+    "catalystsCost": "Perdre la Fleur réduit aussi ses bonus de collection. L’achat est bloqué si les emplacements restants ne suffisent pas. La recueillir à nouveau restaure son éveil pour cette partie."
   },
   "codexUpgrades": {
     "patternsTitle": "Familles de combinaison",
@@ -1965,7 +1969,7 @@
       "p1": "Une main jouée compte jusqu'à {{max}} tuiles. Elle marque comme la meilleure main que ses tuiles forment :",
       "headerHand": "Main",
       "headerMeaning": "Ce que c’est",
-      "mahjong": "Une main de Mahjong complète ajoute +{{mult}} au Mult en plus de ses Yaku."
+      "mahjong": "Une main de Mahjong complète réussit aussitôt la manche, quel que soit son score, et ajoute +{{mult}} au Mult en plus de ses Yaku."
     },
     "ready": {
       "title": "Vous Êtes Prêt !",
@@ -2133,7 +2137,7 @@
       "p1": "Chaque manche vous donne {{turns}} tours. Chaque tour est l’une de deux actions :",
       "play": "marquer les tuiles choisies : jusqu'à {{max}}, ou une main de Mahjong complète.",
       "redraw": "envoyer à la rivière autant de tuiles choisies que vous voulez et en piocher de nouvelles.",
-      "p2": "Atteignez l'objectif de la manche avant d'être à court de tours. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
+      "p2": "Atteignez l’objectif de la manche avant d’être à court de tours, ou jouez une main de Mahjong complète pour réussir aussitôt la manche. Votre dernier tour est toujours une main jouée, et certains objets offrent des repioches gratuites qui ne coûtent aucun tour.",
       "warning": "À court de tours sous l'objectif, la partie est terminée.",
       "emergency": "Au {{stake}} et au-delà, à partir de l’Acte {{act}}, votre dernier tour peut être prolongé : achetez un tour de plus avec de l’or. Le prix augmente à chaque Acte et double pour chaque tour supplémentaire acheté dans la même manche."
     },
@@ -3198,7 +3202,7 @@
     },
     "mahjong": {
       "name": "Mahjong",
-      "explain": "Une main complète : quatre groupes (séquences, brelans ou carrés) et une paire, en général 14 tuiles. Sept Paires et Treize Orphelins sont des exceptions particulières. Ses Yaku multiplient le score."
+      "explain": "Une main complète : quatre groupes (séquences, brelans ou carrés) et une paire, en général 14 tuiles. Sept Paires et Treize Orphelins sont des exceptions particulières. En jouer une réussit aussitôt la manche, quel que soit son score."
     },
     "three_dragons": {
       "name": "Trois Dragons",
@@ -3215,7 +3219,7 @@
   },
   "guide": {
     "title": "Comment jouer",
-    "intro": "Tensho est un jeu façon poker avec des tuiles de Mahjong. Choisissez des tuiles qui forment une main, jouez-la pour marquer et atteignez l’objectif de chaque manche.",
+    "intro": "Tensho est un jeu façon poker avec des tuiles de Mahjong. Choisissez des tuiles qui forment une main, jouez-la pour marquer et atteignez l’objectif de chaque manche. Une main de Mahjong complète réussit aussitôt la manche.",
     "turnsTitle": "Votre tour",
     "playHelp": "marque des points avec les tuiles choisies.",
     "redrawHelp": "envoie autant de tuiles choisies que vous voulez à la rivière et en pioche de nouvelles.",

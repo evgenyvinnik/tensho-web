@@ -1,5 +1,6 @@
 import { afterEach, expect, it } from 'vitest'
 import { Tile, TileSuit, FlowerType } from '../core/Tile'
+import { EnhancementType } from '../core/TileModifier'
 import { Hand } from '../core/Hand'
 import { validateHand } from '../rules/HandValidator'
 import { findCompleteHandSubset } from '../rules/CompleteHandSubset'
@@ -150,8 +151,6 @@ it.each([
       return t
     },
   ],
-  ['shanten_clemency', () => standard().slice(0, -1)],
-  ['false_eye_mandate', () => standard().slice(0, -2)],
   [
     'honor_transmutation',
     () => [
@@ -166,10 +165,6 @@ it.each([
       t[1] = new Tile(TileSuit.Pinzu, 2, t[1].id)
       return t
     },
-  ],
-  [
-    'decree-reality-warp',
-    () => ranks(TileSuit.Manzu, [1, 4, 7, 1, 4, 7, 1, 4, 7, 2, 5, 8, 2, 5]),
   ],
 ] as const)(
   'finds a %s assisted subset and retains the same interpretation on resume',
@@ -188,6 +183,32 @@ it.each([
     expect(game.findCompleteHandSelection()).toEqual(found)
   }
 )
+
+it('finds a complete hand that only a Wild tile completes, for the rack hint', () => {
+  // 1-2-3 4-5-6 of Characters, 2-3-4 of Circles, 6-7 of Bamboo and an East
+  // pair: a Wild 8 of Characters fills 6-7-8 of Bamboo.
+  const wild = new Tile(TileSuit.Manzu, 8, 'wild-8').withEnhancement(
+    EnhancementType.Wild
+  )
+  const tiles = [
+    ...standard().filter(
+      (tile) => !(tile.suit === TileSuit.Souzu && tile.rank === 8)
+    ),
+    wild,
+    ...spares(),
+  ]
+  const game = setup(tiles)
+  const found = game.findCompleteHandSelection()!
+  expect(found).not.toBeNull()
+  expect(found).toContain('wild-8')
+  expect(found).toHaveLength(14)
+  // Without the Wild Edition the same faces are not complete.
+  const plain = setup([
+    ...tiles.filter((tile) => tile.id !== 'wild-8'),
+    new Tile(TileSuit.Manzu, 8, 'plain-8'),
+  ])
+  expect(plain.findCompleteHandSelection()).toBeNull()
+})
 
 it('includes the forced physical copy rather than an interchangeable unlocked copy', () => {
   const tiles = [...standard(), new Tile(TileSuit.Wind, 1, 'forced-east')],
