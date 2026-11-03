@@ -39,6 +39,11 @@ CocoaPods). That build has no service worker and drops the original
 illustration PNGs. `prepare-native-build.mjs` stamps the package version into
 the Xcode project. `src/native/` mirrors localStorage into Preferences, because
 iOS can clear WebView storage, and restores it before the stores hydrate.
+The status bar is hidden through Info.plist. Keep
+`UIViewControllerBasedStatusBarAppearance` off, because Capacitor's SystemBars
+plugin shows the bar again at launch otherwise. For top spacing, use
+`var(--safe-top)` and not `env(safe-area-inset-top)`: on iPhones with a notch
+or Dynamic Island, the app adds room below the camera (`src/index.css`).
 Ads (iOS only): `src/native/adBreaks.ts` schedules an AdMob interstitial after
 every second Boss, shown on the next screen. `admobInterstitials.ts` handles
 consent, the tracking prompt and loading. They use Google's test IDs until

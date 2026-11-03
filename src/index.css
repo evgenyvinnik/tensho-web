@@ -77,6 +77,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* Room above content for a notch, Dynamic Island or status bar. Use this,
+     not env(safe-area-inset-top): the iOS app widens it (see below). */
+  --safe-top: env(safe-area-inset-top, 0px);
+
   /* Default color scheme */
   color-scheme: dark;
   color: var(--color-beige-white);
@@ -239,8 +243,17 @@ a {
   user-select: text;
 }
 
+/* The iOS app hides the status bar, so only the camera is left at the top.
+ * Every iPhone taller than 2:1 has a notch or Dynamic Island: keep a gap
+ * below it, and clear the island even if the web view reports no inset. */
+@media (max-aspect-ratio: 1/2) {
+  [data-native-app] {
+    --safe-top: calc(max(env(safe-area-inset-top, 0px), 50px) + 12px);
+  }
+}
+
 .safe-area-top {
-  padding-top: env(safe-area-inset-top);
+  padding-top: var(--safe-top);
 }
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom);
@@ -305,7 +318,7 @@ a {
 }
 
 .table-pattern-content-framed {
-  padding-top: max(var(--table-frame-content-inset), env(safe-area-inset-top));
+  padding-top: max(var(--table-frame-content-inset), var(--safe-top));
   padding-right: max(
     var(--table-frame-content-inset),
     env(safe-area-inset-right)

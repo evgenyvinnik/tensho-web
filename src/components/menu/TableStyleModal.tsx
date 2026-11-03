@@ -170,7 +170,7 @@ export function TableStyleModal({
       className="fixed inset-0 m-0 h-dvh w-screen max-h-none max-w-none overflow-hidden border-0 open:flex items-center justify-center p-3 sm:p-4"
       style={{
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        paddingTop: 'max(12px, env(safe-area-inset-top))',
+        paddingTop: 'max(12px, var(--safe-top))',
         paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
       }}
       onCancel={(event) => {
