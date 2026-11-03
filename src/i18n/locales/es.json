@@ -1600,6 +1600,34 @@
       "yaku_repetition_charter": {
         "name": "Carta de Repetición de Patrones",
         "description": "Un patrón de jugada (como Doble par) jugado en rondas consecutivas gana ×1,2 por cada ronda anterior de su racha, hasta ×4 antes de las bonificaciones de Flores. Una ronda sin él termina esa racha."
+      },
+      "decree-mirror-lake": {
+        "name": "Lago Espejo",
+        "description": "×2 Mult si esta jugada repite un patrón que ya jugaste esta ronda (como un Par tras otro Par)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Rueda del Nueve",
+        "description": "×3 Mult en la tercera jugada de cada ronda y, a partir de ahí, cada tres jugadas"
+      },
+      "decree-sleeved-tile": {
+        "name": "Ficha en la Manga",
+        "description": "+2 Mult por cada ficha recambiada esta ronda"
+      },
+      "decree-three-roads": {
+        "name": "Tres Caminos",
+        "description": "×1,5 Mult por cada patrón distinto que hayas jugado antes en esta ronda"
+      },
+      "decree-open-palm": {
+        "name": "Palma Abierta",
+        "description": "+2 recambios gratis por ronda, pero la primera jugada de cada ronda recibe ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Esquina Compartida",
+        "description": "+3 Mult por cada grupo que hayas jugado antes en esta ronda (los pares cuentan)"
+      },
+      "decree-last-word": {
+        "name": "La Última Palabra",
+        "description": "×4 Mult si esta jugada usa el último turno de la ronda"
       }
     }
   },

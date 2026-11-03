@@ -1600,6 +1600,34 @@
       "yaku_repetition_charter": {
         "name": "形反復の勅許",
         "description": "連続するラウンドで打った形（二対子など）は、連続中の前のラウンド1つにつき×1.2を得る（花牌のボーナス前で最大×4）。その形のないラウンドがあると連続は途切れる。"
+      },
+      "decree-mirror-lake": {
+        "name": "鏡湖",
+        "description": "このラウンドで既に打った形をもう一度打つと倍率×2（対子の後に対子など）"
+      },
+      "decree-wheel-of-nine": {
+        "name": "九輪",
+        "description": "各ラウンドの3回目の打牌と、その後3回ごとの打牌で倍率×3"
+      },
+      "decree-sleeved-tile": {
+        "name": "袖の牌",
+        "description": "このラウンドで引き直した牌1枚ごとに倍率+2"
+      },
+      "decree-three-roads": {
+        "name": "三叉路",
+        "description": "このラウンドで先に打った異なる形1種類ごとに倍率×1.5"
+      },
+      "decree-open-palm": {
+        "name": "開いた掌",
+        "description": "ラウンドごとに無料の引き直し+2。ただし各ラウンドの最初の打牌は倍率×0.5"
+      },
+      "decree-shared-corner": {
+        "name": "交わる角",
+        "description": "このラウンドで先に打った組1つにつき倍率+3（対子も数える）"
+      },
+      "decree-last-word": {
+        "name": "最後の一言",
+        "description": "ラウンド最後の手番で打つと倍率×4"
       }
     }
   },

@@ -109,6 +109,12 @@ function countScalingSource(
       return pairCount(context)
     case 'groups':
       return playGroups(context).length + (context.phantomPairs ?? 0)
+    case 'patterns_earlier_this_round':
+      return [...(context.patternsPlayedThisRound ?? [])].filter(
+        (pattern) => pattern !== 'loose'
+      ).length
+    case 'groups_earlier_this_round':
+      return context.groupsPlayedThisRound ?? 0
     case 'base_chips_per_100':
       return Math.floor(breakdown.basePoints / 100)
 
@@ -402,6 +408,19 @@ function gateAllows(gate: GateCondition, context: ScoringContext): boolean {
       )
     case 'last_hand_scored_zero':
       return context.lastHandScore === 0
+    case 'repeat_pattern':
+      // A play of loose tiles names no pattern worth repeating.
+      return (
+        context.playPatternId !== undefined &&
+        context.playPatternId !== 'loose' &&
+        (context.patternsPlayedThisRound?.has(context.playPatternId) ?? false)
+      )
+    case 'every_third_play':
+      return (context.round.handsPlayed + 1) % 3 === 0
+    case 'first_play_of_round':
+      return context.round.handsPlayed === 0
+    case 'last_turn':
+      return context.turnsRemaining === 1
     case 'double_target':
       return (
         context.scoreBeforeThresholdBonuses !== undefined &&

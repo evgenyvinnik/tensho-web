@@ -1094,6 +1094,12 @@ describe('loss prevention Decrees', () => {
   it('ends the run normally with no protective Decree', () => {
     const orchestrator = new GameOrchestrator()
     orchestrator.startNewRun(2026, 1)
+    // No Decree at all, and a target two-tile plays cannot reach.
+    const state = orchestrator.getState()
+    for (const decree of state.decreeSystem.getOwnedDecrees())
+      state.decreeSystem.removeDecree(decree.id)
+    ;(state as { targetScore: number }).targetScore = 1e9
+    state.roundManager.getCurrentRound()!.scoreTarget = 1e9
 
     let guard = 0
     while (orchestrator.getState().phase === 'gameplay' && guard++ < 20) {

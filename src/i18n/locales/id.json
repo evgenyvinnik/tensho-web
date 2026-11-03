@@ -1788,6 +1788,34 @@
       "yaku_repetition_charter": {
         "name": "Piagam Pengulangan Pola",
         "description": "Pola main (seperti Dua pasangan) yang dimainkan di ronde berturut-turut mendapat ×1,2 untuk setiap ronde sebelumnya dalam rangkaiannya, hingga ×4 sebelum bonus Bunga. Ronde tanpa pola itu mengakhiri rangkaiannya."
+      },
+      "decree-mirror-lake": {
+        "name": "Danau Cermin",
+        "description": "×2 Mult jika kali main ini mengulang pola yang sudah dimainkan di ronde ini (seperti Pasangan setelah Pasangan)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Roda Sembilan",
+        "description": "×3 Mult pada kali main ketiga di setiap ronde, dan pada setiap kali main ketiga sesudahnya"
+      },
+      "decree-sleeved-tile": {
+        "name": "Ubin di Balik Lengan",
+        "description": "+2 Mult untuk setiap ubin yang ditarik ulang ronde ini"
+      },
+      "decree-three-roads": {
+        "name": "Tiga Jalan",
+        "description": "×1,5 Mult untuk setiap pola berbeda dari kali main sebelumnya di ronde ini"
+      },
+      "decree-open-palm": {
+        "name": "Telapak Terbuka",
+        "description": "+2 tarik ulang gratis per ronde, tetapi kali main pertama di setiap ronde mendapat ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Sudut Bersama",
+        "description": "+3 Mult untuk setiap kelompok dari kali main sebelumnya di ronde ini (pasangan ikut dihitung)"
+      },
+      "decree-last-word": {
+        "name": "Kata Terakhir",
+        "description": "×4 Mult jika kali main ini memakai giliran terakhir ronde"
       }
     }
   },

@@ -251,6 +251,7 @@ const stateFields = {
   handsAllowance: count,
   playsThisRound: optional(count),
   tilesRedrawnThisRound: optional(count),
+  groupsPlayedThisRound: optional(count),
   emergencyTurnsBoughtThisRound: optional(count),
   adTurns: optional(object({ actNumber: positive, count })),
   honorDiscardsThisRound: optional(count),

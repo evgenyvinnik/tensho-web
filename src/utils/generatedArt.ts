@@ -189,6 +189,20 @@ export const generatedArtPaths = {
       'assets/illustrations/generated/decrees/decree-philosophers-stone.webp',
     'decree-photograph':
       'assets/illustrations/generated/decrees/decree-photograph.webp',
+    'decree-mirror-lake':
+      'assets/illustrations/generated/decrees/decree-mirror-lake.webp',
+    'decree-wheel-of-nine':
+      'assets/illustrations/generated/decrees/decree-wheel-of-nine.webp',
+    'decree-three-roads':
+      'assets/illustrations/generated/decrees/decree-three-roads.webp',
+    'decree-sleeved-tile':
+      'assets/illustrations/generated/decrees/decree-sleeved-tile.webp',
+    'decree-open-palm':
+      'assets/illustrations/generated/decrees/decree-open-palm.webp',
+    'decree-shared-corner':
+      'assets/illustrations/generated/decrees/decree-shared-corner.webp',
+    'decree-last-word':
+      'assets/illustrations/generated/decrees/decree-last-word.webp',
     'decree-pinfu-purist':
       'assets/illustrations/generated/decrees/decree-pinfu-purist.webp',
     'decree-pinzu-god':

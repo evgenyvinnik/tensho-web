@@ -1899,6 +1899,34 @@
       "yaku_repetition_charter": {
         "name": "Utos ng Pag-uulit ng Pattern",
         "description": "Ang pattern ng laro (gaya ng Dalawang pares) na nilaro sa magkakasunod na round ay may ×1.2 sa bawat naunang round ng serye nito, hanggang ×4 bago ang mga bonus ng Bulaklak. Napuputol ang serye sa round na wala ito."
+      },
+      "decree-mirror-lake": {
+        "name": "Lawang Salamin",
+        "description": "×2 Mult kung inuulit ng larong ito ang pattern na nalaro mo na ngayong round (gaya ng Pares pagkatapos ng Pares)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Gulong ng Siyam",
+        "description": "×3 Mult sa ikatlong laro ng bawat round, at sa bawat ikatlong laro pagkatapos nito"
+      },
+      "decree-sleeved-tile": {
+        "name": "Tile sa Manggas",
+        "description": "+2 Mult sa bawat tile na na-redraw mo ngayong round"
+      },
+      "decree-three-roads": {
+        "name": "Tatlong Daan",
+        "description": "×1.5 Mult sa bawat naiibang pattern sa mga naunang laro ngayong round"
+      },
+      "decree-open-palm": {
+        "name": "Bukas na Palad",
+        "description": "+2 libreng redraw bawat round, ngunit ×0.5 Mult ang unang laro ng bawat round"
+      },
+      "decree-shared-corner": {
+        "name": "Pinagsasaluhang Sulok",
+        "description": "+3 Mult sa bawat grupo sa mga naunang laro ngayong round (binibilang ang mga pares)"
+      },
+      "decree-last-word": {
+        "name": "Ang Huling Salita",
+        "description": "×4 Mult kung ginagamit ng larong ito ang huling turno ng round"
       }
     }
   },

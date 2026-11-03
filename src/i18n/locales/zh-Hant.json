@@ -1600,6 +1600,34 @@
       "yaku_repetition_charter": {
         "name": "牌型重複敕許",
         "description": "在連續回合中打出的牌型（如兩對），其連續紀錄中此前每有一個回合，就獲得×1.2，花牌加成前最高×4。某回合沒有打出該牌型即中斷連續。"
+      },
+      "decree-mirror-lake": {
+        "name": "鏡湖",
+        "description": "若本次出牌重複本回合已打出過的牌型（如對子之後再出對子），×2倍率"
+      },
+      "decree-wheel-of-nine": {
+        "name": "九之輪",
+        "description": "每回合第三次出牌時×3倍率，此後每出牌三次再觸發一次"
+      },
+      "decree-sleeved-tile": {
+        "name": "袖中牌",
+        "description": "本回合每重抽一張牌倍率+2"
+      },
+      "decree-three-roads": {
+        "name": "三岔路",
+        "description": "本回合此前每打出一種不同的牌型，×1.5倍率"
+      },
+      "decree-open-palm": {
+        "name": "攤開的手掌",
+        "description": "每回合免費重抽+2，但每回合第一次出牌×0.5倍率"
+      },
+      "decree-shared-corner": {
+        "name": "共角",
+        "description": "本回合此前每打出一個組合，倍率+3（對子也算）"
+      },
+      "decree-last-word": {
+        "name": "一錘定音",
+        "description": "本回合最後一次行動出牌時×4倍率"
       }
     }
   },

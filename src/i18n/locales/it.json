@@ -1899,6 +1899,34 @@
       "decree-infinite-loop": {
         "name": "Ciclo Infinito",
         "description": "Ogni tessera che segna punti lo fa quattro volte"
+      },
+      "decree-mirror-lake": {
+        "name": "Lago specchio",
+        "description": "×2 Mult se questa giocata ripete una combinazione già giocata in questo round (come una Coppia dopo una Coppia)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Ruota del nove",
+        "description": "×3 Mult sulla terza giocata di ogni round e, da lì in poi, ogni tre giocate"
+      },
+      "decree-sleeved-tile": {
+        "name": "Tessera nella manica",
+        "description": "+2 Mult per ogni tessera ripescata in questo round"
+      },
+      "decree-three-roads": {
+        "name": "Tre strade",
+        "description": "×1,5 Mult per ogni combinazione diversa giocata nelle giocate precedenti di questo round"
+      },
+      "decree-open-palm": {
+        "name": "Palmo aperto",
+        "description": "+2 ripescate gratuite per round, ma la prima giocata di ogni round riceve ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Angolo condiviso",
+        "description": "+3 Mult per ogni gruppo delle giocate precedenti di questo round (le coppie contano)"
+      },
+      "decree-last-word": {
+        "name": "L’ultima parola",
+        "description": "×4 Mult se questa giocata usa l’ultimo turno del round"
       }
     }
   },

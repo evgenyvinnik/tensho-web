@@ -80,6 +80,8 @@ const SCALING_CONDITIONS: Record<string, ScalingSource> = {
   'per triplet': 'triplets',
   'per pair': 'pairs',
   'per group': 'groups',
+  'per earlier pattern this round': 'patterns_earlier_this_round',
+  'per earlier group this round': 'groups_earlier_this_round',
   'per 100 base chips': 'base_chips_per_100',
   // Round and run progress
   'per hand this round': 'hands_this_round',
@@ -163,6 +165,10 @@ const GATE_CONDITIONS: Record<string, GateCondition> = {
   'if first hand wins': 'first_hand',
   'if last hand was 0': 'last_hand_scored_zero',
   'if 2x over target': 'double_target',
+  'if repeated pattern': 'repeat_pattern',
+  'on every third play': 'every_third_play',
+  'on first play of round': 'first_play_of_round',
+  'on last Turn': 'last_turn',
 }
 
 /**

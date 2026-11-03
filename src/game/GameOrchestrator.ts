@@ -261,6 +261,8 @@ export interface OrchestratorState {
   playsThisRound?: number
   /** Tiles REDRAW has sent to the river this round. */
   tilesRedrawnThisRound?: number
+  /** Groups the round's plays have held so far (Shared Corner). */
+  groupsPlayedThisRound?: number
   /**
    * Emergency Turns bought with Gold this round; each doubles the next one's
    * price. Missing in older saves: none bought.
@@ -848,6 +850,7 @@ export class GameOrchestrator {
     delete this.state.riichiStatus
     this.state.playsThisRound = 0
     this.state.tilesRedrawnThisRound = 0
+    this.state.groupsPlayedThisRound = 0
     this.state.emergencyTurnsBoughtThisRound = 0
     this.state.honorDiscardsThisRound = 0
     this.state.luckyRolls = {}
@@ -2281,6 +2284,10 @@ export class GameOrchestrator {
     if (austerityPlay)
       this.state.completeConcealedHandsPlayed =
         (this.state.completeConcealedHandsPlayed ?? 0) + 1
+    this.state.groupsPlayedThisRound =
+      (this.state.groupsPlayedThisRound ?? 0) +
+      completeHand.parsedHand.melds.length +
+      (completeHand.parsedHand.pair.tiles.length === 2 ? 1 : 0)
     this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
@@ -2428,6 +2435,8 @@ export class GameOrchestrator {
     if (austerityPlay)
       this.state.completeConcealedHandsPlayed =
         (this.state.completeConcealedHandsPlayed ?? 0) + 1
+    this.state.groupsPlayedThisRound =
+      (this.state.groupsPlayedThisRound ?? 0) + parse.groups.length
     this.spendTurn('play')
 
     if (scoreResult.goldEarned > 0) {
@@ -3974,6 +3983,10 @@ export class GameOrchestrator {
       gold: this.state.gold,
       handsPlayedThisRun: this.state.handsPlayedThisRun,
       completeHand: partialMelds === undefined,
+      playPatternId: patternId,
+      patternsPlayedThisRound: this.state.currentRoundYakuIds,
+      groupsPlayedThisRound: this.state.groupsPlayedThisRound ?? 0,
+      turnsRemaining: this.state.handsRemaining,
       phantomPairs: this.isDecreeRuleActive('phantom_pair') ? 1 : 0,
       terminalsCountAsSimples: this.isDecreeRuleActive('tanyao_terminals'),
       completeConcealedHand,

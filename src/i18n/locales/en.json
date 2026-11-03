@@ -1596,6 +1596,34 @@
       "yaku_repetition_charter": {
         "name": "Pattern Repetition Charter",
         "description": "A play pattern (such as Two Pairs) played in back-to-back rounds gains ×1.2 for each earlier round in its streak, up to ×4 before Flower bonuses. A round without it ends that streak."
+      },
+      "decree-mirror-lake": {
+        "name": "Mirror Lake",
+        "description": "×2 Mult if this play repeats a pattern you already played this round (such as a Pair after a Pair)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Wheel of Nine",
+        "description": "×3 Mult on the third play of each round, and on every third play after it"
+      },
+      "decree-sleeved-tile": {
+        "name": "Sleeved Tile",
+        "description": "+2 Mult for each tile you REDRAW this round"
+      },
+      "decree-three-roads": {
+        "name": "Three Roads",
+        "description": "×1.5 Mult for each different pattern you played earlier this round"
+      },
+      "decree-open-palm": {
+        "name": "Open Palm",
+        "description": "+2 free redraws per round, but the first play of each round gets ×0.5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Shared Corner",
+        "description": "+3 Mult for each group you played earlier this round (pairs count)"
+      },
+      "decree-last-word": {
+        "name": "The Last Word",
+        "description": "×4 Mult if this play uses the last Turn of the round"
       }
     }
   },

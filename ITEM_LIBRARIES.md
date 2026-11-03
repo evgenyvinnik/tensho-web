@@ -461,6 +461,9 @@ Conditional effects with stronger bonuses.
 | Expansive Grip | 拡張握 | +2 rack spaces |
 | Careful Player | 慎重者 | +2 free redraws per round |
 | Time Master | 時の支配者 | +2 Turns per round |
+| Mirror Lake | 鏡湖 | ×2 Mult if this play repeats a pattern you already played this round (such as a Pair after a Pair) |
+| Wheel of Nine | 九輪 | ×3 Mult on the third play of each round, and on every third play after it |
+| Sleeved Tile | 袖の牌 | +2 Mult for each tile you REDRAW this round |
 
 ### Rare Decrees (Tier 3)
 
@@ -496,6 +499,10 @@ Powerful effects with significant impact.
 | Endless Journey | 無限旅 | ×1.2 Mult per completed Act |
 | Master Grip | 達人握 | +3 rack spaces |
 | Infinite Patience | 無限忍耐 | +3 free redraws per round |
+| Three Roads | 三叉路 | ×1.5 Mult for each different pattern you played earlier this round |
+| Open Palm | 開掌 | +2 free redraws per round, but the first play of each round gets ×0.5 Mult |
+| Shared Corner | 共角 | +3 Mult for each group you played earlier this round (pairs count) |
+| The Last Word | 結語 | ×4 Mult if this play uses the last Turn of the round |
 
 ### Legendary Decrees (Tier 4)
 

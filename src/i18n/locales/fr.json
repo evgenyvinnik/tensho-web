@@ -1600,6 +1600,34 @@
       "yaku_repetition_charter": {
         "name": "Charte de Répétition des Combinaisons",
         "description": "Une combinaison (comme « Double paire ») jouée sur des manches consécutives gagne ×1,2 pour chaque manche précédente de sa série, jusqu’à ×4 avant les bonus des Fleurs. Une manche sans elle met fin à la série."
+      },
+      "decree-mirror-lake": {
+        "name": "Lac Miroir",
+        "description": "×2 Mult si ce coup répète une combinaison déjà jouée cette manche (comme une Paire après une Paire)"
+      },
+      "decree-wheel-of-nine": {
+        "name": "Roue du Neuf",
+        "description": "×3 Mult au troisième coup de chaque manche, puis tous les trois coups"
+      },
+      "decree-sleeved-tile": {
+        "name": "Tuile dans la Manche",
+        "description": "+2 Mult pour chaque tuile repiochée cette manche"
+      },
+      "decree-three-roads": {
+        "name": "Trois Chemins",
+        "description": "×1,5 Mult pour chaque combinaison différente jouée lors des coups précédents de cette manche"
+      },
+      "decree-open-palm": {
+        "name": "Paume Ouverte",
+        "description": "+2 repioches gratuites par manche, mais le premier coup de chaque manche reçoit ×0,5 Mult"
+      },
+      "decree-shared-corner": {
+        "name": "Coin Partagé",
+        "description": "+3 Mult pour chaque groupe joué lors des coups précédents de cette manche (les paires comptent)"
+      },
+      "decree-last-word": {
+        "name": "Le Dernier Mot",
+        "description": "×4 Mult si ce coup utilise le dernier tour de la manche"
       }
     }
   },

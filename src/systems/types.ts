@@ -78,6 +78,8 @@ export type ScalingSource =
   | 'triplets'
   | 'pairs' // Pairs in the play, the complete hand's pair included
   | 'groups' // Every group in the play, pairs included
+  | 'patterns_earlier_this_round' // Distinct patterns played before this one
+  | 'groups_earlier_this_round' // Groups played before this one this round
   | 'base_chips_per_100'
   // Round and run progress
   | 'hands_this_round'
@@ -145,6 +147,10 @@ export type GateCondition =
   | 'first_hand'
   | 'last_hand_scored_zero'
   | 'double_target'
+  | 'repeat_pattern' // This play's pattern was already played this round
+  | 'every_third_play' // The 3rd, 6th, … play of the round
+  | 'first_play_of_round'
+  | 'last_turn' // This play spends the round's last Turn
 
 /**
  * Additive score bonus effect
@@ -666,6 +672,14 @@ export interface ScoringContext {
   handsPlayedThisRun?: number
   /** Current play is a complete Mahjong hand, which clears the round. */
   completeHand?: boolean
+  /** This play's pattern, for Decrees that compare it with earlier plays. */
+  playPatternId?: string
+  /** Patterns already played this round, before this play. */
+  patternsPlayedThisRound?: ReadonlySet<string>
+  /** Groups already played this round, before this play. */
+  groupsPlayedThisRound?: number
+  /** Turns left before this play spends one. */
+  turnsRemaining?: number
   /** Extra pairs False Eye Mandate grants every play, for Decrees only. */
   phantomPairs?: number
   /** Simples Dispensation: 1s and 9s also count as Simples for Decrees. */

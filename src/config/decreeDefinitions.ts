@@ -896,6 +896,35 @@ export const UNCOMMON_DECREES: DecreeDefinition[] = [
     effects: [createEffect('special', 2, 'extra hands')],
     baseSellValue: 5,
   },
+  {
+    id: 'decree-mirror-lake',
+    name: 'Mirror Lake',
+    japaneseName: '鏡湖',
+    description:
+      '×2 Mult if this play repeats a pattern you already played this round (such as a Pair after a Pair)',
+    rarity: 'uncommon',
+    effects: [createEffect('multiplicative_mult', 2, 'if repeated pattern')],
+    baseSellValue: 4,
+  },
+  {
+    id: 'decree-wheel-of-nine',
+    name: 'Wheel of Nine',
+    japaneseName: '九輪',
+    description:
+      '×3 Mult on the third play of each round, and on every third play after it',
+    rarity: 'uncommon',
+    effects: [createEffect('multiplicative_mult', 3, 'on every third play')],
+    baseSellValue: 5,
+  },
+  {
+    id: 'decree-sleeved-tile',
+    name: 'Sleeved Tile',
+    japaneseName: '袖の牌',
+    description: '+2 Mult for each tile you REDRAW this round',
+    rarity: 'uncommon',
+    effects: [createEffect('additive_mult', 2, 'per discard used')],
+    baseSellValue: 4,
+  },
 ]
 
 // ============================================================================
@@ -1202,6 +1231,54 @@ export const RARE_DECREES: DecreeDefinition[] = [
     rarity: 'rare',
     effects: [createEffect('discard_count', 3)],
     baseSellValue: 7,
+  },
+  {
+    id: 'decree-three-roads',
+    name: 'Three Roads',
+    japaneseName: '三叉路',
+    description:
+      '×1.5 Mult for each different pattern you played earlier this round',
+    rarity: 'rare',
+    effects: [
+      createEffect(
+        'multiplicative_mult',
+        1.5,
+        'per earlier pattern this round'
+      ),
+    ],
+    baseSellValue: 7,
+  },
+  {
+    id: 'decree-open-palm',
+    name: 'Open Palm',
+    japaneseName: '開掌',
+    description:
+      '+2 free redraws per round, but the first play of each round gets ×0.5 Mult',
+    rarity: 'rare',
+    effects: [
+      createEffect('discard_count', 2),
+      createEffect('multiplicative_mult', 0.5, 'on first play of round'),
+    ],
+    baseSellValue: 6,
+  },
+  {
+    id: 'decree-shared-corner',
+    name: 'Shared Corner',
+    japaneseName: '共角',
+    description:
+      '+3 Mult for each group you played earlier this round (pairs count)',
+    rarity: 'rare',
+    effects: [createEffect('additive_mult', 3, 'per earlier group this round')],
+    baseSellValue: 7,
+  },
+  {
+    id: 'decree-last-word',
+    name: 'The Last Word',
+    japaneseName: '結語',
+    description: '×4 Mult if this play uses the last Turn of the round',
+    rarity: 'rare',
+    effects: [createEffect('multiplicative_mult', 4, 'on last Turn')],
+    baseSellValue: 8,
   },
 ]
 

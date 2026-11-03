@@ -1899,6 +1899,34 @@
       "yaku_repetition_charter": {
         "name": "Desen Tekrarı Fermanı",
         "description": "Art arda turlarda oynanan bir oyun deseni (İki çift gibi), serisindeki önceki her tur için ×1,2 kazanır; Çiçek bonuslarından önce en fazla ×4. O desen olmadan geçen bir tur seriyi bitirir."
+      },
+      "decree-mirror-lake": {
+        "name": "Ayna Gölü",
+        "description": "Bu oyun, bu tur zaten oynadığın bir deseni tekrarlarsa Çarpan ×2 (Çift ardından Çift gibi)."
+      },
+      "decree-wheel-of-nine": {
+        "name": "Dokuzun Çarkı",
+        "description": "Her turun üçüncü oyununda ve ardından her üç oyunda bir Çarpan ×3."
+      },
+      "decree-sleeved-tile": {
+        "name": "Yendeki Taş",
+        "description": "Bu tur yeniden çektiğin her taş için +2 Çarpan."
+      },
+      "decree-three-roads": {
+        "name": "Üç Yol",
+        "description": "Bu tur daha önce oynadığın her farklı desen için Çarpan ×1,5."
+      },
+      "decree-open-palm": {
+        "name": "Açık Avuç",
+        "description": "Tur başına +2 ücretsiz yeniden çekiş, ama her turun ilk oyunu Çarpan ×0,5 alır."
+      },
+      "decree-shared-corner": {
+        "name": "Ortak Köşe",
+        "description": "Bu tur daha önce oynadığın her grup için +3 Çarpan (çiftler de sayılır)."
+      },
+      "decree-last-word": {
+        "name": "Son Söz",
+        "description": "Bu oyun turun son hamlesini kullanıyorsa Çarpan ×4."
       }
     }
   },
